@@ -1,3 +1,4 @@
+
 /**
  * SIAR User & Operator Guide Interactive Controller
  * Simulates local identity generation, vault structure inspection, and anti-forensics panic purge.
@@ -18,15 +19,15 @@ document.addEventListener('DOMContentLoaded', () => {
   if (btnGenIdentity && outIdentity) {
     btnGenIdentity.addEventListener('click', () => {
       const mockSeeds = [
-        "velvet", "timber", "crystal", "matrix", "shield", "beacon", "falcon", "orbit", 
-        "echo", "quantum", "hazard", "summit", "drift", "canyon", "siren", "pulse", 
+        "velvet", "timber", "crystal", "matrix", "shield", "beacon", "falcon", "orbit",
+        "echo", "quantum", "hazard", "summit", "drift", "canyon", "siren", "pulse",
         "anchor", "zenith", "shadow", "aurora", "rebel", "granite", "blaze", "whisper"
       ];
-      
-      const randomHex = (len) => Array.from({length: len}, () => Math.floor(Math.random() * 16).toString(16)).join('');
+
+      const randomHex = (len) => Array.from({ length: len }, () => Math.floor(Math.random() * 16).toString(16)).join('');
       const ed25519Pub = "ed25519_pub_" + randomHex(32);
       const x25519Pub = "x25519_dh_" + randomHex(32);
-      const sasCode = ["ALPHA", "COBALT", "VECTOR", "SHIELD"][Math.floor(Math.random()*4)] + "-" + Math.floor(1000 + Math.random()*9000);
+      const sasCode = ["ALPHA", "COBALT", "VECTOR", "SHIELD"][Math.floor(Math.random() * 4)] + "-" + Math.floor(1000 + Math.random() * 9000);
 
       outIdentity.innerHTML = `
         <div style="background: rgba(0, 242, 254, 0.05); border: 1px solid rgba(0, 242, 254, 0.2); border-radius: 6px; padding: 14px; margin-top: 8px;">
