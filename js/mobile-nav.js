@@ -58,6 +58,9 @@
           <a href="index.html" class="drawer-nav-link ${isCurrent('index.html') ? 'active' : ''}">
             <span class="link-icon">🏠</span> Showcase & Features
           </a>
+          <a href="guide.html" class="drawer-nav-link ${isCurrent('guide.html') ? 'active' : ''}">
+            <span class="link-icon">📘</span> User & Operations Guide
+          </a>
           <a href="packages.html" class="drawer-nav-link ${isCurrent('packages.html') ? 'active' : ''}">
             <span class="link-icon">📦</span> Package Center (APKs, Repos)
           </a>

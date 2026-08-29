@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="SIAR Complete User & Operations Manual: Step-by-step instructions for downloading, sovereign identity setup, QR/NFC pairing, encrypted backups, and anti-forensics panic data purge.">
+  <meta name="theme-color" content="#07090e">
+  <title>User & Operator Manual — SIAR</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Core Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+  
+  <style>
+    .guide-hero {
+      text-align: center;
+      padding: 60px 0 40px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .guide-step-card {
+      background: var(--siar-bg-surface);
+      border: 1px solid var(--siar-border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      margin-bottom: 40px;
+      position: relative;
+      transition: var(--transition-normal);
+    }
+    .guide-step-card:hover {
+      border-color: var(--siar-border-active);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    }
+    .step-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0, 242, 254, 0.1);
+      border: 1px solid var(--siar-cyan-glow);
+      color: var(--siar-cyan-glow);
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 16px;
+    }
+    .guide-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-top: 20px;
+    }
+    .guide-callout {
+      background: rgba(14, 18, 27, 0.6);
+      border-left: 4px solid var(--siar-cyan-glow);
+      padding: 16px 20px;
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+      margin: 16px 0;
+      font-size: 0.88rem;
+    }
+    .guide-callout.warning {
+      border-left-color: #f59e0b;
+      background: rgba(245, 158, 11, 0.06);
+    }
+    .guide-callout.danger {
+      border-left-color: #f43f5e;
+      background: rgba(244, 63, 94, 0.06);
+    }
+    .guide-callout.success {
+      border-left-color: #10b981;
+      background: rgba(16, 185, 129, 0.06);
+    }
+    .interactive-simulator-box {
+      background: #030508;
+      border: 1px solid var(--siar-border-subtle);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      margin-top: 16px;
+    }
+    .guide-nav-sticky {
+      position: sticky;
+      top: 80px;
+      z-index: 100;
+      background: var(--siar-bg-glass-heavy);
+      backdrop-filter: blur(16px);
+      padding: 12px 0;
+      border-bottom: 1px solid var(--siar-border-subtle);
+      margin-bottom: 32px;
+    }
+    @media (max-width: 768px) {
+      .guide-grid-2 {
+        grid-template-columns: 1fr;
+      }
+      .guide-step-card {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Live Top Telemetry Bar -->
+  <div class="telemetry-ticker">
+    <div class="ticker-wrap container">
+      <div class="ticker-content">
+        <div class="ticker-item">
+          <span class="ticker-pulse"></span>
+          <span class="ticker-label">User Manual:</span>
+          <span class="ticker-val">End-to-End Sovereign Lifecycle v1.0</span>
+        </div>
+        <div class="ticker-item">
+          <span class="ticker-label">Zero-Trust:</span>
+          <span class="ticker-val">No Phone Numbers • No Email • No Servers</span>
+        </div>
+        <div class="ticker-item">
+          <span class="ticker-label">Anti-Forensics:</span>
+          <span class="ticker-val">DoD 5220.22-M 7-Pass RAM & Flash Shredding</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Navigation Header -->
+  <header class="header-nav">
+    <div class="container nav-inner">
+      <a href="index.html" class="brand-logo">
+        <div class="brand-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+        </div>
+        <span class="brand-text">SIAR</span>
+        <span class="brand-badge">MANUAL</span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="index.html" class="nav-link">Showcase</a></li>
+        <li><a href="guide.html" class="nav-link active">User Guide</a></li>
+        <li><a href="packages.html" class="nav-link">Packages</a></li>
+        <li><a href="docs.html" class="nav-link">Developer Hub</a></li>
+        <li><a href="simulator.html" class="nav-link">WASM Lab</a></li>
+        <li><a href="sys-arch/" class="nav-link">Architecture</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <button id="btnToggleOled" class="btn-icon" title="Toggle OLED Black" aria-label="Toggle OLED Mode">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.81.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/>
+          </svg>
+        </button>
+        <a href="packages.html" class="btn btn-primary btn-sm">Get App</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Sticky Chapter Jump Bar -->
+  <div class="guide-nav-sticky">
+    <div class="container">
+      <div class="touch-scroll-x" style="gap: 8px;">
+        <a href="#ch-download" class="btn btn-secondary btn-sm" style="font-size: 0.75rem;">1. Download & Verify</a>
+        <a href="#ch-setup" class="btn btn-secondary btn-sm" style="font-size: 0.75rem;">2. First-Time Setup</a>
+        <a href="#ch-pairing" class="btn btn-secondary btn-sm" style="font-size: 0.75rem;">3. QR / NFC Pairing</a>
+        <a href="#ch-using" class="btn btn-secondary btn-sm" style="font-size: 0.75rem;">4. Daily Mesh Usage</a>
+        <a href="#ch-backup" class="btn btn-secondary btn-sm" style="font-size: 0.75rem;">5. Export & Import</a>
+        <a href="#ch-purge" class="btn btn-secondary btn-sm" style="font-size: 0.75rem; border-color: #f43f5e; color: #f43f5e;">6. Panic Data Purge</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <main class="container" style="max-width: 1060px;">
+
+    <!-- Hero Header -->
+    <div class="guide-hero">
+      <span class="section-eyebrow">COMPLETE OPERATIONAL LIFECYCLE</span>
+      <h1 class="hero-title" style="font-size: 2.8rem; margin: 12px 0;">
+        SIAR End-to-End User & Operator Guide
+      </h1>
+      <p class="hero-subtitle">
+        Everything you need to know about installing, setting up self-sovereign cryptographic identities, pairing devices offline, exporting encrypted vaults, and triggering anti-forensic panic data shredding.
+      </p>
+    </div>
+
+    <!-- CHAPTER 1: DOWNLOADING & VERIFICATION -->
+    <section id="ch-download" class="guide-step-card">
+      <span class="step-badge">CHAPTER 01</span>
+      <h2 style="font-family: var(--font-display); font-size: 1.8rem; color: #ffffff; margin-bottom: 8px;">
+        Downloading & Verifying SIAR
+      </h2>
+      <p style="color: var(--siar-text-secondary); margin-bottom: 20px;">
+        SIAR is strictly peer-to-peer and distributed as sovereign native binaries for all major desktop, mobile, and headless server environments.
+      </p>
+
+      <div class="guide-grid-2">
+        <div class="siar-glass-card" style="padding: 20px;">
+          <h3 style="font-size: 1.1rem; color: var(--siar-cyan-glow); margin-bottom: 8px;">📱 Mobile (Android)</h3>
+          <ul style="list-style: none; padding-left: 0; font-size: 0.88rem; color: var(--siar-text-secondary); line-height: 1.8;">
+            <li>• <strong>Direct APK</strong>: Download signed universal APK from <a href="packages.html" style="color: var(--siar-cyan-glow);">Package Center</a></li>
+            <li>• <strong>F-Droid Repository</strong>: Add custom mirror <code>https://fdroid.siar.irshad.org.in/repo</code></li>
+            <li>• <strong>Permissions required</strong>: Bluetooth Scan & Connect (BLE 5.x), Nearby Wi-Fi Devices (Wi-Fi Direct), Camera (QR Scanning). No contacts or phone permissions ever requested.</li>
+          </ul>
+        </div>
+
+        <div class="siar-glass-card" style="padding: 20px;">
+          <h3 style="font-size: 1.1rem; color: var(--siar-emerald-online); margin-bottom: 8px;">💻 Desktop (Linux, macOS, Windows)</h3>
+          <ul style="list-style: none; padding-left: 0; font-size: 0.88rem; color: var(--siar-text-secondary); line-height: 1.8;">
+            <li>• <strong>Linux</strong>: <code>sudo apt install siar-desktop</code> (or <code>.rpm</code>, <code>.AppImage</code>, Arch AUR)</li>
+            <li>• <strong>macOS</strong>: <code>brew install --cask siar-messenger</code> (or Universal <code>.dmg</code>)</li>
+            <li>• <strong>Windows</strong>: <code>winget install SIARMessenger</code> (or MSIX package)</li>
+            <li>• <strong>One-Line POSIX Installer</strong>: <code>curl -fsSL https://siar.irshad.org.in/install.sh | sh</code></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="guide-callout success">
+        <strong>🔒 SLSA Level 3+ Cryptographic Verification:</strong>
+        <p style="margin-top: 4px;">
+          Verify your download before execution using Minisign: 
+          <code>minisign -Vm siar-desktop_0.1.0_amd64.deb -p pkg/gpg/minisign.pub</code> or paste the SHA-256 hash into our in-browser <a href="verify.html" style="color: var(--siar-cyan-glow);">SLSA Verifier</a>.
+        </p>
+      </div>
+    </section>
+
+    <!-- CHAPTER 2: FIRST-TIME SETUP & SOVEREIGN IDENTITY -->
+    <section id="ch-setup" class="guide-step-card">
+      <span class="step-badge">CHAPTER 02</span>
+      <h2 style="font-family: var(--font-display); font-size: 1.8rem; color: #ffffff; margin-bottom: 8px;">
+        First-Time Setup & Sovereign Identity Generation
+      </h2>
+      <p style="color: var(--siar-text-secondary); margin-bottom: 20px;">
+        SIAR requires <strong>no phone numbers, email addresses, SMS verification, or central registration</strong>. Your identity is a pure cryptographic keypair generated locally in hardware memory.
+      </p>
+
+      <div class="guide-grid-2">
+        <div>
+          <h3 style="font-size: 1.1rem; color: #ffffff; margin-bottom: 8px;">1. Master Passphrase & Argon2id Derivation</h3>
+          <p style="font-size: 0.88rem; color: var(--siar-text-secondary); line-height: 1.6;">
+            On first launch, you select a local device passphrase. This passphrase is run through memory-hard <strong>Argon2id</strong> (64MB RAM, 4 iterations) to encrypt your local database vault and device Ed25519 signing keys.
+          </p>
+          <div class="guide-callout warning">
+            <strong>⚠️ Important:</strong> SIAR has zero password recovery servers. If you forget your master passphrase, you must restore your identity using your 24-word BIP-39 mnemonic seed phrase.
+          </div>
+        </div>
+
+        <div>
+          <h3 style="font-size: 1.1rem; color: #ffffff; margin-bottom: 8px;">2. Cryptographic Root Identity</h3>
+          <p style="font-size: 0.88rem; color: var(--siar-text-secondary); line-height: 1.6;">
+            Your node generates:
+          </p>
+          <ul style="font-size: 0.85rem; color: var(--siar-text-secondary); line-height: 1.8; margin-top: 8px;">
+            <li>• <strong>Ed25519 Root Identity Key</strong> (Public verification and signature signing)</li>
+            <li>• <strong>X25519 Diffie-Hellman Key</strong> (Ephemeral pairwise key exchange)</li>
+            <li>• <strong>OpenMLS RFC 9420 KeyPackage</strong> (Asynchronous Tree-KEM group ratchet)</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Interactive Simulator: Identity Generator -->
+      <div class="interactive-simulator-box">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+          <strong style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--siar-cyan-glow);">
+            🛠️ Interactive Simulator: Local Cryptographic Identity Generator
+          </strong>
+          <button id="btnSimGenIdentity" class="btn btn-secondary btn-sm" style="font-size: 0.76rem;">
+            ⚡ Generate New Identity
+          </button>
+        </div>
+        <div id="simIdentityOutput" style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--siar-text-secondary); line-height: 1.6;">
+          Click "Generate New Identity" to test local Ed25519/X25519 key derivation in real-time.
+        </div>
+      </div>
+    </section>
+
+    <!-- CHAPTER 3: PAIRING & PEER DISCOVERY -->
+    <section id="ch-pairing" class="guide-step-card">
+      <span class="step-badge">CHAPTER 03</span>
+      <h2 style="font-family: var(--font-display); font-size: 1.8rem; color: #ffffff; margin-bottom: 8px;">
+        Offline Pairing, QR Scanning & NFC Handshakes
+      </h2>
+      <p style="color: var(--siar-text-secondary); margin-bottom: 20px;">
+        To prevent Man-in-the-Middle (MITM) attacks and ensure zero-trust peer verification, SIAR uses physical-proximity rendezvous tickets.
+      </p>
+
+      <div class="guide-grid-2">
+        <div class="siar-glass-card" style="padding: 20px;">
+          <h3 style="font-size: 1.1rem; color: #ffffff; margin-bottom: 8px;">📷 Visual QR Ticket Pairing</h3>
+          <p style="font-size: 0.86rem; color: var(--siar-text-secondary); line-height: 1.6;">
+            1. Open SIAR → Tap <strong>"Show My Ticket"</strong>.<br>
+            2. Your friend opens SIAR → Taps <strong>"Scan Peer QR"</strong>.<br>
+            3. The camera reads the compact binary ticket containing their Ed25519 public key, short authentication string (SAS), and supported radio channels (BLE, Wi-Fi Direct, LoRa).<br>
+            4. Both devices display a 4-word Short Authentication String (e.g. <code>ALPHA-FALCON-COBALT-ORBIT</code>) to confirm physical authenticity.
+          </p>
+        </div>
+
+        <div class="siar-glass-card" style="padding: 20px;">
+          <h3 style="font-size: 1.1rem; color: #ffffff; margin-bottom: 8px;">📡 NFC Tap & Acoustic Pairing</h3>
+          <p style="font-size: 0.86rem; color: var(--siar-text-secondary); line-height: 1.6;">
+            • <strong>NFC Tap</strong>: Hold two Android phones back-to-back. The NDEF payload transmits the OpenMLS bootstrap package in under 200 milliseconds.<br>
+            • <strong>Acoustic Chirp</strong>: In dark or camera-impaired disaster zones, phones can emit an ultrasonic near-inaudible FSK acoustic chirp to exchange public tickets through the microphone!
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CHAPTER 4: USING & DAILY OPERATIONS -->
+    <section id="ch-using" class="guide-step-card">
+      <span class="step-badge">CHAPTER 04</span>
+      <h2 style="font-family: var(--font-display); font-size: 1.8rem; color: #ffffff; margin-bottom: 8px;">
+        Daily Messaging, Groups & Emergency SOS Mode
+      </h2>
+      <p style="color: var(--siar-text-secondary); margin-bottom: 20px;">
+        How communication flows seamlessly whether you have full internet, local Wi-Fi, or zero connectivity in an off-grid wilderness.
+      </p>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
+        <div class="siar-glass-card" style="padding: 18px;">
+          <h4 style="color: var(--siar-cyan-glow); margin-bottom: 6px;">💬 1:1 Direct Encrypted Chat</h4>
+          <p style="font-size: 0.84rem; color: var(--siar-text-secondary);">
+            Every message is sealed with forward-secret Double-Ratchet keys and sent directly over the best available radio link (BLE L2CAP, Wi-Fi Direct, or QUIC).
+          </p>
+        </div>
+
+        <div class="siar-glass-card" style="padding: 18px;">
+          <h4 style="color: #a78bfa; margin-bottom: 6px;">👥 OpenMLS Multi-Party Groups</h4>
+          <p style="font-size: 0.84rem; color: var(--siar-text-secondary);">
+            Supports up to 500 members in a single group with Tree-KEM logarithmic key updates. Adding or removing members immediately rotates the group encryption epoch.
+          </p>
+        </div>
+
+        <div class="siar-glass-card" style="padding: 18px;">
+          <h4 style="color: #fbbf24; margin-bottom: 6px;">📦 DTN Store-Carry-Forward</h4>
+          <p style="font-size: 0.84rem; color: var(--siar-text-secondary);">
+            If your friend is 5 km away with no direct signal, intermediate moving nodes automatically carry your encrypted bundle in their flash storage and deliver it upon proximity rendezvous.
+          </p>
+        </div>
+
+        <div class="siar-glass-card" style="padding: 18px; border-color: rgba(244, 63, 94, 0.4);">
+          <h4 style="color: #f43f5e; margin-bottom: 6px;">🚨 Emergency SOS Beacon</h4>
+          <p style="font-size: 0.84rem; color: var(--siar-text-secondary);">
+            One-tap distress beacon that overrides duty cycles, emits LoRa and Wi-Fi emergency frames with highest RFC 9171 priority, and strobes flashlight SOS.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CHAPTER 5: EXPORT, BACKUP & IMPORT -->
+    <section id="ch-backup" class="guide-step-card">
+      <span class="step-badge">CHAPTER 05</span>
+      <h2 style="font-family: var(--font-display); font-size: 1.8rem; color: #ffffff; margin-bottom: 8px;">
+        Exporting, Importing & Device Migration
+      </h2>
+      <p style="color: var(--siar-text-secondary); margin-bottom: 20px;">
+        You own 100% of your data. You can back up your entire sovereign vault, migrate to a new device, or export readable archives at any time.
+      </p>
+
+      <div class="guide-grid-2">
+        <div>
+          <h3 style="font-size: 1.1rem; color: #ffffff; margin-bottom: 8px;">📦 Full Encrypted Vault Export (`.siarvault`)</h3>
+          <p style="font-size: 0.86rem; color: var(--siar-text-secondary); line-height: 1.6;">
+            1. Go to <strong>Settings → Security & Storage → Export Vault</strong>.<br>
+            2. Enter your master password.<br>
+            3. SIAR compiles your identity keys, contact verification tickets, OpenMLS group trees, and message database into a single binary file encrypted with <strong>ChaCha20-Poly1305 + Argon2id</strong>.<br>
+            4. Save this file to a USB drive, air-gapped microSD card, or sovereign storage.
+          </p>
+        </div>
+
+        <div>
+          <h3 style="font-size: 1.1rem; color: #ffffff; margin-bottom: 8px;">🔄 Restoring Vault on a New Device</h3>
+          <p style="font-size: 0.86rem; color: var(--siar-text-secondary); line-height: 1.6;">
+            1. Install SIAR on your new phone or computer.<br>
+            2. On first run, choose <strong>"Import Existing Vault / Seed"</strong>.<br>
+            3. Select your <code>.siarvault</code> file or type your 24-word seed phrase.<br>
+            4. Enter your passphrase. All your groups, contacts, and message histories are decrypted and restored immediately.
+          </p>
+        </div>
+      </div>
+
+      <!-- Interactive Simulator: Vault Backup Inspector -->
+      <div class="interactive-simulator-box">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+          <strong style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--siar-emerald-online);">
+            📦 Interactive Simulator: Encrypted Vault Structure Inspector
+          </strong>
+          <button id="btnSimInspectVault" class="btn btn-secondary btn-sm" style="font-size: 0.76rem;">
+            🔍 Inspect Mock Vault
+          </button>
+        </div>
+        <div id="simVaultOutput" style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--siar-text-secondary); line-height: 1.6;">
+          Click "Inspect Mock Vault" to see how SIAR packages encrypted data streams into a portable .siarvault container.
+        </div>
+      </div>
+    </section>
+
+    <!-- CHAPTER 6: DELETING DATA & PANIC ANTI-FORENSICS PURGE -->
+    <section id="ch-purge" class="guide-step-card" style="border-color: rgba(244, 63, 94, 0.4);">
+      <span class="step-badge" style="background: rgba(244, 63, 94, 0.1); border-color: #f43f5e; color: #f43f5e;">CHAPTER 06</span>
+      <h2 style="font-family: var(--font-display); font-size: 1.8rem; color: #ffffff; margin-bottom: 8px;">
+        Deleting Data & Panic Anti-Forensics Purge
+      </h2>
+      <p style="color: var(--siar-text-secondary); margin-bottom: 20px;">
+        In hostile environments or emergency confiscation scenarios, SIAR provides multi-level data sanitization and instant zero-residual cryptographic destruction.
+      </p>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 20px;">
+        <div class="siar-glass-card" style="padding: 18px;">
+          <h4 style="color: #ffffff; margin-bottom: 6px;">1. Selective Chat / Message Deletion</h4>
+          <p style="font-size: 0.84rem; color: var(--siar-text-secondary); line-height: 1.5;">
+            Swipe left on any conversation or message and choose <strong>"Secure Delete"</strong>. Rather than marking rows as deleted, SIAR overwrites SQLite database pages with cryptographically secure random bytes before invoking <code>PRAGMA wal_checkpoint(TRUNCATE)</code>.
+          </p>
+        </div>
+
+        <div class="siar-glass-card" style="padding: 18px;">
+          <h4 style="color: #fbbf24; margin-bottom: 6px;">2. Duress PIN / Fake Vault</h4>
+          <p style="font-size: 0.84rem; color: var(--siar-text-secondary); line-height: 1.5;">
+            You can configure a secondary "Duress Passcode". If forced to unlock your device, entering the duress passcode opens a plausible clean decoy account while silently destroying the master encryption keys in background RAM!
+          </p>
+        </div>
+
+        <div class="siar-glass-card" style="padding: 18px; border-color: rgba(244, 63, 94, 0.5);">
+          <h4 style="color: #f43f5e; margin-bottom: 6px;">3. Instant Panic Button (Emergency Purge)</h4>
+          <p style="font-size: 0.84rem; color: var(--siar-text-secondary); line-height: 1.5;">
+            Tapping the Panic Button (or shaking device 5 times if configured) executes:
+            <br>• Zeroizes RAM encryption keys via <code>zeroize::Zeroize</code>.
+            <br>• Overwrites database files using DoD 5220.22-M 7-pass random wipe.
+            <br>• Deletes all credentials and terminates the process in under 100ms.
+          </p>
+        </div>
+      </div>
+
+      <!-- Interactive Simulator: Panic Purge Simulation -->
+      <div class="interactive-simulator-box" style="border-color: rgba(244, 63, 94, 0.4);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+          <strong style="font-family: var(--font-mono); font-size: 0.85rem; color: #f43f5e;">
+            🔥 Interactive Simulator: Anti-Forensic Zeroization & Shredding
+          </strong>
+          <button id="btnSimPanicPurge" class="btn btn-primary btn-sm" style="background: linear-gradient(135deg, #f43f5e, #be123c); border-color: #f43f5e; font-size: 0.76rem;">
+            🚨 Trigger Mock Panic Purge
+          </button>
+        </div>
+        <div id="simPanicOutput" style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--siar-text-secondary); line-height: 1.6;">
+          Click "Trigger Mock Panic Purge" to simulate real-time RAM zeroization and 7-pass flash overwriting.
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="brand-logo">
+            <div class="brand-icon">
+              <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+            </div>
+            <span class="brand-text">SIAR</span>
+          </div>
+          <p>
+            Official User & Operations Manual. Complete guides for sovereign setup, daily mesh usage, backups, and anti-forensics.
+          </p>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">Manual Chapters</h4>
+          <ul class="footer-links">
+            <li><a href="#ch-download">1. Download & Verify</a></li>
+            <li><a href="#ch-setup">2. Identity Setup</a></li>
+            <li><a href="#ch-pairing">3. QR / NFC Pairing</a></li>
+            <li><a href="#ch-using">4. Daily Mesh Messaging</a></li>
+            <li><a href="#ch-backup">5. Export & Import Vault</a></li>
+            <li><a href="#ch-purge">6. Panic Data Purge</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">Portals</h4>
+          <ul class="footer-links">
+            <li><a href="index.html">Showcase</a></li>
+            <li><a href="packages.html">Package Center</a></li>
+            <li><a href="docs.html">Developer Hub</a></li>
+            <li><a href="simulator.html">WASM Simulator</a></li>
+            <li><a href="sys-arch/">System Architecture</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">Open Source</h4>
+          <ul class="footer-links">
+            <li><a href="https://github.com/irshadali5/siar">GitHub Repository</a></li>
+            <li><a href="install.sh">Shell Installer</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>
+          © 2026 SIAR Project & Irshad Ali. Released under dual <strong>Apache-2.0</strong> & <strong>MIT</strong> License.
+        </div>
+        <div style="display: flex; gap: 16px; align-items: center;">
+          <span style="color: var(--siar-emerald-online);">● Anti-Forensic Zeroization</span>
+          <span>•</span>
+          <span>OpenMLS RFC 9420</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/mobile-nav.js"></script>
+  <script src="js/guide-interactive.js"></script>
+</body>
+</html>
