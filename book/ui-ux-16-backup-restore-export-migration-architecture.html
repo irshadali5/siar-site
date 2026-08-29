@@ -1,0 +1,1913 @@
+<!DOCTYPE HTML>
+<html lang="en" class="navy" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>UI/UX 16 — Backup, Restore, Export &amp; Migration UX - SIAR System Architecture &amp; Technical Wiki</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="Comprehensive system architecture, cryptographic protocols, DTN mesh networking, distributed storage, audio DSP pipelines, and UI/UX design specifications for SIAR.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="theme/custom.css">
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "navy";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('navy')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="Home.html">Architecture Portal & Reading Guide</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part I: Protocol Foundation & Extension Platform</li><li class="chapter-item expanded "><a href="01-protocol-extension-system-architecture.html"><strong aria-hidden="true">1.</strong> 01 — Protocol Extension System Architecture</a></li><li class="chapter-item expanded "><a href="07-capability-negotiation-architecture.html"><strong aria-hidden="true">2.</strong> 07 — Capability Negotiation & Protocol Upgrades</a></li><li class="chapter-item expanded "><a href="21-third-party-protocol-extensions-architecture.html"><strong aria-hidden="true">3.</strong> 21 — Third-Party Protocol Extensions</a></li><li class="chapter-item expanded "><a href="22-wasm-compatible-components-architecture.html"><strong aria-hidden="true">4.</strong> 22 — WebAssembly (WASM) Compatible Components</a></li><li class="chapter-item expanded "><a href="23-external-interoperability-suite-architecture.html"><strong aria-hidden="true">5.</strong> 23 — External Interoperability & Conformance Suite</a></li><li class="chapter-item expanded "><a href="24-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">6.</strong> 24 — Dynamic Plugin & Module Ecosystem</a></li><li class="chapter-item expanded affix "><li class="part-title">Part II: Identity, Trust & Cryptography</li><li class="chapter-item expanded "><a href="02-multi-device-identity-architecture.html"><strong aria-hidden="true">7.</strong> 02 — Multi-Device Identity & Trust Model</a></li><li class="chapter-item expanded "><a href="28-production-security-e2ee-key-management-privacy-architecture.html"><strong aria-hidden="true">8.</strong> 28 — Production Security, E2EE, Key Management & Privacy</a></li><li class="chapter-item expanded affix "><li class="part-title">Part III: Mesh Networking, Transports & Hardware</li><li class="chapter-item expanded "><a href="03-transport-routing-policy-engine-architecture.html"><strong aria-hidden="true">9.</strong> 03 — Transport & Routing Policy Engine</a></li><li class="chapter-item expanded "><a href="11-relay-self-hosted-infrastructure-architecture.html"><strong aria-hidden="true">10.</strong> 11 — Self-Hosted Relay & Coordination Infrastructure</a></li><li class="chapter-item expanded "><a href="12-multipath-networking-architecture.html"><strong aria-hidden="true">11.</strong> 12 — Multipath Networking & Link Aggregation</a></li><li class="chapter-item expanded "><a href="13-battery-aware-scheduling-architecture.html"><strong aria-hidden="true">12.</strong> 13 — Battery-Aware Scheduling & Power Profiles</a></li><li class="chapter-item expanded "><a href="14-proximity-abstraction-architecture.html"><strong aria-hidden="true">13.</strong> 14 — Proximity Abstraction (BLE, Wi-Fi Direct, LoRa)</a></li><li class="chapter-item expanded "><a href="15-qr-nfc-bootstrap-pairing-architecture.html"><strong aria-hidden="true">14.</strong> 15 — Out-of-Band QR & NFC Bootstrap Pairing</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IV: Delay-Tolerant Networking & Emergency Mesh</li><li class="chapter-item expanded "><a href="06-dtn-store-carry-forward-architecture.html"><strong aria-hidden="true">15.</strong> 06 — DTN Store-Carry-Forward & Bundle Forwarding</a></li><li class="chapter-item expanded "><a href="17-emergency-priority-classes-architecture.html"><strong aria-hidden="true">16.</strong> 17 — Emergency Priority Classes & Critical Alert Mesh</a></li><li class="chapter-item expanded affix "><li class="part-title">Part V: Storage, Outbox & Data Lifecycle</li><li class="chapter-item expanded "><a href="04-offline-event-log-architecture.html"><strong aria-hidden="true">17.</strong> 04 — Offline Event Log & Sync Engine</a></li><li class="chapter-item expanded "><a href="05-robust-file-blob-subsystem-architecture.html"><strong aria-hidden="true">18.</strong> 05 — Robust File & Blob Subsystem (Chunking & Resumption)</a></li><li class="chapter-item expanded "><a href="09-crash-recovery-architecture.html"><strong aria-hidden="true">19.</strong> 09 — Crash Recovery & State Integrity</a></li><li class="chapter-item expanded "><a href="32-search-indexing-local-knowledge-privacy-architecture.html"><strong aria-hidden="true">20.</strong> 32 — Search, Indexing & Local Privacy Retrieval</a></li><li class="chapter-item expanded "><a href="33-backup-restore-export-import-archival-portability-architecture.html"><strong aria-hidden="true">21.</strong> 33 — Backup, Restore, Export & Long-Term Archival</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VI: Realtime Media, Calling & Audio DSP</li><li class="chapter-item expanded "><a href="25-android-direct-hardware-surface-zero-copy-media-architecture.html"><strong aria-hidden="true">22.</strong> 25 — Android Direct Surface Zero-Copy Media</a></li><li class="chapter-item expanded "><a href="26-rust-first-audio-dsp-resampling-aec-ns-agc-architecture.html"><strong aria-hidden="true">23.</strong> 26 — Rust-First Audio DSP (AEC, NS, AGC, Resampling)</a></li><li class="chapter-item expanded "><a href="29-realtime-calls-media-session-protocol-architecture.html"><strong aria-hidden="true">24.</strong> 29 — Realtime Calls & Media Session Protocol</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VII: Ephemeral State, Presence & Notifications</li><li class="chapter-item expanded "><a href="30-presence-availability-typing-read-receipts-ephemeral-state-architecture.html"><strong aria-hidden="true">25.</strong> 30 — Presence, Availability, Typing & Read Receipts</a></li><li class="chapter-item expanded "><a href="31-notifications-push-background-delivery-lifecycle-architecture.html"><strong aria-hidden="true">26.</strong> 31 — Notifications, Push Wake & Background Delivery</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VIII: Native Runtimes, Daemons & Embedded Linux</li><li class="chapter-item expanded "><a href="16-daemon-headless-runtime-architecture.html"><strong aria-hidden="true">27.</strong> 16 — Headless Daemon & Background Runtime</a></li><li class="chapter-item expanded "><a href="19-c-abi-ffi-architecture.html"><strong aria-hidden="true">28.</strong> 19 — C-ABI FFI & Native Language Interop</a></li><li class="chapter-item expanded "><a href="20-embedded-linux-node-architecture.html"><strong aria-hidden="true">29.</strong> 20 — Embedded Linux Node & Resource-Constrained Targets</a></li><li class="chapter-item expanded "><a href="27-rust-driven-android-native-build-packaging-automation.html"><strong aria-hidden="true">30.</strong> 27 — Rust-Driven Android Native Build & Packaging Automation</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IX: Reliability, Testing, Fuzzing & Diagnostics</li><li class="chapter-item expanded "><a href="08-resource-limits-backpressure-architecture.html"><strong aria-hidden="true">31.</strong> 08 — Resource Limits, Quotas & Backpressure</a></li><li class="chapter-item expanded "><a href="10-fuzzing-protocol-test-suite-architecture.html"><strong aria-hidden="true">32.</strong> 10 — Fuzzing & Protocol Test Suite</a></li><li class="chapter-item expanded "><a href="18-network-diagnostics-path-visualization-architecture.html"><strong aria-hidden="true">33.</strong> 18 — Network Diagnostics & Path Visualization</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part X: UI/UX Client Architecture (Cross-Platform)</li><li class="chapter-item expanded "><a href="ui-ux-01-product-foundation-cross-platform-interaction-architecture.html"><strong aria-hidden="true">34.</strong> UI/UX 01 — Product UX Foundation & Cross-Platform Interaction</a></li><li class="chapter-item expanded "><a href="ui-ux-02-desktop-dioxus-app-shell-navigation-window-architecture.html"><strong aria-hidden="true">35.</strong> UI/UX 02 — Desktop Dioxus App Shell & Navigation</a></li><li class="chapter-item expanded "><a href="ui-ux-03-android-jetpack-compose-app-shell-navigation-lifecycle-architecture.html"><strong aria-hidden="true">36.</strong> UI/UX 03 — Android Jetpack Compose App Shell & Lifecycle</a></li><li class="chapter-item expanded "><a href="ui-ux-04-conversation-list-inbox-architecture.html"><strong aria-hidden="true">37.</strong> UI/UX 04 — Conversation List & Inbox UX</a></li><li class="chapter-item expanded "><a href="ui-ux-05-conversation-message-timeline-architecture.html"><strong aria-hidden="true">38.</strong> UI/UX 05 — Conversation Message Timeline UX</a></li><li class="chapter-item expanded "><a href="ui-ux-06-message-composer-attachments-voice-notes-drafts-architecture.html"><strong aria-hidden="true">39.</strong> UI/UX 06 — Message Composer, Attachments & Voice Notes</a></li><li class="chapter-item expanded "><a href="ui-ux-07-calls-realtime-media-architecture.html"><strong aria-hidden="true">40.</strong> UI/UX 07 — Calls & Realtime Media UX</a></li><li class="chapter-item expanded "><a href="ui-ux-08-contacts-requests-verification-identity-architecture.html"><strong aria-hidden="true">41.</strong> UI/UX 08 — Contacts, Requests, Verification & Identity</a></li><li class="chapter-item expanded "><a href="ui-ux-09-groups-membership-roles-architecture.html"><strong aria-hidden="true">42.</strong> UI/UX 09 — Groups, Membership & Roles UX</a></li><li class="chapter-item expanded "><a href="ui-ux-10-files-media-gallery-transfer-architecture.html"><strong aria-hidden="true">43.</strong> UI/UX 10 — Files, Media Gallery & Transfer UX</a></li><li class="chapter-item expanded "><a href="ui-ux-11-search-local-knowledge-retrieval-architecture.html"><strong aria-hidden="true">44.</strong> UI/UX 11 — Search & Local Knowledge Retrieval UX</a></li><li class="chapter-item expanded "><a href="ui-ux-12-nearby-qr-nfc-pairing-device-linking-architecture.html"><strong aria-hidden="true">45.</strong> UI/UX 12 — Nearby, QR/NFC Pairing & Device Linking UX</a></li><li class="chapter-item expanded "><a href="ui-ux-13-notifications-background-incoming-call-architecture.html"><strong aria-hidden="true">46.</strong> UI/UX 13 — Notifications, Background & Incoming Call UX</a></li><li class="chapter-item expanded "><a href="ui-ux-14-presence-typing-receipts-status-architecture.html"><strong aria-hidden="true">47.</strong> UI/UX 14 — Presence, Typing, Receipts & Status UX</a></li><li class="chapter-item expanded "><a href="ui-ux-15-security-center-devices-keys-recovery-architecture.html"><strong aria-hidden="true">48.</strong> UI/UX 15 — Security Center, Devices, Keys & Recovery UX</a></li><li class="chapter-item expanded "><a href="ui-ux-16-backup-restore-export-migration-architecture.html" class="active"><strong aria-hidden="true">49.</strong> UI/UX 16 — Backup, Restore, Export & Migration UX</a></li><li class="chapter-item expanded "><a href="ui-ux-17-emergency-sos-offline-mesh-architecture.html"><strong aria-hidden="true">50.</strong> UI/UX 17 — Emergency / SOS / Offline Mesh UX</a></li><li class="chapter-item expanded "><a href="ui-ux-18-settings-privacy-notifications-data-controls-architecture.html"><strong aria-hidden="true">51.</strong> UI/UX 18 — Settings, Privacy, Notifications & Data Controls</a></li><li class="chapter-item expanded "><a href="ui-ux-19-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">52.</strong> UI/UX 19 — Plugin & Module Ecosystem UX</a></li><li class="chapter-item expanded "><a href="ui-ux-20-diagnostics-network-paths-advanced-developer-architecture.html"><strong aria-hidden="true">53.</strong> UI/UX 20 — Diagnostics, Network Paths & Developer UX</a></li><li class="chapter-item expanded "><a href="ui-ux-21-accessibility-inclusive-interaction-architecture.html"><strong aria-hidden="true">54.</strong> UI/UX 21 — Accessibility & Inclusive Interaction</a></li><li class="chapter-item expanded "><a href="ui-ux-22-design-system-tokens-typography-icons-motion-architecture.html"><strong aria-hidden="true">55.</strong> UI/UX 22 — Design System, Tokens, Typography & Motion</a></li><li class="chapter-item expanded "><a href="ui-ux-23-responsive-adaptive-desktop-tablet-foldable-phone-layout-architecture.html"><strong aria-hidden="true">56.</strong> UI/UX 23 — Responsive & Adaptive Layouts (Desktop/Tablet/Foldable/Phone)</a></li><li class="chapter-item expanded "><a href="ui-ux-24-error-loading-empty-offline-degraded-state-architecture.html"><strong aria-hidden="true">57.</strong> UI/UX 24 — Error, Loading, Empty & Degraded-State UX</a></li><li class="chapter-item expanded "><a href="ui-ux-25-onboarding-first-run-permission-education-architecture.html"><strong aria-hidden="true">58.</strong> UI/UX 25 — Onboarding, First Run & Permission Education</a></li><li class="chapter-item expanded "><a href="ui-ux-26-performance-virtualization-large-data-ui-architecture.html"><strong aria-hidden="true">59.</strong> UI/UX 26 — Virtualization & Large-Data UI Performance</a></li><li class="chapter-item expanded "><a href="ui-ux-27-ui-testing-screenshot-interaction-release-quality-gates-architecture.html"><strong aria-hidden="true">60.</strong> UI/UX 27 — UI Testing, Screenshots & Release Quality Gates</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">SIAR System Architecture &amp; Technical Wiki</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar/edit/main/sys-arch/ui-ux-16-backup-restore-export-migration-architecture.md" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="uiux-part-16--backup-restore-export--migration-ux-architecture"><a class="header" href="#uiux-part-16--backup-restore-export--migration-ux-architecture">UI/UX Part 16 — Backup, Restore, Export &amp; Migration UX Architecture</a></h1>
+<h2 id="reusable-p2p-communication-platform"><a class="header" href="#reusable-p2p-communication-platform">Reusable P2P Communication Platform</a></h2>
+<p><strong>Status:</strong> UI/UX architecture specification<br />
+<strong>UI Series:</strong> Part 16<br />
+<strong>Desktop UI:</strong> Dioxus<br />
+<strong>Android UI:</strong> Kotlin + Jetpack Compose<br />
+<strong>Core runtime:</strong> Rust<br />
+<strong>Primary purpose:</strong> define the complete backup, restore, export, import, archival, device migration, recovery verification, progress, failure, storage-provider, portability, and Rust presentation architecture across desktop and Android.</p>
+<hr />
+<h1 id="1-purpose"><a class="header" href="#1-purpose">1. Purpose</a></h1>
+<p>Backup and migration are not ordinary file operations.</p>
+<p>They are security-sensitive lifecycle operations that can determine whether a user can recover:</p>
+<pre><code class="language-text">account identity
+contacts
+conversation history
+attachments
+settings
+verification state
+device-independent metadata
+</code></pre>
+<p>after:</p>
+<pre><code class="language-text">device loss
+device replacement
+app reinstall
+storage corruption
+migration to a new machine
+long-term archival
+</code></pre>
+<p>The governing principle is:</p>
+<blockquote>
+<p><strong>The UI should make recoverability understandable while Rust owns backup format, encryption, integrity, migration compatibility, restore safety, and conflict policy.</strong></p>
+</blockquote>
+<hr />
+<h1 id="2-architectural-position"><a class="header" href="#2-architectural-position">2. Architectural Position</a></h1>
+<pre><code class="language-text">Rust Backup / Restore Core
+        │
+        ├── snapshot planning
+        ├── encryption
+        ├── versioning
+        ├── migration
+        ├── integrity
+        ├── selective restore
+        ├── export/import
+        └── archive semantics
+        │
+        ▼
+Backup Presentation Service
+        │
+   ┌────┴─────┐
+   │          │
+Dioxus     Compose
+Desktop    Android
+</code></pre>
+<p>Platform adapters own only:</p>
+<pre><code class="language-text">file picker
+folder picker
+SAF/document provider
+filesystem destination
+share/export UI
+foreground progress surfaces
+</code></pre>
+<hr />
+<h1 id="3-important-conceptual-separation"><a class="header" href="#3-important-conceptual-separation">3. Important Conceptual Separation</a></h1>
+<p>The UI must distinguish:</p>
+<pre><code class="language-text">Backup
+Restore
+Export
+Import
+Migration
+Archive
+</code></pre>
+<p>These are not synonyms.</p>
+<hr />
+<h1 id="4-backup"><a class="header" href="#4-backup">4. Backup</a></h1>
+<p>Purpose:</p>
+<pre><code class="language-text">create a recoverable protected copy
+</code></pre>
+<p>of selected logical user data.</p>
+<hr />
+<h1 id="5-restore"><a class="header" href="#5-restore">5. Restore</a></h1>
+<p>Purpose:</p>
+<pre><code class="language-text">recover logical state from a backup
+</code></pre>
+<p>into a safe current runtime.</p>
+<hr />
+<h1 id="6-export"><a class="header" href="#6-export">6. Export</a></h1>
+<p>Purpose:</p>
+<pre><code class="language-text">produce portable user-readable/interoperable data
+</code></pre>
+<p>Examples:</p>
+<pre><code class="language-text">JSON/CSV/Markdown
+media folder
+conversation archive
+</code></pre>
+<p>depending implementation.</p>
+<p>Export may not contain everything needed for full recovery.</p>
+<hr />
+<h1 id="7-import"><a class="header" href="#7-import">7. Import</a></h1>
+<p>Purpose:</p>
+<pre><code class="language-text">ingest supported external or previous-app data
+</code></pre>
+<p>with provenance and validation.</p>
+<hr />
+<h1 id="8-migration"><a class="header" href="#8-migration">8. Migration</a></h1>
+<p>Purpose:</p>
+<pre><code class="language-text">move account/application state to a new device/runtime
+</code></pre>
+<p>possibly using backup/restore internally.</p>
+<hr />
+<h1 id="9-archive"><a class="header" href="#9-archive">9. Archive</a></h1>
+<p>Purpose:</p>
+<pre><code class="language-text">long-term durable storage
+</code></pre>
+<p>with emphasis on future readability rather than immediate app operation.</p>
+<hr />
+<h1 id="10-backup-classes"><a class="header" href="#10-backup-classes">10. Backup Classes</a></h1>
+<p>Recommended logical classes:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum BackupDataClass {
+    Authoritative,
+    Rebuildable,
+    Ephemeral,
+    HardwareBound,
+    Secret,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="11-authoritative"><a class="header" href="#11-authoritative">11. Authoritative</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">messages
+contacts
+group metadata
+user settings
+local durable drafts if included
+</code></pre>
+<hr />
+<h1 id="12-rebuildable"><a class="header" href="#12-rebuildable">12. Rebuildable</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">search indexes
+thumbnails
+derived caches
+</code></pre>
+<p>Usually excluded.</p>
+<hr />
+<h1 id="13-ephemeral"><a class="header" href="#13-ephemeral">13. Ephemeral</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">typing
+presence
+call transient state
+</code></pre>
+<p>Excluded.</p>
+<hr />
+<h1 id="14-hardware-bound"><a class="header" href="#14-hardware-bound">14. Hardware-Bound</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">device keystore handles
+biometric enrollment
+platform-specific tokens
+</code></pre>
+<p>Cannot be blindly restored.</p>
+<hr />
+<h1 id="15-secret"><a class="header" href="#15-secret">15. Secret</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">recovery material
+backup key envelopes
+</code></pre>
+<p>Handled through explicit security policy.</p>
+<hr />
+<h1 id="16-backup-overview-screen"><a class="header" href="#16-backup-overview-screen">16. Backup Overview Screen</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">Backup status
+Last backup
+Next/automatic backup if configured
+Destination
+Recovery readiness
+Backup size
+Create Backup
+Restore
+Export Data
+</code></pre>
+<hr />
+<h1 id="17-backup-status"><a class="header" href="#17-backup-status">17. Backup Status</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum BackupStatus {
+    NeverCreated,
+    Healthy,
+    Running,
+    Stale,
+    Failed,
+    NeedsAttention,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="18-healthy"><a class="header" href="#18-healthy">18. Healthy</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">Last backup: yesterday
+Verified
+</code></pre>
+<hr />
+<h1 id="19-stale"><a class="header" href="#19-stale">19. Stale</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">Last backup: 45 days ago
+</code></pre>
+<p>with:</p>
+<pre><code class="language-text">Back Up Now
+</code></pre>
+<hr />
+<h1 id="20-failed"><a class="header" href="#20-failed">20. Failed</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">Backup failed
+Storage unavailable
+Retry
+</code></pre>
+<hr />
+<h1 id="21-backup-destination-types"><a class="header" href="#21-backup-destination-types">21. Backup Destination Types</a></h1>
+<p>Potential:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum BackupDestinationKind {
+    LocalFile,
+    LocalFolder,
+    RemovableStorage,
+    UserSelectedProvider,
+    TrustedArchive,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="22-provider-neutrality"><a class="header" href="#22-provider-neutrality">22. Provider Neutrality</a></h1>
+<p>UI should not hardcode backend architecture to one cloud provider.</p>
+<hr />
+<h1 id="23-android-destination"><a class="header" href="#23-android-destination">23. Android Destination</a></h1>
+<p>Use:</p>
+<pre><code class="language-text">Storage Access Framework
+DocumentProvider
+CreateDocument
+OpenDocumentTree
+</code></pre>
+<p>rather than broad filesystem permissions.</p>
+<hr />
+<h1 id="24-desktop-destination"><a class="header" href="#24-desktop-destination">24. Desktop Destination</a></h1>
+<p>Use native:</p>
+<pre><code class="language-text">Save File
+Select Folder
+</code></pre>
+<p>depending container format.</p>
+<hr />
+<h1 id="25-backup-container"><a class="header" href="#25-backup-container">25. Backup Container</a></h1>
+<p>Normal UI should present:</p>
+<pre><code class="language-text">Encrypted backup
+</code></pre>
+<p>not internal chunk/container layout.</p>
+<hr />
+<h1 id="26-backup-format-version"><a class="header" href="#26-backup-format-version">26. Backup Format Version</a></h1>
+<p>Advanced detail:</p>
+<pre><code class="language-text">Backup format v3
+</code></pre>
+<p>only if useful for support.</p>
+<hr />
+<h1 id="27-backup-creation-flow"><a class="header" href="#27-backup-creation-flow">27. Backup Creation Flow</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">Backup
+→ Choose destination
+→ Choose scope
+→ Confirm recovery method
+→ Estimate size
+→ Create
+→ Verify
+→ Complete
+</code></pre>
+<hr />
+<h1 id="28-backup-scope"><a class="header" href="#28-backup-scope">28. Backup Scope</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">Full Backup
+Messages only
+Messages + Files
+Account metadata only
+</code></pre>
+<p>Recommendation:</p>
+<pre><code class="language-text">Full Backup
+Custom
+</code></pre>
+<p>for simpler UX.</p>
+<hr />
+<h1 id="29-full-backup"><a class="header" href="#29-full-backup">29. Full Backup</a></h1>
+<p>Includes all portable authoritative data allowed by policy.</p>
+<hr />
+<h1 id="30-custom-backup"><a class="header" href="#30-custom-backup">30. Custom Backup</a></h1>
+<p>Advanced screen selects:</p>
+<pre><code class="language-text">messages
+attachments
+contacts
+groups
+settings
+drafts
+security metadata
+</code></pre>
+<p>according to backend support.</p>
+<hr />
+<h1 id="31-exclusion-disclosure"><a class="header" href="#31-exclusion-disclosure">31. Exclusion Disclosure</a></h1>
+<p>Tell user if backup excludes:</p>
+<pre><code class="language-text">search indexes
+temporary downloads
+hardware-bound credentials
+live call state
+</code></pre>
+<p>but do not overwhelm.</p>
+<hr />
+<h1 id="32-backup-size-estimate"><a class="header" href="#32-backup-size-estimate">32. Backup Size Estimate</a></h1>
+<p>Rust computes estimate.</p>
+<p>UI shows:</p>
+<pre><code class="language-text">About 4.8 GB
+</code></pre>
+<p>not fake exactness before final packaging.</p>
+<hr />
+<h1 id="33-destination-free-space"><a class="header" href="#33-destination-free-space">33. Destination Free Space</a></h1>
+<p>Platform may report if available.</p>
+<hr />
+<h1 id="34-insufficient-space"><a class="header" href="#34-insufficient-space">34. Insufficient Space</a></h1>
+<p>Show:</p>
+<pre><code class="language-text">Not enough space
+Choose another destination
+</code></pre>
+<hr />
+<h1 id="35-backup-encryption"><a class="header" href="#35-backup-encryption">35. Backup Encryption</a></h1>
+<p>Backup is encrypted by default.</p>
+<p>No unencrypted full backup in normal UX.</p>
+<hr />
+<h1 id="36-recovery-key-relationship"><a class="header" href="#36-recovery-key-relationship">36. Recovery Key Relationship</a></h1>
+<p>Backup may use:</p>
+<pre><code class="language-text">dedicated backup key
+recipient envelopes
+account recovery method
+</code></pre>
+<p>The UI must accurately describe whichever design is implemented.</p>
+<hr />
+<h1 id="37-account-recovery-vs-backup-recovery"><a class="header" href="#37-account-recovery-vs-backup-recovery">37. Account Recovery vs Backup Recovery</a></h1>
+<p>Hard distinction if separate.</p>
+<p>Show:</p>
+<pre><code class="language-text">Account Recovery
+Backup Recovery
+</code></pre>
+<p>not one ambiguous "Recovery".</p>
+<hr />
+<h1 id="38-backup-recovery-key"><a class="header" href="#38-backup-recovery-key">38. Backup Recovery Key</a></h1>
+<p>If distinct, label:</p>
+<pre><code class="language-text">Backup Recovery Key
+</code></pre>
+<hr />
+<h1 id="39-sensitive-key-display"><a class="header" href="#39-sensitive-key-display">39. Sensitive Key Display</a></h1>
+<p>Use Part 15 sensitive screen rules:</p>
+<pre><code class="language-text">reauth
+show/hide
+copy
+save
+verify
+</code></pre>
+<hr />
+<h1 id="40-backup-key-verification"><a class="header" href="#40-backup-key-verification">40. Backup Key Verification</a></h1>
+<p>Before backup considered recoverable:</p>
+<pre><code class="language-text">verify recovery method
+</code></pre>
+<p>where applicable.</p>
+<hr />
+<h1 id="41-backup-job-model"><a class="header" href="#41-backup-job-model">41. Backup Job Model</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct BackupJobView {
+    pub id: BackupJobId,
+    pub state: BackupJobState,
+    pub phase: BackupPhase,
+    pub progress: BackupProgressView,
+    pub destination: BackupDestinationView,
+    pub started_at: Timestamp,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="42-backup-job-state"><a class="header" href="#42-backup-job-state">42. Backup Job State</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum BackupJobState {
+    Planned,
+    Running,
+    Paused,
+    Verifying,
+    Complete,
+    Failed,
+    Cancelled,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="43-backup-phases"><a class="header" href="#43-backup-phases">43. Backup Phases</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum BackupPhase {
+    Planning,
+    Snapshotting,
+    Packing,
+    Encrypting,
+    Writing,
+    Verifying,
+    Finalizing,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="44-user-facing-phase-mapping"><a class="header" href="#44-user-facing-phase-mapping">44. User-Facing Phase Mapping</a></h1>
+<p>Normal UI may simplify to:</p>
+<pre><code class="language-text">Preparing
+Backing up
+Verifying
+Finishing
+</code></pre>
+<hr />
+<h1 id="45-backup-progress"><a class="header" href="#45-backup-progress">45. Backup Progress</a></h1>
+<p>Show:</p>
+<pre><code class="language-text">percentage if meaningful
+bytes processed
+items processed
+time remaining only if stable
+</code></pre>
+<hr />
+<h1 id="46-do-not-fake-linear-progress"><a class="header" href="#46-do-not-fake-linear-progress">46. Do Not Fake Linear Progress</a></h1>
+<p>If total unknown:</p>
+<pre><code class="language-text">indeterminate phase
+</code></pre>
+<p>is better.</p>
+<hr />
+<h1 id="47-backup-cancellation"><a class="header" href="#47-backup-cancellation">47. Backup Cancellation</a></h1>
+<p>Allowed if Rust can clean up safely.</p>
+<hr />
+<h1 id="48-cancel-confirmation"><a class="header" href="#48-cancel-confirmation">48. Cancel Confirmation</a></h1>
+<p>For long backup:</p>
+<pre><code class="language-text">Cancel backup?
+Partial temporary data will be removed.
+</code></pre>
+<hr />
+<h1 id="49-crash-safety"><a class="header" href="#49-crash-safety">49. Crash Safety</a></h1>
+<p>If app crashes:</p>
+<pre><code class="language-text">incomplete backup must not look valid
+</code></pre>
+<hr />
+<h1 id="50-atomic-finalization"><a class="header" href="#50-atomic-finalization">50. Atomic Finalization</a></h1>
+<p>Only after full verification should destination be considered:</p>
+<pre><code class="language-text">Complete
+</code></pre>
+<hr />
+<h1 id="51-backup-verification"><a class="header" href="#51-backup-verification">51. Backup Verification</a></h1>
+<p>Mandatory integrity phase.</p>
+<hr />
+<h1 id="52-verification-result"><a class="header" href="#52-verification-result">52. Verification Result</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum BackupVerificationState {
+    Verified,
+    Unverified,
+    Failed,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="53-verified"><a class="header" href="#53-verified">53. Verified</a></h1>
+<p>Means:</p>
+<pre><code class="language-text">container structure
+integrity/authentication
+required metadata
+</code></pre>
+<p>passed according to backend.</p>
+<hr />
+<h1 id="54-restore-overview"><a class="header" href="#54-restore-overview">54. Restore Overview</a></h1>
+<p>Entry points:</p>
+<pre><code class="language-text">Restore Backup
+Recover on New Device
+Import Data
+</code></pre>
+<hr />
+<h1 id="55-restore-is-high-risk"><a class="header" href="#55-restore-is-high-risk">55. Restore Is High Risk</a></h1>
+<p>Restore can overwrite/merge logical state.</p>
+<p>Require planning before commit.</p>
+<hr />
+<h1 id="56-restore-flow"><a class="header" href="#56-restore-flow">56. Restore Flow</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">Select backup
+→ Inspect/verify
+→ Authenticate/decrypt
+→ Analyze compatibility
+→ Build restore plan
+→ Dry-run summary
+→ Choose scope
+→ Confirm
+→ Restore
+→ Verify
+→ Rebuild derived state
+</code></pre>
+<hr />
+<h1 id="57-restore-inspection"><a class="header" href="#57-restore-inspection">57. Restore Inspection</a></h1>
+<p>Before mutation show:</p>
+<pre><code class="language-text">backup date
+backup version
+account identity
+size
+data classes
+source device
+verification status
+</code></pre>
+<p>where available.</p>
+<hr />
+<h1 id="58-wrong-backup"><a class="header" href="#58-wrong-backup">58. Wrong Backup</a></h1>
+<p>If backup belongs to another account:</p>
+<pre><code class="language-text">This backup belongs to a different identity
+</code></pre>
+<p>Do not continue silently.</p>
+<hr />
+<h1 id="59-backup-version-compatibility"><a class="header" href="#59-backup-version-compatibility">59. Backup Version Compatibility</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum BackupCompatibility {
+    Compatible,
+    MigrationRequired,
+    ReadOnlyArchiveOnly,
+    UnsupportedNewer,
+    Corrupt,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="60-compatible"><a class="header" href="#60-compatible">60. Compatible</a></h1>
+<p>Normal restore.</p>
+<hr />
+<h1 id="61-migration-required"><a class="header" href="#61-migration-required">61. Migration Required</a></h1>
+<p>Rust can migrate old format.</p>
+<p>UI:</p>
+<pre><code class="language-text">This backup will be upgraded during restore
+</code></pre>
+<hr />
+<h1 id="62-unsupported-newer"><a class="header" href="#62-unsupported-newer">62. Unsupported Newer</a></h1>
+<pre><code class="language-text">This backup was created by a newer version of the app
+Update the app
+</code></pre>
+<hr />
+<h1 id="63-archive-only"><a class="header" href="#63-archive-only">63. Archive-Only</a></h1>
+<p>Can be opened/read/exported but not restored into active state.</p>
+<hr />
+<h1 id="64-corrupt"><a class="header" href="#64-corrupt">64. Corrupt</a></h1>
+<p>Do not restore.</p>
+<p>Offer:</p>
+<pre><code class="language-text">Try another backup
+Diagnostics
+</code></pre>
+<hr />
+<h1 id="65-restore-plan"><a class="header" href="#65-restore-plan">65. Restore Plan</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct RestorePlanView {
+    pub plan_id: RestorePlanId,
+    pub compatibility: BackupCompatibility,
+    pub scope: RestoreScopeView,
+    pub conflicts: Vec&lt;RestoreConflictView&gt;,
+    pub warnings: Vec&lt;RestoreWarningView&gt;,
+    pub estimated_changes: RestoreChangeSummary,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="66-dry-run"><a class="header" href="#66-dry-run">66. Dry Run</a></h1>
+<p>Restore planning should be non-mutating.</p>
+<hr />
+<h1 id="67-dry-run-summary"><a class="header" href="#67-dry-run-summary">67. Dry-Run Summary</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">12 conversations will be restored
+2,430 messages added
+120 files restored
+3 existing items merged
+1 security-sensitive state skipped
+</code></pre>
+<hr />
+<h1 id="68-selective-restore"><a class="header" href="#68-selective-restore">68. Selective Restore</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">Account Metadata
+Contacts
+Conversations
+Files
+Settings
+Drafts
+</code></pre>
+<hr />
+<h1 id="69-default-restore"><a class="header" href="#69-default-restore">69. Default Restore</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">safe full logical restore
+</code></pre>
+<p>with security-invalid classes automatically excluded.</p>
+<hr />
+<h1 id="70-never-blindly-restore"><a class="header" href="#70-never-blindly-restore">70. Never Blindly Restore</a></h1>
+<p>Do not restore stale:</p>
+<pre><code class="language-text">live sessions
+ratchet state
+device authorization tokens
+platform keystore handles
+</code></pre>
+<p>into a new device.</p>
+<hr />
+<h1 id="71-new-device-restore"><a class="header" href="#71-new-device-restore">71. New Device Restore</a></h1>
+<p>New device gets fresh:</p>
+<pre><code class="language-text">DeviceId
+device keys
+session state
+</code></pre>
+<p>while portable user data is restored.</p>
+<hr />
+<h1 id="72-restore-security-warning"><a class="header" href="#72-restore-security-warning">72. Restore Security Warning</a></h1>
+<p>Explain:</p>
+<pre><code class="language-text">This backup restores your data, but this device will use fresh device security keys.
+</code></pre>
+<hr />
+<h1 id="73-existing-device-restore"><a class="header" href="#73-existing-device-restore">73. Existing Device Restore</a></h1>
+<p>May require merge with current data.</p>
+<hr />
+<h1 id="74-restore-modes"><a class="header" href="#74-restore-modes">74. Restore Modes</a></h1>
+<p>Potential:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum RestoreMode {
+    Merge,
+    ReplaceLocalPortableData,
+    NewDeviceRecovery,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="75-merge"><a class="header" href="#75-merge">75. Merge</a></h1>
+<p>Recommended default for an existing active account.</p>
+<hr />
+<h1 id="76-replace-local-portable-data"><a class="header" href="#76-replace-local-portable-data">76. Replace Local Portable Data</a></h1>
+<p>Advanced/destructive.</p>
+<p>Does not replace account identity/security unless explicitly designed.</p>
+<hr />
+<h1 id="77-conflict-types"><a class="header" href="#77-conflict-types">77. Conflict Types</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum RestoreConflictKind {
+    SameLogicalItemDifferentVersion,
+    LocalOnlyNewer,
+    BackupOnly,
+    IdentityMismatch,
+    UnsupportedState,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="78-conflict-resolution"><a class="header" href="#78-conflict-resolution">78. Conflict Resolution</a></h1>
+<p>Rust should auto-resolve using deterministic domain rules where safe.</p>
+<p>UI only asks user when semantics truly require a choice.</p>
+<hr />
+<h1 id="79-avoid-per-message-conflict-dialogs"><a class="header" href="#79-avoid-per-message-conflict-dialogs">79. Avoid Per-Message Conflict Dialogs</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="80-provenance"><a class="header" href="#80-provenance">80. Provenance</a></h1>
+<p>Imported/restored data can retain:</p>
+<pre><code class="language-text">restored from backup
+imported from file
+</code></pre>
+<p>in metadata/audit where useful.</p>
+<hr />
+<h1 id="81-restore-progress"><a class="header" href="#81-restore-progress">81. Restore Progress</a></h1>
+<p>Phases:</p>
+<pre><code class="language-text">Decrypting
+Validating
+Migrating
+Applying
+Verifying
+Rebuilding search
+</code></pre>
+<hr />
+<h1 id="82-search-rebuild"><a class="header" href="#82-search-rebuild">82. Search Rebuild</a></h1>
+<p>Part 11 search index can rebuild after core data restore.</p>
+<hr />
+<h1 id="83-derived-state"><a class="header" href="#83-derived-state">83. Derived State</a></h1>
+<p>Rebuild:</p>
+<pre><code class="language-text">search indexes
+thumbnails
+caches
+</code></pre>
+<p>rather than restoring stale copies.</p>
+<hr />
+<h1 id="84-restore-completion"><a class="header" href="#84-restore-completion">84. Restore Completion</a></h1>
+<p>Show:</p>
+<pre><code class="language-text">Restore complete
+</code></pre>
+<p>with summary.</p>
+<hr />
+<h1 id="85-restore-partial-failure"><a class="header" href="#85-restore-partial-failure">85. Restore Partial Failure</a></h1>
+<p>If transaction architecture allows rollback:</p>
+<pre><code class="language-text">rollback
+</code></pre>
+<p>and report failure.</p>
+<p>If partial commits can occur, UI must say exactly what succeeded.</p>
+<p>Recommendation:</p>
+<pre><code class="language-text">transactional/staged restore
+</code></pre>
+<p>so active state flips only after validation.</p>
+<hr />
+<h1 id="86-restore-cancellation"><a class="header" href="#86-restore-cancellation">86. Restore Cancellation</a></h1>
+<p>Before commit:</p>
+<pre><code class="language-text">safe
+</code></pre>
+<p>During commit:</p>
+<pre><code class="language-text">only if backend supports transactional cancellation
+</code></pre>
+<p>otherwise disable Cancel and explain finishing safely.</p>
+<hr />
+<h1 id="87-restore-verification"><a class="header" href="#87-restore-verification">87. Restore Verification</a></h1>
+<p>After applying:</p>
+<pre><code class="language-text">validate resulting state
+</code></pre>
+<p>before declaring success.</p>
+<hr />
+<h1 id="88-migration-to-new-device"><a class="header" href="#88-migration-to-new-device">88. Migration to New Device</a></h1>
+<p>User-facing migration flow can be simpler than manual backup.</p>
+<hr />
+<h1 id="89-device-migration-flow"><a class="header" href="#89-device-migration-flow">89. Device Migration Flow</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">Old device:
+    Devices
+    → Move to New Device
+
+New device:
+    Scan QR / enter migration code
+
+Both:
+    authenticate
+    choose transfer scope
+    transfer encrypted data
+    verify
+    authorize new device
+    optionally revoke old device
+</code></pre>
+<hr />
+<h1 id="90-migration-vs-device-link"><a class="header" href="#90-migration-vs-device-link">90. Migration vs Device Link</a></h1>
+<p>Device link:</p>
+<pre><code class="language-text">adds another device
+</code></pre>
+<p>Migration:</p>
+<pre><code class="language-text">moves primary usage/data and may retire old device
+</code></pre>
+<hr />
+<h1 id="91-migration-uses-part-12-trust"><a class="header" href="#91-migration-uses-part-12-trust">91. Migration Uses Part 12 Trust</a></h1>
+<p>Bootstrap/security uses device-link architecture.</p>
+<hr />
+<h1 id="92-migration-data-plane"><a class="header" href="#92-migration-data-plane">92. Migration Data Plane</a></h1>
+<p>Can use:</p>
+<pre><code class="language-text">LAN/QUIC
+direct cable/network
+encrypted backup handoff
+</code></pre>
+<p>backend choice.</p>
+<p>UI stays transport-neutral.</p>
+<hr />
+<h1 id="93-migration-scope"><a class="header" href="#93-migration-scope">93. Migration Scope</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">All data
+Messages only
+Without large media
+</code></pre>
+<hr />
+<h1 id="94-migration-progress"><a class="header" href="#94-migration-progress">94. Migration Progress</a></h1>
+<p>Show meaningful:</p>
+<pre><code class="language-text">Conversations
+Files
+Settings
+</code></pre>
+<p>without raw chunk count.</p>
+<hr />
+<h1 id="95-old-device-retention"><a class="header" href="#95-old-device-retention">95. Old Device Retention</a></h1>
+<p>At end ask:</p>
+<pre><code class="language-text">Keep this device linked
+Revoke old device
+</code></pre>
+<p>if allowed.</p>
+<hr />
+<h1 id="96-do-not-auto-revoke-before-success"><a class="header" href="#96-do-not-auto-revoke-before-success">96. Do Not Auto-Revoke Before Success</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="97-migration-failure"><a class="header" href="#97-migration-failure">97. Migration Failure</a></h1>
+<p>Old device remains authoritative/trusted unless security policy says otherwise.</p>
+<hr />
+<h1 id="98-migration-resume"><a class="header" href="#98-migration-resume">98. Migration Resume</a></h1>
+<p>If direct transfer interrupted and backend supports checkpoints:</p>
+<pre><code class="language-text">Resume
+</code></pre>
+<hr />
+<h1 id="99-export-ux"><a class="header" href="#99-export-ux">99. Export UX</a></h1>
+<p>Separate screen:</p>
+<pre><code class="language-text">Export Data
+</code></pre>
+<hr />
+<h1 id="100-export-formats"><a class="header" href="#100-export-formats">100. Export Formats</a></h1>
+<p>Potential:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum ExportFormat {
+    PortableArchive,
+    Markdown,
+    Json,
+    Csv,
+    MediaFolder,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Only expose implemented formats.</p>
+<hr />
+<h1 id="101-portable-archive"><a class="header" href="#101-portable-archive">101. Portable Archive</a></h1>
+<p>Human-preserving but not necessarily app-restorable.</p>
+<hr />
+<h1 id="102-markdown-export"><a class="header" href="#102-markdown-export">102. Markdown Export</a></h1>
+<p>Good for:</p>
+<pre><code class="language-text">conversation transcripts
+</code></pre>
+<hr />
+<h1 id="103-json"><a class="header" href="#103-json">103. JSON</a></h1>
+<p>Good for machine portability.</p>
+<hr />
+<h1 id="104-csv"><a class="header" href="#104-csv">104. CSV</a></h1>
+<p>Limited structured tables only.</p>
+<hr />
+<h1 id="105-media-folder"><a class="header" href="#105-media-folder">105. Media Folder</a></h1>
+<p>Exports attachments to normal files.</p>
+<hr />
+<h1 id="106-export-scope"><a class="header" href="#106-export-scope">106. Export Scope</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">All conversations
+Selected conversation
+Date range
+Selected files
+Contacts
+</code></pre>
+<hr />
+<h1 id="107-export-privacy-warning"><a class="header" href="#107-export-privacy-warning">107. Export Privacy Warning</a></h1>
+<p>Exports may be:</p>
+<pre><code class="language-text">unencrypted
+</code></pre>
+<p>depending format.</p>
+<p>Must warn explicitly.</p>
+<hr />
+<h1 id="108-encrypted-export"><a class="header" href="#108-encrypted-export">108. Encrypted Export</a></h1>
+<p>Portable archive may support encrypted mode.</p>
+<hr />
+<h1 id="109-export-destination-android"><a class="header" href="#109-export-destination-android">109. Export Destination Android</a></h1>
+<p>Use SAF/document provider.</p>
+<hr />
+<h1 id="110-export-destination-desktop"><a class="header" href="#110-export-destination-desktop">110. Export Destination Desktop</a></h1>
+<p>Native save/folder picker.</p>
+<hr />
+<h1 id="111-export-filename"><a class="header" href="#111-export-filename">111. Export Filename</a></h1>
+<p>Safe sanitized default.</p>
+<hr />
+<h1 id="112-export-provenance"><a class="header" href="#112-export-provenance">112. Export Provenance</a></h1>
+<p>Include metadata:</p>
+<pre><code class="language-text">export date
+app version
+format version
+</code></pre>
+<p>where useful.</p>
+<hr />
+<h1 id="113-export-does-not-change-app-data"><a class="header" href="#113-export-does-not-change-app-data">113. Export Does Not Change App Data</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="114-import-ux"><a class="header" href="#114-import-ux">114. Import UX</a></h1>
+<p>Separate:</p>
+<pre><code class="language-text">Import Data
+</code></pre>
+<hr />
+<h1 id="115-import-sources"><a class="header" href="#115-import-sources">115. Import Sources</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">previous app export
+portable archive
+supported message format
+contacts file
+</code></pre>
+<hr />
+<h1 id="116-import-inspection"><a class="header" href="#116-import-inspection">116. Import Inspection</a></h1>
+<p>Before commit:</p>
+<pre><code class="language-text">source type
+record count
+date range
+warnings
+unsupported content
+</code></pre>
+<hr />
+<h1 id="117-import-provenance"><a class="header" href="#117-import-provenance">117. Import Provenance</a></h1>
+<p>Imported data should carry origin where relevant.</p>
+<hr />
+<h1 id="118-import-trust"><a class="header" href="#118-import-trust">118. Import Trust</a></h1>
+<p>Imported messages/files are not automatically:</p>
+<pre><code class="language-text">cryptographically verified
+</code></pre>
+<p>as if received live.</p>
+<hr />
+<h1 id="119-imported-identity"><a class="header" href="#119-imported-identity">119. Imported Identity</a></h1>
+<p>Do not create verified contacts solely from imported display names.</p>
+<hr />
+<h1 id="120-import-conflict-handling"><a class="header" href="#120-import-conflict-handling">120. Import Conflict Handling</a></h1>
+<p>Same deterministic approach as restore.</p>
+<hr />
+<h1 id="121-import-dry-run"><a class="header" href="#121-import-dry-run">121. Import Dry Run</a></h1>
+<p>Recommended.</p>
+<hr />
+<h1 id="122-unsupported-records"><a class="header" href="#122-unsupported-records">122. Unsupported Records</a></h1>
+<p>Show aggregate:</p>
+<pre><code class="language-text">12 items could not be imported
+View details
+</code></pre>
+<hr />
+<h1 id="123-archive-ux"><a class="header" href="#123-archive-ux">123. Archive UX</a></h1>
+<p>Long-term archive differs from backup.</p>
+<hr />
+<h1 id="124-archive-goals"><a class="header" href="#124-archive-goals">124. Archive Goals</a></h1>
+<pre><code class="language-text">future readability
+stable metadata
+media preservation
+integrity
+</code></pre>
+<hr />
+<h1 id="125-archive-view"><a class="header" href="#125-archive-view">125. Archive View</a></h1>
+<p>Could allow:</p>
+<pre><code class="language-text">Open Archive
+Browse Conversations
+Search Archive
+Export from Archive
+</code></pre>
+<p>without restoring into active account.</p>
+<hr />
+<h1 id="126-read-only-archive"><a class="header" href="#126-read-only-archive">126. Read-Only Archive</a></h1>
+<p>Strong recommendation.</p>
+<hr />
+<h1 id="127-archive-reader"><a class="header" href="#127-archive-reader">127. Archive Reader</a></h1>
+<p>Uses safe read-only path.</p>
+<hr />
+<h1 id="128-archive-search"><a class="header" href="#128-archive-search">128. Archive Search</a></h1>
+<p>Optional local index built for archive.</p>
+<hr />
+<h1 id="129-archive-version-migration"><a class="header" href="#129-archive-version-migration">129. Archive Version Migration</a></h1>
+<p>Reader may support older versions without mutating original.</p>
+<hr />
+<h1 id="130-backup-scheduling"><a class="header" href="#130-backup-scheduling">130. Backup Scheduling</a></h1>
+<p>If product supports automatic backups:</p>
+<pre><code class="language-text">Daily
+Weekly
+Manual only
+</code></pre>
+<hr />
+<h1 id="131-android-scheduling"><a class="header" href="#131-android-scheduling">131. Android Scheduling</a></h1>
+<p>Background constraints may make exact timing approximate.</p>
+<p>UI should not promise exact minute unless architecture can.</p>
+<hr />
+<h1 id="132-desktop-scheduling"><a class="header" href="#132-desktop-scheduling">132. Desktop Scheduling</a></h1>
+<p>Could run through daemon.</p>
+<hr />
+<h1 id="133-automatic-backup-destination"><a class="header" href="#133-automatic-backup-destination">133. Automatic Backup Destination</a></h1>
+<p>Must remain accessible.</p>
+<hr />
+<h1 id="134-destination-lost"><a class="header" href="#134-destination-lost">134. Destination Lost</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">External drive not connected
+</code></pre>
+<p>Show:</p>
+<pre><code class="language-text">Backup delayed
+</code></pre>
+<p>not immediate destructive failure.</p>
+<hr />
+<h1 id="135-provider-authentication-expired"><a class="header" href="#135-provider-authentication-expired">135. Provider Authentication Expired</a></h1>
+<p>If destination provider needs credentials:</p>
+<pre><code class="language-text">Reconnect storage
+</code></pre>
+<p>through platform/plugin connector.</p>
+<hr />
+<h1 id="136-backup-retention"><a class="header" href="#136-backup-retention">136. Backup Retention</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">Keep last 3
+Keep 30 days
+Keep monthly archives
+</code></pre>
+<hr />
+<h1 id="137-retention-ux"><a class="header" href="#137-retention-ux">137. Retention UX</a></h1>
+<p>Show estimated storage effect.</p>
+<hr />
+<h1 id="138-never-delete-only-good-backup-blindly"><a class="header" href="#138-never-delete-only-good-backup-blindly">138. Never Delete Only Good Backup Blindly</a></h1>
+<p>Retention engine should preserve at least one verified recovery point according to policy.</p>
+<hr />
+<h1 id="139-backup-history"><a class="header" href="#139-backup-history">139. Backup History</a></h1>
+<p>Show:</p>
+<pre><code class="language-text">date
+size
+destination
+verified
+status
+</code></pre>
+<hr />
+<h1 id="140-backup-detail"><a class="header" href="#140-backup-detail">140. Backup Detail</a></h1>
+<p>Actions:</p>
+<pre><code class="language-text">Verify
+Restore
+Delete
+Export/Move
+</code></pre>
+<p>depending destination permissions.</p>
+<hr />
+<h1 id="141-delete-backup"><a class="header" href="#141-delete-backup">141. Delete Backup</a></h1>
+<p>High-impact.</p>
+<p>Explain:</p>
+<pre><code class="language-text">This removes this recovery point.
+</code></pre>
+<hr />
+<h1 id="142-delete-last-backup"><a class="header" href="#142-delete-last-backup">142. Delete Last Backup</a></h1>
+<p>Warn strongly if no other verified backup exists.</p>
+<hr />
+<h1 id="143-remote-provider-delete"><a class="header" href="#143-remote-provider-delete">143. Remote Provider Delete</a></h1>
+<p>Do not claim deletion if provider operation fails.</p>
+<hr />
+<h1 id="144-backup-verification-drill"><a class="header" href="#144-backup-verification-drill">144. Backup Verification Drill</a></h1>
+<p>Action:</p>
+<pre><code class="language-text">Verify Backup
+</code></pre>
+<p>rechecks integrity without restore.</p>
+<hr />
+<h1 id="145-recovery-drill"><a class="header" href="#145-recovery-drill">145. Recovery Drill</a></h1>
+<p>Part 15 can invoke backup verification.</p>
+<hr />
+<h1 id="146-backup-age-warning"><a class="header" href="#146-backup-age-warning">146. Backup Age Warning</a></h1>
+<p>Configurable threshold.</p>
+<hr />
+<h1 id="147-backup-notifications"><a class="header" href="#147-backup-notifications">147. Backup Notifications</a></h1>
+<p>Part 13.</p>
+<p>Useful:</p>
+<pre><code class="language-text">backup failed
+backup needs attention
+manual backup completed
+</code></pre>
+<hr />
+<h1 id="148-routine-success"><a class="header" href="#148-routine-success">148. Routine Success</a></h1>
+<p>May remain silent.</p>
+<hr />
+<h1 id="149-storage-management-integration"><a class="header" href="#149-storage-management-integration">149. Storage Management Integration</a></h1>
+<p>Part 10 can show:</p>
+<pre><code class="language-text">backup cache
+temporary staging
+</code></pre>
+<p>not external backup files unless explicitly tracked.</p>
+<hr />
+<h1 id="150-backup-staging"><a class="header" href="#150-backup-staging">150. Backup Staging</a></h1>
+<p>Temporary local staging must be cleanup-safe.</p>
+<hr />
+<h1 id="151-low-storage"><a class="header" href="#151-low-storage">151. Low Storage</a></h1>
+<p>If local staging insufficient:</p>
+<pre><code class="language-text">Not enough temporary storage
+</code></pre>
+<hr />
+<h1 id="152-streaming-backup"><a class="header" href="#152-streaming-backup">152. Streaming Backup</a></h1>
+<p>Preferred for large data.</p>
+<p>UI should not imply entire archive loads into memory.</p>
+<hr />
+<h1 id="153-large-backup"><a class="header" href="#153-large-backup">153. Large Backup</a></h1>
+<p>Multi-gigabyte backup remains memory-bounded.</p>
+<hr />
+<h1 id="154-progress-update-rate"><a class="header" href="#154-progress-update-rate">154. Progress Update Rate</a></h1>
+<p>Throttle to reasonable rate.</p>
+<hr />
+<h1 id="155-background-backup--android"><a class="header" href="#155-background-backup--android">155. Background Backup — Android</a></h1>
+<p>If user-visible long-running backup requires foreground service:</p>
+<pre><code class="language-text">Backup in progress
+</code></pre>
+<p>notification may be required.</p>
+<hr />
+<h1 id="156-background-backup--desktop"><a class="header" href="#156-background-backup--desktop">156. Background Backup — Desktop</a></h1>
+<p>Can continue in daemon mode.</p>
+<hr />
+<h1 id="157-app-close-during-backup"><a class="header" href="#157-app-close-during-backup">157. App Close During Backup</a></h1>
+<p>Embedded mode:</p>
+<pre><code class="language-text">ask whether to cancel/quit
+</code></pre>
+<p>or wait for safe checkpoint.</p>
+<p>Daemon mode:</p>
+<pre><code class="language-text">UI can close; backup continues
+</code></pre>
+<hr />
+<h1 id="158-power-loss"><a class="header" href="#158-power-loss">158. Power Loss</a></h1>
+<p>Incomplete destination must not be marked valid.</p>
+<hr />
+<h1 id="159-backup-metadata"><a class="header" href="#159-backup-metadata">159. Backup Metadata</a></h1>
+<p>Normal UI may show:</p>
+<pre><code class="language-text">created
+verified
+app version
+device
+</code></pre>
+<hr />
+<h1 id="160-security-metadata"><a class="header" href="#160-security-metadata">160. Security Metadata</a></h1>
+<p>Do not expose:</p>
+<pre><code class="language-text">key IDs
+recipient envelopes
+</code></pre>
+<p>in normal UI.</p>
+<hr />
+<h1 id="161-backup-destination-privacy"><a class="header" href="#161-backup-destination-privacy">161. Backup Destination Privacy</a></h1>
+<p>A filename may reveal identity.</p>
+<p>Use neutral default names.</p>
+<hr />
+<h1 id="162-example-backup-filename"><a class="header" href="#162-example-backup-filename">162. Example Backup Filename</a></h1>
+<pre><code class="language-text">communication-backup-2026-08-25.backup
+</code></pre>
+<p>rather than contact names.</p>
+<hr />
+<h1 id="163-export-filename"><a class="header" href="#163-export-filename">163. Export Filename</a></h1>
+<p>Conversation export may include group/contact name if user explicitly chooses and platform sanitizes.</p>
+<hr />
+<h1 id="164-sensitive-export"><a class="header" href="#164-sensitive-export">164. Sensitive Export</a></h1>
+<p>If export contains plaintext:</p>
+<pre><code class="language-text">This export is not encrypted
+</code></pre>
+<p>must be visible before creation.</p>
+<hr />
+<h1 id="165-android-recent-apps-privacy"><a class="header" href="#165-android-recent-apps-privacy">165. Android Recent Apps Privacy</a></h1>
+<p>Restore/recovery-key screens can use secure-window policy.</p>
+<hr />
+<h1 id="166-desktop-sensitive-restore"><a class="header" href="#166-desktop-sensitive-restore">166. Desktop Sensitive Restore</a></h1>
+<p>Hide secrets after screen loses focus if policy.</p>
+<hr />
+<h1 id="167-clipboard"><a class="header" href="#167-clipboard">167. Clipboard</a></h1>
+<p>Recovery key only explicit copy.</p>
+<p>Backup path is not secret by itself but may be sensitive.</p>
+<hr />
+<h1 id="168-backup-key-logging"><a class="header" href="#168-backup-key-logging">168. Backup Key Logging</a></h1>
+<p>Never log.</p>
+<hr />
+<h1 id="169-restore-key-logging"><a class="header" href="#169-restore-key-logging">169. Restore Key Logging</a></h1>
+<p>Never log.</p>
+<hr />
+<h1 id="170-export-content-logging"><a class="header" href="#170-export-content-logging">170. Export Content Logging</a></h1>
+<p>Never log content.</p>
+<hr />
+<h1 id="171-safe-metrics"><a class="header" href="#171-safe-metrics">171. Safe Metrics</a></h1>
+<p>Possible:</p>
+<pre><code class="language-text">backup duration
+backup bytes bucket
+restore duration
+failure category
+format migration version
+</code></pre>
+<p>without content/path/secrets.</p>
+<hr />
+<h1 id="172-backup-presentation-api"><a class="header" href="#172-backup-presentation-api">172. Backup Presentation API</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait BackupPresentation {
+    async fn overview(
+        &amp;self,
+    ) -&gt; Result&lt;BackupOverviewView, UiError&gt;;
+
+    async fn plan(
+        &amp;self,
+        request: BackupPlanRequest,
+    ) -&gt; Result&lt;BackupPlanView, UiError&gt;;
+
+    async fn start(
+        &amp;self,
+        plan: BackupPlanId,
+    ) -&gt; Result&lt;BackupJobView, UiError&gt;;
+
+    async fn cancel(
+        &amp;self,
+        job: BackupJobId,
+    ) -&gt; Result&lt;(), UiError&gt;;
+
+    async fn verify(
+        &amp;self,
+        backup: BackupRef,
+    ) -&gt; Result&lt;BackupVerificationView, UiError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="173-restore-presentation-api"><a class="header" href="#173-restore-presentation-api">173. Restore Presentation API</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait RestorePresentation {
+    async fn inspect(
+        &amp;self,
+        source: BackupSource,
+    ) -&gt; Result&lt;BackupInspectionView, UiError&gt;;
+
+    async fn plan(
+        &amp;self,
+        source: BackupSource,
+        options: RestoreOptions,
+    ) -&gt; Result&lt;RestorePlanView, UiError&gt;;
+
+    async fn start(
+        &amp;self,
+        plan: RestorePlanId,
+    ) -&gt; Result&lt;RestoreJobView, UiError&gt;;
+
+    async fn cancel(
+        &amp;self,
+        job: RestoreJobId,
+    ) -&gt; Result&lt;(), UiError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="174-export-presentation-api"><a class="header" href="#174-export-presentation-api">174. Export Presentation API</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait ExportPresentation {
+    async fn plan(
+        &amp;self,
+        request: ExportPlanRequest,
+    ) -&gt; Result&lt;ExportPlanView, UiError&gt;;
+
+    async fn start(
+        &amp;self,
+        plan: ExportPlanId,
+        destination: ExportDestinationHandle,
+    ) -&gt; Result&lt;ExportJobView, UiError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="175-import-presentation-api"><a class="header" href="#175-import-presentation-api">175. Import Presentation API</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait ImportPresentation {
+    async fn inspect(
+        &amp;self,
+        source: ImportSource,
+    ) -&gt; Result&lt;ImportInspectionView, UiError&gt;;
+
+    async fn plan(
+        &amp;self,
+        request: ImportPlanRequest,
+    ) -&gt; Result&lt;ImportPlanView, UiError&gt;;
+
+    async fn start(
+        &amp;self,
+        plan: ImportPlanId,
+    ) -&gt; Result&lt;ImportJobView, UiError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="176-migration-presentation-api"><a class="header" href="#176-migration-presentation-api">176. Migration Presentation API</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait MigrationPresentation {
+    async fn create_session(
+        &amp;self,
+    ) -&gt; Result&lt;MigrationSessionView, UiError&gt;;
+
+    async fn inspect_session(
+        &amp;self,
+        session: MigrationSessionId,
+    ) -&gt; Result&lt;MigrationSessionView, UiError&gt;;
+
+    async fn start_transfer(
+        &amp;self,
+        session: MigrationSessionId,
+        scope: MigrationScope,
+    ) -&gt; Result&lt;MigrationJobView, UiError&gt;;
+
+    async fn finalize(
+        &amp;self,
+        session: MigrationSessionId,
+        retire_old_device: bool,
+    ) -&gt; Result&lt;MigrationResultView, UiError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="177-backup-events"><a class="header" href="#177-backup-events">177. Backup Events</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum BackupUiEvent {
+    JobChanged(BackupJobView),
+    BackupAdded(BackupHistoryItemView),
+    BackupRemoved(BackupId),
+    OverviewChanged(BackupOverviewView),
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="178-restore-events"><a class="header" href="#178-restore-events">178. Restore Events</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum RestoreUiEvent {
+    JobChanged(RestoreJobView),
+    PlanInvalidated(RestorePlanId),
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="179-android-viewmodel"><a class="header" href="#179-android-viewmodel">179. Android ViewModel</a></h1>
+<p>Owns:</p>
+<pre><code class="language-text">selected source/destination UI
+SAF effects
+confirmation screens
+scope selection
+progress presentation
+secure-screen effects
+</code></pre>
+<p>Rust owns backup/restore truth.</p>
+<hr />
+<h1 id="180-dioxus-presenter"><a class="header" href="#180-dioxus-presenter">180. Dioxus Presenter</a></h1>
+<p>Owns:</p>
+<pre><code class="language-text">file/folder dialog effects
+history selection
+progress view
+confirmation dialogs
+</code></pre>
+<hr />
+<h1 id="181-platform-handle-rule"><a class="header" href="#181-platform-handle-rule">181. Platform Handle Rule</a></h1>
+<p>Android/desktop UI passes:</p>
+<pre><code class="language-text">destination/source handle
+</code></pre>
+<p>to Rust.</p>
+<p>Do not load backup bytes into UI state.</p>
+<hr />
+<h1 id="182-android-saf-source"><a class="header" href="#182-android-saf-source">182. Android SAF Source</a></h1>
+<p>Use:</p>
+<pre><code class="language-text">content URI / file descriptor
+</code></pre>
+<hr />
+<h1 id="183-desktop-source"><a class="header" href="#183-desktop-source">183. Desktop Source</a></h1>
+<p>Use:</p>
+<pre><code class="language-text">path/handle
+</code></pre>
+<p>validated by Rust.</p>
+<hr />
+<h1 id="184-no-raw-backup-bytes-over-jni"><a class="header" href="#184-no-raw-backup-bytes-over-jni">184. No Raw Backup Bytes Over JNI</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="185-restore-key-entry"><a class="header" href="#185-restore-key-entry">185. Restore Key Entry</a></h1>
+<p>If backup requires key:</p>
+<pre><code class="language-text">sensitive input
+show/hide
+paste optional
+</code></pre>
+<hr />
+<h1 id="186-failed-key-entry"><a class="header" href="#186-failed-key-entry">186. Failed Key Entry</a></h1>
+<p>Show generic:</p>
+<pre><code class="language-text">Could not unlock this backup
+</code></pre>
+<p>Avoid cryptographic oracle details.</p>
+<hr />
+<h1 id="187-retry-limits"><a class="header" href="#187-retry-limits">187. Retry Limits</a></h1>
+<p>Security policy may rate-limit repeated unlock attempts.</p>
+<hr />
+<h1 id="188-backup-corruption-detail"><a class="header" href="#188-backup-corruption-detail">188. Backup Corruption Detail</a></h1>
+<p>Normal UI:</p>
+<pre><code class="language-text">Backup could not be verified
+</code></pre>
+<p>Advanced diagnostics may show non-secret structural reason.</p>
+<hr />
+<h1 id="189-error-taxonomy"><a class="header" href="#189-error-taxonomy">189. Error Taxonomy</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum BackupUiErrorKind {
+    DestinationUnavailable,
+    PermissionDenied,
+    StorageFull,
+    SourceUnavailable,
+    WrongRecoveryMaterial,
+    CorruptBackup,
+    UnsupportedVersion,
+    MigrationFailed,
+    VerificationFailed,
+    ConflictRequiresAction,
+    Cancelled,
+    Internal,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="190-error-ux"><a class="header" href="#190-error-ux">190. Error UX</a></h1>
+<p>Storage full:</p>
+<pre><code class="language-text">Choose another destination
+Manage Storage
+</code></pre>
+<p>Unsupported newer version:</p>
+<pre><code class="language-text">Update the app
+</code></pre>
+<p>Wrong recovery material:</p>
+<pre><code class="language-text">Could not unlock backup
+</code></pre>
+<hr />
+<h1 id="191-retry"><a class="header" href="#191-retry">191. Retry</a></h1>
+<p>Safe jobs can expose:</p>
+<pre><code class="language-text">Retry
+</code></pre>
+<hr />
+<h1 id="192-resume"><a class="header" href="#192-resume">192. Resume</a></h1>
+<p>If backend has checkpoints:</p>
+<pre><code class="language-text">Resume
+</code></pre>
+<hr />
+<h1 id="193-backup-history-pagination"><a class="header" href="#193-backup-history-pagination">193. Backup History Pagination</a></h1>
+<p>If many backups tracked, paginate.</p>
+<hr />
+<h1 id="194-archive-list"><a class="header" href="#194-archive-list">194. Archive List</a></h1>
+<p>Separate from active backup history if necessary.</p>
+<hr />
+<h1 id="195-accessibility--backup"><a class="header" href="#195-accessibility--backup">195. Accessibility — Backup</a></h1>
+<p>Screen reader:</p>
+<pre><code class="language-text">Last backup yesterday, verified
+</code></pre>
+<hr />
+<h1 id="196-progress-accessibility"><a class="header" href="#196-progress-accessibility">196. Progress Accessibility</a></h1>
+<p>Announce meaningful milestones, not every percent.</p>
+<hr />
+<h1 id="197-restore-plan-accessibility"><a class="header" href="#197-restore-plan-accessibility">197. Restore Plan Accessibility</a></h1>
+<p>Conflict/warning summary must be readable.</p>
+<hr />
+<h1 id="198-recovery-key-accessibility"><a class="header" href="#198-recovery-key-accessibility">198. Recovery Key Accessibility</a></h1>
+<p>Grouped reading.</p>
+<hr />
+<h1 id="199-large-font"><a class="header" href="#199-large-font">199. Large Font</a></h1>
+<p>Scope lists/warnings wrap.</p>
+<hr />
+<h1 id="200-rtl"><a class="header" href="#200-rtl">200. RTL</a></h1>
+<p>Backup screens mirror.</p>
+<p>Filenames/technical IDs preserve appropriate direction.</p>
+<hr />
+<h1 id="201-reduced-motion"><a class="header" href="#201-reduced-motion">201. Reduced Motion</a></h1>
+<p>Progress works without animated dependence.</p>
+<hr />
+<h1 id="202-color-independence"><a class="header" href="#202-color-independence">202. Color Independence</a></h1>
+<p>Verified/failed/warning use text/icon.</p>
+<hr />
+<h1 id="203-desktop-keyboard"><a class="header" href="#203-desktop-keyboard">203. Desktop Keyboard</a></h1>
+<p>Support:</p>
+<pre><code class="language-text">Tab
+Enter
+Esc
+Ctrl/Cmd+F in history
+</code></pre>
+<hr />
+<h1 id="204-android-talkback"><a class="header" href="#204-android-talkback">204. Android TalkBack</a></h1>
+<p>SAF/open/save system UI remains platform accessible; app confirmation/progress must be equally accessible.</p>
+<hr />
+<h1 id="205-screenshot-test-fixtures"><a class="header" href="#205-screenshot-test-fixtures">205. Screenshot Test Fixtures</a></h1>
+<p>Required:</p>
+<pre><code class="language-text">no backup
+healthy backup
+stale backup
+failed backup
+backup running
+verifying
+restore inspect
+migration required
+restore dry-run
+restore conflict
+restore running
+export plaintext warning
+migration transfer
+complete
+dark mode
+large font
+RTL
+</code></pre>
+<hr />
+<h1 id="206-backup-test-matrix"><a class="header" href="#206-backup-test-matrix">206. Backup Test Matrix</a></h1>
+<pre><code class="language-text">small backup
+large backup
+cancel
+power loss
+storage full
+provider unavailable
+verification failure
+restart
+retention
+last verified backup
+</code></pre>
+<hr />
+<h1 id="207-restore-test-matrix"><a class="header" href="#207-restore-test-matrix">207. Restore Test Matrix</a></h1>
+<pre><code class="language-text">compatible
+old version migration
+newer unsupported
+wrong account
+wrong key
+corrupt backup
+selective restore
+merge
+cancel before commit
+failure during commit
+search rebuild
+</code></pre>
+<hr />
+<h1 id="208-migration-test-matrix"><a class="header" href="#208-migration-test-matrix">208. Migration Test Matrix</a></h1>
+<pre><code class="language-text">new device
+offline LAN transfer
+interrupted transfer
+resume
+old device retained
+old device revoked after success
+failure before finalization
+</code></pre>
+<hr />
+<h1 id="209-exportimport-tests"><a class="header" href="#209-exportimport-tests">209. Export/Import Tests</a></h1>
+<pre><code class="language-text">Markdown
+JSON
+media export
+plaintext warning
+unsupported import items
+duplicate import
+provenance
+</code></pre>
+<hr />
+<h1 id="210-security-tests"><a class="header" href="#210-security-tests">210. Security Tests</a></h1>
+<p>Ensure no restore can reactivate stale:</p>
+<pre><code class="language-text">ratchets
+session keys
+device auth tokens
+hardware-bound secrets
+</code></pre>
+<hr />
+<h1 id="211-secret-leakage-tests"><a class="header" href="#211-secret-leakage-tests">211. Secret Leakage Tests</a></h1>
+<p>No:</p>
+<pre><code class="language-text">backup keys
+recovery keys
+plaintext export content
+</code></pre>
+<p>in logs/crash reports/analytics.</p>
+<hr />
+<h1 id="212-large-data-test"><a class="header" href="#212-large-data-test">212. Large Data Test</a></h1>
+<p>Multi-gigabyte backup/restore/export remains streaming and memory-bounded.</p>
+<hr />
+<h1 id="213-multi-device-backup-semantics"><a class="header" href="#213-multi-device-backup-semantics">213. Multi-Device Backup Semantics</a></h1>
+<p>Backup is a logical recovery artifact.</p>
+<p>It need not mirror per-device:</p>
+<pre><code class="language-text">cache
+download state
+search index
+</code></pre>
+<hr />
+<h1 id="214-device-local-data"><a class="header" href="#214-device-local-data">214. Device-Local Data</a></h1>
+<p>May include optionally:</p>
+<pre><code class="language-text">drafts
+device preferences
+</code></pre>
+<p>with clear policy.</p>
+<hr />
+<h1 id="215-account-wide-data"><a class="header" href="#215-account-wide-data">215. Account-Wide Data</a></h1>
+<p>Typically:</p>
+<pre><code class="language-text">contacts
+groups
+messages
+verification metadata
+</code></pre>
+<p>subject to backend architecture.</p>
+<hr />
+<h1 id="216-backup-completeness-indicator"><a class="header" href="#216-backup-completeness-indicator">216. Backup Completeness Indicator</a></h1>
+<p>Can show:</p>
+<pre><code class="language-text">Includes messages and files
+Excludes search index and temporary data
+</code></pre>
+<hr />
+<h1 id="217-restore-source-trust"><a class="header" href="#217-restore-source-trust">217. Restore Source Trust</a></h1>
+<p>A backup being decryptable does not automatically mean every imported external record is trustworthy.</p>
+<hr />
+<h1 id="218-import-vs-restore-trust"><a class="header" href="#218-import-vs-restore-trust">218. Import vs Restore Trust</a></h1>
+<p>Restore from own authenticated backup can preserve more trust metadata than arbitrary import.</p>
+<hr />
+<h1 id="219-archive-trust"><a class="header" href="#219-archive-trust">219. Archive Trust</a></h1>
+<p>Read-only archive preserves provenance but does not grant active device authorization.</p>
+<hr />
+<h1 id="220-initial-production-scope"><a class="header" href="#220-initial-production-scope">220. Initial Production Scope</a></h1>
+<p>Ship:</p>
+<pre><code class="language-text">encrypted full backup
+manual backup
+verified backup history
+restore inspect
+restore dry run
+safe full restore
+new-device recovery
+selective restore basics
+export conversations/files
+import supported portable format
+device migration
+Android SAF
+desktop native file/folder dialogs
+progress/cancel/retry
+backup/recovery key integration
+</code></pre>
+<p>Defer:</p>
+<pre><code class="language-text">many cloud-provider-specific UIs
+continuous cloud sync disguised as backup
+complex retention DSL
+cross-account restore
+collaborative archives
+</code></pre>
+<p>unless backend explicitly requires them.</p>
+<hr />
+<h1 id="221-definition-of-done"><a class="header" href="#221-definition-of-done">221. Definition of Done</a></h1>
+<p>UI/UX Part 16 is complete when:</p>
+<ul>
+<li>backup, restore, export, import, migration, and archive are distinct concepts</li>
+<li>Rust owns container format, encryption, integrity, version compatibility, migration, restore safety, and conflict policy</li>
+<li>backup status/history and verified recovery points are visible</li>
+<li>backup creation supports destination, scope, size estimate, progress, verification, cancellation, and safe finalization</li>
+<li>account recovery and backup recovery are not conflated unless intentionally unified</li>
+<li>restore starts with inspection and a non-mutating dry-run plan</li>
+<li>selective restore is possible without exposing internal storage schema</li>
+<li>stale sessions, ratchets, device tokens, and hardware-bound secrets are never blindly restored</li>
+<li>new-device restore creates fresh device security identity</li>
+<li>existing-device restore uses safe merge/replace semantics</li>
+<li>derived search indexes/thumbnails/caches rebuild instead of being trusted from backup</li>
+<li>migration differs from simply linking another device and never revokes the old device before success</li>
+<li>export clearly warns when output is plaintext/unprotected</li>
+<li>import preserves provenance and does not invent verification</li>
+<li>Android uses SAF/document-provider flows and no giant JNI byte arrays</li>
+<li>desktop uses native file/folder flows</li>
+<li>background/daemon execution and process recovery are defined</li>
+<li>accessibility, RTL, large font, progress semantics, and secure secret entry are explicit</li>
+<li>Rust backup/restore/export/import/migration presentation APIs are specified</li>
+<li>corruption, wrong key, incompatible version, storage failure, interruption, secret leakage, and large-data tests are included</li>
+</ul>
+<hr />
+<h1 id="222-final-architecture"><a class="header" href="#222-final-architecture">222. Final Architecture</a></h1>
+<pre><code class="language-text">                  RUST DATA SURVIVABILITY CORE
+                            │
+      ┌─────────────────────┼─────────────────────┐
+      │                     │                     │
+    Backup               Restore             Portability
+      │                     │                     │
+ Encrypt/Verify        Inspect/Plan        Export/Import
+ Snapshot/Write        Migrate/Merge       Archive/Migrate
+      │                     │                     │
+      └─────────────────────┼─────────────────────┘
+                            │
+                  Backup Presentation
+                    ┌───────┴───────┐
+                    │               │
+                 Dioxus          Compose
+                    │               │
+            Desktop Files      Android SAF
+</code></pre>
+<p>Restore safety:</p>
+<pre><code class="language-text">Backup
+  │
+  ▼
+Inspect
+  │
+  ▼
+Verify / Unlock
+  │
+  ▼
+Compatibility
+  │
+  ▼
+Dry-Run Restore Plan
+  │
+  ▼
+Explicit Confirmation
+  │
+  ▼
+Staged / Transactional Restore
+  │
+  ▼
+Verification
+  │
+  ▼
+Rebuild Derived State
+</code></pre>
+<hr />
+<h1 id="223-final-principle"><a class="header" href="#223-final-principle">223. Final Principle</a></h1>
+<p>Backup UX should optimize for a single outcome:</p>
+<pre><code class="language-text">when something goes wrong, the user can recover safely and understand what will happen before data is changed
+</code></pre>
+<p>The correct model is:</p>
+<pre><code class="language-text">encrypted verified backup
++
+explicit recovery ownership
++
+inspect-before-restore
++
+dry-run planning
++
+fresh device security
++
+portable exports
+</code></pre>
+<p>not:</p>
+<pre><code class="language-text">copy application directories and hope they work later
+</code></pre>
+<p>This gives Dioxus desktop and Android Compose a recoverable, portable, security-conscious data lifecycle while the Rust core remains authoritative for backup correctness and restore safety.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="ui-ux-15-security-center-devices-keys-recovery-architecture.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="ui-ux-17-emergency-sos-offline-mesh-architecture.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="ui-ux-15-security-center-devices-keys-recovery-architecture.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="ui-ux-17-emergency-sos-offline-mesh-architecture.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

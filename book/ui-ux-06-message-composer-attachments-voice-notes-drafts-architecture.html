@@ -1,0 +1,2301 @@
+<!DOCTYPE HTML>
+<html lang="en" class="navy" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>UI/UX 06 — Message Composer, Attachments &amp; Voice Notes - SIAR System Architecture &amp; Technical Wiki</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="Comprehensive system architecture, cryptographic protocols, DTN mesh networking, distributed storage, audio DSP pipelines, and UI/UX design specifications for SIAR.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="theme/custom.css">
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "navy";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('navy')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="Home.html">Architecture Portal & Reading Guide</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part I: Protocol Foundation & Extension Platform</li><li class="chapter-item expanded "><a href="01-protocol-extension-system-architecture.html"><strong aria-hidden="true">1.</strong> 01 — Protocol Extension System Architecture</a></li><li class="chapter-item expanded "><a href="07-capability-negotiation-architecture.html"><strong aria-hidden="true">2.</strong> 07 — Capability Negotiation & Protocol Upgrades</a></li><li class="chapter-item expanded "><a href="21-third-party-protocol-extensions-architecture.html"><strong aria-hidden="true">3.</strong> 21 — Third-Party Protocol Extensions</a></li><li class="chapter-item expanded "><a href="22-wasm-compatible-components-architecture.html"><strong aria-hidden="true">4.</strong> 22 — WebAssembly (WASM) Compatible Components</a></li><li class="chapter-item expanded "><a href="23-external-interoperability-suite-architecture.html"><strong aria-hidden="true">5.</strong> 23 — External Interoperability & Conformance Suite</a></li><li class="chapter-item expanded "><a href="24-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">6.</strong> 24 — Dynamic Plugin & Module Ecosystem</a></li><li class="chapter-item expanded affix "><li class="part-title">Part II: Identity, Trust & Cryptography</li><li class="chapter-item expanded "><a href="02-multi-device-identity-architecture.html"><strong aria-hidden="true">7.</strong> 02 — Multi-Device Identity & Trust Model</a></li><li class="chapter-item expanded "><a href="28-production-security-e2ee-key-management-privacy-architecture.html"><strong aria-hidden="true">8.</strong> 28 — Production Security, E2EE, Key Management & Privacy</a></li><li class="chapter-item expanded affix "><li class="part-title">Part III: Mesh Networking, Transports & Hardware</li><li class="chapter-item expanded "><a href="03-transport-routing-policy-engine-architecture.html"><strong aria-hidden="true">9.</strong> 03 — Transport & Routing Policy Engine</a></li><li class="chapter-item expanded "><a href="11-relay-self-hosted-infrastructure-architecture.html"><strong aria-hidden="true">10.</strong> 11 — Self-Hosted Relay & Coordination Infrastructure</a></li><li class="chapter-item expanded "><a href="12-multipath-networking-architecture.html"><strong aria-hidden="true">11.</strong> 12 — Multipath Networking & Link Aggregation</a></li><li class="chapter-item expanded "><a href="13-battery-aware-scheduling-architecture.html"><strong aria-hidden="true">12.</strong> 13 — Battery-Aware Scheduling & Power Profiles</a></li><li class="chapter-item expanded "><a href="14-proximity-abstraction-architecture.html"><strong aria-hidden="true">13.</strong> 14 — Proximity Abstraction (BLE, Wi-Fi Direct, LoRa)</a></li><li class="chapter-item expanded "><a href="15-qr-nfc-bootstrap-pairing-architecture.html"><strong aria-hidden="true">14.</strong> 15 — Out-of-Band QR & NFC Bootstrap Pairing</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IV: Delay-Tolerant Networking & Emergency Mesh</li><li class="chapter-item expanded "><a href="06-dtn-store-carry-forward-architecture.html"><strong aria-hidden="true">15.</strong> 06 — DTN Store-Carry-Forward & Bundle Forwarding</a></li><li class="chapter-item expanded "><a href="17-emergency-priority-classes-architecture.html"><strong aria-hidden="true">16.</strong> 17 — Emergency Priority Classes & Critical Alert Mesh</a></li><li class="chapter-item expanded affix "><li class="part-title">Part V: Storage, Outbox & Data Lifecycle</li><li class="chapter-item expanded "><a href="04-offline-event-log-architecture.html"><strong aria-hidden="true">17.</strong> 04 — Offline Event Log & Sync Engine</a></li><li class="chapter-item expanded "><a href="05-robust-file-blob-subsystem-architecture.html"><strong aria-hidden="true">18.</strong> 05 — Robust File & Blob Subsystem (Chunking & Resumption)</a></li><li class="chapter-item expanded "><a href="09-crash-recovery-architecture.html"><strong aria-hidden="true">19.</strong> 09 — Crash Recovery & State Integrity</a></li><li class="chapter-item expanded "><a href="32-search-indexing-local-knowledge-privacy-architecture.html"><strong aria-hidden="true">20.</strong> 32 — Search, Indexing & Local Privacy Retrieval</a></li><li class="chapter-item expanded "><a href="33-backup-restore-export-import-archival-portability-architecture.html"><strong aria-hidden="true">21.</strong> 33 — Backup, Restore, Export & Long-Term Archival</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VI: Realtime Media, Calling & Audio DSP</li><li class="chapter-item expanded "><a href="25-android-direct-hardware-surface-zero-copy-media-architecture.html"><strong aria-hidden="true">22.</strong> 25 — Android Direct Surface Zero-Copy Media</a></li><li class="chapter-item expanded "><a href="26-rust-first-audio-dsp-resampling-aec-ns-agc-architecture.html"><strong aria-hidden="true">23.</strong> 26 — Rust-First Audio DSP (AEC, NS, AGC, Resampling)</a></li><li class="chapter-item expanded "><a href="29-realtime-calls-media-session-protocol-architecture.html"><strong aria-hidden="true">24.</strong> 29 — Realtime Calls & Media Session Protocol</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VII: Ephemeral State, Presence & Notifications</li><li class="chapter-item expanded "><a href="30-presence-availability-typing-read-receipts-ephemeral-state-architecture.html"><strong aria-hidden="true">25.</strong> 30 — Presence, Availability, Typing & Read Receipts</a></li><li class="chapter-item expanded "><a href="31-notifications-push-background-delivery-lifecycle-architecture.html"><strong aria-hidden="true">26.</strong> 31 — Notifications, Push Wake & Background Delivery</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VIII: Native Runtimes, Daemons & Embedded Linux</li><li class="chapter-item expanded "><a href="16-daemon-headless-runtime-architecture.html"><strong aria-hidden="true">27.</strong> 16 — Headless Daemon & Background Runtime</a></li><li class="chapter-item expanded "><a href="19-c-abi-ffi-architecture.html"><strong aria-hidden="true">28.</strong> 19 — C-ABI FFI & Native Language Interop</a></li><li class="chapter-item expanded "><a href="20-embedded-linux-node-architecture.html"><strong aria-hidden="true">29.</strong> 20 — Embedded Linux Node & Resource-Constrained Targets</a></li><li class="chapter-item expanded "><a href="27-rust-driven-android-native-build-packaging-automation.html"><strong aria-hidden="true">30.</strong> 27 — Rust-Driven Android Native Build & Packaging Automation</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IX: Reliability, Testing, Fuzzing & Diagnostics</li><li class="chapter-item expanded "><a href="08-resource-limits-backpressure-architecture.html"><strong aria-hidden="true">31.</strong> 08 — Resource Limits, Quotas & Backpressure</a></li><li class="chapter-item expanded "><a href="10-fuzzing-protocol-test-suite-architecture.html"><strong aria-hidden="true">32.</strong> 10 — Fuzzing & Protocol Test Suite</a></li><li class="chapter-item expanded "><a href="18-network-diagnostics-path-visualization-architecture.html"><strong aria-hidden="true">33.</strong> 18 — Network Diagnostics & Path Visualization</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part X: UI/UX Client Architecture (Cross-Platform)</li><li class="chapter-item expanded "><a href="ui-ux-01-product-foundation-cross-platform-interaction-architecture.html"><strong aria-hidden="true">34.</strong> UI/UX 01 — Product UX Foundation & Cross-Platform Interaction</a></li><li class="chapter-item expanded "><a href="ui-ux-02-desktop-dioxus-app-shell-navigation-window-architecture.html"><strong aria-hidden="true">35.</strong> UI/UX 02 — Desktop Dioxus App Shell & Navigation</a></li><li class="chapter-item expanded "><a href="ui-ux-03-android-jetpack-compose-app-shell-navigation-lifecycle-architecture.html"><strong aria-hidden="true">36.</strong> UI/UX 03 — Android Jetpack Compose App Shell & Lifecycle</a></li><li class="chapter-item expanded "><a href="ui-ux-04-conversation-list-inbox-architecture.html"><strong aria-hidden="true">37.</strong> UI/UX 04 — Conversation List & Inbox UX</a></li><li class="chapter-item expanded "><a href="ui-ux-05-conversation-message-timeline-architecture.html"><strong aria-hidden="true">38.</strong> UI/UX 05 — Conversation Message Timeline UX</a></li><li class="chapter-item expanded "><a href="ui-ux-06-message-composer-attachments-voice-notes-drafts-architecture.html" class="active"><strong aria-hidden="true">39.</strong> UI/UX 06 — Message Composer, Attachments & Voice Notes</a></li><li class="chapter-item expanded "><a href="ui-ux-07-calls-realtime-media-architecture.html"><strong aria-hidden="true">40.</strong> UI/UX 07 — Calls & Realtime Media UX</a></li><li class="chapter-item expanded "><a href="ui-ux-08-contacts-requests-verification-identity-architecture.html"><strong aria-hidden="true">41.</strong> UI/UX 08 — Contacts, Requests, Verification & Identity</a></li><li class="chapter-item expanded "><a href="ui-ux-09-groups-membership-roles-architecture.html"><strong aria-hidden="true">42.</strong> UI/UX 09 — Groups, Membership & Roles UX</a></li><li class="chapter-item expanded "><a href="ui-ux-10-files-media-gallery-transfer-architecture.html"><strong aria-hidden="true">43.</strong> UI/UX 10 — Files, Media Gallery & Transfer UX</a></li><li class="chapter-item expanded "><a href="ui-ux-11-search-local-knowledge-retrieval-architecture.html"><strong aria-hidden="true">44.</strong> UI/UX 11 — Search & Local Knowledge Retrieval UX</a></li><li class="chapter-item expanded "><a href="ui-ux-12-nearby-qr-nfc-pairing-device-linking-architecture.html"><strong aria-hidden="true">45.</strong> UI/UX 12 — Nearby, QR/NFC Pairing & Device Linking UX</a></li><li class="chapter-item expanded "><a href="ui-ux-13-notifications-background-incoming-call-architecture.html"><strong aria-hidden="true">46.</strong> UI/UX 13 — Notifications, Background & Incoming Call UX</a></li><li class="chapter-item expanded "><a href="ui-ux-14-presence-typing-receipts-status-architecture.html"><strong aria-hidden="true">47.</strong> UI/UX 14 — Presence, Typing, Receipts & Status UX</a></li><li class="chapter-item expanded "><a href="ui-ux-15-security-center-devices-keys-recovery-architecture.html"><strong aria-hidden="true">48.</strong> UI/UX 15 — Security Center, Devices, Keys & Recovery UX</a></li><li class="chapter-item expanded "><a href="ui-ux-16-backup-restore-export-migration-architecture.html"><strong aria-hidden="true">49.</strong> UI/UX 16 — Backup, Restore, Export & Migration UX</a></li><li class="chapter-item expanded "><a href="ui-ux-17-emergency-sos-offline-mesh-architecture.html"><strong aria-hidden="true">50.</strong> UI/UX 17 — Emergency / SOS / Offline Mesh UX</a></li><li class="chapter-item expanded "><a href="ui-ux-18-settings-privacy-notifications-data-controls-architecture.html"><strong aria-hidden="true">51.</strong> UI/UX 18 — Settings, Privacy, Notifications & Data Controls</a></li><li class="chapter-item expanded "><a href="ui-ux-19-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">52.</strong> UI/UX 19 — Plugin & Module Ecosystem UX</a></li><li class="chapter-item expanded "><a href="ui-ux-20-diagnostics-network-paths-advanced-developer-architecture.html"><strong aria-hidden="true">53.</strong> UI/UX 20 — Diagnostics, Network Paths & Developer UX</a></li><li class="chapter-item expanded "><a href="ui-ux-21-accessibility-inclusive-interaction-architecture.html"><strong aria-hidden="true">54.</strong> UI/UX 21 — Accessibility & Inclusive Interaction</a></li><li class="chapter-item expanded "><a href="ui-ux-22-design-system-tokens-typography-icons-motion-architecture.html"><strong aria-hidden="true">55.</strong> UI/UX 22 — Design System, Tokens, Typography & Motion</a></li><li class="chapter-item expanded "><a href="ui-ux-23-responsive-adaptive-desktop-tablet-foldable-phone-layout-architecture.html"><strong aria-hidden="true">56.</strong> UI/UX 23 — Responsive & Adaptive Layouts (Desktop/Tablet/Foldable/Phone)</a></li><li class="chapter-item expanded "><a href="ui-ux-24-error-loading-empty-offline-degraded-state-architecture.html"><strong aria-hidden="true">57.</strong> UI/UX 24 — Error, Loading, Empty & Degraded-State UX</a></li><li class="chapter-item expanded "><a href="ui-ux-25-onboarding-first-run-permission-education-architecture.html"><strong aria-hidden="true">58.</strong> UI/UX 25 — Onboarding, First Run & Permission Education</a></li><li class="chapter-item expanded "><a href="ui-ux-26-performance-virtualization-large-data-ui-architecture.html"><strong aria-hidden="true">59.</strong> UI/UX 26 — Virtualization & Large-Data UI Performance</a></li><li class="chapter-item expanded "><a href="ui-ux-27-ui-testing-screenshot-interaction-release-quality-gates-architecture.html"><strong aria-hidden="true">60.</strong> UI/UX 27 — UI Testing, Screenshots & Release Quality Gates</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">SIAR System Architecture &amp; Technical Wiki</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar/edit/main/sys-arch/ui-ux-06-message-composer-attachments-voice-notes-drafts-architecture.md" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="uiux-part-06--message-composer-attachments-voice-notes--drafts-ux-architecture"><a class="header" href="#uiux-part-06--message-composer-attachments-voice-notes--drafts-ux-architecture">UI/UX Part 06 — Message Composer, Attachments, Voice Notes &amp; Drafts UX Architecture</a></h1>
+<h2 id="reusable-p2p-communication-platform"><a class="header" href="#reusable-p2p-communication-platform">Reusable P2P Communication Platform</a></h2>
+<p><strong>Status:</strong> UI/UX architecture specification<br />
+<strong>UI Series:</strong> Part 06<br />
+<strong>Desktop UI:</strong> Dioxus<br />
+<strong>Android UI:</strong> Kotlin + Jetpack Compose<br />
+<strong>Core runtime:</strong> Rust<br />
+<strong>Primary purpose:</strong> define the complete message composition experience across desktop and Android, including text entry, drafts, replies, edits, attachments, paste/share flows, voice notes, camera/media capture, preview, reordering, offline queuing, validation, autosave, accessibility, process-death recovery, and Rust-backed send semantics.</p>
+<hr />
+<h1 id="1-purpose"><a class="header" href="#1-purpose">1. Purpose</a></h1>
+<p>The composer is where user intent becomes durable outbound content.</p>
+<p>It must handle:</p>
+<pre><code class="language-text">plain text
+multiline text
+reply
+edit
+attachments
+images
+video
+documents
+voice notes
+paste
+drag/drop
+shared content
+offline send
+draft recovery
+permission flows
+</code></pre>
+<p>without duplicating message-domain logic in the UI.</p>
+<p>The governing principle is:</p>
+<blockquote>
+<p><strong>The composer owns temporary input interaction; Rust owns draft persistence, validation, attachment preparation, message creation, and send truth.</strong></p>
+</blockquote>
+<hr />
+<h1 id="2-architectural-position"><a class="header" href="#2-architectural-position">2. Architectural Position</a></h1>
+<pre><code class="language-text">User Input
+   │
+   ├── text
+   ├── attachment
+   ├── voice note
+   ├── paste/drop/share
+   └── reply/edit intent
+   │
+   ▼
+Platform Composer UI
+   │
+   ▼
+Composer Presenter / ViewModel
+   │
+   ▼
+Rust Composition Service
+   │
+   ├── validation
+   ├── draft persistence
+   ├── attachment ingestion
+   ├── message creation
+   └── outbox
+</code></pre>
+<hr />
+<h1 id="3-composer-state"><a class="header" href="#3-composer-state">3. Composer State</a></h1>
+<p>Recommended shared presentation model:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct ComposerSnapshot {
+    pub conversation: ConversationId,
+    pub mode: ComposerMode,
+    pub text: String,
+    pub attachments: Vec&lt;ComposerAttachment&gt;,
+    pub can_send: bool,
+    pub validation: ComposerValidation,
+    pub draft_state: DraftState,
+    pub voice_state: VoiceComposerState,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="4-composer-modes"><a class="header" href="#4-composer-modes">4. Composer Modes</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum ComposerMode {
+    New,
+    Reply {
+        target: MessageReferenceView,
+    },
+    Edit {
+        target: MessageId,
+    },
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Only one primary mode should be active at a time.</p>
+<hr />
+<h1 id="5-ui-owned-vs-rust-owned-composer-state"><a class="header" href="#5-ui-owned-vs-rust-owned-composer-state">5. UI-Owned vs Rust-Owned Composer State</a></h1>
+<p>UI may own transient presentation details:</p>
+<pre><code class="language-text">text field focus
+IME state
+cursor position
+attachment drag hover
+expanded attachment sheet
+recording gesture progress
+</code></pre>
+<p>Rust should own or validate:</p>
+<pre><code class="language-text">draft content if durable
+reply target
+edit target
+attachment list
+attachment identity
+validation
+send eligibility
+</code></pre>
+<hr />
+<h1 id="6-draft-strategy"><a class="header" href="#6-draft-strategy">6. Draft Strategy</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">draft is a first-class Rust domain object
+</code></pre>
+<p>rather than only in ViewModel/component memory.</p>
+<p>This improves:</p>
+<pre><code class="language-text">process-death recovery
+desktop restart
+device crash recovery
+future multi-device draft sync
+</code></pre>
+<hr />
+<h1 id="7-draft-identity"><a class="header" href="#7-draft-identity">7. Draft Identity</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct DraftId([u8; 16]);
+<span class="boring">}</span></code></pre></pre>
+<p>Usually one active draft per conversation.</p>
+<hr />
+<h1 id="8-draft-model"><a class="header" href="#8-draft-model">8. Draft Model</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct MessageDraft {
+    pub id: DraftId,
+    pub conversation: ConversationId,
+    pub mode: ComposerMode,
+    pub text: String,
+    pub attachments: Vec&lt;DraftAttachmentRef&gt;,
+    pub updated_at: Timestamp,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="9-draft-is-not-a-message"><a class="header" href="#9-draft-is-not-a-message">9. Draft Is Not a Message</a></h1>
+<p>A draft must not:</p>
+<pre><code class="language-text">consume MessageSequence
+trigger notifications
+send typing receipts
+appear as sent history
+</code></pre>
+<p>until user sends.</p>
+<hr />
+<h1 id="10-autosave"><a class="header" href="#10-autosave">10. Autosave</a></h1>
+<p>Draft autosave should be:</p>
+<pre><code class="language-text">debounced
+</code></pre>
+<p>not persisted per keystroke.</p>
+<p>Example:</p>
+<pre><code class="language-text">300–1000 ms after change
+</code></pre>
+<p>Tune by storage/backend.</p>
+<hr />
+<h1 id="11-crash-safety"><a class="header" href="#11-crash-safety">11. Crash Safety</a></h1>
+<p>If application crashes after user typed:</p>
+<pre><code class="language-text">draft reappears
+</code></pre>
+<p>according to autosave boundary.</p>
+<hr />
+<h1 id="12-draft-emptying"><a class="header" href="#12-draft-emptying">12. Draft Emptying</a></h1>
+<p>If user clears composer:</p>
+<pre><code class="language-text">delete empty draft
+</code></pre>
+<p>unless reply/edit state still meaningful.</p>
+<hr />
+<h1 id="13-draft-in-inbox"><a class="header" href="#13-draft-in-inbox">13. Draft in Inbox</a></h1>
+<p>Part 04 may show:</p>
+<pre><code class="language-text">Draft: ...
+</code></pre>
+<p>from Rust draft projection.</p>
+<hr />
+<h1 id="14-draft-sync"><a class="header" href="#14-draft-sync">14. Draft Sync</a></h1>
+<p>Initial recommendation:</p>
+<pre><code class="language-text">device-local
+</code></pre>
+<p>Later optional:</p>
+<pre><code class="language-text">account-wide encrypted draft sync
+</code></pre>
+<p>Do not require cross-device draft sync in v1.</p>
+<hr />
+<h1 id="15-multi-device-draft-conflict"><a class="header" href="#15-multi-device-draft-conflict">15. Multi-Device Draft Conflict</a></h1>
+<p>If later synced:</p>
+<pre><code class="language-text">latest device edit
+or
+per-device drafts
+</code></pre>
+<p>must be explicit.</p>
+<p>Avoid silent text merging.</p>
+<hr />
+<h1 id="16-text-input"><a class="header" href="#16-text-input">16. Text Input</a></h1>
+<p>Support:</p>
+<pre><code class="language-text">Unicode
+emoji
+multiline
+RTL
+mixed scripts
+clipboard
+hardware keyboard
+IME composition
+</code></pre>
+<hr />
+<h1 id="17-text-length"><a class="header" href="#17-text-length">17. Text Length</a></h1>
+<p>UI may show limit hint.</p>
+<p>Rust remains authority.</p>
+<hr />
+<h1 id="18-validation"><a class="header" href="#18-validation">18. Validation</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">message too long
+too many attachments
+attachment too large
+unsupported file
+editing not allowed
+conversation read-only
+</code></pre>
+<hr />
+<h1 id="19-validation-timing"><a class="header" href="#19-validation-timing">19. Validation Timing</a></h1>
+<p>Use:</p>
+<pre><code class="language-text">lightweight local prevalidation
++
+authoritative Rust validation
+</code></pre>
+<p>for responsive UX.</p>
+<hr />
+<h1 id="20-send-button-state"><a class="header" href="#20-send-button-state">20. Send Button State</a></h1>
+<p>Enable when:</p>
+<pre><code class="language-text">text non-empty
+or
+valid attachment exists
+or
+valid voice note exists
+</code></pre>
+<p>and Rust says sending allowed.</p>
+<hr />
+<h1 id="21-empty-whitespace"><a class="header" href="#21-empty-whitespace">21. Empty Whitespace</a></h1>
+<p>Trim policy must be defined.</p>
+<p>Recommended:</p>
+<pre><code class="language-text">message consisting only of whitespace → invalid
+</code></pre>
+<p>while preserving meaningful leading/trailing spaces inside code blocks if supported.</p>
+<hr />
+<h1 id="22-enter--send-behavior"><a class="header" href="#22-enter--send-behavior">22. Enter / Send Behavior</a></h1>
+<p>Android phone:</p>
+<pre><code class="language-text">Enter → newline
+send button → send
+</code></pre>
+<p>Desktop:</p>
+<pre><code class="language-text">Enter → configurable
+Ctrl/Cmd+Enter → send
+</code></pre>
+<p>Recommendation for desktop default:</p>
+<pre><code class="language-text">Enter → newline
+Ctrl/Cmd+Enter → send
+</code></pre>
+<p>or user setting later.</p>
+<hr />
+<h1 id="23-ime-action"><a class="header" href="#23-ime-action">23. IME Action</a></h1>
+<p>Android keyboard action can show:</p>
+<pre><code class="language-text">Send
+</code></pre>
+<p>only if product wants single-line-like behavior.</p>
+<p>For multiline chats, explicit send button is clearer.</p>
+<hr />
+<h1 id="24-composer-expansion"><a class="header" href="#24-composer-expansion">24. Composer Expansion</a></h1>
+<p>Text area expands vertically up to a bounded max height.</p>
+<p>Then scroll internally.</p>
+<hr />
+<h1 id="25-desktop-composer-height"><a class="header" href="#25-desktop-composer-height">25. Desktop Composer Height</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">1–8 lines
+</code></pre>
+<p>before internal scrolling.</p>
+<hr />
+<h1 id="26-android-composer-height"><a class="header" href="#26-android-composer-height">26. Android Composer Height</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">1–6 lines
+</code></pre>
+<p>to preserve screen space above keyboard.</p>
+<hr />
+<h1 id="27-reply-mode"><a class="header" href="#27-reply-mode">27. Reply Mode</a></h1>
+<p>When replying:</p>
+<pre><code class="language-text">reply context strip
+</code></pre>
+<p>appears above composer.</p>
+<p>Contains:</p>
+<pre><code class="language-text">sender
+message excerpt/type
+cancel
+</code></pre>
+<hr />
+<h1 id="28-reply-context"><a class="header" href="#28-reply-context">28. Reply Context</a></h1>
+<p>Tap/click reply context can:</p>
+<pre><code class="language-text">jump to original
+</code></pre>
+<p>if useful.</p>
+<hr />
+<h1 id="29-cancel-reply"><a class="header" href="#29-cancel-reply">29. Cancel Reply</a></h1>
+<p>Clears reply target but preserves typed text.</p>
+<hr />
+<h1 id="30-edit-mode"><a class="header" href="#30-edit-mode">30. Edit Mode</a></h1>
+<p>Edit context must be visually distinct:</p>
+<pre><code class="language-text">Editing message
+</code></pre>
+<p>with:</p>
+<pre><code class="language-text">original text loaded
+save action
+cancel
+</code></pre>
+<hr />
+<h1 id="31-cancel-edit"><a class="header" href="#31-cancel-edit">31. Cancel Edit</a></h1>
+<p>Restores previous draft only if architecture explicitly preserved it.</p>
+<p>Recommendation:</p>
+<pre><code class="language-text">editing temporarily replaces composer
+</code></pre>
+<p>and original draft is stashed locally/Rust-side until edit completes/cancels.</p>
+<hr />
+<h1 id="32-edit-save"><a class="header" href="#32-edit-save">32. Edit Save</a></h1>
+<p>Rust validates:</p>
+<pre><code class="language-text">ownership
+time/policy
+message still exists
+content constraints
+</code></pre>
+<hr />
+<h1 id="33-edit-conflict"><a class="header" href="#33-edit-conflict">33. Edit Conflict</a></h1>
+<p>If message changed remotely while editing:</p>
+<pre><code class="language-text">show updated state
+offer reload/overwrite only if supported
+</code></pre>
+<p>Avoid silent overwrite.</p>
+<hr />
+<h1 id="34-attachments-overview"><a class="header" href="#34-attachments-overview">34. Attachments Overview</a></h1>
+<p>Supported categories:</p>
+<pre><code class="language-text">Photos
+Videos
+Documents
+Audio
+Camera capture
+Other files
+</code></pre>
+<hr />
+<h1 id="35-attachment-picker-architecture"><a class="header" href="#35-attachment-picker-architecture">35. Attachment Picker Architecture</a></h1>
+<p>UI requests platform picker.</p>
+<p>Rust receives safe file handles/FDs/paths.</p>
+<hr />
+<h1 id="36-android-attachment-flow"><a class="header" href="#36-android-attachment-flow">36. Android Attachment Flow</a></h1>
+<pre><code class="language-text">Compose
+→ Activity Result API
+→ URI
+→ content metadata
+→ FD/stream handle
+→ Rust file ingestion
+</code></pre>
+<hr />
+<h1 id="37-desktop-attachment-flow"><a class="header" href="#37-desktop-attachment-flow">37. Desktop Attachment Flow</a></h1>
+<pre><code class="language-text">Dioxus
+→ native file dialog / drag-drop
+→ path/handle
+→ Rust file ingestion
+</code></pre>
+<hr />
+<h1 id="38-never-copy-giant-files-through-ui-state"><a class="header" href="#38-never-copy-giant-files-through-ui-state">38. Never Copy Giant Files Through UI State</a></h1>
+<p>Hard rule:</p>
+<pre><code class="language-text">no multi-GB ByteArray in Kotlin
+no giant Vec&lt;u8&gt; in Dioxus component state
+</code></pre>
+<p>Use:</p>
+<pre><code class="language-text">descriptor
+path
+stream
+handle
+</code></pre>
+<hr />
+<h1 id="39-attachment-ingestion"><a class="header" href="#39-attachment-ingestion">39. Attachment Ingestion</a></h1>
+<p>Rust creates:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct ComposerAttachment {
+    pub id: ComposerAttachmentId,
+    pub kind: AttachmentKind,
+    pub display_name: String,
+    pub size: u64,
+    pub preview: Option&lt;AttachmentPreviewRef&gt;,
+    pub state: ComposerAttachmentState,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="40-attachment-states"><a class="header" href="#40-attachment-states">40. Attachment States</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum ComposerAttachmentState {
+    Inspecting,
+    Ready,
+    Preparing,
+    Invalid,
+    Failed,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="41-inspecting"><a class="header" href="#41-inspecting">41. Inspecting</a></h1>
+<p>Rust validates:</p>
+<pre><code class="language-text">type
+size
+readability
+security policy
+</code></pre>
+<hr />
+<h1 id="42-ready"><a class="header" href="#42-ready">42. Ready</a></h1>
+<p>Can be sent.</p>
+<hr />
+<h1 id="43-preparing"><a class="header" href="#43-preparing">43. Preparing</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">thumbnail
+video metadata
+image processing
+encryption preparation
+</code></pre>
+<hr />
+<h1 id="44-invalid"><a class="header" href="#44-invalid">44. Invalid</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">too large
+unsupported
+not readable
+</code></pre>
+<hr />
+<h1 id="45-attachment-preview-strip"><a class="header" href="#45-attachment-preview-strip">45. Attachment Preview Strip</a></h1>
+<p>Display above composer.</p>
+<p>Each item:</p>
+<pre><code class="language-text">thumbnail/icon
+name
+size/type
+remove
+state
+</code></pre>
+<hr />
+<h1 id="46-reordering-attachments"><a class="header" href="#46-reordering-attachments">46. Reordering Attachments</a></h1>
+<p>Useful if multi-attachment message preserves ordering.</p>
+<p>Support drag on desktop.</p>
+<p>Android can support long-press reorder later.</p>
+<hr />
+<h1 id="47-initial-recommendation"><a class="header" href="#47-initial-recommendation">47. Initial Recommendation</a></h1>
+<p>Support attachment ordering in data model.</p>
+<p>Manual reordering optional for v1.</p>
+<hr />
+<h1 id="48-remove-attachment"><a class="header" href="#48-remove-attachment">48. Remove Attachment</a></h1>
+<p>Removes draft reference.</p>
+<p>If Rust staged temporary file:</p>
+<pre><code class="language-text">release staging resource
+</code></pre>
+<p>when no longer referenced.</p>
+<hr />
+<h1 id="49-attachment-count-limit"><a class="header" href="#49-attachment-count-limit">49. Attachment Count Limit</a></h1>
+<p>Rust enforces.</p>
+<p>UI shows clear limit.</p>
+<hr />
+<h1 id="50-duplicate-attachment"><a class="header" href="#50-duplicate-attachment">50. Duplicate Attachment</a></h1>
+<p>Policy:</p>
+<pre><code class="language-text">allow duplicates
+or
+coalesce identical selection
+</code></pre>
+<p>Recommendation:</p>
+<pre><code class="language-text">allow unless exact same handle selected accidentally in one picker batch
+</code></pre>
+<hr />
+<h1 id="51-clipboard-paste"><a class="header" href="#51-clipboard-paste">51. Clipboard Paste</a></h1>
+<p>Desktop:</p>
+<pre><code class="language-text">paste text
+image
+file path where available
+</code></pre>
+<p>Android:</p>
+<pre><code class="language-text">paste text
+image/content URI if platform provides
+</code></pre>
+<hr />
+<h1 id="52-paste-image"><a class="header" href="#52-paste-image">52. Paste Image</a></h1>
+<p>Create attachment draft.</p>
+<p>Do not encode large image into text field.</p>
+<hr />
+<h1 id="53-drag-and-drop"><a class="header" href="#53-drag-and-drop">53. Drag and Drop</a></h1>
+<p>Desktop drop over conversation/composer:</p>
+<pre><code class="language-text">visual overlay
+drop
+ingest
+preview
+</code></pre>
+<hr />
+<h1 id="54-drag-over-state"><a class="header" href="#54-drag-over-state">54. Drag Over State</a></h1>
+<p>Presentation-only.</p>
+<hr />
+<h1 id="55-invalid-drop"><a class="header" href="#55-invalid-drop">55. Invalid Drop</a></h1>
+<p>Show:</p>
+<pre><code class="language-text">Unsupported file
+File too large
+</code></pre>
+<p>inline/snackbar.</p>
+<hr />
+<h1 id="56-share-into-app"><a class="header" href="#56-share-into-app">56. Share Into App</a></h1>
+<p>Android incoming <code>ACTION_SEND</code> / <code>ACTION_SEND_MULTIPLE</code>:</p>
+<pre><code class="language-text">external app
+→ Kotlin intent
+→ safe content handles
+→ choose conversation
+→ create composer draft
+</code></pre>
+<hr />
+<h1 id="57-share-text"><a class="header" href="#57-share-text">57. Share Text</a></h1>
+<p>Populate composer text.</p>
+<hr />
+<h1 id="58-share-files"><a class="header" href="#58-share-files">58. Share Files</a></h1>
+<p>Populate attachment draft.</p>
+<hr />
+<h1 id="59-share--existing-draft"><a class="header" href="#59-share--existing-draft">59. Share + Existing Draft</a></h1>
+<p>Conflict policy required.</p>
+<p>Recommendation:</p>
+<pre><code class="language-text">ask:
+Replace draft / Add to draft / Cancel
+</code></pre>
+<p>if existing draft non-empty.</p>
+<hr />
+<h1 id="60-camera-capture"><a class="header" href="#60-camera-capture">60. Camera Capture</a></h1>
+<p>Android:</p>
+<pre><code class="language-text">camera permission
+capture flow
+result handle
+Rust ingestion
+</code></pre>
+<hr />
+<h1 id="61-desktop-camera-capture"><a class="header" href="#61-desktop-camera-capture">61. Desktop Camera Capture</a></h1>
+<p>Optional.</p>
+<p>Not required if desktop product initially uses file picker only.</p>
+<hr />
+<h1 id="62-photo-capture"><a class="header" href="#62-photo-capture">62. Photo Capture</a></h1>
+<p>Use platform-native capture or camera module.</p>
+<p>Avoid duplicating full camera stack in composer.</p>
+<hr />
+<h1 id="63-video-capture"><a class="header" href="#63-video-capture">63. Video Capture</a></h1>
+<p>Likewise.</p>
+<p>May need duration/file-size limit.</p>
+<hr />
+<h1 id="64-image-preprocessing"><a class="header" href="#64-image-preprocessing">64. Image Preprocessing</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">orientation normalization
+thumbnail generation
+optional downscale
+</code></pre>
+<p>Rust-first where practical.</p>
+<hr />
+<h1 id="65-original-vs-compressed-image"><a class="header" href="#65-original-vs-compressed-image">65. Original vs Compressed Image</a></h1>
+<p>User may choose:</p>
+<pre><code class="language-text">Original quality
+Optimized
+</code></pre>
+<p>later.</p>
+<hr />
+<h1 id="66-video-compression"><a class="header" href="#66-video-compression">66. Video Compression</a></h1>
+<p>Do not silently recompress large video in v1 unless product policy explicitly says.</p>
+<hr />
+<h1 id="67-attachment-security"><a class="header" href="#67-attachment-security">67. Attachment Security</a></h1>
+<p>Rust must inspect:</p>
+<pre><code class="language-text">path safety
+readability
+size
+type
+</code></pre>
+<p>before accepting.</p>
+<hr />
+<h1 id="68-filename-display"><a class="header" href="#68-filename-display">68. Filename Display</a></h1>
+<p>Use safe display name.</p>
+<p>Never trust filename as path.</p>
+<hr />
+<h1 id="69-mime"><a class="header" href="#69-mime">69. MIME</a></h1>
+<p>Treat MIME as hint, not sole truth.</p>
+<hr />
+<h1 id="70-voice-notes"><a class="header" href="#70-voice-notes">70. Voice Notes</a></h1>
+<p>Voice-note composition is distinct from live calls.</p>
+<hr />
+<h1 id="71-voice-note-states"><a class="header" href="#71-voice-note-states">71. Voice Note States</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum VoiceComposerState {
+    Idle,
+    RequestingPermission,
+    Recording,
+    Paused,
+    Preview,
+    Preparing,
+    Failed,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="72-voice-note-flow"><a class="header" href="#72-voice-note-flow">72. Voice Note Flow</a></h1>
+<pre><code class="language-text">press/tap record
+→ permission if needed
+→ recording
+→ stop
+→ preview
+→ send or discard
+</code></pre>
+<hr />
+<h1 id="73-android-microphone-permission"><a class="header" href="#73-android-microphone-permission">73. Android Microphone Permission</a></h1>
+<p>Requested contextually when recording begins.</p>
+<hr />
+<h1 id="74-desktop-microphone-permission"><a class="header" href="#74-desktop-microphone-permission">74. Desktop Microphone Permission</a></h1>
+<p>Platform-specific if required.</p>
+<hr />
+<h1 id="75-hold-to-record-vs-tap-to-record"><a class="header" href="#75-hold-to-record-vs-tap-to-record">75. Hold-to-Record vs Tap-to-Record</a></h1>
+<p>Android can support familiar hold-to-record interaction.</p>
+<p>Desktop should prefer explicit click record/stop.</p>
+<hr />
+<h1 id="76-android-hold-to-record"><a class="header" href="#76-android-hold-to-record">76. Android Hold-to-Record</a></h1>
+<p>Possible gestures:</p>
+<pre><code class="language-text">hold → record
+slide left → cancel
+slide up → lock recording
+</code></pre>
+<p>Only if interaction is thoroughly tested/accessibility-friendly.</p>
+<hr />
+<h1 id="77-accessibility-alternative"><a class="header" href="#77-accessibility-alternative">77. Accessibility Alternative</a></h1>
+<p>Always provide explicit:</p>
+<pre><code class="language-text">Start recording
+Stop
+Cancel
+</code></pre>
+<p>actions.</p>
+<p>Do not require gesture-only recording.</p>
+<hr />
+<h1 id="78-recording-timer"><a class="header" href="#78-recording-timer">78. Recording Timer</a></h1>
+<p>Show duration.</p>
+<hr />
+<h1 id="79-waveform"><a class="header" href="#79-waveform">79. Waveform</a></h1>
+<p>Optional visual aid.</p>
+<p>Not correctness requirement.</p>
+<hr />
+<h1 id="80-recording-buffer"><a class="header" href="#80-recording-buffer">80. Recording Buffer</a></h1>
+<p>Audio path should not store raw PCM in Compose state.</p>
+<p>Rust/native audio subsystem owns media buffers.</p>
+<hr />
+<h1 id="81-voice-recording-format"><a class="header" href="#81-voice-recording-format">81. Voice Recording Format</a></h1>
+<p>Use product-selected encoded format from Rust media pipeline.</p>
+<p>UI only sees:</p>
+<pre><code class="language-text">duration
+waveform summary
+state
+temporary clip ID
+</code></pre>
+<hr />
+<h1 id="82-pause-recording"><a class="header" href="#82-pause-recording">82. Pause Recording</a></h1>
+<p>Optional.</p>
+<p>Useful for longer voice notes.</p>
+<p>Not required for v1.</p>
+<hr />
+<h1 id="83-voice-preview"><a class="header" href="#83-voice-preview">83. Voice Preview</a></h1>
+<p>After recording:</p>
+<pre><code class="language-text">play
+scrub
+delete
+send
+</code></pre>
+<hr />
+<h1 id="84-voice-playback"><a class="header" href="#84-voice-playback">84. Voice Playback</a></h1>
+<p>Use media/audio service.</p>
+<p>No giant audio data in UI state.</p>
+<hr />
+<h1 id="85-voice-send"><a class="header" href="#85-voice-send">85. Voice Send</a></h1>
+<p>Rust turns temporary clip into attachment/message content.</p>
+<hr />
+<h1 id="86-voice-draft-persistence"><a class="header" href="#86-voice-draft-persistence">86. Voice Draft Persistence</a></h1>
+<p>Policy options:</p>
+<pre><code class="language-text">persist unfinished voice note
+or
+discard on exit
+</code></pre>
+<p>Recommendation:</p>
+<pre><code class="language-text">persist completed preview clip
+discard active in-progress raw recording on crash
+</code></pre>
+<p>unless robust crash-safe recording exists.</p>
+<hr />
+<h1 id="87-interrupted-recording"><a class="header" href="#87-interrupted-recording">87. Interrupted Recording</a></h1>
+<p>If app backgrounds unexpectedly:</p>
+<pre><code class="language-text">pause/stop safely
+</code></pre>
+<p>according to platform policy.</p>
+<hr />
+<h1 id="88-incoming-call-during-voice-recording"><a class="header" href="#88-incoming-call-during-voice-recording">88. Incoming Call During Voice Recording</a></h1>
+<p>Recommendation:</p>
+<pre><code class="language-text">pause/stop voice recording
+preserve completed portion if possible
+</code></pre>
+<p>call gets priority.</p>
+<hr />
+<h1 id="89-call-while-composer-draft-exists"><a class="header" href="#89-call-while-composer-draft-exists">89. Call While Composer Draft Exists</a></h1>
+<p>Draft remains intact.</p>
+<hr />
+<h1 id="90-send-while-offline"><a class="header" href="#90-send-while-offline">90. Send While Offline</a></h1>
+<p>Rust accepts message into outbox if policy allows.</p>
+<p>UI clears composer only after durable local message creation succeeds.</p>
+<hr />
+<h1 id="91-important-send-rule"><a class="header" href="#91-important-send-rule">91. Important Send Rule</a></h1>
+<p>Do not clear input immediately on button tap before Rust accepts it.</p>
+<p>Correct:</p>
+<pre><code class="language-text">tap Send
+→ Rust creates durable pending message
+→ success
+→ clear draft/composer
+</code></pre>
+<hr />
+<h1 id="92-send-failure-before-durable-commit"><a class="header" href="#92-send-failure-before-durable-commit">92. Send Failure Before Durable Commit</a></h1>
+<p>Composer remains intact.</p>
+<p>Show error.</p>
+<hr />
+<h1 id="93-send-accepted-but-network-offline"><a class="header" href="#93-send-accepted-but-network-offline">93. Send Accepted but Network Offline</a></h1>
+<p>Composer clears.</p>
+<p>Timeline shows:</p>
+<pre><code class="language-text">Queued
+</code></pre>
+<hr />
+<h1 id="94-double-send-protection"><a class="header" href="#94-double-send-protection">94. Double Send Protection</a></h1>
+<p>Disable duplicate send while same submission is being committed, or use <code>CommandId</code>.</p>
+<hr />
+<h1 id="95-compose-recomposition-safety"><a class="header" href="#95-compose-recomposition-safety">95. Compose Recomposition Safety</a></h1>
+<p>Never invoke send from recomposition.</p>
+<p>Only explicit event.</p>
+<hr />
+<h1 id="96-dioxus-re-render-safety"><a class="header" href="#96-dioxus-re-render-safety">96. Dioxus Re-render Safety</a></h1>
+<p>Same.</p>
+<hr />
+<h1 id="97-send-command"><a class="header" href="#97-send-command">97. Send Command</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct SendMessageCommand {
+    pub command_id: CommandId,
+    pub conversation: ConversationId,
+    pub draft_id: Option&lt;DraftId&gt;,
+    pub mode: SendMode,
+    pub text: String,
+    pub attachments: Vec&lt;ComposerAttachmentId&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="98-send-mode"><a class="header" href="#98-send-mode">98. Send Mode</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum SendMode {
+    New,
+    Reply(MessageId),
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Edit is separate command.</p>
+<hr />
+<h1 id="99-sending-attachment-message"><a class="header" href="#99-sending-attachment-message">99. Sending Attachment Message</a></h1>
+<p>Rust determines:</p>
+<pre><code class="language-text">message metadata
+content keys
+outbox
+transfer state
+</code></pre>
+<p>UI does not manually coordinate message + file transfer.</p>
+<hr />
+<h1 id="100-attachment-send-atomicity"><a class="header" href="#100-attachment-send-atomicity">100. Attachment Send Atomicity</a></h1>
+<p>If message references attachment:</p>
+<pre><code class="language-text">message + attachment intent
+</code></pre>
+<p>must be created consistently.</p>
+<hr />
+<h1 id="101-preparation-before-send"><a class="header" href="#101-preparation-before-send">101. Preparation Before Send</a></h1>
+<p>Some attachments may need:</p>
+<pre><code class="language-text">metadata extraction
+thumbnail
+hash
+</code></pre>
+<p>before message can be committed.</p>
+<hr />
+<h1 id="102-large-file-ux"><a class="header" href="#102-large-file-ux">102. Large File UX</a></h1>
+<p>If preparation takes time:</p>
+<pre><code class="language-text">Preparing…
+</code></pre>
+<p>in composer attachment card.</p>
+<hr />
+<h1 id="103-user-can-continue-typing"><a class="header" href="#103-user-can-continue-typing">103. User Can Continue Typing</a></h1>
+<p>Attachment preparation should not freeze text input.</p>
+<hr />
+<h1 id="104-send-during-preparation"><a class="header" href="#104-send-during-preparation">104. Send During Preparation</a></h1>
+<p>Two options:</p>
+<pre><code class="language-text">disable send until ready
+</code></pre>
+<p>or:</p>
+<pre><code class="language-text">allow send and finish preparation in outbox
+</code></pre>
+<p>Recommendation:</p>
+<pre><code class="language-text">allow only if backend can guarantee durable staged attachment
+</code></pre>
+<p>Otherwise disable until safely staged.</p>
+<hr />
+<h1 id="105-attachment-auto-upload"><a class="header" href="#105-attachment-auto-upload">105. Attachment Auto-Upload</a></h1>
+<p>Do not upload before user sends unless product explicitly wants pre-upload.</p>
+<p>For P2P architecture, staging locally before send is enough.</p>
+<hr />
+<h1 id="106-draft-attachment-storage"><a class="header" href="#106-draft-attachment-storage">106. Draft Attachment Storage</a></h1>
+<p>Rust may copy/stage selected content into app-controlled secure storage if original URI/path may disappear.</p>
+<hr />
+<h1 id="107-android-uri-lifetime"><a class="header" href="#107-android-uri-lifetime">107. Android URI Lifetime</a></h1>
+<p>Content URI permissions may not survive process death.</p>
+<p>If draft persistence is desired:</p>
+<pre><code class="language-text">persist URI permission
+or
+copy safely into app-owned draft staging
+</code></pre>
+<p>depending provider/support.</p>
+<hr />
+<h1 id="108-desktop-path-lifetime"><a class="header" href="#108-desktop-path-lifetime">108. Desktop Path Lifetime</a></h1>
+<p>Original path may move/delete.</p>
+<p>For durable draft attachments:</p>
+<pre><code class="language-text">stage/copy or detect missing at send
+</code></pre>
+<hr />
+<h1 id="109-draft-staging-policy"><a class="header" href="#109-draft-staging-policy">109. Draft Staging Policy</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">small/medium attachment → secure app staging
+large attachment → durable source handle/reference when possible
+</code></pre>
+<p>with clear invalidation handling.</p>
+<hr />
+<h1 id="110-missing-draft-attachment"><a class="header" href="#110-missing-draft-attachment">110. Missing Draft Attachment</a></h1>
+<p>On restore:</p>
+<pre><code class="language-text">File is no longer available
+Remove / Re-select
+</code></pre>
+<hr />
+<h1 id="111-draft-storage-quota"><a class="header" href="#111-draft-storage-quota">111. Draft Storage Quota</a></h1>
+<p>Bound staged draft data.</p>
+<hr />
+<h1 id="112-old-draft-cleanup"><a class="header" href="#112-old-draft-cleanup">112. Old Draft Cleanup</a></h1>
+<p>GC abandoned drafts after user-defined/system retention.</p>
+<hr />
+<h1 id="113-draft-cleanup-safety"><a class="header" href="#113-draft-cleanup-safety">113. Draft Cleanup Safety</a></h1>
+<p>Do not delete staged data still referenced by active draft.</p>
+<hr />
+<h1 id="114-conversation-read-only"><a class="header" href="#114-conversation-read-only">114. Conversation Read-Only</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">blocked
+left group
+archived read-only policy
+security issue
+</code></pre>
+<p>Composer becomes disabled with clear reason.</p>
+<hr />
+<h1 id="115-blocked-contact"><a class="header" href="#115-blocked-contact">115. Blocked Contact</a></h1>
+<p>Composer:</p>
+<pre><code class="language-text">You blocked this contact
+Unblock
+</code></pre>
+<hr />
+<h1 id="116-removed-from-group"><a class="header" href="#116-removed-from-group">116. Removed from Group</a></h1>
+<p>Composer:</p>
+<pre><code class="language-text">You can no longer send messages to this group
+</code></pre>
+<hr />
+<h1 id="117-security-hold"><a class="header" href="#117-security-hold">117. Security Hold</a></h1>
+<p>If identity requires review:</p>
+<pre><code class="language-text">sending may be blocked
+Review security
+</code></pre>
+<p>according to Part 28 policy.</p>
+<hr />
+<h1 id="118-permissioned-group"><a class="header" href="#118-permissioned-group">118. Permissioned Group</a></h1>
+<p>If only admins can post:</p>
+<pre><code class="language-text">Only admins can send messages
+</code></pre>
+<hr />
+<h1 id="119-slow-mode"><a class="header" href="#119-slow-mode">119. Slow Mode</a></h1>
+<p>Future group feature.</p>
+<p>Composer displays cooldown.</p>
+<p>Not required initially.</p>
+<hr />
+<h1 id="120-attachment-picker-ux--android"><a class="header" href="#120-attachment-picker-ux--android">120. Attachment Picker UX — Android</a></h1>
+<p>Recommended bottom sheet:</p>
+<pre><code class="language-text">Camera
+Photos
+Video
+Document
+Audio
+Other File
+</code></pre>
+<hr />
+<h1 id="121-attachment-picker-ux--desktop"><a class="header" href="#121-attachment-picker-ux--desktop">121. Attachment Picker UX — Desktop</a></h1>
+<p>Toolbar/menu:</p>
+<pre><code class="language-text">Attach File
+Attach Photo
+</code></pre>
+<p>plus drag/drop and paste.</p>
+<hr />
+<h1 id="122-attachment-button"><a class="header" href="#122-attachment-button">122. Attachment Button</a></h1>
+<p>Should remain easy to reach without cluttering composer.</p>
+<hr />
+<h1 id="123-composer-action-layout--android"><a class="header" href="#123-composer-action-layout--android">123. Composer Action Layout — Android</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">[+] [ Text field................ ] [Voice/Send]
+</code></pre>
+<p>When text/attachments present:</p>
+<pre><code class="language-text">voice button → send
+</code></pre>
+<hr />
+<h1 id="124-composer-action-layout--desktop"><a class="header" href="#124-composer-action-layout--desktop">124. Composer Action Layout — Desktop</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">Attachments / Emoji
+Multiline Text Editor
+Voice optional
+Send
+</code></pre>
+<hr />
+<h1 id="125-emoji-picker"><a class="header" href="#125-emoji-picker">125. Emoji Picker</a></h1>
+<p>Android:</p>
+<pre><code class="language-text">system keyboard emoji is enough
+</code></pre>
+<p>Desktop may provide emoji picker later.</p>
+<p>Not required in v1.</p>
+<hr />
+<h1 id="126-stickergif"><a class="header" href="#126-stickergif">126. Sticker/GIF</a></h1>
+<p>Future extension.</p>
+<p>Do not complicate base composer.</p>
+<hr />
+<h1 id="127-mentions"><a class="header" href="#127-mentions">127. Mentions</a></h1>
+<p>Group composer may support:</p>
+<pre><code class="language-text">@name
+</code></pre>
+<hr />
+<h1 id="128-mention-suggestions"><a class="header" href="#128-mention-suggestions">128. Mention Suggestions</a></h1>
+<p>Triggered by:</p>
+<pre><code class="language-text">@
+</code></pre>
+<p>with group member search.</p>
+<hr />
+<h1 id="129-mention-data"><a class="header" href="#129-mention-data">129. Mention Data</a></h1>
+<p>Rust supplies valid member IDs.</p>
+<p>UI formats suggestions.</p>
+<hr />
+<h1 id="130-mention-token"><a class="header" href="#130-mention-token">130. Mention Token</a></h1>
+<p>Do not encode mention only as plain display name.</p>
+<p>Use logical ID in message content model.</p>
+<hr />
+<h1 id="131-autocomplete"><a class="header" href="#131-autocomplete">131. Autocomplete</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">mentions
+commands
+emoji
+</code></pre>
+<p>Keep modular.</p>
+<hr />
+<h1 id="132-slash-commands"><a class="header" href="#132-slash-commands">132. Slash Commands</a></h1>
+<p>Only if product needs.</p>
+<p>Plugins may add safe commands later.</p>
+<hr />
+<h1 id="133-plugin-composer-extensions"><a class="header" href="#133-plugin-composer-extensions">133. Plugin Composer Extensions</a></h1>
+<p>Part 24 may allow:</p>
+<pre><code class="language-text">attachment provider
+composer action
+structured message form
+</code></pre>
+<p>through safe declarative extension points.</p>
+<hr />
+<h1 id="134-plugin-boundary"><a class="header" href="#134-plugin-boundary">134. Plugin Boundary</a></h1>
+<p>Plugin must not directly manipulate core composer internals.</p>
+<p>Host exposes permissioned API.</p>
+<hr />
+<h1 id="135-structured-messages"><a class="header" href="#135-structured-messages">135. Structured Messages</a></h1>
+<p>Future:</p>
+<pre><code class="language-text">location
+poll
+contact card
+ERP record
+</code></pre>
+<p>Composer extension can produce typed payload.</p>
+<hr />
+<h1 id="136-location-sharing"><a class="header" href="#136-location-sharing">136. Location Sharing</a></h1>
+<p>If added:</p>
+<pre><code class="language-text">explicit permission
+preview
+precision controls
+</code></pre>
+<p>not automatic.</p>
+<hr />
+<h1 id="137-message-scheduling"><a class="header" href="#137-message-scheduling">137. Message Scheduling</a></h1>
+<p>Future feature.</p>
+<p>Would require:</p>
+<pre><code class="language-text">scheduled outbox
+</code></pre>
+<p>and dedicated UX.</p>
+<p>Not part of v1 composer.</p>
+<hr />
+<h1 id="138-disappearing-message-timer"><a class="header" href="#138-disappearing-message-timer">138. Disappearing Message Timer</a></h1>
+<p>Future per-conversation setting.</p>
+<p>Composer may show timer indicator.</p>
+<p>Not necessary now.</p>
+<hr />
+<h1 id="139-attachment-captions"><a class="header" href="#139-attachment-captions">139. Attachment Captions</a></h1>
+<p>Allow optional text caption in same message or per attachment depending product model.</p>
+<hr />
+<h1 id="140-recommendation"><a class="header" href="#140-recommendation">140. Recommendation</a></h1>
+<p>For v1:</p>
+<pre><code class="language-text">one text body + ordered attachments
+</code></pre>
+<p>Simpler and interoperable.</p>
+<hr />
+<h1 id="141-per-attachment-caption"><a class="header" href="#141-per-attachment-caption">141. Per-Attachment Caption</a></h1>
+<p>Can be added later.</p>
+<hr />
+<h1 id="142-file-names"><a class="header" href="#142-file-names">142. File Names</a></h1>
+<p>User may rename attachment display name before send if product supports.</p>
+<p>Not necessary initially.</p>
+<hr />
+<h1 id="143-sensitive-attachment-warning"><a class="header" href="#143-sensitive-attachment-warning">143. Sensitive Attachment Warning</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">executable
+archive
+unknown file
+</code></pre>
+<p>warning.</p>
+<p>Do not over-warn normal documents.</p>
+<hr />
+<h1 id="144-metadata-stripping"><a class="header" href="#144-metadata-stripping">144. Metadata Stripping</a></h1>
+<p>Optional privacy feature for photos:</p>
+<pre><code class="language-text">remove EXIF location
+</code></pre>
+<p>before send.</p>
+<hr />
+<h1 id="145-default-recommendation"><a class="header" href="#145-default-recommendation">145. Default Recommendation</a></h1>
+<p>Strip sensitive location metadata from images by default if technically safe, or offer setting.</p>
+<p>Rust media/file preparation owns it.</p>
+<hr />
+<h1 id="146-original-metadata-option"><a class="header" href="#146-original-metadata-option">146. Original Metadata Option</a></h1>
+<p>Advanced user can preserve original if desired.</p>
+<hr />
+<h1 id="147-clipboard-privacy"><a class="header" href="#147-clipboard-privacy">147. Clipboard Privacy</a></h1>
+<p>Do not automatically read clipboard.</p>
+<p>Only read on explicit paste.</p>
+<hr />
+<h1 id="148-android-clipboard-toast"><a class="header" href="#148-android-clipboard-toast">148. Android Clipboard Toast</a></h1>
+<p>Respect platform behavior.</p>
+<hr />
+<h1 id="149-voice-note-privacy"><a class="header" href="#149-voice-note-privacy">149. Voice Note Privacy</a></h1>
+<p>Do not upload recording during capture unless user sends.</p>
+<hr />
+<h1 id="150-draft-privacy"><a class="header" href="#150-draft-privacy">150. Draft Privacy</a></h1>
+<p>Drafts are sensitive local data.</p>
+<p>Encrypt/protect under same local storage security policy.</p>
+<hr />
+<h1 id="151-draft-notification"><a class="header" href="#151-draft-notification">151. Draft Notification</a></h1>
+<p>Do not show draft text in OS notifications.</p>
+<hr />
+<h1 id="152-draft-search"><a class="header" href="#152-draft-search">152. Draft Search</a></h1>
+<p>Drafts may appear in inbox preview.</p>
+<p>Do not include in global message search unless product explicitly wants.</p>
+<hr />
+<h1 id="153-typing-indicator-trigger"><a class="header" href="#153-typing-indicator-trigger">153. Typing Indicator Trigger</a></h1>
+<p>Typing service can observe composer activity.</p>
+<hr />
+<h1 id="154-typing-start"><a class="header" href="#154-typing-start">154. Typing Start</a></h1>
+<p>When user meaningfully begins input.</p>
+<hr />
+<h1 id="155-typing-stop"><a class="header" href="#155-typing-stop">155. Typing Stop</a></h1>
+<p>On:</p>
+<pre><code class="language-text">send
+clear
+focus loss
+idle
+conversation leave
+</code></pre>
+<hr />
+<h1 id="156-attachment-only-typing"><a class="header" href="#156-attachment-only-typing">156. Attachment-Only Typing</a></h1>
+<p>Do not send "typing" merely because attachment picker is open.</p>
+<hr />
+<h1 id="157-voice-recording-indicator"><a class="header" href="#157-voice-recording-indicator">157. Voice Recording Indicator</a></h1>
+<p>Part 30 may send recording indicator while active.</p>
+<hr />
+<h1 id="158-privacy-setting"><a class="header" href="#158-privacy-setting">158. Privacy Setting</a></h1>
+<p>If user disables typing/recording indicators:</p>
+<pre><code class="language-text">composer still works
+</code></pre>
+<p>without sending ephemeral hints.</p>
+<hr />
+<h1 id="159-focus-behavior--desktop"><a class="header" href="#159-focus-behavior--desktop">159. Focus Behavior — Desktop</a></h1>
+<p>Open conversation:</p>
+<pre><code class="language-text">focus timeline or composer based on navigation intent
+</code></pre>
+<p>New-conversation command:</p>
+<pre><code class="language-text">focus composer
+</code></pre>
+<hr />
+<h1 id="160-focus-behavior--android"><a class="header" href="#160-focus-behavior--android">160. Focus Behavior — Android</a></h1>
+<p>Opening conversation should not automatically open keyboard unless user entered via compose intent.</p>
+<hr />
+<h1 id="161-restore-focus"><a class="header" href="#161-restore-focus">161. Restore Focus</a></h1>
+<p>After closing attachment sheet:</p>
+<pre><code class="language-text">return to composer
+</code></pre>
+<p>if appropriate.</p>
+<hr />
+<h1 id="162-sending-focus"><a class="header" href="#162-sending-focus">162. Sending Focus</a></h1>
+<p>After send:</p>
+<pre><code class="language-text">keep composer focused
+</code></pre>
+<p>for rapid desktop chatting.</p>
+<p>Android may keep keyboard open.</p>
+<hr />
+<h1 id="163-accessibility--composer"><a class="header" href="#163-accessibility--composer">163. Accessibility — Composer</a></h1>
+<p>Text field label:</p>
+<pre><code class="language-text">Message
+</code></pre>
+<p>Reply context announced.</p>
+<p>Attachment controls have meaningful labels.</p>
+<hr />
+<h1 id="164-voice-note-accessibility"><a class="header" href="#164-voice-note-accessibility">164. Voice Note Accessibility</a></h1>
+<p>Explicit controls:</p>
+<pre><code class="language-text">Start recording
+Stop recording
+Play recording
+Delete recording
+Send recording
+</code></pre>
+<hr />
+<h1 id="165-attachment-preview-accessibility"><a class="header" href="#165-attachment-preview-accessibility">165. Attachment Preview Accessibility</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">PDF attachment timetable.pdf, 2.4 MB, remove
+</code></pre>
+<hr />
+<h1 id="166-send-button-accessibility"><a class="header" href="#166-send-button-accessibility">166. Send Button Accessibility</a></h1>
+<p>Announce disabled reason if useful:</p>
+<pre><code class="language-text">Send unavailable, attachment still preparing
+</code></pre>
+<hr />
+<h1 id="167-large-font"><a class="header" href="#167-large-font">167. Large Font</a></h1>
+<p>Composer must expand without covering send/attachment controls.</p>
+<hr />
+<h1 id="168-rtl"><a class="header" href="#168-rtl">168. RTL</a></h1>
+<p>Text field respects input direction.</p>
+<p>Attachment controls and reply strips mirror correctly.</p>
+<hr />
+<h1 id="169-reduced-motion"><a class="header" href="#169-reduced-motion">169. Reduced Motion</a></h1>
+<p>Attachment add/remove and voice recording animations should not depend on motion.</p>
+<hr />
+<h1 id="170-color-independence"><a class="header" href="#170-color-independence">170. Color Independence</a></h1>
+<p>Recording state should use:</p>
+<pre><code class="language-text">icon
+label
+timer
+</code></pre>
+<p>not red color alone.</p>
+<hr />
+<h1 id="171-desktop-keyboard-shortcuts"><a class="header" href="#171-desktop-keyboard-shortcuts">171. Desktop Keyboard Shortcuts</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">Ctrl/Cmd+Enter → Send
+Esc → Cancel reply/edit
+Ctrl/Cmd+Shift+A → Attach file
+</code></pre>
+<hr />
+<h1 id="172-android-hardware-keyboard"><a class="header" href="#172-android-hardware-keyboard">172. Android Hardware Keyboard</a></h1>
+<p>Support:</p>
+<pre><code class="language-text">Ctrl+Enter → Send
+Esc/Back → dismiss context
+</code></pre>
+<p>where feasible.</p>
+<hr />
+<h1 id="173-desktop-paste-files"><a class="header" href="#173-desktop-paste-files">173. Desktop Paste Files</a></h1>
+<p>OS clipboard file list can be converted into attachment draft.</p>
+<hr />
+<h1 id="174-desktop-screenshot-paste"><a class="header" href="#174-desktop-screenshot-paste">174. Desktop Screenshot Paste</a></h1>
+<p>Image clipboard becomes attachment.</p>
+<hr />
+<h1 id="175-android-image-paste"><a class="header" href="#175-android-image-paste">175. Android Image Paste</a></h1>
+<p>Support where IME/content APIs provide rich content.</p>
+<hr />
+<h1 id="176-rich-content-from-ime"><a class="header" href="#176-rich-content-from-ime">176. Rich Content from IME</a></h1>
+<p>Android keyboards may insert:</p>
+<pre><code class="language-text">GIF
+image
+</code></pre>
+<p>through content APIs.</p>
+<p>Map to attachment ingestion if supported.</p>
+<hr />
+<h1 id="177-validation-ui"><a class="header" href="#177-validation-ui">177. Validation UI</a></h1>
+<p>Prefer inline near affected item.</p>
+<p>Examples:</p>
+<pre><code class="language-text">File exceeds 2 GB limit
+Message is too long
+</code></pre>
+<hr />
+<h1 id="178-global-composer-error"><a class="header" href="#178-global-composer-error">178. Global Composer Error</a></h1>
+<p>Use above composer for:</p>
+<pre><code class="language-text">Conversation no longer writable
+</code></pre>
+<hr />
+<h1 id="179-snackbar"><a class="header" href="#179-snackbar">179. Snackbar</a></h1>
+<p>Good for:</p>
+<pre><code class="language-text">Attachment removed
+Draft restored
+</code></pre>
+<p>only if useful.</p>
+<hr />
+<h1 id="180-no-modal-for-ordinary-validation"><a class="header" href="#180-no-modal-for-ordinary-validation">180. No Modal for Ordinary Validation</a></h1>
+<p>Do not interrupt with dialog for simple file-size error.</p>
+<hr />
+<h1 id="181-send-in-progress"><a class="header" href="#181-send-in-progress">181. Send In Progress</a></h1>
+<p>Short local commit should be near-instant.</p>
+<p>Do not show blocking spinner unless unusual.</p>
+<hr />
+<h1 id="182-large-attachment-preparation"><a class="header" href="#182-large-attachment-preparation">182. Large Attachment Preparation</a></h1>
+<p>Show progress on attachment tile.</p>
+<hr />
+<h1 id="183-attachment-hashing"><a class="header" href="#183-attachment-hashing">183. Attachment Hashing</a></h1>
+<p>If backend hashes large file:</p>
+<pre><code class="language-text">Preparing 42%
+</code></pre>
+<p>optional.</p>
+<hr />
+<h1 id="184-user-cancel-preparation"><a class="header" href="#184-user-cancel-preparation">184. User Cancel Preparation</a></h1>
+<p>Allow remove/cancel.</p>
+<hr />
+<h1 id="185-composer-backgrounding"><a class="header" href="#185-composer-backgrounding">185. Composer Backgrounding</a></h1>
+<p>Android:</p>
+<pre><code class="language-text">save draft
+release UI-only state
+</code></pre>
+<hr />
+<h1 id="186-process-death"><a class="header" href="#186-process-death">186. Process Death</a></h1>
+<p>On restart:</p>
+<pre><code class="language-text">restore draft from Rust
+revalidate attachment staging
+</code></pre>
+<hr />
+<h1 id="187-desktop-app-restart"><a class="header" href="#187-desktop-app-restart">187. Desktop App Restart</a></h1>
+<p>Same.</p>
+<hr />
+<h1 id="188-conversation-switch"><a class="header" href="#188-conversation-switch">188. Conversation Switch</a></h1>
+<p>Before leaving:</p>
+<pre><code class="language-text">flush/debounce draft save
+</code></pre>
+<hr />
+<h1 id="189-rapid-conversation-switching"><a class="header" href="#189-rapid-conversation-switching">189. Rapid Conversation Switching</a></h1>
+<p>Drafts remain per conversation.</p>
+<hr />
+<h1 id="190-multiple-windows-desktop"><a class="header" href="#190-multiple-windows-desktop">190. Multiple Windows Desktop</a></h1>
+<p>Two windows open same conversation.</p>
+<p>Potential conflict.</p>
+<p>Recommendation:</p>
+<pre><code class="language-text">shared Rust draft
+</code></pre>
+<p>with one live draft state.</p>
+<hr />
+<h1 id="191-draft-edit-conflict-across-windows"><a class="header" href="#191-draft-edit-conflict-across-windows">191. Draft Edit Conflict Across Windows</a></h1>
+<p>If both edit simultaneously:</p>
+<pre><code class="language-text">last-writer or explicit lock
+</code></pre>
+<p>Recommendation:</p>
+<pre><code class="language-text">single active draft lease per conversation per device
+</code></pre>
+<p>if this becomes real issue.</p>
+<hr />
+<h1 id="192-draft-lease"><a class="header" href="#192-draft-lease">192. Draft Lease</a></h1>
+<p>Could expose:</p>
+<pre><code class="language-text">Draft active in another window
+</code></pre>
+<p>for multi-window safety.</p>
+<hr />
+<h1 id="193-attachment-staging-across-windows"><a class="header" href="#193-attachment-staging-across-windows">193. Attachment Staging Across Windows</a></h1>
+<p>Owned by Rust draft ID, not window.</p>
+<hr />
+<h1 id="194-composer-searchslash-ui-layer"><a class="header" href="#194-composer-searchslash-ui-layer">194. Composer Search/Slash UI Layer</a></h1>
+<p>Autocomplete popup should not block typing.</p>
+<hr />
+<h1 id="195-mention-popup--desktop"><a class="header" href="#195-mention-popup--desktop">195. Mention Popup — Desktop</a></h1>
+<p>Anchored below text cursor if feasible.</p>
+<hr />
+<h1 id="196-mention-popup--android"><a class="header" href="#196-mention-popup--android">196. Mention Popup — Android</a></h1>
+<p>Dropdown/popup above IME/composer.</p>
+<hr />
+<h1 id="197-mention-selection"><a class="header" href="#197-mention-selection">197. Mention Selection</a></h1>
+<p>Inserts structured mention token.</p>
+<hr />
+<h1 id="198-message-formatting-toolbar"><a class="header" href="#198-message-formatting-toolbar">198. Message Formatting Toolbar</a></h1>
+<p>Desktop may optionally expose:</p>
+<pre><code class="language-text">bold
+italic
+code
+</code></pre>
+<p>later.</p>
+<p>Android can rely on markdown syntax or contextual toolbar.</p>
+<hr />
+<h1 id="199-formatting-simplicity"><a class="header" href="#199-formatting-simplicity">199. Formatting Simplicity</a></h1>
+<p>Recommendation v1:</p>
+<pre><code class="language-text">basic plain text
+links
+emoji
+code formatting only if important
+</code></pre>
+<p>Avoid heavy rich-text editor complexity initially.</p>
+<hr />
+<h1 id="200-code-message-ux"><a class="header" href="#200-code-message-ux">200. Code Message UX</a></h1>
+<p>If supporting code blocks:</p>
+<pre><code class="language-text">monospace
+preserve whitespace
+</code></pre>
+<p>Rust validation must not trim meaningful code whitespace.</p>
+<hr />
+<h1 id="201-draft-version"><a class="header" href="#201-draft-version">201. Draft Version</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct DraftRevision(pub u64);
+<span class="boring">}</span></code></pre></pre>
+<p>Useful for stale update prevention.</p>
+<hr />
+<h1 id="202-composer-event"><a class="header" href="#202-composer-event">202. Composer Event</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum ComposerEvent {
+    DraftChanged(ComposerSnapshot),
+    AttachmentUpdated(ComposerAttachment),
+    VoiceStateChanged(VoiceComposerState),
+    WritePermissionChanged(bool),
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="203-composer-commands"><a class="header" href="#203-composer-commands">203. Composer Commands</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum ComposerCommand {
+    SetText(String),
+    SetReply(Option&lt;MessageId&gt;),
+    BeginEdit(MessageId),
+    CancelEdit,
+    AddAttachment(AttachmentSource),
+    RemoveAttachment(ComposerAttachmentId),
+    StartVoiceRecording,
+    StopVoiceRecording,
+    DiscardVoiceRecording,
+    Send,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="204-avoid-per-keystroke-jni-chatter"><a class="header" href="#204-avoid-per-keystroke-jni-chatter">204. Avoid Per-Keystroke JNI Chatter</a></h1>
+<p>Android text updates can be debounced/batched to Rust draft persistence.</p>
+<p>ViewModel may hold immediate local text while periodically syncing draft.</p>
+<hr />
+<h1 id="205-immediate-ui-text"><a class="header" href="#205-immediate-ui-text">205. Immediate UI Text</a></h1>
+<p>Compose must remain responsive even if JNI/storage is briefly busy.</p>
+<hr />
+<h1 id="206-draft-sync-strategy-android"><a class="header" href="#206-draft-sync-strategy-android">206. Draft Sync Strategy Android</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">Compose TextField immediate state
+→ ViewModel
+→ debounce
+→ Rust draft update
+</code></pre>
+<hr />
+<h1 id="207-draft-sync-strategy-desktop"><a class="header" href="#207-draft-sync-strategy-desktop">207. Draft Sync Strategy Desktop</a></h1>
+<p>Dioxus signal immediate.</p>
+<p>Debounced Rust draft persistence.</p>
+<hr />
+<h1 id="208-send-uses-latest-text"><a class="header" href="#208-send-uses-latest-text">208. Send Uses Latest Text</a></h1>
+<p>Before send:</p>
+<pre><code class="language-text">flush latest local text to Rust/send command payload
+</code></pre>
+<p>so debounce cannot lose final characters.</p>
+<hr />
+<h1 id="209-rust-validation-on-send"><a class="header" href="#209-rust-validation-on-send">209. Rust Validation on Send</a></h1>
+<p>Rust checks:</p>
+<pre><code class="language-text">current conversation writable
+text
+attachments
+reply/edit target
+security
+resource limits
+</code></pre>
+<hr />
+<h1 id="210-send-result"><a class="header" href="#210-send-result">210. Send Result</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum SendCommitResult {
+    Committed(MessageView),
+    Rejected(UiError),
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="211-composer-clear"><a class="header" href="#211-composer-clear">211. Composer Clear</a></h1>
+<p>Only after:</p>
+<pre><code class="language-text">Committed
+</code></pre>
+<hr />
+<h1 id="212-draft-deletion"><a class="header" href="#212-draft-deletion">212. Draft Deletion</a></h1>
+<p>Committed send deletes/advances corresponding draft atomically.</p>
+<hr />
+<h1 id="213-reply-clear"><a class="header" href="#213-reply-clear">213. Reply Clear</a></h1>
+<p>Reply target cleared after successful commit.</p>
+<hr />
+<h1 id="214-attachment-ownership-transfer"><a class="header" href="#214-attachment-ownership-transfer">214. Attachment Ownership Transfer</a></h1>
+<p>On send:</p>
+<pre><code class="language-text">draft attachment
+→ message/outbox attachment
+</code></pre>
+<p>atomically.</p>
+<hr />
+<h1 id="215-voice-clip-ownership-transfer"><a class="header" href="#215-voice-clip-ownership-transfer">215. Voice Clip Ownership Transfer</a></h1>
+<p>Same.</p>
+<hr />
+<h1 id="216-edit-commit"><a class="header" href="#216-edit-commit">216. Edit Commit</a></h1>
+<p>Separate:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct EditMessageCommand {
+    pub message: MessageId,
+    pub new_text: String,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Attachments on edits may be disallowed initially for simplicity.</p>
+<hr />
+<h1 id="217-recommended-v1-edit-scope"><a class="header" href="#217-recommended-v1-edit-scope">217. Recommended v1 Edit Scope</a></h1>
+<p>Allow:</p>
+<pre><code class="language-text">text edit only
+</code></pre>
+<p>Do not allow changing attachments initially.</p>
+<hr />
+<h1 id="218-reply--attachments"><a class="header" href="#218-reply--attachments">218. Reply + Attachments</a></h1>
+<p>Allowed.</p>
+<hr />
+<h1 id="219-attachment-only-message"><a class="header" href="#219-attachment-only-message">219. Attachment-Only Message</a></h1>
+<p>Allowed.</p>
+<hr />
+<h1 id="220-empty-caption"><a class="header" href="#220-empty-caption">220. Empty Caption</a></h1>
+<p>Valid if attachment exists.</p>
+<hr />
+<h1 id="221-voice-only-message"><a class="header" href="#221-voice-only-message">221. Voice-Only Message</a></h1>
+<p>Allowed.</p>
+<hr />
+<h1 id="222-voice--text"><a class="header" href="#222-voice--text">222. Voice + Text</a></h1>
+<p>Possible:</p>
+<pre><code class="language-text">voice attachment + caption
+</code></pre>
+<p>if message model supports.</p>
+<p>Recommendation:</p>
+<pre><code class="language-text">support later
+</code></pre>
+<p>unless already easy.</p>
+<hr />
+<h1 id="223-sending-multiple-attachments"><a class="header" href="#223-sending-multiple-attachments">223. Sending Multiple Attachments</a></h1>
+<p>One message with ordered list is recommended.</p>
+<p>Avoid creating N separate messages automatically unless user chooses.</p>
+<hr />
+<h1 id="224-album-layout"><a class="header" href="#224-album-layout">224. Album Layout</a></h1>
+<p>Timeline can render image groups as album.</p>
+<p>Part 05 renderer consumes attachment grouping.</p>
+<hr />
+<h1 id="225-file-attachment-group"><a class="header" href="#225-file-attachment-group">225. File Attachment Group</a></h1>
+<p>Documents can render stacked.</p>
+<hr />
+<h1 id="226-camera-capture-failure"><a class="header" href="#226-camera-capture-failure">226. Camera Capture Failure</a></h1>
+<p>Return to composer intact.</p>
+<hr />
+<h1 id="227-permission-denied"><a class="header" href="#227-permission-denied">227. Permission Denied</a></h1>
+<p>Composer shows contextual explanation.</p>
+<hr />
+<h1 id="228-storage-full"><a class="header" href="#228-storage-full">228. Storage Full</a></h1>
+<p>Cannot stage attachment/draft.</p>
+<p>Show:</p>
+<pre><code class="language-text">Storage is full
+Manage Storage
+</code></pre>
+<hr />
+<h1 id="229-read-only-external-uri"><a class="header" href="#229-read-only-external-uri">229. Read-Only External URI</a></h1>
+<p>If file can be read once but not persist:</p>
+<pre><code class="language-text">copy into staging
+</code></pre>
+<p>before draft can survive process death.</p>
+<hr />
+<h1 id="230-temporary-camera-file"><a class="header" href="#230-temporary-camera-file">230. Temporary Camera File</a></h1>
+<p>Rust/file subsystem takes ownership after capture.</p>
+<hr />
+<h1 id="231-draft-backup"><a class="header" href="#231-draft-backup">231. Draft Backup</a></h1>
+<p>Part 33 may include drafts optionally.</p>
+<p>Recommendation:</p>
+<pre><code class="language-text">user drafts included in full device backup
+</code></pre>
+<p>but not search index.</p>
+<hr />
+<h1 id="232-draft-export"><a class="header" href="#232-draft-export">232. Draft Export</a></h1>
+<p>Not necessary.</p>
+<hr />
+<h1 id="233-draft-encryption"><a class="header" href="#233-draft-encryption">233. Draft Encryption</a></h1>
+<p>Use local app encryption/security policy.</p>
+<hr />
+<h1 id="234-draft-telemetry"><a class="header" href="#234-draft-telemetry">234. Draft Telemetry</a></h1>
+<p>Never send draft text to analytics.</p>
+<hr />
+<h1 id="235-composer-logging"><a class="header" href="#235-composer-logging">235. Composer Logging</a></h1>
+<p>Do not log:</p>
+<pre><code class="language-text">draft text
+attachment filenames if sensitive
+voice content
+</code></pre>
+<hr />
+<h1 id="236-crash-reports"><a class="header" href="#236-crash-reports">236. Crash Reports</a></h1>
+<p>Redact text field state.</p>
+<hr />
+<h1 id="237-performance"><a class="header" href="#237-performance">237. Performance</a></h1>
+<p>Typing latency must remain local and immediate.</p>
+<p>Do not block UI on:</p>
+<pre><code class="language-text">disk
+network
+hashing
+thumbnail generation
+</code></pre>
+<hr />
+<h1 id="238-attachment-preparation-worker"><a class="header" href="#238-attachment-preparation-worker">238. Attachment Preparation Worker</a></h1>
+<p>Background Rust worker.</p>
+<hr />
+<h1 id="239-voice-recording-priority"><a class="header" href="#239-voice-recording-priority">239. Voice Recording Priority</a></h1>
+<p>Realtime audio capture higher priority than:</p>
+<pre><code class="language-text">backup
+semantic indexing
+</code></pre>
+<hr />
+<h1 id="240-draft-autosave-priority"><a class="header" href="#240-draft-autosave-priority">240. Draft Autosave Priority</a></h1>
+<p>Low but prompt.</p>
+<hr />
+<h1 id="241-composer-memory"><a class="header" href="#241-composer-memory">241. Composer Memory</a></h1>
+<p>Avoid holding full attachments in memory.</p>
+<hr />
+<h1 id="242-thumbnail-memory"><a class="header" href="#242-thumbnail-memory">242. Thumbnail Memory</a></h1>
+<p>Bound/cache.</p>
+<hr />
+<h1 id="243-very-large-paste"><a class="header" href="#243-very-large-paste">243. Very Large Paste</a></h1>
+<p>If user pastes huge text:</p>
+<pre><code class="language-text">validate length
+offer file conversion only if product supports
+</code></pre>
+<hr />
+<h1 id="244-long-text"><a class="header" href="#244-long-text">244. Long Text</a></h1>
+<p>Display character count near limit.</p>
+<hr />
+<h1 id="245-mention-count-limit"><a class="header" href="#245-mention-count-limit">245. Mention Count Limit</a></h1>
+<p>Bound mentions if protocol needs.</p>
+<hr />
+<h1 id="246-attachment-abuse"><a class="header" href="#246-attachment-abuse">246. Attachment Abuse</a></h1>
+<p>Unknown conversation/request restrictions may disallow attachment sends until accepted.</p>
+<hr />
+<h1 id="247-message-request-composer"><a class="header" href="#247-message-request-composer">247. Message Request Composer</a></h1>
+<p>If user replying to unknown request:</p>
+<pre><code class="language-text">Accept / Reply
+</code></pre>
+<p>policy must be explicit.</p>
+<hr />
+<h1 id="248-blocked-conversation"><a class="header" href="#248-blocked-conversation">248. Blocked Conversation</a></h1>
+<p>Composer disabled.</p>
+<hr />
+<h1 id="249-archived-conversation"><a class="header" href="#249-archived-conversation">249. Archived Conversation</a></h1>
+<p>Archive should usually remain writable when opened.</p>
+<p>Sending may automatically unarchive.</p>
+<hr />
+<h1 id="250-unarchive-on-send"><a class="header" href="#250-unarchive-on-send">250. Unarchive on Send</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">sending in archived conversation → unarchive
+</code></pre>
+<hr />
+<h1 id="251-group-role-change"><a class="header" href="#251-group-role-change">251. Group Role Change</a></h1>
+<p>If permission changes while typing:</p>
+<pre><code class="language-text">composer disables
+draft preserved
+</code></pre>
+<hr />
+<h1 id="252-security-state-change"><a class="header" href="#252-security-state-change">252. Security State Change</a></h1>
+<p>If contact identity changes:</p>
+<pre><code class="language-text">send may pause
+draft preserved
+Review Security
+</code></pre>
+<hr />
+<h1 id="253-connection-loss-during-composition"><a class="header" href="#253-connection-loss-during-composition">253. Connection Loss During Composition</a></h1>
+<p>No visual disruption beyond subtle offline status.</p>
+<hr />
+<h1 id="254-connection-return"><a class="header" href="#254-connection-return">254. Connection Return</a></h1>
+<p>No composer reset.</p>
+<hr />
+<h1 id="255-duplicate-send-race"><a class="header" href="#255-duplicate-send-race">255. Duplicate Send Race</a></h1>
+<p>Use <code>CommandId</code>.</p>
+<hr />
+<h1 id="256-slow-jni-call"><a class="header" href="#256-slow-jni-call">256. Slow JNI Call</a></h1>
+<p>UI send button may briefly show commit state.</p>
+<p>But avoid spinner if commit fast.</p>
+<hr />
+<h1 id="257-android-back-behavior"><a class="header" href="#257-android-back-behavior">257. Android Back Behavior</a></h1>
+<p>Back while attachment sheet open:</p>
+<pre><code class="language-text">close sheet
+</code></pre>
+<p>Back while voice preview:</p>
+<pre><code class="language-text">stay conversation, optionally discard confirmation if unsaved
+</code></pre>
+<p>Back while composer has draft:</p>
+<pre><code class="language-text">navigate back, draft autosaved
+</code></pre>
+<hr />
+<h1 id="258-desktop-esc-behavior"><a class="header" href="#258-desktop-esc-behavior">258. Desktop Esc Behavior</a></h1>
+<p>Priority:</p>
+<pre><code class="language-text">close popup
+cancel selection
+cancel reply/edit
+then normal navigation
+</code></pre>
+<p>Do not clear ordinary draft on Esc.</p>
+<hr />
+<h1 id="259-attachment-preview-fullscreen"><a class="header" href="#259-attachment-preview-fullscreen">259. Attachment Preview Fullscreen</a></h1>
+<p>Tap attachment draft preview:</p>
+<pre><code class="language-text">open local preview
+</code></pre>
+<p>before send.</p>
+<hr />
+<h1 id="260-remove-from-preview"><a class="header" href="#260-remove-from-preview">260. Remove from Preview</a></h1>
+<p>Available.</p>
+<hr />
+<h1 id="261-image-cropedit"><a class="header" href="#261-image-cropedit">261. Image Crop/Edit</a></h1>
+<p>Future.</p>
+<p>Not required in v1.</p>
+<hr />
+<h1 id="262-video-trim"><a class="header" href="#262-video-trim">262. Video Trim</a></h1>
+<p>Future.</p>
+<p>Not required.</p>
+<hr />
+<h1 id="263-voice-noise-processing"><a class="header" href="#263-voice-noise-processing">263. Voice Noise Processing</a></h1>
+<p>Part 26 DSP may apply recording profile if desired.</p>
+<hr />
+<h1 id="264-voice-recording-quality"><a class="header" href="#264-voice-recording-quality">264. Voice Recording Quality</a></h1>
+<p>Product setting:</p>
+<pre><code class="language-text">voice optimized
+</code></pre>
+<p>not user codec complexity.</p>
+<hr />
+<h1 id="265-audio-focus"><a class="header" href="#265-audio-focus">265. Audio Focus</a></h1>
+<p>Voice recording must integrate with:</p>
+<pre><code class="language-text">media playback
+calls
+notifications
+</code></pre>
+<p>through Android/platform audio layer.</p>
+<hr />
+<h1 id="266-recording-while-music-playing"><a class="header" href="#266-recording-while-music-playing">266. Recording While Music Playing</a></h1>
+<p>Policy:</p>
+<pre><code class="language-text">request audio focus
+duck/pause other app according to Android behavior
+</code></pre>
+<hr />
+<h1 id="267-desktop-recording-device"><a class="header" href="#267-desktop-recording-device">267. Desktop Recording Device</a></h1>
+<p>Use current/default mic.</p>
+<p>Advanced input selection in Calls &amp; Media settings.</p>
+<hr />
+<h1 id="268-recorder-failure"><a class="header" href="#268-recorder-failure">268. Recorder Failure</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">mic unavailable
+permission denied
+device disconnected
+</code></pre>
+<p>Show inline.</p>
+<hr />
+<h1 id="269-attachment-mime-preview-mapping"><a class="header" href="#269-attachment-mime-preview-mapping">269. Attachment MIME Preview Mapping</a></h1>
+<p>UI gets semantic:</p>
+<pre><code class="language-text">Image
+Video
+PDF
+Archive
+Document
+Audio
+Unknown
+</code></pre>
+<p>not raw MIME string only.</p>
+<hr />
+<h1 id="270-international-filenames"><a class="header" href="#270-international-filenames">270. International Filenames</a></h1>
+<p>Support Unicode safely.</p>
+<hr />
+<h1 id="271-truncation"><a class="header" href="#271-truncation">271. Truncation</a></h1>
+<p>Truncate display name visually.</p>
+<p>Full filename in tooltip/details.</p>
+<hr />
+<h1 id="272-attachment-sorting"><a class="header" href="#272-attachment-sorting">272. Attachment Sorting</a></h1>
+<p>Preserve user-selected order.</p>
+<hr />
+<h1 id="273-draft-timestamp"><a class="header" href="#273-draft-timestamp">273. Draft Timestamp</a></h1>
+<p>Used for inbox preview and cleanup.</p>
+<hr />
+<h1 id="274-draft-restore-banner"><a class="header" href="#274-draft-restore-banner">274. Draft Restore Banner</a></h1>
+<p>Usually unnecessary.</p>
+<p>Simply restore content.</p>
+<p>Optional subtle:</p>
+<pre><code class="language-text">Draft restored
+</code></pre>
+<p>after crash if helpful.</p>
+<hr />
+<h1 id="275-draft-corruption"><a class="header" href="#275-draft-corruption">275. Draft Corruption</a></h1>
+<p>If draft cannot load:</p>
+<pre><code class="language-text">show recovery message
+</code></pre>
+<p>without affecting conversation history.</p>
+<hr />
+<h1 id="276-stale-reply-target"><a class="header" href="#276-stale-reply-target">276. Stale Reply Target</a></h1>
+<p>If reply target deleted:</p>
+<pre><code class="language-text">reply context says Original unavailable
+</code></pre>
+<p>user may still send reply or cancel.</p>
+<hr />
+<h1 id="277-stale-edit-target"><a class="header" href="#277-stale-edit-target">277. Stale Edit Target</a></h1>
+<p>If edit target deleted:</p>
+<pre><code class="language-text">exit edit mode
+preserve typed replacement as draft if possible
+</code></pre>
+<hr />
+<h1 id="278-attachment-revalidation-on-restore"><a class="header" href="#278-attachment-revalidation-on-restore">278. Attachment Revalidation on Restore</a></h1>
+<p>Check:</p>
+<pre><code class="language-text">staged file exists
+permissions still valid
+size/type
+</code></pre>
+<hr />
+<h1 id="279-sendability-projection"><a class="header" href="#279-sendability-projection">279. Sendability Projection</a></h1>
+<p>Rust can expose:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum ComposerSendability {
+    Ready,
+    Empty,
+    Preparing,
+    ReadOnly,
+    Invalid,
+    SecurityBlocked,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="280-ui-presentation"><a class="header" href="#280-ui-presentation">280. UI Presentation</a></h1>
+<p>Map to:</p>
+<pre><code class="language-text">enabled send button
+disabled reason
+banner
+inline warning
+</code></pre>
+<hr />
+<h1 id="281-android-viewmodel"><a class="header" href="#281-android-viewmodel">281. Android ViewModel</a></h1>
+<p>Owns:</p>
+<pre><code class="language-text">immediate text
+focus
+picker effects
+permission effects
+temporary reorder UI
+</code></pre>
+<p>Rust owns durable draft and attachment preparation.</p>
+<hr />
+<h1 id="282-dioxus-presenter"><a class="header" href="#282-dioxus-presenter">282. Dioxus Presenter</a></h1>
+<p>Owns:</p>
+<pre><code class="language-text">input signal
+focus
+drag hover
+popup state
+</code></pre>
+<p>Rust owns durable draft.</p>
+<hr />
+<h1 id="283-shared-presentation-api"><a class="header" href="#283-shared-presentation-api">283. Shared Presentation API</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait ComposerPresentation {
+    async fn snapshot(
+        &amp;self,
+        conversation: ConversationId,
+    ) -&gt; Result&lt;ComposerSnapshot, UiError&gt;;
+
+    async fn save_draft(
+        &amp;self,
+        update: DraftUpdate,
+    ) -&gt; Result&lt;DraftRevision, UiError&gt;;
+
+    async fn add_attachment(
+        &amp;self,
+        source: AttachmentSource,
+    ) -&gt; Result&lt;ComposerAttachment, UiError&gt;;
+
+    async fn remove_attachment(
+        &amp;self,
+        id: ComposerAttachmentId,
+    ) -&gt; Result&lt;(), UiError&gt;;
+
+    async fn send(
+        &amp;self,
+        command: SendMessageCommand,
+    ) -&gt; Result&lt;SendCommitResult, UiError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="284-voice-api"><a class="header" href="#284-voice-api">284. Voice API</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait VoiceComposerService {
+    async fn start(&amp;self, conversation: ConversationId) -&gt; Result&lt;(), UiError&gt;;
+    async fn stop(&amp;self) -&gt; Result&lt;VoiceDraft, UiError&gt;;
+    async fn discard(&amp;self) -&gt; Result&lt;(), UiError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Platform adapter handles permission/audio device integration.</p>
+<hr />
+<h1 id="285-draft-update"><a class="header" href="#285-draft-update">285. Draft Update</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct DraftUpdate {
+    pub draft: DraftId,
+    pub expected_revision: DraftRevision,
+    pub text: String,
+    pub mode: ComposerMode,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="286-revision-protection"><a class="header" href="#286-revision-protection">286. Revision Protection</a></h1>
+<p>Prevents stale delayed autosave overwriting newer draft.</p>
+<hr />
+<h1 id="287-android-debounce-race"><a class="header" href="#287-android-debounce-race">287. Android Debounce Race</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">type A
+type B
+send
+old autosave A arrives later
+</code></pre>
+<p>Revision/flush prevents old draft resurrection.</p>
+<hr />
+<h1 id="288-desktop-multi-window-race"><a class="header" href="#288-desktop-multi-window-race">288. Desktop Multi-Window Race</a></h1>
+<p>Same protection.</p>
+<hr />
+<h1 id="289-composer-test-matrix"><a class="header" href="#289-composer-test-matrix">289. Composer Test Matrix</a></h1>
+<p>Required states:</p>
+<pre><code class="language-text">empty
+text
+multiline
+reply
+edit
+attachment
+multiple attachments
+preparing
+invalid attachment
+voice recording
+voice preview
+offline
+read-only
+security blocked
+restored draft
+</code></pre>
+<hr />
+<h1 id="290-android-tests"><a class="header" href="#290-android-tests">290. Android Tests</a></h1>
+<p>Verify:</p>
+<pre><code class="language-text">IME open/close
+permission request
+file picker
+share intent
+process death
+rotation
+large font
+TalkBack
+RTL
+</code></pre>
+<hr />
+<h1 id="291-desktop-tests"><a class="header" href="#291-desktop-tests">291. Desktop Tests</a></h1>
+<p>Verify:</p>
+<pre><code class="language-text">drag/drop
+paste image
+keyboard send
+Esc behavior
+multi-window draft consistency
+file dialog
+</code></pre>
+<hr />
+<h1 id="292-draft-tests"><a class="header" href="#292-draft-tests">292. Draft Tests</a></h1>
+<p>Scenario:</p>
+<pre><code class="language-text">type text
+kill app
+restart
+</code></pre>
+<p>Expected:</p>
+<pre><code class="language-text">draft restored
+</code></pre>
+<hr />
+<h1 id="293-send-commit-test"><a class="header" href="#293-send-commit-test">293. Send Commit Test</a></h1>
+<p>If Rust commit fails:</p>
+<pre><code class="language-text">draft remains
+</code></pre>
+<hr />
+<h1 id="294-offline-send-test"><a class="header" href="#294-offline-send-test">294. Offline Send Test</a></h1>
+<p>If commit succeeds offline:</p>
+<pre><code class="language-text">draft clears
+timeline shows Queued
+</code></pre>
+<hr />
+<h1 id="295-attachment-restore-test"><a class="header" href="#295-attachment-restore-test">295. Attachment Restore Test</a></h1>
+<p>Draft references missing file.</p>
+<p>UI shows reselect/remove.</p>
+<hr />
+<h1 id="296-voice-interrupt-test"><a class="header" href="#296-voice-interrupt-test">296. Voice Interrupt Test</a></h1>
+<p>Incoming call interrupts voice recording safely.</p>
+<hr />
+<h1 id="297-permission-denied-test"><a class="header" href="#297-permission-denied-test">297. Permission Denied Test</a></h1>
+<p>Mic/camera denied without losing draft.</p>
+<hr />
+<h1 id="298-draft-revision-test"><a class="header" href="#298-draft-revision-test">298. Draft Revision Test</a></h1>
+<p>Stale autosave cannot overwrite newer draft.</p>
+<hr />
+<h1 id="299-large-file-test"><a class="header" href="#299-large-file-test">299. Large File Test</a></h1>
+<p>No giant memory copy.</p>
+<p>Preparation stays responsive.</p>
+<hr />
+<h1 id="300-multiple-attachment-test"><a class="header" href="#300-multiple-attachment-test">300. Multiple Attachment Test</a></h1>
+<p>Order preserved.</p>
+<p>Remove one without affecting others.</p>
+<hr />
+<h1 id="301-replydelete-race"><a class="header" href="#301-replydelete-race">301. Reply/Delete Race</a></h1>
+<p>Target deleted while composing reply.</p>
+<p>No crash.</p>
+<hr />
+<h1 id="302-editdelete-race"><a class="header" href="#302-editdelete-race">302. Edit/Delete Race</a></h1>
+<p>Target deleted while editing.</p>
+<p>Edit exits safely.</p>
+<hr />
+<h1 id="303-security-change-test"><a class="header" href="#303-security-change-test">303. Security Change Test</a></h1>
+<p>Identity warning appears.</p>
+<p>Draft preserved while sending blocked.</p>
+<hr />
+<h1 id="304-accessibility-test"><a class="header" href="#304-accessibility-test">304. Accessibility Test</a></h1>
+<p>Entire composer usable with:</p>
+<pre><code class="language-text">keyboard
+TalkBack/screen reader
+large text
+no gestures
+</code></pre>
+<hr />
+<h1 id="305-performance-targets"><a class="header" href="#305-performance-targets">305. Performance Targets</a></h1>
+<p>Typing response:</p>
+<pre><code class="language-text">immediate local
+</code></pre>
+<p>Draft autosave:</p>
+<pre><code class="language-text">background
+</code></pre>
+<p>Attachment ingestion:</p>
+<pre><code class="language-text">non-blocking
+</code></pre>
+<p>Voice controls:</p>
+<pre><code class="language-text">low-latency
+</code></pre>
+<hr />
+<h1 id="306-initial-production-recommendation"><a class="header" href="#306-initial-production-recommendation">306. Initial Production Recommendation</a></h1>
+<p>For v1, support:</p>
+<pre><code class="language-text">plain/multiline text
+reply
+text edit
+durable drafts
+file/photo/video/document attachments
+drag/drop desktop
+system picker Android
+paste image/file where supported
+voice notes
+offline send
+attachment preview/remove
+</code></pre>
+<p>Defer:</p>
+<pre><code class="language-text">rich editor
+GIF/sticker marketplace
+image editor
+video trim
+scheduled messages
+complex slash commands
+per-attachment captions
+multi-device draft sync
+</code></pre>
+<hr />
+<h1 id="307-definition-of-done"><a class="header" href="#307-definition-of-done">307. Definition of Done</a></h1>
+<p>UI/UX Part 06 is complete when:</p>
+<ul>
+<li>composer temporary interaction state is separated from Rust durable draft/message truth</li>
+<li>drafts survive app/process restart according to autosave policy</li>
+<li>stale autosave cannot overwrite newer draft</li>
+<li>reply and edit modes are explicit and recover safely</li>
+<li>composer clears only after Rust durably commits a pending message</li>
+<li>offline send produces queued timeline state rather than losing input</li>
+<li>Android uses system picker/URI/FD flows rather than giant byte arrays</li>
+<li>desktop supports file dialog, drag/drop, and paste</li>
+<li>attachments are represented by Rust-owned draft attachment IDs</li>
+<li>attachment preparation/validation is asynchronous and non-blocking</li>
+<li>missing draft attachments are detected on restore</li>
+<li>voice-note recording never puts raw PCM in Compose/Dioxus state</li>
+<li>voice recording has accessible non-gesture controls</li>
+<li>permissions are contextual and platform-native</li>
+<li>process death, call interruption, permission denial, security block, and offline transitions preserve draft safely</li>
+<li>attachment count/size/type limits are authoritative in Rust</li>
+<li>accessibility, RTL, large font, reduced motion, keyboard, and screen-reader behavior are defined</li>
+<li>send, attachment, draft, and voice operations have explicit Rust presentation APIs</li>
+<li>v1 scope remains focused and avoids premature rich-editor complexity</li>
+</ul>
+<hr />
+<h1 id="308-final-architecture"><a class="header" href="#308-final-architecture">308. Final Architecture</a></h1>
+<pre><code class="language-text">                    PLATFORM COMPOSER
+             ┌──────────────┼──────────────┐
+             │              │              │
+           Text        Attachments       Voice
+             │              │              │
+             └──────────────┼──────────────┘
+                            │
+                    Presenter/ViewModel
+                            │
+                    Rust Composer Service
+              ┌─────────────┼─────────────┐
+              │             │             │
+           Drafts       Attachment     Voice Draft
+              │          Staging           │
+              └─────────────┼─────────────┘
+                            │
+                      Send Commit
+                            │
+                         Outbox
+                            │
+                    Message Timeline
+</code></pre>
+<p>Platform-specific ingress:</p>
+<pre><code class="language-text">Desktop:
+    file dialog
+    drag/drop
+    clipboard
+    microphone
+
+Android:
+    system picker
+    share intent
+    camera
+    microphone
+    IME
+</code></pre>
+<p>All converge into the same:</p>
+<pre><code class="language-text">DraftId
+ComposerAttachmentId
+SendMessageCommand
+MessageId
+</code></pre>
+<hr />
+<h1 id="309-final-principle"><a class="header" href="#309-final-principle">309. Final Principle</a></h1>
+<p>The composer should feel immediate and forgiving while preserving strong message-delivery correctness.</p>
+<p>The right model is:</p>
+<pre><code class="language-text">instant local typing
++
+durable debounced drafts
++
+platform-native file/media input
++
+Rust-owned validation/staging
++
+atomic send commit
++
+offline outbox
+</code></pre>
+<p>not:</p>
+<pre><code class="language-text">UI directly assembles and transmits message payloads
+</code></pre>
+<p>This makes composition fast and native on both Dioxus desktop and Android Compose while keeping the shared Rust communication engine authoritative.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="ui-ux-05-conversation-message-timeline-architecture.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="ui-ux-07-calls-realtime-media-architecture.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="ui-ux-05-conversation-message-timeline-architecture.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="ui-ux-07-calls-realtime-media-architecture.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

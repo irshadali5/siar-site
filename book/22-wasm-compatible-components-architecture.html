@@ -1,0 +1,2538 @@
+<!DOCTYPE HTML>
+<html lang="en" class="navy" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>22 — WebAssembly (WASM) Compatible Components - SIAR System Architecture &amp; Technical Wiki</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="Comprehensive system architecture, cryptographic protocols, DTN mesh networking, distributed storage, audio DSP pipelines, and UI/UX design specifications for SIAR.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="theme/custom.css">
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "navy";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('navy')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="Home.html">Architecture Portal & Reading Guide</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part I: Protocol Foundation & Extension Platform</li><li class="chapter-item expanded "><a href="01-protocol-extension-system-architecture.html"><strong aria-hidden="true">1.</strong> 01 — Protocol Extension System Architecture</a></li><li class="chapter-item expanded "><a href="07-capability-negotiation-architecture.html"><strong aria-hidden="true">2.</strong> 07 — Capability Negotiation & Protocol Upgrades</a></li><li class="chapter-item expanded "><a href="21-third-party-protocol-extensions-architecture.html"><strong aria-hidden="true">3.</strong> 21 — Third-Party Protocol Extensions</a></li><li class="chapter-item expanded "><a href="22-wasm-compatible-components-architecture.html" class="active"><strong aria-hidden="true">4.</strong> 22 — WebAssembly (WASM) Compatible Components</a></li><li class="chapter-item expanded "><a href="23-external-interoperability-suite-architecture.html"><strong aria-hidden="true">5.</strong> 23 — External Interoperability & Conformance Suite</a></li><li class="chapter-item expanded "><a href="24-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">6.</strong> 24 — Dynamic Plugin & Module Ecosystem</a></li><li class="chapter-item expanded affix "><li class="part-title">Part II: Identity, Trust & Cryptography</li><li class="chapter-item expanded "><a href="02-multi-device-identity-architecture.html"><strong aria-hidden="true">7.</strong> 02 — Multi-Device Identity & Trust Model</a></li><li class="chapter-item expanded "><a href="28-production-security-e2ee-key-management-privacy-architecture.html"><strong aria-hidden="true">8.</strong> 28 — Production Security, E2EE, Key Management & Privacy</a></li><li class="chapter-item expanded affix "><li class="part-title">Part III: Mesh Networking, Transports & Hardware</li><li class="chapter-item expanded "><a href="03-transport-routing-policy-engine-architecture.html"><strong aria-hidden="true">9.</strong> 03 — Transport & Routing Policy Engine</a></li><li class="chapter-item expanded "><a href="11-relay-self-hosted-infrastructure-architecture.html"><strong aria-hidden="true">10.</strong> 11 — Self-Hosted Relay & Coordination Infrastructure</a></li><li class="chapter-item expanded "><a href="12-multipath-networking-architecture.html"><strong aria-hidden="true">11.</strong> 12 — Multipath Networking & Link Aggregation</a></li><li class="chapter-item expanded "><a href="13-battery-aware-scheduling-architecture.html"><strong aria-hidden="true">12.</strong> 13 — Battery-Aware Scheduling & Power Profiles</a></li><li class="chapter-item expanded "><a href="14-proximity-abstraction-architecture.html"><strong aria-hidden="true">13.</strong> 14 — Proximity Abstraction (BLE, Wi-Fi Direct, LoRa)</a></li><li class="chapter-item expanded "><a href="15-qr-nfc-bootstrap-pairing-architecture.html"><strong aria-hidden="true">14.</strong> 15 — Out-of-Band QR & NFC Bootstrap Pairing</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IV: Delay-Tolerant Networking & Emergency Mesh</li><li class="chapter-item expanded "><a href="06-dtn-store-carry-forward-architecture.html"><strong aria-hidden="true">15.</strong> 06 — DTN Store-Carry-Forward & Bundle Forwarding</a></li><li class="chapter-item expanded "><a href="17-emergency-priority-classes-architecture.html"><strong aria-hidden="true">16.</strong> 17 — Emergency Priority Classes & Critical Alert Mesh</a></li><li class="chapter-item expanded affix "><li class="part-title">Part V: Storage, Outbox & Data Lifecycle</li><li class="chapter-item expanded "><a href="04-offline-event-log-architecture.html"><strong aria-hidden="true">17.</strong> 04 — Offline Event Log & Sync Engine</a></li><li class="chapter-item expanded "><a href="05-robust-file-blob-subsystem-architecture.html"><strong aria-hidden="true">18.</strong> 05 — Robust File & Blob Subsystem (Chunking & Resumption)</a></li><li class="chapter-item expanded "><a href="09-crash-recovery-architecture.html"><strong aria-hidden="true">19.</strong> 09 — Crash Recovery & State Integrity</a></li><li class="chapter-item expanded "><a href="32-search-indexing-local-knowledge-privacy-architecture.html"><strong aria-hidden="true">20.</strong> 32 — Search, Indexing & Local Privacy Retrieval</a></li><li class="chapter-item expanded "><a href="33-backup-restore-export-import-archival-portability-architecture.html"><strong aria-hidden="true">21.</strong> 33 — Backup, Restore, Export & Long-Term Archival</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VI: Realtime Media, Calling & Audio DSP</li><li class="chapter-item expanded "><a href="25-android-direct-hardware-surface-zero-copy-media-architecture.html"><strong aria-hidden="true">22.</strong> 25 — Android Direct Surface Zero-Copy Media</a></li><li class="chapter-item expanded "><a href="26-rust-first-audio-dsp-resampling-aec-ns-agc-architecture.html"><strong aria-hidden="true">23.</strong> 26 — Rust-First Audio DSP (AEC, NS, AGC, Resampling)</a></li><li class="chapter-item expanded "><a href="29-realtime-calls-media-session-protocol-architecture.html"><strong aria-hidden="true">24.</strong> 29 — Realtime Calls & Media Session Protocol</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VII: Ephemeral State, Presence & Notifications</li><li class="chapter-item expanded "><a href="30-presence-availability-typing-read-receipts-ephemeral-state-architecture.html"><strong aria-hidden="true">25.</strong> 30 — Presence, Availability, Typing & Read Receipts</a></li><li class="chapter-item expanded "><a href="31-notifications-push-background-delivery-lifecycle-architecture.html"><strong aria-hidden="true">26.</strong> 31 — Notifications, Push Wake & Background Delivery</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VIII: Native Runtimes, Daemons & Embedded Linux</li><li class="chapter-item expanded "><a href="16-daemon-headless-runtime-architecture.html"><strong aria-hidden="true">27.</strong> 16 — Headless Daemon & Background Runtime</a></li><li class="chapter-item expanded "><a href="19-c-abi-ffi-architecture.html"><strong aria-hidden="true">28.</strong> 19 — C-ABI FFI & Native Language Interop</a></li><li class="chapter-item expanded "><a href="20-embedded-linux-node-architecture.html"><strong aria-hidden="true">29.</strong> 20 — Embedded Linux Node & Resource-Constrained Targets</a></li><li class="chapter-item expanded "><a href="27-rust-driven-android-native-build-packaging-automation.html"><strong aria-hidden="true">30.</strong> 27 — Rust-Driven Android Native Build & Packaging Automation</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IX: Reliability, Testing, Fuzzing & Diagnostics</li><li class="chapter-item expanded "><a href="08-resource-limits-backpressure-architecture.html"><strong aria-hidden="true">31.</strong> 08 — Resource Limits, Quotas & Backpressure</a></li><li class="chapter-item expanded "><a href="10-fuzzing-protocol-test-suite-architecture.html"><strong aria-hidden="true">32.</strong> 10 — Fuzzing & Protocol Test Suite</a></li><li class="chapter-item expanded "><a href="18-network-diagnostics-path-visualization-architecture.html"><strong aria-hidden="true">33.</strong> 18 — Network Diagnostics & Path Visualization</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part X: UI/UX Client Architecture (Cross-Platform)</li><li class="chapter-item expanded "><a href="ui-ux-01-product-foundation-cross-platform-interaction-architecture.html"><strong aria-hidden="true">34.</strong> UI/UX 01 — Product UX Foundation & Cross-Platform Interaction</a></li><li class="chapter-item expanded "><a href="ui-ux-02-desktop-dioxus-app-shell-navigation-window-architecture.html"><strong aria-hidden="true">35.</strong> UI/UX 02 — Desktop Dioxus App Shell & Navigation</a></li><li class="chapter-item expanded "><a href="ui-ux-03-android-jetpack-compose-app-shell-navigation-lifecycle-architecture.html"><strong aria-hidden="true">36.</strong> UI/UX 03 — Android Jetpack Compose App Shell & Lifecycle</a></li><li class="chapter-item expanded "><a href="ui-ux-04-conversation-list-inbox-architecture.html"><strong aria-hidden="true">37.</strong> UI/UX 04 — Conversation List & Inbox UX</a></li><li class="chapter-item expanded "><a href="ui-ux-05-conversation-message-timeline-architecture.html"><strong aria-hidden="true">38.</strong> UI/UX 05 — Conversation Message Timeline UX</a></li><li class="chapter-item expanded "><a href="ui-ux-06-message-composer-attachments-voice-notes-drafts-architecture.html"><strong aria-hidden="true">39.</strong> UI/UX 06 — Message Composer, Attachments & Voice Notes</a></li><li class="chapter-item expanded "><a href="ui-ux-07-calls-realtime-media-architecture.html"><strong aria-hidden="true">40.</strong> UI/UX 07 — Calls & Realtime Media UX</a></li><li class="chapter-item expanded "><a href="ui-ux-08-contacts-requests-verification-identity-architecture.html"><strong aria-hidden="true">41.</strong> UI/UX 08 — Contacts, Requests, Verification & Identity</a></li><li class="chapter-item expanded "><a href="ui-ux-09-groups-membership-roles-architecture.html"><strong aria-hidden="true">42.</strong> UI/UX 09 — Groups, Membership & Roles UX</a></li><li class="chapter-item expanded "><a href="ui-ux-10-files-media-gallery-transfer-architecture.html"><strong aria-hidden="true">43.</strong> UI/UX 10 — Files, Media Gallery & Transfer UX</a></li><li class="chapter-item expanded "><a href="ui-ux-11-search-local-knowledge-retrieval-architecture.html"><strong aria-hidden="true">44.</strong> UI/UX 11 — Search & Local Knowledge Retrieval UX</a></li><li class="chapter-item expanded "><a href="ui-ux-12-nearby-qr-nfc-pairing-device-linking-architecture.html"><strong aria-hidden="true">45.</strong> UI/UX 12 — Nearby, QR/NFC Pairing & Device Linking UX</a></li><li class="chapter-item expanded "><a href="ui-ux-13-notifications-background-incoming-call-architecture.html"><strong aria-hidden="true">46.</strong> UI/UX 13 — Notifications, Background & Incoming Call UX</a></li><li class="chapter-item expanded "><a href="ui-ux-14-presence-typing-receipts-status-architecture.html"><strong aria-hidden="true">47.</strong> UI/UX 14 — Presence, Typing, Receipts & Status UX</a></li><li class="chapter-item expanded "><a href="ui-ux-15-security-center-devices-keys-recovery-architecture.html"><strong aria-hidden="true">48.</strong> UI/UX 15 — Security Center, Devices, Keys & Recovery UX</a></li><li class="chapter-item expanded "><a href="ui-ux-16-backup-restore-export-migration-architecture.html"><strong aria-hidden="true">49.</strong> UI/UX 16 — Backup, Restore, Export & Migration UX</a></li><li class="chapter-item expanded "><a href="ui-ux-17-emergency-sos-offline-mesh-architecture.html"><strong aria-hidden="true">50.</strong> UI/UX 17 — Emergency / SOS / Offline Mesh UX</a></li><li class="chapter-item expanded "><a href="ui-ux-18-settings-privacy-notifications-data-controls-architecture.html"><strong aria-hidden="true">51.</strong> UI/UX 18 — Settings, Privacy, Notifications & Data Controls</a></li><li class="chapter-item expanded "><a href="ui-ux-19-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">52.</strong> UI/UX 19 — Plugin & Module Ecosystem UX</a></li><li class="chapter-item expanded "><a href="ui-ux-20-diagnostics-network-paths-advanced-developer-architecture.html"><strong aria-hidden="true">53.</strong> UI/UX 20 — Diagnostics, Network Paths & Developer UX</a></li><li class="chapter-item expanded "><a href="ui-ux-21-accessibility-inclusive-interaction-architecture.html"><strong aria-hidden="true">54.</strong> UI/UX 21 — Accessibility & Inclusive Interaction</a></li><li class="chapter-item expanded "><a href="ui-ux-22-design-system-tokens-typography-icons-motion-architecture.html"><strong aria-hidden="true">55.</strong> UI/UX 22 — Design System, Tokens, Typography & Motion</a></li><li class="chapter-item expanded "><a href="ui-ux-23-responsive-adaptive-desktop-tablet-foldable-phone-layout-architecture.html"><strong aria-hidden="true">56.</strong> UI/UX 23 — Responsive & Adaptive Layouts (Desktop/Tablet/Foldable/Phone)</a></li><li class="chapter-item expanded "><a href="ui-ux-24-error-loading-empty-offline-degraded-state-architecture.html"><strong aria-hidden="true">57.</strong> UI/UX 24 — Error, Loading, Empty & Degraded-State UX</a></li><li class="chapter-item expanded "><a href="ui-ux-25-onboarding-first-run-permission-education-architecture.html"><strong aria-hidden="true">58.</strong> UI/UX 25 — Onboarding, First Run & Permission Education</a></li><li class="chapter-item expanded "><a href="ui-ux-26-performance-virtualization-large-data-ui-architecture.html"><strong aria-hidden="true">59.</strong> UI/UX 26 — Virtualization & Large-Data UI Performance</a></li><li class="chapter-item expanded "><a href="ui-ux-27-ui-testing-screenshot-interaction-release-quality-gates-architecture.html"><strong aria-hidden="true">60.</strong> UI/UX 27 — UI Testing, Screenshots & Release Quality Gates</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">SIAR System Architecture &amp; Technical Wiki</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar/edit/main/sys-arch/22-wasm-compatible-components-architecture.md" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="part-22--wasm-compatible-components-architecture"><a class="header" href="#part-22--wasm-compatible-components-architecture">Part 22 — WASM-Compatible Components Architecture</a></h1>
+<h2 id="reusable-p2p-communication-platform"><a class="header" href="#reusable-p2p-communication-platform">Reusable P2P Communication Platform</a></h2>
+<p><strong>Status:</strong> Architecture specification<br />
+<strong>Part:</strong> 22 of 24<br />
+<strong>Primary implementation language:</strong> Rust<br />
+<strong>Portable execution target:</strong> WebAssembly Components + WIT, with WASI where host capabilities are appropriate<br />
+<strong>Primary host runtime:</strong> native Rust runtime; Wasmtime is the preferred initial component host for server/desktop/embedded deployments<br />
+<strong>Primary goals:</strong> portable components, sandboxed third-party execution, capability-based host access, browser/WASI portability, resource metering, deterministic interfaces, safe extension reuse, and preservation of the high-performance native networking core</p>
+<hr />
+<h1 id="1-purpose"><a class="header" href="#1-purpose">1. Purpose</a></h1>
+<p>The communication platform should be able to reuse selected logic across:</p>
+<pre><code class="language-text">desktop
+server
+embedded Linux
+mobile-supporting host runtimes
+browser-compatible environments
+third-party extension sandboxes
+testing environments
+</code></pre>
+<p>without attempting to force the entire communication engine into WebAssembly.</p>
+<p>The correct architecture is not:</p>
+<pre><code class="language-text">compile everything to WASM
+</code></pre>
+<p>Instead:</p>
+<pre><code class="language-text">Native Rust Core
++
+Portable WASM-Compatible Components
+</code></pre>
+<p>The native core continues to own:</p>
+<pre><code class="language-text">Iroh networking
+QUIC
+Bluetooth
+Wi-Fi Direct/Aware
+native filesystem integration
+hardware codecs
+OS notifications
+secure key stores
+high-performance file I/O
+daemon lifecycle
+</code></pre>
+<p>WASM-compatible components handle logic that benefits from:</p>
+<pre><code class="language-text">portability
+sandboxing
+determinism
+cross-language interoperability
+extension isolation
+</code></pre>
+<p>The core rule is:</p>
+<blockquote>
+<p><strong>Use WebAssembly for portable policy and extension logic; keep hardware-, OS-, transport-, and latency-critical systems native.</strong></p>
+</blockquote>
+<hr />
+<h1 id="2-architectural-position"><a class="header" href="#2-architectural-position">2. Architectural Position</a></h1>
+<pre><code class="language-text">                    Product / App
+                         │
+               Communication Runtime
+                         │
+        ┌────────────────┴────────────────┐
+        │                                 │
+ Native Rust Core                  Component Host
+        │                                 │
+ Iroh / Files / DTN /              WASM Components
+ Proximity / Storage /              ├── policies
+ Secure Store / Media               ├── transforms
+        │                           ├── extensions
+        │                           └── workflows
+        │                                 │
+        └──────── Capability APIs ─────────┘
+</code></pre>
+<hr />
+<h1 id="3-what-should-be-wasm-compatible"><a class="header" href="#3-what-should-be-wasm-compatible">3. What SHOULD Be WASM-Compatible</a></h1>
+<p>Good candidates:</p>
+<pre><code class="language-text">message transforms
+application-specific protocol logic
+validation rules
+policy evaluation
+workflow engines
+document metadata transforms
+ERP event adapters
+format conversion
+custom synchronization rules
+routing policy plugins
+notification rules
+DTN forwarding policy plugins
+content classification
+extension state machines
+deterministic business logic
+test/reference implementations
+</code></pre>
+<hr />
+<h1 id="4-what-should-stay-native"><a class="header" href="#4-what-should-stay-native">4. What SHOULD Stay Native</a></h1>
+<p>Keep native:</p>
+<pre><code class="language-text">Iroh endpoint
+QUIC transport
+Bluetooth
+Wi-Fi APIs
+LAN sockets
+hardware codec integration
+AV1 software codec hot loops unless separately optimized
+filesystem zero-copy
+memory-mapped large files
+platform keystore
+OS biometric APIs
+Android JNI platform adapters
+system daemon integration
+kernel/network-interface control
+</code></pre>
+<p>These depend heavily on OS/hardware or need native performance.</p>
+<hr />
+<h1 id="5-component-model-first"><a class="header" href="#5-component-model-first">5. Component Model First</a></h1>
+<p>The portable architecture should target:</p>
+<pre><code class="language-text">WebAssembly Component Model
++
+WIT interfaces
+</code></pre>
+<p>rather than exposing arbitrary raw WebAssembly imports.</p>
+<p>Benefits:</p>
+<pre><code class="language-text">typed interfaces
+explicit imports/exports
+language-neutral contracts
+composable components
+better capability control
+versionable APIs
+</code></pre>
+<hr />
+<h1 id="6-wit-as-the-contract"><a class="header" href="#6-wit-as-the-contract">6. WIT as the Contract</a></h1>
+<p>Example:</p>
+<pre><code class="language-wit">package comm:extension@1.0.0;
+
+interface diagnostics {
+    log: func(level: u8, message: string);
+}
+
+interface state {
+    get: func(key: list&lt;u8&gt;) -&gt; option&lt;list&lt;u8&gt;&gt;;
+    put: func(key: list&lt;u8&gt;, value: list&lt;u8&gt;) -&gt; result&lt;_, string&gt;;
+}
+
+world extension {
+    import diagnostics;
+    import state;
+    export run: func(input: list&lt;u8&gt;) -&gt; result&lt;list&lt;u8&gt;, string&gt;;
+}
+</code></pre>
+<p>The actual production interfaces should use richer typed records instead of opaque bytes wherever practical.</p>
+<hr />
+<h1 id="7-wit-package-naming"><a class="header" href="#7-wit-package-naming">7. WIT Package Naming</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">comm:core
+comm:extension
+comm:storage
+comm:routing
+comm:dtn
+comm:files
+comm:diagnostics
+</code></pre>
+<p>Third-party namespaces:</p>
+<pre><code class="language-text">vendor:package
+organization:extension-name
+</code></pre>
+<hr />
+<h1 id="8-component-api-versioning"><a class="header" href="#8-component-api-versioning">8. Component API Versioning</a></h1>
+<p>Separate:</p>
+<pre><code class="language-text">WIT package version
+component package version
+wire protocol version
+extension state schema
+host runtime version
+</code></pre>
+<p>These must not be conflated.</p>
+<hr />
+<h1 id="9-wit-major-compatibility"><a class="header" href="#9-wit-major-compatibility">9. WIT Major Compatibility</a></h1>
+<p>Breaking changes:</p>
+<pre><code class="language-text">new package major
+</code></pre>
+<p>Examples:</p>
+<pre><code class="language-text">remove field
+change required parameter
+change semantic meaning
+</code></pre>
+<hr />
+<h1 id="10-additive-evolution"><a class="header" href="#10-additive-evolution">10. Additive Evolution</a></h1>
+<p>Prefer:</p>
+<pre><code class="language-text">new interface
+new optional variant
+new method in newer package version
+</code></pre>
+<p>without breaking existing components.</p>
+<hr />
+<h1 id="11-capability-based-host-design"><a class="header" href="#11-capability-based-host-design">11. Capability-Based Host Design</a></h1>
+<p>A component receives only explicitly imported capabilities.</p>
+<p>Example:</p>
+<pre><code class="language-text">component needs storage
+→ import comm:storage/state
+
+component does not need networking
+→ no network capability
+</code></pre>
+<p>No ambient authority.</p>
+<hr />
+<h1 id="12-no-raw-host-os-access-by-default"><a class="header" href="#12-no-raw-host-os-access-by-default">12. No Raw Host OS Access by Default</a></h1>
+<p>Do not expose:</p>
+<pre><code class="language-text">arbitrary filesystem
+arbitrary socket
+environment variables
+process spawning
+system shell
+</code></pre>
+<p>to untrusted components.</p>
+<hr />
+<h1 id="13-host-capability-categories"><a class="header" href="#13-host-capability-categories">13. Host Capability Categories</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum WasmHostCapability {
+    Diagnostics,
+    ExtensionState,
+    ExtensionSecrets,
+    PeerMessaging,
+    FileReferences,
+    DtnDelivery,
+    RoutingRequest,
+    Time,
+    Random,
+    Notification,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="14-capability-grants"><a class="header" href="#14-capability-grants">14. Capability Grants</a></h1>
+<p>At load time:</p>
+<pre><code class="language-text">manifest requests
++
+user/admin policy
++
+host policy
+=
+effective grants
+</code></pre>
+<hr />
+<h1 id="15-component-manifest"><a class="header" href="#15-component-manifest">15. Component Manifest</a></h1>
+<p>Example:</p>
+<pre><code class="language-ron">(
+    id: "org.example.whiteboard",
+    version: "1.2.0",
+    world: "comm-extension",
+    wit: "comm:extension@1",
+    permissions: [
+        "state",
+        "peer-messaging",
+        "files",
+    ],
+    resources: (
+        memory_bytes: 33554432,
+        execution_ms: 100,
+        persistent_bytes: 104857600,
+    ),
+)
+</code></pre>
+<hr />
+<h1 id="16-wasm-is-not-automatically-safe"><a class="header" href="#16-wasm-is-not-automatically-safe">16. WASM Is Not Automatically Safe</a></h1>
+<p>WebAssembly provides strong memory isolation relative to native plugins, but the host can still create unsafe capabilities.</p>
+<p>Bad host API:</p>
+<pre><code class="language-text">open arbitrary path
+connect arbitrary socket
+execute command
+</code></pre>
+<p>Good host API:</p>
+<pre><code class="language-text">read own state
+send protocol frame to authorized peer
+request BlobId
+</code></pre>
+<hr />
+<h1 id="17-host-owns-policy"><a class="header" href="#17-host-owns-policy">17. Host Owns Policy</a></h1>
+<p>Even when component requests:</p>
+<pre><code class="language-text">send
+store
+DTN
+critical priority
+</code></pre>
+<p>the native core still applies:</p>
+<pre><code class="language-text">identity
+authorization
+resource limits
+battery policy
+routing policy
+emergency authorization
+</code></pre>
+<hr />
+<h1 id="18-wasi-usage"><a class="header" href="#18-wasi-usage">18. WASI Usage</a></h1>
+<p>Use WASI selectively.</p>
+<p>Do not automatically provide the full WASI environment to every extension.</p>
+<p>Possible:</p>
+<pre><code class="language-text">WASI clocks
+WASI random
+WASI limited filesystem
+WASI limited streams
+</code></pre>
+<p>only where appropriate.</p>
+<hr />
+<h1 id="19-prefer-domain-apis-over-posix-like-apis"><a class="header" href="#19-prefer-domain-apis-over-posix-like-apis">19. Prefer Domain APIs Over POSIX-Like APIs</a></h1>
+<p>For application extensions:</p>
+<p>Good:</p>
+<pre><code class="language-text">comm:files/open-blob
+comm:peer/send-event
+</code></pre>
+<p>Less desirable:</p>
+<pre><code class="language-text">filesystem path
+TCP socket
+</code></pre>
+<p>This keeps policy enforceable.</p>
+<hr />
+<h1 id="20-browser-vs-wasi-host"><a class="header" href="#20-browser-vs-wasi-host">20. Browser vs WASI Host</a></h1>
+<p>Browser WebAssembly and native WASI execution are different environments.</p>
+<p>Design components against:</p>
+<pre><code class="language-text">portable WIT domain interfaces
+</code></pre>
+<p>rather than assuming:</p>
+<pre><code class="language-text">filesystem
+threads
+sockets
+</code></pre>
+<p>exist everywhere.</p>
+<hr />
+<h1 id="21-portable-core-world"><a class="header" href="#21-portable-core-world">21. Portable Core World</a></h1>
+<p>Define a minimal browser/native-compatible world:</p>
+<pre><code class="language-text">comm:portable
+</code></pre>
+<p>Imports:</p>
+<pre><code class="language-text">clock
+random
+state
+diagnostics
+</code></pre>
+<p>No native networking assumptions.</p>
+<hr />
+<h1 id="22-native-extended-world"><a class="header" href="#22-native-extended-world">22. Native Extended World</a></h1>
+<p>For trusted native components:</p>
+<pre><code class="language-text">comm:native-extension
+</code></pre>
+<p>may add:</p>
+<pre><code class="language-text">file streams
+background tasks
+advanced diagnostics
+</code></pre>
+<p>Still no raw OS access unless explicitly needed.</p>
+<hr />
+<h1 id="23-browser-compatible-component-candidates"><a class="header" href="#23-browser-compatible-component-candidates">23. Browser-Compatible Component Candidates</a></h1>
+<p>Good candidates:</p>
+<pre><code class="language-text">message formatting
+policy rules
+workflow state machines
+protocol parsing
+content validation
+extension UI-neutral logic
+offline local transforms
+</code></pre>
+<hr />
+<h1 id="24-browser-incompatible-components"><a class="header" href="#24-browser-incompatible-components">24. Browser-Incompatible Components</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">BLE scanner
+Wi-Fi Direct manager
+Iroh native endpoint
+system daemon
+hardware media codec
+</code></pre>
+<p>These remain host-provided/native.</p>
+<hr />
+<h1 id="25-native-host-runtime"><a class="header" href="#25-native-host-runtime">25. Native Host Runtime</a></h1>
+<p>Preferred initial runtime:</p>
+<pre><code class="language-text">Wasmtime
+</code></pre>
+<p>Reasons:</p>
+<pre><code class="language-text">Rust embedding
+Component Model support
+resource controls
+mature server/desktop use
+</code></pre>
+<p>Host runtime remains abstracted.</p>
+<hr />
+<h1 id="26-runtime-abstraction"><a class="header" href="#26-runtime-abstraction">26. Runtime Abstraction</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait ComponentRuntime {
+    async fn instantiate(
+        &amp;self,
+        package: &amp;ComponentPackage,
+        grants: &amp;CapabilityGrantSet,
+    ) -&gt; Result&lt;ComponentInstance, ComponentError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="27-avoid-wasmtime-types-in-domain-core"><a class="header" href="#27-avoid-wasmtime-types-in-domain-core">27. Avoid Wasmtime Types in Domain Core</a></h1>
+<p>Keep:</p>
+<pre><code class="language-text">Store
+Linker
+Component
+ResourceLimiter
+</code></pre>
+<p>inside:</p>
+<pre><code class="language-text">comm-wasm-wasmtime
+</code></pre>
+<p>not across all crates.</p>
+<hr />
+<h1 id="28-suggested-crates"><a class="header" href="#28-suggested-crates">28. Suggested Crates</a></h1>
+<pre><code class="language-text">crates/
+├── comm-component-core/
+├── comm-component-host/
+├── comm-component-wit/
+├── comm-wasm-wasmtime/
+├── comm-component-storage/
+├── comm-component-security/
+├── comm-component-testkit/
+└── comm-component-browser/
+</code></pre>
+<hr />
+<h1 id="29-comm-component-core"><a class="header" href="#29-comm-component-core">29. <code>comm-component-core</code></a></h1>
+<p>Owns:</p>
+<pre><code class="language-text">component IDs
+manifest
+permissions
+resource budgets
+lifecycle
+errors
+</code></pre>
+<hr />
+<h1 id="30-comm-component-wit"><a class="header" href="#30-comm-component-wit">30. <code>comm-component-wit</code></a></h1>
+<p>Contains:</p>
+<pre><code class="language-text">WIT packages
+generated bindings
+compatibility fixtures
+</code></pre>
+<hr />
+<h1 id="31-comm-wasm-wasmtime"><a class="header" href="#31-comm-wasm-wasmtime">31. <code>comm-wasm-wasmtime</code></a></h1>
+<p>Owns:</p>
+<pre><code class="language-text">Wasmtime engine
+Store
+Linker
+component instantiation
+fuel/epoch policy
+memory limiter
+trap conversion
+</code></pre>
+<hr />
+<h1 id="32-comm-component-browser"><a class="header" href="#32-comm-component-browser">32. <code>comm-component-browser</code></a></h1>
+<p>Provides compatible host adapters for browser-supported worlds.</p>
+<p>It does not attempt to implement native-only capabilities.</p>
+<hr />
+<h1 id="33-component-identity"><a class="header" href="#33-component-identity">33. Component Identity</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct ComponentId(String);
+<span class="boring">}</span></code></pre></pre>
+<p>May reuse extension ID from Part 21 when component implements an extension.</p>
+<hr />
+<h1 id="34-component-package"><a class="header" href="#34-component-package">34. Component Package</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct ComponentPackage {
+    pub manifest: ComponentManifest,
+    pub bytes: Vec&lt;u8&gt;,
+    pub digest: Digest,
+    pub signature: Option&lt;PackageSignature&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Large package data should be streamed from storage rather than always held in RAM.</p>
+<hr />
+<h1 id="35-package-signing"><a class="header" href="#35-package-signing">35. Package Signing</a></h1>
+<p>Signed packages provide:</p>
+<pre><code class="language-text">publisher authenticity
+integrity
+</code></pre>
+<p>not automatic permission trust.</p>
+<hr />
+<h1 id="36-package-digest"><a class="header" href="#36-package-digest">36. Package Digest</a></h1>
+<p>Use content digest to:</p>
+<pre><code class="language-text">cache
+deduplicate
+verify
+pin
+</code></pre>
+<hr />
+<h1 id="37-execution-trust-classes"><a class="header" href="#37-execution-trust-classes">37. Execution Trust Classes</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum ComponentTrust {
+    BuiltIn,
+    TrustedPublisher,
+    SandboxedThirdParty,
+    Development,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="38-all-wasm-components-still-sandboxed"><a class="header" href="#38-all-wasm-components-still-sandboxed">38. All WASM Components Still Sandboxed</a></h1>
+<p>Even trusted components should use bounded capabilities.</p>
+<p>Trust may increase resource/permission ceilings, not remove all policy.</p>
+<hr />
+<h1 id="39-instance-lifecycle"><a class="header" href="#39-instance-lifecycle">39. Instance Lifecycle</a></h1>
+<pre><code class="language-text">Installed
+ ↓
+Validated
+ ↓
+Compiled/Prepared
+ ↓
+Instantiated
+ ↓
+Running
+ ↓
+Stopping
+ ↓
+Stopped
+</code></pre>
+<p>Failure:</p>
+<pre><code class="language-text">Trapped
+Failed
+Quarantined
+</code></pre>
+<hr />
+<h1 id="40-instance-scope"><a class="header" href="#40-instance-scope">40. Instance Scope</a></h1>
+<p>Possible:</p>
+<pre><code class="language-text">singleton component
+per-account instance
+per-peer session
+per-protocol session
+per-task invocation
+</code></pre>
+<p>Choose according to state isolation needs.</p>
+<hr />
+<h1 id="41-stateless-invocation"><a class="header" href="#41-stateless-invocation">41. Stateless Invocation</a></h1>
+<p>Ideal for:</p>
+<pre><code class="language-text">validation
+transforms
+policy evaluation
+</code></pre>
+<p>Create/call/reuse safely.</p>
+<hr />
+<h1 id="42-stateful-component"><a class="header" href="#42-stateful-component">42. Stateful Component</a></h1>
+<p>Useful for:</p>
+<pre><code class="language-text">collaboration protocol
+workflow
+</code></pre>
+<p>Persistent state must live in host-managed storage, not only WASM linear memory.</p>
+<hr />
+<h1 id="43-linear-memory-is-ephemeral"><a class="header" href="#43-linear-memory-is-ephemeral">43. Linear Memory Is Ephemeral</a></h1>
+<p>Do not treat component memory as durable state.</p>
+<p>After:</p>
+<pre><code class="language-text">restart
+trap
+upgrade
+</code></pre>
+<p>reconstruct from host-managed state/events.</p>
+<hr />
+<h1 id="44-memory-budget"><a class="header" href="#44-memory-budget">44. Memory Budget</a></h1>
+<p>Every component has maximum memory.</p>
+<p>Example:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct ComponentMemoryBudget {
+    pub max_linear_memory_bytes: u64,
+    pub max_table_elements: u32,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="45-memory-growth"><a class="header" href="#45-memory-growth">45. Memory Growth</a></h1>
+<p>Host must deny memory growth beyond quota.</p>
+<p>Trap/error should disable only affected invocation/session.</p>
+<hr />
+<h1 id="46-cpu-budget"><a class="header" href="#46-cpu-budget">46. CPU Budget</a></h1>
+<p>Untrusted component must not run forever.</p>
+<p>Use:</p>
+<pre><code class="language-text">fuel
+epoch interruption
+host deadline
+</code></pre>
+<p>depending workload.</p>
+<hr />
+<h1 id="47-fuel"><a class="header" href="#47-fuel">47. Fuel</a></h1>
+<p>Useful for:</p>
+<pre><code class="language-text">deterministic instruction budget
+tests
+small policy execution
+</code></pre>
+<hr />
+<h1 id="48-epoch-interruption"><a class="header" href="#48-epoch-interruption">48. Epoch Interruption</a></h1>
+<p>Useful for:</p>
+<pre><code class="language-text">wall-time style coarse interruption
+high-throughput runtime
+</code></pre>
+<p>Host decides per trust/workload.</p>
+<hr />
+<h1 id="49-dual-limit"><a class="header" href="#49-dual-limit">49. Dual Limit</a></h1>
+<p>Strong model:</p>
+<pre><code class="language-text">fuel/instruction budget
++
+wall-clock deadline
+</code></pre>
+<hr />
+<h1 id="50-invocation-budget"><a class="header" href="#50-invocation-budget">50. Invocation Budget</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct InvocationBudget {
+    pub max_fuel: Option&lt;u64&gt;,
+    pub max_wall_time: Duration,
+    pub max_output_bytes: u64,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="51-no-infinite-host-calls"><a class="header" href="#51-no-infinite-host-calls">51. No Infinite Host Calls</a></h1>
+<p>Host calls are also bounded.</p>
+<p>Component cannot escape CPU limit by repeatedly requesting expensive host work without quotas.</p>
+<hr />
+<h1 id="52-async-host-calls"><a class="header" href="#52-async-host-calls">52. Async Host Calls</a></h1>
+<p>Networking/storage operations are naturally async.</p>
+<p>Component API should use Component Model-supported async patterns where stable in chosen runtime/toolchain, or an explicit operation-handle model until mature.</p>
+<p>Do not block native executor threads.</p>
+<hr />
+<h1 id="53-stable-async-abstraction"><a class="header" href="#53-stable-async-abstraction">53. Stable Async Abstraction</a></h1>
+<p>Conceptually:</p>
+<pre><code class="language-text">request operation
+yield
+resume on result
+</code></pre>
+<p>The exact WIT mechanics may evolve.</p>
+<p>Keep business API independent of runtime-specific async implementation details.</p>
+<hr />
+<h1 id="54-host-operation-handle"><a class="header" href="#54-host-operation-handle">54. Host Operation Handle</a></h1>
+<p>Fallback architecture:</p>
+<pre><code class="language-text">component submits request
+→ receives operation ID
+→ polls/receives event
+</code></pre>
+<p>This also works in constrained hosts.</p>
+<hr />
+<h1 id="55-deterministic-policy-components"><a class="header" href="#55-deterministic-policy-components">55. Deterministic Policy Components</a></h1>
+<p>For policy logic, prefer pure functions:</p>
+<pre><code class="language-text">input DTO
+→ output decision
+</code></pre>
+<p>No clock/network unless explicitly needed.</p>
+<hr />
+<h1 id="56-deterministic-testing"><a class="header" href="#56-deterministic-testing">56. Deterministic Testing</a></h1>
+<p>Inject:</p>
+<pre><code class="language-text">FakeClock
+seeded randomness
+fake storage
+fake peer state
+</code></pre>
+<p>through WIT test host.</p>
+<hr />
+<h1 id="57-clock-capability"><a class="header" href="#57-clock-capability">57. Clock Capability</a></h1>
+<p>Expose:</p>
+<pre><code class="language-text">monotonic
+wall time
+</code></pre>
+<p>separately.</p>
+<p>Components that do not need wall time should not receive it.</p>
+<hr />
+<h1 id="58-random-capability"><a class="header" href="#58-random-capability">58. Random Capability</a></h1>
+<p>Provide secure random through host.</p>
+<p>For deterministic tests:</p>
+<pre><code class="language-text">test host
+</code></pre>
+<p>can substitute seeded deterministic implementation.</p>
+<p>Never use deterministic RNG for production cryptographic identity.</p>
+<hr />
+<h1 id="59-storage-capability"><a class="header" href="#59-storage-capability">59. Storage Capability</a></h1>
+<p>Extension state API:</p>
+<pre><code class="language-wit">interface state {
+    get: func(key: list&lt;u8&gt;) -&gt; option&lt;list&lt;u8&gt;&gt;;
+    put: func(key: list&lt;u8&gt;, value: list&lt;u8&gt;) -&gt; result&lt;_, state-error&gt;;
+    delete: func(key: list&lt;u8&gt;) -&gt; result&lt;_, state-error&gt;;
+}
+</code></pre>
+<hr />
+<h1 id="60-storage-namespacing"><a class="header" href="#60-storage-namespacing">60. Storage Namespacing</a></h1>
+<p>Host automatically scopes:</p>
+<pre><code class="language-text">tenant
+account
+component
+</code></pre>
+<p>Component never receives raw DB namespace identifiers it can escape.</p>
+<hr />
+<h1 id="61-storage-quota"><a class="header" href="#61-storage-quota">61. Storage Quota</a></h1>
+<p>Enforce:</p>
+<pre><code class="language-text">total bytes
+value bytes
+keys
+writes/sec
+</code></pre>
+<hr />
+<h1 id="62-transaction-capability"><a class="header" href="#62-transaction-capability">62. Transaction Capability</a></h1>
+<p>For complex state:</p>
+<pre><code class="language-text">begin transaction
+get/put
+commit
+</code></pre>
+<p>through safe host abstraction.</p>
+<p>Do not expose raw SQL.</p>
+<hr />
+<h1 id="63-event-store-capability"><a class="header" href="#63-event-store-capability">63. Event Store Capability</a></h1>
+<p>Protocol components may append their own extension events.</p>
+<p>Host checks:</p>
+<pre><code class="language-text">namespace
+size
+schema
+quota
+</code></pre>
+<hr />
+<h1 id="64-file-capability"><a class="header" href="#64-file-capability">64. File Capability</a></h1>
+<p>Component works with:</p>
+<pre><code class="language-text">BlobId
+BlobReader resource
+BlobWriter resource
+</code></pre>
+<p>not arbitrary paths.</p>
+<hr />
+<h1 id="65-resource-handles-in-wit"><a class="header" href="#65-resource-handles-in-wit">65. Resource Handles in WIT</a></h1>
+<p>Component Model resources are ideal for host-owned entities such as:</p>
+<pre><code class="language-text">blob-reader
+peer-session
+operation
+subscription
+</code></pre>
+<p>The host maintains real native objects.</p>
+<hr />
+<h1 id="66-blob-reader-resource"><a class="header" href="#66-blob-reader-resource">66. Blob Reader Resource</a></h1>
+<p>Conceptual WIT:</p>
+<pre><code class="language-wit">resource blob-reader {
+    read: func(max: u32) -&gt; result&lt;list&lt;u8&gt;, blob-error&gt;;
+}
+</code></pre>
+<p>Actual large streaming should use efficient stream interfaces where supported.</p>
+<hr />
+<h1 id="67-avoid-giant-copies"><a class="header" href="#67-avoid-giant-copies">67. Avoid Giant Copies</a></h1>
+<p>WASM boundary crossing can copy data.</p>
+<p>Do not route:</p>
+<pre><code class="language-text">4 GB file
+</code></pre>
+<p>through repeated giant component buffers.</p>
+<p>Component should operate on:</p>
+<pre><code class="language-text">metadata
+small chunks
+stream handles
+</code></pre>
+<p>while native core owns hot transfer path.</p>
+<hr />
+<h1 id="68-hot-path-rule"><a class="header" href="#68-hot-path-rule">68. Hot Path Rule</a></h1>
+<p>Do not invoke WASM for every QUIC packet.</p>
+<p>WASM should sit at:</p>
+<pre><code class="language-text">operation
+message
+protocol frame
+policy
+workflow
+</code></pre>
+<p>granularity.</p>
+<hr />
+<h1 id="69-message-transform-example"><a class="header" href="#69-message-transform-example">69. Message Transform Example</a></h1>
+<pre><code class="language-text">Message DTO
+ ↓
+WASM component
+ ↓
+Validated/Transformed DTO
+ ↓
+Native sender
+</code></pre>
+<p>Good boundary.</p>
+<hr />
+<h1 id="70-bad-packet-filter-example"><a class="header" href="#70-bad-packet-filter-example">70. Bad Packet Filter Example</a></h1>
+<pre><code class="language-text">every encrypted packet
+→ WASM
+</code></pre>
+<p>Too much overhead and policy risk for general use.</p>
+<hr />
+<h1 id="71-routing-policy-component"><a class="header" href="#71-routing-policy-component">71. Routing Policy Component</a></h1>
+<p>A WASM policy may receive:</p>
+<pre><code class="language-text">path classes
+latency class
+metered flag
+battery state
+operation requirements
+</code></pre>
+<p>and return:</p>
+<pre><code class="language-text">preference weights
+</code></pre>
+<p>Native Part 03 still enforces hard constraints.</p>
+<hr />
+<h1 id="72-hard-constraints-stay-native"><a class="header" href="#72-hard-constraints-stay-native">72. Hard Constraints Stay Native</a></h1>
+<p>Component cannot override:</p>
+<pre><code class="language-text">blocked peer
+forbidden metered path
+revoked device
+resource limit
+emergency authorization
+</code></pre>
+<p>It may only influence policy within allowed space.</p>
+<hr />
+<h1 id="73-dtn-policy-component"><a class="header" href="#73-dtn-policy-component">73. DTN Policy Component</a></h1>
+<p>Can decide:</p>
+<pre><code class="language-text">which eligible bundle first
+</code></pre>
+<p>within host-supplied safe candidate set.</p>
+<p>Host still enforces:</p>
+<pre><code class="language-text">hop limit
+expiry
+replication budget
+storage quota
+</code></pre>
+<hr />
+<h1 id="74-emergency-boundary"><a class="header" href="#74-emergency-boundary">74. Emergency Boundary</a></h1>
+<p>Third-party WASM component cannot self-grant:</p>
+<pre><code class="language-text">Critical
+AuthorityCritical
+</code></pre>
+<p>Part 17 authorizes effective class.</p>
+<hr />
+<h1 id="75-identity-api"><a class="header" href="#75-identity-api">75. Identity API</a></h1>
+<p>Expose:</p>
+<pre><code class="language-text">peer trust class
+scoped peer ID
+sign-request handle if authorized
+</code></pre>
+<p>Never:</p>
+<pre><code class="language-text">raw identity private key
+</code></pre>
+<hr />
+<h1 id="76-scoped-peer-ids"><a class="header" href="#76-scoped-peer-ids">76. Scoped Peer IDs</a></h1>
+<p>Part 21 privacy model applies.</p>
+<p>Each component can receive:</p>
+<pre><code class="language-text">component-scoped peer pseudonym
+</code></pre>
+<p>instead of raw DeviceId.</p>
+<hr />
+<h1 id="77-secret-storage"><a class="header" href="#77-secret-storage">77. Secret Storage</a></h1>
+<p>Components may have own secret namespace.</p>
+<p>Use:</p>
+<pre><code class="language-text">put-secret
+sign/use-secret
+</code></pre>
+<p>according to policy.</p>
+<hr />
+<h1 id="78-no-secret-enumeration"><a class="header" href="#78-no-secret-enumeration">78. No Secret Enumeration</a></h1>
+<p>Prefer named/opaque secret handles.</p>
+<p>Do not let component list all host secrets.</p>
+<hr />
+<h1 id="79-networking-capability"><a class="header" href="#79-networking-capability">79. Networking Capability</a></h1>
+<p>General third-party component should not get:</p>
+<pre><code class="language-text">raw TCP
+raw UDP
+</code></pre>
+<p>by default.</p>
+<p>It gets:</p>
+<pre><code class="language-text">open extension session to authorized peer
+send protocol frame
+</code></pre>
+<hr />
+<h1 id="80-external-http"><a class="header" href="#80-external-http">80. External HTTP</a></h1>
+<p>If future extensions need external APIs:</p>
+<pre><code class="language-text">separate permission
+allowlisted domains
+request size limits
+response size limits
+timeouts
+</code></pre>
+<p>Do not grant ambient Internet.</p>
+<hr />
+<h1 id="81-dns-privacy"><a class="header" href="#81-dns-privacy">81. DNS Privacy</a></h1>
+<p>Domain allowlist can still leak.</p>
+<p>Document.</p>
+<p>External network capability should be high-risk.</p>
+<hr />
+<h1 id="82-notifications"><a class="header" href="#82-notifications">82. Notifications</a></h1>
+<p>Component requests:</p>
+<pre><code class="language-text">semantic notification
+</code></pre>
+<p>Host decides:</p>
+<pre><code class="language-text">OS priority
+presentation
+rate limit
+</code></pre>
+<hr />
+<h1 id="83-ui-separation"><a class="header" href="#83-ui-separation">83. UI Separation</a></h1>
+<p>Part 22 components are UI-neutral by default.</p>
+<p>A future UI plugin may use:</p>
+<pre><code class="language-text">declarative UI schema
+</code></pre>
+<p>or separate Part 24 plugin interface.</p>
+<p>Do not allow arbitrary native UI code from portable protocol component.</p>
+<hr />
+<h1 id="84-browser-host"><a class="header" href="#84-browser-host">84. Browser Host</a></h1>
+<p>Browser-compatible host can provide:</p>
+<pre><code class="language-text">IndexedDB-backed state
+browser clock
+crypto RNG
+postMessage/Web Worker
+web transport adapter if product supplies
+</code></pre>
+<p>through the same domain-oriented WIT interfaces.</p>
+<hr />
+<h1 id="85-browser-networking"><a class="header" href="#85-browser-networking">85. Browser Networking</a></h1>
+<p>The browser host cannot assume native Iroh/UDP/BLE parity.</p>
+<p>Networking must be provided by:</p>
+<pre><code class="language-text">browser-supported transport
+server bridge
+WebTransport/WebSocket
+product adapter
+</code></pre>
+<p>when needed.</p>
+<p>Portable components should not care which.</p>
+<hr />
+<h1 id="86-browser-component-role"><a class="header" href="#86-browser-component-role">86. Browser Component Role</a></h1>
+<p>A browser build may reuse:</p>
+<pre><code class="language-text">protocol parser
+workflow logic
+message transforms
+validation
+state machine
+</code></pre>
+<p>even if native P2P transport is unavailable.</p>
+<hr />
+<h1 id="87-wasm-compatible-does-not-mean-web-app"><a class="header" href="#87-wasm-compatible-does-not-mean-web-app">87. WASM-Compatible Does Not Mean Web App</a></h1>
+<p>Important distinction:</p>
+<pre><code class="language-text">WASM-compatible component
+</code></pre>
+<p>can run:</p>
+<pre><code class="language-text">inside native desktop daemon
+inside server
+inside embedded node
+inside browser
+</code></pre>
+<p>if its required host interfaces are available.</p>
+<hr />
+<h1 id="88-embedded-linux-host"><a class="header" href="#88-embedded-linux-host">88. Embedded Linux Host</a></h1>
+<p>Part 20 can run sandboxed components with:</p>
+<pre><code class="language-text">small memory limit
+fuel
+strict storage quota
+no JIT if platform/security policy prefers AOT
+</code></pre>
+<hr />
+<h1 id="89-aot-compilation"><a class="header" href="#89-aot-compilation">89. AOT Compilation</a></h1>
+<p>For embedded/server environments:</p>
+<pre><code class="language-text">precompile components
+</code></pre>
+<p>where runtime supports.</p>
+<p>Benefits:</p>
+<pre><code class="language-text">faster startup
+predictable deployment
+reduced runtime compilation work
+</code></pre>
+<hr />
+<h1 id="90-jit-vs-aot"><a class="header" href="#90-jit-vs-aot">90. JIT vs AOT</a></h1>
+<p>Desktop/server:</p>
+<pre><code class="language-text">JIT or cached compilation
+</code></pre>
+<p>Embedded hardened appliance:</p>
+<pre><code class="language-text">AOT preferred where practical
+</code></pre>
+<p>Browser:</p>
+<pre><code class="language-text">browser engine decides
+</code></pre>
+<hr />
+<h1 id="91-precompiled-artifact-compatibility"><a class="header" href="#91-precompiled-artifact-compatibility">91. Precompiled Artifact Compatibility</a></h1>
+<p>Precompiled runtime artifacts may be:</p>
+<pre><code class="language-text">runtime-version
+architecture
+configuration
+</code></pre>
+<p>specific.</p>
+<p>Do not distribute one precompiled artifact blindly to every host.</p>
+<p>Keep original component package too.</p>
+<hr />
+<h1 id="92-component-cache"><a class="header" href="#92-component-cache">92. Component Cache</a></h1>
+<p>Cache key:</p>
+<pre><code class="language-text">component digest
+runtime version
+target
+engine config
+</code></pre>
+<hr />
+<h1 id="93-cache-is-rebuildable"><a class="header" href="#93-cache-is-rebuildable">93. Cache Is Rebuildable</a></h1>
+<p>Compiled WASM cache is:</p>
+<pre><code class="language-text">cache
+</code></pre>
+<p>not authoritative state.</p>
+<p>Safe to delete.</p>
+<hr />
+<h1 id="94-component-cold-start"><a class="header" href="#94-component-cold-start">94. Component Cold Start</a></h1>
+<p>Reduce by:</p>
+<pre><code class="language-text">precompile
+pool common instances
+lazy load
+</code></pre>
+<p>depending workload.</p>
+<hr />
+<h1 id="95-instance-pooling"><a class="header" href="#95-instance-pooling">95. Instance Pooling</a></h1>
+<p>Useful for stateless transforms.</p>
+<p>Do not reuse instance across security tenants without carefully resetting all state.</p>
+<hr />
+<h1 id="96-tenant-isolation"><a class="header" href="#96-tenant-isolation">96. Tenant Isolation</a></h1>
+<p>For multi-tenant host:</p>
+<pre><code class="language-text">separate Store/instance
+separate state namespace
+separate resource budget
+</code></pre>
+<hr />
+<h1 id="97-no-cross-tenant-linear-memory"><a class="header" href="#97-no-cross-tenant-linear-memory">97. No Cross-Tenant Linear Memory</a></h1>
+<p>Never reuse active instance memory across tenants.</p>
+<hr />
+<h1 id="98-component-resource-tree"><a class="header" href="#98-component-resource-tree">98. Component Resource Tree</a></h1>
+<pre><code class="language-text">global host budget
+  ↓
+tenant
+  ↓
+component
+  ↓
+instance
+  ↓
+invocation
+</code></pre>
+<p>Part 08 hierarchical quotas apply.</p>
+<hr />
+<h1 id="99-memory-pressure"><a class="header" href="#99-memory-pressure">99. Memory Pressure</a></h1>
+<p>Native host may:</p>
+<pre><code class="language-text">refuse new instance
+evict idle instance
+reduce cache
+</code></pre>
+<p>before harming core messaging.</p>
+<hr />
+<h1 id="100-emergency-resource-pressure"><a class="header" href="#100-emergency-resource-pressure">100. Emergency Resource Pressure</a></h1>
+<p>When Part 17 emergency mode activates:</p>
+<pre><code class="language-text">pause low-priority components
+reduce background extension CPU
+preserve critical core networking
+</code></pre>
+<hr />
+<h1 id="101-battery-aware-wasm"><a class="header" href="#101-battery-aware-wasm">101. Battery-Aware WASM</a></h1>
+<p>On mobile/embedded battery:</p>
+<pre><code class="language-text">defer background components
+lower CPU budget
+disable expensive transforms
+</code></pre>
+<p>Part 13 remains authoritative.</p>
+<hr />
+<h1 id="102-thermal-aware-wasm"><a class="header" href="#102-thermal-aware-wasm">102. Thermal-Aware WASM</a></h1>
+<p>If thermal serious:</p>
+<pre><code class="language-text">reduce component concurrency
+</code></pre>
+<p>before core communication suffers.</p>
+<hr />
+<h1 id="103-lifecycle-supervision"><a class="header" href="#103-lifecycle-supervision">103. Lifecycle Supervision</a></h1>
+<p>Each component instance belongs to supervisor.</p>
+<pre><code class="language-text">start
+health
+stop
+trap
+restart
+quarantine
+</code></pre>
+<hr />
+<h1 id="104-trap-handling"><a class="header" href="#104-trap-handling">104. Trap Handling</a></h1>
+<p>Trap:</p>
+<pre><code class="language-text">terminate invocation/session
+record diagnostics
+release resources
+</code></pre>
+<p>Core daemon continues.</p>
+<hr />
+<h1 id="105-repeated-traps"><a class="header" href="#105-repeated-traps">105. Repeated Traps</a></h1>
+<p>Use backoff.</p>
+<p>After threshold:</p>
+<pre><code class="language-text">quarantine component
+</code></pre>
+<hr />
+<h1 id="106-quarantine"><a class="header" href="#106-quarantine">106. Quarantine</a></h1>
+<p>State:</p>
+<pre><code class="language-text">installed
+but execution disabled
+</code></pre>
+<p>until:</p>
+<pre><code class="language-text">update
+admin action
+automatic trusted rollback
+</code></pre>
+<hr />
+<h1 id="107-host-panic"><a class="header" href="#107-host-panic">107. Host Panic</a></h1>
+<p>WASM trap must not become host panic.</p>
+<p>Convert runtime errors into typed component errors.</p>
+<hr />
+<h1 id="108-component-error-model"><a class="header" href="#108-component-error-model">108. Component Error Model</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum ComponentError {
+    InvalidPackage,
+    SignatureRejected,
+    IncompatibleWorld,
+    PermissionDenied,
+    ResourceDenied,
+    FuelExhausted,
+    DeadlineExceeded,
+    MemoryLimit,
+    Trap,
+    HostCallFailed,
+    StateMigrationFailed,
+    Quarantined,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="109-guest-error-model"><a class="header" href="#109-guest-error-model">109. Guest Error Model</a></h1>
+<p>WIT interfaces should use typed variants, not stringly typed errors where practical.</p>
+<hr />
+<h1 id="110-error-redaction"><a class="header" href="#110-error-redaction">110. Error Redaction</a></h1>
+<p>Host errors returned to component should not expose:</p>
+<pre><code class="language-text">filesystem paths
+secret IDs
+internal SQL
+raw OS errors
+</code></pre>
+<p>unless needed.</p>
+<hr />
+<h1 id="111-diagnostics"><a class="header" href="#111-diagnostics">111. Diagnostics</a></h1>
+<p>Component diagnostics include:</p>
+<pre><code class="language-text">instance count
+CPU/fuel use
+memory
+traps
+host-call errors
+storage use
+</code></pre>
+<hr />
+<h1 id="112-no-high-cardinality-metrics"><a class="header" href="#112-no-high-cardinality-metrics">112. No High-Cardinality Metrics</a></h1>
+<p>Do not label fleet metrics with:</p>
+<pre><code class="language-text">peer ID
+operation ID
+</code></pre>
+<hr />
+<h1 id="113-component-logs"><a class="header" href="#113-component-logs">113. Component Logs</a></h1>
+<p>Host logging API applies:</p>
+<pre><code class="language-text">rate limit
+length limit
+redaction
+</code></pre>
+<hr />
+<h1 id="114-log-injection"><a class="header" href="#114-log-injection">114. Log Injection</a></h1>
+<p>Component strings are untrusted.</p>
+<p>Structured logging must escape/control output.</p>
+<hr />
+<h1 id="115-testing-host"><a class="header" href="#115-testing-host">115. Testing Host</a></h1>
+<p>Provide:</p>
+<pre><code class="language-text">comm-component-testkit
+</code></pre>
+<p>with:</p>
+<pre><code class="language-text">FakeClock
+FakeState
+FakePeer
+FakeFiles
+FakeDtn
+FakeDiagnostics
+</code></pre>
+<hr />
+<h1 id="116-component-unit-tests"><a class="header" href="#116-component-unit-tests">116. Component Unit Tests</a></h1>
+<p>Component authors test logic outside full application.</p>
+<hr />
+<h1 id="117-host-conformance-tests"><a class="header" href="#117-host-conformance-tests">117. Host Conformance Tests</a></h1>
+<p>Every component world gets tests ensuring host implementation behaves consistently.</p>
+<hr />
+<h1 id="118-browsernative-parity-tests"><a class="header" href="#118-browsernative-parity-tests">118. Browser/Native Parity Tests</a></h1>
+<p>Run same portable component against:</p>
+<pre><code class="language-text">native host
+browser host
+</code></pre>
+<p>and compare semantic results.</p>
+<hr />
+<h1 id="119-deterministic-golden-tests"><a class="header" href="#119-deterministic-golden-tests">119. Deterministic Golden Tests</a></h1>
+<p>For pure components:</p>
+<pre><code class="language-text">input
+→ exact output
+</code></pre>
+<p>golden vectors.</p>
+<hr />
+<h1 id="120-wit-compatibility-tests"><a class="header" href="#120-wit-compatibility-tests">120. WIT Compatibility Tests</a></h1>
+<p>CI checks accidental interface breaking changes.</p>
+<hr />
+<h1 id="121-component-binary-validation"><a class="header" href="#121-component-binary-validation">121. Component Binary Validation</a></h1>
+<p>Before installation:</p>
+<pre><code class="language-text">parse
+validate
+inspect imports
+verify manifest match
+verify digest/signature
+</code></pre>
+<hr />
+<h1 id="122-import-allowlist"><a class="header" href="#122-import-allowlist">122. Import Allowlist</a></h1>
+<p>Reject package importing capabilities not declared.</p>
+<hr />
+<h1 id="123-export-validation"><a class="header" href="#123-export-validation">123. Export Validation</a></h1>
+<p>Required exported world/functions must exist.</p>
+<hr />
+<h1 id="124-package-bomb-protection"><a class="header" href="#124-package-bomb-protection">124. Package Bomb Protection</a></h1>
+<p>Bound:</p>
+<pre><code class="language-text">component size
+custom sections
+nested components
+metadata
+</code></pre>
+<p>during validation.</p>
+<hr />
+<h1 id="125-compilation-dos"><a class="header" href="#125-compilation-dos">125. Compilation DoS</a></h1>
+<p>Compiling malicious/huge WASM can consume resources.</p>
+<p>Use:</p>
+<pre><code class="language-text">size limits
+compilation concurrency limits
+timeouts
+</code></pre>
+<hr />
+<h1 id="126-cache-poisoning"><a class="header" href="#126-cache-poisoning">126. Cache Poisoning</a></h1>
+<p>Cache key includes digest and engine config.</p>
+<p>Never trust unverified externally supplied precompiled artifact.</p>
+<hr />
+<h1 id="127-package-signature"><a class="header" href="#127-package-signature">127. Package Signature</a></h1>
+<p>Verify before expensive compilation where possible.</p>
+<hr />
+<h1 id="128-publisher-trust"><a class="header" href="#128-publisher-trust">128. Publisher Trust</a></h1>
+<p>Part 21 rules apply:</p>
+<pre><code class="language-text">signed does not mean unrestricted
+</code></pre>
+<hr />
+<h1 id="129-update-permission-changes"><a class="header" href="#129-update-permission-changes">129. Update Permission Changes</a></h1>
+<p>New component version requesting new capability:</p>
+<pre><code class="language-text">requires re-approval
+</code></pre>
+<hr />
+<h1 id="130-component-state-migration"><a class="header" href="#130-component-state-migration">130. Component State Migration</a></h1>
+<p>State schema version:</p>
+<pre><code class="language-text">v1 → v2
+</code></pre>
+<p>Migration can be another controlled component entrypoint.</p>
+<hr />
+<h1 id="131-migration-budget"><a class="header" href="#131-migration-budget">131. Migration Budget</a></h1>
+<p>Migration has:</p>
+<pre><code class="language-text">higher bounded CPU
+storage transaction
+deadline
+</code></pre>
+<hr />
+<h1 id="132-crash-safe-migration"><a class="header" href="#132-crash-safe-migration">132. Crash-Safe Migration</a></h1>
+<p>Host owns transaction boundary.</p>
+<p>If migration traps:</p>
+<pre><code class="language-text">rollback
+keep old state/version
+</code></pre>
+<p>where storage backend supports.</p>
+<hr />
+<h1 id="133-component-rollback"><a class="header" href="#133-component-rollback">133. Component Rollback</a></h1>
+<p>Only if old component can read current state schema.</p>
+<p>Otherwise require migration rollback or state snapshot restore.</p>
+<hr />
+<h1 id="134-extension-integration"><a class="header" href="#134-extension-integration">134. Extension Integration</a></h1>
+<p>Part 21 protocol extension can be implemented as:</p>
+<pre><code class="language-text">WASM component
+</code></pre>
+<p>with imports:</p>
+<pre><code class="language-text">peer-session
+state
+files
+diagnostics
+</code></pre>
+<hr />
+<h1 id="135-extension-session-resource"><a class="header" href="#135-extension-session-resource">135. Extension Session Resource</a></h1>
+<p>Host can expose:</p>
+<pre><code class="language-wit">resource peer-session
+</code></pre>
+<p>Methods:</p>
+<pre><code class="language-text">send-frame
+open-stream
+peer-trust
+close
+</code></pre>
+<hr />
+<h1 id="136-session-security"><a class="header" href="#136-session-security">136. Session Security</a></h1>
+<p>Native core completes:</p>
+<pre><code class="language-text">peer authentication
+extension negotiation
+authorization
+</code></pre>
+<p>before handing session resource to component.</p>
+<hr />
+<h1 id="137-component-cannot-open-arbitrary-peer"><a class="header" href="#137-component-cannot-open-arbitrary-peer">137. Component Cannot Open Arbitrary Peer</a></h1>
+<p>It requests:</p>
+<pre><code class="language-text">authorized peer reference
+</code></pre>
+<p>from host API.</p>
+<p>Host verifies policy.</p>
+<hr />
+<h1 id="138-protocol-frame-limits"><a class="header" href="#138-protocol-frame-limits">138. Protocol Frame Limits</a></h1>
+<p>Host validates:</p>
+<pre><code class="language-text">size
+rate
+extension namespace
+session state
+</code></pre>
+<p>before transmission.</p>
+<hr />
+<h1 id="139-protocol-parser-placement"><a class="header" href="#139-protocol-parser-placement">139. Protocol Parser Placement</a></h1>
+<p>Untrusted extension-specific parser may live inside WASM.</p>
+<p>Core framing parser stays native and bounded.</p>
+<hr />
+<h1 id="140-two-layer-parsing"><a class="header" href="#140-two-layer-parsing">140. Two-Layer Parsing</a></h1>
+<pre><code class="language-text">Native:
+frame length
+extension ID
+protocol version
+
+WASM:
+extension payload semantics
+</code></pre>
+<p>This is a strong isolation model.</p>
+<hr />
+<h1 id="141-malformed-payload"><a class="header" href="#141-malformed-payload">141. Malformed Payload</a></h1>
+<p>If WASM parser traps:</p>
+<pre><code class="language-text">extension session fails
+</code></pre>
+<p>not daemon.</p>
+<hr />
+<h1 id="142-fuzzing-wasm-parsers"><a class="header" href="#142-fuzzing-wasm-parsers">142. Fuzzing WASM Parsers</a></h1>
+<p>Use Part 10 corpus against:</p>
+<pre><code class="language-text">native host harness
+WASM component parser
+</code></pre>
+<hr />
+<h1 id="143-differential-testing"><a class="header" href="#143-differential-testing">143. Differential Testing</a></h1>
+<p>Compare:</p>
+<pre><code class="language-text">native reference implementation
+WASM implementation
+</code></pre>
+<p>when both exist.</p>
+<hr />
+<h1 id="144-wasm-reference-implementations"><a class="header" href="#144-wasm-reference-implementations">144. WASM Reference Implementations</a></h1>
+<p>Portable components can serve as canonical protocol references.</p>
+<p>This is useful for external interoperability.</p>
+<hr />
+<h1 id="145-part-23-conformance"><a class="header" href="#145-part-23-conformance">145. Part 23 Conformance</a></h1>
+<p>External interoperability suite can execute reference WASM components as:</p>
+<pre><code class="language-text">oracle/reference behavior
+</code></pre>
+<p>for selected protocol semantics.</p>
+<hr />
+<h1 id="146-ffi-integration"><a class="header" href="#146-ffi-integration">146. FFI Integration</a></h1>
+<p>Part 19 foreign-language apps do not need to know whether feature logic is native or WASM.</p>
+<p>They use same SDK API.</p>
+<hr />
+<h1 id="147-component-management-api"><a class="header" href="#147-component-management-api">147. Component Management API</a></h1>
+<p>Host-side:</p>
+<pre><code class="language-text">install
+enable
+disable
+update
+list
+inspect
+</code></pre>
+<p>Part 24 may own distribution UI/catalog.</p>
+<hr />
+<h1 id="148-local-developer-mode"><a class="header" href="#148-local-developer-mode">148. Local Developer Mode</a></h1>
+<p>Allow:</p>
+<pre><code class="language-text">unsigned local component
+debug imports
+hot reload
+</code></pre>
+<p>only in explicit development mode.</p>
+<hr />
+<h1 id="149-hot-reload"><a class="header" href="#149-hot-reload">149. Hot Reload</a></h1>
+<p>For stateless components:</p>
+<pre><code class="language-text">swap immediately
+</code></pre>
+<p>For stateful/session components:</p>
+<pre><code class="language-text">drain
+snapshot/migrate
+start new version
+</code></pre>
+<hr />
+<h1 id="150-production-update"><a class="header" href="#150-production-update">150. Production Update</a></h1>
+<p>Use:</p>
+<pre><code class="language-text">verify
+stage
+instantiate smoke test
+migrate
+activate
+rollback on failure
+</code></pre>
+<hr />
+<h1 id="151-shadow-execution"><a class="header" href="#151-shadow-execution">151. Shadow Execution</a></h1>
+<p>Advanced:</p>
+<pre><code class="language-text">run old + new policy components
+compare output
+use old result
+</code></pre>
+<p>during canary.</p>
+<p>Useful for safe routing/business-policy upgrades.</p>
+<hr />
+<h1 id="152-canary-components"><a class="header" href="#152-canary-components">152. Canary Components</a></h1>
+<p>Enable new version for:</p>
+<pre><code class="language-text">small user/device percentage
+</code></pre>
+<p>where product supports.</p>
+<hr />
+<h1 id="153-deterministic-shadowing"><a class="header" href="#153-deterministic-shadowing">153. Deterministic Shadowing</a></h1>
+<p>Works best for pure policy components.</p>
+<hr />
+<h1 id="154-component-distribution"><a class="header" href="#154-component-distribution">154. Component Distribution</a></h1>
+<p>Component Model tooling can support packaging/distribution through registry-style systems.</p>
+<p>Architecture should allow:</p>
+<pre><code class="language-text">local file
+organization registry
+OCI-backed package source
+built-in bundle
+</code></pre>
+<p>without hard-coding one registry.</p>
+<hr />
+<h1 id="155-offline-installation"><a class="header" href="#155-offline-installation">155. Offline Installation</a></h1>
+<p>Embedded/emergency deployments need:</p>
+<pre><code class="language-text">USB
+LAN
+bundled update package
+</code></pre>
+<p>with signature verification.</p>
+<hr />
+<h1 id="156-package-manifest-vs-component-metadata"><a class="header" href="#156-package-manifest-vs-component-metadata">156. Package Manifest vs Component Metadata</a></h1>
+<p>Do not trust only embedded custom sections.</p>
+<p>Use an external signed manifest binding:</p>
+<pre><code class="language-text">component digest
+permissions
+publisher
+resource budget
+</code></pre>
+<hr />
+<h1 id="157-sbom"><a class="header" href="#157-sbom">157. SBOM</a></h1>
+<p>Third-party component package should include:</p>
+<pre><code class="language-text">dependencies
+licenses
+source/build metadata
+</code></pre>
+<p>where possible.</p>
+<hr />
+<h1 id="158-reproducible-builds"><a class="header" href="#158-reproducible-builds">158. Reproducible Builds</a></h1>
+<p>Recommended for trusted/high-risk components.</p>
+<hr />
+<h1 id="159-component-risk-classes"><a class="header" href="#159-component-risk-classes">159. Component Risk Classes</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum ComponentRiskClass {
+    Pure,
+    Stateful,
+    Networked,
+    Sensitive,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="160-pure"><a class="header" href="#160-pure">160. Pure</a></h1>
+<p>Imports:</p>
+<pre><code class="language-text">clock maybe
+no storage/network
+</code></pre>
+<p>Lowest risk.</p>
+<hr />
+<h1 id="161-stateful"><a class="header" href="#161-stateful">161. Stateful</a></h1>
+<p>Uses:</p>
+<pre><code class="language-text">component state
+</code></pre>
+<p>but no peer/network.</p>
+<hr />
+<h1 id="162-networked"><a class="header" href="#162-networked">162. Networked</a></h1>
+<p>Uses:</p>
+<pre><code class="language-text">peer protocol
+files
+DTN
+</code></pre>
+<p>Requires stronger review.</p>
+<hr />
+<h1 id="163-sensitive"><a class="header" href="#163-sensitive">163. Sensitive</a></h1>
+<p>Uses:</p>
+<pre><code class="language-text">contact metadata
+secret storage
+organization authority hooks
+</code></pre>
+<p>Strongest governance.</p>
+<hr />
+<h1 id="164-no-authority-component-by-default"><a class="header" href="#164-no-authority-component-by-default">164. No Authority Component by Default</a></h1>
+<p>A WASM component should not directly hold:</p>
+<pre><code class="language-text">root account signing authority
+emergency authority key
+</code></pre>
+<p>Prefer host-mediated signing after policy verification.</p>
+<hr />
+<h1 id="165-host-mediated-signature"><a class="header" href="#165-host-mediated-signature">165. Host-Mediated Signature</a></h1>
+<p>Component asks:</p>
+<pre><code class="language-text">sign this typed operation
+</code></pre>
+<p>Host validates operation class and identity permission.</p>
+<hr />
+<h1 id="166-signing-oracle-risk"><a class="header" href="#166-signing-oracle-risk">166. Signing Oracle Risk</a></h1>
+<p>Do not expose:</p>
+<pre><code class="language-text">sign arbitrary bytes
+</code></pre>
+<p>for sensitive identity key.</p>
+<p>Use domain-separated typed signing APIs.</p>
+<hr />
+<h1 id="167-domain-separation"><a class="header" href="#167-domain-separation">167. Domain Separation</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">sign-extension-event
+sign-authorized-document
+</code></pre>
+<p>not raw signing.</p>
+<hr />
+<h1 id="168-secure-store-handle"><a class="header" href="#168-secure-store-handle">168. Secure Store Handle</a></h1>
+<p>WIT resource can represent:</p>
+<pre><code class="language-text">secret-handle
+</code></pre>
+<p>with limited operations.</p>
+<hr />
+<h1 id="169-component-to-component-composition"><a class="header" href="#169-component-to-component-composition">169. Component-to-Component Composition</a></h1>
+<p>Component Model allows composition.</p>
+<p>Use cautiously.</p>
+<p>Example:</p>
+<pre><code class="language-text">ERP workflow component
+imports
+document validation component
+</code></pre>
+<hr />
+<h1 id="170-dependency-graph"><a class="header" href="#170-dependency-graph">170. Dependency Graph</a></h1>
+<p>Host resolves:</p>
+<pre><code class="language-text">component dependencies
+WIT versions
+publisher policy
+</code></pre>
+<hr />
+<h1 id="171-no-hidden-transitive-permissions"><a class="header" href="#171-no-hidden-transitive-permissions">171. No Hidden Transitive Permissions</a></h1>
+<p>If component A imports component B:</p>
+<pre><code class="language-text">B does not automatically inherit all A host capabilities
+</code></pre>
+<p>Capability graph must remain explicit.</p>
+<hr />
+<h1 id="172-dependency-resource-budget"><a class="header" href="#172-dependency-resource-budget">172. Dependency Resource Budget</a></h1>
+<p>Transitive components consume parent/global quota.</p>
+<hr />
+<h1 id="173-dependency-failure"><a class="header" href="#173-dependency-failure">173. Dependency Failure</a></h1>
+<p>If optional dependency fails:</p>
+<pre><code class="language-text">degrade
+</code></pre>
+<p>Required dependency:</p>
+<pre><code class="language-text">component unavailable
+</code></pre>
+<p>Core runtime unaffected.</p>
+<hr />
+<h1 id="174-dependency-cycle"><a class="header" href="#174-dependency-cycle">174. Dependency Cycle</a></h1>
+<p>Reject unsupported cycles.</p>
+<hr />
+<h1 id="175-component-registry"><a class="header" href="#175-component-registry">175. Component Registry</a></h1>
+<p>Runtime registry tracks:</p>
+<pre><code class="language-text">id
+digest
+version
+world
+publisher
+permissions
+state
+compiled cache
+</code></pre>
+<hr />
+<h1 id="176-registry-state"><a class="header" href="#176-registry-state">176. Registry State</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum ComponentInstallState {
+    Installed,
+    Enabled,
+    Disabled,
+    Failed,
+    Quarantined,
+    UpdatePending,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="177-startup"><a class="header" href="#177-startup">177. Startup</a></h1>
+<p>Daemon startup order:</p>
+<pre><code class="language-text">core recovery
+ ↓
+identity/network minimum ready
+ ↓
+component registry
+ ↓
+validate enabled components
+ ↓
+instantiate required components
+ ↓
+optional components lazily
+</code></pre>
+<hr />
+<h1 id="178-optional-components-must-not-block-ready"><a class="header" href="#178-optional-components-must-not-block-ready">178. Optional Components Must Not Block Ready</a></h1>
+<p>A broken optional component must not prevent messaging core from becoming ready.</p>
+<hr />
+<h1 id="179-required-product-component"><a class="header" href="#179-required-product-component">179. Required Product Component</a></h1>
+<p>Some product may require one component.</p>
+<p>Then:</p>
+<pre><code class="language-text">product feature unavailable
+</code></pre>
+<p>but runtime health should distinguish component failure from core corruption.</p>
+<hr />
+<h1 id="180-headless-operation"><a class="header" href="#180-headless-operation">180. Headless Operation</a></h1>
+<p>All component management and execution works without Dioxus.</p>
+<p>CLI:</p>
+<pre><code class="language-text">comm component list
+comm component inspect
+comm component enable
+comm component disable
+comm component doctor
+</code></pre>
+<hr />
+<h1 id="181-dioxus-ui"><a class="header" href="#181-dioxus-ui">181. Dioxus UI</a></h1>
+<p>Dioxus may present:</p>
+<pre><code class="language-text">component list
+permissions
+resource use
+health
+</code></pre>
+<p>but the component core is UI-neutral.</p>
+<hr />
+<h1 id="182-permission-ux"><a class="header" href="#182-permission-ux">182. Permission UX</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">This component can:
+• store up to 50 MB
+• exchange protocol data with trusted peers
+• access file references you explicitly share
+
+It cannot:
+• read your private identity keys
+• open arbitrary network sockets
+</code></pre>
+<hr />
+<h1 id="183-diagnostics-ui"><a class="header" href="#183-diagnostics-ui">183. Diagnostics UI</a></h1>
+<p>Show:</p>
+<pre><code class="language-text">Running
+Memory 12/32 MB
+State 4 MB
+Last trap none
+Version 1.3.2
+</code></pre>
+<hr />
+<h1 id="184-browser-permission-ux"><a class="header" href="#184-browser-permission-ux">184. Browser Permission UX</a></h1>
+<p>Browser host may additionally depend on:</p>
+<pre><code class="language-text">browser storage permission
+notifications
+user gesture
+</code></pre>
+<p>but maps them into same domain capability semantics.</p>
+<hr />
+<h1 id="185-serialization"><a class="header" href="#185-serialization">185. Serialization</a></h1>
+<p>At WIT boundary, prefer typed Component Model values.</p>
+<p>Do not serialize everything into Postcard merely to cross WASM boundary.</p>
+<hr />
+<h1 id="186-postcard-inside-extension-protocol"><a class="header" href="#186-postcard-inside-extension-protocol">186. Postcard Inside Extension Protocol</a></h1>
+<p>Still useful for:</p>
+<pre><code class="language-text">wire payload
+durable compact extension event
+</code></pre>
+<p>if protocol defines it.</p>
+<hr />
+<h1 id="187-ron"><a class="header" href="#187-ron">187. RON</a></h1>
+<p>Useful for:</p>
+<pre><code class="language-text">manifest
+developer configuration
+test scenario
+</code></pre>
+<p>not component call hot path.</p>
+<hr />
+<h1 id="188-json"><a class="header" href="#188-json">188. JSON</a></h1>
+<p>Use for:</p>
+<pre><code class="language-text">external diagnostic/export
+browser tooling
+</code></pre>
+<p>only where interoperability value outweighs overhead.</p>
+<hr />
+<h1 id="189-host--component-copies"><a class="header" href="#189-host--component-copies">189. Host ↔ Component Copies</a></h1>
+<p>Measure copy cost.</p>
+<p>For small structured values:</p>
+<pre><code class="language-text">fine
+</code></pre>
+<p>For large blobs:</p>
+<pre><code class="language-text">resource/stream handles
+</code></pre>
+<hr />
+<h1 id="190-batching"><a class="header" href="#190-batching">190. Batching</a></h1>
+<p>Reduce boundary crossings by:</p>
+<pre><code class="language-text">batching events
+batching policy candidates
+batching telemetry
+</code></pre>
+<hr />
+<h1 id="191-routing-policy-batch"><a class="header" href="#191-routing-policy-batch">191. Routing Policy Batch</a></h1>
+<p>Instead of:</p>
+<pre><code class="language-text">one WASM call per path metric
+</code></pre>
+<p>send:</p>
+<pre><code class="language-text">all candidates in one decision input
+</code></pre>
+<hr />
+<h1 id="192-collaboration-event-batch"><a class="header" href="#192-collaboration-event-batch">192. Collaboration Event Batch</a></h1>
+<p>Group small operations where latency permits.</p>
+<hr />
+<h1 id="193-performance-budgets"><a class="header" href="#193-performance-budgets">193. Performance Budgets</a></h1>
+<p>Benchmark:</p>
+<pre><code class="language-text">instantiation
+call overhead
+WIT conversion
+memory use
+host call latency
+</code></pre>
+<p>on:</p>
+<pre><code class="language-text">desktop
+server
+Raspberry Pi-class device
+</code></pre>
+<hr />
+<h1 id="194-do-not-use-wasm-where-slower-by-design"><a class="header" href="#194-do-not-use-wasm-where-slower-by-design">194. Do Not Use WASM Where Slower by Design</a></h1>
+<p>If benchmark shows hot-path regression with no isolation benefit:</p>
+<pre><code class="language-text">keep native
+</code></pre>
+<hr />
+<h1 id="195-safety--micro-performance-for-third-party-logic"><a class="header" href="#195-safety--micro-performance-for-third-party-logic">195. Safety &gt; Micro-Performance for Third-Party Logic</a></h1>
+<p>For untrusted extension code:</p>
+<pre><code class="language-text">moderate WASM overhead
+</code></pre>
+<p>is usually worth isolation.</p>
+<hr />
+<h1 id="196-mobile-runtime-decision"><a class="header" href="#196-mobile-runtime-decision">196. Mobile Runtime Decision</a></h1>
+<p>Do not require embedding a heavyweight WASM runtime in every mobile build unless actual product extensions need it.</p>
+<p>Feature-gate:</p>
+<pre><code class="language-text">wasm-components
+</code></pre>
+<hr />
+<h1 id="197-mobile-built-in-portable-logic"><a class="header" href="#197-mobile-built-in-portable-logic">197. Mobile Built-In Portable Logic</a></h1>
+<p>If a component is first-party and static, it may also be compiled as native Rust on mobile while using the same logical interface.</p>
+<hr />
+<h1 id="198-dual-implementation-strategy"><a class="header" href="#198-dual-implementation-strategy">198. Dual Implementation Strategy</a></h1>
+<p>For selected components:</p>
+<pre><code class="language-text">native Rust implementation
++
+WASM implementation
+</code></pre>
+<p>both satisfy shared test vectors.</p>
+<p>Use native where sandbox not needed.</p>
+<hr />
+<h1 id="199-portable-trait-model"><a class="header" href="#199-portable-trait-model">199. Portable Trait Model</a></h1>
+<p>Internal Rust can define:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait PolicyComponent {
+    fn evaluate(&amp;self, input: PolicyInput) -&gt; Result&lt;PolicyOutput, PolicyError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Adapters:</p>
+<pre><code class="language-text">NativePolicyComponent
+WasmPolicyComponent
+</code></pre>
+<hr />
+<h1 id="200-backend-transparency"><a class="header" href="#200-backend-transparency">200. Backend Transparency</a></h1>
+<p>Callers do not care whether implementation is:</p>
+<pre><code class="language-text">native
+WASM
+remote
+</code></pre>
+<p>as long as semantic contract matches.</p>
+<hr />
+<h1 id="201-native-fallback"><a class="header" href="#201-native-fallback">201. Native Fallback</a></h1>
+<p>If WASM runtime unavailable on constrained platform:</p>
+<pre><code class="language-text">built-in native components still work
+</code></pre>
+<p>Third-party WASM feature can be marked unsupported.</p>
+<hr />
+<h1 id="202-browser-fallback"><a class="header" href="#202-browser-fallback">202. Browser Fallback</a></h1>
+<p>If a WIT host capability is unavailable:</p>
+<pre><code class="language-text">component install/load reports capability missing
+</code></pre>
+<p>not runtime crash.</p>
+<hr />
+<h1 id="203-capability-compatibility"><a class="header" href="#203-capability-compatibility">203. Capability Compatibility</a></h1>
+<p>Component manifest:</p>
+<pre><code class="language-text">required capabilities
+optional capabilities
+</code></pre>
+<p>Host negotiates local availability at install/activation time.</p>
+<hr />
+<h1 id="204-required-capability-missing"><a class="header" href="#204-required-capability-missing">204. Required Capability Missing</a></h1>
+<p>Result:</p>
+<pre><code class="language-text">IncompatibleHost
+</code></pre>
+<p>with diagnostic explanation.</p>
+<hr />
+<h1 id="205-optional-capability-missing"><a class="header" href="#205-optional-capability-missing">205. Optional Capability Missing</a></h1>
+<p>Component loads with feature disabled.</p>
+<hr />
+<h1 id="206-host-version-negotiation"><a class="header" href="#206-host-version-negotiation">206. Host Version Negotiation</a></h1>
+<p>Component declares:</p>
+<pre><code class="language-text">comm:extension@1
+comm:files@2
+</code></pre>
+<p>Host selects compatible interface versions.</p>
+<hr />
+<h1 id="207-multiple-wit-versions"><a class="header" href="#207-multiple-wit-versions">207. Multiple WIT Versions</a></h1>
+<p>Host may provide:</p>
+<pre><code class="language-text">v1 adapter
+v2 native
+</code></pre>
+<p>during migration window.</p>
+<hr />
+<h1 id="208-compatibility-shim"><a class="header" href="#208-compatibility-shim">208. Compatibility Shim</a></h1>
+<p>Use explicit host adapters.</p>
+<p>Do not fake old semantics if safety changed.</p>
+<hr />
+<h1 id="209-component-conformance-package"><a class="header" href="#209-component-conformance-package">209. Component Conformance Package</a></h1>
+<p>Each stable component can ship:</p>
+<pre><code class="language-text">manifest
+WIT
+golden inputs
+expected outputs
+fuzz corpus
+state migration fixtures
+</code></pre>
+<hr />
+<h1 id="210-cross-language-components"><a class="header" href="#210-cross-language-components">210. Cross-Language Components</a></h1>
+<p>Because the Component Model is language-neutral, extension authors may eventually build components from:</p>
+<pre><code class="language-text">Rust
+C/C++
+JavaScript
+Python
+C#
+TinyGo
+other supported toolchains
+</code></pre>
+<p>Host contract remains WIT.</p>
+<hr />
+<h1 id="211-language-support-policy"><a class="header" href="#211-language-support-policy">211. Language Support Policy</a></h1>
+<p>Do not promise every language is equally production-ready.</p>
+<p>Officially support only toolchains that pass conformance and packaging tests.</p>
+<hr />
+<h1 id="212-rust-component-sdk"><a class="header" href="#212-rust-component-sdk">212. Rust Component SDK</a></h1>
+<p>Provide ergonomic crate:</p>
+<pre><code class="language-text">comm-component-sdk
+</code></pre>
+<p>that generates/uses WIT bindings.</p>
+<hr />
+<h1 id="213-sdk-apis"><a class="header" href="#213-sdk-apis">213. SDK APIs</a></h1>
+<pre><code class="language-text">state
+files
+peer session
+diagnostics
+time
+random
+notifications
+</code></pre>
+<hr />
+<h1 id="214-no-native-rust-dependency-leakage"><a class="header" href="#214-no-native-rust-dependency-leakage">214. No Native Rust Dependency Leakage</a></h1>
+<p>A third-party Rust component should not need:</p>
+<pre><code class="language-text">comm-runtime internals
+</code></pre>
+<p>Only public SDK/WIT contracts.</p>
+<hr />
+<h1 id="215-browser-sdk"><a class="header" href="#215-browser-sdk">215. Browser SDK</a></h1>
+<p>Generate TypeScript/JS bindings where component tooling supports.</p>
+<hr />
+<h1 id="216-component-test-cli"><a class="header" href="#216-component-test-cli">216. Component Test CLI</a></h1>
+<pre><code class="language-text">comm-component test component.wasm
+</code></pre>
+<p>Runs:</p>
+<pre><code class="language-text">validation
+manifest
+permissions
+golden vectors
+resource tests
+</code></pre>
+<hr />
+<h1 id="217-component-doctor"><a class="header" href="#217-component-doctor">217. Component Doctor</a></h1>
+<pre><code class="language-text">comm component doctor org.example.whiteboard
+</code></pre>
+<p>Reports:</p>
+<pre><code class="language-text">signature
+WIT compatibility
+permissions
+memory budget
+state schema
+last traps
+</code></pre>
+<hr />
+<h1 id="218-security-tests"><a class="header" href="#218-security-tests">218. Security Tests</a></h1>
+<p>Required:</p>
+<pre><code class="language-text">memory exhaustion
+infinite loop
+host-call flood
+storage quota bypass
+undeclared import
+forged package
+permission escalation
+secret access
+priority escalation
+</code></pre>
+<hr />
+<h1 id="219-infinite-loop-test"><a class="header" href="#219-infinite-loop-test">219. Infinite Loop Test</a></h1>
+<p>Component:</p>
+<pre><code class="language-text">loop {}
+</code></pre>
+<p>Expected:</p>
+<pre><code class="language-text">fuel/deadline trap
+daemon healthy
+</code></pre>
+<hr />
+<h1 id="220-memory-bomb-test"><a class="header" href="#220-memory-bomb-test">220. Memory Bomb Test</a></h1>
+<p>Component repeatedly grows memory.</p>
+<p>Expected:</p>
+<pre><code class="language-text">memory limit trap
+</code></pre>
+<hr />
+<h1 id="221-host-call-flood"><a class="header" href="#221-host-call-flood">221. Host Call Flood</a></h1>
+<p>Component requests thousands of expensive operations.</p>
+<p>Expected:</p>
+<pre><code class="language-text">rate limit
+quota
+</code></pre>
+<hr />
+<h1 id="222-storage-escape-test"><a class="header" href="#222-storage-escape-test">222. Storage Escape Test</a></h1>
+<p>Try keys/paths designed to escape namespace.</p>
+<p>Expected:</p>
+<pre><code class="language-text">impossible/rejected
+</code></pre>
+<hr />
+<h1 id="223-network-escape-test"><a class="header" href="#223-network-escape-test">223. Network Escape Test</a></h1>
+<p>Component without external network permission cannot create arbitrary sockets.</p>
+<hr />
+<h1 id="224-priority-escalation-test"><a class="header" href="#224-priority-escalation-test">224. Priority Escalation Test</a></h1>
+<p>Third-party component requests AuthorityCritical.</p>
+<p>Expected:</p>
+<pre><code class="language-text">Part 17 rejection/downgrade
+</code></pre>
+<hr />
+<h1 id="225-identity-key-test"><a class="header" href="#225-identity-key-test">225. Identity Key Test</a></h1>
+<p>No component API returns raw long-term private identity key.</p>
+<hr />
+<h1 id="226-trap-recovery-test"><a class="header" href="#226-trap-recovery-test">226. Trap Recovery Test</a></h1>
+<p>Component traps during peer session.</p>
+<p>Expected:</p>
+<pre><code class="language-text">session closed
+resources released
+core transport survives
+</code></pre>
+<hr />
+<h1 id="227-migration-trap-test"><a class="header" href="#227-migration-trap-test">227. Migration Trap Test</a></h1>
+<p>Expected:</p>
+<pre><code class="language-text">old state retained
+new version not activated
+</code></pre>
+<hr />
+<h1 id="228-update-rollback-test"><a class="header" href="#228-update-rollback-test">228. Update Rollback Test</a></h1>
+<p>New component fails smoke test.</p>
+<p>Expected:</p>
+<pre><code class="language-text">old version remains active
+</code></pre>
+<hr />
+<h1 id="229-browser-parity-test"><a class="header" href="#229-browser-parity-test">229. Browser Parity Test</a></h1>
+<p>Same pure component input on native/browser hosts.</p>
+<p>Expected:</p>
+<pre><code class="language-text">same semantic result
+</code></pre>
+<hr />
+<h1 id="230-embedded-test"><a class="header" href="#230-embedded-test">230. Embedded Test</a></h1>
+<p>Run component with low memory/fuel profile on ARM hardware.</p>
+<hr />
+<h1 id="231-performance-test"><a class="header" href="#231-performance-test">231. Performance Test</a></h1>
+<p>Ensure policy component cannot materially delay critical routing beyond configured deadline.</p>
+<p>Timeout fallback:</p>
+<pre><code class="language-text">native default policy
+</code></pre>
+<hr />
+<h1 id="232-fail-closed-vs-fail-open"><a class="header" href="#232-fail-closed-vs-fail-open">232. Fail-Closed vs Fail-Open</a></h1>
+<p>Per component function define fallback.</p>
+<p>Security policy component:</p>
+<pre><code class="language-text">fail closed
+</code></pre>
+<p>Optional routing preference:</p>
+<pre><code class="language-text">fall back to native default
+</code></pre>
+<hr />
+<h1 id="233-component-failure-policy"><a class="header" href="#233-component-failure-policy">233. Component Failure Policy</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum ComponentFailurePolicy {
+    FailClosed,
+    FallbackNative,
+    DisableFeature,
+    RetryLater,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="234-security-sensitive-components"><a class="header" href="#234-security-sensitive-components">234. Security-Sensitive Components</a></h1>
+<p>Require:</p>
+<pre><code class="language-text">trusted publisher
+strict limits
+fail-closed
+audit
+</code></pre>
+<hr />
+<h1 id="235-optional-ux-components"><a class="header" href="#235-optional-ux-components">235. Optional UX Components</a></h1>
+<p>Can:</p>
+<pre><code class="language-text">disable feature
+</code></pre>
+<p>without affecting core.</p>
+<hr />
+<h1 id="236-audit-events"><a class="header" href="#236-audit-events">236. Audit Events</a></h1>
+<p>Record:</p>
+<pre><code class="language-text">installed
+updated
+permission granted
+permission revoked
+quarantined
+publisher changed
+</code></pre>
+<hr />
+<h1 id="237-no-user-payload-in-audit"><a class="header" href="#237-no-user-payload-in-audit">237. No User Payload in Audit</a></h1>
+<p>Do not log component message/file contents.</p>
+<hr />
+<h1 id="238-backup"><a class="header" href="#238-backup">238. Backup</a></h1>
+<p>Host backup can include:</p>
+<pre><code class="language-text">component manifests
+enabled state
+component persistent state
+</code></pre>
+<p>Compiled cache excluded.</p>
+<hr />
+<h1 id="239-restore"><a class="header" href="#239-restore">239. Restore</a></h1>
+<p>If component missing:</p>
+<pre><code class="language-text">retain namespaced state
+</code></pre>
+<p>until compatible component installed.</p>
+<hr />
+<h1 id="240-uninstall"><a class="header" href="#240-uninstall">240. Uninstall</a></h1>
+<p>Options:</p>
+<pre><code class="language-text">keep state
+export
+delete
+</code></pre>
+<p>according to product/admin policy.</p>
+<hr />
+<h1 id="241-secret-state-cleanup"><a class="header" href="#241-secret-state-cleanup">241. Secret State Cleanup</a></h1>
+<p>Use best-effort deletion and revoke associated host credentials/tokens.</p>
+<hr />
+<h1 id="242-ecosystem-boundary"><a class="header" href="#242-ecosystem-boundary">242. Ecosystem Boundary</a></h1>
+<p>Part 22 defines:</p>
+<pre><code class="language-text">portable execution and host interfaces
+</code></pre>
+<p>Part 21 defines:</p>
+<pre><code class="language-text">third-party protocol semantics
+</code></pre>
+<p>Part 24 can define:</p>
+<pre><code class="language-text">plugin packaging/catalog/governance
+</code></pre>
+<p>These layers must remain separate.</p>
+<hr />
+<h1 id="243-recommended-production-defaults"><a class="header" href="#243-recommended-production-defaults">243. Recommended Production Defaults</a></h1>
+<pre><code class="language-text">native core always enabled
+WASM component runtime feature-gated
+no raw sockets
+no arbitrary filesystem
+32–64 MB default third-party memory ceiling
+bounded CPU/fuel
+namespaced state
+publisher verification
+explicit permissions
+quarantine on repeated traps
+</code></pre>
+<p>Actual memory values should be tuned per device profile.</p>
+<hr />
+<h1 id="244-embedded-defaults"><a class="header" href="#244-embedded-defaults">244. Embedded Defaults</a></h1>
+<p>Tiny node:</p>
+<pre><code class="language-text">WASM runtime disabled
+or only a few trusted AOT components
+</code></pre>
+<p>Standard edge node:</p>
+<pre><code class="language-text">sandboxed components enabled
+strict memory/fuel
+</code></pre>
+<hr />
+<h1 id="245-desktop-defaults"><a class="header" href="#245-desktop-defaults">245. Desktop Defaults</a></h1>
+<p>Allow:</p>
+<pre><code class="language-text">sandboxed signed third-party components
+</code></pre>
+<p>if product ecosystem enables plugins.</p>
+<hr />
+<h1 id="246-server-defaults"><a class="header" href="#246-server-defaults">246. Server Defaults</a></h1>
+<p>Allow:</p>
+<pre><code class="language-text">tenant-scoped components
+</code></pre>
+<p>only with strong resource isolation.</p>
+<hr />
+<h1 id="247-mobile-defaults"><a class="header" href="#247-mobile-defaults">247. Mobile Defaults</a></h1>
+<p>Initially:</p>
+<pre><code class="language-text">built-in native logic
+</code></pre>
+<p>WASM runtime enabled only if real third-party extension requirement exists.</p>
+<p>This controls binary size and complexity.</p>
+<hr />
+<h1 id="248-browser-defaults"><a class="header" href="#248-browser-defaults">248. Browser Defaults</a></h1>
+<p>Only components whose required WIT interfaces have browser implementations are loadable.</p>
+<hr />
+<h1 id="249-initial-production-scope"><a class="header" href="#249-initial-production-scope">249. Initial Production Scope</a></h1>
+<p>Implement first:</p>
+<pre><code class="language-text">WIT package definitions
+comm-component-core
+Wasmtime host adapter
+manifest + permission model
+memory limits
+fuel/deadline execution limits
+state storage
+diagnostics
+pure/stateless component support
+Part 21 extension component support
+testkit
+</code></pre>
+<p>Then:</p>
+<pre><code class="language-text">stream/resource APIs
+browser host
+AOT cache
+stateful component migrations
+package signing
+component composition
+cross-language SDKs
+</code></pre>
+<p>Defer initially:</p>
+<pre><code class="language-text">raw WASI socket access
+arbitrary filesystem access
+full UI components
+unrestricted external HTTP
+mobile third-party component marketplace
+</code></pre>
+<hr />
+<h1 id="250-implementation-phases"><a class="header" href="#250-implementation-phases">250. Implementation Phases</a></h1>
+<h2 id="phase-1--portable-contracts"><a class="header" href="#phase-1--portable-contracts">Phase 1 — Portable Contracts</a></h2>
+<pre><code class="language-text">WIT packages
+component manifest
+errors
+permissions
+</code></pre>
+<h2 id="phase-2--native-host"><a class="header" href="#phase-2--native-host">Phase 2 — Native Host</a></h2>
+<pre><code class="language-text">Wasmtime
+instantiation
+memory limiter
+fuel/deadline
+</code></pre>
+<h2 id="phase-3--host-capabilities"><a class="header" href="#phase-3--host-capabilities">Phase 3 — Host Capabilities</a></h2>
+<pre><code class="language-text">state
+clock
+random
+diagnostics
+</code></pre>
+<h2 id="phase-4--extension-integration"><a class="header" href="#phase-4--extension-integration">Phase 4 — Extension Integration</a></h2>
+<pre><code class="language-text">peer session
+files
+DTN
+routing request
+</code></pre>
+<h2 id="phase-5--persistence"><a class="header" href="#phase-5--persistence">Phase 5 — Persistence</a></h2>
+<pre><code class="language-text">state schema
+migration
+rollback
+</code></pre>
+<h2 id="phase-6--distributionsecurity"><a class="header" href="#phase-6--distributionsecurity">Phase 6 — Distribution/Security</a></h2>
+<pre><code class="language-text">signature
+publisher trust
+digest cache
+</code></pre>
+<h2 id="phase-7--browser-portability"><a class="header" href="#phase-7--browser-portability">Phase 7 — Browser Portability</a></h2>
+<pre><code class="language-text">portable host
+JS/browser adapters
+</code></pre>
+<h2 id="phase-8--hardening"><a class="header" href="#phase-8--hardening">Phase 8 — Hardening</a></h2>
+<pre><code class="language-text">fuzz
+resource abuse
+trap recovery
+cross-host conformance
+embedded tests
+</code></pre>
+<hr />
+<h1 id="251-definition-of-done"><a class="header" href="#251-definition-of-done">251. Definition of Done</a></h1>
+<p>Part 22 is complete when:</p>
+<ul>
+<li>selected protocol/business logic can run as Component Model components</li>
+<li>WIT is the stable host/guest contract</li>
+<li>native networking/hardware hot paths remain native</li>
+<li>components receive only explicitly granted capabilities</li>
+<li>arbitrary filesystem/network/process access is denied by default</li>
+<li>component memory is bounded</li>
+<li>component execution time/instructions are bounded</li>
+<li>a trapped component cannot crash the daemon</li>
+<li>persistent state is host-owned and namespaced</li>
+<li>extension private keys/core identity keys are not exposed</li>
+<li>large blobs use resources/streams rather than giant WASM copies</li>
+<li>Part 21 extensions can be implemented as sandboxed components</li>
+<li>Part 17 emergency priority remains host-authorized</li>
+<li>Part 13/08 resource and battery policy can throttle components</li>
+<li>optional component failure does not prevent core runtime readiness</li>
+<li>native and browser hosts can run the same portable component where required interfaces exist</li>
+<li>component updates/migrations can rollback safely</li>
+<li>package signatures and publisher trust can be enforced</li>
+<li>fuzz, memory bomb, infinite loop, host-call flood, permission escape, migration, and cross-host conformance tests exist</li>
+</ul>
+<hr />
+<h1 id="252-relationship-to-earlier-parts"><a class="header" href="#252-relationship-to-earlier-parts">252. Relationship to Earlier Parts</a></h1>
+<p>Part 22 builds on:</p>
+<pre><code class="language-text">01 — Protocol Extension System
+02 — Multi-Device Identity
+03 — Transport &amp; Routing Policy Engine
+04 — Offline Event Log
+05 — Robust File / Blob Subsystem
+06 — DTN / Store-Carry-Forward
+07 — Capability Negotiation
+08 — Resource Limits &amp; Backpressure
+09 — Crash Recovery
+10 — Fuzzing &amp; Protocol Test Suite
+11 — Relay / Self-Hosted Infrastructure
+12 — Multipath Networking
+13 — Battery-Aware Scheduling
+14 — Proximity Abstraction
+15 — QR / NFC Bootstrap
+16 — Daemon &amp; Headless Runtime
+17 — Emergency Priority Classes
+18 — Network Diagnostics &amp; Path Visualization
+19 — C ABI / FFI
+20 — Embedded Linux Node
+21 — Third-Party Protocol Extensions
+</code></pre>
+<p>It prepares:</p>
+<pre><code class="language-text">23 — External Interoperability Suite
+24 — Plugin / Module Ecosystem
+</code></pre>
+<hr />
+<h1 id="253-final-architecture"><a class="header" href="#253-final-architecture">253. Final Architecture</a></h1>
+<pre><code class="language-text">                      NATIVE RUST CORE
+ ┌─────────────────────────────────────────────────────────┐
+ │ Identity  Iroh  Routing  Files  DTN  Proximity  Media  │
+ └───────────────────────┬─────────────────────────────────┘
+                         │
+                 Capability Host APIs
+                         │
+                    WIT Interfaces
+                         │
+                ┌────────┴─────────┐
+                │                  │
+         WASM Component A    WASM Component B
+          Routing Policy       ERP Workflow
+                │                  │
+                └────────┬─────────┘
+                         │
+                    Sandboxed
+                  Resource Limits
+</code></pre>
+<p>Portable deployment:</p>
+<pre><code class="language-text">Same component logic
+   ├── Desktop Wasmtime host
+   ├── Server Wasmtime host
+   ├── Embedded Linux host
+   └── Browser-compatible host
+</code></pre>
+<p>only where its imported capabilities are implemented.</p>
+<hr />
+<h1 id="254-final-principle"><a class="header" href="#254-final-principle">254. Final Principle</a></h1>
+<p>The system should be able to reuse a component such as:</p>
+<pre><code class="language-text">"school ERP notification protocol"
+</code></pre>
+<p>in:</p>
+<pre><code class="language-text">desktop app
+headless server
+Raspberry Pi gateway
+browser-compatible management client
+</code></pre>
+<p>without giving that component unrestricted access to:</p>
+<pre><code class="language-text">the filesystem
+raw sockets
+identity private keys
+Bluetooth
+OS processes
+</code></pre>
+<p>At the same time, the native Rust communication engine should continue to do the work it is best at:</p>
+<pre><code class="language-text">Iroh
+QUIC
+BLE/Wi-Fi
+file streaming
+hardware integration
+AV1/media
+daemon lifecycle
+</code></pre>
+<p>The architectural split is therefore:</p>
+<pre><code class="language-text">Native Rust:
+performance + hardware + trusted core
+
+WASM Components:
+portability + isolation + extensibility
+</code></pre>
+<p>That is the purpose of Part 22: gain WebAssembly portability and sandboxing where they provide real architectural value without sacrificing the efficiency, native integration, and reliability of the core P2P platform.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="21-third-party-protocol-extensions-architecture.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="23-external-interoperability-suite-architecture.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="21-third-party-protocol-extensions-architecture.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="23-external-interoperability-suite-architecture.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

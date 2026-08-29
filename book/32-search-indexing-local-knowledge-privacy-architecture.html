@@ -1,0 +1,1963 @@
+<!DOCTYPE HTML>
+<html lang="en" class="navy" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>32 — Search, Indexing &amp; Local Privacy Retrieval - SIAR System Architecture &amp; Technical Wiki</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="Comprehensive system architecture, cryptographic protocols, DTN mesh networking, distributed storage, audio DSP pipelines, and UI/UX design specifications for SIAR.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="theme/custom.css">
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "navy";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('navy')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="Home.html">Architecture Portal & Reading Guide</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part I: Protocol Foundation & Extension Platform</li><li class="chapter-item expanded "><a href="01-protocol-extension-system-architecture.html"><strong aria-hidden="true">1.</strong> 01 — Protocol Extension System Architecture</a></li><li class="chapter-item expanded "><a href="07-capability-negotiation-architecture.html"><strong aria-hidden="true">2.</strong> 07 — Capability Negotiation & Protocol Upgrades</a></li><li class="chapter-item expanded "><a href="21-third-party-protocol-extensions-architecture.html"><strong aria-hidden="true">3.</strong> 21 — Third-Party Protocol Extensions</a></li><li class="chapter-item expanded "><a href="22-wasm-compatible-components-architecture.html"><strong aria-hidden="true">4.</strong> 22 — WebAssembly (WASM) Compatible Components</a></li><li class="chapter-item expanded "><a href="23-external-interoperability-suite-architecture.html"><strong aria-hidden="true">5.</strong> 23 — External Interoperability & Conformance Suite</a></li><li class="chapter-item expanded "><a href="24-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">6.</strong> 24 — Dynamic Plugin & Module Ecosystem</a></li><li class="chapter-item expanded affix "><li class="part-title">Part II: Identity, Trust & Cryptography</li><li class="chapter-item expanded "><a href="02-multi-device-identity-architecture.html"><strong aria-hidden="true">7.</strong> 02 — Multi-Device Identity & Trust Model</a></li><li class="chapter-item expanded "><a href="28-production-security-e2ee-key-management-privacy-architecture.html"><strong aria-hidden="true">8.</strong> 28 — Production Security, E2EE, Key Management & Privacy</a></li><li class="chapter-item expanded affix "><li class="part-title">Part III: Mesh Networking, Transports & Hardware</li><li class="chapter-item expanded "><a href="03-transport-routing-policy-engine-architecture.html"><strong aria-hidden="true">9.</strong> 03 — Transport & Routing Policy Engine</a></li><li class="chapter-item expanded "><a href="11-relay-self-hosted-infrastructure-architecture.html"><strong aria-hidden="true">10.</strong> 11 — Self-Hosted Relay & Coordination Infrastructure</a></li><li class="chapter-item expanded "><a href="12-multipath-networking-architecture.html"><strong aria-hidden="true">11.</strong> 12 — Multipath Networking & Link Aggregation</a></li><li class="chapter-item expanded "><a href="13-battery-aware-scheduling-architecture.html"><strong aria-hidden="true">12.</strong> 13 — Battery-Aware Scheduling & Power Profiles</a></li><li class="chapter-item expanded "><a href="14-proximity-abstraction-architecture.html"><strong aria-hidden="true">13.</strong> 14 — Proximity Abstraction (BLE, Wi-Fi Direct, LoRa)</a></li><li class="chapter-item expanded "><a href="15-qr-nfc-bootstrap-pairing-architecture.html"><strong aria-hidden="true">14.</strong> 15 — Out-of-Band QR & NFC Bootstrap Pairing</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IV: Delay-Tolerant Networking & Emergency Mesh</li><li class="chapter-item expanded "><a href="06-dtn-store-carry-forward-architecture.html"><strong aria-hidden="true">15.</strong> 06 — DTN Store-Carry-Forward & Bundle Forwarding</a></li><li class="chapter-item expanded "><a href="17-emergency-priority-classes-architecture.html"><strong aria-hidden="true">16.</strong> 17 — Emergency Priority Classes & Critical Alert Mesh</a></li><li class="chapter-item expanded affix "><li class="part-title">Part V: Storage, Outbox & Data Lifecycle</li><li class="chapter-item expanded "><a href="04-offline-event-log-architecture.html"><strong aria-hidden="true">17.</strong> 04 — Offline Event Log & Sync Engine</a></li><li class="chapter-item expanded "><a href="05-robust-file-blob-subsystem-architecture.html"><strong aria-hidden="true">18.</strong> 05 — Robust File & Blob Subsystem (Chunking & Resumption)</a></li><li class="chapter-item expanded "><a href="09-crash-recovery-architecture.html"><strong aria-hidden="true">19.</strong> 09 — Crash Recovery & State Integrity</a></li><li class="chapter-item expanded "><a href="32-search-indexing-local-knowledge-privacy-architecture.html" class="active"><strong aria-hidden="true">20.</strong> 32 — Search, Indexing & Local Privacy Retrieval</a></li><li class="chapter-item expanded "><a href="33-backup-restore-export-import-archival-portability-architecture.html"><strong aria-hidden="true">21.</strong> 33 — Backup, Restore, Export & Long-Term Archival</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VI: Realtime Media, Calling & Audio DSP</li><li class="chapter-item expanded "><a href="25-android-direct-hardware-surface-zero-copy-media-architecture.html"><strong aria-hidden="true">22.</strong> 25 — Android Direct Surface Zero-Copy Media</a></li><li class="chapter-item expanded "><a href="26-rust-first-audio-dsp-resampling-aec-ns-agc-architecture.html"><strong aria-hidden="true">23.</strong> 26 — Rust-First Audio DSP (AEC, NS, AGC, Resampling)</a></li><li class="chapter-item expanded "><a href="29-realtime-calls-media-session-protocol-architecture.html"><strong aria-hidden="true">24.</strong> 29 — Realtime Calls & Media Session Protocol</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VII: Ephemeral State, Presence & Notifications</li><li class="chapter-item expanded "><a href="30-presence-availability-typing-read-receipts-ephemeral-state-architecture.html"><strong aria-hidden="true">25.</strong> 30 — Presence, Availability, Typing & Read Receipts</a></li><li class="chapter-item expanded "><a href="31-notifications-push-background-delivery-lifecycle-architecture.html"><strong aria-hidden="true">26.</strong> 31 — Notifications, Push Wake & Background Delivery</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VIII: Native Runtimes, Daemons & Embedded Linux</li><li class="chapter-item expanded "><a href="16-daemon-headless-runtime-architecture.html"><strong aria-hidden="true">27.</strong> 16 — Headless Daemon & Background Runtime</a></li><li class="chapter-item expanded "><a href="19-c-abi-ffi-architecture.html"><strong aria-hidden="true">28.</strong> 19 — C-ABI FFI & Native Language Interop</a></li><li class="chapter-item expanded "><a href="20-embedded-linux-node-architecture.html"><strong aria-hidden="true">29.</strong> 20 — Embedded Linux Node & Resource-Constrained Targets</a></li><li class="chapter-item expanded "><a href="27-rust-driven-android-native-build-packaging-automation.html"><strong aria-hidden="true">30.</strong> 27 — Rust-Driven Android Native Build & Packaging Automation</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IX: Reliability, Testing, Fuzzing & Diagnostics</li><li class="chapter-item expanded "><a href="08-resource-limits-backpressure-architecture.html"><strong aria-hidden="true">31.</strong> 08 — Resource Limits, Quotas & Backpressure</a></li><li class="chapter-item expanded "><a href="10-fuzzing-protocol-test-suite-architecture.html"><strong aria-hidden="true">32.</strong> 10 — Fuzzing & Protocol Test Suite</a></li><li class="chapter-item expanded "><a href="18-network-diagnostics-path-visualization-architecture.html"><strong aria-hidden="true">33.</strong> 18 — Network Diagnostics & Path Visualization</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part X: UI/UX Client Architecture (Cross-Platform)</li><li class="chapter-item expanded "><a href="ui-ux-01-product-foundation-cross-platform-interaction-architecture.html"><strong aria-hidden="true">34.</strong> UI/UX 01 — Product UX Foundation & Cross-Platform Interaction</a></li><li class="chapter-item expanded "><a href="ui-ux-02-desktop-dioxus-app-shell-navigation-window-architecture.html"><strong aria-hidden="true">35.</strong> UI/UX 02 — Desktop Dioxus App Shell & Navigation</a></li><li class="chapter-item expanded "><a href="ui-ux-03-android-jetpack-compose-app-shell-navigation-lifecycle-architecture.html"><strong aria-hidden="true">36.</strong> UI/UX 03 — Android Jetpack Compose App Shell & Lifecycle</a></li><li class="chapter-item expanded "><a href="ui-ux-04-conversation-list-inbox-architecture.html"><strong aria-hidden="true">37.</strong> UI/UX 04 — Conversation List & Inbox UX</a></li><li class="chapter-item expanded "><a href="ui-ux-05-conversation-message-timeline-architecture.html"><strong aria-hidden="true">38.</strong> UI/UX 05 — Conversation Message Timeline UX</a></li><li class="chapter-item expanded "><a href="ui-ux-06-message-composer-attachments-voice-notes-drafts-architecture.html"><strong aria-hidden="true">39.</strong> UI/UX 06 — Message Composer, Attachments & Voice Notes</a></li><li class="chapter-item expanded "><a href="ui-ux-07-calls-realtime-media-architecture.html"><strong aria-hidden="true">40.</strong> UI/UX 07 — Calls & Realtime Media UX</a></li><li class="chapter-item expanded "><a href="ui-ux-08-contacts-requests-verification-identity-architecture.html"><strong aria-hidden="true">41.</strong> UI/UX 08 — Contacts, Requests, Verification & Identity</a></li><li class="chapter-item expanded "><a href="ui-ux-09-groups-membership-roles-architecture.html"><strong aria-hidden="true">42.</strong> UI/UX 09 — Groups, Membership & Roles UX</a></li><li class="chapter-item expanded "><a href="ui-ux-10-files-media-gallery-transfer-architecture.html"><strong aria-hidden="true">43.</strong> UI/UX 10 — Files, Media Gallery & Transfer UX</a></li><li class="chapter-item expanded "><a href="ui-ux-11-search-local-knowledge-retrieval-architecture.html"><strong aria-hidden="true">44.</strong> UI/UX 11 — Search & Local Knowledge Retrieval UX</a></li><li class="chapter-item expanded "><a href="ui-ux-12-nearby-qr-nfc-pairing-device-linking-architecture.html"><strong aria-hidden="true">45.</strong> UI/UX 12 — Nearby, QR/NFC Pairing & Device Linking UX</a></li><li class="chapter-item expanded "><a href="ui-ux-13-notifications-background-incoming-call-architecture.html"><strong aria-hidden="true">46.</strong> UI/UX 13 — Notifications, Background & Incoming Call UX</a></li><li class="chapter-item expanded "><a href="ui-ux-14-presence-typing-receipts-status-architecture.html"><strong aria-hidden="true">47.</strong> UI/UX 14 — Presence, Typing, Receipts & Status UX</a></li><li class="chapter-item expanded "><a href="ui-ux-15-security-center-devices-keys-recovery-architecture.html"><strong aria-hidden="true">48.</strong> UI/UX 15 — Security Center, Devices, Keys & Recovery UX</a></li><li class="chapter-item expanded "><a href="ui-ux-16-backup-restore-export-migration-architecture.html"><strong aria-hidden="true">49.</strong> UI/UX 16 — Backup, Restore, Export & Migration UX</a></li><li class="chapter-item expanded "><a href="ui-ux-17-emergency-sos-offline-mesh-architecture.html"><strong aria-hidden="true">50.</strong> UI/UX 17 — Emergency / SOS / Offline Mesh UX</a></li><li class="chapter-item expanded "><a href="ui-ux-18-settings-privacy-notifications-data-controls-architecture.html"><strong aria-hidden="true">51.</strong> UI/UX 18 — Settings, Privacy, Notifications & Data Controls</a></li><li class="chapter-item expanded "><a href="ui-ux-19-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">52.</strong> UI/UX 19 — Plugin & Module Ecosystem UX</a></li><li class="chapter-item expanded "><a href="ui-ux-20-diagnostics-network-paths-advanced-developer-architecture.html"><strong aria-hidden="true">53.</strong> UI/UX 20 — Diagnostics, Network Paths & Developer UX</a></li><li class="chapter-item expanded "><a href="ui-ux-21-accessibility-inclusive-interaction-architecture.html"><strong aria-hidden="true">54.</strong> UI/UX 21 — Accessibility & Inclusive Interaction</a></li><li class="chapter-item expanded "><a href="ui-ux-22-design-system-tokens-typography-icons-motion-architecture.html"><strong aria-hidden="true">55.</strong> UI/UX 22 — Design System, Tokens, Typography & Motion</a></li><li class="chapter-item expanded "><a href="ui-ux-23-responsive-adaptive-desktop-tablet-foldable-phone-layout-architecture.html"><strong aria-hidden="true">56.</strong> UI/UX 23 — Responsive & Adaptive Layouts (Desktop/Tablet/Foldable/Phone)</a></li><li class="chapter-item expanded "><a href="ui-ux-24-error-loading-empty-offline-degraded-state-architecture.html"><strong aria-hidden="true">57.</strong> UI/UX 24 — Error, Loading, Empty & Degraded-State UX</a></li><li class="chapter-item expanded "><a href="ui-ux-25-onboarding-first-run-permission-education-architecture.html"><strong aria-hidden="true">58.</strong> UI/UX 25 — Onboarding, First Run & Permission Education</a></li><li class="chapter-item expanded "><a href="ui-ux-26-performance-virtualization-large-data-ui-architecture.html"><strong aria-hidden="true">59.</strong> UI/UX 26 — Virtualization & Large-Data UI Performance</a></li><li class="chapter-item expanded "><a href="ui-ux-27-ui-testing-screenshot-interaction-release-quality-gates-architecture.html"><strong aria-hidden="true">60.</strong> UI/UX 27 — UI Testing, Screenshots & Release Quality Gates</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">SIAR System Architecture &amp; Technical Wiki</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar/edit/main/sys-arch/32-search-indexing-local-knowledge-privacy-architecture.md" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="part-32--search-indexing-local-knowledge-retrieval--privacy-preserving-discovery-architecture"><a class="header" href="#part-32--search-indexing-local-knowledge-retrieval--privacy-preserving-discovery-architecture">Part 32 — Search, Indexing, Local Knowledge Retrieval &amp; Privacy-Preserving Discovery Architecture</a></h1>
+<h2 id="reusable-p2p-communication-platform"><a class="header" href="#reusable-p2p-communication-platform">Reusable P2P Communication Platform</a></h2>
+<p><strong>Status:</strong> Architecture specification<br />
+<strong>Part:</strong> 32<br />
+<strong>Primary language:</strong> Rust<br />
+<strong>Primary purpose:</strong> provide fast, private, local-first search and retrieval across messages, files, attachments, contacts, call metadata, plugin-owned data, and optionally local semantic knowledge without weakening end-to-end encryption<br />
+<strong>Primary goals:</strong> incremental local indexing, encrypted/private search state, deterministic rebuilds, offline operation, bounded resource use, fast full-text retrieval, optional semantic/vector retrieval, attachment metadata discovery, message edit/delete handling, multi-device behavior, background indexing, and strict prohibition on server-side plaintext indexing of E2EE data by default</p>
+<hr />
+<h1 id="1-purpose"><a class="header" href="#1-purpose">1. Purpose</a></h1>
+<p>A production communication platform eventually contains a large amount of user-owned information:</p>
+<pre><code class="language-text">messages
+files
+attachments
+voice-note metadata
+call history
+contacts
+group names
+links
+documents
+plugin data
+ERP events
+shared notes
+</code></pre>
+<p>Without a dedicated search architecture, users end up with:</p>
+<pre><code class="language-text">slow linear scans
+inconsistent results
+large memory use
+stale indexes
+privacy leakage
+server-side plaintext search
+</code></pre>
+<p>The governing principle is:</p>
+<blockquote>
+<p><strong>Search should be local-first, rebuildable, privacy-preserving, and derived from authoritative encrypted/durable state.</strong></p>
+</blockquote>
+<hr />
+<h1 id="2-architectural-position"><a class="header" href="#2-architectural-position">2. Architectural Position</a></h1>
+<pre><code class="language-text">Authoritative Durable State
+        │
+        ├── Messages
+        ├── Files
+        ├── Contacts
+        ├── Calls
+        └── Plugin data
+        │
+        ▼
+   Indexing Pipeline
+        │
+        ▼
+   Local Search Index
+        │
+        ▼
+  Query / Ranking Engine
+        │
+        ▼
+      Dioxus UI
+</code></pre>
+<p>Optional semantic layer:</p>
+<pre><code class="language-text">Local Content
+    ↓
+Embedding / Feature Extraction
+    ↓
+Local Vector Index
+    ↓
+Semantic Retrieval
+</code></pre>
+<hr />
+<h1 id="3-search-is-derived-state"><a class="header" href="#3-search-is-derived-state">3. Search Is Derived State</a></h1>
+<p>The search index is not authoritative.</p>
+<p>If lost or corrupted:</p>
+<pre><code class="language-text">rebuild from durable source
+</code></pre>
+<p>This is a major architectural invariant.</p>
+<hr />
+<h1 id="4-search-domains"><a class="header" href="#4-search-domains">4. Search Domains</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum SearchDomain {
+    Messages,
+    Files,
+    Contacts,
+    Calls,
+    Groups,
+    Links,
+    PluginData,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="5-search-scope"><a class="header" href="#5-search-scope">5. Search Scope</a></h1>
+<p>User may search:</p>
+<pre><code class="language-text">everything
+current conversation
+one group
+one contact
+one file type
+date range
+sender
+</code></pre>
+<hr />
+<h1 id="6-search-query"><a class="header" href="#6-search-query">6. Search Query</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct SearchQuery {
+    pub text: String,
+    pub scope: SearchScope,
+    pub filters: SearchFilters,
+    pub limit: usize,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="7-search-scope-types"><a class="header" href="#7-search-scope-types">7. Search Scope Types</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum SearchScope {
+    Global,
+    Conversation(ConversationId),
+    Group(GroupId),
+    Contact(AccountId),
+    Domain(SearchDomain),
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="8-filters"><a class="header" href="#8-filters">8. Filters</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct SearchFilters {
+    pub sender: Option&lt;AccountId&gt;,
+    pub after: Option&lt;Timestamp&gt;,
+    pub before: Option&lt;Timestamp&gt;,
+    pub file_types: Vec&lt;FileType&gt;,
+    pub has_attachment: Option&lt;bool&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="9-text-search"><a class="header" href="#9-text-search">9. Text Search</a></h1>
+<p>Baseline:</p>
+<pre><code class="language-text">tokenized full-text search
+prefix search
+phrase search
+field-aware filtering
+</code></pre>
+<hr />
+<h1 id="10-local-fts"><a class="header" href="#10-local-fts">10. Local FTS</a></h1>
+<p>Use a local embedded index.</p>
+<p>The exact backend may be:</p>
+<pre><code class="language-text">SQLite FTS
+Tantivy
+custom inverted index
+</code></pre>
+<p>depending product/DB choices.</p>
+<p>Architecture remains backend-neutral.</p>
+<hr />
+<h1 id="11-search-backend-trait"><a class="header" href="#11-search-backend-trait">11. Search Backend Trait</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait SearchIndex {
+    fn upsert(&amp;mut self, doc: SearchDocument) -&gt; Result&lt;(), SearchError&gt;;
+    fn delete(&amp;mut self, id: SearchDocumentId) -&gt; Result&lt;(), SearchError&gt;;
+    fn query(&amp;self, q: &amp;SearchQuery) -&gt; Result&lt;Vec&lt;SearchHit&gt;, SearchError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="12-search-document"><a class="header" href="#12-search-document">12. Search Document</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct SearchDocument {
+    pub id: SearchDocumentId,
+    pub domain: SearchDomain,
+    pub text: String,
+    pub metadata: SearchMetadata,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="13-stable-search-ids"><a class="header" href="#13-stable-search-ids">13. Stable Search IDs</a></h1>
+<p>Do not use backend row IDs as product identity.</p>
+<p>Use logical IDs:</p>
+<pre><code class="language-text">MessageId
+BlobId
+ConversationId
+ContactId
+</code></pre>
+<p>wrapped into <code>SearchDocumentId</code>.</p>
+<hr />
+<h1 id="14-message-indexing"><a class="header" href="#14-message-indexing">14. Message Indexing</a></h1>
+<p>Index:</p>
+<pre><code class="language-text">message body
+sender display name optionally
+attachment names
+links
+selected metadata
+</code></pre>
+<p>Do not index hidden/system secrets.</p>
+<hr />
+<h1 id="15-edited-messages"><a class="header" href="#15-edited-messages">15. Edited Messages</a></h1>
+<p>When message changes:</p>
+<pre><code class="language-text">same document ID
+→ update index
+</code></pre>
+<p>No duplicate old result.</p>
+<hr />
+<h1 id="16-deleted-messages"><a class="header" href="#16-deleted-messages">16. Deleted Messages</a></h1>
+<p>On deletion:</p>
+<pre><code class="language-text">remove from search index
+</code></pre>
+<p>according to actual local deletion semantics.</p>
+<hr />
+<h1 id="17-expiring-messages"><a class="header" href="#17-expiring-messages">17. Expiring Messages</a></h1>
+<p>When expired:</p>
+<pre><code class="language-text">delete search entry
+</code></pre>
+<p>along with durable content/key erasure policy.</p>
+<hr />
+<h1 id="18-file-indexing"><a class="header" href="#18-file-indexing">18. File Indexing</a></h1>
+<p>File search may include:</p>
+<pre><code class="language-text">filename
+MIME
+caption
+size
+sender
+conversation
+creation date
+</code></pre>
+<hr />
+<h1 id="19-file-content-search"><a class="header" href="#19-file-content-search">19. File Content Search</a></h1>
+<p>Optional.</p>
+<p>Only index document contents if:</p>
+<pre><code class="language-text">user has local plaintext access
+supported file parser exists
+resource budget allows
+</code></pre>
+<hr />
+<h1 id="20-file-parsing"><a class="header" href="#20-file-parsing">20. File Parsing</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">PDF text
+plain text
+Markdown
+office document text
+</code></pre>
+<p>through sandboxed parser modules.</p>
+<hr />
+<h1 id="21-untrusted-file-parsing"><a class="header" href="#21-untrusted-file-parsing">21. Untrusted File Parsing</a></h1>
+<p>Attachments are untrusted input.</p>
+<p>Use:</p>
+<pre><code class="language-text">bounded parsers
+sandbox/WASM where practical
+timeouts
+size limits
+</code></pre>
+<hr />
+<h1 id="22-ocr"><a class="header" href="#22-ocr">22. OCR</a></h1>
+<p>If future OCR exists:</p>
+<pre><code class="language-text">local OCR
+</code></pre>
+<p>can feed index.</p>
+<p>Do not require cloud OCR for core functionality.</p>
+<hr />
+<h1 id="23-voice-notes"><a class="header" href="#23-voice-notes">23. Voice Notes</a></h1>
+<p>Baseline index:</p>
+<pre><code class="language-text">sender
+time
+duration
+caption
+</code></pre>
+<p>Optional local transcription later.</p>
+<hr />
+<h1 id="24-local-transcription"><a class="header" href="#24-local-transcription">24. Local Transcription</a></h1>
+<p>If on-device speech recognition added:</p>
+<pre><code class="language-text">transcript
+→ local index
+</code></pre>
+<p>User should understand storage/privacy implications.</p>
+<hr />
+<h1 id="25-calls"><a class="header" href="#25-calls">25. Calls</a></h1>
+<p>Index call metadata only:</p>
+<pre><code class="language-text">participant
+date
+duration
+call type
+</code></pre>
+<p>Do not index audio/video unless user created transcription/notes explicitly.</p>
+<hr />
+<h1 id="26-contacts"><a class="header" href="#26-contacts">26. Contacts</a></h1>
+<p>Index:</p>
+<pre><code class="language-text">display name
+aliases
+organization
+user-added notes
+</code></pre>
+<p>according to privacy policy.</p>
+<hr />
+<h1 id="27-groups"><a class="header" href="#27-groups">27. Groups</a></h1>
+<p>Index:</p>
+<pre><code class="language-text">group name
+description
+member names optionally
+</code></pre>
+<hr />
+<h1 id="28-plugin-data"><a class="header" href="#28-plugin-data">28. Plugin Data</a></h1>
+<p>Plugins can register searchable fields only through explicit API.</p>
+<p>They do not get raw access to core search index.</p>
+<hr />
+<h1 id="29-plugin-search-namespace"><a class="header" href="#29-plugin-search-namespace">29. Plugin Search Namespace</a></h1>
+<pre><code class="language-text">PluginId
++
+document type
+</code></pre>
+<hr />
+<h1 id="30-plugin-permission"><a class="header" href="#30-plugin-permission">30. Plugin Permission</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">SearchIndexOwnData
+</code></pre>
+<p>Default:</p>
+<pre><code class="language-text">own namespace only
+</code></pre>
+<hr />
+<h1 id="31-no-cross-plugin-search-access"><a class="header" href="#31-no-cross-plugin-search-access">31. No Cross-Plugin Search Access</a></h1>
+<p>One plugin cannot enumerate another plugin's index.</p>
+<hr />
+<h1 id="32-search-index-privacy"><a class="header" href="#32-search-index-privacy">32. Search Index Privacy</a></h1>
+<p>A plaintext local FTS index may expose message content if the device storage is stolen.</p>
+<p>This is a real security trade-off.</p>
+<hr />
+<h1 id="33-privacy-modes"><a class="header" href="#33-privacy-modes">33. Privacy Modes</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum SearchPrivacyMode {
+    FastLocal,
+    EncryptedIndex,
+    RebuildOnUnlock,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="34-fastlocal"><a class="header" href="#34-fastlocal">34. FastLocal</a></h1>
+<p>Index stored locally with OS/app storage protection.</p>
+<p>Fastest and simplest.</p>
+<hr />
+<h1 id="35-encryptedindex"><a class="header" href="#35-encryptedindex">35. EncryptedIndex</a></h1>
+<p>Search index itself encrypted at rest.</p>
+<p>Requires backend/architecture support.</p>
+<hr />
+<h1 id="36-rebuildonunlock"><a class="header" href="#36-rebuildonunlock">36. RebuildOnUnlock</a></h1>
+<p>High-security option:</p>
+<pre><code class="language-text">no persistent plaintext index
+</code></pre>
+<p>Rebuild selected searchable state after unlock.</p>
+<p>Potentially expensive.</p>
+<hr />
+<h1 id="37-recommended-default"><a class="header" href="#37-recommended-default">37. Recommended Default</a></h1>
+<p>Use:</p>
+<pre><code class="language-text">local index
++
+encrypted device storage / app DB protection
+</code></pre>
+<p>and document risk.</p>
+<p>Do not send plaintext index to server.</p>
+<hr />
+<h1 id="38-server-side-search"><a class="header" href="#38-server-side-search">38. Server-Side Search</a></h1>
+<p>Default:</p>
+<pre><code class="language-text">unsupported for E2EE plaintext
+</code></pre>
+<p>Server may search only:</p>
+<pre><code class="language-text">non-sensitive public metadata
+encrypted opaque IDs
+explicit organization-managed data
+</code></pre>
+<hr />
+<h1 id="39-search-is-not-an-e2ee-backdoor"><a class="header" href="#39-search-is-not-an-e2ee-backdoor">39. Search Is Not an E2EE Backdoor</a></h1>
+<p>Never upload:</p>
+<pre><code class="language-text">message plaintext
+tokenized keywords
+embeddings
+</code></pre>
+<p>to server by default.</p>
+<p>Embeddings can leak content semantics.</p>
+<hr />
+<h1 id="40-semantic-search"><a class="header" href="#40-semantic-search">40. Semantic Search</a></h1>
+<p>Optional local feature.</p>
+<p>Examples:</p>
+<pre><code class="language-text">"find the conversation about school fee policy"
+"show the file about emergency routing"
+</code></pre>
+<hr />
+<h1 id="41-semantic-retrieval-architecture"><a class="header" href="#41-semantic-retrieval-architecture">41. Semantic Retrieval Architecture</a></h1>
+<pre><code class="language-text">Local plaintext content
+      ↓
+Local embedding model
+      ↓
+Vector
+      ↓
+Local vector index
+      ↓
+Similarity search
+</code></pre>
+<hr />
+<h1 id="42-local-only-embeddings"><a class="header" href="#42-local-only-embeddings">42. Local-Only Embeddings</a></h1>
+<p>Default:</p>
+<pre><code class="language-text">generated on device
+stored on device
+</code></pre>
+<hr />
+<h1 id="43-embeddings-are-sensitive"><a class="header" href="#43-embeddings-are-sensitive">43. Embeddings Are Sensitive</a></h1>
+<p>Even though embeddings are not plaintext, they can reveal semantic information.</p>
+<p>Treat them as sensitive derived data.</p>
+<hr />
+<h1 id="44-vector-index-privacy"><a class="header" href="#44-vector-index-privacy">44. Vector Index Privacy</a></h1>
+<p>Protect like:</p>
+<pre><code class="language-text">message content
+</code></pre>
+<hr />
+<h1 id="45-semantic-search-optionality"><a class="header" href="#45-semantic-search-optionality">45. Semantic Search Optionality</a></h1>
+<p>Core messenger must not depend on semantic search.</p>
+<p>Feature-gate:</p>
+<pre><code class="language-text">semantic-search
+</code></pre>
+<hr />
+<h1 id="46-model-runtime"><a class="header" href="#46-model-runtime">46. Model Runtime</a></h1>
+<p>Prefer local Rust-compatible inference runtime if viable.</p>
+<p>If platform-native accelerator is easier:</p>
+<pre><code class="language-text">narrow adapter
+</code></pre>
+<p>is acceptable.</p>
+<hr />
+<h1 id="47-rust-first-rule"><a class="header" href="#47-rust-first-rule">47. Rust-First Rule</a></h1>
+<p>Use Rust for:</p>
+<pre><code class="language-text">chunking
+index orchestration
+vector storage
+ranking
+query fusion
+</code></pre>
+<p>Platform/native model runtime only if needed.</p>
+<hr />
+<h1 id="48-embedding-model-version"><a class="header" href="#48-embedding-model-version">48. Embedding Model Version</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct EmbeddingModelVersion(String);
+<span class="boring">}</span></code></pre></pre>
+<p>Index entries bind to model version.</p>
+<hr />
+<h1 id="49-model-upgrade"><a class="header" href="#49-model-upgrade">49. Model Upgrade</a></h1>
+<p>Changing embedding model requires:</p>
+<pre><code class="language-text">re-embedding
+</code></pre>
+<p>Do not compare vectors from incompatible models blindly.</p>
+<hr />
+<h1 id="50-embedding-index-rebuild"><a class="header" href="#50-embedding-index-rebuild">50. Embedding Index Rebuild</a></h1>
+<p>Background/rebuildable.</p>
+<hr />
+<h1 id="51-hybrid-search"><a class="header" href="#51-hybrid-search">51. Hybrid Search</a></h1>
+<p>Combine:</p>
+<pre><code class="language-text">keyword FTS
++
+semantic vector
+</code></pre>
+<p>for stronger results.</p>
+<hr />
+<h1 id="52-ranking"><a class="header" href="#52-ranking">52. Ranking</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">text relevance
+semantic similarity
+recency
+conversation relevance
+sender match
+</code></pre>
+<hr />
+<h1 id="53-ranking-policy"><a class="header" href="#53-ranking-policy">53. Ranking Policy</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait SearchRanker {
+    fn rank(
+        &amp;self,
+        candidates: &amp;mut [SearchHit],
+        ctx: &amp;SearchContext,
+    );
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="54-deterministic-baseline-ranking"><a class="header" href="#54-deterministic-baseline-ranking">54. Deterministic Baseline Ranking</a></h1>
+<p>Start with explainable ranking.</p>
+<p>Avoid opaque AI ranker as required dependency.</p>
+<hr />
+<h1 id="55-search-hit"><a class="header" href="#55-search-hit">55. Search Hit</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct SearchHit {
+    pub id: SearchDocumentId,
+    pub score: f32,
+    pub domain: SearchDomain,
+    pub snippet: Option&lt;String&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="56-snippets"><a class="header" href="#56-snippets">56. Snippets</a></h1>
+<p>Generate locally.</p>
+<p>Do not persist giant highlighted snippets.</p>
+<hr />
+<h1 id="57-highlighting"><a class="header" href="#57-highlighting">57. Highlighting</a></h1>
+<p>Query:</p>
+<pre><code class="language-text">architecture
+</code></pre>
+<p>result:</p>
+<pre><code class="language-text">"... complete system and architecture ..."
+</code></pre>
+<hr />
+<h1 id="58-tokenization"><a class="header" href="#58-tokenization">58. Tokenization</a></h1>
+<p>Need language-aware tokenization strategy.</p>
+<p>Start with robust Unicode tokenization.</p>
+<hr />
+<h1 id="59-unicode"><a class="header" href="#59-unicode">59. Unicode</a></h1>
+<p>Handle:</p>
+<pre><code class="language-text">Latin
+Devanagari
+Arabic
+CJK
+emoji
+mixed scripts
+</code></pre>
+<p>without ASCII-only assumptions.</p>
+<hr />
+<h1 id="60-normalization"><a class="header" href="#60-normalization">60. Normalization</a></h1>
+<p>Search normalization may include:</p>
+<pre><code class="language-text">case folding
+Unicode normalization
+</code></pre>
+<p>but message identity/storage remains unchanged.</p>
+<hr />
+<h1 id="61-accent-handling"><a class="header" href="#61-accent-handling">61. Accent Handling</a></h1>
+<p>Optional accent-insensitive search.</p>
+<hr />
+<h1 id="62-stemming"><a class="header" href="#62-stemming">62. Stemming</a></h1>
+<p>Language-specific stemming may improve search.</p>
+<p>Do not apply wrong stemmer globally.</p>
+<hr />
+<h1 id="63-multilingual-search"><a class="header" href="#63-multilingual-search">63. Multilingual Search</a></h1>
+<p>Store analyzer metadata per document/language if needed.</p>
+<hr />
+<h1 id="64-language-detection"><a class="header" href="#64-language-detection">64. Language Detection</a></h1>
+<p>Optional.</p>
+<p>Avoid expensive model if simple heuristics suffice.</p>
+<hr />
+<h1 id="65-exact-search"><a class="header" href="#65-exact-search">65. Exact Search</a></h1>
+<p>Support quoting:</p>
+<pre><code class="language-text">"store carry forward"
+</code></pre>
+<hr />
+<h1 id="66-prefix-search"><a class="header" href="#66-prefix-search">66. Prefix Search</a></h1>
+<p>Useful for:</p>
+<pre><code class="language-text">contact names
+filenames
+</code></pre>
+<hr />
+<h1 id="67-fuzzy-search"><a class="header" href="#67-fuzzy-search">67. Fuzzy Search</a></h1>
+<p>Optional limited edit distance.</p>
+<p>Avoid expensive global fuzzy query on giant dataset.</p>
+<hr />
+<h1 id="68-typo-tolerance"><a class="header" href="#68-typo-tolerance">68. Typo Tolerance</a></h1>
+<p>Good for contact/file names.</p>
+<hr />
+<h1 id="69-filtered-search"><a class="header" href="#69-filtered-search">69. Filtered Search</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">from:Alice has:file after:2026-01-01
+</code></pre>
+<p>Product may expose graphical filters instead of query syntax.</p>
+<hr />
+<h1 id="70-query-parser"><a class="header" href="#70-query-parser">70. Query Parser</a></h1>
+<p>If advanced syntax supported:</p>
+<pre><code class="language-text">strict parser
+typed filters
+</code></pre>
+<p>No arbitrary backend query injection.</p>
+<hr />
+<h1 id="71-search-query-limits"><a class="header" href="#71-search-query-limits">71. Search Query Limits</a></h1>
+<p>Bound:</p>
+<pre><code class="language-text">query length
+token count
+filter count
+result limit
+</code></pre>
+<hr />
+<h1 id="72-search-resource-limits"><a class="header" href="#72-search-resource-limits">72. Search Resource Limits</a></h1>
+<p>Part 08 applies:</p>
+<pre><code class="language-text">CPU time
+memory
+index bytes
+parallel queries
+background index work
+</code></pre>
+<hr />
+<h1 id="73-cancellation"><a class="header" href="#73-cancellation">73. Cancellation</a></h1>
+<p>Search should be cancellable as user types.</p>
+<hr />
+<h1 id="74-incremental-query"><a class="header" href="#74-incremental-query">74. Incremental Query</a></h1>
+<p>Dioxus search box:</p>
+<pre><code class="language-text">i
+ir
+iro
+iroh
+</code></pre>
+<p>Previous query tasks should cancel.</p>
+<hr />
+<h1 id="75-debounce"><a class="header" href="#75-debounce">75. Debounce</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">100–250 ms
+</code></pre>
+<p>before expensive query.</p>
+<hr />
+<h1 id="76-result-streaming"><a class="header" href="#76-result-streaming">76. Result Streaming</a></h1>
+<p>For large result sets:</p>
+<pre><code class="language-text">first page quickly
+then more
+</code></pre>
+<hr />
+<h1 id="77-pagination"><a class="header" href="#77-pagination">77. Pagination</a></h1>
+<p>Cursor-based pagination preferable to loading thousands of hits.</p>
+<hr />
+<h1 id="78-search-cursor"><a class="header" href="#78-search-cursor">78. Search Cursor</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct SearchCursor {
+    // backend-neutral opaque cursor
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="79-index-update-pipeline"><a class="header" href="#79-index-update-pipeline">79. Index Update Pipeline</a></h1>
+<pre><code class="language-text">Durable Commit
+   ↓
+Index Event
+   ↓
+Index Worker
+   ↓
+Search Index
+</code></pre>
+<hr />
+<h1 id="80-persist-before-index"><a class="header" href="#80-persist-before-index">80. Persist Before Index</a></h1>
+<p>Always:</p>
+<pre><code class="language-text">durable state first
+index second
+</code></pre>
+<hr />
+<h1 id="81-index-lag"><a class="header" href="#81-index-lag">81. Index Lag</a></h1>
+<p>Search may briefly lag behind durable state.</p>
+<p>UI can tolerate small lag.</p>
+<hr />
+<h1 id="82-strong-read-your-write"><a class="header" href="#82-strong-read-your-write">82. Strong Read-Your-Write</a></h1>
+<p>For newly sent local message, UI can inject recent unindexed item into results if needed.</p>
+<p>Not mandatory initially.</p>
+<hr />
+<h1 id="83-index-event"><a class="header" href="#83-index-event">83. Index Event</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum IndexEvent {
+    UpsertMessage(MessageId),
+    DeleteMessage(MessageId),
+    UpsertFile(BlobId),
+    DeleteFile(BlobId),
+    UpsertContact(AccountId),
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="84-index-worker"><a class="header" href="#84-index-worker">84. Index Worker</a></h1>
+<p>Bounded background worker.</p>
+<hr />
+<h1 id="85-batch-indexing"><a class="header" href="#85-batch-indexing">85. Batch Indexing</a></h1>
+<p>Process events in batches.</p>
+<p>Reduces:</p>
+<pre><code class="language-text">disk sync
+CPU
+lock churn
+</code></pre>
+<hr />
+<h1 id="86-coalescing"><a class="header" href="#86-coalescing">86. Coalescing</a></h1>
+<p>Multiple edits to same document:</p>
+<pre><code class="language-text">index latest state only
+</code></pre>
+<hr />
+<h1 id="87-index-queue-durability"><a class="header" href="#87-index-queue-durability">87. Index Queue Durability</a></h1>
+<p>Two choices:</p>
+<pre><code class="language-text">rebuildable in-memory queue
+</code></pre>
+<p>or:</p>
+<pre><code class="language-text">durable index checkpoint
+</code></pre>
+<p>Recommended:</p>
+<pre><code class="language-text">durable indexing cursor/checkpoint
+</code></pre>
+<p>so crash recovery knows where to continue.</p>
+<hr />
+<h1 id="88-index-checkpoint"><a class="header" href="#88-index-checkpoint">88. Index Checkpoint</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct IndexCheckpoint {
+    pub source_revision: u64,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="89-event-log-integration"><a class="header" href="#89-event-log-integration">89. Event Log Integration</a></h1>
+<p>If Part 04 provides ordered events:</p>
+<pre><code class="language-text">index consumes event sequence
+</code></pre>
+<hr />
+<h1 id="90-idempotent-indexing"><a class="header" href="#90-idempotent-indexing">90. Idempotent Indexing</a></h1>
+<p>Reprocessing same source event must be safe.</p>
+<hr />
+<h1 id="91-crash-during-index-update"><a class="header" href="#91-crash-during-index-update">91. Crash During Index Update</a></h1>
+<p>Index backend transaction should prevent partial corruption.</p>
+<hr />
+<h1 id="92-index-corruption"><a class="header" href="#92-index-corruption">92. Index Corruption</a></h1>
+<p>Detect:</p>
+<pre><code class="language-text">checksum/version/open failure
+</code></pre>
+<p>Then:</p>
+<pre><code class="language-text">quarantine/delete index
+rebuild
+</code></pre>
+<p>Authoritative messages remain safe.</p>
+<hr />
+<h1 id="93-index-version"><a class="header" href="#93-index-version">93. Index Version</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct SearchIndexVersion(pub u32);
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="94-schema-upgrade"><a class="header" href="#94-schema-upgrade">94. Schema Upgrade</a></h1>
+<p>New analyzer/index schema:</p>
+<pre><code class="language-text">build new index side-by-side
+swap when ready
+</code></pre>
+<hr />
+<h1 id="95-zero-downtime-reindex"><a class="header" href="#95-zero-downtime-reindex">95. Zero-Downtime Reindex</a></h1>
+<pre><code class="language-text">old index serves
+new index builds
+atomic switch
+</code></pre>
+<p>if storage allows.</p>
+<hr />
+<h1 id="96-low-storage-reindex"><a class="header" href="#96-low-storage-reindex">96. Low-Storage Reindex</a></h1>
+<p>If no space for two copies:</p>
+<pre><code class="language-text">incremental migration
+or
+disable search temporarily
+</code></pre>
+<hr />
+<h1 id="97-storage-budget"><a class="header" href="#97-storage-budget">97. Storage Budget</a></h1>
+<p>Index size bounded relative to searchable data.</p>
+<hr />
+<h1 id="98-index-quota"><a class="header" href="#98-index-quota">98. Index Quota</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct SearchStorageBudget {
+    pub max_text_index_bytes: u64,
+    pub max_vector_index_bytes: u64,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="99-storage-pressure"><a class="header" href="#99-storage-pressure">99. Storage Pressure</a></h1>
+<p>Under pressure:</p>
+<pre><code class="language-text">drop vector index first
+keep basic FTS
+</code></pre>
+<p>if semantic search optional.</p>
+<hr />
+<h1 id="100-emergency-storage-pressure"><a class="header" href="#100-emergency-storage-pressure">100. Emergency Storage Pressure</a></h1>
+<p>Part 17 can disable indexing entirely.</p>
+<hr />
+<h1 id="101-battery-aware-indexing"><a class="header" href="#101-battery-aware-indexing">101. Battery-Aware Indexing</a></h1>
+<p>Foreground/charging:</p>
+<pre><code class="language-text">full-speed indexing
+</code></pre>
+<p>Background/battery saver:</p>
+<pre><code class="language-text">defer expensive semantic embeddings
+</code></pre>
+<hr />
+<h1 id="102-thermal-aware-indexing"><a class="header" href="#102-thermal-aware-indexing">102. Thermal-Aware Indexing</a></h1>
+<p>Pause embedding generation under thermal pressure.</p>
+<hr />
+<h1 id="103-user-visible-search-still-works"><a class="header" href="#103-user-visible-search-still-works">103. User-Visible Search Still Works</a></h1>
+<p>Even if semantic index paused:</p>
+<pre><code class="language-text">basic FTS remains
+</code></pre>
+<hr />
+<h1 id="104-background-index-scheduler"><a class="header" href="#104-background-index-scheduler">104. Background Index Scheduler</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum IndexWorkClass {
+    Immediate,
+    Background,
+    Heavy,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="105-immediate"><a class="header" href="#105-immediate">105. Immediate</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">new message text
+message edit
+delete
+</code></pre>
+<hr />
+<h1 id="106-background"><a class="header" href="#106-background">106. Background</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">file metadata
+link extraction
+</code></pre>
+<hr />
+<h1 id="107-heavy"><a class="header" href="#107-heavy">107. Heavy</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">PDF text extraction
+OCR
+embedding generation
+</code></pre>
+<hr />
+<h1 id="108-heavy-work-conditions"><a class="header" href="#108-heavy-work-conditions">108. Heavy Work Conditions</a></h1>
+<p>Run when:</p>
+<pre><code class="language-text">charging
+unmetered
+thermal okay
+</code></pre>
+<p>according to user policy.</p>
+<hr />
+<h1 id="109-link-extraction"><a class="header" href="#109-link-extraction">109. Link Extraction</a></h1>
+<p>Index URLs separately.</p>
+<hr />
+<h1 id="110-link-search"><a class="header" href="#110-link-search">110. Link Search</a></h1>
+<p>User can search:</p>
+<pre><code class="language-text">all links in conversation
+</code></pre>
+<hr />
+<h1 id="111-media-search"><a class="header" href="#111-media-search">111. Media Search</a></h1>
+<p>Image/video search baseline:</p>
+<pre><code class="language-text">filename
+caption
+sender
+date
+</code></pre>
+<hr />
+<h1 id="112-image-semantic-search"><a class="header" href="#112-image-semantic-search">112. Image Semantic Search</a></h1>
+<p>Future optional:</p>
+<pre><code class="language-text">local vision embedding
+</code></pre>
+<p>high cost.</p>
+<p>Not initial production requirement.</p>
+<hr />
+<h1 id="113-file-type-facets"><a class="header" href="#113-file-type-facets">113. File-Type Facets</a></h1>
+<pre><code class="language-text">Images
+Videos
+Documents
+Audio
+Links
+</code></pre>
+<hr />
+<h1 id="114-conversation-search-projection"><a class="header" href="#114-conversation-search-projection">114. Conversation Search Projection</a></h1>
+<p>Maintain lightweight metadata for:</p>
+<pre><code class="language-text">latest match
+match count
+</code></pre>
+<p>if useful.</p>
+<hr />
+<h1 id="115-search-result-navigation"><a class="header" href="#115-search-result-navigation">115. Search Result Navigation</a></h1>
+<p>Hit contains enough logical identity to navigate:</p>
+<pre><code class="language-text">conversation
+message
+file
+</code></pre>
+<hr />
+<h1 id="116-jump-to-message"><a class="header" href="#116-jump-to-message">116. Jump to Message</a></h1>
+<p>Dioxus:</p>
+<pre><code class="language-text">search hit
+→ conversation
+→ load around MessageId
+→ highlight
+</code></pre>
+<hr />
+<h1 id="117-no-offset-based-identity"><a class="header" href="#117-no-offset-based-identity">117. No Offset-Based Identity</a></h1>
+<p>Do not store:</p>
+<pre><code class="language-text">"message was row 145"
+</code></pre>
+<p>as stable navigation.</p>
+<p>Use MessageId.</p>
+<hr />
+<h1 id="118-deleted-hit-race"><a class="header" href="#118-deleted-hit-race">118. Deleted Hit Race</a></h1>
+<p>If user clicks result after message deleted:</p>
+<pre><code class="language-text">show no longer available
+</code></pre>
+<p>not crash.</p>
+<hr />
+<h1 id="119-permission-changes"><a class="header" href="#119-permission-changes">119. Permission Changes</a></h1>
+<p>If user loses access to group/plugin content:</p>
+<pre><code class="language-text">remove related search entries
+</code></pre>
+<hr />
+<h1 id="120-device-revocation"><a class="header" href="#120-device-revocation">120. Device Revocation</a></h1>
+<p>Revoked device local data depends on account/device policy.</p>
+<p>Search should follow underlying data deletion policy.</p>
+<hr />
+<h1 id="121-conversation-deletion"><a class="header" href="#121-conversation-deletion">121. Conversation Deletion</a></h1>
+<p>If user deletes local conversation:</p>
+<pre><code class="language-text">remove index namespace
+</code></pre>
+<hr />
+<h1 id="122-archive"><a class="header" href="#122-archive">122. Archive</a></h1>
+<p>Archived conversation remains searchable unless user filters it out.</p>
+<hr />
+<h1 id="123-hiddenlocked-conversation"><a class="header" href="#123-hiddenlocked-conversation">123. Hidden/Locked Conversation</a></h1>
+<p>Search visibility follows privacy setting.</p>
+<hr />
+<h1 id="124-app-lock"><a class="header" href="#124-app-lock">124. App Lock</a></h1>
+<p>High-security mode may require unlock before search index opens.</p>
+<hr />
+<h1 id="125-search-index-key"><a class="header" href="#125-search-index-key">125. Search Index Key</a></h1>
+<p>If encrypted index:</p>
+<pre><code class="language-text">derive separate local search key
+</code></pre>
+<p>Do not reuse account root key directly.</p>
+<hr />
+<h1 id="126-key-rotation"><a class="header" href="#126-key-rotation">126. Key Rotation</a></h1>
+<p>Index encryption key can rotate independently.</p>
+<p>Because index is rebuildable:</p>
+<pre><code class="language-text">delete/rebuild
+</code></pre>
+<p>is acceptable recovery strategy.</p>
+<hr />
+<h1 id="127-backup"><a class="header" href="#127-backup">127. Backup</a></h1>
+<p>Search index should usually not be backed up.</p>
+<p>Rebuild after restore.</p>
+<hr />
+<h1 id="128-why-not-backup-index"><a class="header" href="#128-why-not-backup-index">128. Why Not Backup Index</a></h1>
+<p>It is:</p>
+<pre><code class="language-text">large
+derived
+potentially sensitive
+version-dependent
+</code></pre>
+<hr />
+<h1 id="129-restore"><a class="header" href="#129-restore">129. Restore</a></h1>
+<p>After backup restore:</p>
+<pre><code class="language-text">start with empty index
+background rebuild
+</code></pre>
+<hr />
+<h1 id="130-multi-device-search"><a class="header" href="#130-multi-device-search">130. Multi-Device Search</a></h1>
+<p>Each device maintains its own local index.</p>
+<p>Do not synchronize search index files.</p>
+<hr />
+<h1 id="131-multi-device-search-consistency"><a class="header" href="#131-multi-device-search-consistency">131. Multi-Device Search Consistency</a></h1>
+<p>Underlying messages/files sync.</p>
+<p>Each device independently indexes what it possesses.</p>
+<hr />
+<h1 id="132-device-specific-results"><a class="header" href="#132-device-specific-results">132. Device-Specific Results</a></h1>
+<p>A device may lack old history.</p>
+<p>Search naturally returns only locally available data.</p>
+<hr />
+<h1 id="133-optional-remote-search"><a class="header" href="#133-optional-remote-search">133. Optional Remote Search</a></h1>
+<p>If user explicitly wants search on another trusted device:</p>
+<pre><code class="language-text">query remote trusted device
+</code></pre>
+<p>could be future feature.</p>
+<p>But do not expose plaintext to central server.</p>
+<hr />
+<h1 id="134-remote-trusted-search"><a class="header" href="#134-remote-trusted-search">134. Remote Trusted Search</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">device A
+→ E2EE query
+→ device B
+→ local search
+→ encrypted results
+</code></pre>
+<p>Useful for home node/archive.</p>
+<hr />
+<h1 id="135-search-query-privacy"><a class="header" href="#135-search-query-privacy">135. Search Query Privacy</a></h1>
+<p>Even remote trusted-device search queries are sensitive.</p>
+<p>Encrypt them.</p>
+<hr />
+<h1 id="136-no-server-query-logging"><a class="header" href="#136-no-server-query-logging">136. No Server Query Logging</a></h1>
+<p>If relay forwards encrypted search request:</p>
+<pre><code class="language-text">server sees opaque traffic only
+</code></pre>
+<hr />
+<h1 id="137-personal-archive-node"><a class="header" href="#137-personal-archive-node">137. Personal Archive Node</a></h1>
+<p>Part 20 embedded node can store:</p>
+<pre><code class="language-text">encrypted history
+searchable local archive
+</code></pre>
+<p>if user explicitly trusts it and gives decryption/search authority.</p>
+<hr />
+<h1 id="138-archive-security"><a class="header" href="#138-archive-security">138. Archive Security</a></h1>
+<p>Grant:</p>
+<pre><code class="language-text">searchable archive capability
+</code></pre>
+<p>explicitly.</p>
+<p>Not every relay gets it.</p>
+<hr />
+<h1 id="139-search-capability"><a class="header" href="#139-search-capability">139. Search Capability</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum SearchCapability {
+    LocalContent,
+    FileContent,
+    SemanticSearch,
+    RemoteTrustedSearch,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="140-plugin-search-provider"><a class="header" href="#140-plugin-search-provider">140. Plugin Search Provider</a></h1>
+<p>Plugin can expose its own search provider.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait PluginSearchProvider {
+    fn search(
+        &amp;self,
+        query: &amp;PluginSearchQuery,
+    ) -&gt; Result&lt;Vec&lt;PluginSearchHit&gt;, PluginError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="141-federated-local-search"><a class="header" href="#141-federated-local-search">141. Federated Local Search</a></h1>
+<p>Global UI can combine:</p>
+<pre><code class="language-text">core FTS
+plugin providers
+semantic index
+</code></pre>
+<hr />
+<h1 id="142-timeout-per-provider"><a class="header" href="#142-timeout-per-provider">142. Timeout Per Provider</a></h1>
+<p>A slow plugin must not block global search.</p>
+<hr />
+<h1 id="143-provider-result-budget"><a class="header" href="#143-provider-result-budget">143. Provider Result Budget</a></h1>
+<p>Limit:</p>
+<pre><code class="language-text">hits/provider
+time/provider
+</code></pre>
+<hr />
+<h1 id="144-ranking-across-providers"><a class="header" href="#144-ranking-across-providers">144. Ranking Across Providers</a></h1>
+<p>Normalize provider scores before merging.</p>
+<hr />
+<h1 id="145-plugin-result-labeling"><a class="header" href="#145-plugin-result-labeling">145. Plugin Result Labeling</a></h1>
+<p>Show source:</p>
+<pre><code class="language-text">Messages
+Files
+ERP Plugin
+</code></pre>
+<hr />
+<h1 id="146-plugin-data-privacy"><a class="header" href="#146-plugin-data-privacy">146. Plugin Data Privacy</a></h1>
+<p>Core UI does not receive more plugin content than plugin is allowed to expose.</p>
+<hr />
+<h1 id="147-search-suggestions"><a class="header" href="#147-search-suggestions">147. Search Suggestions</a></h1>
+<p>Suggestions may include:</p>
+<pre><code class="language-text">recent queries
+contacts
+recent conversations
+</code></pre>
+<hr />
+<h1 id="148-recent-query-privacy"><a class="header" href="#148-recent-query-privacy">148. Recent Query Privacy</a></h1>
+<p>Stored locally.</p>
+<p>Allow clear history.</p>
+<hr />
+<h1 id="149-search-history"><a class="header" href="#149-search-history">149. Search History</a></h1>
+<p>Optional.</p>
+<p>Not required.</p>
+<hr />
+<h1 id="150-incognito-search"><a class="header" href="#150-incognito-search">150. Incognito Search</a></h1>
+<p>High-security option:</p>
+<pre><code class="language-text">do not save recent query
+</code></pre>
+<hr />
+<h1 id="151-search-telemetry"><a class="header" href="#151-search-telemetry">151. Search Telemetry</a></h1>
+<p>Do not upload raw user queries.</p>
+<hr />
+<h1 id="152-safe-metrics"><a class="header" href="#152-safe-metrics">152. Safe Metrics</a></h1>
+<p>Possible aggregate:</p>
+<pre><code class="language-text">query latency
+index size
+result count
+rebuild duration
+</code></pre>
+<p>without text.</p>
+<hr />
+<h1 id="153-diagnostics"><a class="header" href="#153-diagnostics">153. Diagnostics</a></h1>
+<p>Part 18 can show:</p>
+<pre><code class="language-text">index status
+documents indexed
+index lag
+index bytes
+rebuild state
+semantic model version
+</code></pre>
+<hr />
+<h1 id="154-user-diagnostics"><a class="header" href="#154-user-diagnostics">154. User Diagnostics</a></h1>
+<p>Simple:</p>
+<pre><code class="language-text">Search index is rebuilding
+</code></pre>
+<hr />
+<h1 id="155-developer-diagnostics"><a class="header" href="#155-developer-diagnostics">155. Developer Diagnostics</a></h1>
+<p>Detailed:</p>
+<pre><code class="language-text">source revision
+indexed revision
+pending events
+FTS size
+vector size
+last corruption
+</code></pre>
+<hr />
+<h1 id="156-search-health"><a class="header" href="#156-search-health">156. Search Health</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum SearchHealth {
+    Ready,
+    Indexing,
+    Rebuilding,
+    Degraded,
+    Disabled,
+    Failed,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="157-degraded"><a class="header" href="#157-degraded">157. Degraded</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">basic FTS works
+semantic index unavailable
+</code></pre>
+<hr />
+<h1 id="158-search-failure"><a class="header" href="#158-search-failure">158. Search Failure</a></h1>
+<p>Search failure must not affect messaging.</p>
+<hr />
+<h1 id="159-startup"><a class="header" href="#159-startup">159. Startup</a></h1>
+<p>Do not block app startup on full index rebuild.</p>
+<p>Flow:</p>
+<pre><code class="language-text">open DB
+open index
+if healthy → ready
+if stale → incremental catch-up
+if corrupt → rebuild background
+</code></pre>
+<hr />
+<h1 id="160-lazy-initialization"><a class="header" href="#160-lazy-initialization">160. Lazy Initialization</a></h1>
+<p>Search engine can initialize when:</p>
+<pre><code class="language-text">app idle
+or
+user opens search
+</code></pre>
+<p>depending startup target.</p>
+<hr />
+<h1 id="161-index-catch-up"><a class="header" href="#161-index-catch-up">161. Index Catch-Up</a></h1>
+<p>Use source checkpoint.</p>
+<hr />
+<h1 id="162-message-ingestion"><a class="header" href="#162-message-ingestion">162. Message Ingestion</a></h1>
+<p>On new message durable commit:</p>
+<pre><code class="language-text">enqueue immediate index update
+</code></pre>
+<hr />
+<h1 id="163-read-receipt"><a class="header" href="#163-read-receipt">163. Read Receipt</a></h1>
+<p>Does not need full-text reindex.</p>
+<p>Only update searchable metadata if search filters depend on read state.</p>
+<hr />
+<h1 id="164-reactions"><a class="header" href="#164-reactions">164. Reactions</a></h1>
+<p>Usually no reindex unless reactions searchable.</p>
+<hr />
+<h1 id="165-attachment-download"><a class="header" href="#165-attachment-download">165. Attachment Download</a></h1>
+<p>Metadata can index before file downloaded.</p>
+<p>Content extraction waits until local file exists.</p>
+<hr />
+<h1 id="166-partial-file"><a class="header" href="#166-partial-file">166. Partial File</a></h1>
+<p>Do not parse until enough content/complete file exists.</p>
+<hr />
+<h1 id="167-file-hash-validation"><a class="header" href="#167-file-hash-validation">167. File Hash Validation</a></h1>
+<p>Parse only verified attachment content.</p>
+<hr />
+<h1 id="168-parser-isolation"><a class="header" href="#168-parser-isolation">168. Parser Isolation</a></h1>
+<p>Potential parser execution modes:</p>
+<pre><code class="language-text">trusted Rust crate
+WASM sandbox
+out-of-process parser
+</code></pre>
+<hr />
+<h1 id="169-parser-resource-limits"><a class="header" href="#169-parser-resource-limits">169. Parser Resource Limits</a></h1>
+<p>Bound:</p>
+<pre><code class="language-text">CPU
+RAM
+output text size
+recursion
+file size
+</code></pre>
+<hr />
+<h1 id="170-zip-bomb"><a class="header" href="#170-zip-bomb">170. Zip Bomb</a></h1>
+<p>Archive/document parser must protect against compressed bombs.</p>
+<hr />
+<h1 id="171-pdf-bomb"><a class="header" href="#171-pdf-bomb">171. PDF Bomb</a></h1>
+<p>Bound:</p>
+<pre><code class="language-text">page count
+object count
+text extraction size
+</code></pre>
+<hr />
+<h1 id="172-malicious-unicode"><a class="header" href="#172-malicious-unicode">172. Malicious Unicode</a></h1>
+<p>Normalizer/tokenizer must handle malformed sequences safely.</p>
+<hr />
+<h1 id="173-fuzzing"><a class="header" href="#173-fuzzing">173. Fuzzing</a></h1>
+<p>Part 10 fuzz:</p>
+<pre><code class="language-text">query parser
+tokenizer
+index document parser
+filter parser
+highlighting
+search protocol
+</code></pre>
+<hr />
+<h1 id="174-file-parser-fuzzing"><a class="header" href="#174-file-parser-fuzzing">174. File Parser Fuzzing</a></h1>
+<p>Separate corpora per format.</p>
+<hr />
+<h1 id="175-property-tests"><a class="header" href="#175-property-tests">175. Property Tests</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">deleted message never appears
+read-only index corruption never corrupts authoritative DB
+replaying index event is idempotent
+search result IDs always resolve or fail safely
+</code></pre>
+<hr />
+<h1 id="176-rebuild-test"><a class="header" href="#176-rebuild-test">176. Rebuild Test</a></h1>
+<p>Delete index completely.</p>
+<p>Rebuild.</p>
+<p>Results match expected corpus.</p>
+<hr />
+<h1 id="177-crash-during-reindex"><a class="header" href="#177-crash-during-reindex">177. Crash During Reindex</a></h1>
+<p>Restart.</p>
+<p>Continue/restart safely.</p>
+<hr />
+<h1 id="178-model-upgrade-test"><a class="header" href="#178-model-upgrade-test">178. Model Upgrade Test</a></h1>
+<p>Embedding model v1 → v2.</p>
+<p>No mixed vector comparisons.</p>
+<hr />
+<h1 id="179-low-storage-test"><a class="header" href="#179-low-storage-test">179. Low-Storage Test</a></h1>
+<p>Index reaches quota.</p>
+<p>Semantic indexing pauses before basic search breaks.</p>
+<hr />
+<h1 id="180-battery-saver-test"><a class="header" href="#180-battery-saver-test">180. Battery Saver Test</a></h1>
+<p>Heavy embedding/parser work deferred.</p>
+<hr />
+<h1 id="181-search-while-rebuilding"><a class="header" href="#181-search-while-rebuilding">181. Search While Rebuilding</a></h1>
+<p>Return partial/current results with:</p>
+<pre><code class="language-text">Indexing…
+</code></pre>
+<p>status.</p>
+<hr />
+<h1 id="182-multi-language-test"><a class="header" href="#182-multi-language-test">182. Multi-Language Test</a></h1>
+<p>Search corpus with:</p>
+<pre><code class="language-text">English
+Hindi
+Urdu
+Arabic
+mixed code
+</code></pre>
+<hr />
+<h1 id="183-emoji-search"><a class="header" href="#183-emoji-search">183. Emoji Search</a></h1>
+<p>Search by emoji where tokenizer supports.</p>
+<hr />
+<h1 id="184-file-search-test"><a class="header" href="#184-file-search-test">184. File Search Test</a></h1>
+<p>Filename, caption, sender, date filters.</p>
+<hr />
+<h1 id="185-conversation-scope-test"><a class="header" href="#185-conversation-scope-test">185. Conversation Scope Test</a></h1>
+<p>Global vs one conversation results.</p>
+<hr />
+<h1 id="186-privacy-test"><a class="header" href="#186-privacy-test">186. Privacy Test</a></h1>
+<p>Server receives no plaintext query or index content.</p>
+<hr />
+<h1 id="187-plugin-isolation-test"><a class="header" href="#187-plugin-isolation-test">187. Plugin Isolation Test</a></h1>
+<p>Plugin cannot inspect core search index.</p>
+<hr />
+<h1 id="188-search-performance"><a class="header" href="#188-search-performance">188. Search Performance</a></h1>
+<p>Targets:</p>
+<pre><code class="language-text">common query &lt;100 ms on moderate local history
+</code></pre>
+<p>where device/storage allows.</p>
+<p>Use measurement, not rigid guarantee.</p>
+<hr />
+<h1 id="189-large-history-benchmark"><a class="header" href="#189-large-history-benchmark">189. Large History Benchmark</a></h1>
+<p>Test:</p>
+<pre><code class="language-text">10k messages
+100k messages
+1M messages
+</code></pre>
+<p>depending product scale.</p>
+<hr />
+<h1 id="190-index-build-benchmark"><a class="header" href="#190-index-build-benchmark">190. Index Build Benchmark</a></h1>
+<p>Measure:</p>
+<pre><code class="language-text">docs/sec
+bytes/sec
+CPU
+battery
+</code></pre>
+<hr />
+<h1 id="191-memory-budget"><a class="header" href="#191-memory-budget">191. Memory Budget</a></h1>
+<p>Query should not load entire result corpus into RAM.</p>
+<hr />
+<h1 id="192-snippet-budget"><a class="header" href="#192-snippet-budget">192. Snippet Budget</a></h1>
+<p>Limit snippet length.</p>
+<hr />
+<h1 id="193-result-limit"><a class="header" href="#193-result-limit">193. Result Limit</a></h1>
+<p>Default:</p>
+<pre><code class="language-text">20–50
+</code></pre>
+<p>per page.</p>
+<hr />
+<h1 id="194-cancellation-benchmark"><a class="header" href="#194-cancellation-benchmark">194. Cancellation Benchmark</a></h1>
+<p>Rapid query typing should not leave dozens of expensive tasks alive.</p>
+<hr />
+<h1 id="195-concurrent-search"><a class="header" href="#195-concurrent-search">195. Concurrent Search</a></h1>
+<p>Limit active searches.</p>
+<hr />
+<h1 id="196-dioxus-search-ui"><a class="header" href="#196-dioxus-search-ui">196. Dioxus Search UI</a></h1>
+<p>Components:</p>
+<pre><code class="language-text">SearchBar
+FilterChips
+ResultList
+ResultSection
+SearchStatus
+</code></pre>
+<hr />
+<h1 id="197-global-search-ux"><a class="header" href="#197-global-search-ux">197. Global Search UX</a></h1>
+<p>Sections:</p>
+<pre><code class="language-text">Messages
+Files
+Contacts
+Links
+Plugins
+</code></pre>
+<hr />
+<h1 id="198-conversation-search-ux"><a class="header" href="#198-conversation-search-ux">198. Conversation Search UX</a></h1>
+<p>Show:</p>
+<pre><code class="language-text">match count
+previous/next match
+</code></pre>
+<hr />
+<h1 id="199-jump-navigation"><a class="header" href="#199-jump-navigation">199. Jump Navigation</a></h1>
+<p>Use MessageId and lazy history loading.</p>
+<hr />
+<h1 id="200-search-highlight"><a class="header" href="#200-search-highlight">200. Search Highlight</a></h1>
+<p>Highlight matched terms.</p>
+<hr />
+<h1 id="201-semantic-match-label"><a class="header" href="#201-semantic-match-label">201. Semantic Match Label</a></h1>
+<p>If semantic result not exact keyword match:</p>
+<pre><code class="language-text">Related result
+</code></pre>
+<p>optional.</p>
+<hr />
+<h1 id="202-explainability"><a class="header" href="#202-explainability">202. Explainability</a></h1>
+<p>For baseline ranking, provide simple reason:</p>
+<pre><code class="language-text">matched message text
+matched filename
+recent
+</code></pre>
+<hr />
+<h1 id="203-no-ai-hallucination"><a class="header" href="#203-no-ai-hallucination">203. No AI Hallucination</a></h1>
+<p>Search returns real stored documents/messages only.</p>
+<p>Semantic search ranks existing content; it does not invent answers.</p>
+<hr />
+<h1 id="204-local-knowledge-retrieval"><a class="header" href="#204-local-knowledge-retrieval">204. Local Knowledge Retrieval</a></h1>
+<p>Future assistant-like feature can retrieve:</p>
+<pre><code class="language-text">top local messages/files
+</code></pre>
+<p>then answer locally or through user-approved model.</p>
+<hr />
+<h1 id="205-retrieval-api"><a class="header" href="#205-retrieval-api">205. Retrieval API</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait KnowledgeRetriever {
+    fn retrieve(
+        &amp;self,
+        request: RetrievalRequest,
+    ) -&gt; Result&lt;Vec&lt;KnowledgeChunk&gt;, SearchError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="206-knowledge-chunk"><a class="header" href="#206-knowledge-chunk">206. Knowledge Chunk</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct KnowledgeChunk {
+    pub source: SearchDocumentId,
+    pub text: String,
+    pub score: f32,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="207-retrieval-privacy"><a class="header" href="#207-retrieval-privacy">207. Retrieval Privacy</a></h1>
+<p>Do not send retrieved private chunks to external AI API without explicit user configuration/consent.</p>
+<hr />
+<h1 id="208-on-device-ai"><a class="header" href="#208-on-device-ai">208. On-Device AI</a></h1>
+<p>If local model available:</p>
+<pre><code class="language-text">retrieve locally
+→ infer locally
+</code></pre>
+<p>preserves privacy.</p>
+<hr />
+<h1 id="209-external-ai-adapter"><a class="header" href="#209-external-ai-adapter">209. External AI Adapter</a></h1>
+<p>If user configures API key:</p>
+<pre><code class="language-text">clear data-flow warning
+scope selected content
+</code></pre>
+<p>Do not silently upload conversation history.</p>
+<hr />
+<h1 id="210-retrieval-scope"><a class="header" href="#210-retrieval-scope">210. Retrieval Scope</a></h1>
+<p>Assistant can be restricted:</p>
+<pre><code class="language-text">this conversation only
+selected files
+selected workspace
+</code></pre>
+<hr />
+<h1 id="211-plugin-knowledge-providers"><a class="header" href="#211-plugin-knowledge-providers">211. Plugin Knowledge Providers</a></h1>
+<p>Plugins may contribute retrievable chunks from own namespace.</p>
+<hr />
+<h1 id="212-search-security-boundary"><a class="header" href="#212-search-security-boundary">212. Search Security Boundary</a></h1>
+<p>Search engine sees plaintext after local decryption.</p>
+<p>Therefore it belongs inside trusted local runtime, not untrusted plugin.</p>
+<hr />
+<h1 id="213-process-isolation"><a class="header" href="#213-process-isolation">213. Process Isolation</a></h1>
+<p>Optional high-security architecture:</p>
+<pre><code class="language-text">search/index worker process
+</code></pre>
+<p>with local authenticated IPC.</p>
+<p>Not required initially.</p>
+<hr />
+<h1 id="214-headless-search"><a class="header" href="#214-headless-search">214. Headless Search</a></h1>
+<p>Part 16 daemon can expose local search API to:</p>
+<pre><code class="language-text">CLI
+desktop UI
+mobile client
+</code></pre>
+<hr />
+<h1 id="215-local-ipc-search"><a class="header" href="#215-local-ipc-search">215. Local IPC Search</a></h1>
+<p>Use typed request/response.</p>
+<p>Bound query/result sizes.</p>
+<hr />
+<h1 id="216-remote-admin-search"><a class="header" href="#216-remote-admin-search">216. Remote Admin Search</a></h1>
+<p>Do not expose user-content search over remote admin API by default.</p>
+<hr />
+<h1 id="217-embedded-archive-search"><a class="header" href="#217-embedded-archive-search">217. Embedded Archive Search</a></h1>
+<p>Optional trusted personal node can serve E2EE-authenticated search to user's devices.</p>
+<hr />
+<h1 id="218-ffi-search"><a class="header" href="#218-ffi-search">218. FFI Search</a></h1>
+<p>Part 19 exposes:</p>
+<pre><code class="language-text">search
+cancel_search
+fetch_more
+</code></pre>
+<p>with opaque handles.</p>
+<hr />
+<h1 id="219-wasm-components"><a class="header" href="#219-wasm-components">219. WASM Components</a></h1>
+<p>Do not run entire core index in WASM by default.</p>
+<p>WASM may implement:</p>
+<pre><code class="language-text">custom token transforms
+plugin search
+ranking policy
+</code></pre>
+<p>if bounded.</p>
+<hr />
+<h1 id="220-search-protocol"><a class="header" href="#220-search-protocol">220. Search Protocol</a></h1>
+<p>If remote trusted-device search added:</p>
+<pre><code class="language-text">search/1
+</code></pre>
+<p>with:</p>
+<pre><code class="language-text">encrypted query
+scope
+limit
+result metadata
+</code></pre>
+<hr />
+<h1 id="221-search-query-abuse"><a class="header" href="#221-search-query-abuse">221. Search Query Abuse</a></h1>
+<p>Remote trusted device still gets quotas.</p>
+<hr />
+<h1 id="222-result-redaction"><a class="header" href="#222-result-redaction">222. Result Redaction</a></h1>
+<p>Remote archive returns only authorized scope.</p>
+<hr />
+<h1 id="223-search-capability-negotiation"><a class="header" href="#223-search-capability-negotiation">223. Search Capability Negotiation</a></h1>
+<p>Part 07 can advertise:</p>
+<pre><code class="language-text">local-search-v1
+remote-trusted-search-v1
+semantic-search-v1
+</code></pre>
+<hr />
+<h1 id="224-interoperability"><a class="header" href="#224-interoperability">224. Interoperability</a></h1>
+<p>Part 23 can define:</p>
+<pre><code class="language-text">query parser vectors
+remote search request/response vectors
+</code></pre>
+<p>for externally implemented clients.</p>
+<hr />
+<h1 id="225-search-index-version-compatibility"><a class="header" href="#225-search-index-version-compatibility">225. Search Index Version Compatibility</a></h1>
+<p>Index files are local implementation detail.</p>
+<p>Do not standardize them across implementations.</p>
+<hr />
+<h1 id="226-standardize-search-api-semantics"><a class="header" href="#226-standardize-search-api-semantics">226. Standardize Search API Semantics</a></h1>
+<p>Cross-language SDK should agree on:</p>
+<pre><code class="language-text">scope
+filters
+pagination
+hit identity
+</code></pre>
+<p>not backend index format.</p>
+<hr />
+<h1 id="227-suggested-workspace"><a class="header" href="#227-suggested-workspace">227. Suggested Workspace</a></h1>
+<pre><code class="language-text">crates/
+├── comm-search-core/
+├── comm-search-index/
+├── comm-search-fts/
+├── comm-search-files/
+├── comm-search-semantic/
+├── comm-search-ranking/
+├── comm-search-runtime/
+├── comm-search-knowledge/
+├── comm-search-diagnostics/
+└── comm-search-testkit/
+</code></pre>
+<hr />
+<h1 id="228-comm-search-core"><a class="header" href="#228-comm-search-core">228. <code>comm-search-core</code></a></h1>
+<p>Owns:</p>
+<pre><code class="language-text">query
+scope
+filters
+hits
+document IDs
+</code></pre>
+<hr />
+<h1 id="229-comm-search-index"><a class="header" href="#229-comm-search-index">229. <code>comm-search-index</code></a></h1>
+<p>Backend-neutral index trait and lifecycle.</p>
+<hr />
+<h1 id="230-comm-search-fts"><a class="header" href="#230-comm-search-fts">230. <code>comm-search-fts</code></a></h1>
+<p>Owns text indexing/tokenization.</p>
+<hr />
+<h1 id="231-comm-search-files"><a class="header" href="#231-comm-search-files">231. <code>comm-search-files</code></a></h1>
+<p>Owns attachment metadata/content extraction pipeline.</p>
+<hr />
+<h1 id="232-comm-search-semantic"><a class="header" href="#232-comm-search-semantic">232. <code>comm-search-semantic</code></a></h1>
+<p>Feature-gated:</p>
+<pre><code class="language-text">embedding
+vector index
+model version
+</code></pre>
+<hr />
+<h1 id="233-comm-search-ranking"><a class="header" href="#233-comm-search-ranking">233. <code>comm-search-ranking</code></a></h1>
+<p>Owns ranking/fusion.</p>
+<hr />
+<h1 id="234-comm-search-runtime"><a class="header" href="#234-comm-search-runtime">234. <code>comm-search-runtime</code></a></h1>
+<p>Owns:</p>
+<pre><code class="language-text">index worker
+checkpoints
+rebuild
+resource policy
+</code></pre>
+<hr />
+<h1 id="235-comm-search-knowledge"><a class="header" href="#235-comm-search-knowledge">235. <code>comm-search-knowledge</code></a></h1>
+<p>Owns retrieval API for local assistant/knowledge use.</p>
+<hr />
+<h1 id="236-comm-search-testkit"><a class="header" href="#236-comm-search-testkit">236. <code>comm-search-testkit</code></a></h1>
+<p>Provides:</p>
+<pre><code class="language-text">synthetic histories
+multilingual corpus
+corrupt index fixtures
+fake parser
+fake embedding model
+</code></pre>
+<hr />
+<h1 id="237-implementation-phases"><a class="header" href="#237-implementation-phases">237. Implementation Phases</a></h1>
+<h2 id="phase-1--core-message-fts"><a class="header" href="#phase-1--core-message-fts">Phase 1 — Core Message FTS</a></h2>
+<pre><code class="language-text">message body
+conversation scope
+sender/date filters
+</code></pre>
+<h2 id="phase-2--contacts--files--links"><a class="header" href="#phase-2--contacts--files--links">Phase 2 — Contacts / Files / Links</a></h2>
+<pre><code class="language-text">metadata indexing
+facets
+navigation
+</code></pre>
+<h2 id="phase-3--incremental-indexing"><a class="header" href="#phase-3--incremental-indexing">Phase 3 — Incremental Indexing</a></h2>
+<pre><code class="language-text">checkpoint
+crash recovery
+rebuild
+</code></pre>
+<h2 id="phase-4--privacy-hardening"><a class="header" href="#phase-4--privacy-hardening">Phase 4 — Privacy Hardening</a></h2>
+<pre><code class="language-text">index encryption option
+backup exclusion
+app-lock behavior
+</code></pre>
+<h2 id="phase-5--file-content"><a class="header" href="#phase-5--file-content">Phase 5 — File Content</a></h2>
+<pre><code class="language-text">safe parsers
+resource limits
+PDF/text/Markdown
+</code></pre>
+<h2 id="phase-6--semantic-search"><a class="header" href="#phase-6--semantic-search">Phase 6 — Semantic Search</a></h2>
+<pre><code class="language-text">local embeddings
+vector index
+hybrid ranking
+</code></pre>
+<h2 id="phase-7--knowledge-retrieval"><a class="header" href="#phase-7--knowledge-retrieval">Phase 7 — Knowledge Retrieval</a></h2>
+<pre><code class="language-text">retrieval API
+on-device assistant integration
+</code></pre>
+<h2 id="phase-8--remote-trusted-search"><a class="header" href="#phase-8--remote-trusted-search">Phase 8 — Remote Trusted Search</a></h2>
+<pre><code class="language-text">personal archive node
+E2EE query/result
+</code></pre>
+<h2 id="phase-9--hardening"><a class="header" href="#phase-9--hardening">Phase 9 — Hardening</a></h2>
+<pre><code class="language-text">large corpus
+low storage
+battery
+multilingual
+corruption
+fuzz
+</code></pre>
+<hr />
+<h1 id="238-initial-production-recommendation"><a class="header" href="#238-initial-production-recommendation">238. Initial Production Recommendation</a></h1>
+<p>For v1:</p>
+<pre><code class="language-text">local full-text message search
+conversation-scoped search
+contacts
+filenames
+links
+date/sender/file filters
+incremental rebuildable index
+</code></pre>
+<p>Then add:</p>
+<pre><code class="language-text">document content extraction
+semantic/vector search
+local knowledge retrieval
+trusted archive-node search
+</code></pre>
+<p>Do not make semantic search a prerequisite for basic search.</p>
+<hr />
+<h1 id="239-definition-of-done"><a class="header" href="#239-definition-of-done">239. Definition of Done</a></h1>
+<p>Part 32 is complete when:</p>
+<ul>
+<li>search works fully offline</li>
+<li>the search index is derived/rebuildable, never authoritative</li>
+<li>message edits update one stable search document</li>
+<li>deleted/expired messages are removed from results</li>
+<li>files, contacts, groups, and links can be searched</li>
+<li>query scopes and filters are typed and bounded</li>
+<li>indexing happens only after durable source commit</li>
+<li>indexing is incremental and crash-safe</li>
+<li>corrupt index can be discarded/rebuilt without data loss</li>
+<li>search does not block application startup during rebuild</li>
+<li>background indexing obeys battery/thermal/storage budgets</li>
+<li>file-content parsers are bounded and isolated</li>
+<li>plaintext message/index data is not uploaded to server by default</li>
+<li>semantic embeddings are treated as sensitive data</li>
+<li>semantic search remains optional/local-first</li>
+<li>each device maintains its own local index</li>
+<li>backup restore rebuilds the index rather than trusting stale index files</li>
+<li>plugins can index/search only their authorized namespace</li>
+<li>global search can federate multiple local providers without a slow provider blocking the UI</li>
+<li>search results use stable logical IDs for navigation</li>
+<li>private local knowledge retrieval does not silently send content to external AI</li>
+<li>fuzz, corruption, low-storage, multilingual, crash/rebuild, and large-history tests exist</li>
+</ul>
+<hr />
+<h1 id="240-relationship-to-earlier-parts"><a class="header" href="#240-relationship-to-earlier-parts">240. Relationship to Earlier Parts</a></h1>
+<p>Part 32 integrates with:</p>
+<pre><code class="language-text">04 — Offline Event Log
+05 — File / Blob Subsystem
+08 — Resource Limits
+09 — Crash Recovery
+10 — Fuzzing
+13 — Battery Scheduling
+16 — Daemon / Headless Runtime
+18 — Diagnostics
+19 — C ABI / FFI
+20 — Embedded Linux
+21 — Protocol Extensions
+22 — WASM Components
+23 — Interoperability
+24 — Plugin Ecosystem
+28 — Security / E2EE
+30 — Presence / Read State
+31 — Background Delivery
+</code></pre>
+<hr />
+<h1 id="241-final-architecture"><a class="header" href="#241-final-architecture">241. Final Architecture</a></h1>
+<pre><code class="language-text">               AUTHORITATIVE LOCAL STATE
+                         │
+        ┌────────────────┼────────────────┐
+        │                │                │
+     Messages          Files           Contacts
+        │                │                │
+        └────────────────┼────────────────┘
+                         │
+                   Index Event Stream
+                         │
+                  Background Indexer
+             ┌───────────┴────────────┐
+             │                        │
+         Text / FTS            Semantic Vectors
+             │                        │
+             └───────────┬────────────┘
+                         │
+                    Query Engine
+                         │
+                    Ranking/Fusion
+                         │
+                      Dioxus
+</code></pre>
+<p>Privacy boundary:</p>
+<pre><code class="language-text">E2EE ciphertext at rest/server
+        │
+local trusted device decrypts
+        │
+local search index
+        │
+local query/result
+</code></pre>
+<p>No default path exists for:</p>
+<pre><code class="language-text">plaintext search index
+→ central server
+</code></pre>
+<hr />
+<h1 id="242-final-principle"><a class="header" href="#242-final-principle">242. Final Principle</a></h1>
+<p>Search should make the user's local history useful without turning encrypted communication into a searchable server-side data lake.</p>
+<p>The correct model is:</p>
+<pre><code class="language-text">authoritative encrypted/durable data
++
+local derived index
++
+bounded incremental indexing
++
+optional local semantic retrieval
++
+rebuildable state
+</code></pre>
+<p>not:</p>
+<pre><code class="language-text">upload plaintext/tokenized history
+so the server can search it
+</code></pre>
+<p>Part 32 therefore gives the platform fast, modern discovery while preserving the local-first and E2EE guarantees established by the earlier architecture.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="09-crash-recovery-architecture.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="33-backup-restore-export-import-archival-portability-architecture.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="09-crash-recovery-architecture.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="33-backup-restore-export-import-archival-portability-architecture.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

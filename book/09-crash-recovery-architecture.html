@@ -1,0 +1,2123 @@
+<!DOCTYPE HTML>
+<html lang="en" class="navy" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>09 — Crash Recovery &amp; State Integrity - SIAR System Architecture &amp; Technical Wiki</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="Comprehensive system architecture, cryptographic protocols, DTN mesh networking, distributed storage, audio DSP pipelines, and UI/UX design specifications for SIAR.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="theme/custom.css">
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "navy";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('navy')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="Home.html">Architecture Portal & Reading Guide</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part I: Protocol Foundation & Extension Platform</li><li class="chapter-item expanded "><a href="01-protocol-extension-system-architecture.html"><strong aria-hidden="true">1.</strong> 01 — Protocol Extension System Architecture</a></li><li class="chapter-item expanded "><a href="07-capability-negotiation-architecture.html"><strong aria-hidden="true">2.</strong> 07 — Capability Negotiation & Protocol Upgrades</a></li><li class="chapter-item expanded "><a href="21-third-party-protocol-extensions-architecture.html"><strong aria-hidden="true">3.</strong> 21 — Third-Party Protocol Extensions</a></li><li class="chapter-item expanded "><a href="22-wasm-compatible-components-architecture.html"><strong aria-hidden="true">4.</strong> 22 — WebAssembly (WASM) Compatible Components</a></li><li class="chapter-item expanded "><a href="23-external-interoperability-suite-architecture.html"><strong aria-hidden="true">5.</strong> 23 — External Interoperability & Conformance Suite</a></li><li class="chapter-item expanded "><a href="24-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">6.</strong> 24 — Dynamic Plugin & Module Ecosystem</a></li><li class="chapter-item expanded affix "><li class="part-title">Part II: Identity, Trust & Cryptography</li><li class="chapter-item expanded "><a href="02-multi-device-identity-architecture.html"><strong aria-hidden="true">7.</strong> 02 — Multi-Device Identity & Trust Model</a></li><li class="chapter-item expanded "><a href="28-production-security-e2ee-key-management-privacy-architecture.html"><strong aria-hidden="true">8.</strong> 28 — Production Security, E2EE, Key Management & Privacy</a></li><li class="chapter-item expanded affix "><li class="part-title">Part III: Mesh Networking, Transports & Hardware</li><li class="chapter-item expanded "><a href="03-transport-routing-policy-engine-architecture.html"><strong aria-hidden="true">9.</strong> 03 — Transport & Routing Policy Engine</a></li><li class="chapter-item expanded "><a href="11-relay-self-hosted-infrastructure-architecture.html"><strong aria-hidden="true">10.</strong> 11 — Self-Hosted Relay & Coordination Infrastructure</a></li><li class="chapter-item expanded "><a href="12-multipath-networking-architecture.html"><strong aria-hidden="true">11.</strong> 12 — Multipath Networking & Link Aggregation</a></li><li class="chapter-item expanded "><a href="13-battery-aware-scheduling-architecture.html"><strong aria-hidden="true">12.</strong> 13 — Battery-Aware Scheduling & Power Profiles</a></li><li class="chapter-item expanded "><a href="14-proximity-abstraction-architecture.html"><strong aria-hidden="true">13.</strong> 14 — Proximity Abstraction (BLE, Wi-Fi Direct, LoRa)</a></li><li class="chapter-item expanded "><a href="15-qr-nfc-bootstrap-pairing-architecture.html"><strong aria-hidden="true">14.</strong> 15 — Out-of-Band QR & NFC Bootstrap Pairing</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IV: Delay-Tolerant Networking & Emergency Mesh</li><li class="chapter-item expanded "><a href="06-dtn-store-carry-forward-architecture.html"><strong aria-hidden="true">15.</strong> 06 — DTN Store-Carry-Forward & Bundle Forwarding</a></li><li class="chapter-item expanded "><a href="17-emergency-priority-classes-architecture.html"><strong aria-hidden="true">16.</strong> 17 — Emergency Priority Classes & Critical Alert Mesh</a></li><li class="chapter-item expanded affix "><li class="part-title">Part V: Storage, Outbox & Data Lifecycle</li><li class="chapter-item expanded "><a href="04-offline-event-log-architecture.html"><strong aria-hidden="true">17.</strong> 04 — Offline Event Log & Sync Engine</a></li><li class="chapter-item expanded "><a href="05-robust-file-blob-subsystem-architecture.html"><strong aria-hidden="true">18.</strong> 05 — Robust File & Blob Subsystem (Chunking & Resumption)</a></li><li class="chapter-item expanded "><a href="09-crash-recovery-architecture.html" class="active"><strong aria-hidden="true">19.</strong> 09 — Crash Recovery & State Integrity</a></li><li class="chapter-item expanded "><a href="32-search-indexing-local-knowledge-privacy-architecture.html"><strong aria-hidden="true">20.</strong> 32 — Search, Indexing & Local Privacy Retrieval</a></li><li class="chapter-item expanded "><a href="33-backup-restore-export-import-archival-portability-architecture.html"><strong aria-hidden="true">21.</strong> 33 — Backup, Restore, Export & Long-Term Archival</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VI: Realtime Media, Calling & Audio DSP</li><li class="chapter-item expanded "><a href="25-android-direct-hardware-surface-zero-copy-media-architecture.html"><strong aria-hidden="true">22.</strong> 25 — Android Direct Surface Zero-Copy Media</a></li><li class="chapter-item expanded "><a href="26-rust-first-audio-dsp-resampling-aec-ns-agc-architecture.html"><strong aria-hidden="true">23.</strong> 26 — Rust-First Audio DSP (AEC, NS, AGC, Resampling)</a></li><li class="chapter-item expanded "><a href="29-realtime-calls-media-session-protocol-architecture.html"><strong aria-hidden="true">24.</strong> 29 — Realtime Calls & Media Session Protocol</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VII: Ephemeral State, Presence & Notifications</li><li class="chapter-item expanded "><a href="30-presence-availability-typing-read-receipts-ephemeral-state-architecture.html"><strong aria-hidden="true">25.</strong> 30 — Presence, Availability, Typing & Read Receipts</a></li><li class="chapter-item expanded "><a href="31-notifications-push-background-delivery-lifecycle-architecture.html"><strong aria-hidden="true">26.</strong> 31 — Notifications, Push Wake & Background Delivery</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VIII: Native Runtimes, Daemons & Embedded Linux</li><li class="chapter-item expanded "><a href="16-daemon-headless-runtime-architecture.html"><strong aria-hidden="true">27.</strong> 16 — Headless Daemon & Background Runtime</a></li><li class="chapter-item expanded "><a href="19-c-abi-ffi-architecture.html"><strong aria-hidden="true">28.</strong> 19 — C-ABI FFI & Native Language Interop</a></li><li class="chapter-item expanded "><a href="20-embedded-linux-node-architecture.html"><strong aria-hidden="true">29.</strong> 20 — Embedded Linux Node & Resource-Constrained Targets</a></li><li class="chapter-item expanded "><a href="27-rust-driven-android-native-build-packaging-automation.html"><strong aria-hidden="true">30.</strong> 27 — Rust-Driven Android Native Build & Packaging Automation</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IX: Reliability, Testing, Fuzzing & Diagnostics</li><li class="chapter-item expanded "><a href="08-resource-limits-backpressure-architecture.html"><strong aria-hidden="true">31.</strong> 08 — Resource Limits, Quotas & Backpressure</a></li><li class="chapter-item expanded "><a href="10-fuzzing-protocol-test-suite-architecture.html"><strong aria-hidden="true">32.</strong> 10 — Fuzzing & Protocol Test Suite</a></li><li class="chapter-item expanded "><a href="18-network-diagnostics-path-visualization-architecture.html"><strong aria-hidden="true">33.</strong> 18 — Network Diagnostics & Path Visualization</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part X: UI/UX Client Architecture (Cross-Platform)</li><li class="chapter-item expanded "><a href="ui-ux-01-product-foundation-cross-platform-interaction-architecture.html"><strong aria-hidden="true">34.</strong> UI/UX 01 — Product UX Foundation & Cross-Platform Interaction</a></li><li class="chapter-item expanded "><a href="ui-ux-02-desktop-dioxus-app-shell-navigation-window-architecture.html"><strong aria-hidden="true">35.</strong> UI/UX 02 — Desktop Dioxus App Shell & Navigation</a></li><li class="chapter-item expanded "><a href="ui-ux-03-android-jetpack-compose-app-shell-navigation-lifecycle-architecture.html"><strong aria-hidden="true">36.</strong> UI/UX 03 — Android Jetpack Compose App Shell & Lifecycle</a></li><li class="chapter-item expanded "><a href="ui-ux-04-conversation-list-inbox-architecture.html"><strong aria-hidden="true">37.</strong> UI/UX 04 — Conversation List & Inbox UX</a></li><li class="chapter-item expanded "><a href="ui-ux-05-conversation-message-timeline-architecture.html"><strong aria-hidden="true">38.</strong> UI/UX 05 — Conversation Message Timeline UX</a></li><li class="chapter-item expanded "><a href="ui-ux-06-message-composer-attachments-voice-notes-drafts-architecture.html"><strong aria-hidden="true">39.</strong> UI/UX 06 — Message Composer, Attachments & Voice Notes</a></li><li class="chapter-item expanded "><a href="ui-ux-07-calls-realtime-media-architecture.html"><strong aria-hidden="true">40.</strong> UI/UX 07 — Calls & Realtime Media UX</a></li><li class="chapter-item expanded "><a href="ui-ux-08-contacts-requests-verification-identity-architecture.html"><strong aria-hidden="true">41.</strong> UI/UX 08 — Contacts, Requests, Verification & Identity</a></li><li class="chapter-item expanded "><a href="ui-ux-09-groups-membership-roles-architecture.html"><strong aria-hidden="true">42.</strong> UI/UX 09 — Groups, Membership & Roles UX</a></li><li class="chapter-item expanded "><a href="ui-ux-10-files-media-gallery-transfer-architecture.html"><strong aria-hidden="true">43.</strong> UI/UX 10 — Files, Media Gallery & Transfer UX</a></li><li class="chapter-item expanded "><a href="ui-ux-11-search-local-knowledge-retrieval-architecture.html"><strong aria-hidden="true">44.</strong> UI/UX 11 — Search & Local Knowledge Retrieval UX</a></li><li class="chapter-item expanded "><a href="ui-ux-12-nearby-qr-nfc-pairing-device-linking-architecture.html"><strong aria-hidden="true">45.</strong> UI/UX 12 — Nearby, QR/NFC Pairing & Device Linking UX</a></li><li class="chapter-item expanded "><a href="ui-ux-13-notifications-background-incoming-call-architecture.html"><strong aria-hidden="true">46.</strong> UI/UX 13 — Notifications, Background & Incoming Call UX</a></li><li class="chapter-item expanded "><a href="ui-ux-14-presence-typing-receipts-status-architecture.html"><strong aria-hidden="true">47.</strong> UI/UX 14 — Presence, Typing, Receipts & Status UX</a></li><li class="chapter-item expanded "><a href="ui-ux-15-security-center-devices-keys-recovery-architecture.html"><strong aria-hidden="true">48.</strong> UI/UX 15 — Security Center, Devices, Keys & Recovery UX</a></li><li class="chapter-item expanded "><a href="ui-ux-16-backup-restore-export-migration-architecture.html"><strong aria-hidden="true">49.</strong> UI/UX 16 — Backup, Restore, Export & Migration UX</a></li><li class="chapter-item expanded "><a href="ui-ux-17-emergency-sos-offline-mesh-architecture.html"><strong aria-hidden="true">50.</strong> UI/UX 17 — Emergency / SOS / Offline Mesh UX</a></li><li class="chapter-item expanded "><a href="ui-ux-18-settings-privacy-notifications-data-controls-architecture.html"><strong aria-hidden="true">51.</strong> UI/UX 18 — Settings, Privacy, Notifications & Data Controls</a></li><li class="chapter-item expanded "><a href="ui-ux-19-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">52.</strong> UI/UX 19 — Plugin & Module Ecosystem UX</a></li><li class="chapter-item expanded "><a href="ui-ux-20-diagnostics-network-paths-advanced-developer-architecture.html"><strong aria-hidden="true">53.</strong> UI/UX 20 — Diagnostics, Network Paths & Developer UX</a></li><li class="chapter-item expanded "><a href="ui-ux-21-accessibility-inclusive-interaction-architecture.html"><strong aria-hidden="true">54.</strong> UI/UX 21 — Accessibility & Inclusive Interaction</a></li><li class="chapter-item expanded "><a href="ui-ux-22-design-system-tokens-typography-icons-motion-architecture.html"><strong aria-hidden="true">55.</strong> UI/UX 22 — Design System, Tokens, Typography & Motion</a></li><li class="chapter-item expanded "><a href="ui-ux-23-responsive-adaptive-desktop-tablet-foldable-phone-layout-architecture.html"><strong aria-hidden="true">56.</strong> UI/UX 23 — Responsive & Adaptive Layouts (Desktop/Tablet/Foldable/Phone)</a></li><li class="chapter-item expanded "><a href="ui-ux-24-error-loading-empty-offline-degraded-state-architecture.html"><strong aria-hidden="true">57.</strong> UI/UX 24 — Error, Loading, Empty & Degraded-State UX</a></li><li class="chapter-item expanded "><a href="ui-ux-25-onboarding-first-run-permission-education-architecture.html"><strong aria-hidden="true">58.</strong> UI/UX 25 — Onboarding, First Run & Permission Education</a></li><li class="chapter-item expanded "><a href="ui-ux-26-performance-virtualization-large-data-ui-architecture.html"><strong aria-hidden="true">59.</strong> UI/UX 26 — Virtualization & Large-Data UI Performance</a></li><li class="chapter-item expanded "><a href="ui-ux-27-ui-testing-screenshot-interaction-release-quality-gates-architecture.html"><strong aria-hidden="true">60.</strong> UI/UX 27 — UI Testing, Screenshots & Release Quality Gates</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">SIAR System Architecture &amp; Technical Wiki</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar/edit/main/sys-arch/09-crash-recovery-architecture.md" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="part-09--crash-recovery-architecture"><a class="header" href="#part-09--crash-recovery-architecture">Part 09 — Crash Recovery Architecture</a></h1>
+<h2 id="reusable-p2p-communication-platform"><a class="header" href="#reusable-p2p-communication-platform">Reusable P2P Communication Platform</a></h2>
+<p><strong>Status:</strong> Architecture specification<br />
+<strong>Part:</strong> 09 of 24<br />
+<strong>Primary language:</strong> Rust<br />
+<strong>Primary goals:</strong> deterministic restart, crash-safe persistence, idempotent recovery, state reconciliation, partial-operation repair, corruption containment, fault injection, reusable recovery across messaging/files/DTN/identity/daemon/mobile/headless deployments</p>
+<hr />
+<h1 id="1-purpose"><a class="header" href="#1-purpose">1. Purpose</a></h1>
+<p>A production communication platform must assume that the process can terminate at any point.</p>
+<p>Possible causes:</p>
+<pre><code class="language-text">power loss
+kernel crash
+application panic
+Android process kill
+mobile OS background reclaim
+desktop reboot
+storage I/O error
+forced update
+SIGKILL
+watchdog termination
+out-of-memory kill
+unexpected device restart
+</code></pre>
+<p>The system must therefore be designed around this rule:</p>
+<blockquote>
+<p><strong>Any instruction can stop between two machine operations.</strong></p>
+</blockquote>
+<p>Correct recovery cannot depend on:</p>
+<pre><code class="language-text">destructor ran
+shutdown callback completed
+network close succeeded
+UI saved state
+async task reached final line
+</code></pre>
+<p>The architecture must guarantee that durable user operations remain recoverable and that ambiguous external side effects are handled idempotently.</p>
+<hr />
+<h1 id="2-fundamental-recovery-model"><a class="header" href="#2-fundamental-recovery-model">2. Fundamental Recovery Model</a></h1>
+<pre><code class="language-text">Durable Intent
+     ↓
+Crash-Safe Commit
+     ↓
+External Effect
+     ↓
+Durable Result Marker
+</code></pre>
+<p>If crash occurs:</p>
+<pre><code class="language-text">before commit
+→ operation did not exist durably
+
+after commit, before effect
+→ retry effect
+
+after effect, before result marker
+→ retry using same idempotency ID
+
+after result marker
+→ continue from completed state
+</code></pre>
+<p>This is the core crash-recovery pattern.</p>
+<hr />
+<h1 id="3-recovery-architecture-position"><a class="header" href="#3-recovery-architecture-position">3. Recovery Architecture Position</a></h1>
+<pre><code class="language-text">Persistent Stores
+├── Event Log
+├── Outbox / Work Queues
+├── Transfer Journal
+├── Blob Store
+├── DTN Store
+├── Identity Store
+└── Configuration
+
+        ↓
+
+Recovery Coordinator
+
+        ↓
+
+Subsystem Reconcilers
+├── Messaging
+├── Files
+├── DTN
+├── Identity
+├── Routing
+├── Capability Cache
+└── Daemon/IPC
+
+        ↓
+
+Runtime Resume
+</code></pre>
+<p>Recovery must happen before normal background effects resume.</p>
+<hr />
+<h1 id="4-recovery-coordinator"><a class="header" href="#4-recovery-coordinator">4. Recovery Coordinator</a></h1>
+<p>Create a central coordinator:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct RecoveryCoordinator {
+    // subsystem reconcilers
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Responsibilities:</p>
+<ul>
+<li>detect previous unclean shutdown</li>
+<li>run storage integrity checks</li>
+<li>run schema migrations</li>
+<li>reconcile subsystem durable state</li>
+<li>repair derived state</li>
+<li>invalidate stale ephemeral state</li>
+<li>classify failures</li>
+<li>choose recovery mode</li>
+<li>release runtime only when minimum invariants hold</li>
+</ul>
+<hr />
+<h1 id="5-recovery-phases"><a class="header" href="#5-recovery-phases">5. Recovery Phases</a></h1>
+<p>Recommended sequence:</p>
+<pre><code class="language-text">Phase 0 — Open storage safely
+Phase 1 — Verify schema/migrations
+Phase 2 — Detect unclean shutdown
+Phase 3 — Validate critical stores
+Phase 4 — Reconcile durable semantic state
+Phase 5 — Repair derived work/projections
+Phase 6 — Validate file/blob staging
+Phase 7 — Reconcile DTN bundles
+Phase 8 — Invalidate sessions/capability caches
+Phase 9 — Start local read-only/query services
+Phase 10 — Resume network/background work
+</code></pre>
+<p>Order matters.</p>
+<hr />
+<h1 id="6-clean-shutdown-marker"><a class="header" href="#6-clean-shutdown-marker">6. Clean Shutdown Marker</a></h1>
+<p>Persist:</p>
+<pre><code class="language-text">runtime_started
+runtime_clean_shutdown
+</code></pre>
+<p>or equivalent generation marker.</p>
+<p>On startup:</p>
+<pre><code class="language-text">last start had no clean close
+→ unclean startup path
+</code></pre>
+<p>Do not depend on this marker for correctness, only for deciding how much recovery work to run.</p>
+<hr />
+<h1 id="7-crash-recovery-must-be-idempotent"><a class="header" href="#7-crash-recovery-must-be-idempotent">7. Crash Recovery Must Be Idempotent</a></h1>
+<p>Recovery itself may crash.</p>
+<p>Therefore:</p>
+<pre><code class="language-text">run recovery
+crash halfway
+run again
+</code></pre>
+<p>must be safe.</p>
+<p>Every recovery step should be:</p>
+<pre><code class="language-text">idempotent
+transactional
+or resumable
+</code></pre>
+<hr />
+<h1 id="8-recovery-state-machine"><a class="header" href="#8-recovery-state-machine">8. Recovery State Machine</a></h1>
+<pre><code class="language-text">Starting
+ ↓
+StorageOpened
+ ↓
+IntegrityChecked
+ ↓
+Reconciling
+ ↓
+Recovered
+ ↓
+RuntimeReady
+</code></pre>
+<p>Failure branches:</p>
+<pre><code class="language-text">ReadOnlyRecovery
+ManualRepairRequired
+FatalCorruption
+MigrationFailed
+StorageUnavailable
+</code></pre>
+<hr />
+<h1 id="9-storage-transaction-boundaries"><a class="header" href="#9-storage-transaction-boundaries">9. Storage Transaction Boundaries</a></h1>
+<p>Durable state transitions should use database transactions.</p>
+<p>Examples:</p>
+<pre><code class="language-text">append event
++
+update projection
++
+enqueue outbox
+</code></pre>
+<p>one transaction where consistency requires.</p>
+<p>Do not create recovery problems by splitting logically atomic state unnecessarily.</p>
+<hr />
+<h1 id="10-wal"><a class="header" href="#10-wal">10. WAL</a></h1>
+<p>For SQLite-like storage, use WAL appropriately.</p>
+<p>Benefits:</p>
+<ul>
+<li>atomic commit</li>
+<li>crash recovery</li>
+<li>concurrent readers</li>
+<li>good mobile/desktop performance</li>
+</ul>
+<p>Do not manually implement log semantics already provided by database engine unless needed.</p>
+<hr />
+<h1 id="11-wal-is-not-enough"><a class="header" href="#11-wal-is-not-enough">11. WAL Is Not Enough</a></h1>
+<p>WAL protects database atomicity.</p>
+<p>It does not automatically reconcile:</p>
+<pre><code class="language-text">database row says file exists
+but file rename failed
+</code></pre>
+<p>Cross-resource operations need explicit recovery design.</p>
+<hr />
+<h1 id="12-cross-store-atomicity"><a class="header" href="#12-cross-store-atomicity">12. Cross-Store Atomicity</a></h1>
+<p>You cannot atomically commit:</p>
+<pre><code class="language-text">SQLite transaction
++
+filesystem rename
++
+network send
+</code></pre>
+<p>as one universal transaction.</p>
+<p>Use staged state machines.</p>
+<p>Example:</p>
+<pre><code class="language-text">Prepare
+ ↓
+Persist Intent
+ ↓
+Perform Filesystem Action
+ ↓
+Persist Completion
+</code></pre>
+<p>Recovery checks intermediate state.</p>
+<hr />
+<h1 id="13-durable-operation-state"><a class="header" href="#13-durable-operation-state">13. Durable Operation State</a></h1>
+<p>Every long-lived operation needs explicit states.</p>
+<p>Example file:</p>
+<pre><code class="language-text">Created
+Preparing
+Transferring
+Finalizing
+Completed
+</code></pre>
+<p>Never rely on:</p>
+<pre><code class="language-text">absence of error
+</code></pre>
+<p>to infer completion.</p>
+<hr />
+<h1 id="14-messaging-recovery"><a class="header" href="#14-messaging-recovery">14. Messaging Recovery</a></h1>
+<p>Outbound messaging state:</p>
+<pre><code class="language-text">MessageCreated
+MessageQueued
+OutboxPending
+</code></pre>
+<p>On restart:</p>
+<pre><code class="language-text">reload pending outbox
+validate expiry/revocation
+retry same MessageId
+</code></pre>
+<p>Do not create new MessageId.</p>
+<hr />
+<h1 id="15-ambiguous-send-result"><a class="header" href="#15-ambiguous-send-result">15. Ambiguous Send Result</a></h1>
+<p>Crash scenario:</p>
+<pre><code class="language-text">network send succeeded
+process crashes before local Sent marker
+</code></pre>
+<p>On restart:</p>
+<pre><code class="language-text">send same MessageId again
+</code></pre>
+<p>Recipient deduplicates.</p>
+<p>This is why stable IDs are required.</p>
+<hr />
+<h1 id="16-delivery-receipt-recovery"><a class="header" href="#16-delivery-receipt-recovery">16. Delivery Receipt Recovery</a></h1>
+<p>If message delivered but receipt not processed:</p>
+<pre><code class="language-text">recipient may resend receipt
+sender applies idempotently
+</code></pre>
+<p>Do not rely on one-shot receipts.</p>
+<hr />
+<h1 id="17-inbox-recovery"><a class="header" href="#17-inbox-recovery">17. Inbox Recovery</a></h1>
+<p>Remote message should be ACKed according to durable semantics.</p>
+<p>For durable receive:</p>
+<pre><code class="language-text">validate
+persist
+commit
+then ACK
+</code></pre>
+<p>Crash before ACK:</p>
+<pre><code class="language-text">sender retries
+recipient deduplicates EventId/MessageId
+</code></pre>
+<hr />
+<h1 id="18-file-transfer-recovery"><a class="header" href="#18-file-transfer-recovery">18. File Transfer Recovery</a></h1>
+<p>Part 05 transfer state includes:</p>
+<pre><code class="language-text">TransferId
+BlobId
+verified chunk bitmap/ranges
+staging path
+state
+</code></pre>
+<p>On restart:</p>
+<pre><code class="language-text">load transfer
+validate staging
+recompute/verify uncertain chunks
+resume missing chunks
+</code></pre>
+<hr />
+<h1 id="19-chunk-commit-ordering"><a class="header" href="#19-chunk-commit-ordering">19. Chunk Commit Ordering</a></h1>
+<p>Safe receive sequence:</p>
+<pre><code class="language-text">receive chunk
+ ↓
+write staging bytes
+ ↓
+flush as policy requires
+ ↓
+verify hash/authentication
+ ↓
+persist chunk-complete state
+ ↓
+ACK chunk
+</code></pre>
+<p>Crash between any two steps must be recoverable.</p>
+<hr />
+<h1 id="20-chunk-state-ambiguity"><a class="header" href="#20-chunk-state-ambiguity">20. Chunk State Ambiguity</a></h1>
+<p>If bytes were written but completion bit not committed:</p>
+<pre><code class="language-text">treat chunk as unverified
+reverify on restart
+</code></pre>
+<p>Do not assume.</p>
+<hr />
+<h1 id="21-finalization-recovery"><a class="header" href="#21-finalization-recovery">21. Finalization Recovery</a></h1>
+<p>File finalization:</p>
+<pre><code class="language-text">all chunks verified
+ ↓
+write Finalizing
+ ↓
+verify full blob/root
+ ↓
+atomic rename staging → final
+ ↓
+persist Completed
+</code></pre>
+<p>Crash scenarios:</p>
+<h3 id="crash-before-rename"><a class="header" href="#crash-before-rename">Crash before rename</a></h3>
+<p>Resume finalization.</p>
+<h3 id="crash-after-rename-before-completed-row"><a class="header" href="#crash-after-rename-before-completed-row">Crash after rename before Completed row</a></h3>
+<p>Recovery detects final object exists and verifies it.</p>
+<h3 id="crash-after-completed-but-object-missing"><a class="header" href="#crash-after-completed-but-object-missing">Crash after Completed but object missing</a></h3>
+<p>This is corruption/inconsistency; repair or downgrade state.</p>
+<hr />
+<h1 id="22-atomic-rename"><a class="header" href="#22-atomic-rename">22. Atomic Rename</a></h1>
+<p>Use atomic rename when filesystem supports it.</p>
+<p>Do not assume atomicity across filesystems/mounts.</p>
+<p>Staging and final store should live on same filesystem when atomic rename is required.</p>
+<hr />
+<h1 id="23-temp-files"><a class="header" href="#23-temp-files">23. Temp Files</a></h1>
+<p>Temporary files must use opaque IDs.</p>
+<p>Recovery scans:</p>
+<pre><code class="language-text">staging/
+temp/
+</code></pre>
+<p>and classifies:</p>
+<pre><code class="language-text">owned by active transfer
+orphan
+too new
+expired
+corrupt
+</code></pre>
+<hr />
+<h1 id="24-orphan-cleanup"><a class="header" href="#24-orphan-cleanup">24. Orphan Cleanup</a></h1>
+<p>Do not immediately delete every unknown temp file after crash.</p>
+<p>Use:</p>
+<pre><code class="language-text">ownership metadata
+age threshold
+transaction generation
+</code></pre>
+<p>then clean safely.</p>
+<hr />
+<h1 id="25-blob-reference-recovery"><a class="header" href="#25-blob-reference-recovery">25. Blob Reference Recovery</a></h1>
+<p>Reference counts are derived.</p>
+<p>If inconsistent:</p>
+<pre><code class="language-text">rebuild from authoritative references
+</code></pre>
+<p>Do not trust cached reference count blindly.</p>
+<hr />
+<h1 id="26-blob-gc-crash-safety"><a class="header" href="#26-blob-gc-crash-safety">26. Blob GC Crash Safety</a></h1>
+<p>GC should use staged deletion.</p>
+<p>Example:</p>
+<pre><code class="language-text">mark GC candidate
+ ↓
+recheck references
+ ↓
+delete object
+ ↓
+delete metadata
+</code></pre>
+<p>Recovery reconciles partial state.</p>
+<hr />
+<h1 id="27-dtn-recovery"><a class="header" href="#27-dtn-recovery">27. DTN Recovery</a></h1>
+<p>DTN bundle store is durable.</p>
+<p>On restart:</p>
+<pre><code class="language-text">load bundles
+remove expired
+restore replication budget
+restore tombstones
+resume encounter scheduler
+</code></pre>
+<p>Do not reset all bundle states.</p>
+<hr />
+<h1 id="28-relay-ack-ambiguity"><a class="header" href="#28-relay-ack-ambiguity">28. Relay ACK Ambiguity</a></h1>
+<p>Crash after durable relay storage but before sending relay ACK:</p>
+<pre><code class="language-text">origin resends
+relay deduplicates BundleId
+relay sends ACK
+</code></pre>
+<p>Safe.</p>
+<hr />
+<h1 id="29-destination-ack-ambiguity"><a class="header" href="#29-destination-ack-ambiguity">29. Destination ACK Ambiguity</a></h1>
+<p>Destination may have committed payload but crash before sending destination ACK.</p>
+<p>On next contact/session:</p>
+<pre><code class="language-text">destination resends ACK
+</code></pre>
+<p>ACK must be idempotent.</p>
+<hr />
+<h1 id="30-dtn-forward-history-recovery"><a class="header" href="#30-dtn-forward-history-recovery">30. DTN Forward History Recovery</a></h1>
+<p>Forward history can prevent immediate bounce.</p>
+<p>On restart, preserve enough:</p>
+<pre><code class="language-text">peer
+bundle
+last forward time
+</code></pre>
+<p>Do not require perfect full path history.</p>
+<hr />
+<h1 id="31-identity-recovery"><a class="header" href="#31-identity-recovery">31. Identity Recovery</a></h1>
+<p>Part 02 identity state is security critical.</p>
+<p>Recovery must verify:</p>
+<pre><code class="language-text">device-event chain
+highest generation
+revocation set
+root continuity
+certificate integrity
+</code></pre>
+<p>If identity state is inconsistent:</p>
+<pre><code class="language-text">fail closed for trusted network operations
+</code></pre>
+<hr />
+<h1 id="32-identity-fork-recovery"><a class="header" href="#32-identity-fork-recovery">32. Identity Fork Recovery</a></h1>
+<p>If two conflicting same-generation account states appear:</p>
+<pre><code class="language-text">do not auto-merge
+</code></pre>
+<p>Enter:</p>
+<pre><code class="language-text">IdentityForkDetected
+</code></pre>
+<p>and require explicit reconciliation/security flow.</p>
+<hr />
+<h1 id="33-revocation-recovery"><a class="header" href="#33-revocation-recovery">33. Revocation Recovery</a></h1>
+<p>Revocation must never be lost because process crashed after user approved it.</p>
+<p>Safe flow:</p>
+<pre><code class="language-text">append signed revocation
+commit
+invalidate local sessions
+propagate asynchronously
+</code></pre>
+<p>Crash after commit:</p>
+<pre><code class="language-text">recovery sees revocation
+sessions remain invalid
+</code></pre>
+<hr />
+<h1 id="34-session-recovery"><a class="header" href="#34-session-recovery">34. Session Recovery</a></h1>
+<p>Authenticated network sessions are ephemeral.</p>
+<p>After process crash:</p>
+<pre><code class="language-text">invalidate all in-memory session state
+</code></pre>
+<p>Do not persist raw live session objects.</p>
+<hr />
+<h1 id="35-session-resumption-tokens"><a class="header" href="#35-session-resumption-tokens">35. Session Resumption Tokens</a></h1>
+<p>If protocol later supports resumption:</p>
+<pre><code class="language-text">persist only cryptographically safe resumption material
+</code></pre>
+<p>with:</p>
+<ul>
+<li>expiry</li>
+<li>revocation binding</li>
+<li>account generation binding</li>
+<li>secure storage</li>
+</ul>
+<p>Start without complex resumption if unnecessary.</p>
+<hr />
+<h1 id="36-capability-recovery"><a class="header" href="#36-capability-recovery">36. Capability Recovery</a></h1>
+<p>Part 07 cached peer capabilities are hints only.</p>
+<p>After restart:</p>
+<pre><code class="language-text">cache may help UI
+new session must renegotiate
+</code></pre>
+<p>Do not restore old negotiated contract as authoritative.</p>
+<hr />
+<h1 id="37-routing-recovery"><a class="header" href="#37-routing-recovery">37. Routing Recovery</a></h1>
+<p>Part 03 route history is advisory.</p>
+<p>Persisted:</p>
+<pre><code class="language-text">last successful transport
+known endpoint hints
+</code></pre>
+<p>may bootstrap.</p>
+<p>Revalidate all route candidates.</p>
+<hr />
+<h1 id="38-resource-recovery"><a class="header" href="#38-resource-recovery">38. Resource Recovery</a></h1>
+<p>Part 08 in-memory permits disappear on crash.</p>
+<p>After restart:</p>
+<pre><code class="language-text">memory/stream/CPU permits reset
+</code></pre>
+<p>Persistent resource reservations:</p>
+<pre><code class="language-text">storage reservations
+staging allocations
+</code></pre>
+<p>must be reconciled.</p>
+<hr />
+<h1 id="39-storage-reservation-recovery"><a class="header" href="#39-storage-reservation-recovery">39. Storage Reservation Recovery</a></h1>
+<p>For each reservation:</p>
+<pre><code class="language-text">active operation exists?
+</code></pre>
+<p>If yes:</p>
+<pre><code class="language-text">restore reservation
+</code></pre>
+<p>If no:</p>
+<pre><code class="language-text">expire/release after safety check
+</code></pre>
+<hr />
+<h1 id="40-outbox-reconciliation"><a class="header" href="#40-outbox-reconciliation">40. Outbox Reconciliation</a></h1>
+<p>Outbox should be consistent with semantic event state.</p>
+<p>On startup:</p>
+<pre><code class="language-text">event says MessageQueued
+outbox missing
+→ reconstruct
+
+outbox exists
+message already Delivered
+→ remove
+</code></pre>
+<p>This repairs drift.</p>
+<hr />
+<h1 id="41-projection-recovery"><a class="header" href="#41-projection-recovery">41. Projection Recovery</a></h1>
+<p>Part 04 projections have checkpoints.</p>
+<p>Startup:</p>
+<pre><code class="language-text">read checkpoint
+replay committed events after it
+</code></pre>
+<p>If projection schema version changed:</p>
+<pre><code class="language-text">rebuild
+</code></pre>
+<hr />
+<h1 id="42-projection-corruption"><a class="header" href="#42-projection-corruption">42. Projection Corruption</a></h1>
+<p>If noncritical projection corrupt:</p>
+<pre><code class="language-text">drop/rebuild
+</code></pre>
+<p>If critical authoritative store corrupt:</p>
+<pre><code class="language-text">do not continue blindly
+</code></pre>
+<p>Classify severity.</p>
+<hr />
+<h1 id="43-search-index-recovery"><a class="header" href="#43-search-index-recovery">43. Search Index Recovery</a></h1>
+<p>Search index is derived.</p>
+<p>Recovery can:</p>
+<pre><code class="language-text">mark unavailable
+rebuild in background
+</code></pre>
+<p>Messaging still works.</p>
+<hr />
+<h1 id="44-conversation-summary-recovery"><a class="header" href="#44-conversation-summary-recovery">44. Conversation Summary Recovery</a></h1>
+<p>If chat-list projection missing:</p>
+<pre><code class="language-text">rebuild from message streams
+</code></pre>
+<p>Can prioritize recent streams first for fast startup.</p>
+<hr />
+<h1 id="45-progressive-recovery"><a class="header" href="#45-progressive-recovery">45. Progressive Recovery</a></h1>
+<p>Do not require full years-long rebuild before app becomes usable.</p>
+<p>Possible:</p>
+<pre><code class="language-text">recover critical state
+ ↓
+render recent/local data
+ ↓
+background rebuild secondary indexes
+</code></pre>
+<hr />
+<h1 id="46-recovery-priority"><a class="header" href="#46-recovery-priority">46. Recovery Priority</a></h1>
+<p>Recover first:</p>
+<pre><code class="language-text">identity
+security state
+event store integrity
+pending messages
+SOS/critical DTN
+active transfers
+</code></pre>
+<p>Later:</p>
+<pre><code class="language-text">search
+analytics
+old thumbnails
+</code></pre>
+<hr />
+<h1 id="47-read-only-recovery-mode"><a class="header" href="#47-read-only-recovery-mode">47. Read-Only Recovery Mode</a></h1>
+<p>If writes are unsafe but reads work:</p>
+<pre><code class="language-text">ReadOnlyRecovery
+</code></pre>
+<p>allows:</p>
+<ul>
+<li>view messages</li>
+<li>export data</li>
+<li>inspect devices</li>
+<li>diagnostics</li>
+</ul>
+<p>Disallow new durable operations.</p>
+<hr />
+<h1 id="48-degraded-recovery-mode"><a class="header" href="#48-degraded-recovery-mode">48. Degraded Recovery Mode</a></h1>
+<p>Some noncritical subsystem unavailable:</p>
+<pre><code class="language-text">search broken
+thumbnail cache broken
+</code></pre>
+<p>Runtime can start degraded.</p>
+<p>Surface diagnostics.</p>
+<hr />
+<h1 id="49-fatal-recovery-mode"><a class="header" href="#49-fatal-recovery-mode">49. Fatal Recovery Mode</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">identity key store inaccessible
+critical DB unrecoverable
+migration partially corrupted
+</code></pre>
+<p>Do not start network operations that could make state worse.</p>
+<hr />
+<h1 id="50-recovery-classification"><a class="header" href="#50-recovery-classification">50. Recovery Classification</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum RecoverySeverity {
+    Clean,
+    Repaired,
+    Degraded,
+    ReadOnly,
+    Fatal,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="51-corruption-detection"><a class="header" href="#51-corruption-detection">51. Corruption Detection</a></h1>
+<p>Mechanisms:</p>
+<pre><code class="language-text">SQLite integrity check
+event checksums
+blob hashes
+manifest authentication
+snapshot checksums
+identity signatures
+</code></pre>
+<p>Use domain-appropriate checks.</p>
+<hr />
+<h1 id="52-corruption-scope"><a class="header" href="#52-corruption-scope">52. Corruption Scope</a></h1>
+<p>Classify:</p>
+<pre><code class="language-text">single blob corrupt
+one projection corrupt
+one event stream corrupt
+entire DB corrupt
+secure-store failure
+</code></pre>
+<p>Do not treat all corruption the same.</p>
+<hr />
+<h1 id="53-single-blob-corruption"><a class="header" href="#53-single-blob-corruption">53. Single Blob Corruption</a></h1>
+<p>If blob can be reacquired:</p>
+<pre><code class="language-text">mark corrupt
+remove final trust
+redownload
+</code></pre>
+<p>Do not poison whole application.</p>
+<hr />
+<h1 id="54-transfer-journal-corruption"><a class="header" href="#54-transfer-journal-corruption">54. Transfer Journal Corruption</a></h1>
+<p>If transfer journal corrupt but blob chunks are verifiable:</p>
+<pre><code class="language-text">rebuild progress by scanning/verifying chunks
+</code></pre>
+<p>possibly slower but safe.</p>
+<hr />
+<h1 id="55-event-stream-corruption"><a class="header" href="#55-event-stream-corruption">55. Event Stream Corruption</a></h1>
+<p>If immutable authoritative event stream corrupt:</p>
+<pre><code class="language-text">quarantine
+attempt restore from backup/peer
+</code></pre>
+<p>Do not silently skip events.</p>
+<hr />
+<h1 id="56-secure-store-failure"><a class="header" href="#56-secure-store-failure">56. Secure Store Failure</a></h1>
+<p>If device private keys unavailable:</p>
+<pre><code class="language-text">network identity unavailable
+</code></pre>
+<p>Allow local data viewing where possible, but fail trusted communication.</p>
+<hr />
+<h1 id="57-backup-integration"><a class="header" href="#57-backup-integration">57. Backup Integration</a></h1>
+<p>Recovery can use backups when local repair insufficient.</p>
+<p>Backup must be:</p>
+<pre><code class="language-text">authenticated
+versioned
+integrity-checked
+</code></pre>
+<hr />
+<h1 id="58-restore-is-not-ordinary-recovery"><a class="header" href="#58-restore-is-not-ordinary-recovery">58. Restore Is Not Ordinary Recovery</a></h1>
+<p>Restore may resurrect old pending operations.</p>
+<p>Therefore after restore:</p>
+<pre><code class="language-text">re-evaluate expiry
+delivery state
+revocation
+peer state
+</code></pre>
+<p>before rescheduling effects.</p>
+<hr />
+<h1 id="59-duplicate-effect-prevention"><a class="header" href="#59-duplicate-effect-prevention">59. Duplicate Effect Prevention</a></h1>
+<p>Every external effect needs stable identity.</p>
+<p>Examples:</p>
+<pre><code class="language-text">MessageId
+TransferId
+BundleId
+DeviceEventId
+</code></pre>
+<p>Recovery retries with same ID.</p>
+<hr />
+<h1 id="60-idempotent-receiver"><a class="header" href="#60-idempotent-receiver">60. Idempotent Receiver</a></h1>
+<p>Receiver must tolerate duplicate:</p>
+<pre><code class="language-text">message
+chunk
+bundle
+receipt
+device event
+</code></pre>
+<p>This is essential for crash safety.</p>
+<hr />
+<h1 id="61-side-effect-journal"><a class="header" href="#61-side-effect-journal">61. Side Effect Journal</a></h1>
+<p>For some operations, keep explicit effect state:</p>
+<pre><code class="language-text">Pending
+InFlight
+Succeeded
+Failed
+Deferred
+</code></pre>
+<p>Do not rely only on task existence.</p>
+<hr />
+<h1 id="62-inflight-state-semantics"><a class="header" href="#62-inflight-state-semantics">62. InFlight State Semantics</a></h1>
+<p>After crash, <code>InFlight</code> becomes:</p>
+<pre><code class="language-text">UnknownOutcome
+</code></pre>
+<p>Recovery decides:</p>
+<pre><code class="language-text">retry
+verify remote state
+or wait
+</code></pre>
+<p>Do not assume failure.</p>
+<hr />
+<h1 id="63-unknown-outcome-state"><a class="header" href="#63-unknown-outcome-state">63. Unknown Outcome State</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum EffectRecoveryState {
+    Pending,
+    UnknownOutcome,
+    ConfirmedSuccess,
+    ConfirmedFailure,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Useful for non-idempotent external systems.</p>
+<p>Within this P2P platform, design protocols to make retries idempotent.</p>
+<hr />
+<h1 id="64-network-effect-recovery"><a class="header" href="#64-network-effect-recovery">64. Network Effect Recovery</a></h1>
+<p>For network send:</p>
+<pre><code class="language-text">UnknownOutcome
+→ retry same ID
+</code></pre>
+<p>preferred.</p>
+<hr />
+<h1 id="65-file-export-recovery"><a class="header" href="#65-file-export-recovery">65. File Export Recovery</a></h1>
+<p>Exporting plaintext to user filesystem may be non-idempotent.</p>
+<p>Use:</p>
+<pre><code class="language-text">temp destination
+atomic commit/rename
+</code></pre>
+<p>or explicit user-visible duplicate policy.</p>
+<hr />
+<h1 id="66-notification-recovery"><a class="header" href="#66-notification-recovery">66. Notification Recovery</a></h1>
+<p>Do not treat notification display as authoritative state.</p>
+<p>If crash causes duplicate notification:</p>
+<pre><code class="language-text">deduplicate by notification/event ID
+</code></pre>
+<p>where platform allows.</p>
+<hr />
+<h1 id="67-android-process-death"><a class="header" href="#67-android-process-death">67. Android Process Death</a></h1>
+<p>Assume app can die immediately after backgrounding.</p>
+<p>Therefore:</p>
+<pre><code class="language-text">persist before returning success to UI
+</code></pre>
+<p>Long-running work should be represented durably and resumed through allowed platform mechanisms.</p>
+<hr />
+<h1 id="68-android-foreground-service-recovery"><a class="header" href="#68-android-foreground-service-recovery">68. Android Foreground Service Recovery</a></h1>
+<p>If service stops unexpectedly:</p>
+<pre><code class="language-text">Rust durable state remains source of truth
+</code></pre>
+<p>Kotlin service restart asks runtime what work remains.</p>
+<p>Do not let Kotlin maintain parallel hidden transfer state.</p>
+<hr />
+<h1 id="69-ios-recovery"><a class="header" href="#69-ios-recovery">69. iOS Recovery</a></h1>
+<p>iOS background execution may end unpredictably.</p>
+<p>Same principle:</p>
+<pre><code class="language-text">durable state in Rust/storage
+platform callback is only execution opportunity
+</code></pre>
+<hr />
+<h1 id="70-desktop-daemon-recovery"><a class="header" href="#70-desktop-daemon-recovery">70. Desktop Daemon Recovery</a></h1>
+<p>Part 16 daemon owns persistent runtime.</p>
+<p>On crash:</p>
+<pre><code class="language-text">system supervisor restarts daemon
+recovery runs
+GUI reconnects
+</code></pre>
+<p>GUI should not attempt to repair DB independently.</p>
+<hr />
+<h1 id="71-ipc-client-recovery"><a class="header" href="#71-ipc-client-recovery">71. IPC Client Recovery</a></h1>
+<p>When daemon restarts:</p>
+<pre><code class="language-text">GUI/CLI IPC connection breaks
+</code></pre>
+<p>Client:</p>
+<pre><code class="language-text">reconnect
+request fresh state snapshot
+resubscribe
+</code></pre>
+<p>Do not assume incremental event stream continuity.</p>
+<hr />
+<h1 id="72-headless-node-recovery"><a class="header" href="#72-headless-node-recovery">72. Headless Node Recovery</a></h1>
+<p>Headless relay/server should be able to restart unattended.</p>
+<p>Requirements:</p>
+<pre><code class="language-text">no UI prompt for routine recovery
+automatic bundle/file/outbox resume
+clear logs/health state
+</code></pre>
+<p>Fatal key/corruption cases may still require admin intervention.</p>
+<hr />
+<h1 id="73-supervision"><a class="header" href="#73-supervision">73. Supervision</a></h1>
+<p>Long-lived workers need supervisor.</p>
+<pre><code class="language-text">Supervisor
+├── OutboxWorker
+├── TransferScheduler
+├── DtnScheduler
+├── ProjectionRunner
+└── DiscoveryService
+</code></pre>
+<p>Worker panic does not crash unrelated state if recoverable.</p>
+<hr />
+<h1 id="74-worker-restart-policy"><a class="header" href="#74-worker-restart-policy">74. Worker Restart Policy</a></h1>
+<pre><code class="language-text">bounded exponential backoff
+</code></pre>
+<p>Repeated failure:</p>
+<pre><code class="language-text">mark subsystem degraded
+stop restart storm
+</code></pre>
+<hr />
+<h1 id="75-panic-boundaries"><a class="header" href="#75-panic-boundaries">75. Panic Boundaries</a></h1>
+<p>Rust panic should not unwind across FFI.</p>
+<p>At service boundaries:</p>
+<pre><code class="language-text">catch/report where appropriate
+</code></pre>
+<p>Do not use panic as ordinary error control.</p>
+<hr />
+<h1 id="76-process-wide-panic-strategy"><a class="header" href="#76-process-wide-panic-strategy">76. Process-Wide Panic Strategy</a></h1>
+<p>For unrecoverable invariant violation:</p>
+<pre><code class="language-text">abort/restart
+</code></pre>
+<p>may be safer than continuing corrupted shared state.</p>
+<p>Persistent recovery then restores from durable state.</p>
+<hr />
+<h1 id="77-oom-considerations"><a class="header" href="#77-oom-considerations">77. OOM Considerations</a></h1>
+<p>OOM may abort process without cleanup.</p>
+<p>Part 08 resource limits should make OOM less likely.</p>
+<p>Crash recovery must still assume:</p>
+<pre><code class="language-text">no cleanup happened
+</code></pre>
+<hr />
+<h1 id="78-disk-full-during-transaction"><a class="header" href="#78-disk-full-during-transaction">78. Disk Full During Transaction</a></h1>
+<p>Database transaction should fail.</p>
+<p>Application must not claim operation accepted.</p>
+<p>Recovery later may:</p>
+<pre><code class="language-text">evict cache
+free temp
+retry if user requests
+</code></pre>
+<hr />
+<h1 id="79-disk-full-during-blob-write"><a class="header" href="#79-disk-full-during-blob-write">79. Disk Full During Blob Write</a></h1>
+<p>Transfer state remains incomplete.</p>
+<p>Do not mark chunk complete before durable write succeeded.</p>
+<hr />
+<h1 id="80-disk-full-during-finalization"><a class="header" href="#80-disk-full-during-finalization">80. Disk Full During Finalization</a></h1>
+<p>Keep transfer in:</p>
+<pre><code class="language-text">Finalizing/FailedStorage
+</code></pre>
+<p>and allow user action.</p>
+<hr />
+<h1 id="81-partial-database-migration"><a class="header" href="#81-partial-database-migration">81. Partial Database Migration</a></h1>
+<p>Migration architecture should be transactional where possible.</p>
+<p>Maintain:</p>
+<pre><code class="language-text">schema version
+migration state
+</code></pre>
+<p>If crash mid-migration:</p>
+<pre><code class="language-text">resume or rollback deterministically
+</code></pre>
+<hr />
+<h1 id="82-migration-lock"><a class="header" href="#82-migration-lock">82. Migration Lock</a></h1>
+<p>Only one process performs migration.</p>
+<p>Daemon mode simplifies this.</p>
+<hr />
+<h1 id="83-migration-backup"><a class="header" href="#83-migration-backup">83. Migration Backup</a></h1>
+<p>Before risky destructive migration:</p>
+<pre><code class="language-text">backup/checkpoint
+</code></pre>
+<p>according to storage size/policy.</p>
+<hr />
+<h1 id="84-event-schema-vs-db-schema"><a class="header" href="#84-event-schema-vs-db-schema">84. Event Schema vs DB Schema</a></h1>
+<p>Event schemas remain immutable.</p>
+<p>DB migration may change:</p>
+<pre><code class="language-text">indexes
+projection tables
+metadata layout
+</code></pre>
+<p>without rewriting event meaning.</p>
+<hr />
+<h1 id="85-recovery-version-compatibility"><a class="header" href="#85-recovery-version-compatibility">85. Recovery Version Compatibility</a></h1>
+<p>New binary should understand old durable state.</p>
+<p>Do not release incompatible persistence changes without migration path.</p>
+<hr />
+<h1 id="86-downgrade-compatibility"><a class="header" href="#86-downgrade-compatibility">86. Downgrade Compatibility</a></h1>
+<p>Running older binary against newer DB may be unsafe.</p>
+<p>Use:</p>
+<pre><code class="language-text">min_reader_version
+min_writer_version
+</code></pre>
+<p>metadata.</p>
+<p>Reject unsafe downgrade.</p>
+<hr />
+<h1 id="87-recovery-metadata"><a class="header" href="#87-recovery-metadata">87. Recovery Metadata</a></h1>
+<p>Maintain:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct RecoveryMetadata {
+    pub last_clean_shutdown: Option&lt;Timestamp&gt;,
+    pub schema_version: u32,
+    pub recovery_generation: u64,
+    pub last_recovery_status: RecoverySeverity,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="88-recovery-generation"><a class="header" href="#88-recovery-generation">88. Recovery Generation</a></h1>
+<p>Increment every successful recovery/start generation.</p>
+<p>Useful for:</p>
+<pre><code class="language-text">stale temp ownership
+diagnostics
+reservation cleanup
+</code></pre>
+<hr />
+<h1 id="89-orphan-resource-ownership"><a class="header" href="#89-orphan-resource-ownership">89. Orphan Resource Ownership</a></h1>
+<p>Temp/staging records can include:</p>
+<pre><code class="language-text">created_generation
+operation_id
+</code></pre>
+<p>Recovery can distinguish stale orphan from current operation.</p>
+<hr />
+<h1 id="90-stale-locks"><a class="header" href="#90-stale-locks">90. Stale Locks</a></h1>
+<p>Never rely on process-lifetime lock files without stale recovery semantics.</p>
+<p>Prefer OS locks or DB locks.</p>
+<p>If using lock file:</p>
+<pre><code class="language-text">PID alone is insufficient
+</code></pre>
+<p>because PID can be reused.</p>
+<hr />
+<h1 id="91-monotonic-vs-wall-time"><a class="header" href="#91-monotonic-vs-wall-time">91. Monotonic vs Wall Time</a></h1>
+<p>Timeout/age decisions across restart use persisted wall time with tolerance.</p>
+<p>Within process use monotonic clock.</p>
+<p>Do not persist monotonic timestamps directly.</p>
+<hr />
+<h1 id="92-retry-timers-recovery"><a class="header" href="#92-retry-timers-recovery">92. Retry Timers Recovery</a></h1>
+<p>Persist:</p>
+<pre><code class="language-text">next_attempt_at
+attempt_count
+expiry
+</code></pre>
+<p>For long-lived durable work.</p>
+<p>After restart:</p>
+<pre><code class="language-text">if next_attempt_at passed
+→ eligible now
+</code></pre>
+<hr />
+<h1 id="93-backoff-recovery"><a class="header" href="#93-backoff-recovery">93. Backoff Recovery</a></h1>
+<p>Do not reset every retry backoff to zero after crash.</p>
+<p>Could cause thundering herd.</p>
+<p>Persist coarse retry state where useful.</p>
+<hr />
+<h1 id="94-thundering-herd-prevention"><a class="header" href="#94-thundering-herd-prevention">94. Thundering Herd Prevention</a></h1>
+<p>On restart with 10k pending operations:</p>
+<pre><code class="language-text">do not resume all immediately
+</code></pre>
+<p>Use:</p>
+<pre><code class="language-text">priority
+jitter
+resource admission
+batching
+</code></pre>
+<hr />
+<h1 id="95-recovery-scheduler"><a class="header" href="#95-recovery-scheduler">95. Recovery Scheduler</a></h1>
+<pre><code class="language-text">Critical pending
+ ↓
+Interactive
+ ↓
+Normal
+ ↓
+Bulk
+ ↓
+Background
+</code></pre>
+<p>Reuse Part 08 fairness.</p>
+<hr />
+<h1 id="96-sos-recovery"><a class="header" href="#96-sos-recovery">96. SOS Recovery</a></h1>
+<p>If pending SOS exists and not expired/cancelled:</p>
+<pre><code class="language-text">resume highest priority
+</code></pre>
+<p>after identity/storage safety checks.</p>
+<hr />
+<h1 id="97-revocation-recovery-priority"><a class="header" href="#97-revocation-recovery-priority">97. Revocation Recovery Priority</a></h1>
+<p>Identity revocations should be applied before ordinary sends.</p>
+<p>A message queued to now-revoked device should be re-evaluated.</p>
+<hr />
+<h1 id="98-policy-re-evaluation"><a class="header" href="#98-policy-re-evaluation">98. Policy Re-Evaluation</a></h1>
+<p>Durable pending work may outlive policy changes.</p>
+<p>On restart:</p>
+<pre><code class="language-text">recheck current policy
+</code></pre>
+<p>Examples:</p>
+<pre><code class="language-text">mobile data now disabled
+peer revoked
+file size policy changed
+</code></pre>
+<hr />
+<h1 id="99-capability-re-evaluation"><a class="header" href="#99-capability-re-evaluation">99. Capability Re-Evaluation</a></h1>
+<p>Old peer capability cache may be stale.</p>
+<p>Pending operation can remain queued until new session renegotiates.</p>
+<p>Do not assume prior capability.</p>
+<hr />
+<h1 id="100-routing-re-evaluation"><a class="header" href="#100-routing-re-evaluation">100. Routing Re-Evaluation</a></h1>
+<p>Every restart reconstructs routes.</p>
+<p>Do not persist:</p>
+<pre><code class="language-text">"send via Bluetooth"
+</code></pre>
+<p>as durable semantic truth.</p>
+<p>Persist:</p>
+<pre><code class="language-text">delivery intent
+</code></pre>
+<p>then Part 03 chooses current path.</p>
+<hr />
+<h1 id="101-dtn-vs-direct-re-evaluation"><a class="header" href="#101-dtn-vs-direct-re-evaluation">101. DTN vs Direct Re-Evaluation</a></h1>
+<p>Pending DTN message may later have direct Internet path.</p>
+<p>Recovery can:</p>
+<pre><code class="language-text">prefer direct
+</code></pre>
+<p>while preserving BundleId/MessageId semantics and deduplication.</p>
+<hr />
+<h1 id="102-recovery-of-multi-path-transfer"><a class="header" href="#102-recovery-of-multi-path-transfer">102. Recovery of Multi-Path Transfer</a></h1>
+<p>Part 12 future multipath:</p>
+<pre><code class="language-text">persist verified chunk ownership/progress
+</code></pre>
+<p>not transient path assignment.</p>
+<p>After restart, scheduler can choose new paths.</p>
+<hr />
+<h1 id="103-recovery-of-media-calls"><a class="header" href="#103-recovery-of-media-calls">103. Recovery of Media Calls</a></h1>
+<p>Realtime calls generally do not survive process crash as live sessions.</p>
+<p>On restart:</p>
+<pre><code class="language-text">mark call interrupted/ended
+</code></pre>
+<p>Do not attempt to resume RTP state blindly.</p>
+<hr />
+<h1 id="104-call-history"><a class="header" href="#104-call-history">104. Call History</a></h1>
+<p>Semantic event:</p>
+<pre><code class="language-text">CallInterrupted
+</code></pre>
+<p>may be added.</p>
+<p>This is different from attempting live media recovery.</p>
+<hr />
+<h1 id="105-presence-recovery"><a class="header" href="#105-presence-recovery">105. Presence Recovery</a></h1>
+<p>Presence/typing is ephemeral.</p>
+<p>After restart:</p>
+<pre><code class="language-text">discard stale presence
+</code></pre>
+<p>Recompute current presence.</p>
+<hr />
+<h1 id="106-discovery-recovery"><a class="header" href="#106-discovery-recovery">106. Discovery Recovery</a></h1>
+<p>Nearby discovery state is ephemeral.</p>
+<p>Persist only long-lived trusted peer/endpoints where appropriate.</p>
+<p>Rescan after restart.</p>
+<hr />
+<h1 id="107-capability-dynamic-state-recovery"><a class="header" href="#107-capability-dynamic-state-recovery">107. Capability Dynamic State Recovery</a></h1>
+<p>Dynamic hardware/battery capability resets.</p>
+<p>Requery platform.</p>
+<hr />
+<h1 id="108-resource-pressure-recovery"><a class="header" href="#108-resource-pressure-recovery">108. Resource Pressure Recovery</a></h1>
+<p>Do not persist:</p>
+<pre><code class="language-text">memory pressure currently critical
+</code></pre>
+<p>as authoritative.</p>
+<p>Recompute from current environment.</p>
+<p>Persistent storage pressure derives from disk state.</p>
+<hr />
+<h1 id="109-cleanup-order"><a class="header" href="#109-cleanup-order">109. Cleanup Order</a></h1>
+<p>After unclean shutdown:</p>
+<pre><code class="language-text">1. critical DB integrity
+2. identity
+3. event/outbox
+4. transfer staging
+5. DTN
+6. cache/temp cleanup
+</code></pre>
+<p>Do not aggressively GC before establishing authoritative references.</p>
+<hr />
+<h1 id="110-quarantine"><a class="header" href="#110-quarantine">110. Quarantine</a></h1>
+<p>Suspicious/corrupt artifacts can move to:</p>
+<pre><code class="language-text">quarantine/
+</code></pre>
+<p>instead of immediate deletion.</p>
+<p>Bound quarantine size.</p>
+<hr />
+<h1 id="111-manual-repair-tools"><a class="header" href="#111-manual-repair-tools">111. Manual Repair Tools</a></h1>
+<p>Provide CLI/admin tooling:</p>
+<pre><code class="language-text">verify database
+verify blobs
+rebuild projections
+list orphan staging
+export diagnostics
+</code></pre>
+<p>Do not require user to hand-edit SQLite.</p>
+<hr />
+<h1 id="112-comm-doctor"><a class="header" href="#112-comm-doctor">112. <code>comm doctor</code></a></h1>
+<p>A headless diagnostic command could provide:</p>
+<pre><code class="language-text">communication-node doctor
+</code></pre>
+<p>checks:</p>
+<ul>
+<li>DB integrity</li>
+<li>event projection lag</li>
+<li>blob store consistency</li>
+<li>DTN store consistency</li>
+<li>key-store accessibility</li>
+<li>schema version</li>
+<li>orphan temp files</li>
+</ul>
+<hr />
+<h1 id="113-repair-command-safety"><a class="header" href="#113-repair-command-safety">113. Repair Command Safety</a></h1>
+<p>Repair operations should be:</p>
+<pre><code class="language-text">dry-run capable
+logged
+bounded
+backup-aware
+</code></pre>
+<p>Avoid destructive "fix everything" automatically.</p>
+<hr />
+<h1 id="114-automatic-repair-policy"><a class="header" href="#114-automatic-repair-policy">114. Automatic Repair Policy</a></h1>
+<p>Safe automatic:</p>
+<pre><code class="language-text">rebuild cache
+rebuild projection
+delete expired temp
+reverify partial chunk
+</code></pre>
+<p>Manual/admin:</p>
+<pre><code class="language-text">drop corrupt authoritative event
+reset identity chain
+</code></pre>
+<hr />
+<h1 id="115-recovery-diagnostics"><a class="header" href="#115-recovery-diagnostics">115. Recovery Diagnostics</a></h1>
+<p>Store last recovery report:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct RecoveryReport {
+    pub severity: RecoverySeverity,
+    pub repaired_items: Vec&lt;RecoveryAction&gt;,
+    pub warnings: Vec&lt;RecoveryWarning&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Do not include secret material.</p>
+<hr />
+<h1 id="116-user-facing-recovery-ux"><a class="header" href="#116-user-facing-recovery-ux">116. User-Facing Recovery UX</a></h1>
+<p>Normal:</p>
+<pre><code class="language-text">Recovering your messages…
+</code></pre>
+<p>but avoid long blocking if not necessary.</p>
+<p>If issue:</p>
+<pre><code class="language-text">Some file transfers were paused and will resume.
+</code></pre>
+<p>For serious:</p>
+<pre><code class="language-text">App is in read-only recovery mode.
+</code></pre>
+<hr />
+<h1 id="117-developer-diagnostics"><a class="header" href="#117-developer-diagnostics">117. Developer Diagnostics</a></h1>
+<p>Show:</p>
+<pre><code class="language-text">Unclean shutdown: yes
+Event log: healthy
+Projection rebuild: 1200 events
+Transfers resumed: 3
+Orphan temp cleaned: 7
+DTN bundles restored: 12
+Identity: verified generation 41
+</code></pre>
+<hr />
+<h1 id="118-recovery-metrics"><a class="header" href="#118-recovery-metrics">118. Recovery Metrics</a></h1>
+<p>Track:</p>
+<pre><code class="language-text">recovery duration
+unclean startups
+repaired projections
+resumed transfers
+orphan bytes reclaimed
+corruption count
+read-only starts
+</code></pre>
+<hr />
+<h1 id="119-privacy"><a class="header" href="#119-privacy">119. Privacy</a></h1>
+<p>Recovery logs should not include:</p>
+<pre><code class="language-text">message plaintext
+file names unless needed
+private keys
+full contact graph
+</code></pre>
+<hr />
+<h1 id="120-crash-injection-testing"><a class="header" href="#120-crash-injection-testing">120. Crash Injection Testing</a></h1>
+<p>This is mandatory.</p>
+<p>Inject crashes at deterministic points.</p>
+<p>Examples:</p>
+<pre><code class="language-text">before DB commit
+after DB commit
+before network send
+after network send
+before result marker
+during chunk write
+during final rename
+during DTN persistence
+during projection checkpoint
+</code></pre>
+<hr />
+<h1 id="121-failpoint-framework"><a class="header" href="#121-failpoint-framework">121. Failpoint Framework</a></h1>
+<p>Add internal failpoints:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>failpoint!("after_message_commit");
+failpoint!("before_blob_rename");
+<span class="boring">}</span></code></pre></pre>
+<p>Enabled only in tests/debug builds.</p>
+<p>This allows reproducible crash scenarios.</p>
+<hr />
+<h1 id="122-process-kill-tests"><a class="header" href="#122-process-kill-tests">122. Process-Kill Tests</a></h1>
+<p>Do not only simulate exceptions.</p>
+<p>Run integration tests that:</p>
+<pre><code class="language-text">start process
+perform operation
+SIGKILL
+restart
+assert state
+</code></pre>
+<p>This validates real OS/database behavior.</p>
+<hr />
+<h1 id="123-power-loss-approximation"><a class="header" href="#123-power-loss-approximation">123. Power-Loss Approximation</a></h1>
+<p>Hard to reproduce exactly, but can approximate:</p>
+<pre><code class="language-text">fsync boundaries
+kill timing
+filesystem fault injection
+</code></pre>
+<p>Test on target filesystems where practical.</p>
+<hr />
+<h1 id="124-database-fault-injection"><a class="header" href="#124-database-fault-injection">124. Database Fault Injection</a></h1>
+<p>Simulate:</p>
+<pre><code class="language-text">busy
+I/O error
+disk full
+corrupt page
+migration failure
+</code></pre>
+<hr />
+<h1 id="125-network-fault-injection"><a class="header" href="#125-network-fault-injection">125. Network Fault Injection</a></h1>
+<p>Crash combined with:</p>
+<pre><code class="language-text">duplicate send
+delayed ACK
+lost ACK
+peer restart
+</code></pre>
+<p>must remain idempotent.</p>
+<hr />
+<h1 id="126-file-fault-injection"><a class="header" href="#126-file-fault-injection">126. File Fault Injection</a></h1>
+<p>Simulate:</p>
+<pre><code class="language-text">partial write
+short write
+rename failure
+permission change
+source file disappears
+</code></pre>
+<hr />
+<h1 id="127-dtn-fault-injection"><a class="header" href="#127-dtn-fault-injection">127. DTN Fault Injection</a></h1>
+<p>Simulate:</p>
+<pre><code class="language-text">relay stores then crashes
+relay ACK lost
+destination ACK delayed
+tombstone lost and rebuilt
+</code></pre>
+<hr />
+<h1 id="128-identity-fault-injection"><a class="header" href="#128-identity-fault-injection">128. Identity Fault Injection</a></h1>
+<p>Simulate:</p>
+<pre><code class="language-text">revocation committed then crash
+root rotation interrupted
+stale state presented
+secure store unavailable
+</code></pre>
+<hr />
+<h1 id="129-projection-fault-injection"><a class="header" href="#129-projection-fault-injection">129. Projection Fault Injection</a></h1>
+<p>Crash:</p>
+<pre><code class="language-text">after projection row update
+before checkpoint
+</code></pre>
+<p>On restart:</p>
+<pre><code class="language-text">event may replay
+projection must remain idempotent
+</code></pre>
+<hr />
+<h1 id="130-property-tests"><a class="header" href="#130-property-tests">130. Property Tests</a></h1>
+<p>Important invariants:</p>
+<pre><code class="language-text">committed durable intent is never lost
+uncommitted intent never appears as committed
+duplicate effect does not duplicate logical state
+completed blob never becomes incomplete due only to restart
+revoked device never becomes active after recovery
+expired DTN bundle never resumes forwarding
+projection rebuild equals committed history
+</code></pre>
+<hr />
+<h1 id="131-recovery-determinism"><a class="header" href="#131-recovery-determinism">131. Recovery Determinism</a></h1>
+<p>Given same durable state, recovery result should be deterministic.</p>
+<p>This greatly simplifies debugging.</p>
+<hr />
+<h1 id="132-recovery-should-not-depend-on-network"><a class="header" href="#132-recovery-should-not-depend-on-network">132. Recovery Should Not Depend on Network</a></h1>
+<p>Minimum local recovery must complete without Internet.</p>
+<p>Network sync happens afterward.</p>
+<p>This is critical for offline/emergency environments.</p>
+<hr />
+<h1 id="133-peer-assisted-repair"><a class="header" href="#133-peer-assisted-repair">133. Peer-Assisted Repair</a></h1>
+<p>After local recovery, peers may help restore:</p>
+<pre><code class="language-text">missing messages
+missing blobs
+device directory
+</code></pre>
+<p>but local system must not require them just to open.</p>
+<hr />
+<h1 id="134-authoritative-vs-reconstructible-data"><a class="header" href="#134-authoritative-vs-reconstructible-data">134. Authoritative vs Reconstructible Data</a></h1>
+<p>Classify all storage.</p>
+<h2 id="authoritative"><a class="header" href="#authoritative">Authoritative</a></h2>
+<pre><code class="language-text">event log
+identity state
+user-owned blobs
+</code></pre>
+<h2 id="reconstructible"><a class="header" href="#reconstructible">Reconstructible</a></h2>
+<pre><code class="language-text">search index
+conversation summary
+route cache
+capability cache
+thumbnail cache
+</code></pre>
+<p>Recovery strategy depends on class.</p>
+<hr />
+<h1 id="135-storage-catalog"><a class="header" href="#135-storage-catalog">135. Storage Catalog</a></h1>
+<p>Maintain architecture doc/table for each data set:</p>
+<pre><code class="language-text">authoritative?
+rebuild source?
+retention?
+backup?
+encryption?
+recovery method?
+</code></pre>
+<p>This prevents accidental misuse.</p>
+<hr />
+<h1 id="136-recovery-ownership"><a class="header" href="#136-recovery-ownership">136. Recovery Ownership</a></h1>
+<p>Each subsystem owns its reconciler.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait RecoverableSubsystem {
+    async fn recover(
+        &amp;self,
+        ctx: &amp;RecoveryContext,
+    ) -&gt; Result&lt;SubsystemRecoveryReport, RecoveryError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Coordinator orchestrates order.</p>
+<hr />
+<h1 id="137-recovery-context"><a class="header" href="#137-recovery-context">137. Recovery Context</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct RecoveryContext {
+    pub generation: u64,
+    pub unclean_shutdown: bool,
+    pub mode: RecoveryMode,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="138-recovery-mode"><a class="header" href="#138-recovery-mode">138. Recovery Mode</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum RecoveryMode {
+    Normal,
+    Thorough,
+    ReadOnly,
+    Repair,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Normal startup may run lightweight checks.</p>
+<p>Unclean shutdown may run Thorough.</p>
+<hr />
+<h1 id="139-fast-startup-vs-thorough-check"><a class="header" href="#139-fast-startup-vs-thorough-check">139. Fast Startup vs Thorough Check</a></h1>
+<p>Do not run full database integrity scan every normal launch if too expensive.</p>
+<p>Strategy:</p>
+<pre><code class="language-text">clean previous shutdown
+→ fast checks
+
+unclean
+→ targeted thorough checks
+
+periodic maintenance
+→ full checks
+</code></pre>
+<hr />
+<h1 id="140-periodic-scrubbing"><a class="header" href="#140-periodic-scrubbing">140. Periodic Scrubbing</a></h1>
+<p>Blob store can periodically verify:</p>
+<pre><code class="language-text">random/sample hashes
+</code></pre>
+<p>to detect latent corruption.</p>
+<p>Not every startup.</p>
+<hr />
+<h1 id="141-bit-rot"><a class="header" href="#141-bit-rot">141. Bit Rot</a></h1>
+<p>Long-lived file store may experience corruption.</p>
+<p>Content hashes allow detection.</p>
+<p>Repair from:</p>
+<pre><code class="language-text">other device
+backup
+authorized peer
+</code></pre>
+<p>if available.</p>
+<hr />
+<h1 id="142-database-backup-strategy"><a class="header" href="#142-database-backup-strategy">142. Database Backup Strategy</a></h1>
+<p>For SQLite:</p>
+<pre><code class="language-text">online backup API
+</code></pre>
+<p>or consistent snapshot method.</p>
+<p>Never copy live DB files blindly without understanding WAL.</p>
+<hr />
+<h1 id="143-backup-recovery-test"><a class="header" href="#143-backup-recovery-test">143. Backup Recovery Test</a></h1>
+<p>Regularly test:</p>
+<pre><code class="language-text">create backup
+restore to fresh environment
+rebuild projections
+verify logical state
+</code></pre>
+<p>A backup not tested is not a recovery plan.</p>
+<hr />
+<h1 id="144-disaster-recovery-vs-crash-recovery"><a class="header" href="#144-disaster-recovery-vs-crash-recovery">144. Disaster Recovery vs Crash Recovery</a></h1>
+<p>Crash recovery:</p>
+<pre><code class="language-text">same device/storage mostly intact
+</code></pre>
+<p>Disaster recovery:</p>
+<pre><code class="language-text">device/storage lost
+restore from backup/other device
+</code></pre>
+<p>Part 09 focuses on crash recovery but must integrate with backup.</p>
+<hr />
+<h1 id="145-multi-device-recovery"><a class="header" href="#145-multi-device-recovery">145. Multi-Device Recovery</a></h1>
+<p>If one device loses local state:</p>
+<pre><code class="language-text">new/recovered device
+</code></pre>
+<p>may bootstrap from:</p>
+<pre><code class="language-text">own trusted device
+</code></pre>
+<p>after identity authorization.</p>
+<p>Do not assume server backup exists.</p>
+<hr />
+<h1 id="146-partial-history-recovery"><a class="header" href="#146-partial-history-recovery">146. Partial History Recovery</a></h1>
+<p>A device may restore only:</p>
+<pre><code class="language-text">recent messages
+metadata
+on-demand blobs
+</code></pre>
+<p>Full history is policy-dependent.</p>
+<hr />
+<h1 id="147-recovery-security"><a class="header" href="#147-recovery-security">147. Recovery Security</a></h1>
+<p>Never accept peer-supplied "repair" state without:</p>
+<pre><code class="language-text">identity
+authorization
+integrity
+version checks
+</code></pre>
+<p>Repair paths are security-sensitive.</p>
+<hr />
+<h1 id="148-rollback-attack-recovery"><a class="header" href="#148-rollback-attack-recovery">148. Rollback Attack Recovery</a></h1>
+<p>Attacker restores old local database backup.</p>
+<p>Identity/account generation must detect:</p>
+<pre><code class="language-text">stale state
+</code></pre>
+<p>if newer trusted state exists elsewhere/local secure metadata.</p>
+<p>Part 02 rollback protection applies.</p>
+<hr />
+<h1 id="149-secure-monotonic-anchor"><a class="header" href="#149-secure-monotonic-anchor">149. Secure Monotonic Anchor</a></h1>
+<p>Where platform supports, store minimal:</p>
+<pre><code class="language-text">highest identity generation
+</code></pre>
+<p>in secure storage to make rollback harder.</p>
+<p>Optional.</p>
+<hr />
+<h1 id="150-recovery-and-encryption-keys"><a class="header" href="#150-recovery-and-encryption-keys">150. Recovery and Encryption Keys</a></h1>
+<p>Recovery must distinguish:</p>
+<pre><code class="language-text">data exists
+keys exist
+</code></pre>
+<p>Encrypted blob without key is not usable.</p>
+<p>Do not mark fully recovered if cryptographic material is missing.</p>
+<hr />
+<h1 id="151-key-backup-policy"><a class="header" href="#151-key-backup-policy">151. Key Backup Policy</a></h1>
+<p>Device private keys may intentionally be non-exportable.</p>
+<p>Then device restore may require:</p>
+<pre><code class="language-text">new device identity
+</code></pre>
+<p>rather than restoring same key.</p>
+<p>Document product semantics.</p>
+<hr />
+<h1 id="152-session-key-recovery"><a class="header" href="#152-session-key-recovery">152. Session Key Recovery</a></h1>
+<p>Do not restore ephemeral session keys after crash unless protocol explicitly supports secure resumption.</p>
+<p>Default:</p>
+<pre><code class="language-text">new session handshake
+</code></pre>
+<hr />
+<h1 id="153-group-key-recovery"><a class="header" href="#153-group-key-recovery">153. Group Key Recovery</a></h1>
+<p>Group state may require current epoch keys.</p>
+<p>If local group key state missing:</p>
+<pre><code class="language-text">request authorized resync
+</code></pre>
+<p>Do not derive from stale membership.</p>
+<hr />
+<h1 id="154-corrupt-config"><a class="header" href="#154-corrupt-config">154. Corrupt Config</a></h1>
+<p>Configuration file parse failure should not destroy data.</p>
+<p>Use:</p>
+<pre><code class="language-text">last-known-good
+defaults
+safe mode
+</code></pre>
+<p>depending on setting.</p>
+<hr />
+<h1 id="155-config-transactions"><a class="header" href="#155-config-transactions">155. Config Transactions</a></h1>
+<p>Critical config updates should be atomic:</p>
+<pre><code class="language-text">write temp
+fsync
+rename
+</code></pre>
+<p>or stored transactionally in DB.</p>
+<hr />
+<h1 id="156-ron-config"><a class="header" href="#156-ron-config">156. RON Config</a></h1>
+<p>If using RON:</p>
+<pre><code class="language-text">version config
+validate strictly
+keep defaults explicit
+</code></pre>
+<p>Do not accept malformed config silently.</p>
+<hr />
+<h1 id="157-postcard-durable-data"><a class="header" href="#157-postcard-durable-data">157. Postcard Durable Data</a></h1>
+<p>Version durable Postcard schemas.</p>
+<p>Do not decode old persistent bytes into changed current struct without migration/upcast.</p>
+<hr />
+<h1 id="158-recovery-of-third-party-extensions"><a class="header" href="#158-recovery-of-third-party-extensions">158. Recovery of Third-Party Extensions</a></h1>
+<p>Part 22/24 extensions must declare:</p>
+<pre><code class="language-text">durable state version
+recovery hook
+resource cleanup
+</code></pre>
+<p>One extension failure should not corrupt core.</p>
+<hr />
+<h1 id="159-extension-quarantine"><a class="header" href="#159-extension-quarantine">159. Extension Quarantine</a></h1>
+<p>If extension recovery repeatedly fails:</p>
+<pre><code class="language-text">disable extension
+start core degraded
+</code></pre>
+<p>where safe.</p>
+<p>Do not prevent messaging/files if unrelated custom plugin breaks.</p>
+<hr />
+<h1 id="160-recovery-api-boundary"><a class="header" href="#160-recovery-api-boundary">160. Recovery API Boundary</a></h1>
+<p>Core applications should call:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>runtime.recover().await?;
+<span class="boring">}</span></code></pre></pre>
+<p>not manually orchestrate subsystem repair.</p>
+<hr />
+<h1 id="161-recovery-report-api"><a class="header" href="#161-recovery-report-api">161. Recovery Report API</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let report = runtime.recovery_report();
+<span class="boring">}</span></code></pre></pre>
+<p>Useful for UI/admin.</p>
+<hr />
+<h1 id="162-health-state-after-recovery"><a class="header" href="#162-health-state-after-recovery">162. Health State After Recovery</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct RuntimeHealth {
+    pub recovery: RecoverySeverity,
+    pub storage: HealthState,
+    pub identity: HealthState,
+    pub messaging: HealthState,
+    pub files: HealthState,
+    pub dtn: HealthState,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="163-admission-after-recovery"><a class="header" href="#163-admission-after-recovery">163. Admission After Recovery</a></h1>
+<p>Before recovery complete:</p>
+<pre><code class="language-text">reject/defer new durable operations
+</code></pre>
+<p>Read-only queries may be allowed earlier.</p>
+<hr />
+<h1 id="164-network-start-barrier"><a class="header" href="#164-network-start-barrier">164. Network Start Barrier</a></h1>
+<p>Do not start inbound network listeners before:</p>
+<pre><code class="language-text">identity
+critical store
+dedup state
+</code></pre>
+<p>are ready.</p>
+<p>Otherwise duplicate/security handling may be wrong.</p>
+<hr />
+<h1 id="165-listener-startup-order"><a class="header" href="#165-listener-startup-order">165. Listener Startup Order</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">identity ready
+event store ready
+dedup/outbox ready
+DTN store ready
+then transport listeners
+</code></pre>
+<hr />
+<h1 id="166-lazy-secondary-recovery"><a class="header" href="#166-lazy-secondary-recovery">166. Lazy Secondary Recovery</a></h1>
+<p>Search/index/cache can continue after network starts if isolated.</p>
+<hr />
+<h1 id="167-versioned-recovery-protocol"><a class="header" href="#167-versioned-recovery-protocol">167. Versioned Recovery Protocol</a></h1>
+<p>If daemon/GUI versions differ:</p>
+<pre><code class="language-text">IPC schema/version negotiation
+</code></pre>
+<p>should prevent GUI from assuming unavailable recovered state.</p>
+<hr />
+<h1 id="168-rolling-upgrade"><a class="header" href="#168-rolling-upgrade">168. Rolling Upgrade</a></h1>
+<p>Server/headless deployments may restart nodes one by one.</p>
+<p>Persisted wire/session state should not require cluster-wide simultaneous upgrade where avoidable.</p>
+<hr />
+<h1 id="169-recovery-and-relay-cluster"><a class="header" href="#169-recovery-and-relay-cluster">169. Recovery and Relay Cluster</a></h1>
+<p>Part 11 may add relay cluster state.</p>
+<p>User-message E2EE state remains client-side.</p>
+<p>Relay crash recovery should restore:</p>
+<pre><code class="language-text">sessions/queues only as designed
+</code></pre>
+<p>without plaintext dependence.</p>
+<hr />
+<h1 id="170-recovery-and-multipath"><a class="header" href="#170-recovery-and-multipath">170. Recovery and Multipath</a></h1>
+<p>Path assignments are ephemeral.</p>
+<p>Persistent transfer state is:</p>
+<pre><code class="language-text">which chunks verified
+</code></pre>
+<p>not:</p>
+<pre><code class="language-text">chunk 8 assigned to path Wi-Fi
+</code></pre>
+<p>This makes multipath restart simple.</p>
+<hr />
+<h1 id="171-recovery-and-battery-scheduling"><a class="header" href="#171-recovery-and-battery-scheduling">171. Recovery and Battery Scheduling</a></h1>
+<p>After restart, recompute:</p>
+<pre><code class="language-text">battery
+charging
+thermal
+</code></pre>
+<p>then schedule pending work accordingly.</p>
+<p>Do not immediately resume everything at maximum throughput.</p>
+<hr />
+<h1 id="172-recovery-and-proximity"><a class="header" href="#172-recovery-and-proximity">172. Recovery and Proximity</a></h1>
+<p>Nearby encounter state is transient.</p>
+<p>Durable DTN bundle store survives.</p>
+<p>When proximity returns:</p>
+<pre><code class="language-text">forwarding resumes
+</code></pre>
+<hr />
+<h1 id="173-recovery-and-qrnfc-linking"><a class="header" href="#173-recovery-and-qrnfc-linking">173. Recovery and QR/NFC Linking</a></h1>
+<p>If crash during device linking:</p>
+<pre><code class="language-text">link state machine
+</code></pre>
+<p>must either:</p>
+<pre><code class="language-text">resume safely
+or expire/restart
+</code></pre>
+<p>Never leave half-authorized device.</p>
+<hr />
+<h1 id="174-device-link-commit-point"><a class="header" href="#174-device-link-commit-point">174. Device Link Commit Point</a></h1>
+<p>Only after:</p>
+<pre><code class="language-text">certificate/device event committed
+</code></pre>
+<p>is device considered linked.</p>
+<p>Ephemeral QR/NFC handshake alone does not authorize.</p>
+<hr />
+<h1 id="175-recovery-and-emergency-priority"><a class="header" href="#175-recovery-and-emergency-priority">175. Recovery and Emergency Priority</a></h1>
+<p>Pending emergency events are restored before bulk work.</p>
+<p>This ordering must be explicit.</p>
+<hr />
+<h1 id="176-recovery-and-diagnostics"><a class="header" href="#176-recovery-and-diagnostics">176. Recovery and Diagnostics</a></h1>
+<p>Part 18 can visualize:</p>
+<pre><code class="language-text">what was recovered
+what remains degraded
+what operation resumed
+</code></pre>
+<hr />
+<h1 id="177-recovery-and-ffi"><a class="header" href="#177-recovery-and-ffi">177. Recovery and FFI</a></h1>
+<p>Part 19 host app may crash independently.</p>
+<p>Core durable runtime/daemon remains source of truth.</p>
+<p>On reconnect, FFI host requests snapshot.</p>
+<hr />
+<h1 id="178-recovery-and-wasm"><a class="header" href="#178-recovery-and-wasm">178. Recovery and WASM</a></h1>
+<p>WASM components may use different persistence semantics.</p>
+<p>Shared recovery model still applies:</p>
+<pre><code class="language-text">durable intent
+idempotent effects
+projection rebuild
+</code></pre>
+<hr />
+<h1 id="179-recovery-and-interoperability"><a class="header" href="#179-recovery-and-interoperability">179. Recovery and Interoperability</a></h1>
+<p>Part 23 tests should include:</p>
+<pre><code class="language-text">duplicate after reconnect
+retransmit after lost ACK
+resume transfer after restart
+</code></pre>
+<p>across implementations.</p>
+<hr />
+<h1 id="180-suggested-crate-structure"><a class="header" href="#180-suggested-crate-structure">180. Suggested Crate Structure</a></h1>
+<pre><code class="language-text">crates/comm-recovery/
+├── src/
+│   ├── lib.rs
+│   ├── coordinator.rs
+│   ├── phase.rs
+│   ├── context.rs
+│   ├── report.rs
+│   ├── health.rs
+│   ├── storage.rs
+│   ├── outbox.rs
+│   ├── projection.rs
+│   ├── files.rs
+│   ├── dtn.rs
+│   ├── identity.rs
+│   ├── cleanup.rs
+│   ├── quarantine.rs
+│   └── error.rs
+└── Cargo.toml
+</code></pre>
+<hr />
+<h1 id="181-recovery-error-model"><a class="header" href="#181-recovery-error-model">181. Recovery Error Model</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum RecoveryError {
+    StorageUnavailable,
+    IntegrityFailure,
+    MigrationFailure,
+    IdentityFailure,
+    ProjectionFailure,
+    BlobFailure,
+    DtnFailure,
+    SecureStoreFailure,
+    UnsupportedVersion,
+    FatalInvariant,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="182-initial-production-scope"><a class="header" href="#182-initial-production-scope">182. Initial Production Scope</a></h1>
+<p>Implement first:</p>
+<pre><code class="language-text">unclean-shutdown detection
+recovery coordinator
+outbox reconciliation
+projection resume/rebuild
+file staging scan
+chunk re-verification
+blob finalization repair
+DTN bundle restore
+identity integrity/revocation restore
+storage reservation cleanup
+ephemeral session invalidation
+typed recovery report
+fault injection
+process-kill tests
+</code></pre>
+<p>Defer initially:</p>
+<pre><code class="language-text">complex peer-assisted database repair
+automatic authoritative-event surgery
+cluster-wide distributed recovery
+</code></pre>
+<hr />
+<h1 id="183-implementation-phases"><a class="header" href="#183-implementation-phases">183. Implementation Phases</a></h1>
+<h2 id="phase-1--recovery-metadata"><a class="header" href="#phase-1--recovery-metadata">Phase 1 — Recovery Metadata</a></h2>
+<pre><code class="language-text">shutdown marker
+recovery generation
+health states
+</code></pre>
+<h2 id="phase-2--eventoutbox"><a class="header" href="#phase-2--eventoutbox">Phase 2 — Event/Outbox</a></h2>
+<pre><code class="language-text">projection checkpoints
+outbox reconciliation
+idempotent resend
+</code></pre>
+<h2 id="phase-3--files"><a class="header" href="#phase-3--files">Phase 3 — Files</a></h2>
+<pre><code class="language-text">staging scan
+chunk verify
+finalization recovery
+orphan cleanup
+</code></pre>
+<h2 id="phase-4--dtn"><a class="header" href="#phase-4--dtn">Phase 4 — DTN</a></h2>
+<pre><code class="language-text">bundle restore
+expiry
+tombstones
+forward history
+</code></pre>
+<h2 id="phase-5--identity"><a class="header" href="#phase-5--identity">Phase 5 — Identity</a></h2>
+<pre><code class="language-text">generation
+revocation
+fork detection
+secure store validation
+</code></pre>
+<h2 id="phase-6--resource-cleanup"><a class="header" href="#phase-6--resource-cleanup">Phase 6 — Resource Cleanup</a></h2>
+<pre><code class="language-text">storage reservations
+stale temp
+runtime permits reset
+</code></pre>
+<h2 id="phase-7--hardening"><a class="header" href="#phase-7--hardening">Phase 7 — Hardening</a></h2>
+<pre><code class="language-text">failpoints
+SIGKILL tests
+disk full
+corruption
+migration interruption
+</code></pre>
+<hr />
+<h1 id="184-definition-of-done"><a class="header" href="#184-definition-of-done">184. Definition of Done</a></h1>
+<p>Part 09 is complete when:</p>
+<ul>
+<li>process can be killed at any documented failpoint without logical corruption</li>
+<li>committed message intent survives restart</li>
+<li>uncommitted message intent does not appear as committed</li>
+<li>ambiguous network send retries with same stable ID</li>
+<li>receiver deduplicates retries</li>
+<li>transfer progress survives process death</li>
+<li>incomplete chunks are reverified rather than trusted blindly</li>
+<li>blob finalization recovers after crash around rename/commit</li>
+<li>DTN relay bundles survive crash</li>
+<li>relay/destination ACK ambiguity is idempotent</li>
+<li>device revocation survives crash immediately</li>
+<li>stale sessions/capabilities/routes are invalidated</li>
+<li>storage reservations and temp files are reconciled</li>
+<li>projections can resume/rebuild</li>
+<li>derived indexes can fail without losing authoritative data</li>
+<li>read-only recovery mode exists</li>
+<li>severe corruption fails closed</li>
+<li>recovery does not require Internet</li>
+<li>recovery itself is idempotent</li>
+<li>process-kill/fault-injection/property tests exist</li>
+</ul>
+<hr />
+<h1 id="185-relationship-to-earlier-parts"><a class="header" href="#185-relationship-to-earlier-parts">185. Relationship to Earlier Parts</a></h1>
+<p>Part 09 builds on:</p>
+<pre><code class="language-text">01 — Protocol Extension System
+02 — Multi-Device Identity
+03 — Transport &amp; Routing Policy Engine
+04 — Offline Event Log
+05 — Robust File / Blob Subsystem
+06 — DTN / Store-Carry-Forward
+07 — Capability Negotiation
+08 — Resource Limits &amp; Backpressure
+</code></pre>
+<p>It directly supports:</p>
+<pre><code class="language-text">10 — Protocol Fuzzing &amp; Test Suite
+11 — Relay / Self-Hosted Infrastructure
+12 — Multipath Networking
+13 — Battery-Aware Scheduling
+14 — Proximity Abstraction
+15 — QR / NFC Bootstrap Pairing
+16 — Daemon &amp; Headless Runtime
+17 — Emergency Priority Architecture
+18 — Network Diagnostics &amp; Path Visualization
+19 — C ABI / FFI
+20 — Embedded Linux Node
+22 — Third-Party Protocol Extensions
+23 — External Interoperability Suite
+24 — Plugin / Module Ecosystem
+</code></pre>
+<hr />
+<h1 id="186-final-principle"><a class="header" href="#186-final-principle">186. Final Principle</a></h1>
+<p>The crash-recovery architecture should make this statement true:</p>
+<blockquote>
+<p><strong>A crash changes execution timing, not logical truth.</strong></p>
+</blockquote>
+<p>If the system accepted a durable operation before the crash, recovery finds it.</p>
+<p>If an external side effect may have happened, recovery retries safely using the same stable identity.</p>
+<p>If only derived state was lost, it is rebuilt.</p>
+<p>If authoritative state is corrupt, the system fails closed rather than inventing data.</p>
+<p>That is the standard required for a production-grade local-first P2P platform operating on mobile, desktop, headless nodes, and unreliable disaster networks.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="05-robust-file-blob-subsystem-architecture.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="32-search-indexing-local-knowledge-privacy-architecture.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="05-robust-file-blob-subsystem-architecture.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="32-search-indexing-local-knowledge-privacy-architecture.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

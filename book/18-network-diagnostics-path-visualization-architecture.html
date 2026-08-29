@@ -1,0 +1,2343 @@
+<!DOCTYPE HTML>
+<html lang="en" class="navy" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>18 — Network Diagnostics &amp; Path Visualization - SIAR System Architecture &amp; Technical Wiki</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="Comprehensive system architecture, cryptographic protocols, DTN mesh networking, distributed storage, audio DSP pipelines, and UI/UX design specifications for SIAR.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="theme/custom.css">
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "navy";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('navy')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="Home.html">Architecture Portal & Reading Guide</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part I: Protocol Foundation & Extension Platform</li><li class="chapter-item expanded "><a href="01-protocol-extension-system-architecture.html"><strong aria-hidden="true">1.</strong> 01 — Protocol Extension System Architecture</a></li><li class="chapter-item expanded "><a href="07-capability-negotiation-architecture.html"><strong aria-hidden="true">2.</strong> 07 — Capability Negotiation & Protocol Upgrades</a></li><li class="chapter-item expanded "><a href="21-third-party-protocol-extensions-architecture.html"><strong aria-hidden="true">3.</strong> 21 — Third-Party Protocol Extensions</a></li><li class="chapter-item expanded "><a href="22-wasm-compatible-components-architecture.html"><strong aria-hidden="true">4.</strong> 22 — WebAssembly (WASM) Compatible Components</a></li><li class="chapter-item expanded "><a href="23-external-interoperability-suite-architecture.html"><strong aria-hidden="true">5.</strong> 23 — External Interoperability & Conformance Suite</a></li><li class="chapter-item expanded "><a href="24-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">6.</strong> 24 — Dynamic Plugin & Module Ecosystem</a></li><li class="chapter-item expanded affix "><li class="part-title">Part II: Identity, Trust & Cryptography</li><li class="chapter-item expanded "><a href="02-multi-device-identity-architecture.html"><strong aria-hidden="true">7.</strong> 02 — Multi-Device Identity & Trust Model</a></li><li class="chapter-item expanded "><a href="28-production-security-e2ee-key-management-privacy-architecture.html"><strong aria-hidden="true">8.</strong> 28 — Production Security, E2EE, Key Management & Privacy</a></li><li class="chapter-item expanded affix "><li class="part-title">Part III: Mesh Networking, Transports & Hardware</li><li class="chapter-item expanded "><a href="03-transport-routing-policy-engine-architecture.html"><strong aria-hidden="true">9.</strong> 03 — Transport & Routing Policy Engine</a></li><li class="chapter-item expanded "><a href="11-relay-self-hosted-infrastructure-architecture.html"><strong aria-hidden="true">10.</strong> 11 — Self-Hosted Relay & Coordination Infrastructure</a></li><li class="chapter-item expanded "><a href="12-multipath-networking-architecture.html"><strong aria-hidden="true">11.</strong> 12 — Multipath Networking & Link Aggregation</a></li><li class="chapter-item expanded "><a href="13-battery-aware-scheduling-architecture.html"><strong aria-hidden="true">12.</strong> 13 — Battery-Aware Scheduling & Power Profiles</a></li><li class="chapter-item expanded "><a href="14-proximity-abstraction-architecture.html"><strong aria-hidden="true">13.</strong> 14 — Proximity Abstraction (BLE, Wi-Fi Direct, LoRa)</a></li><li class="chapter-item expanded "><a href="15-qr-nfc-bootstrap-pairing-architecture.html"><strong aria-hidden="true">14.</strong> 15 — Out-of-Band QR & NFC Bootstrap Pairing</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IV: Delay-Tolerant Networking & Emergency Mesh</li><li class="chapter-item expanded "><a href="06-dtn-store-carry-forward-architecture.html"><strong aria-hidden="true">15.</strong> 06 — DTN Store-Carry-Forward & Bundle Forwarding</a></li><li class="chapter-item expanded "><a href="17-emergency-priority-classes-architecture.html"><strong aria-hidden="true">16.</strong> 17 — Emergency Priority Classes & Critical Alert Mesh</a></li><li class="chapter-item expanded affix "><li class="part-title">Part V: Storage, Outbox & Data Lifecycle</li><li class="chapter-item expanded "><a href="04-offline-event-log-architecture.html"><strong aria-hidden="true">17.</strong> 04 — Offline Event Log & Sync Engine</a></li><li class="chapter-item expanded "><a href="05-robust-file-blob-subsystem-architecture.html"><strong aria-hidden="true">18.</strong> 05 — Robust File & Blob Subsystem (Chunking & Resumption)</a></li><li class="chapter-item expanded "><a href="09-crash-recovery-architecture.html"><strong aria-hidden="true">19.</strong> 09 — Crash Recovery & State Integrity</a></li><li class="chapter-item expanded "><a href="32-search-indexing-local-knowledge-privacy-architecture.html"><strong aria-hidden="true">20.</strong> 32 — Search, Indexing & Local Privacy Retrieval</a></li><li class="chapter-item expanded "><a href="33-backup-restore-export-import-archival-portability-architecture.html"><strong aria-hidden="true">21.</strong> 33 — Backup, Restore, Export & Long-Term Archival</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VI: Realtime Media, Calling & Audio DSP</li><li class="chapter-item expanded "><a href="25-android-direct-hardware-surface-zero-copy-media-architecture.html"><strong aria-hidden="true">22.</strong> 25 — Android Direct Surface Zero-Copy Media</a></li><li class="chapter-item expanded "><a href="26-rust-first-audio-dsp-resampling-aec-ns-agc-architecture.html"><strong aria-hidden="true">23.</strong> 26 — Rust-First Audio DSP (AEC, NS, AGC, Resampling)</a></li><li class="chapter-item expanded "><a href="29-realtime-calls-media-session-protocol-architecture.html"><strong aria-hidden="true">24.</strong> 29 — Realtime Calls & Media Session Protocol</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VII: Ephemeral State, Presence & Notifications</li><li class="chapter-item expanded "><a href="30-presence-availability-typing-read-receipts-ephemeral-state-architecture.html"><strong aria-hidden="true">25.</strong> 30 — Presence, Availability, Typing & Read Receipts</a></li><li class="chapter-item expanded "><a href="31-notifications-push-background-delivery-lifecycle-architecture.html"><strong aria-hidden="true">26.</strong> 31 — Notifications, Push Wake & Background Delivery</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VIII: Native Runtimes, Daemons & Embedded Linux</li><li class="chapter-item expanded "><a href="16-daemon-headless-runtime-architecture.html"><strong aria-hidden="true">27.</strong> 16 — Headless Daemon & Background Runtime</a></li><li class="chapter-item expanded "><a href="19-c-abi-ffi-architecture.html"><strong aria-hidden="true">28.</strong> 19 — C-ABI FFI & Native Language Interop</a></li><li class="chapter-item expanded "><a href="20-embedded-linux-node-architecture.html"><strong aria-hidden="true">29.</strong> 20 — Embedded Linux Node & Resource-Constrained Targets</a></li><li class="chapter-item expanded "><a href="27-rust-driven-android-native-build-packaging-automation.html"><strong aria-hidden="true">30.</strong> 27 — Rust-Driven Android Native Build & Packaging Automation</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IX: Reliability, Testing, Fuzzing & Diagnostics</li><li class="chapter-item expanded "><a href="08-resource-limits-backpressure-architecture.html"><strong aria-hidden="true">31.</strong> 08 — Resource Limits, Quotas & Backpressure</a></li><li class="chapter-item expanded "><a href="10-fuzzing-protocol-test-suite-architecture.html"><strong aria-hidden="true">32.</strong> 10 — Fuzzing & Protocol Test Suite</a></li><li class="chapter-item expanded "><a href="18-network-diagnostics-path-visualization-architecture.html" class="active"><strong aria-hidden="true">33.</strong> 18 — Network Diagnostics & Path Visualization</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part X: UI/UX Client Architecture (Cross-Platform)</li><li class="chapter-item expanded "><a href="ui-ux-01-product-foundation-cross-platform-interaction-architecture.html"><strong aria-hidden="true">34.</strong> UI/UX 01 — Product UX Foundation & Cross-Platform Interaction</a></li><li class="chapter-item expanded "><a href="ui-ux-02-desktop-dioxus-app-shell-navigation-window-architecture.html"><strong aria-hidden="true">35.</strong> UI/UX 02 — Desktop Dioxus App Shell & Navigation</a></li><li class="chapter-item expanded "><a href="ui-ux-03-android-jetpack-compose-app-shell-navigation-lifecycle-architecture.html"><strong aria-hidden="true">36.</strong> UI/UX 03 — Android Jetpack Compose App Shell & Lifecycle</a></li><li class="chapter-item expanded "><a href="ui-ux-04-conversation-list-inbox-architecture.html"><strong aria-hidden="true">37.</strong> UI/UX 04 — Conversation List & Inbox UX</a></li><li class="chapter-item expanded "><a href="ui-ux-05-conversation-message-timeline-architecture.html"><strong aria-hidden="true">38.</strong> UI/UX 05 — Conversation Message Timeline UX</a></li><li class="chapter-item expanded "><a href="ui-ux-06-message-composer-attachments-voice-notes-drafts-architecture.html"><strong aria-hidden="true">39.</strong> UI/UX 06 — Message Composer, Attachments & Voice Notes</a></li><li class="chapter-item expanded "><a href="ui-ux-07-calls-realtime-media-architecture.html"><strong aria-hidden="true">40.</strong> UI/UX 07 — Calls & Realtime Media UX</a></li><li class="chapter-item expanded "><a href="ui-ux-08-contacts-requests-verification-identity-architecture.html"><strong aria-hidden="true">41.</strong> UI/UX 08 — Contacts, Requests, Verification & Identity</a></li><li class="chapter-item expanded "><a href="ui-ux-09-groups-membership-roles-architecture.html"><strong aria-hidden="true">42.</strong> UI/UX 09 — Groups, Membership & Roles UX</a></li><li class="chapter-item expanded "><a href="ui-ux-10-files-media-gallery-transfer-architecture.html"><strong aria-hidden="true">43.</strong> UI/UX 10 — Files, Media Gallery & Transfer UX</a></li><li class="chapter-item expanded "><a href="ui-ux-11-search-local-knowledge-retrieval-architecture.html"><strong aria-hidden="true">44.</strong> UI/UX 11 — Search & Local Knowledge Retrieval UX</a></li><li class="chapter-item expanded "><a href="ui-ux-12-nearby-qr-nfc-pairing-device-linking-architecture.html"><strong aria-hidden="true">45.</strong> UI/UX 12 — Nearby, QR/NFC Pairing & Device Linking UX</a></li><li class="chapter-item expanded "><a href="ui-ux-13-notifications-background-incoming-call-architecture.html"><strong aria-hidden="true">46.</strong> UI/UX 13 — Notifications, Background & Incoming Call UX</a></li><li class="chapter-item expanded "><a href="ui-ux-14-presence-typing-receipts-status-architecture.html"><strong aria-hidden="true">47.</strong> UI/UX 14 — Presence, Typing, Receipts & Status UX</a></li><li class="chapter-item expanded "><a href="ui-ux-15-security-center-devices-keys-recovery-architecture.html"><strong aria-hidden="true">48.</strong> UI/UX 15 — Security Center, Devices, Keys & Recovery UX</a></li><li class="chapter-item expanded "><a href="ui-ux-16-backup-restore-export-migration-architecture.html"><strong aria-hidden="true">49.</strong> UI/UX 16 — Backup, Restore, Export & Migration UX</a></li><li class="chapter-item expanded "><a href="ui-ux-17-emergency-sos-offline-mesh-architecture.html"><strong aria-hidden="true">50.</strong> UI/UX 17 — Emergency / SOS / Offline Mesh UX</a></li><li class="chapter-item expanded "><a href="ui-ux-18-settings-privacy-notifications-data-controls-architecture.html"><strong aria-hidden="true">51.</strong> UI/UX 18 — Settings, Privacy, Notifications & Data Controls</a></li><li class="chapter-item expanded "><a href="ui-ux-19-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">52.</strong> UI/UX 19 — Plugin & Module Ecosystem UX</a></li><li class="chapter-item expanded "><a href="ui-ux-20-diagnostics-network-paths-advanced-developer-architecture.html"><strong aria-hidden="true">53.</strong> UI/UX 20 — Diagnostics, Network Paths & Developer UX</a></li><li class="chapter-item expanded "><a href="ui-ux-21-accessibility-inclusive-interaction-architecture.html"><strong aria-hidden="true">54.</strong> UI/UX 21 — Accessibility & Inclusive Interaction</a></li><li class="chapter-item expanded "><a href="ui-ux-22-design-system-tokens-typography-icons-motion-architecture.html"><strong aria-hidden="true">55.</strong> UI/UX 22 — Design System, Tokens, Typography & Motion</a></li><li class="chapter-item expanded "><a href="ui-ux-23-responsive-adaptive-desktop-tablet-foldable-phone-layout-architecture.html"><strong aria-hidden="true">56.</strong> UI/UX 23 — Responsive & Adaptive Layouts (Desktop/Tablet/Foldable/Phone)</a></li><li class="chapter-item expanded "><a href="ui-ux-24-error-loading-empty-offline-degraded-state-architecture.html"><strong aria-hidden="true">57.</strong> UI/UX 24 — Error, Loading, Empty & Degraded-State UX</a></li><li class="chapter-item expanded "><a href="ui-ux-25-onboarding-first-run-permission-education-architecture.html"><strong aria-hidden="true">58.</strong> UI/UX 25 — Onboarding, First Run & Permission Education</a></li><li class="chapter-item expanded "><a href="ui-ux-26-performance-virtualization-large-data-ui-architecture.html"><strong aria-hidden="true">59.</strong> UI/UX 26 — Virtualization & Large-Data UI Performance</a></li><li class="chapter-item expanded "><a href="ui-ux-27-ui-testing-screenshot-interaction-release-quality-gates-architecture.html"><strong aria-hidden="true">60.</strong> UI/UX 27 — UI Testing, Screenshots & Release Quality Gates</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">SIAR System Architecture &amp; Technical Wiki</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar/edit/main/sys-arch/18-network-diagnostics-path-visualization-architecture.md" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="part-18--network-diagnostics--path-visualization-architecture"><a class="header" href="#part-18--network-diagnostics--path-visualization-architecture">Part 18 — Network Diagnostics &amp; Path Visualization Architecture</a></h1>
+<h2 id="reusable-p2p-communication-platform"><a class="header" href="#reusable-p2p-communication-platform">Reusable P2P Communication Platform</a></h2>
+<p><strong>Status:</strong> Architecture specification<br />
+<strong>Part:</strong> 18 of 24<br />
+<strong>Primary language:</strong> Rust<br />
+<strong>Primary UI:</strong> Dioxus<br />
+<strong>Primary goals:</strong> explainable networking, real-time path diagnostics, direct/relay/local/DTN visibility, transport transition history, multipath visualization, privacy-preserving metrics, failure diagnosis, operator observability, user-friendly health states, reusable diagnostics APIs</p>
+<hr />
+<h1 id="1-purpose"><a class="header" href="#1-purpose">1. Purpose</a></h1>
+<p>A sophisticated P2P communication system can use:</p>
+<pre><code class="language-text">Iroh direct
+Iroh relay
+LAN
+Bluetooth LE
+Bluetooth Classic
+Wi-Fi Direct
+Wi-Fi Aware
+multipath
+DTN
+gateway nodes
+</code></pre>
+<p>Without good diagnostics, a user or developer may only see:</p>
+<pre><code class="language-text">Connecting…
+</code></pre>
+<p>while the actual system could be:</p>
+<pre><code class="language-text">trying LAN
+waiting for NAT traversal
+falling back to relay
+discovering BLE
+switching to Wi-Fi Direct
+resuming chunks
+</code></pre>
+<p>A production-ready platform therefore needs a first-class observability system.</p>
+<p>The core rule is:</p>
+<blockquote>
+<p><strong>The network stack must be able to explain what path it is using, why it chose that path, what changed, and why an operation failed—without exposing unnecessary sensitive metadata.</strong></p>
+</blockquote>
+<hr />
+<h1 id="2-architectural-position"><a class="header" href="#2-architectural-position">2. Architectural Position</a></h1>
+<pre><code class="language-text">Transports / Routing / DTN / Multipath
+             ↓
+      Diagnostic Events
+             ↓
+     Network Observability Core
+      ├── live state
+      ├── path graph
+      ├── measurements
+      ├── history
+      ├── failure reasoning
+      └── privacy filtering
+             ↓
+    ┌────────┼─────────┐
+    │        │         │
+ Dioxus     CLI     Operator API
+</code></pre>
+<hr />
+<h1 id="3-diagnostics-is-not-logging"><a class="header" href="#3-diagnostics-is-not-logging">3. Diagnostics Is Not Logging</a></h1>
+<p>Separate:</p>
+<pre><code class="language-text">structured logs
+metrics
+traces
+live diagnostics
+historical path events
+</code></pre>
+<p>Each has a different purpose.</p>
+<hr />
+<h1 id="4-diagnostics-responsibilities"><a class="header" href="#4-diagnostics-responsibilities">4. Diagnostics Responsibilities</a></h1>
+<p>Part 18 owns:</p>
+<pre><code class="language-text">network status model
+path state model
+path visualization model
+routing explanation
+transport health
+connection timelines
+multipath visualization
+DTN route/hop status
+network measurements
+failure reason classification
+diagnostic snapshots
+safe export bundles
+</code></pre>
+<p>It does not own:</p>
+<pre><code class="language-text">routing decisions
+transport implementation
+message state
+file state
+identity authorization
+</code></pre>
+<hr />
+<h1 id="5-core-diagnostic-model"><a class="header" href="#5-core-diagnostic-model">5. Core Diagnostic Model</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct NetworkDiagnostics {
+    pub connectivity: ConnectivityState,
+    pub active_paths: Vec&lt;PathDiagnostic&gt;,
+    pub candidates: Vec&lt;PathCandidateDiagnostic&gt;,
+    pub recent_events: Vec&lt;NetworkDiagnosticEvent&gt;,
+    pub health: NetworkHealthSummary,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="6-connectivity-state"><a class="header" href="#6-connectivity-state">6. Connectivity State</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum ConnectivityState {
+    Offline,
+    LocalOnly,
+    InternetLimited,
+    Connected,
+    Degraded,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="7-user-meaning"><a class="header" href="#7-user-meaning">7. User Meaning</a></h1>
+<h2 id="offline"><a class="header" href="#offline">Offline</a></h2>
+<pre><code class="language-text">No usable communication path.
+</code></pre>
+<h2 id="localonly"><a class="header" href="#localonly">LocalOnly</a></h2>
+<pre><code class="language-text">LAN/Bluetooth/Wi-Fi/DTN available, Internet unavailable.
+</code></pre>
+<h2 id="internetlimited"><a class="header" href="#internetlimited">InternetLimited</a></h2>
+<pre><code class="language-text">Internet exists but remote P2P reachability is degraded.
+</code></pre>
+<h2 id="connected"><a class="header" href="#connected">Connected</a></h2>
+<pre><code class="language-text">Normal usable paths.
+</code></pre>
+<h2 id="degraded"><a class="header" href="#degraded">Degraded</a></h2>
+<pre><code class="language-text">Communication works but with meaningful failures/poor quality.
+</code></pre>
+<hr />
+<h1 id="8-path-types"><a class="header" href="#8-path-types">8. Path Types</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum DiagnosticPathKind {
+    IrohDirect,
+    IrohRelay,
+    Lan,
+    BluetoothLe,
+    BluetoothClassic,
+    WifiDirect,
+    WifiAware,
+    Cellular,
+    Dtn,
+    Gateway,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Some are underlay hints while others are logical communication paths.</p>
+<hr />
+<h1 id="9-path-identity"><a class="header" href="#9-path-identity">9. Path Identity</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct PathId([u8; 16]);
+<span class="boring">}</span></code></pre></pre>
+<p>Path IDs are local diagnostic identifiers.</p>
+<p>Do not expose raw peer IP as identity.</p>
+<hr />
+<h1 id="10-path-diagnostic"><a class="header" href="#10-path-diagnostic">10. Path Diagnostic</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct PathDiagnostic {
+    pub id: PathId,
+    pub kind: DiagnosticPathKind,
+    pub state: PathState,
+    pub role: PathRole,
+    pub quality: PathQuality,
+    pub started_at: Timestamp,
+    pub last_changed_at: Timestamp,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="11-path-state"><a class="header" href="#11-path-state">11. Path State</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum PathState {
+    Candidate,
+    Probing,
+    Connecting,
+    Authenticating,
+    Ready,
+    Active,
+    Standby,
+    Degraded,
+    Failed,
+    Closed,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="12-path-role"><a class="header" href="#12-path-role">12. Path Role</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum PathRole {
+    Primary,
+    Secondary,
+    Standby,
+    Control,
+    Bulk,
+    Redundant,
+    DtnCarry,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="13-path-quality"><a class="header" href="#13-path-quality">13. Path Quality</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct PathQuality {
+    pub latency: Option&lt;LatencyClass&gt;,
+    pub throughput: Option&lt;ThroughputClass&gt;,
+    pub loss: Option&lt;LossClass&gt;,
+    pub jitter: Option&lt;JitterClass&gt;,
+    pub stability: StabilityClass,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>User-facing UI should prefer coarse quality classes.</p>
+<hr />
+<h1 id="14-latency-class"><a class="header" href="#14-latency-class">14. Latency Class</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum LatencyClass {
+    Excellent,
+    Good,
+    Fair,
+    Poor,
+    VeryPoor,
+    Unknown,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Raw milliseconds remain available in developer mode.</p>
+<hr />
+<h1 id="15-throughput-class"><a class="header" href="#15-throughput-class">15. Throughput Class</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum ThroughputClass {
+    Tiny,
+    Low,
+    Medium,
+    High,
+    VeryHigh,
+    Unknown,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="16-loss-class"><a class="header" href="#16-loss-class">16. Loss Class</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum LossClass {
+    NoneObserved,
+    Low,
+    Moderate,
+    High,
+    Unknown,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="17-stability-class"><a class="header" href="#17-stability-class">17. Stability Class</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum StabilityClass {
+    Stable,
+    Fluctuating,
+    Unstable,
+    Unknown,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="18-measurements"><a class="header" href="#18-measurements">18. Measurements</a></h1>
+<p>Raw local metrics may include:</p>
+<pre><code class="language-text">RTT
+throughput
+loss
+jitter
+connection age
+reconnect count
+path switch count
+queue delay
+</code></pre>
+<hr />
+<h1 id="19-do-not-over-probe"><a class="header" href="#19-do-not-over-probe">19. Do Not Over-Probe</a></h1>
+<p>Prefer measurements from actual transport traffic.</p>
+<p>Synthetic probes should be:</p>
+<pre><code class="language-text">small
+rate-limited
+purposeful
+</code></pre>
+<p>especially on mobile.</p>
+<hr />
+<h1 id="20-diagnostic-event-stream"><a class="header" href="#20-diagnostic-event-stream">20. Diagnostic Event Stream</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum NetworkDiagnosticEvent {
+    CandidateDiscovered(...),
+    PathProbeStarted(...),
+    PathConnected(...),
+    PathAuthenticated(...),
+    PathActivated(...),
+    PathDegraded(...),
+    PathFailed(...),
+    PathSwitched(...),
+    RelaySelected(...),
+    GatewayReached(...),
+    DtnForwarded(...),
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="21-event-classification"><a class="header" href="#21-event-classification">21. Event Classification</a></h1>
+<p>Separate:</p>
+<pre><code class="language-text">operational event
+user-visible event
+security-sensitive event
+</code></pre>
+<p>Most low-level changes remain developer diagnostics only.</p>
+<hr />
+<h1 id="22-routing-explanation"><a class="header" href="#22-routing-explanation">22. Routing Explanation</a></h1>
+<p>Part 03 should produce a structured explanation.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct RoutingExplanation {
+    pub selected: PathId,
+    pub reason: RoutingReason,
+    pub rejected: Vec&lt;RejectedPathReason&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="23-routing-reason"><a class="header" href="#23-routing-reason">23. Routing Reason</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum RoutingReason {
+    LowestLatency,
+    ExistingConnection,
+    LocalPreferred,
+    DirectPreferred,
+    RelayFallback,
+    MeteredAvoidance,
+    BatteryPolicy,
+    EmergencyPriority,
+    FileThroughput,
+    MultipathBenefit,
+    DtnOnlyAvailable,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="24-rejected-path-reason"><a class="header" href="#24-rejected-path-reason">24. Rejected Path Reason</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum RejectedPathReason {
+    Unreachable,
+    PolicyDenied,
+    MeteredDenied,
+    BatteryDenied,
+    CapabilityMissing,
+    AuthenticationFailed,
+    ResourceLimit,
+    TooSlow,
+    SharedFailureDomain,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="25-explainability-contract"><a class="header" href="#25-explainability-contract">25. Explainability Contract</a></h1>
+<p>A routing decision should be answerable as:</p>
+<pre><code class="language-text">Selected LAN because:
+- peer is local
+- LAN is authenticated
+- lower latency
+- no metered cost
+
+Did not use relay because:
+- direct local path is healthy
+</code></pre>
+<hr />
+<h1 id="26-no-opaque-scoring-only"><a class="header" href="#26-no-opaque-scoring-only">26. No Opaque Scoring Only</a></h1>
+<p>Do not expose only:</p>
+<pre><code class="language-text">score = 73.42
+</code></pre>
+<p>Provide semantic reason codes.</p>
+<p>Scores may exist internally.</p>
+<hr />
+<h1 id="27-user-level-network-status"><a class="header" href="#27-user-level-network-status">27. User-Level Network Status</a></h1>
+<p>Normal user should see:</p>
+<pre><code class="language-text">Direct connection
+Relayed connection
+Nearby connection
+Offline — waiting for nearby device
+</code></pre>
+<p>Not raw QUIC internals.</p>
+<hr />
+<h1 id="28-advanced-diagnostics-mode"><a class="header" href="#28-advanced-diagnostics-mode">28. Advanced Diagnostics Mode</a></h1>
+<p>Developer/advanced view can expose:</p>
+<pre><code class="language-text">transport
+relay
+RTT
+loss
+throughput
+path transitions
+routing reasons
+</code></pre>
+<hr />
+<h1 id="29-path-visualization"><a class="header" href="#29-path-visualization">29. Path Visualization</a></h1>
+<p>A useful path diagram:</p>
+<pre><code class="language-text">This Device
+    │
+   LAN
+    │
+Peer Device
+</code></pre>
+<p>Relay:</p>
+<pre><code class="language-text">This Device
+    │
+  Internet
+    │
+Iroh Relay
+    │
+  Internet
+    │
+Peer
+</code></pre>
+<hr />
+<h1 id="30-dtn-visualization"><a class="header" href="#30-dtn-visualization">30. DTN Visualization</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">Alice
+  ↓ BLE
+Bob
+  ↓ carried offline
+Carol
+  ↓ Wi-Fi
+Gateway
+  ↓ Iroh
+Destination
+</code></pre>
+<p>This is especially useful for emergency diagnostics.</p>
+<hr />
+<h1 id="31-path-graph-model"><a class="header" href="#31-path-graph-model">31. Path Graph Model</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct DiagnosticGraph {
+    pub nodes: Vec&lt;DiagnosticNode&gt;,
+    pub edges: Vec&lt;DiagnosticEdge&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="32-diagnostic-node"><a class="header" href="#32-diagnostic-node">32. Diagnostic Node</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum DiagnosticNodeKind {
+    LocalDevice,
+    PeerDevice,
+    Relay,
+    Gateway,
+    DtnRelay,
+    NetworkBoundary,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="33-diagnostic-edge"><a class="header" href="#33-diagnostic-edge">33. Diagnostic Edge</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct DiagnosticEdge {
+    pub from: DiagnosticNodeId,
+    pub to: DiagnosticNodeId,
+    pub transport: DiagnosticPathKind,
+    pub state: PathState,
+    pub metrics: EdgeMetrics,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="34-privacy-safe-node-labels"><a class="header" href="#34-privacy-safe-node-labels">34. Privacy-Safe Node Labels</a></h1>
+<p>Normal UI labels:</p>
+<pre><code class="language-text">This device
+Relay
+Nearby relay
+Destination
+</code></pre>
+<p>Advanced local diagnostics may show trusted peer device names.</p>
+<hr />
+<h1 id="35-do-not-reveal-relay-internals-unnecessarily"><a class="header" href="#35-do-not-reveal-relay-internals-unnecessarily">35. Do Not Reveal Relay Internals Unnecessarily</a></h1>
+<p>Normal user generally does not need:</p>
+<pre><code class="language-text">relay hostname
+IP
+region code
+</code></pre>
+<p>Advanced diagnostics can show them.</p>
+<hr />
+<h1 id="36-multipath-visualization"><a class="header" href="#36-multipath-visualization">36. Multipath Visualization</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">                 ┌─ Wi-Fi ──────┐
+This Device ─────┤               ├─ Peer
+                 └─ Cellular ───┘
+</code></pre>
+<p>Show roles:</p>
+<pre><code class="language-text">Wi-Fi: primary
+Cellular: standby
+</code></pre>
+<p>or:</p>
+<pre><code class="language-text">Wi-Fi: 75% file chunks
+Cellular: 25%
+</code></pre>
+<hr />
+<h1 id="37-multipath-state"><a class="header" href="#37-multipath-state">37. Multipath State</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct MultipathDiagnostic {
+    pub strategy: MultipathStrategy,
+    pub plan_epoch: u64,
+    pub paths: Vec&lt;MultipathPathDiagnostic&gt;,
+    pub duplicate_bytes: u64,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="38-file-path-visualization"><a class="header" href="#38-file-path-visualization">38. File Path Visualization</a></h1>
+<p>For large transfer:</p>
+<pre><code class="language-text">File 72%
+├── LAN      60%
+└── Relay    12%
+</code></pre>
+<p>Actual visualization should distinguish:</p>
+<pre><code class="language-text">overall transfer completion
+path contribution
+</code></pre>
+<hr />
+<h1 id="39-file-diagnostics"><a class="header" href="#39-file-diagnostics">39. File Diagnostics</a></h1>
+<p>Part 05 exposes:</p>
+<pre><code class="language-text">chunks completed
+chunks in flight
+retries
+current paths
+resume state
+</code></pre>
+<p>Diagnostics should not scan raw file data.</p>
+<hr />
+<h1 id="40-message-diagnostics"><a class="header" href="#40-message-diagnostics">40. Message Diagnostics</a></h1>
+<p>Message status:</p>
+<pre><code class="language-text">Queued
+Connecting
+Sent locally
+Relayed
+Delivered
+Read
+</code></pre>
+<p>Network diagnostics can explain current delivery path.</p>
+<hr />
+<h1 id="41-emergency-diagnostics"><a class="header" href="#41-emergency-diagnostics">41. Emergency Diagnostics</a></h1>
+<p>Critical message should display:</p>
+<pre><code class="language-text">Stored locally
+Sent over Internet
+Carried by 2 nearby relay devices
+Reached gateway
+Delivered
+</code></pre>
+<p>This is more informative than a single spinner.</p>
+<hr />
+<h1 id="42-dtn-privacy"><a class="header" href="#42-dtn-privacy">42. DTN Privacy</a></h1>
+<p>Do not display the real identity of arbitrary relay peers unless authorized.</p>
+<p>Use:</p>
+<pre><code class="language-text">Nearby relay 1
+Nearby relay 2
+</code></pre>
+<hr />
+<h1 id="43-dtn-hop-count"><a class="header" href="#43-dtn-hop-count">43. DTN Hop Count</a></h1>
+<p>Can expose:</p>
+<pre><code class="language-text">Copies carried: 3
+Gateway reached: yes
+</code></pre>
+<p>rather than exact social graph.</p>
+<hr />
+<h1 id="44-connection-timeline"><a class="header" href="#44-connection-timeline">44. Connection Timeline</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">14:20:01 Direct path probing
+14:20:02 Relay connected
+14:20:04 Direct path succeeded
+14:20:04 Switched relay → direct
+</code></pre>
+<p>Useful for debugging.</p>
+<hr />
+<h1 id="45-timeline-model"><a class="header" href="#45-timeline-model">45. Timeline Model</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct PathTimelineEvent {
+    pub timestamp: Timestamp,
+    pub path_id: Option&lt;PathId&gt;,
+    pub kind: PathTimelineKind,
+    pub reason: Option&lt;DiagnosticReason&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="46-timeline-retention"><a class="header" href="#46-timeline-retention">46. Timeline Retention</a></h1>
+<p>Keep bounded.</p>
+<p>Normal:</p>
+<pre><code class="language-text">recent session
+</code></pre>
+<p>Advanced persistent diagnostics:</p>
+<pre><code class="language-text">limited hours/days
+</code></pre>
+<p>Do not retain indefinite mobility/network history.</p>
+<hr />
+<h1 id="47-diagnostic-ring-buffer"><a class="header" href="#47-diagnostic-ring-buffer">47. Diagnostic Ring Buffer</a></h1>
+<p>Use:</p>
+<pre><code class="language-text">bounded in-memory ring buffer
+</code></pre>
+<p>for high-frequency events.</p>
+<p>Persist only selected important diagnostic events if enabled.</p>
+<hr />
+<h1 id="48-sampling"><a class="header" href="#48-sampling">48. Sampling</a></h1>
+<p>High-frequency path metrics should be sampled/coalesced.</p>
+<p>Example:</p>
+<pre><code class="language-text">1-second or multi-second snapshots
+</code></pre>
+<p>rather than per-packet.</p>
+<hr />
+<h1 id="49-historical-metrics"><a class="header" href="#49-historical-metrics">49. Historical Metrics</a></h1>
+<p>Useful rolling history:</p>
+<pre><code class="language-text">RTT
+throughput
+loss
+active path
+</code></pre>
+<p>for the current transfer/session.</p>
+<hr />
+<h1 id="50-time-series"><a class="header" href="#50-time-series">50. Time Series</a></h1>
+<p>Dioxus may graph:</p>
+<pre><code class="language-text">latency over time
+throughput over time
+</code></pre>
+<p>for advanced users.</p>
+<hr />
+<h1 id="51-avoid-fake-precision"><a class="header" href="#51-avoid-fake-precision">51. Avoid Fake Precision</a></h1>
+<p>If transport only provides coarse estimate:</p>
+<pre><code class="language-text">show coarse
+</code></pre>
+<p>not invented exact values.</p>
+<hr />
+<h1 id="52-direct-vs-relay-detection"><a class="header" href="#52-direct-vs-relay-detection">52. Direct vs Relay Detection</a></h1>
+<p>Expose:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum ReachabilityMode {
+    Direct,
+    Relayed,
+    Local,
+    Dtn,
+    Mixed,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="53-connection-upgrade"><a class="header" href="#53-connection-upgrade">53. Connection Upgrade</a></h1>
+<p>If:</p>
+<pre><code class="language-text">Relay → Direct
+</code></pre>
+<p>show:</p>
+<pre><code class="language-text">Connection improved to direct
+</code></pre>
+<p>only if user-facing notification is useful.</p>
+<p>Usually record silently.</p>
+<hr />
+<h1 id="54-connection-downgrade"><a class="header" href="#54-connection-downgrade">54. Connection Downgrade</a></h1>
+<p>If:</p>
+<pre><code class="language-text">Direct → Relay
+</code></pre>
+<p>communication still works.</p>
+<p>Normal UI may remain:</p>
+<pre><code class="language-text">Connected
+</code></pre>
+<p>Advanced view shows downgrade.</p>
+<hr />
+<h1 id="55-failure-taxonomy"><a class="header" href="#55-failure-taxonomy">55. Failure Taxonomy</a></h1>
+<p>Do not expose generic:</p>
+<pre><code class="language-text">Network error
+</code></pre>
+<p>for everything.</p>
+<p>Use structured failures.</p>
+<hr />
+<h1 id="56-failure-domains"><a class="header" href="#56-failure-domains">56. Failure Domains</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum NetworkFailureDomain {
+    Dns,
+    Internet,
+    NatTraversal,
+    Relay,
+    Lan,
+    Bluetooth,
+    Wifi,
+    Authentication,
+    Capability,
+    Policy,
+    Resource,
+    Storage,
+    Timeout,
+    PeerUnavailable,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="57-failure-cause"><a class="header" href="#57-failure-cause">57. Failure Cause</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct DiagnosticFailure {
+    pub domain: NetworkFailureDomain,
+    pub code: DiagnosticErrorCode,
+    pub retryable: bool,
+    pub user_action: Option&lt;UserActionHint&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="58-user-action-hint"><a class="header" href="#58-user-action-hint">58. User Action Hint</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">Enable Bluetooth
+Allow Nearby Devices permission
+Connect to Wi-Fi
+Free storage
+Disable battery saver for this transfer
+Ask peer to update app
+</code></pre>
+<p>Only suggest actions that are actually relevant.</p>
+<hr />
+<h1 id="59-root-cause-chain"><a class="header" href="#59-root-cause-chain">59. Root Cause Chain</a></h1>
+<p>An operation may fail because:</p>
+<pre><code class="language-text">Wi-Fi Direct unavailable
++
+Bluetooth too slow
++
+relay unreachable
+</code></pre>
+<p>Diagnostics should preserve the chain.</p>
+<hr />
+<h1 id="60-failure-tree"><a class="header" href="#60-failure-tree">60. Failure Tree</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct FailureTree {
+    pub operation: OperationId,
+    pub attempts: Vec&lt;PathAttemptFailure&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="61-example-failure-explanation"><a class="header" href="#61-example-failure-explanation">61. Example Failure Explanation</a></h1>
+<pre><code class="language-text">File transfer could not start.
+
+LAN:
+Peer not reachable on local network.
+
+Wi-Fi Direct:
+Permission unavailable.
+
+Iroh direct:
+NAT traversal failed.
+
+Relay:
+Relay connection timed out.
+</code></pre>
+<p>This is actionable.</p>
+<hr />
+<h1 id="62-routing-attempt-history"><a class="header" href="#62-routing-attempt-history">62. Routing Attempt History</a></h1>
+<p>Keep:</p>
+<pre><code class="language-text">path tried
+start/end time
+result
+reason
+</code></pre>
+<p>bounded per operation.</p>
+<hr />
+<h1 id="63-connection-correlation-id"><a class="header" href="#63-connection-correlation-id">63. Connection Correlation ID</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct ConnectionAttemptId([u8; 16]);
+<span class="boring">}</span></code></pre></pre>
+<p>Used across logs/traces/diagnostics.</p>
+<hr />
+<h1 id="64-operation-correlation"><a class="header" href="#64-operation-correlation">64. Operation Correlation</a></h1>
+<p>Path diagnostics should attach to:</p>
+<pre><code class="language-text">MessageId
+TransferId
+EmergencyId
+CallId
+</code></pre>
+<p>where applicable.</p>
+<hr />
+<h1 id="65-no-global-raw-packet-capture-by-default"><a class="header" href="#65-no-global-raw-packet-capture-by-default">65. No Global Raw Packet Capture by Default</a></h1>
+<p>Packet capture is sensitive and expensive.</p>
+<p>Do not build always-on packet logging.</p>
+<hr />
+<h1 id="66-optional-expert-capture"><a class="header" href="#66-optional-expert-capture">66. Optional Expert Capture</a></h1>
+<p>A developer build may enable:</p>
+<pre><code class="language-text">protocol metadata capture
+</code></pre>
+<p>with explicit user action.</p>
+<p>Payload plaintext still excluded by default.</p>
+<hr />
+<h1 id="67-diagnostic-levels"><a class="header" href="#67-diagnostic-levels">67. Diagnostic Levels</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum DiagnosticLevel {
+    User,
+    Advanced,
+    Developer,
+    Operator,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="68-user-level"><a class="header" href="#68-user-level">68. User Level</a></h1>
+<p>Shows:</p>
+<pre><code class="language-text">connected/offline
+direct/relayed/nearby
+transfer state
+actionable problem
+</code></pre>
+<hr />
+<h1 id="69-advanced-level"><a class="header" href="#69-advanced-level">69. Advanced Level</a></h1>
+<p>Shows:</p>
+<pre><code class="language-text">path kind
+quality
+relay/local
+reconnects
+multipath
+DTN state
+</code></pre>
+<hr />
+<h1 id="70-developer-level"><a class="header" href="#70-developer-level">70. Developer Level</a></h1>
+<p>Shows:</p>
+<pre><code class="language-text">raw RTT
+throughput
+loss
+routing reasons
+path state transitions
+protocol version
+capabilities
+</code></pre>
+<hr />
+<h1 id="71-operator-level"><a class="header" href="#71-operator-level">71. Operator Level</a></h1>
+<p>For headless/relay infrastructure:</p>
+<pre><code class="language-text">fleet/node health
+connections
+relay utilization
+failure rate
+</code></pre>
+<p>No user plaintext.</p>
+<hr />
+<h1 id="72-privacy-filtering"><a class="header" href="#72-privacy-filtering">72. Privacy Filtering</a></h1>
+<p>All diagnostic output passes through:</p>
+<pre><code class="language-text">DiagnosticRedactor
+</code></pre>
+<p>before UI/export/telemetry.</p>
+<hr />
+<h1 id="73-redaction-policy"><a class="header" href="#73-redaction-policy">73. Redaction Policy</a></h1>
+<p>Remove or hash:</p>
+<pre><code class="language-text">IP addresses
+peer IDs
+ephemeral proximity IDs
+file names
+message contents
+precise location
+</code></pre>
+<p>unless explicitly required and authorized.</p>
+<hr />
+<h1 id="74-local-vs-exported-diagnostics"><a class="header" href="#74-local-vs-exported-diagnostics">74. Local vs Exported Diagnostics</a></h1>
+<p>Local advanced view may show more.</p>
+<p>Exported diagnostic bundle should be more aggressively redacted.</p>
+<hr />
+<h1 id="75-diagnostic-export"><a class="header" href="#75-diagnostic-export">75. Diagnostic Export</a></h1>
+<p>User can generate:</p>
+<pre><code class="language-text">diagnostic bundle
+</code></pre>
+<p>for support.</p>
+<p>Contents:</p>
+<pre><code class="language-text">build version
+platform
+runtime health
+network state
+recent failures
+relay/direct ratios
+resource state
+redacted path timeline
+</code></pre>
+<hr />
+<h1 id="76-diagnostic-bundle-excludes"><a class="header" href="#76-diagnostic-bundle-excludes">76. Diagnostic Bundle Excludes</a></h1>
+<p>By default:</p>
+<pre><code class="language-text">message plaintext
+file contents
+private keys
+auth tokens
+contact graph
+exact location
+</code></pre>
+<hr />
+<h1 id="77-export-manifest"><a class="header" href="#77-export-manifest">77. Export Manifest</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct DiagnosticBundleManifest {
+    pub version: u16,
+    pub created_at: Timestamp,
+    pub sections: Vec&lt;DiagnosticSection&gt;,
+    pub redaction_level: DiagnosticRedactionLevel,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="78-support-token"><a class="header" href="#78-support-token">78. Support Token</a></h1>
+<p>Optional:</p>
+<pre><code class="language-text">short diagnostic ID
+</code></pre>
+<p>can correlate a user report with server-side aggregate logs if user consents.</p>
+<hr />
+<h1 id="79-local-doctor-tool"><a class="header" href="#79-local-doctor-tool">79. Local Doctor Tool</a></h1>
+<p>CLI:</p>
+<pre><code class="language-text">comm doctor network
+</code></pre>
+<p>checks:</p>
+<pre><code class="language-text">Iroh endpoint
+relay reachability
+LAN
+Bluetooth availability
+Wi-Fi capability
+routing policy
+resource pressure
+</code></pre>
+<hr />
+<h1 id="80-doctor-modes"><a class="header" href="#80-doctor-modes">80. Doctor Modes</a></h1>
+<pre><code class="language-text">basic
+full
+privacy-safe export
+</code></pre>
+<hr />
+<h1 id="81-doctor-should-not-require-internet"><a class="header" href="#81-doctor-should-not-require-internet">81. Doctor Should Not Require Internet</a></h1>
+<p>Local checks can still diagnose:</p>
+<pre><code class="language-text">Bluetooth
+LAN
+database
+permissions
+</code></pre>
+<p>offline.</p>
+<hr />
+<h1 id="82-active-network-test"><a class="header" href="#82-active-network-test">82. Active Network Test</a></h1>
+<p>Full doctor may intentionally:</p>
+<pre><code class="language-text">probe configured relay
+perform test handshake
+measure RTT
+</code></pre>
+<p>with user/admin action.</p>
+<hr />
+<h1 id="83-relay-diagnostics"><a class="header" href="#83-relay-diagnostics">83. Relay Diagnostics</a></h1>
+<p>Part 11 provides:</p>
+<pre><code class="language-text">relay selected
+region
+health
+latency
+TLS/connect result
+</code></pre>
+<hr />
+<h1 id="84-direct-path-diagnostics"><a class="header" href="#84-direct-path-diagnostics">84. Direct Path Diagnostics</a></h1>
+<p>Show:</p>
+<pre><code class="language-text">direct path available
+NAT traversal duration
+path upgraded from relay
+</code></pre>
+<p>where adapter provides data.</p>
+<hr />
+<h1 id="85-nat-diagnostics"><a class="header" href="#85-nat-diagnostics">85. NAT Diagnostics</a></h1>
+<p>Do not expose misleading simplistic NAT labels if not reliably known.</p>
+<p>Prefer:</p>
+<pre><code class="language-text">direct connection succeeded
+direct connection failed
+relay fallback used
+</code></pre>
+<hr />
+<h1 id="86-proximity-diagnostics"><a class="header" href="#86-proximity-diagnostics">86. Proximity Diagnostics</a></h1>
+<p>Part 14 can expose:</p>
+<pre><code class="language-text">BLE available
+BLE permission
+Wi-Fi Aware available
+Wi-Fi Direct available
+LAN peers
+</code></pre>
+<hr />
+<h1 id="87-permission-diagnostics"><a class="header" href="#87-permission-diagnostics">87. Permission Diagnostics</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">Bluetooth: unavailable because permission denied
+</code></pre>
+<p>rather than just:</p>
+<pre><code class="language-text">Bluetooth failed
+</code></pre>
+<hr />
+<h1 id="88-battery-diagnostics"><a class="header" href="#88-battery-diagnostics">88. Battery Diagnostics</a></h1>
+<p>Part 13 provides reason:</p>
+<pre><code class="language-text">Multipath disabled by battery saver
+DTN scan reduced
+</code></pre>
+<hr />
+<h1 id="89-resource-diagnostics"><a class="header" href="#89-resource-diagnostics">89. Resource Diagnostics</a></h1>
+<p>Part 08 provides:</p>
+<pre><code class="language-text">transfer deferred: storage pressure
+connection denied: connection limit
+</code></pre>
+<hr />
+<h1 id="90-capability-diagnostics"><a class="header" href="#90-capability-diagnostics">90. Capability Diagnostics</a></h1>
+<p>Part 07 can explain:</p>
+<pre><code class="language-text">Video unavailable because peer does not support compatible codec.
+</code></pre>
+<hr />
+<h1 id="91-version-diagnostics"><a class="header" href="#91-version-diagnostics">91. Version Diagnostics</a></h1>
+<p>Show:</p>
+<pre><code class="language-text">local protocol version
+peer negotiated version
+</code></pre>
+<p>in developer mode.</p>
+<hr />
+<h1 id="92-protocol-mismatch"><a class="header" href="#92-protocol-mismatch">92. Protocol Mismatch</a></h1>
+<p>User-level:</p>
+<pre><code class="language-text">The other device needs an app update.
+</code></pre>
+<p>Developer:</p>
+<pre><code class="language-text">files/1 required, peer supports none
+</code></pre>
+<hr />
+<h1 id="93-authentication-failure"><a class="header" href="#93-authentication-failure">93. Authentication Failure</a></h1>
+<p>Normal UI:</p>
+<pre><code class="language-text">Could not verify the other device.
+</code></pre>
+<p>Never expose internal keys.</p>
+<hr />
+<h1 id="94-security-diagnostic-events"><a class="header" href="#94-security-diagnostic-events">94. Security Diagnostic Events</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">downgrade suspected
+certificate revoked
+identity mismatch
+</code></pre>
+<p>Must be clearly distinguished from network failure.</p>
+<hr />
+<h1 id="95-security-vs-connectivity"><a class="header" href="#95-security-vs-connectivity">95. Security vs Connectivity</a></h1>
+<p>Do not say:</p>
+<pre><code class="language-text">network unavailable
+</code></pre>
+<p>if actual reason is:</p>
+<pre><code class="language-text">peer identity rejected
+</code></pre>
+<hr />
+<h1 id="96-path-visualization-ui-architecture"><a class="header" href="#96-path-visualization-ui-architecture">96. Path Visualization UI Architecture</a></h1>
+<p>Dioxus components:</p>
+<pre><code class="language-text">NetworkStatusBadge
+PathSummaryCard
+PathGraph
+PathTimeline
+TransferPathView
+DtnJourneyView
+DiagnosticFailureView
+NetworkDoctorView
+</code></pre>
+<hr />
+<h1 id="97-dioxus-state-source"><a class="header" href="#97-dioxus-state-source">97. Dioxus State Source</a></h1>
+<p>UI subscribes through Part 16 runtime API.</p>
+<p>Do not query transports directly.</p>
+<hr />
+<h1 id="98-ui-view-model"><a class="header" href="#98-ui-view-model">98. UI View Model</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct NetworkDiagnosticsViewModel {
+    pub summary: NetworkSummaryVm,
+    pub path_graph: PathGraphVm,
+    pub timeline: Vec&lt;TimelineVm&gt;,
+    pub actions: Vec&lt;DiagnosticActionVm&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="99-normal-network-screen"><a class="header" href="#99-normal-network-screen">99. Normal Network Screen</a></h1>
+<p>Suggested:</p>
+<pre><code class="language-text">Connection
+──────────
+Connected directly
+
+Quality
+Good
+
+Active path
+Wi-Fi → Peer
+
+Fallback
+Relay available
+</code></pre>
+<hr />
+<h1 id="100-advanced-network-screen"><a class="header" href="#100-advanced-network-screen">100. Advanced Network Screen</a></h1>
+<p>Suggested sections:</p>
+<pre><code class="language-text">Overview
+Active paths
+Candidate paths
+Routing decisions
+Recent transitions
+DTN
+Relay
+Permissions
+Power/resource constraints
+</code></pre>
+<hr />
+<h1 id="101-visual-path-states"><a class="header" href="#101-visual-path-states">101. Visual Path States</a></h1>
+<p>Use distinguishable visual states:</p>
+<pre><code class="language-text">active
+standby
+degraded
+failed
+</code></pre>
+<p>Do not rely solely on color; use icons/line styles/text for accessibility.</p>
+<hr />
+<h1 id="102-accessibility"><a class="header" href="#102-accessibility">102. Accessibility</a></h1>
+<p>Path graphs should have equivalent textual description.</p>
+<p>Screen reader example:</p>
+<pre><code class="language-text">Primary path: Wi-Fi direct to peer. Secondary path: cellular standby.
+</code></pre>
+<hr />
+<h1 id="103-mobile-ui"><a class="header" href="#103-mobile-ui">103. Mobile UI</a></h1>
+<p>On mobile, use progressive disclosure.</p>
+<p>Default:</p>
+<pre><code class="language-text">simple status
+</code></pre>
+<p>Tap:</p>
+<pre><code class="language-text">connection details
+</code></pre>
+<p>Tap advanced:</p>
+<pre><code class="language-text">full diagnostics
+</code></pre>
+<hr />
+<h1 id="104-desktop-ui"><a class="header" href="#104-desktop-ui">104. Desktop UI</a></h1>
+<p>Can show richer:</p>
+<pre><code class="language-text">graph
+timeline
+metrics charts
+</code></pre>
+<hr />
+<h1 id="105-headless-cli"><a class="header" href="#105-headless-cli">105. Headless CLI</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">comm network status
+comm network paths
+comm network timeline
+comm network doctor
+</code></pre>
+<hr />
+<h1 id="106-machine-readable-output"><a class="header" href="#106-machine-readable-output">106. Machine-Readable Output</a></h1>
+<p>CLI supports:</p>
+<pre><code class="language-text">RON
+JSON
+</code></pre>
+<p>JSON is justified for external tooling.</p>
+<hr />
+<h1 id="107-runtime-diagnostic-api"><a class="header" href="#107-runtime-diagnostic-api">107. Runtime Diagnostic API</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait NetworkDiagnosticApi {
+    async fn snapshot(
+        &amp;self,
+        level: DiagnosticLevel,
+    ) -&gt; Result&lt;NetworkDiagnosticSnapshot, DiagnosticError&gt;;
+
+    fn subscribe(
+        &amp;self,
+        filter: DiagnosticFilter,
+    ) -&gt; DiagnosticEventStream;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="108-diagnostic-snapshot"><a class="header" href="#108-diagnostic-snapshot">108. Diagnostic Snapshot</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct NetworkDiagnosticSnapshot {
+    pub generated_at: Timestamp,
+    pub health: NetworkHealthSummary,
+    pub paths: Vec&lt;PathDiagnostic&gt;,
+    pub routing: Vec&lt;RoutingExplanation&gt;,
+    pub failures: Vec&lt;DiagnosticFailure&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="109-diagnostic-event-filtering"><a class="header" href="#109-diagnostic-event-filtering">109. Diagnostic Event Filtering</a></h1>
+<p>Clients can subscribe to:</p>
+<pre><code class="language-text">all
+routing
+transport
+DTN
+relay
+proximity
+security
+</code></pre>
+<hr />
+<h1 id="110-backpressure"><a class="header" href="#110-backpressure">110. Backpressure</a></h1>
+<p>Part 08 applies to diagnostics.</p>
+<p>High-frequency telemetry must not crash the daemon/UI.</p>
+<p>Use:</p>
+<pre><code class="language-text">bounded queues
+sampling
+coalescing
+latest-value channels
+</code></pre>
+<hr />
+<h1 id="111-diagnostics-must-not-affect-networking"><a class="header" href="#111-diagnostics-must-not-affect-networking">111. Diagnostics Must Not Affect Networking</a></h1>
+<p>If diagnostics consumer is slow:</p>
+<pre><code class="language-text">drop/coalesce diagnostics
+</code></pre>
+<p>Never slow critical networking.</p>
+<hr />
+<h1 id="112-diagnostic-priority"><a class="header" href="#112-diagnostic-priority">112. Diagnostic Priority</a></h1>
+<p>Diagnostic events are generally:</p>
+<pre><code class="language-text">low/background
+</code></pre>
+<p>except security/user-action states.</p>
+<hr />
+<h1 id="113-metrics-aggregator"><a class="header" href="#113-metrics-aggregator">113. Metrics Aggregator</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct NetworkMetricsAggregator {
+    // rolling counters/windows
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Consumes events without blocking transports.</p>
+<hr />
+<h1 id="114-rolling-windows"><a class="header" href="#114-rolling-windows">114. Rolling Windows</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">10 seconds
+1 minute
+15 minutes
+</code></pre>
+<p>for local quality summaries.</p>
+<hr />
+<h1 id="115-histograms"><a class="header" href="#115-histograms">115. Histograms</a></h1>
+<p>Useful for:</p>
+<pre><code class="language-text">RTT
+connection establishment time
+transfer throughput
+</code></pre>
+<p>operator metrics.</p>
+<hr />
+<h1 id="116-cardinality-discipline"><a class="header" href="#116-cardinality-discipline">116. Cardinality Discipline</a></h1>
+<p>Do not label exported metrics with raw:</p>
+<pre><code class="language-text">PeerId
+MessageId
+TransferId
+</code></pre>
+<p>unless local-only diagnostic.</p>
+<hr />
+<h1 id="117-opentelemetry"><a class="header" href="#117-opentelemetry">117. OpenTelemetry</a></h1>
+<p>Optional operator integration:</p>
+<pre><code class="language-text">metrics
+traces
+logs
+</code></pre>
+<p>Keep behind feature flag/adapter.</p>
+<hr />
+<h1 id="118-prometheus"><a class="header" href="#118-prometheus">118. Prometheus</a></h1>
+<p>Headless/relay deployments may expose metrics.</p>
+<p>Not required in mobile/desktop binary.</p>
+<hr />
+<h1 id="119-structured-logging"><a class="header" href="#119-structured-logging">119. Structured Logging</a></h1>
+<p>Use <code>tracing</code> ecosystem.</p>
+<p>Recommended fields:</p>
+<pre><code class="language-text">subsystem
+operation kind
+path kind
+reason code
+duration
+result
+</code></pre>
+<hr />
+<h1 id="120-span-architecture"><a class="header" href="#120-span-architecture">120. Span Architecture</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">send_message
+  ├── route_plan
+  ├── connect
+  ├── authenticate
+  └── transmit
+</code></pre>
+<hr />
+<h1 id="121-file-transfer-spans"><a class="header" href="#121-file-transfer-spans">121. File Transfer Spans</a></h1>
+<pre><code class="language-text">file_transfer
+  ├── manifest
+  ├── route selection
+  ├── chunk workers
+  └── finalize
+</code></pre>
+<p>Avoid one trace span per byte/chunk for huge files unless sampled.</p>
+<hr />
+<h1 id="122-dtn-tracing"><a class="header" href="#122-dtn-tracing">122. DTN Tracing</a></h1>
+<p>Track:</p>
+<pre><code class="language-text">bundle created
+encounter
+forwarded
+gateway
+destination ACK
+</code></pre>
+<p>with privacy-safe relay identifiers.</p>
+<hr />
+<h1 id="123-emergency-tracing"><a class="header" href="#123-emergency-tracing">123. Emergency Tracing</a></h1>
+<p>Critical delivery diagnostics should be locally detailed.</p>
+<p>Export remains redacted.</p>
+<hr />
+<h1 id="124-failure-reason-stability"><a class="header" href="#124-failure-reason-stability">124. Failure Reason Stability</a></h1>
+<p>Diagnostic reason codes should be stable API values.</p>
+<p>This helps support tooling.</p>
+<hr />
+<h1 id="125-diagnostic-error-code"><a class="header" href="#125-diagnostic-error-code">125. Diagnostic Error Code</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct DiagnosticErrorCode(pub u32);
+<span class="boring">}</span></code></pre></pre>
+<p>Map canonical codes to documentation.</p>
+<hr />
+<h1 id="126-self-service-troubleshooting"><a class="header" href="#126-self-service-troubleshooting">126. Self-Service Troubleshooting</a></h1>
+<p>For common issues:</p>
+<pre><code class="language-text">Bluetooth permission denied
+relay unreachable
+storage full
+peer outdated
+</code></pre>
+<p>provide guided remediation.</p>
+<hr />
+<h1 id="127-remediation-action"><a class="header" href="#127-remediation-action">127. Remediation Action</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum DiagnosticAction {
+    OpenPermissions,
+    Retry,
+    SwitchNetwork,
+    FreeStorage,
+    UpdateApp,
+    RunNetworkTest,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="128-ui-must-not-invent-diagnosis"><a class="header" href="#128-ui-must-not-invent-diagnosis">128. UI Must Not Invent Diagnosis</a></h1>
+<p>Actions come from structured diagnostics.</p>
+<p>Do not make UI guess based on strings.</p>
+<hr />
+<h1 id="129-network-doctor-architecture"><a class="header" href="#129-network-doctor-architecture">129. Network Doctor Architecture</a></h1>
+<pre><code class="language-text">Check platform state
+ ↓
+Check local interfaces
+ ↓
+Check proximity permissions
+ ↓
+Check Iroh endpoint
+ ↓
+Check configured relays
+ ↓
+Check routing policy
+ ↓
+Check resource/power constraints
+ ↓
+Generate report
+</code></pre>
+<hr />
+<h1 id="130-doctor-check-model"><a class="header" href="#130-doctor-check-model">130. Doctor Check Model</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct DiagnosticCheckResult {
+    pub check: DiagnosticCheckId,
+    pub status: CheckStatus,
+    pub explanation: DiagnosticReason,
+    pub action: Option&lt;DiagnosticAction&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="131-check-status"><a class="header" href="#131-check-status">131. Check Status</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum CheckStatus {
+    Pass,
+    Warning,
+    Fail,
+    Skipped,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="132-active-probe-consent"><a class="header" href="#132-active-probe-consent">132. Active Probe Consent</a></h1>
+<p>Network doctor may create actual connections.</p>
+<p>Make this explicit if it may consume:</p>
+<pre><code class="language-text">mobile data
+battery
+</code></pre>
+<hr />
+<h1 id="133-offline-doctor"><a class="header" href="#133-offline-doctor">133. Offline Doctor</a></h1>
+<p>When Internet unavailable, it should still return useful results rather than fail whole diagnostic process.</p>
+<hr />
+<h1 id="134-historical-path-record"><a class="header" href="#134-historical-path-record">134. Historical Path Record</a></h1>
+<p>For selected operations, persist compact path transition summaries.</p>
+<p>Example:</p>
+<pre><code class="language-text">Message:
+Relay → Direct → Delivered
+</code></pre>
+<p>This may aid support.</p>
+<hr />
+<h1 id="135-persistence-policy"><a class="header" href="#135-persistence-policy">135. Persistence Policy</a></h1>
+<p>Default persistent network history should be minimal.</p>
+<p>Potential:</p>
+<pre><code class="language-text">last failure code
+last successful path class
+operation transition summary
+</code></pre>
+<hr />
+<h1 id="136-no-location-history-via-network-metadata"><a class="header" href="#136-no-location-history-via-network-metadata">136. No Location History via Network Metadata</a></h1>
+<p>Do not use Wi-Fi/Bluetooth diagnostics to build persistent movement history.</p>
+<hr />
+<h1 id="137-retention-configuration"><a class="header" href="#137-retention-configuration">137. Retention Configuration</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct DiagnosticRetention {
+    pub event_buffer: usize,
+    pub persistent_days: u16,
+    pub raw_metrics_minutes: u16,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Defaults conservative.</p>
+<hr />
+<h1 id="138-diagnostic-storage-class"><a class="header" href="#138-diagnostic-storage-class">138. Diagnostic Storage Class</a></h1>
+<p>Part 08 should classify diagnostic persistence as:</p>
+<pre><code class="language-text">Cache/Operational
+</code></pre>
+<p>not authoritative user data.</p>
+<p>Can be evicted under pressure.</p>
+<hr />
+<h1 id="139-crash-recovery"><a class="header" href="#139-crash-recovery">139. Crash Recovery</a></h1>
+<p>Part 09 does not need to restore live path objects.</p>
+<p>After restart:</p>
+<pre><code class="language-text">new path discovery
+</code></pre>
+<p>Persisted recent failure summaries may survive.</p>
+<hr />
+<h1 id="140-daemon-integration"><a class="header" href="#140-daemon-integration">140. Daemon Integration</a></h1>
+<p>Part 16 daemon owns the diagnostic aggregator.</p>
+<p>Multiple UI/CLI clients subscribe.</p>
+<hr />
+<h1 id="141-client-isolation"><a class="header" href="#141-client-isolation">141. Client Isolation</a></h1>
+<p>One diagnostics-heavy client cannot force unbounded work.</p>
+<p>Per-client level/rate limits apply.</p>
+<hr />
+<h1 id="142-headless-node-diagnostics"><a class="header" href="#142-headless-node-diagnostics">142. Headless Node Diagnostics</a></h1>
+<p>Headless mode exposes:</p>
+<pre><code class="language-text">local CLI
+admin API
+metrics
+health
+</code></pre>
+<hr />
+<h1 id="143-relay-fleet-diagnostics"><a class="header" href="#143-relay-fleet-diagnostics">143. Relay Fleet Diagnostics</a></h1>
+<p>Part 11 operators need:</p>
+<pre><code class="language-text">relay health
+active connections
+traffic
+failure rate
+region state
+</code></pre>
+<p>The client diagnostic model should remain distinct from fleet metrics.</p>
+<hr />
+<h1 id="144-fleet-vs-client"><a class="header" href="#144-fleet-vs-client">144. Fleet vs Client</a></h1>
+<p>Client:</p>
+<pre><code class="language-text">Why is my path relayed?
+</code></pre>
+<p>Operator:</p>
+<pre><code class="language-text">Why did relay-region-IN error rate spike?
+</code></pre>
+<p>Different views, shared reason codes where useful.</p>
+<hr />
+<h1 id="145-versioned-diagnostic-schema"><a class="header" href="#145-versioned-diagnostic-schema">145. Versioned Diagnostic Schema</a></h1>
+<p>Diagnostics may be consumed externally.</p>
+<p>Version DTOs.</p>
+<pre><code class="language-text">diagnostics/1
+</code></pre>
+<hr />
+<h1 id="146-ffi-integration"><a class="header" href="#146-ffi-integration">146. FFI Integration</a></h1>
+<p>Part 19 can expose:</p>
+<pre><code class="language-text">network summary
+path list
+diagnostic events
+</code></pre>
+<p>without exposing Rust internals.</p>
+<hr />
+<h1 id="147-third-party-extension-diagnostics"><a class="header" href="#147-third-party-extension-diagnostics">147. Third-Party Extension Diagnostics</a></h1>
+<p>Part 22 extensions may register:</p>
+<pre><code class="language-text">diagnostic reason codes
+health component
+</code></pre>
+<p>through a bounded namespace.</p>
+<hr />
+<h1 id="148-plugin-diagnostics"><a class="header" href="#148-plugin-diagnostics">148. Plugin Diagnostics</a></h1>
+<p>Part 24 plugins should not access sensitive core diagnostics by default.</p>
+<p>Use permission scopes.</p>
+<hr />
+<h1 id="149-security-permission-scopes"><a class="header" href="#149-security-permission-scopes">149. Security Permission Scopes</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">DiagnosticsBasic
+DiagnosticsAdvanced
+DiagnosticsSensitiveLocal
+</code></pre>
+<hr />
+<h1 id="150-sensitive-diagnostics"><a class="header" href="#150-sensitive-diagnostics">150. Sensitive Diagnostics</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">IP address
+relay host
+full DeviceId
+</code></pre>
+<p>require explicit advanced/local permission.</p>
+<hr />
+<h1 id="151-test-strategy"><a class="header" href="#151-test-strategy">151. Test Strategy</a></h1>
+<p>Unit:</p>
+<pre><code class="language-text">reason mapping
+redaction
+quality classes
+state transitions
+</code></pre>
+<p>Integration:</p>
+<pre><code class="language-text">routing → diagnostics
+multipath → graph
+DTN → journey
+</code></pre>
+<hr />
+<h1 id="152-property-tests"><a class="header" href="#152-property-tests">152. Property Tests</a></h1>
+<p>Invariants:</p>
+<pre><code class="language-text">redacted export contains no private keys
+normal diagnostic level never exposes raw IP
+path graph edges reference existing nodes
+failure chain remains bounded
+</code></pre>
+<hr />
+<h1 id="153-fuzzing"><a class="header" href="#153-fuzzing">153. Fuzzing</a></h1>
+<p>Part 10 fuzz:</p>
+<pre><code class="language-text">diagnostic export parser
+admin diagnostic protocol
+path graph serialization
+</code></pre>
+<hr />
+<h1 id="154-slow-consumer-test"><a class="header" href="#154-slow-consumer-test">154. Slow Consumer Test</a></h1>
+<p>Diagnostic UI stops reading.</p>
+<p>Expected:</p>
+<pre><code class="language-text">network remains unaffected
+diagnostic queue remains bounded
+</code></pre>
+<hr />
+<h1 id="155-path-flap-test"><a class="header" href="#155-path-flap-test">155. Path Flap Test</a></h1>
+<p>Rapid:</p>
+<pre><code class="language-text">direct ↔ relay
+</code></pre>
+<p>Expected:</p>
+<pre><code class="language-text">timeline coalesced
+no UI storm
+</code></pre>
+<hr />
+<h1 id="156-multipath-test"><a class="header" href="#156-multipath-test">156. Multipath Test</a></h1>
+<p>Paths activate/deactivate.</p>
+<p>Graph correctly updates roles and epoch.</p>
+<hr />
+<h1 id="157-dtn-test"><a class="header" href="#157-dtn-test">157. DTN Test</a></h1>
+<p>Multi-hop journey displays:</p>
+<pre><code class="language-text">carried
+gateway
+delivered
+</code></pre>
+<p>without exposing unknown relay identities.</p>
+<hr />
+<h1 id="158-privacy-export-test"><a class="header" href="#158-privacy-export-test">158. Privacy Export Test</a></h1>
+<p>Generate support bundle.</p>
+<p>Assert absence of:</p>
+<pre><code class="language-text">message plaintext
+private keys
+raw contact IDs
+precise location
+raw nearby IDs
+</code></pre>
+<hr />
+<h1 id="159-permission-failure-test"><a class="header" href="#159-permission-failure-test">159. Permission Failure Test</a></h1>
+<p>Bluetooth denied.</p>
+<p>Doctor returns:</p>
+<pre><code class="language-text">Fail
+domain=Bluetooth
+action=OpenPermissions
+</code></pre>
+<hr />
+<h1 id="160-relay-failure-test"><a class="header" href="#160-relay-failure-test">160. Relay Failure Test</a></h1>
+<p>Relay unavailable.</p>
+<p>Diagnostics show:</p>
+<pre><code class="language-text">direct attempt
+relay timeout
+alternate candidate
+</code></pre>
+<hr />
+<h1 id="161-capability-failure-test"><a class="header" href="#161-capability-failure-test">161. Capability Failure Test</a></h1>
+<p>Peer lacks file capability.</p>
+<p>Do not report:</p>
+<pre><code class="language-text">network error
+</code></pre>
+<p>Report:</p>
+<pre><code class="language-text">CapabilityMissing
+</code></pre>
+<hr />
+<h1 id="162-resource-failure-test"><a class="header" href="#162-resource-failure-test">162. Resource Failure Test</a></h1>
+<p>Storage full.</p>
+<p>Network path may be healthy.</p>
+<p>Transfer diagnosis must say:</p>
+<pre><code class="language-text">Storage
+</code></pre>
+<p>not network.</p>
+<hr />
+<h1 id="163-authentication-failure-test"><a class="header" href="#163-authentication-failure-test">163. Authentication Failure Test</a></h1>
+<p>Path connected physically but peer verification fails.</p>
+<p>UI shows security verification failure.</p>
+<hr />
+<h1 id="164-crash-test"><a class="header" href="#164-crash-test">164. Crash Test</a></h1>
+<p>Daemon crashes and restarts.</p>
+<p>Live diagnostics reset.</p>
+<p>Recent persisted diagnostic summary remains bounded.</p>
+<hr />
+<h1 id="165-performance"><a class="header" href="#165-performance">165. Performance</a></h1>
+<p>Diagnostic hot-path overhead should be minimal.</p>
+<p>Avoid:</p>
+<pre><code class="language-text">large allocations
+string formatting
+JSON serialization
+</code></pre>
+<p>inside packet/stream loops.</p>
+<hr />
+<h1 id="166-structured-internal-events"><a class="header" href="#166-structured-internal-events">166. Structured Internal Events</a></h1>
+<p>Use enums/IDs internally.</p>
+<p>Format strings only at presentation/export boundary.</p>
+<hr />
+<h1 id="167-zerolow-allocation-events"><a class="header" href="#167-zerolow-allocation-events">167. Zero/Low Allocation Events</a></h1>
+<p>Where performance-sensitive:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>struct PathMetricSample {
+    path: PathId,
+    rtt_micros: u32,
+    bytes: u64,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>bounded channel to aggregator.</p>
+<hr />
+<h1 id="168-sampling-budget"><a class="header" href="#168-sampling-budget">168. Sampling Budget</a></h1>
+<p>If event rate too high:</p>
+<pre><code class="language-text">sample
+aggregate
+coalesce
+</code></pre>
+<hr />
+<h1 id="169-metrics-clock"><a class="header" href="#169-metrics-clock">169. Metrics Clock</a></h1>
+<p>Use monotonic time for durations.</p>
+<p>Wall clock for human timeline labels.</p>
+<hr />
+<h1 id="170-clock-drift"><a class="header" href="#170-clock-drift">170. Clock Drift</a></h1>
+<p>Do not compute RTT from wall-clock timestamps.</p>
+<hr />
+<h1 id="171-diagnostic-ids"><a class="header" href="#171-diagnostic-ids">171. Diagnostic IDs</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">NET-DIRECT-001
+NET-RELAY-002
+NET-BLE-003
+NET-POLICY-004
+</code></pre>
+<p>Useful for documentation/support.</p>
+<hr />
+<h1 id="172-documentation-link-mapping"><a class="header" href="#172-documentation-link-mapping">172. Documentation Link Mapping</a></h1>
+<p>UI can map known reason code to local help article.</p>
+<p>Avoid server dependency for basic explanations.</p>
+<hr />
+<h1 id="173-dioxus-component-tree"><a class="header" href="#173-dioxus-component-tree">173. Dioxus Component Tree</a></h1>
+<pre><code class="language-text">NetworkDiagnosticsPage
+├── NetworkOverviewCard
+├── ActivePathCard
+├── PathGraph
+├── QualityMetricsPanel
+├── RoutingReasonPanel
+├── RecentTransitions
+├── DtnJourneyPanel
+└── TroubleshootingPanel
+</code></pre>
+<hr />
+<h1 id="174-mobile-layout"><a class="header" href="#174-mobile-layout">174. Mobile Layout</a></h1>
+<p>Mobile:</p>
+<pre><code class="language-text">Overview
+ ↓
+Current path
+ ↓
+Problem/action
+ ↓
+Advanced details collapsed
+</code></pre>
+<hr />
+<h1 id="175-desktop-layout"><a class="header" href="#175-desktop-layout">175. Desktop Layout</a></h1>
+<p>Desktop may use:</p>
+<pre><code class="language-text">left path graph
+right status/details
+bottom timeline
+</code></pre>
+<hr />
+<h1 id="176-visual-simplicity"><a class="header" href="#176-visual-simplicity">176. Visual Simplicity</a></h1>
+<p>Do not turn diagnostics into a network-engineering cockpit by default.</p>
+<p>Advanced information must be opt-in.</p>
+<hr />
+<h1 id="177-color-accessibility"><a class="header" href="#177-color-accessibility">177. Color Accessibility</a></h1>
+<p>Never communicate:</p>
+<pre><code class="language-text">healthy/degraded/failed
+</code></pre>
+<p>only via green/yellow/red.</p>
+<p>Use:</p>
+<pre><code class="language-text">icons
+labels
+line styles
+</code></pre>
+<hr />
+<h1 id="178-graph-scalability"><a class="header" href="#178-graph-scalability">178. Graph Scalability</a></h1>
+<p>Normal path graph is small.</p>
+<p>DTN history could be larger.</p>
+<p>Bound visualization:</p>
+<pre><code class="language-text">last N logical hops
+aggregate unknown relays
+</code></pre>
+<hr />
+<h1 id="179-dtn-long-journey"><a class="header" href="#179-dtn-long-journey">179. DTN Long Journey</a></h1>
+<p>Instead of rendering 50 nodes:</p>
+<pre><code class="language-text">This device
+→ 12 nearby relay hops
+→ Gateway
+→ Destination
+</code></pre>
+<hr />
+<h1 id="180-topology-is-approximate"><a class="header" href="#180-topology-is-approximate">180. Topology Is Approximate</a></h1>
+<p>The platform usually knows only observed path segments.</p>
+<p>Do not imply a complete Internet topology.</p>
+<hr />
+<h1 id="181-uncertainty-representation"><a class="header" href="#181-uncertainty-representation">181. Uncertainty Representation</a></h1>
+<p>Use:</p>
+<pre><code class="language-text">Unknown intermediate network
+</code></pre>
+<p>where topology not known.</p>
+<hr />
+<h1 id="182-diagnostic-graph-semantics"><a class="header" href="#182-diagnostic-graph-semantics">182. Diagnostic Graph Semantics</a></h1>
+<p>Graph represents:</p>
+<pre><code class="language-text">logical communication route
+</code></pre>
+<p>not physical router-by-router topology.</p>
+<hr />
+<h1 id="183-network-quality-summary"><a class="header" href="#183-network-quality-summary">183. Network Quality Summary</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct NetworkHealthSummary {
+    pub state: ConnectivityState,
+    pub quality: OverallQuality,
+    pub primary_path: Option&lt;PathId&gt;,
+    pub issue: Option&lt;DiagnosticFailure&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="184-overall-quality"><a class="header" href="#184-overall-quality">184. Overall Quality</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum OverallQuality {
+    Excellent,
+    Good,
+    Fair,
+    Poor,
+    Unusable,
+    Unknown,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="185-quality-calculation"><a class="header" href="#185-quality-calculation">185. Quality Calculation</a></h1>
+<p>Should use:</p>
+<pre><code class="language-text">operation context
+latency
+loss
+throughput
+stability
+</code></pre>
+<p>A 1 Mbps link may be excellent for text but poor for video.</p>
+<hr />
+<h1 id="186-context-aware-quality"><a class="header" href="#186-context-aware-quality">186. Context-Aware Quality</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum DiagnosticWorkload {
+    Messaging,
+    FileTransfer,
+    AudioCall,
+    VideoCall,
+    Dtn,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Quality should be workload-specific when useful.</p>
+<hr />
+<h1 id="187-example"><a class="header" href="#187-example">187. Example</a></h1>
+<pre><code class="language-text">Network:
+Good for messaging
+Poor for video call
+</code></pre>
+<p>This is more informative than a universal signal score.</p>
+<hr />
+<h1 id="188-diagnostic-snapshot-consistency"><a class="header" href="#188-diagnostic-snapshot-consistency">188. Diagnostic Snapshot Consistency</a></h1>
+<p>Snapshot should represent one coherent observation point as much as practical.</p>
+<p>Use:</p>
+<pre><code class="language-text">snapshot generation
+</code></pre>
+<hr />
+<h1 id="189-snapshot-generation"><a class="header" href="#189-snapshot-generation">189. Snapshot Generation</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct DiagnosticGeneration(u64);
+<span class="boring">}</span></code></pre></pre>
+<p>Helps UI discard stale updates.</p>
+<hr />
+<h1 id="190-live-update-delta"><a class="header" href="#190-live-update-delta">190. Live Update Delta</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct DiagnosticDelta {
+    pub generation: DiagnosticGeneration,
+    pub changes: Vec&lt;DiagnosticChange&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="191-missed-delta"><a class="header" href="#191-missed-delta">191. Missed Delta</a></h1>
+<p>Client detects gap:</p>
+<pre><code class="language-text">request fresh snapshot
+</code></pre>
+<p>same approach as Part 16.</p>
+<hr />
+<h1 id="192-public-crate-structure"><a class="header" href="#192-public-crate-structure">192. Public Crate Structure</a></h1>
+<pre><code class="language-text">crates/comm-diagnostics/
+├── src/
+│   ├── lib.rs
+│   ├── snapshot.rs
+│   ├── event.rs
+│   ├── path.rs
+│   ├── graph.rs
+│   ├── quality.rs
+│   ├── routing.rs
+│   ├── failure.rs
+│   ├── timeline.rs
+│   ├── metrics.rs
+│   ├── retention.rs
+│   ├── redaction.rs
+│   ├── export.rs
+│   ├── doctor.rs
+│   └── error.rs
+└── Cargo.toml
+</code></pre>
+<hr />
+<h1 id="193-ui-crate"><a class="header" href="#193-ui-crate">193. UI Crate</a></h1>
+<pre><code class="language-text">crates/comm-ui-diagnostics/
+├── src/
+│   ├── overview.rs
+│   ├── path_graph.rs
+│   ├── timeline.rs
+│   ├── metrics.rs
+│   ├── dtn.rs
+│   ├── troubleshooting.rs
+│   └── view_model.rs
+</code></pre>
+<p>Dioxus-only dependency stays here.</p>
+<hr />
+<h1 id="194-headlessadmin-components"><a class="header" href="#194-headlessadmin-components">194. Headless/Admin Components</a></h1>
+<pre><code class="language-text">crates/comm-diagnostics-cli/
+crates/comm-diagnostics-otel/
+</code></pre>
+<p>optional.</p>
+<hr />
+<h1 id="195-public-api"><a class="header" href="#195-public-api">195. Public API</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let snapshot = diagnostics
+    .snapshot(DiagnosticLevel::Advanced)
+    .await?;
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="196-path-query"><a class="header" href="#196-path-query">196. Path Query</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let paths = diagnostics.paths_for(transfer_id).await?;
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="197-explanation-query"><a class="header" href="#197-explanation-query">197. Explanation Query</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let why = diagnostics
+    .explain_operation(operation_id)
+    .await?;
+<span class="boring">}</span></code></pre></pre>
+<p>This is a major usability feature.</p>
+<hr />
+<h1 id="198-doctor-api"><a class="header" href="#198-doctor-api">198. Doctor API</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let report = diagnostics
+    .run_doctor(NetworkDoctorMode::Basic)
+    .await?;
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="199-export-api"><a class="header" href="#199-export-api">199. Export API</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let bundle = diagnostics
+    .export(DiagnosticExportPolicy::PrivacySafe)
+    .await?;
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="200-error-model"><a class="header" href="#200-error-model">200. Error Model</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum DiagnosticError {
+    NotAvailable,
+    PermissionDenied,
+    SnapshotTooLarge,
+    ExportFailed,
+    Unsupported,
+    Cancelled,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="201-initial-production-scope"><a class="header" href="#201-initial-production-scope">201. Initial Production Scope</a></h1>
+<p>Implement first:</p>
+<pre><code class="language-text">ConnectivityState
+PathDiagnostic
+RoutingExplanation
+failure taxonomy
+direct/relay/local indicators
+file transfer path status
+DTN delivery status
+bounded timeline
+network doctor
+privacy-safe export
+Dioxus diagnostics page
+CLI diagnostics
+</code></pre>
+<p>Then:</p>
+<pre><code class="language-text">multipath graph
+historical charts
+OpenTelemetry adapter
+support bundles
+advanced DTN journey visualization
+</code></pre>
+<p>Defer initially:</p>
+<pre><code class="language-text">packet capture UI
+router-by-router topology maps
+automatic remote telemetry upload
+complex ML diagnosis
+</code></pre>
+<hr />
+<h1 id="202-implementation-phases"><a class="header" href="#202-implementation-phases">202. Implementation Phases</a></h1>
+<h2 id="phase-1--diagnostic-model"><a class="header" href="#phase-1--diagnostic-model">Phase 1 — Diagnostic Model</a></h2>
+<pre><code class="language-text">path
+state
+quality
+failure
+</code></pre>
+<h2 id="phase-2--routing-integration"><a class="header" href="#phase-2--routing-integration">Phase 2 — Routing Integration</a></h2>
+<pre><code class="language-text">selected/rejected reasons
+attempt history
+</code></pre>
+<h2 id="phase-3--transport-integration"><a class="header" href="#phase-3--transport-integration">Phase 3 — Transport Integration</a></h2>
+<pre><code class="language-text">Iroh
+relay
+LAN
+BLE
+Wi-Fi
+</code></pre>
+<h2 id="phase-4--filedtnmultipath"><a class="header" href="#phase-4--filedtnmultipath">Phase 4 — File/DTN/Multipath</a></h2>
+<pre><code class="language-text">transfer paths
+DTN journey
+multiple paths
+</code></pre>
+<h2 id="phase-5--ui--cli"><a class="header" href="#phase-5--ui--cli">Phase 5 — UI / CLI</a></h2>
+<pre><code class="language-text">Dioxus
+doctor
+timeline
+troubleshooting
+</code></pre>
+<h2 id="phase-6--privacy--export"><a class="header" href="#phase-6--privacy--export">Phase 6 — Privacy / Export</a></h2>
+<pre><code class="language-text">redaction
+support bundle
+retention
+</code></pre>
+<h2 id="phase-7--operator-observability"><a class="header" href="#phase-7--operator-observability">Phase 7 — Operator Observability</a></h2>
+<pre><code class="language-text">metrics
+tracing
+OpenTelemetry
+headless health
+</code></pre>
+<h2 id="phase-8--hardening"><a class="header" href="#phase-8--hardening">Phase 8 — Hardening</a></h2>
+<pre><code class="language-text">fuzz
+privacy tests
+slow consumers
+path flapping
+large histories
+</code></pre>
+<hr />
+<h1 id="203-definition-of-done"><a class="header" href="#203-definition-of-done">203. Definition of Done</a></h1>
+<p>Part 18 is complete when:</p>
+<ul>
+<li>the runtime can report whether communication is direct, relayed, local, DTN, or mixed</li>
+<li>every active path has explicit lifecycle state</li>
+<li>routing can explain why one path was selected</li>
+<li>rejected paths have structured reason codes</li>
+<li>file transfers can show which paths carry data</li>
+<li>multipath roles can be visualized</li>
+<li>DTN can show carried/gateway/delivered state without exposing arbitrary relay identities</li>
+<li>diagnostics distinguish network, capability, security, storage, resource, and permission failures</li>
+<li>normal UI remains simple</li>
+<li>advanced/developer views expose detailed metrics</li>
+<li>path timelines are bounded and coalesced</li>
+<li>diagnostic consumers cannot backpressure networking</li>
+<li>support exports redact sensitive data</li>
+<li>network doctor can run online or offline</li>
+<li>Dioxus uses runtime diagnostic APIs rather than transports directly</li>
+<li>headless CLI/admin diagnostics work without UI</li>
+<li>privacy, fuzz, path-flap, slow-consumer, and failure-taxonomy tests exist</li>
+</ul>
+<hr />
+<h1 id="204-relationship-to-earlier-parts"><a class="header" href="#204-relationship-to-earlier-parts">204. Relationship to Earlier Parts</a></h1>
+<p>Part 18 builds on and observes:</p>
+<pre><code class="language-text">01 — Protocol Extension System
+02 — Multi-Device Identity
+03 — Transport &amp; Routing Policy Engine
+04 — Offline Event Log
+05 — Robust File / Blob Subsystem
+06 — DTN / Store-Carry-Forward
+07 — Capability Negotiation
+08 — Resource Limits &amp; Backpressure
+09 — Crash Recovery
+10 — Fuzzing &amp; Protocol Test Suite
+11 — Relay / Self-Hosted Infrastructure
+12 — Multipath Networking
+13 — Battery-Aware Scheduling
+14 — Proximity Abstraction
+15 — QR / NFC Bootstrap
+16 — Daemon &amp; Headless Runtime
+17 — Emergency Priority Classes
+</code></pre>
+<p>It directly supports:</p>
+<pre><code class="language-text">19 — C ABI / FFI
+20 — Embedded Linux Node
+21 — WASM-Compatible Components
+22 — Third-Party Protocol Extensions
+23 — External Interoperability Suite
+24 — Plugin / Module Ecosystem
+</code></pre>
+<hr />
+<h1 id="205-final-architecture"><a class="header" href="#205-final-architecture">205. Final Architecture</a></h1>
+<pre><code class="language-text">                    NETWORK RUNTIME
+                         │
+      ┌──────────────────┼──────────────────┐
+      │                  │                  │
+   Routing            Transports          DTN
+      │                  │                  │
+      └──────────── Diagnostic Events ──────┘
+                         │
+               Diagnostics Aggregator
+              ┌──────────┼───────────┐
+              │          │           │
+           Snapshot    Timeline    Metrics
+              │          │           │
+              └──────────┼───────────┘
+                         │
+                 Privacy Redaction
+                         │
+          ┌──────────────┼───────────────┐
+          │              │               │
+       Dioxus UI        CLI          Operator
+</code></pre>
+<p>Example user path:</p>
+<pre><code class="language-text">This Device
+    │
+    │ Wi-Fi / Direct
+    ▼
+Peer Device
+</code></pre>
+<p>Example relayed path:</p>
+<pre><code class="language-text">This Device
+    │
+    ▼
+Iroh Relay
+    │
+    ▼
+Peer Device
+</code></pre>
+<p>Example resilient emergency journey:</p>
+<pre><code class="language-text">This Device
+    │ BLE
+    ▼
+Nearby Relay
+    │ store/carry
+    ▼
+Gateway
+    │ Iroh
+    ▼
+Destination
+</code></pre>
+<hr />
+<h1 id="206-final-principle"><a class="header" href="#206-final-principle">206. Final Principle</a></h1>
+<p>A sophisticated networking stack should not be a black box.</p>
+<p>When a transfer is slow, the system should be able to say:</p>
+<pre><code class="language-text">The peer is reachable.
+Direct Internet connectivity failed.
+A relay path is active.
+The relay is healthy.
+The transfer is throttled because the device is in battery-saver mode.
+</code></pre>
+<p>When an emergency message is offline:</p>
+<pre><code class="language-text">Stored locally.
+Carried by 2 nearby relay devices.
+No Internet gateway yet.
+</code></pre>
+<p>When connectivity improves:</p>
+<pre><code class="language-text">Gateway reached.
+Delivered.
+</code></pre>
+<p>And when something fails, the product should distinguish:</p>
+<pre><code class="language-text">network failure
+security failure
+permission failure
+capability mismatch
+resource pressure
+storage failure
+</code></pre>
+<p>instead of presenting every problem as "Connection failed."</p>
+<p>That explainability is essential for users, developers, support teams, emergency operators, and any external product embedding the communication platform.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="10-fuzzing-protocol-test-suite-architecture.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="ui-ux-01-product-foundation-cross-platform-interaction-architecture.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="10-fuzzing-protocol-test-suite-architecture.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="ui-ux-01-product-foundation-cross-platform-interaction-architecture.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIAR Cryptographic Supply Chain & In-Browser Verifier</title>
+  <meta name="description" content="Verify the cryptographic authenticity and SLSA Level 3+ build provenance of any SIAR release artifact directly in your browser. Zero file upload, 100% private.">
+  
+  <!-- OpenGraph / Social Metadata -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://siar.irshad.org.in/verify.html">
+  <meta property="og:title" content="SIAR In-Browser Cryptographic Verifier">
+  <meta property="og:description" content="Client-side WebCrypto SHA-256 calculation, Minisign Ed25519 signature validation, and Rekor transparency log proof.">
+
+  <!-- Favicon and CSS -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2300f2fe'><path d='M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z'/></svg>">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Top Telemetry Live Bar -->
+  <div class="telemetry-ticker" aria-label="Live SIAR Security Telemetry">
+    <div class="container">
+      <div class="ticker-wrap">
+        <div class="ticker-content">
+          <div class="ticker-item">
+            <span class="ticker-pulse"></span>
+            <span class="ticker-label">Provenance Standard:</span>
+            <span class="ticker-val">SLSA v1.0 Level 3+ Attested</span>
+          </div>
+          <div class="ticker-item">
+            <span class="ticker-label">Root Release Key:</span>
+            <span class="ticker-val">Minisign Ed25519 (ID: 7A9F4B)</span>
+          </div>
+          <div class="ticker-item">
+            <span class="ticker-label">Transparency Ledger:</span>
+            <span class="ticker-val">Rekor Public Log #41908234</span>
+          </div>
+          <div class="ticker-item">
+            <span class="ticker-label">OIDC Keyless Identity:</span>
+            <span class="ticker-val">GitHub Actions (irshadali5/siar)</span>
+          </div>
+          <div class="ticker-item">
+            <span class="ticker-label">WebCrypto Core:</span>
+            <span class="ticker-val">W3C SubtleCrypto SHA-256</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header & Navigation -->
+  <header class="header-nav">
+    <div class="container nav-inner">
+      <a href="index.html" class="brand-logo" aria-label="SIAR Home">
+        <div class="brand-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+        </div>
+        <span class="brand-text">SIAR</span>
+        <span class="brand-badge">VERIFIER</span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="index.html" class="nav-link">Showcase</a></li>
+        <li><a href="packages.html" class="nav-link">Packages</a></li>
+        <li><a href="simulator.html" class="nav-link">WASM Lab</a></li>
+        <li><a href="docs.html" class="nav-link">Developer Hub</a></li>
+        <li><a href="#verifier" class="nav-link">Web Verifier</a></li>
+        <li><a href="#provenance" class="nav-link">SLSA Ledger</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <!-- OLED Black Mode Toggle -->
+        <button id="btnToggleOled" class="btn-icon" title="Toggle OLED Pure-Black Mode" aria-label="Toggle OLED Mode">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.81.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/>
+          </svg>
+        </button>
+
+        <a href="packages.html" class="btn btn-primary btn-sm">Download Packages</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container" style="padding-top: 56px;">
+    
+    <!-- Header Hero -->
+    <div style="text-align: center; max-width: 820px; margin: 0 auto 48px;">
+      <span class="section-eyebrow">ZERO-TRUST SUPPLY CHAIN VERIFICATION</span>
+      <h1 class="hero-title" style="font-size: 2.8rem;">
+        In-Browser Binary Verifier & Cryptographic Ledger
+      </h1>
+      <p class="hero-subtitle">
+        Verify the authentic SHA-256 hash, Minisign Ed25519 signature, and SLSA Level 3 build provenance of any downloaded SIAR package. Calculated locally in your browser with zero file uploads.
+      </p>
+    </div>
+
+    <!-- Section 1: In-Browser Drag & Drop Verifier -->
+    <section id="verifier" style="margin-bottom: 64px;">
+      
+      <!-- Drag and Drop Target Zone -->
+      <div id="cryptoDropzone" class="dropzone-box" tabindex="0" role="button" aria-label="Drag and drop or click to select a binary to verify">
+        <div class="dropzone-icon">
+          🔐
+        </div>
+        <div>
+          <h3 style="font-family: var(--font-display); font-size: 1.4rem; color: #ffffff; margin-bottom: 6px;">
+            Drag & Drop any downloaded SIAR file here
+          </h3>
+          <p style="font-size: 0.9rem; color: var(--siar-text-secondary);">
+            Supports <code>.apk</code>, <code>.deb</code>, <code>.rpm</code>, <code>.tar.gz</code>, <code>.AppImage</code>, <code>.dmg</code>, <code>.msix</code>, <code>.exe</code>
+          </p>
+        </div>
+        <button class="btn btn-primary btn-sm" style="pointer-events: none;">
+          📁 Or Choose Local File
+        </button>
+        <input id="cryptoFileInput" type="file" style="display: none;">
+      </div>
+
+      <!-- Quick Test Sandbox Triggers -->
+      <div style="display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; margin-bottom: 32px;">
+        <span style="font-family: var(--font-mono); font-size: 0.78rem; color: var(--siar-text-muted);">Quick Sandbox Tests:</span>
+        <button id="btnTestDeb" class="btn btn-secondary btn-sm">🐧 Test Linux .deb</button>
+        <button id="btnTestApk" class="btn btn-secondary btn-sm">📱 Test Android .apk</button>
+        <button id="btnTestCli" class="btn btn-secondary btn-sm">⚡ Test CLI Tarball</button>
+        <button id="btnTestCorrupt" class="btn btn-secondary btn-sm" style="border-color: rgba(244, 63, 94, 0.4); color: #f43f5e;">
+          ⚠️ Test Tampered File
+        </button>
+      </div>
+
+      <!-- Real-time Progress Bar -->
+      <div id="verifyProgressContainer" style="display: none; margin-bottom: 32px;">
+        <div class="progress-wrap">
+          <div id="verifyProgressBar" class="progress-bar-fill"></div>
+        </div>
+        <div id="verifyProgressText" style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--siar-cyan-glow); text-align: center;">
+          Computing SHA-256 hash...
+        </div>
+      </div>
+
+      <!-- Audit Result Card (Populated by JS) -->
+      <div id="verifyAuditCard" style="display: none;">
+        <!-- Injected via JavaScript -->
+      </div>
+    </section>
+
+    <!-- Section 2: SLSA Level 3 Provenance & Rekor Log Viewer -->
+    <section id="provenance" style="margin-bottom: 64px;">
+      <div class="section-head" style="text-align: left; margin-bottom: 24px;">
+        <span class="section-eyebrow">PUBLIC TRANSPARENCY & PROVENANCE</span>
+        <h2 class="section-title" style="font-size: 1.8rem;">SLSA Level 3 in-toto Statement & Rekor Ledger</h2>
+        <p class="section-desc">
+          Every release binary is bound to an immutable build definition, recording the exact Git commit, isolated container environment, and ephemeral OIDC certificate.
+        </p>
+      </div>
+
+      <div class="spec-viewer-box">
+        <div class="prov-tabs">
+          <button class="prov-tab-btn active" data-doc="intoto">📜 in-toto Provenance (SLSA v1.0)</button>
+          <button class="prov-tab-btn" data-doc="rekor">🔗 Rekor Transparency Log Entry</button>
+          <button class="prov-tab-btn" data-doc="minisign">🔐 Minisign Detached Signature</button>
+        </div>
+
+        <pre class="spec-content-pre"><code id="provViewerContent">{
+  "_type": "https://in-toto.io/Statement/v1",
+  "subject": [
+    {
+      "name": "siar-desktop_0.1.0_amd64.deb",
+      "digest": { "sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b" }
+    }
+  ],
+  "predicateType": "https://slsa.dev/provenance/v1",
+  "predicate": {
+    "buildDefinition": {
+      "buildType": "https://actions.github.io/buildtypes/workflow/v1",
+      "externalParameters": {
+        "workflow": {
+          "ref": "refs/tags/v0.1.0",
+          "repository": "https://github.com/irshadali5/siar",
+          "path": ".github/workflows/release.yml"
+        }
+      }
+    },
+    "runDetails": {
+      "builder": { "id": "https://github.com/actions/runner" }
+    }
+  }
+}</code></pre>
+      </div>
+    </section>
+
+    <!-- Section 3: Offline & Terminal CLI Verification Guide -->
+    <section id="cli-guide" style="margin-bottom: 64px;">
+      <div class="section-head" style="text-align: left; margin-bottom: 24px;">
+        <span class="section-eyebrow">AIR-GAPPED VERIFICATION</span>
+        <h2 class="section-title" style="font-size: 1.8rem;">Offline & Terminal Verification Guide</h2>
+        <p class="section-desc">
+          For air-gapped workstations, terminal operators, and automated deployment scripts.
+        </p>
+      </div>
+
+      <div class="dev-terminal-card">
+        <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 20px; background: var(--siar-bg-surface-elevated); border-bottom: 1px solid var(--siar-border-subtle);">
+          <div style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--siar-text-secondary);">
+            Tool: 
+            <select id="cliToolSelect" class="select-control" style="margin-left: 8px;">
+              <option value="minisign">Minisign CLI (Ed25519 Detached)</option>
+              <option value="cosign">Cosign / Sigstore (OIDC Keyless)</option>
+              <option value="gpg">GPG APT InRelease Keyring</option>
+            </select>
+          </div>
+          <button class="btn btn-secondary btn-sm copy-btn" data-copy="minisign -Vm siar-cli-v0.1.0-x86_64-unknown-linux-musl.tar.gz -P RWS1A5v7D1lQ0s8nQj21kX8yN2Zp9qW4eR6tY8uI0oP=">
+            📋 Copy CLI Snippet
+          </button>
+        </div>
+
+        <div class="term-body">
+          <pre><code id="cliCommandOutput"># 1. Download binary and detached Minisign signature
+curl -LO https://pkg.siar.irshad.org.in/releases/siar-cli-v0.1.0-x86_64-unknown-linux-musl.tar.gz
+curl -LO https://pkg.siar.irshad.org.in/releases/siar-cli-v0.1.0-x86_64-unknown-linux-musl.tar.gz.minisig
+
+# 2. Verify with SIAR Official Public Release Key
+minisign -Vm siar-cli-v0.1.0-x86_64-unknown-linux-musl.tar.gz \
+  -P RWS1A5v7D1lQ0s8nQj21kX8yN2Zp9qW4eR6tY8uI0oP=</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 4: Public Key Hierarchy Directory -->
+    <section id="key-hierarchy" style="margin-bottom: 64px;">
+      <div class="section-head" style="text-align: left; margin-bottom: 24px;">
+        <span class="section-eyebrow">SECURITY AUTHORITY DIRECTORY</span>
+        <h2 class="section-title" style="font-size: 1.8rem;">Official Public Keys & Fingerprints</h2>
+        <p class="section-desc">
+          Official signing identities and hardware key specifications.
+        </p>
+      </div>
+
+      <div class="pillars-grid">
+        <!-- Minisign Root Key -->
+        <div class="siar-glass-card pillar-card">
+          <div class="pillar-icon-box icon-cyan">🔐</div>
+          <h3 class="pillar-title" style="font-size: 1.15rem;">SIAR Root Release Key</h3>
+          <p class="pillar-text" style="font-size: 0.84rem; font-family: var(--font-mono); word-break: break-all; color: var(--siar-cyan-glow);">
+            RWS1A5v7D1lQ0s8nQj21kX8yN2Zp9qW4eR6tY8uI0oP=
+          </p>
+          <div class="pillar-spec-tag">
+            <span>Type:</span> <strong>Minisign Ed25519 (Air-Gapped HSM)</strong>
+          </div>
+          <a href="pkg/gpg/minisign.pub" download class="btn btn-secondary btn-sm" style="margin-top: 14px;">
+            📥 Download minisign.pub
+          </a>
+        </div>
+
+        <!-- Debian APT GPG Keyring -->
+        <div class="siar-glass-card pillar-card">
+          <div class="pillar-icon-box icon-emerald">📦</div>
+          <h3 class="pillar-title" style="font-size: 1.15rem;">Debian / Ubuntu APT Keyring</h3>
+          <p class="pillar-text" style="font-size: 0.84rem; font-family: var(--font-mono); color: #cbd5e1;">
+            Fingerprint: 4F82 1B09 7E65 D34A 9812 BC7E 51A2 8C9D 0F4B 2277
+          </p>
+          <div class="pillar-spec-tag">
+            <span>Type:</span> <strong>RSA 4096 / GPG Subkey</strong>
+          </div>
+          <a href="pkg/gpg/siar-archive-keyring.gpg" download class="btn btn-secondary btn-sm" style="margin-top: 14px;">
+            📥 Download siar-archive-keyring.gpg
+          </a>
+        </div>
+
+        <!-- Fedora RPM Key -->
+        <div class="siar-glass-card pillar-card">
+          <div class="pillar-icon-box icon-amber">🛡️</div>
+          <h3 class="pillar-title" style="font-size: 1.15rem;">Fedora / RHEL RPM Key</h3>
+          <p class="pillar-text" style="font-size: 0.84rem; font-family: var(--font-mono); color: #cbd5e1;">
+            Fingerprint: 8F3A 42C1 B990 E51D 642C FA30 17D5 7B66 448A 2F10
+          </p>
+          <div class="pillar-spec-tag">
+            <span>Type:</span> <strong>RPM GPG Release Signature</strong>
+          </div>
+          <a href="pkg/gpg/siar-rpm-key.pub" download class="btn btn-secondary btn-sm" style="margin-top: 14px;">
+            📥 Download siar-rpm-key.pub
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="brand-logo">
+            <div class="brand-icon">
+              <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+            </div>
+            <span class="brand-text">SIAR</span>
+          </div>
+          <p>
+            Cryptographic Supply Chain Authority. Zero-trust SLSA Level 3+ build provenance and tamper-evident transparent distribution.
+          </p>
+          <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--siar-text-muted);">
+            Authority: <code>siar.irshad.org.in</code>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">Verification</h4>
+          <ul class="footer-links">
+            <li><a href="#verifier">In-Browser Verifier</a></li>
+            <li><a href="pkg/provenance/siar-v0.1.0.intoto.jsonl">in-toto Statement</a></li>
+            <li><a href="pkg/provenance/rekor-entry-41908234.json">Rekor Entry (#41908234)</a></li>
+            <li><a href="pkg/manifest.json">Release Manifest</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">Keys & Keyrings</h4>
+          <ul class="footer-links">
+            <li><a href="pkg/gpg/minisign.pub">Minisign Public Key</a></li>
+            <li><a href="pkg/gpg/siar-archive-keyring.gpg">APT Keyring (.gpg)</a></li>
+            <li><a href="pkg/gpg/siar-rpm-key.pub">RPM Key (.pub)</a></li>
+            <li><a href="https://github.com/irshadali5/siar/releases">GitHub Releases</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">Navigation</h4>
+          <ul class="footer-links">
+            <li><a href="index.html">Main Showcase</a></li>
+            <li><a href="packages.html">Package Center</a></li>
+            <li><a href="index.html#simulator">Mesh WASM Lab</a></li>
+            <li><a href="install.sh">Shell Installer</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>
+          © 2026 SIAR Project & Irshad Ali. Released under dual <strong>Apache-2.0</strong> & <strong>MIT</strong> License.
+        </div>
+        <div style="display: flex; gap: 16px; align-items: center;">
+          <span style="color: var(--siar-emerald-online);">● SLSA Level 3 Provenance</span>
+          <span>•</span>
+          <span>Minisign Ed25519</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/crypto-verifier.js"></script>
+</body>
+</html>

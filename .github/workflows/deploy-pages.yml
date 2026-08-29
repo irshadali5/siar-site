@@ -1,0 +1,62 @@
+name: Deploy Official Showcase & System Architecture to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup mdBook
+        uses: peaceiris/actions-mdbook@v2
+        with:
+          mdbook-version: '0.4.40'
+
+      - name: Build System Architecture mdBook
+        run: |
+          echo "Building mdBook System Architecture portal..."
+          mdbook build
+
+      - name: Assemble Unified Deployment Directory
+        run: |
+          echo "Assembling unified showcase site and architecture docs..."
+          mkdir -p dist
+          
+          # Copy root showcase site assets
+          cp -r index.html packages.html plugins.html verify.html simulator.html docs.html \
+                infra.html offline.html pipeline.html roadmap.html portal.html \
+                install.sh install.ps1 css js pkg vectors include dist/
+          
+          # Copy compiled mdBook into dist/sys-arch/
+          mkdir -p dist/sys-arch
+          cp -r book/* dist/sys-arch/
+          
+          # Add .nojekyll to prevent GitHub Pages from ignoring folders starting with underscore
+          touch dist/.nojekyll
+
+      - name: Upload Pages Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

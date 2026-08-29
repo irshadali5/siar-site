@@ -1,0 +1,2136 @@
+<!DOCTYPE HTML>
+<html lang="en" class="navy" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>07 — Capability Negotiation &amp; Protocol Upgrades - SIAR System Architecture &amp; Technical Wiki</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="Comprehensive system architecture, cryptographic protocols, DTN mesh networking, distributed storage, audio DSP pipelines, and UI/UX design specifications for SIAR.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="theme/custom.css">
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "navy";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('navy')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="Home.html">Architecture Portal & Reading Guide</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part I: Protocol Foundation & Extension Platform</li><li class="chapter-item expanded "><a href="01-protocol-extension-system-architecture.html"><strong aria-hidden="true">1.</strong> 01 — Protocol Extension System Architecture</a></li><li class="chapter-item expanded "><a href="07-capability-negotiation-architecture.html" class="active"><strong aria-hidden="true">2.</strong> 07 — Capability Negotiation & Protocol Upgrades</a></li><li class="chapter-item expanded "><a href="21-third-party-protocol-extensions-architecture.html"><strong aria-hidden="true">3.</strong> 21 — Third-Party Protocol Extensions</a></li><li class="chapter-item expanded "><a href="22-wasm-compatible-components-architecture.html"><strong aria-hidden="true">4.</strong> 22 — WebAssembly (WASM) Compatible Components</a></li><li class="chapter-item expanded "><a href="23-external-interoperability-suite-architecture.html"><strong aria-hidden="true">5.</strong> 23 — External Interoperability & Conformance Suite</a></li><li class="chapter-item expanded "><a href="24-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">6.</strong> 24 — Dynamic Plugin & Module Ecosystem</a></li><li class="chapter-item expanded affix "><li class="part-title">Part II: Identity, Trust & Cryptography</li><li class="chapter-item expanded "><a href="02-multi-device-identity-architecture.html"><strong aria-hidden="true">7.</strong> 02 — Multi-Device Identity & Trust Model</a></li><li class="chapter-item expanded "><a href="28-production-security-e2ee-key-management-privacy-architecture.html"><strong aria-hidden="true">8.</strong> 28 — Production Security, E2EE, Key Management & Privacy</a></li><li class="chapter-item expanded affix "><li class="part-title">Part III: Mesh Networking, Transports & Hardware</li><li class="chapter-item expanded "><a href="03-transport-routing-policy-engine-architecture.html"><strong aria-hidden="true">9.</strong> 03 — Transport & Routing Policy Engine</a></li><li class="chapter-item expanded "><a href="11-relay-self-hosted-infrastructure-architecture.html"><strong aria-hidden="true">10.</strong> 11 — Self-Hosted Relay & Coordination Infrastructure</a></li><li class="chapter-item expanded "><a href="12-multipath-networking-architecture.html"><strong aria-hidden="true">11.</strong> 12 — Multipath Networking & Link Aggregation</a></li><li class="chapter-item expanded "><a href="13-battery-aware-scheduling-architecture.html"><strong aria-hidden="true">12.</strong> 13 — Battery-Aware Scheduling & Power Profiles</a></li><li class="chapter-item expanded "><a href="14-proximity-abstraction-architecture.html"><strong aria-hidden="true">13.</strong> 14 — Proximity Abstraction (BLE, Wi-Fi Direct, LoRa)</a></li><li class="chapter-item expanded "><a href="15-qr-nfc-bootstrap-pairing-architecture.html"><strong aria-hidden="true">14.</strong> 15 — Out-of-Band QR & NFC Bootstrap Pairing</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IV: Delay-Tolerant Networking & Emergency Mesh</li><li class="chapter-item expanded "><a href="06-dtn-store-carry-forward-architecture.html"><strong aria-hidden="true">15.</strong> 06 — DTN Store-Carry-Forward & Bundle Forwarding</a></li><li class="chapter-item expanded "><a href="17-emergency-priority-classes-architecture.html"><strong aria-hidden="true">16.</strong> 17 — Emergency Priority Classes & Critical Alert Mesh</a></li><li class="chapter-item expanded affix "><li class="part-title">Part V: Storage, Outbox & Data Lifecycle</li><li class="chapter-item expanded "><a href="04-offline-event-log-architecture.html"><strong aria-hidden="true">17.</strong> 04 — Offline Event Log & Sync Engine</a></li><li class="chapter-item expanded "><a href="05-robust-file-blob-subsystem-architecture.html"><strong aria-hidden="true">18.</strong> 05 — Robust File & Blob Subsystem (Chunking & Resumption)</a></li><li class="chapter-item expanded "><a href="09-crash-recovery-architecture.html"><strong aria-hidden="true">19.</strong> 09 — Crash Recovery & State Integrity</a></li><li class="chapter-item expanded "><a href="32-search-indexing-local-knowledge-privacy-architecture.html"><strong aria-hidden="true">20.</strong> 32 — Search, Indexing & Local Privacy Retrieval</a></li><li class="chapter-item expanded "><a href="33-backup-restore-export-import-archival-portability-architecture.html"><strong aria-hidden="true">21.</strong> 33 — Backup, Restore, Export & Long-Term Archival</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VI: Realtime Media, Calling & Audio DSP</li><li class="chapter-item expanded "><a href="25-android-direct-hardware-surface-zero-copy-media-architecture.html"><strong aria-hidden="true">22.</strong> 25 — Android Direct Surface Zero-Copy Media</a></li><li class="chapter-item expanded "><a href="26-rust-first-audio-dsp-resampling-aec-ns-agc-architecture.html"><strong aria-hidden="true">23.</strong> 26 — Rust-First Audio DSP (AEC, NS, AGC, Resampling)</a></li><li class="chapter-item expanded "><a href="29-realtime-calls-media-session-protocol-architecture.html"><strong aria-hidden="true">24.</strong> 29 — Realtime Calls & Media Session Protocol</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VII: Ephemeral State, Presence & Notifications</li><li class="chapter-item expanded "><a href="30-presence-availability-typing-read-receipts-ephemeral-state-architecture.html"><strong aria-hidden="true">25.</strong> 30 — Presence, Availability, Typing & Read Receipts</a></li><li class="chapter-item expanded "><a href="31-notifications-push-background-delivery-lifecycle-architecture.html"><strong aria-hidden="true">26.</strong> 31 — Notifications, Push Wake & Background Delivery</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VIII: Native Runtimes, Daemons & Embedded Linux</li><li class="chapter-item expanded "><a href="16-daemon-headless-runtime-architecture.html"><strong aria-hidden="true">27.</strong> 16 — Headless Daemon & Background Runtime</a></li><li class="chapter-item expanded "><a href="19-c-abi-ffi-architecture.html"><strong aria-hidden="true">28.</strong> 19 — C-ABI FFI & Native Language Interop</a></li><li class="chapter-item expanded "><a href="20-embedded-linux-node-architecture.html"><strong aria-hidden="true">29.</strong> 20 — Embedded Linux Node & Resource-Constrained Targets</a></li><li class="chapter-item expanded "><a href="27-rust-driven-android-native-build-packaging-automation.html"><strong aria-hidden="true">30.</strong> 27 — Rust-Driven Android Native Build & Packaging Automation</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IX: Reliability, Testing, Fuzzing & Diagnostics</li><li class="chapter-item expanded "><a href="08-resource-limits-backpressure-architecture.html"><strong aria-hidden="true">31.</strong> 08 — Resource Limits, Quotas & Backpressure</a></li><li class="chapter-item expanded "><a href="10-fuzzing-protocol-test-suite-architecture.html"><strong aria-hidden="true">32.</strong> 10 — Fuzzing & Protocol Test Suite</a></li><li class="chapter-item expanded "><a href="18-network-diagnostics-path-visualization-architecture.html"><strong aria-hidden="true">33.</strong> 18 — Network Diagnostics & Path Visualization</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part X: UI/UX Client Architecture (Cross-Platform)</li><li class="chapter-item expanded "><a href="ui-ux-01-product-foundation-cross-platform-interaction-architecture.html"><strong aria-hidden="true">34.</strong> UI/UX 01 — Product UX Foundation & Cross-Platform Interaction</a></li><li class="chapter-item expanded "><a href="ui-ux-02-desktop-dioxus-app-shell-navigation-window-architecture.html"><strong aria-hidden="true">35.</strong> UI/UX 02 — Desktop Dioxus App Shell & Navigation</a></li><li class="chapter-item expanded "><a href="ui-ux-03-android-jetpack-compose-app-shell-navigation-lifecycle-architecture.html"><strong aria-hidden="true">36.</strong> UI/UX 03 — Android Jetpack Compose App Shell & Lifecycle</a></li><li class="chapter-item expanded "><a href="ui-ux-04-conversation-list-inbox-architecture.html"><strong aria-hidden="true">37.</strong> UI/UX 04 — Conversation List & Inbox UX</a></li><li class="chapter-item expanded "><a href="ui-ux-05-conversation-message-timeline-architecture.html"><strong aria-hidden="true">38.</strong> UI/UX 05 — Conversation Message Timeline UX</a></li><li class="chapter-item expanded "><a href="ui-ux-06-message-composer-attachments-voice-notes-drafts-architecture.html"><strong aria-hidden="true">39.</strong> UI/UX 06 — Message Composer, Attachments & Voice Notes</a></li><li class="chapter-item expanded "><a href="ui-ux-07-calls-realtime-media-architecture.html"><strong aria-hidden="true">40.</strong> UI/UX 07 — Calls & Realtime Media UX</a></li><li class="chapter-item expanded "><a href="ui-ux-08-contacts-requests-verification-identity-architecture.html"><strong aria-hidden="true">41.</strong> UI/UX 08 — Contacts, Requests, Verification & Identity</a></li><li class="chapter-item expanded "><a href="ui-ux-09-groups-membership-roles-architecture.html"><strong aria-hidden="true">42.</strong> UI/UX 09 — Groups, Membership & Roles UX</a></li><li class="chapter-item expanded "><a href="ui-ux-10-files-media-gallery-transfer-architecture.html"><strong aria-hidden="true">43.</strong> UI/UX 10 — Files, Media Gallery & Transfer UX</a></li><li class="chapter-item expanded "><a href="ui-ux-11-search-local-knowledge-retrieval-architecture.html"><strong aria-hidden="true">44.</strong> UI/UX 11 — Search & Local Knowledge Retrieval UX</a></li><li class="chapter-item expanded "><a href="ui-ux-12-nearby-qr-nfc-pairing-device-linking-architecture.html"><strong aria-hidden="true">45.</strong> UI/UX 12 — Nearby, QR/NFC Pairing & Device Linking UX</a></li><li class="chapter-item expanded "><a href="ui-ux-13-notifications-background-incoming-call-architecture.html"><strong aria-hidden="true">46.</strong> UI/UX 13 — Notifications, Background & Incoming Call UX</a></li><li class="chapter-item expanded "><a href="ui-ux-14-presence-typing-receipts-status-architecture.html"><strong aria-hidden="true">47.</strong> UI/UX 14 — Presence, Typing, Receipts & Status UX</a></li><li class="chapter-item expanded "><a href="ui-ux-15-security-center-devices-keys-recovery-architecture.html"><strong aria-hidden="true">48.</strong> UI/UX 15 — Security Center, Devices, Keys & Recovery UX</a></li><li class="chapter-item expanded "><a href="ui-ux-16-backup-restore-export-migration-architecture.html"><strong aria-hidden="true">49.</strong> UI/UX 16 — Backup, Restore, Export & Migration UX</a></li><li class="chapter-item expanded "><a href="ui-ux-17-emergency-sos-offline-mesh-architecture.html"><strong aria-hidden="true">50.</strong> UI/UX 17 — Emergency / SOS / Offline Mesh UX</a></li><li class="chapter-item expanded "><a href="ui-ux-18-settings-privacy-notifications-data-controls-architecture.html"><strong aria-hidden="true">51.</strong> UI/UX 18 — Settings, Privacy, Notifications & Data Controls</a></li><li class="chapter-item expanded "><a href="ui-ux-19-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">52.</strong> UI/UX 19 — Plugin & Module Ecosystem UX</a></li><li class="chapter-item expanded "><a href="ui-ux-20-diagnostics-network-paths-advanced-developer-architecture.html"><strong aria-hidden="true">53.</strong> UI/UX 20 — Diagnostics, Network Paths & Developer UX</a></li><li class="chapter-item expanded "><a href="ui-ux-21-accessibility-inclusive-interaction-architecture.html"><strong aria-hidden="true">54.</strong> UI/UX 21 — Accessibility & Inclusive Interaction</a></li><li class="chapter-item expanded "><a href="ui-ux-22-design-system-tokens-typography-icons-motion-architecture.html"><strong aria-hidden="true">55.</strong> UI/UX 22 — Design System, Tokens, Typography & Motion</a></li><li class="chapter-item expanded "><a href="ui-ux-23-responsive-adaptive-desktop-tablet-foldable-phone-layout-architecture.html"><strong aria-hidden="true">56.</strong> UI/UX 23 — Responsive & Adaptive Layouts (Desktop/Tablet/Foldable/Phone)</a></li><li class="chapter-item expanded "><a href="ui-ux-24-error-loading-empty-offline-degraded-state-architecture.html"><strong aria-hidden="true">57.</strong> UI/UX 24 — Error, Loading, Empty & Degraded-State UX</a></li><li class="chapter-item expanded "><a href="ui-ux-25-onboarding-first-run-permission-education-architecture.html"><strong aria-hidden="true">58.</strong> UI/UX 25 — Onboarding, First Run & Permission Education</a></li><li class="chapter-item expanded "><a href="ui-ux-26-performance-virtualization-large-data-ui-architecture.html"><strong aria-hidden="true">59.</strong> UI/UX 26 — Virtualization & Large-Data UI Performance</a></li><li class="chapter-item expanded "><a href="ui-ux-27-ui-testing-screenshot-interaction-release-quality-gates-architecture.html"><strong aria-hidden="true">60.</strong> UI/UX 27 — UI Testing, Screenshots & Release Quality Gates</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">SIAR System Architecture &amp; Technical Wiki</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar/edit/main/sys-arch/07-capability-negotiation-architecture.md" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="part-07--capability-negotiation-architecture"><a class="header" href="#part-07--capability-negotiation-architecture">Part 07 — Capability Negotiation Architecture</a></h1>
+<h2 id="reusable-p2p-communication-platform"><a class="header" href="#reusable-p2p-communication-platform">Reusable P2P Communication Platform</a></h2>
+<p><strong>Status:</strong> Architecture specification<br />
+<strong>Part:</strong> 07 of 24<br />
+<strong>Primary language:</strong> Rust<br />
+<strong>Primary goals:</strong> safe protocol compatibility, feature discovery, version negotiation, transport/media/file/DTN capability exchange, downgrade resistance, efficient session setup, cross-platform interoperability, reusable across messaging/files/calls/emergency/ERP/custom products</p>
+<hr />
+<h1 id="1-purpose"><a class="header" href="#1-purpose">1. Purpose</a></h1>
+<p>A reusable communication platform cannot assume every peer has the same:</p>
+<ul>
+<li>application version</li>
+<li>protocol version</li>
+<li>transport support</li>
+<li>media codecs</li>
+<li>hardware capabilities</li>
+<li>file-transfer features</li>
+<li>DTN features</li>
+<li>storage limits</li>
+<li>background capabilities</li>
+<li>security algorithms</li>
+<li>device class</li>
+<li>platform restrictions</li>
+</ul>
+<p>Two peers must first answer:</p>
+<pre><code class="language-text">What do you support?
+What do I support?
+What is mutually usable?
+What is required?
+What must be rejected?
+What may safely degrade?
+</code></pre>
+<p>This is the responsibility of the capability negotiation subsystem.</p>
+<p>Its purpose is to create a <strong>verified, bounded, versioned capability contract</strong> for every authenticated session and every reusable extension.</p>
+<hr />
+<h1 id="2-fundamental-rule"><a class="header" href="#2-fundamental-rule">2. Fundamental Rule</a></h1>
+<p>Do not use:</p>
+<pre><code class="language-text">if app_version &gt;= X
+</code></pre>
+<p>as a substitute for capability negotiation.</p>
+<p>Do not infer:</p>
+<pre><code class="language-text">Android = H.264
+Desktop = AV1 software
+Iroh = files
+</code></pre>
+<p>Instead:</p>
+<pre><code class="language-text">Authenticated Peer
+      ↓
+Capability Advertisement
+      ↓
+Version / Policy Filtering
+      ↓
+Mutual Capability Set
+      ↓
+Per-Extension Negotiation
+      ↓
+Session Capability Contract
+</code></pre>
+<p>The rest of the platform consumes the negotiated result.</p>
+<hr />
+<h1 id="3-architectural-position"><a class="header" href="#3-architectural-position">3. Architectural Position</a></h1>
+<pre><code class="language-text">Transport Connected
+      ↓
+Identity Authentication
+      ↓
+Core Protocol Handshake
+      ↓
+Capability Negotiation
+      ↓
+Extension Activation
+      ↓
+Messaging / Files / Calls / DTN / Custom
+</code></pre>
+<p>Capability negotiation depends on:</p>
+<pre><code class="language-text">Part 01 — Protocol Extension System
+Part 02 — Multi-Device Identity
+</code></pre>
+<p>and feeds:</p>
+<pre><code class="language-text">Part 03 — Routing
+Part 05 — Files
+Part 06 — DTN
+media/calls
+UI
+</code></pre>
+<hr />
+<h1 id="4-capability-categories"><a class="header" href="#4-capability-categories">4. Capability Categories</a></h1>
+<p>Capabilities should be grouped into domains.</p>
+<p>Recommended categories:</p>
+<pre><code class="language-text">Core Protocol
+Security
+Transport
+Messaging
+Files
+Groups
+Presence
+DTN
+Media
+Platform
+Device Resources
+Application Extensions
+</code></pre>
+<p>Do not create one unstructured giant map.</p>
+<hr />
+<h1 id="5-capability-identifier"><a class="header" href="#5-capability-identifier">5. Capability Identifier</a></h1>
+<p>Use stable typed IDs.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct CapabilityId {
+    pub namespace: CapabilityNamespace,
+    pub code: u32,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Example canonical names:</p>
+<pre><code class="language-text">core.protocol.v1
+files.resume
+files.parallel_chunks
+dtn.spray_wait
+media.video.av1.software
+media.video.h264.hardware
+platform.wifi_aware
+</code></pre>
+<p>Wire representation can be compact numeric IDs after namespace agreement.</p>
+<hr />
+<h1 id="6-capability-namespace"><a class="header" href="#6-capability-namespace">6. Capability Namespace</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum CapabilityNamespace {
+    Core,
+    Security,
+    Transport,
+    Messaging,
+    Files,
+    Groups,
+    Presence,
+    Dtn,
+    Media,
+    Platform,
+    Resource,
+    Application(NamespaceId),
+}
+<span class="boring">}</span></code></pre></pre>
+<p>This prevents collisions and supports third-party extensions.</p>
+<hr />
+<h1 id="7-capability-descriptor"><a class="header" href="#7-capability-descriptor">7. Capability Descriptor</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct CapabilityDescriptor {
+    pub id: CapabilityId,
+    pub version: CapabilityVersion,
+    pub requirement: CapabilityRequirement,
+    pub parameters: CapabilityParameters,
+    pub stability: CapabilityStability,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="8-required-vs-optional"><a class="header" href="#8-required-vs-optional">8. Required vs Optional</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum CapabilityRequirement {
+    Required,
+    Optional,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Required means:</p>
+<pre><code class="language-text">this operation/extension cannot work safely without it
+</code></pre>
+<p>Optional means:</p>
+<pre><code class="language-text">use if mutually supported
+</code></pre>
+<p>Unknown required capability:</p>
+<pre><code class="language-text">negotiation failure
+</code></pre>
+<p>Unknown optional capability:</p>
+<pre><code class="language-text">ignore safely
+</code></pre>
+<hr />
+<h1 id="9-capability-versioning"><a class="header" href="#9-capability-versioning">9. Capability Versioning</a></h1>
+<p>A capability may have its own version:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct CapabilityVersion {
+    pub major: u16,
+    pub minor: u16,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Do not make all feature evolution depend only on application version.</p>
+<hr />
+<h1 id="10-protocol-version-vs-capability-version"><a class="header" href="#10-protocol-version-vs-capability-version">10. Protocol Version vs Capability Version</a></h1>
+<p>Separate:</p>
+<pre><code class="language-text">files/1 protocol
+</code></pre>
+<p>from:</p>
+<pre><code class="language-text">files.resume capability v2
+</code></pre>
+<p>This lets a stable protocol major gain backward-compatible features.</p>
+<hr />
+<h1 id="11-parameterized-capabilities"><a class="header" href="#11-parameterized-capabilities">11. Parameterized Capabilities</a></h1>
+<p>Some capabilities need parameters.</p>
+<p>Example:</p>
+<pre><code class="language-text">files.max_chunk_size = 4 MiB
+files.max_parallel = 8
+media.max_video_width = 3840
+dtn.max_bundle_size = 1 MiB
+</code></pre>
+<p>Use typed bounded parameter structures.</p>
+<p>Do not use:</p>
+<pre><code class="language-text">HashMap&lt;String, String&gt;
+</code></pre>
+<p>for core behavior.</p>
+<hr />
+<h1 id="12-capability-parameters"><a class="header" href="#12-capability-parameters">12. Capability Parameters</a></h1>
+<p>Conceptually:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum CapabilityParameters {
+    None,
+    U32(u32),
+    U64(u64),
+    RangeU32 { min: u32, max: u32 },
+    BitSet(CapabilityBits),
+    Bytes(BoundedBytes),
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Prefer domain-specific structs for complex capability groups.</p>
+<hr />
+<h1 id="13-capability-advertisement"><a class="header" href="#13-capability-advertisement">13. Capability Advertisement</a></h1>
+<p>Each peer sends an authenticated advertisement.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct CapabilityAdvertisement {
+    pub device_id: DeviceId,
+    pub account_generation: u64,
+    pub core_protocols: Vec&lt;ProtocolSupport&gt;,
+    pub extensions: Vec&lt;ExtensionCapabilitySet&gt;,
+    pub security: SecurityCapabilities,
+    pub transport: TransportCapabilitiesSummary,
+    pub platform: PlatformCapabilitiesSummary,
+    pub resources: ResourceCapabilities,
+    pub issued_at: Timestamp,
+    pub nonce: HandshakeNonce,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>The advertisement is bound to the authenticated session transcript.</p>
+<hr />
+<h1 id="14-authentication-binding"><a class="header" href="#14-authentication-binding">14. Authentication Binding</a></h1>
+<p>Capabilities must not be accepted before peer identity is authenticated.</p>
+<p>Otherwise attacker could advertise:</p>
+<pre><code class="language-text">fake codec
+fake protocol
+fake relay
+fake device features
+</code></pre>
+<p>Handshake binding should include:</p>
+<pre><code class="language-text">peer identity
+session transcript
+capability advertisement hash
+</code></pre>
+<hr />
+<h1 id="15-replay-resistance"><a class="header" href="#15-replay-resistance">15. Replay Resistance</a></h1>
+<p>Capability advertisements must be freshness-bound.</p>
+<p>Use:</p>
+<pre><code class="language-text">session nonce
+transcript hash
+short lifetime
+</code></pre>
+<p>Do not accept old signed capability sets as current runtime truth.</p>
+<hr />
+<h1 id="16-device-certificate-vs-runtime-capability"><a class="header" href="#16-device-certificate-vs-runtime-capability">16. Device Certificate vs Runtime Capability</a></h1>
+<p>Part 02 device certificate may contain durable capability classes.</p>
+<p>Example:</p>
+<pre><code class="language-text">headless
+relay
+link authority
+</code></pre>
+<p>Runtime negotiation contains ephemeral/current capabilities:</p>
+<pre><code class="language-text">Wi-Fi enabled
+AV1 encoder currently available
+storage quota
+battery policy
+</code></pre>
+<p>Do not confuse them.</p>
+<hr />
+<h1 id="17-durable-vs-ephemeral-capabilities"><a class="header" href="#17-durable-vs-ephemeral-capabilities">17. Durable vs Ephemeral Capabilities</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum CapabilityLifetime {
+    IdentityBound,
+    SessionBound,
+    Dynamic,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Examples:</p>
+<pre><code class="language-text">Device role → IdentityBound
+files.resume support → SessionBound
+battery available → Dynamic
+Wi-Fi enabled → Dynamic
+</code></pre>
+<hr />
+<h1 id="18-negotiation-output"><a class="header" href="#18-negotiation-output">18. Negotiation Output</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct NegotiatedCapabilities {
+    pub core: NegotiatedCore,
+    pub extensions: HashMap&lt;ProtocolId, NegotiatedExtensionCapabilities&gt;,
+    pub security: NegotiatedSecurity,
+    pub transport: NegotiatedTransportHints,
+    pub media: NegotiatedMedia,
+    pub limits: NegotiatedLimits,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>This object is immutable for the session generation.</p>
+<p>Dynamic changes create updates/versioned snapshots.</p>
+<hr />
+<h1 id="19-intersection-rule"><a class="header" href="#19-intersection-rule">19. Intersection Rule</a></h1>
+<p>For simple Boolean capabilities:</p>
+<pre><code class="language-text">negotiated = local ∩ remote
+</code></pre>
+<p>For ranges:</p>
+<pre><code class="language-text">negotiated range = overlap(local, remote)
+</code></pre>
+<p>For maximum limits:</p>
+<pre><code class="language-text">effective max = min(local_max, remote_max, policy_max)
+</code></pre>
+<p>For security:</p>
+<pre><code class="language-text">effective = strongest mutually supported and locally permitted
+</code></pre>
+<p>Do not always use simple intersection.</p>
+<hr />
+<h1 id="20-policy-filter"><a class="header" href="#20-policy-filter">20. Policy Filter</a></h1>
+<p>Negotiation is:</p>
+<pre><code class="language-text">local support
+∩
+remote support
+∩
+local security policy
+∩
+application policy
+∩
+runtime platform availability
+</code></pre>
+<p>A capability can be supported by code but disabled by policy.</p>
+<hr />
+<h1 id="21-hard-policy"><a class="header" href="#21-hard-policy">21. Hard Policy</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">minimum protocol version
+disallow insecure algorithm
+forbid public relay
+max accepted file size
+</code></pre>
+<p>Hard policy cannot be overridden by peer advertisement.</p>
+<hr />
+<h1 id="22-user-policy"><a class="header" href="#22-user-policy">22. User Policy</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">disable read receipts
+disable nearby forwarding
+disable mobile-data files
+disable H.265 due compatibility concerns
+</code></pre>
+<p>User policy changes effective capabilities.</p>
+<hr />
+<h1 id="23-application-policy"><a class="header" href="#23-application-policy">23. Application Policy</a></h1>
+<p>ERP example:</p>
+<pre><code class="language-text">files required
+DTN disabled
+messaging optional
+</code></pre>
+<p>Emergency app:</p>
+<pre><code class="language-text">DTN required
+nearby required where platform supports
+</code></pre>
+<hr />
+<h1 id="24-negotiation-state-machine"><a class="header" href="#24-negotiation-state-machine">24. Negotiation State Machine</a></h1>
+<pre><code class="language-text">TransportConnected
+       ↓
+IdentityAuthenticated
+       ↓
+CapabilitiesOffered
+       ↓
+CapabilitiesReceived
+       ↓
+Validate
+       ↓
+Intersect
+       ↓
+PolicyFilter
+       ↓
+RequiredCheck
+       ↓
+Confirmed
+       ↓
+Active
+</code></pre>
+<p>Failure states:</p>
+<pre><code class="language-text">VersionMismatch
+RequiredCapabilityMissing
+SecurityPolicyFailure
+MalformedAdvertisement
+DowngradeDetected
+</code></pre>
+<hr />
+<h1 id="25-two-phase-confirmation"><a class="header" href="#25-two-phase-confirmation">25. Two-Phase Confirmation</a></h1>
+<p>For security-sensitive negotiations:</p>
+<pre><code class="language-text">Offer
+ ↓
+Selection
+ ↓
+Confirmation hash
+</code></pre>
+<p>Both peers confirm the same negotiated capability set.</p>
+<p>This prevents ambiguity.</p>
+<hr />
+<h1 id="26-negotiation-transcript-hash"><a class="header" href="#26-negotiation-transcript-hash">26. Negotiation Transcript Hash</a></h1>
+<p>Canonical encode:</p>
+<pre><code class="language-text">local advertisement
+remote advertisement
+selected capabilities
+session nonce
+</code></pre>
+<p>Then derive:</p>
+<pre><code class="language-text">NegotiationHash
+</code></pre>
+<p>Both peers verify equality.</p>
+<hr />
+<h1 id="27-canonical-encoding"><a class="header" href="#27-canonical-encoding">27. Canonical Encoding</a></h1>
+<p>Capability ordering must be canonical before hashing.</p>
+<p>Example:</p>
+<pre><code class="language-text">sort by namespace + code + version
+</code></pre>
+<p>Do not hash arbitrary HashMap iteration order.</p>
+<hr />
+<h1 id="28-downgrade-attacks"><a class="header" href="#28-downgrade-attacks">28. Downgrade Attacks</a></h1>
+<p>An attacker may attempt to remove strong features from negotiation.</p>
+<p>Example:</p>
+<pre><code class="language-text">both peers support strong algorithm
+attacker forces weaker
+</code></pre>
+<p>Mitigations:</p>
+<ul>
+<li>authenticated transcript</li>
+<li>minimum local policy</li>
+<li>remembered peer security baseline where appropriate</li>
+<li>explicit downgrade detection</li>
+</ul>
+<hr />
+<h1 id="29-security-capability-negotiation"><a class="header" href="#29-security-capability-negotiation">29. Security Capability Negotiation</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">signature schemes
+AEAD schemes
+KDF versions
+session protocol versions
+group security versions
+</code></pre>
+<p>Security selection must use:</p>
+<pre><code class="language-text">strongest mutually supported
++
+locally allowed
+</code></pre>
+<p>not peer-preferred order alone.</p>
+<hr />
+<h1 id="30-algorithm-agility"><a class="header" href="#30-algorithm-agility">30. Algorithm Agility</a></h1>
+<p>Represent algorithms by IDs.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct AlgorithmId(u16);
+<span class="boring">}</span></code></pre></pre>
+<p>Do not bake algorithm names into every public type if future migration matters.</p>
+<hr />
+<h1 id="31-minimum-security-floor"><a class="header" href="#31-minimum-security-floor">31. Minimum Security Floor</a></h1>
+<p>Local policy:</p>
+<pre><code class="language-text">MinimumSecurityProfile::Modern
+</code></pre>
+<p>can reject older capability sets.</p>
+<p>Backward compatibility must never override unacceptable security.</p>
+<hr />
+<h1 id="32-remembered-security-baseline"><a class="header" href="#32-remembered-security-baseline">32. Remembered Security Baseline</a></h1>
+<p>For previously verified contacts, optionally remember:</p>
+<pre><code class="language-text">highest previously observed security generation
+</code></pre>
+<p>If a future session unexpectedly drops below it:</p>
+<pre><code class="language-text">DowngradeSuspected
+</code></pre>
+<p>Do not auto-reject all capability loss; device/platform changes can be legitimate.</p>
+<p>Use policy.</p>
+<hr />
+<h1 id="33-extension-capability-negotiation"><a class="header" href="#33-extension-capability-negotiation">33. Extension Capability Negotiation</a></h1>
+<p>Each protocol extension from Part 01 owns its capability schema.</p>
+<p>Example:</p>
+<pre><code class="language-text">messaging/1
+  text
+  reply
+  edit
+  reactions
+  read_receipts
+</code></pre>
+<p>Negotiation should be delegated to extension-specific logic.</p>
+<hr />
+<h1 id="34-extension-negotiator-trait"><a class="header" href="#34-extension-negotiator-trait">34. Extension Negotiator Trait</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait ExtensionNegotiator {
+    fn advertise(&amp;self) -&gt; ExtensionCapabilitySet;
+
+    fn negotiate(
+        &amp;self,
+        remote: &amp;ExtensionCapabilitySet,
+        policy: &amp;CapabilityPolicy,
+    ) -&gt; Result&lt;NegotiatedExtensionCapabilities, CapabilityError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="35-file-capabilities"><a class="header" href="#35-file-capabilities">35. File Capabilities</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">files/1
+├── fixed_chunking
+├── resume
+├── parallel_chunks
+├── ciphertext_addressing
+├── partial_read
+├── multi_source
+└── max_chunk_size
+</code></pre>
+<p>Part 05 consumes the negotiated set.</p>
+<hr />
+<h1 id="36-file-limit-negotiation"><a class="header" href="#36-file-limit-negotiation">36. File Limit Negotiation</a></h1>
+<p>Sender:</p>
+<pre><code class="language-text">max chunk = 4 MiB
+</code></pre>
+<p>Receiver:</p>
+<pre><code class="language-text">max chunk = 1 MiB
+</code></pre>
+<p>Effective:</p>
+<pre><code class="language-text">1 MiB
+</code></pre>
+<p>Local policy may reduce further.</p>
+<hr />
+<h1 id="37-dtn-capabilities"><a class="header" href="#37-dtn-capabilities">37. DTN Capabilities</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">dtn/1
+├── direct_only
+├── relay_ack
+├── spray_wait
+├── gateway_handoff
+├── blob_chunk
+├── local_broadcast
+└── max_bundle_size
+</code></pre>
+<p>Part 06 uses only negotiated features.</p>
+<hr />
+<h1 id="38-transport-capabilities"><a class="header" href="#38-transport-capabilities">38. Transport Capabilities</a></h1>
+<p>Transport-level:</p>
+<pre><code class="language-text">reliable_stream
+datagram
+local_discovery
+relay
+multipath
+store_and_forward
+</code></pre>
+<p>These describe current session/adapter abilities.</p>
+<p>Routing uses them.</p>
+<hr />
+<h1 id="39-platform-capabilities"><a class="header" href="#39-platform-capabilities">39. Platform Capabilities</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">Bluetooth LE
+Bluetooth Classic
+Wi-Fi Direct
+Wi-Fi Aware
+background nearby
+hardware secure store
+camera
+microphone
+PiP
+</code></pre>
+<p>Do not expose raw Android/iOS API details to upper layers.</p>
+<hr />
+<h1 id="40-media-capabilities"><a class="header" href="#40-media-capabilities">40. Media Capabilities</a></h1>
+<p>For calls:</p>
+<pre><code class="language-text">Audio:
+  Opus
+
+Video:
+  AV1 software
+  AV1 hardware
+  H.264 hardware
+  H.265 hardware
+</code></pre>
+<p>Also parameters:</p>
+<pre><code class="language-text">encode
+decode
+max resolution
+max fps
+bit depth
+hardware/software
+</code></pre>
+<hr />
+<h1 id="41-media-capability-type"><a class="header" href="#41-media-capability-type">41. Media Capability Type</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct VideoCodecCapability {
+    pub codec: VideoCodec,
+    pub direction: CodecDirection,
+    pub implementation: CodecImplementation,
+    pub max_width: u32,
+    pub max_height: u32,
+    pub max_fps: u16,
+    pub profiles: CodecProfileSet,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="42-codec-selection"><a class="header" href="#42-codec-selection">42. Codec Selection</a></h1>
+<p>Selection policy may prioritize:</p>
+<pre><code class="language-text">compatibility
+hardware efficiency
+quality
+battery
+CPU
+</code></pre>
+<p>Example Android:</p>
+<pre><code class="language-text">AV1 HW if both support and efficient
+else H.265 if policy allows
+else H.264
+</code></pre>
+<p>Desktop software-only policy may differ.</p>
+<hr />
+<h1 id="43-codec-negotiation-is-not-routing"><a class="header" href="#43-codec-negotiation-is-not-routing">43. Codec Negotiation Is Not Routing</a></h1>
+<p>Capability negotiation decides:</p>
+<pre><code class="language-text">what can be encoded/decoded
+</code></pre>
+<p>Routing decides:</p>
+<pre><code class="language-text">which network path carries media
+</code></pre>
+<p>Keep them separate.</p>
+<hr />
+<h1 id="44-codec-runtime-failure"><a class="header" href="#44-codec-runtime-failure">44. Codec Runtime Failure</a></h1>
+<p>A capability can be negotiated but fail at runtime.</p>
+<p>Example:</p>
+<pre><code class="language-text">broken vendor MediaCodec
+</code></pre>
+<p>Media subsystem reports:</p>
+<pre><code class="language-text">capability degraded
+</code></pre>
+<p>and renegotiates or falls back.</p>
+<p>Capability advertisement is not an infallible guarantee.</p>
+<hr />
+<h1 id="45-dynamic-capability-update"><a class="header" href="#45-dynamic-capability-update">45. Dynamic Capability Update</a></h1>
+<p>Support runtime update:</p>
+<pre><code class="language-text">camera permission revoked
+Bluetooth disabled
+Wi-Fi becomes available
+hardware codec unavailable due thermal issue
+</code></pre>
+<p>Do not restart whole identity session unnecessarily.</p>
+<hr />
+<h1 id="46-capability-epoch"><a class="header" href="#46-capability-epoch">46. Capability Epoch</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct CapabilityEpoch(u64);
+<span class="boring">}</span></code></pre></pre>
+<p>Every dynamic capability update increments local epoch.</p>
+<p>Peer can detect stale updates.</p>
+<hr />
+<h1 id="47-capability-update-message"><a class="header" href="#47-capability-update-message">47. Capability Update Message</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct CapabilityUpdate {
+    pub epoch: CapabilityEpoch,
+    pub changed: Vec&lt;CapabilityDelta&gt;,
+    pub transcript_binding: SessionBinding,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Keep updates bounded.</p>
+<hr />
+<h1 id="48-full-snapshot-vs-delta"><a class="header" href="#48-full-snapshot-vs-delta">48. Full Snapshot vs Delta</a></h1>
+<p>Initial handshake:</p>
+<pre><code class="language-text">full capability snapshot
+</code></pre>
+<p>Runtime:</p>
+<pre><code class="language-text">delta
+</code></pre>
+<p>If peer detects missed delta:</p>
+<pre><code class="language-text">request full snapshot
+</code></pre>
+<hr />
+<h1 id="49-capability-cache"><a class="header" href="#49-capability-cache">49. Capability Cache</a></h1>
+<p>Cache negotiated peer capabilities for UX/performance hints.</p>
+<p>Store:</p>
+<pre><code class="language-text">peer/device
+capability set hash
+observed_at
+session generation
+</code></pre>
+<p>But cache is not authoritative for new sessions.</p>
+<hr />
+<h1 id="50-cache-uses"><a class="header" href="#50-cache-uses">50. Cache Uses</a></h1>
+<p>Useful for:</p>
+<ul>
+<li>pre-disable unsupported UI actions</li>
+<li>estimate route options</li>
+<li>avoid unnecessary offers</li>
+<li>prepare call UI</li>
+</ul>
+<p>Always revalidate on authenticated session.</p>
+<hr />
+<h1 id="51-capability-staleness"><a class="header" href="#51-capability-staleness">51. Capability Staleness</a></h1>
+<p>Cached capability should have:</p>
+<pre><code class="language-text">fresh
+stale
+unknown
+</code></pre>
+<p>Do not present stale support as guaranteed.</p>
+<hr />
+<h1 id="52-peer-upgrade"><a class="header" href="#52-peer-upgrade">52. Peer Upgrade</a></h1>
+<p>If peer upgrades:</p>
+<pre><code class="language-text">new capability epoch
+</code></pre>
+<p>future sessions negotiate more features automatically.</p>
+<p>No central server migration required.</p>
+<hr />
+<h1 id="53-peer-downgrade"><a class="header" href="#53-peer-downgrade">53. Peer Downgrade</a></h1>
+<p>If peer intentionally disables feature:</p>
+<pre><code class="language-text">capability disappears
+</code></pre>
+<p>Application should degrade gracefully.</p>
+<p>Example:</p>
+<pre><code class="language-text">edit no longer supported
+</code></pre>
+<p>Disable edit UI for that peer/session.</p>
+<hr />
+<h1 id="54-required-capability-per-operation"><a class="header" href="#54-required-capability-per-operation">54. Required Capability per Operation</a></h1>
+<p>Even inside active session, an operation may require capability.</p>
+<p>Example:</p>
+<pre><code class="language-text">send edited message
+requires messaging.edit
+</code></pre>
+<p>Before send:</p>
+<pre><code class="language-text">check negotiated capability
+</code></pre>
+<p>Do not assume extension presence implies every feature.</p>
+<hr />
+<h1 id="55-operation-capability-requirement"><a class="header" href="#55-operation-capability-requirement">55. Operation Capability Requirement</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct OperationCapabilityRequirement {
+    pub extension: ProtocolId,
+    pub required: CapabilitySet,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Routing/application validates before work begins.</p>
+<hr />
+<h1 id="56-capability-based-ui"><a class="header" href="#56-capability-based-ui">56. Capability-Based UI</a></h1>
+<p>UI consumes a simplified view model:</p>
+<pre><code class="language-text">CanSendFiles
+CanVideoCall
+CanUseNearby
+CanResumeTransfer
+</code></pre>
+<p>It should not parse raw protocol capabilities.</p>
+<hr />
+<h1 id="57-ui-capability-adapter"><a class="header" href="#57-ui-capability-adapter">57. UI Capability Adapter</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct UiCapabilities {
+    pub can_message: bool,
+    pub can_send_file: bool,
+    pub can_audio_call: bool,
+    pub can_video_call: bool,
+    pub can_dtn: bool,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Derived from negotiated capability state.</p>
+<hr />
+<h1 id="58-unknown-ui-capability"><a class="header" href="#58-unknown-ui-capability">58. Unknown UI Capability</a></h1>
+<p>If peer state unknown:</p>
+<pre><code class="language-text">action may remain available
+</code></pre>
+<p>and negotiation can happen on demand.</p>
+<p>Do not over-disable based on stale cache.</p>
+<hr />
+<h1 id="59-lazy-extension-negotiation"><a class="header" href="#59-lazy-extension-negotiation">59. Lazy Extension Negotiation</a></h1>
+<p>Some heavy extensions can negotiate only when needed.</p>
+<p>Example:</p>
+<pre><code class="language-text">calls
+</code></pre>
+<p>Core session advertises:</p>
+<pre><code class="language-text">calls extension supported
+</code></pre>
+<p>Detailed codec negotiation occurs when call starts.</p>
+<hr />
+<h1 id="60-hierarchical-negotiation"><a class="header" href="#60-hierarchical-negotiation">60. Hierarchical Negotiation</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">Core session
+ ↓
+extension support
+ ↓
+feature subset
+ ↓
+operation-specific parameters
+</code></pre>
+<p>Do not send huge codec/file capability payload on every connection if unused.</p>
+<hr />
+<h1 id="61-capability-advertisement-size"><a class="header" href="#61-capability-advertisement-size">61. Capability Advertisement Size</a></h1>
+<p>Bound:</p>
+<pre><code class="language-text">max capabilities
+max parameters
+max bytes
+</code></pre>
+<p>A peer must not force huge negotiation payloads.</p>
+<hr />
+<h1 id="62-compact-encoding"><a class="header" href="#62-compact-encoding">62. Compact Encoding</a></h1>
+<p>Use numeric IDs and bitsets for common capabilities.</p>
+<p>Example:</p>
+<pre><code class="language-text">MessagingCapabilityBits
+FilesCapabilityBits
+</code></pre>
+<p>This reduces handshake size.</p>
+<hr />
+<h1 id="63-bitset-evolution"><a class="header" href="#63-bitset-evolution">63. Bitset Evolution</a></h1>
+<p>Reserve bits carefully.</p>
+<p>Unknown bits:</p>
+<pre><code class="language-text">ignored if optional
+</code></pre>
+<p>Do not reuse removed bits.</p>
+<hr />
+<h1 id="64-sparse-custom-capabilities"><a class="header" href="#64-sparse-custom-capabilities">64. Sparse Custom Capabilities</a></h1>
+<p>Third-party/custom extensions may use:</p>
+<pre><code class="language-text">bounded sorted vector of IDs
+</code></pre>
+<p>rather than allocating giant bitsets.</p>
+<hr />
+<h1 id="65-capability-registry"><a class="header" href="#65-capability-registry">65. Capability Registry</a></h1>
+<p>Maintain registry:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct CapabilityRegistry {
+    descriptors: HashMap&lt;CapabilityId, CapabilityDefinition&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>The registry provides:</p>
+<ul>
+<li>canonical names</li>
+<li>validation</li>
+<li>version semantics</li>
+<li>parameter codec</li>
+<li>security classification</li>
+</ul>
+<p>No global singleton required.</p>
+<hr />
+<h1 id="66-capability-definition"><a class="header" href="#66-capability-definition">66. Capability Definition</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct CapabilityDefinition {
+    pub id: CapabilityId,
+    pub name: &amp;'static str,
+    pub max_version: CapabilityVersion,
+    pub parameter_schema: ParameterSchema,
+    pub security_class: SecurityClass,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="67-security-class"><a class="header" href="#67-security-class">67. Security Class</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum SecurityClass {
+    Informational,
+    Functional,
+    SecuritySensitive,
+    Critical,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Unknown critical capability behavior should be conservative.</p>
+<hr />
+<h1 id="68-mandatory-unknown-critical-capability"><a class="header" href="#68-mandatory-unknown-critical-capability">68. Mandatory Unknown Critical Capability</a></h1>
+<p>If remote marks:</p>
+<pre><code class="language-text">unknown critical capability required
+</code></pre>
+<p>reject that extension/session operation.</p>
+<p>Never silently ignore.</p>
+<hr />
+<h1 id="69-capability-dependency"><a class="header" href="#69-capability-dependency">69. Capability Dependency</a></h1>
+<p>Some capabilities depend on others.</p>
+<p>Example:</p>
+<pre><code class="language-text">files.parallel_chunks
+requires files.chunking
+</code></pre>
+<p>Model:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct CapabilityDependency {
+    pub capability: CapabilityId,
+    pub requires: CapabilitySet,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Validation must reject inconsistent advertisement.</p>
+<hr />
+<h1 id="70-capability-conflict"><a class="header" href="#70-capability-conflict">70. Capability Conflict</a></h1>
+<p>Some are mutually exclusive.</p>
+<p>Example:</p>
+<pre><code class="language-text">compression mode A
+compression mode B
+</code></pre>
+<p>Negotiator selects one or fails according to rules.</p>
+<hr />
+<h1 id="71-preference-ordering"><a class="header" href="#71-preference-ordering">71. Preference Ordering</a></h1>
+<p>For selectable modes:</p>
+<pre><code class="language-text">local preference
+remote support
+policy
+</code></pre>
+<p>Example codec preference.</p>
+<p>Do not let peer alone choose mode.</p>
+<hr />
+<h1 id="72-negotiation-determinism"><a class="header" href="#72-negotiation-determinism">72. Negotiation Determinism</a></h1>
+<p>Given same:</p>
+<pre><code class="language-text">local set
+remote set
+policy
+</code></pre>
+<p>both peers should derive same result.</p>
+<p>This simplifies testing and transcript confirmation.</p>
+<hr />
+<h1 id="73-selection-function"><a class="header" href="#73-selection-function">73. Selection Function</a></h1>
+<p>Prefer pure:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn negotiate(
+    local: &amp;CapabilitySet,
+    remote: &amp;CapabilitySet,
+    policy: &amp;CapabilityPolicy,
+) -&gt; Result&lt;NegotiatedCapabilities, CapabilityError&gt;
+<span class="boring">}</span></code></pre></pre>
+<p>No network side effects.</p>
+<hr />
+<h1 id="74-canonical-preference-rule"><a class="header" href="#74-canonical-preference-rule">74. Canonical Preference Rule</a></h1>
+<p>For choices such as algorithm/codec:</p>
+<pre><code class="language-text">filter unsafe
+find mutual
+rank by local policy
+tie-break canonically
+</code></pre>
+<p>Both sides should reach same choice if symmetric agreement required.</p>
+<hr />
+<h1 id="75-asymmetric-capabilities"><a class="header" href="#75-asymmetric-capabilities">75. Asymmetric Capabilities</a></h1>
+<p>Some capabilities differ by direction.</p>
+<p>Example:</p>
+<pre><code class="language-text">can_encode AV1
+can_decode AV1
+</code></pre>
+<p>Do not represent as one Boolean.</p>
+<hr />
+<h1 id="76-direction"><a class="header" href="#76-direction">76. Direction</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum CapabilityDirection {
+    Send,
+    Receive,
+    Both,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Useful for:</p>
+<ul>
+<li>codecs</li>
+<li>file upload/download limits</li>
+<li>relay capability</li>
+<li>call media</li>
+</ul>
+<hr />
+<h1 id="77-device-specific-capabilities"><a class="header" href="#77-device-specific-capabilities">77. Device-Specific Capabilities</a></h1>
+<p>Part 02 allows multiple devices.</p>
+<p>Account-level capability must be derived from device set.</p>
+<p>Example:</p>
+<pre><code class="language-text">Bob account:
+Phone can video
+Laptop cannot
+</code></pre>
+<p>Call routing targets the capable device.</p>
+<p>Do not flatten all devices into one Boolean permanently.</p>
+<hr />
+<h1 id="78-account-capability-view"><a class="header" href="#78-account-capability-view">78. Account Capability View</a></h1>
+<p>A convenience derived view may say:</p>
+<pre><code class="language-text">Account has at least one video-capable device
+</code></pre>
+<p>but routing still resolves actual device.</p>
+<hr />
+<h1 id="79-route-integration"><a class="header" href="#79-route-integration">79. Route Integration</a></h1>
+<p>Part 03 can filter candidates based on required capability.</p>
+<p>Example:</p>
+<pre><code class="language-text">file transfer requires files/1
+</code></pre>
+<p>Candidate session without it:</p>
+<pre><code class="language-text">invalid for operation
+</code></pre>
+<hr />
+<h1 id="80-dtn-integration"><a class="header" href="#80-dtn-integration">80. DTN Integration</a></h1>
+<p>DTN forwarding peer may support:</p>
+<pre><code class="language-text">relay small bundles
+blob chunks
+gateway handoff
+</code></pre>
+<p>Negotiated capability determines which bundle classes can be exchanged.</p>
+<hr />
+<h1 id="81-file-integration"><a class="header" href="#81-file-integration">81. File Integration</a></h1>
+<p>Part 05 uses:</p>
+<pre><code class="language-text">chunk size
+parallelism
+resume
+partial transfer
+</code></pre>
+<p>from negotiated file capability contract.</p>
+<hr />
+<h1 id="82-offline-event-log-integration"><a class="header" href="#82-offline-event-log-integration">82. Offline Event Log Integration</a></h1>
+<p>Part 04 may persist:</p>
+<pre><code class="language-text">meaningful peer capability generation
+</code></pre>
+<p>as cache/projection if useful.</p>
+<p>Do not permanently journal every ephemeral capability fluctuation.</p>
+<hr />
+<h1 id="83-capability-snapshot-persistence"><a class="header" href="#83-capability-snapshot-persistence">83. Capability Snapshot Persistence</a></h1>
+<p>Store:</p>
+<pre><code class="language-text">last_verified_peer_capabilities
+</code></pre>
+<p>as cache.</p>
+<p>Mark with:</p>
+<pre><code class="language-text">observed session
+timestamp
+hash
+</code></pre>
+<hr />
+<h1 id="84-no-capability-trust-from-server-alone"><a class="header" href="#84-no-capability-trust-from-server-alone">84. No Capability Trust from Server Alone</a></h1>
+<p>A directory server may publish:</p>
+<pre><code class="language-text">peer capability hint
+</code></pre>
+<p>Use only as hint.</p>
+<p>Final capability contract comes from authenticated peer negotiation.</p>
+<hr />
+<h1 id="85-relay-capability-advertisement"><a class="header" href="#85-relay-capability-advertisement">85. Relay Capability Advertisement</a></h1>
+<p>A relay may advertise:</p>
+<pre><code class="language-text">max bundle
+gateway
+storage class
+</code></pre>
+<p>Routing/DTN uses as hints.</p>
+<p>Do not trust self-reported capacity for security-sensitive decisions.</p>
+<hr />
+<h1 id="86-capability-attestation"><a class="header" href="#86-capability-attestation">86. Capability Attestation</a></h1>
+<p>Optional platform attestation can prove some hardware/platform properties.</p>
+<p>It is supplemental.</p>
+<p>Do not make capability negotiation depend on remote attestation for normal use.</p>
+<hr />
+<h1 id="87-resource-capabilities"><a class="header" href="#87-resource-capabilities">87. Resource Capabilities</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">max concurrent transfers
+max inbound file size
+max relay bytes
+max active streams
+</code></pre>
+<p>These are negotiated limits, not promises of permanent capacity.</p>
+<hr />
+<h1 id="88-dynamic-resource-limits"><a class="header" href="#88-dynamic-resource-limits">88. Dynamic Resource Limits</a></h1>
+<p>At runtime:</p>
+<pre><code class="language-text">storage pressure
+battery
+memory
+</code></pre>
+<p>can reduce effective limits.</p>
+<p>Capability update may advertise changed capacity class.</p>
+<hr />
+<h1 id="89-coarse-resource-classes"><a class="header" href="#89-coarse-resource-classes">89. Coarse Resource Classes</a></h1>
+<p>Prefer:</p>
+<pre><code class="language-text">Low
+Normal
+High
+</code></pre>
+<p>for sensitive/battery-related hints rather than exact values when privacy matters.</p>
+<hr />
+<h1 id="90-capability-privacy"><a class="header" href="#90-capability-privacy">90. Capability Privacy</a></h1>
+<p>Capability sets can fingerprint devices.</p>
+<p>Minimize exposure.</p>
+<p>Do not advertise exact:</p>
+<pre><code class="language-text">model
+GPU
+codec vendor
+RAM
+battery %
+</code></pre>
+<p>unless necessary.</p>
+<hr />
+<h1 id="91-privacy-profiles"><a class="header" href="#91-privacy-profiles">91. Privacy Profiles</a></h1>
+<p>Possible:</p>
+<pre><code class="language-text">Minimal
+Standard
+Diagnostic
+</code></pre>
+<p>Normal peers receive only required feature capabilities.</p>
+<p>Detailed hardware capability is available only when needed.</p>
+<hr />
+<h1 id="92-progressive-disclosure"><a class="header" href="#92-progressive-disclosure">92. Progressive Disclosure</a></h1>
+<p>Initial handshake:</p>
+<pre><code class="language-text">supports media
+</code></pre>
+<p>Call setup:</p>
+<pre><code class="language-text">detailed codec capabilities
+</code></pre>
+<p>File transfer setup:</p>
+<pre><code class="language-text">detailed transfer limits
+</code></pre>
+<p>This reduces metadata leakage and handshake size.</p>
+<hr />
+<h1 id="93-capability-fingerprinting-risk"><a class="header" href="#93-capability-fingerprinting-risk">93. Capability Fingerprinting Risk</a></h1>
+<p>A rare combination such as:</p>
+<pre><code class="language-text">exact codec profile
+exact max resolution
+exact Bluetooth feature
+</code></pre>
+<p>may identify device class.</p>
+<p>Document this risk.</p>
+<hr />
+<h1 id="94-capability-hash"><a class="header" href="#94-capability-hash">94. Capability Hash</a></h1>
+<p>Store canonical capability set hash:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct CapabilitySetHash([u8; 32]);
+<span class="boring">}</span></code></pre></pre>
+<p>Useful for:</p>
+<ul>
+<li>cache validation</li>
+<li>delta detection</li>
+<li>transcript binding</li>
+</ul>
+<hr />
+<h1 id="95-delta-update"><a class="header" href="#95-delta-update">95. Delta Update</a></h1>
+<pre><code class="language-text">old hash
+new hash
+changed capabilities
+</code></pre>
+<p>Peer verifies expected previous epoch/hash.</p>
+<p>This prevents applying delta to wrong base.</p>
+<hr />
+<h1 id="96-missed-update-recovery"><a class="header" href="#96-missed-update-recovery">96. Missed Update Recovery</a></h1>
+<p>If peer sees unexpected epoch:</p>
+<pre><code class="language-text">request full capability snapshot
+</code></pre>
+<p>Do not attempt to infer missing deltas.</p>
+<hr />
+<h1 id="97-session-reconnect"><a class="header" href="#97-session-reconnect">97. Session Reconnect</a></h1>
+<p>On reconnect:</p>
+<pre><code class="language-text">new authenticated negotiation
+</code></pre>
+<p>Cached hash may let peers shortcut if both explicitly support safe resume.</p>
+<p>Start without shortcut initially.</p>
+<hr />
+<h1 id="98-session-resumption-optimization"><a class="header" href="#98-session-resumption-optimization">98. Session Resumption Optimization</a></h1>
+<p>Future:</p>
+<pre><code class="language-text">capability hash unchanged
++
+session resumption authenticated
+</code></pre>
+<p>can avoid sending full sets.</p>
+<p>But correctness first.</p>
+<hr />
+<h1 id="99-interoperability"><a class="header" href="#99-interoperability">99. Interoperability</a></h1>
+<p>Stable capability IDs and semantics allow non-Rust implementations later.</p>
+<p>Do not rely on:</p>
+<pre><code class="language-text">Rust enum memory layout
+usize
+HashMap order
+</code></pre>
+<p>Wire representation must be explicit.</p>
+<hr />
+<h1 id="100-postcard-use"><a class="header" href="#100-postcard-use">100. Postcard Use</a></h1>
+<p>Postcard is suitable for compact capability structures.</p>
+<p>Rules:</p>
+<ul>
+<li>fixed-width protocol-relevant integers</li>
+<li>bounded vectors</li>
+<li>versioned schemas</li>
+<li>canonical ordering before transcript hash</li>
+<li>no unbounded recursive structures</li>
+</ul>
+<hr />
+<h1 id="101-wire-structure"><a class="header" href="#101-wire-structure">101. Wire Structure</a></h1>
+<p>Potential:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct CapabilityAdvertisementV1 {
+    pub core_version: u16,
+    pub extension_sets: Vec&lt;ExtensionCapabilitiesV1&gt;,
+    pub security: SecurityCapabilitiesV1,
+    pub summary: CapabilitySummaryV1,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Detailed optional negotiation follows extension open.</p>
+<hr />
+<h1 id="102-capability-summary"><a class="header" href="#102-capability-summary">102. Capability Summary</a></h1>
+<p>Compact initial summary can use:</p>
+<pre><code class="language-text">extension IDs
+major versions
+feature-group bits
+</code></pre>
+<p>Then request detail lazily.</p>
+<hr />
+<h1 id="103-negotiation-error-model"><a class="header" href="#103-negotiation-error-model">103. Negotiation Error Model</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum CapabilityError {
+    Malformed,
+    UnsupportedCoreVersion,
+    RequiredCapabilityMissing,
+    VersionMismatch,
+    SecurityPolicyFailure,
+    InconsistentDependency,
+    DowngradeSuspected,
+    LimitExceeded,
+    TranscriptMismatch,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="104-user-visible-mapping"><a class="header" href="#104-user-visible-mapping">104. User-Visible Mapping</a></h1>
+<p>Normal UI should show:</p>
+<pre><code class="language-text">File transfer unsupported
+Video calling unavailable
+Nearby forwarding unavailable
+</code></pre>
+<p>not:</p>
+<pre><code class="language-text">Capability 0x0421 missing
+</code></pre>
+<p>Diagnostics can expose technical detail.</p>
+<hr />
+<h1 id="105-required-capability-failure"><a class="header" href="#105-required-capability-failure">105. Required Capability Failure</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">files-only app
+requires files/1
+peer lacks files/1
+</code></pre>
+<p>Connection core may remain alive, but file operation fails cleanly.</p>
+<p>Do not necessarily tear down entire session.</p>
+<hr />
+<h1 id="106-security-failure"><a class="header" href="#106-security-failure">106. Security Failure</a></h1>
+<p>If required security capability fails:</p>
+<pre><code class="language-text">terminate trusted session
+</code></pre>
+<p>This is different from optional feature mismatch.</p>
+<hr />
+<h1 id="107-extension-isolation"><a class="header" href="#107-extension-isolation">107. Extension Isolation</a></h1>
+<p>One failed extension negotiation should not necessarily break unrelated extensions.</p>
+<p>Example:</p>
+<pre><code class="language-text">calls unsupported
+messaging works
+files work
+</code></pre>
+<hr />
+<h1 id="108-capability-lifecycle"><a class="header" href="#108-capability-lifecycle">108. Capability Lifecycle</a></h1>
+<pre><code class="language-text">Unknown
+ ↓
+Advertised
+ ↓
+Negotiating
+ ↓
+Negotiated
+ ↓
+Active
+ ↓
+Updated
+ ↓
+Invalidated
+</code></pre>
+<hr />
+<h1 id="109-invalidation"><a class="header" href="#109-invalidation">109. Invalidation</a></h1>
+<p>Invalidate capability contract when:</p>
+<pre><code class="language-text">identity changes
+session reauth
+device revoked
+protocol reset
+critical update mismatch
+</code></pre>
+<hr />
+<h1 id="110-runtime-capability-failure"><a class="header" href="#110-runtime-capability-failure">110. Runtime Capability Failure</a></h1>
+<p>If a feature fails repeatedly:</p>
+<pre><code class="language-text">mark degraded locally
+</code></pre>
+<p>Optionally send update.</p>
+<p>Example:</p>
+<pre><code class="language-text">hardware AV1 encoder broken
+→ remove encode capability for current session
+</code></pre>
+<hr />
+<h1 id="111-capability-health"><a class="header" href="#111-capability-health">111. Capability Health</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum CapabilityHealth {
+    Available,
+    Degraded,
+    TemporarilyUnavailable,
+    DisabledByPolicy,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Do not conflate support with current health.</p>
+<hr />
+<h1 id="112-capability-query-api"><a class="header" href="#112-capability-query-api">112. Capability Query API</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let caps = client.capabilities(peer).await?;
+
+if caps.supports(FILE_RESUME) {
+    ...
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Provide higher-level helpers too.</p>
+<hr />
+<h1 id="113-operation-guard-api"><a class="header" href="#113-operation-guard-api">113. Operation Guard API</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>client
+    .require_capabilities(peer, OperationKind::VideoCall)
+    .await?;
+<span class="boring">}</span></code></pre></pre>
+<p>This can return structured fallback info.</p>
+<hr />
+<h1 id="114-fallback-suggestions"><a class="header" href="#114-fallback-suggestions">114. Fallback Suggestions</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">Video unsupported
+Audio supported
+</code></pre>
+<p>Capability engine can produce:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>FallbackPlan::AudioOnly
+<span class="boring">}</span></code></pre></pre>
+<p>or data used by call layer.</p>
+<hr />
+<h1 id="115-file-fallback"><a class="header" href="#115-file-fallback">115. File Fallback</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">parallel unsupported
+resume supported
+</code></pre>
+<p>File engine uses:</p>
+<pre><code class="language-text">single-stream resumable transfer
+</code></pre>
+<hr />
+<h1 id="116-dtn-fallback"><a class="header" href="#116-dtn-fallback">116. DTN Fallback</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">blob-chunk relay unsupported
+small inline bundles supported
+</code></pre>
+<p>Then:</p>
+<pre><code class="language-text">send text/SOS
+defer large file
+</code></pre>
+<hr />
+<h1 id="117-routing-fallback"><a class="header" href="#117-routing-fallback">117. Routing Fallback</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">Wi-Fi Direct unsupported
+Bluetooth supported
+</code></pre>
+<p>Routing adapts automatically.</p>
+<hr />
+<h1 id="118-capability-negotiation-for-custom-apps"><a class="header" href="#118-capability-negotiation-for-custom-apps">118. Capability Negotiation for Custom Apps</a></h1>
+<p>ERP extension:</p>
+<pre><code class="language-text">com.example.erp/approval/1
+</code></pre>
+<p>can register:</p>
+<pre><code class="language-text">approval-v2
+attachments
+offline-signature
+</code></pre>
+<p>without modifying core negotiation logic.</p>
+<hr />
+<h1 id="119-third-party-capability-registry"><a class="header" href="#119-third-party-capability-registry">119. Third-Party Capability Registry</a></h1>
+<p>Namespaced capability IDs prevent collision.</p>
+<p>Core may reserve:</p>
+<pre><code class="language-text">0x0000_0000..0x0FFF_FFFF
+</code></pre>
+<p>and application namespaces map separately.</p>
+<p>Exact scheme should be documented.</p>
+<hr />
+<h1 id="120-capability-documentation"><a class="header" href="#120-capability-documentation">120. Capability Documentation</a></h1>
+<p>Every stable capability should document:</p>
+<pre><code class="language-text">canonical name
+ID
+version
+parameters
+dependencies
+security class
+default policy
+wire behavior
+fallback behavior
+</code></pre>
+<hr />
+<h1 id="121-generated-docs"><a class="header" href="#121-generated-docs">121. Generated Docs</a></h1>
+<p>Registry metadata can generate:</p>
+<pre><code class="language-text">capability matrix
+protocol compatibility table
+</code></pre>
+<p>for developers.</p>
+<hr />
+<h1 id="122-compatibility-matrix"><a class="header" href="#122-compatibility-matrix">122. Compatibility Matrix</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">Peer A       Peer B       Result
+messaging/1  messaging/1  works
+files/1      none         messaging only
+AV1 HW       H264 HW      H264
+DTN spray    DTN direct   direct-only DTN
+</code></pre>
+<hr />
+<h1 id="123-golden-tests"><a class="header" href="#123-golden-tests">123. Golden Tests</a></h1>
+<p>Store stable negotiation cases.</p>
+<p>Example:</p>
+<pre><code class="language-text">local set
+remote set
+policy
+expected negotiated set
+</code></pre>
+<p>These prevent accidental behavior changes.</p>
+<hr />
+<h1 id="124-property-tests"><a class="header" href="#124-property-tests">124. Property Tests</a></h1>
+<p>Invariants:</p>
+<pre><code class="language-text">negotiated capability is supported by both peers
+hard policy is never violated
+required missing capability never becomes active
+result is deterministic
+effective max never exceeds either peer max
+</code></pre>
+<hr />
+<h1 id="125-fuzzing"><a class="header" href="#125-fuzzing">125. Fuzzing</a></h1>
+<p>Fuzz:</p>
+<pre><code class="language-text">capability advertisement
+parameter decoding
+dependency graphs
+delta updates
+canonical ordering
+transcript hash inputs
+</code></pre>
+<p>Bound allocations.</p>
+<hr />
+<h1 id="126-downgrade-tests"><a class="header" href="#126-downgrade-tests">126. Downgrade Tests</a></h1>
+<p>Simulate attacker stripping:</p>
+<pre><code class="language-text">strong security capability
+</code></pre>
+<p>Negotiation must detect transcript mismatch or policy failure.</p>
+<hr />
+<h1 id="127-malformed-capability-tests"><a class="header" href="#127-malformed-capability-tests">127. Malformed Capability Tests</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">duplicate IDs with conflicting versions
+invalid range
+cyclic dependency
+too many entries
+oversized parameter
+unknown required critical
+</code></pre>
+<p>Reject deterministically.</p>
+<hr />
+<h1 id="128-large-capability-set-test"><a class="header" href="#128-large-capability-set-test">128. Large Capability Set Test</a></h1>
+<p>Third-party ecosystem may grow.</p>
+<p>Ensure:</p>
+<pre><code class="language-text">bounded
+fast
+canonical
+</code></pre>
+<p>negotiation with hundreds of capabilities.</p>
+<p>Do not design for millions.</p>
+<hr />
+<h1 id="129-performance"><a class="header" href="#129-performance">129. Performance</a></h1>
+<p>Capability negotiation occurs per session/extension open, not per packet.</p>
+<p>Optimize for:</p>
+<pre><code class="language-text">small wire size
+fast validation
+deterministic selection
+cacheable result
+</code></pre>
+<p>Do not micro-optimize at expense of clarity/security.</p>
+<hr />
+<h1 id="130-memory-bounds"><a class="header" href="#130-memory-bounds">130. Memory Bounds</a></h1>
+<p>Limit:</p>
+<pre><code class="language-text">max extension count
+max capabilities per extension
+max parameter bytes
+max nested depth
+</code></pre>
+<hr />
+<h1 id="131-logging"><a class="header" href="#131-logging">131. Logging</a></h1>
+<p>Log:</p>
+<pre><code class="language-text">peer device id hash/redacted
+extension
+selected versions
+feature count
+failure reason
+</code></pre>
+<p>Do not log sensitive hardware fingerprint detail by default.</p>
+<hr />
+<h1 id="132-diagnostics"><a class="header" href="#132-diagnostics">132. Diagnostics</a></h1>
+<p>Advanced diagnostics can show:</p>
+<pre><code class="language-text">Core protocol: 1
+Messaging: v1
+  reply=yes
+  edit=no
+
+Files: v1
+  resume=yes
+  parallel=4
+  max chunk=1 MiB
+
+Media:
+  AV1 decode software
+  H264 encode hardware
+
+DTN:
+  spray-wait=yes
+  max bundle=64 KiB
+</code></pre>
+<hr />
+<h1 id="133-ui-simplicity"><a class="header" href="#133-ui-simplicity">133. UI Simplicity</a></h1>
+<p>Normal UI should summarize:</p>
+<pre><code class="language-text">Can send files
+Can video call
+Nearby relay supported
+</code></pre>
+<p>Capability internals belong in developer/security screens.</p>
+<hr />
+<h1 id="134-storage-schema"><a class="header" href="#134-storage-schema">134. Storage Schema</a></h1>
+<p>Optional cache tables:</p>
+<pre><code class="language-text">peer_capability_snapshots
+peer_capability_hashes
+capability_observed_at
+</code></pre>
+<p>Do not persist session secrets here.</p>
+<hr />
+<h1 id="135-cache-invalidation"><a class="header" href="#135-cache-invalidation">135. Cache Invalidation</a></h1>
+<p>Invalidate on:</p>
+<pre><code class="language-text">device certificate change
+account generation change
+protocol upgrade
+session reauthentication
+explicit peer update
+</code></pre>
+<hr />
+<h1 id="136-multi-device-capability-view"><a class="header" href="#136-multi-device-capability-view">136. Multi-Device Capability View</a></h1>
+<p>For an account:</p>
+<pre><code class="language-text">Phone:
+video yes
+DTN yes
+
+Laptop:
+video no
+files yes
+</code></pre>
+<p>Application query should be able to ask:</p>
+<pre><code class="language-text">which devices satisfy Operation X?
+</code></pre>
+<hr />
+<h1 id="137-device-selection-query"><a class="header" href="#137-device-selection-query">137. Device Selection Query</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let devices = capabilities
+    .devices_supporting(account, OperationKind::VideoCall)
+    .await?;
+<span class="boring">}</span></code></pre></pre>
+<p>Routing then selects reachable device.</p>
+<hr />
+<h1 id="138-capability-based-fan-out"><a class="header" href="#138-capability-based-fan-out">138. Capability-Based Fan-Out</a></h1>
+<p>Messaging may fan out to all devices supporting:</p>
+<pre><code class="language-text">messaging/1
+</code></pre>
+<p>File transfer may target only devices supporting:</p>
+<pre><code class="language-text">files/1
+</code></pre>
+<hr />
+<h1 id="139-headless-device-capabilities"><a class="header" href="#139-headless-device-capabilities">139. Headless Device Capabilities</a></h1>
+<p>Headless node can advertise:</p>
+<pre><code class="language-text">DTN relay
+files
+gateway
+</code></pre>
+<p>without:</p>
+<pre><code class="language-text">calls
+UI
+camera
+</code></pre>
+<p>This is expected, not exceptional.</p>
+<hr />
+<h1 id="140-emergency-node-capabilities"><a class="header" href="#140-emergency-node-capabilities">140. Emergency Node Capabilities</a></h1>
+<p>Emergency relay may advertise:</p>
+<pre><code class="language-text">high relay class
+authority alert forwarding
+Wi-Fi bridge
+Iroh gateway
+</code></pre>
+<p>through bounded coarse capabilities.</p>
+<hr />
+<h1 id="141-capability-negotiation-and-resource-limits"><a class="header" href="#141-capability-negotiation-and-resource-limits">141. Capability Negotiation and Resource Limits</a></h1>
+<p>Part 08 will enforce runtime limits.</p>
+<p>Negotiated values are upper contracts.</p>
+<p>Actual scheduler may use less.</p>
+<p>Example:</p>
+<pre><code class="language-text">max parallel = 8 negotiated
+current battery policy = 2
+</code></pre>
+<hr />
+<h1 id="142-capability-negotiation-and-crash-recovery"><a class="header" href="#142-capability-negotiation-and-crash-recovery">142. Capability Negotiation and Crash Recovery</a></h1>
+<p>After restart:</p>
+<pre><code class="language-text">capability cache may help UX
+</code></pre>
+<p>but new network session must reauthenticate and renegotiate.</p>
+<p>Do not restore stale session capability contract as authoritative.</p>
+<hr />
+<h1 id="143-capability-negotiation-and-relay-infrastructure"><a class="header" href="#143-capability-negotiation-and-relay-infrastructure">143. Capability Negotiation and Relay Infrastructure</a></h1>
+<p>Part 11 relay servers may advertise:</p>
+<pre><code class="language-text">relay protocol version
+max session class
+regional support
+</code></pre>
+<p>but application-level capabilities remain peer-to-peer authenticated.</p>
+<hr />
+<h1 id="144-capability-negotiation-and-multipath"><a class="header" href="#144-capability-negotiation-and-multipath">144. Capability Negotiation and Multipath</a></h1>
+<p>Part 12 can negotiate:</p>
+<pre><code class="language-text">multipath supported
+max concurrent paths
+chunk striping support
+</code></pre>
+<p>without changing core handshake semantics.</p>
+<hr />
+<h1 id="145-capability-negotiation-and-battery-scheduling"><a class="header" href="#145-capability-negotiation-and-battery-scheduling">145. Capability Negotiation and Battery Scheduling</a></h1>
+<p>Part 13 may dynamically reduce:</p>
+<pre><code class="language-text">relay capacity
+background transfer capacity
+</code></pre>
+<p>through capability health/updates.</p>
+<hr />
+<h1 id="146-capability-negotiation-and-proximity"><a class="header" href="#146-capability-negotiation-and-proximity">146. Capability Negotiation and Proximity</a></h1>
+<p>Part 14 can advertise coarse proximity transports:</p>
+<pre><code class="language-text">BLE
+Wi-Fi Direct
+Wi-Fi Aware
+</code></pre>
+<p>Detailed hardware fingerprint should remain hidden until needed.</p>
+<hr />
+<h1 id="147-capability-negotiation-and-qrnfc"><a class="header" href="#147-capability-negotiation-and-qrnfc">147. Capability Negotiation and QR/NFC</a></h1>
+<p>Part 15 bootstrap payload can include:</p>
+<pre><code class="language-text">core protocol versions
+minimal capability summary
+</code></pre>
+<p>to avoid attempting impossible link flows.</p>
+<p>Full negotiation still occurs after authenticated session.</p>
+<hr />
+<h1 id="148-capability-negotiation-and-daemon"><a class="header" href="#148-capability-negotiation-and-daemon">148. Capability Negotiation and Daemon</a></h1>
+<p>Part 16 daemon exposes capabilities through stable IPC API.</p>
+<p>GUI/CLI should not directly inspect hardware adapters.</p>
+<hr />
+<h1 id="149-capability-negotiation-and-emergency-priority"><a class="header" href="#149-capability-negotiation-and-emergency-priority">149. Capability Negotiation and Emergency Priority</a></h1>
+<p>Part 17 can negotiate:</p>
+<pre><code class="language-text">critical relay support
+authority alert version
+broadcast class
+</code></pre>
+<p>with authorization rules.</p>
+<hr />
+<h1 id="150-capability-negotiation-and-diagnostics"><a class="header" href="#150-capability-negotiation-and-diagnostics">150. Capability Negotiation and Diagnostics</a></h1>
+<p>Part 18 can visualize:</p>
+<pre><code class="language-text">which path/feature unavailable because capability missing
+</code></pre>
+<p>This is crucial for support.</p>
+<hr />
+<h1 id="151-capability-negotiation-and-ffi"><a class="header" href="#151-capability-negotiation-and-ffi">151. Capability Negotiation and FFI</a></h1>
+<p>Part 19 should expose a simplified stable capability query API.</p>
+<p>Do not expose internal Rust registry pointers across FFI.</p>
+<hr />
+<h1 id="152-capability-negotiation-and-embedded-linux"><a class="header" href="#152-capability-negotiation-and-embedded-linux">152. Capability Negotiation and Embedded Linux</a></h1>
+<p>Part 20 embedded nodes may advertise minimal subsets.</p>
+<p>The protocol should handle small constrained peers cleanly.</p>
+<hr />
+<h1 id="153-capability-negotiation-and-wasm"><a class="header" href="#153-capability-negotiation-and-wasm">153. Capability Negotiation and WASM</a></h1>
+<p>Part 21 WASM components can reuse:</p>
+<pre><code class="language-text">capability types
+selection logic
+codec
+</code></pre>
+<p>without transport-specific runtime.</p>
+<hr />
+<h1 id="154-capability-negotiation-and-third-party-extensions"><a class="header" href="#154-capability-negotiation-and-third-party-extensions">154. Capability Negotiation and Third-Party Extensions</a></h1>
+<p>Part 22 directly depends on namespaced capability registration.</p>
+<p>Custom extensions can define their own capability IDs and parameter codecs.</p>
+<hr />
+<h1 id="155-capability-negotiation-and-interoperability-suite"><a class="header" href="#155-capability-negotiation-and-interoperability-suite">155. Capability Negotiation and Interoperability Suite</a></h1>
+<p>Part 23 should test:</p>
+<pre><code class="language-text">capability advertisement
+required/optional behavior
+version mismatch
+unknown capability
+downgrade detection
+</code></pre>
+<p>across implementations.</p>
+<hr />
+<h1 id="156-capability-negotiation-and-plugin-ecosystem"><a class="header" href="#156-capability-negotiation-and-plugin-ecosystem">156. Capability Negotiation and Plugin Ecosystem</a></h1>
+<p>Part 24 plugin/module system can register capability schemas through controlled API.</p>
+<p>Plugins must not overwrite existing IDs.</p>
+<hr />
+<h1 id="157-public-api-surface"><a class="header" href="#157-public-api-surface">157. Public API Surface</a></h1>
+<p>Suggested:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>CapabilityClient
+CapabilityRegistry
+NegotiatedCapabilities
+CapabilityPolicy
+CapabilityQuery
+<span class="boring">}</span></code></pre></pre>
+<p>Keep low-level wire negotiation internal.</p>
+<hr />
+<h1 id="158-suggested-crate-structure"><a class="header" href="#158-suggested-crate-structure">158. Suggested Crate Structure</a></h1>
+<pre><code class="language-text">crates/comm-capability/
+├── src/
+│   ├── lib.rs
+│   ├── id.rs
+│   ├── namespace.rs
+│   ├── descriptor.rs
+│   ├── set.rs
+│   ├── parameter.rs
+│   ├── registry.rs
+│   ├── advertisement.rs
+│   ├── negotiate.rs
+│   ├── policy.rs
+│   ├── security.rs
+│   ├── cache.rs
+│   ├── update.rs
+│   ├── diagnostics.rs
+│   └── error.rs
+└── Cargo.toml
+</code></pre>
+<p>Potential protocol module:</p>
+<pre><code class="language-text">comm-capability-protocol
+</code></pre>
+<p>if wire concerns grow.</p>
+<hr />
+<h1 id="159-error-model"><a class="header" href="#159-error-model">159. Error Model</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum CapabilityNegotiationError {
+    UnsupportedCore,
+    MissingRequired,
+    VersionMismatch,
+    SecurityPolicy,
+    Malformed,
+    DependencyViolation,
+    Conflict,
+    LimitExceeded,
+    DowngradeSuspected,
+    TranscriptMismatch,
+    Cancelled,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Use typed errors.</p>
+<hr />
+<h1 id="160-initial-production-scope"><a class="header" href="#160-initial-production-scope">160. Initial Production Scope</a></h1>
+<p>Implement first:</p>
+<pre><code class="language-text">core protocol version negotiation
+extension support advertisement
+required vs optional capabilities
+typed file capability parameters
+typed DTN capability parameters
+basic media codec capability
+security algorithm negotiation
+canonical capability hashing
+two-phase confirmation
+capability cache
+runtime capability updates
+</code></pre>
+<p>Defer initially:</p>
+<pre><code class="language-text">complex attestation
+dynamic remote plugin capability code
+automatic capability learning
+large metadata-rich hardware profiles
+</code></pre>
+<hr />
+<h1 id="161-implementation-phases"><a class="header" href="#161-implementation-phases">161. Implementation Phases</a></h1>
+<h2 id="phase-1--core-types"><a class="header" href="#phase-1--core-types">Phase 1 — Core Types</a></h2>
+<pre><code class="language-text">CapabilityId
+CapabilityVersion
+CapabilitySet
+CapabilityRegistry
+</code></pre>
+<h2 id="phase-2--handshake"><a class="header" href="#phase-2--handshake">Phase 2 — Handshake</a></h2>
+<pre><code class="language-text">advertise
+validate
+intersect
+confirm
+</code></pre>
+<h2 id="phase-3--extension-integration"><a class="header" href="#phase-3--extension-integration">Phase 3 — Extension Integration</a></h2>
+<pre><code class="language-text">messaging
+files
+DTN
+</code></pre>
+<h2 id="phase-4--security"><a class="header" href="#phase-4--security">Phase 4 — Security</a></h2>
+<pre><code class="language-text">algorithm selection
+minimum policy
+downgrade detection
+transcript hash
+</code></pre>
+<h2 id="phase-5--mediaplatform"><a class="header" href="#phase-5--mediaplatform">Phase 5 — Media/Platform</a></h2>
+<pre><code class="language-text">codec
+Bluetooth/Wi-Fi
+resource summaries
+</code></pre>
+<h2 id="phase-6--dynamic-updates"><a class="header" href="#phase-6--dynamic-updates">Phase 6 — Dynamic Updates</a></h2>
+<pre><code class="language-text">epoch
+delta
+full resync
+</code></pre>
+<h2 id="phase-7--hardening"><a class="header" href="#phase-7--hardening">Phase 7 — Hardening</a></h2>
+<pre><code class="language-text">fuzzing
+property tests
+golden cases
+interoperability tests
+</code></pre>
+<hr />
+<h1 id="162-definition-of-done"><a class="header" href="#162-definition-of-done">162. Definition of Done</a></h1>
+<p>Part 07 is complete when:</p>
+<ul>
+<li>peers do not rely on app version to infer feature support</li>
+<li>capability advertisements are authenticated</li>
+<li>required and optional capabilities behave differently</li>
+<li>unknown optional capabilities do not break compatibility</li>
+<li>unknown required capabilities fail safely</li>
+<li>version ranges negotiate deterministically</li>
+<li>security capabilities respect a minimum local security floor</li>
+<li>downgrade attempts are detectable</li>
+<li>file transfer negotiates chunk/resume/parallel limits</li>
+<li>DTN negotiates relay/bundle capabilities</li>
+<li>media negotiates codec direction and implementation</li>
+<li>device-specific capability differences are preserved</li>
+<li>routing can filter paths by required capabilities</li>
+<li>capability cache is treated only as a hint</li>
+<li>dynamic capability updates are versioned</li>
+<li>capability payload sizes are bounded</li>
+<li>canonical transcript hashing exists</li>
+<li>Dioxus consumes simplified derived capability state</li>
+<li>custom third-party namespaces can register capabilities safely</li>
+<li>property/fuzz/golden/interoperability tests exist</li>
+</ul>
+<hr />
+<h1 id="163-relationship-to-earlier-parts"><a class="header" href="#163-relationship-to-earlier-parts">163. Relationship to Earlier Parts</a></h1>
+<p>Part 07 builds directly on:</p>
+<pre><code class="language-text">01 — Protocol Extension System
+02 — Multi-Device Identity
+03 — Transport &amp; Routing Policy Engine
+04 — Offline Event Log
+05 — Robust File / Blob Subsystem
+06 — DTN / Store-Carry-Forward
+</code></pre>
+<p>It prepares the platform for:</p>
+<pre><code class="language-text">08 — Resource Limits &amp; Backpressure
+09 — Crash Recovery
+10 — Protocol Fuzzing &amp; Test Suite
+11 — Relay / Self-Hosted Infrastructure
+12 — Multipath Networking
+13 — Battery-Aware Scheduling
+14 — Proximity Abstraction
+15 — QR / NFC Bootstrap Pairing
+16 — Daemon &amp; Headless Runtime
+17 — Emergency Priority Architecture
+18 — Network Diagnostics &amp; Path Visualization
+19 — C ABI / FFI
+20 — Embedded Linux Node
+21 — WASM-Compatible Components
+22 — Third-Party Protocol Extensions
+23 — External Interoperability Suite
+24 — Plugin / Module Ecosystem
+</code></pre>
+<hr />
+<h1 id="164-final-principle"><a class="header" href="#164-final-principle">164. Final Principle</a></h1>
+<p>The capability system should let two completely different peers safely discover the strongest mutually compatible behavior.</p>
+<p>Example:</p>
+<pre><code class="language-text">Alice Android
+  messaging v1
+  files resume+parallel
+  AV1 HW
+  H264 HW
+  DTN spray-wait
+  Wi-Fi Aware
+
+Bob Linux
+  messaging v1
+  files resume
+  AV1 software
+  no H264 hardware
+  DTN direct-only
+  LAN
+</code></pre>
+<p>The negotiated result may become:</p>
+<pre><code class="language-text">Messaging:
+  v1
+
+Files:
+  resume
+  single-path/single-parallel subset
+
+Video:
+  AV1
+
+DTN:
+  direct-only common subset
+</code></pre>
+<p>Neither peer needs to know the other's implementation details.</p>
+<p>They only need a verified, versioned contract describing what they can safely do together.</p>
+<p>That is what makes the communication platform interoperable, evolvable, modular, and production-ready across different devices, products, and future protocol generations.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="01-protocol-extension-system-architecture.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="21-third-party-protocol-extensions-architecture.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="01-protocol-extension-system-architecture.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="21-third-party-protocol-extensions-architecture.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

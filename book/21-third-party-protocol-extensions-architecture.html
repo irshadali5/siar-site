@@ -1,0 +1,2329 @@
+<!DOCTYPE HTML>
+<html lang="en" class="navy" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>21 — Third-Party Protocol Extensions - SIAR System Architecture &amp; Technical Wiki</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="Comprehensive system architecture, cryptographic protocols, DTN mesh networking, distributed storage, audio DSP pipelines, and UI/UX design specifications for SIAR.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="theme/custom.css">
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "navy";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('navy')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="Home.html">Architecture Portal & Reading Guide</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part I: Protocol Foundation & Extension Platform</li><li class="chapter-item expanded "><a href="01-protocol-extension-system-architecture.html"><strong aria-hidden="true">1.</strong> 01 — Protocol Extension System Architecture</a></li><li class="chapter-item expanded "><a href="07-capability-negotiation-architecture.html"><strong aria-hidden="true">2.</strong> 07 — Capability Negotiation & Protocol Upgrades</a></li><li class="chapter-item expanded "><a href="21-third-party-protocol-extensions-architecture.html" class="active"><strong aria-hidden="true">3.</strong> 21 — Third-Party Protocol Extensions</a></li><li class="chapter-item expanded "><a href="22-wasm-compatible-components-architecture.html"><strong aria-hidden="true">4.</strong> 22 — WebAssembly (WASM) Compatible Components</a></li><li class="chapter-item expanded "><a href="23-external-interoperability-suite-architecture.html"><strong aria-hidden="true">5.</strong> 23 — External Interoperability & Conformance Suite</a></li><li class="chapter-item expanded "><a href="24-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">6.</strong> 24 — Dynamic Plugin & Module Ecosystem</a></li><li class="chapter-item expanded affix "><li class="part-title">Part II: Identity, Trust & Cryptography</li><li class="chapter-item expanded "><a href="02-multi-device-identity-architecture.html"><strong aria-hidden="true">7.</strong> 02 — Multi-Device Identity & Trust Model</a></li><li class="chapter-item expanded "><a href="28-production-security-e2ee-key-management-privacy-architecture.html"><strong aria-hidden="true">8.</strong> 28 — Production Security, E2EE, Key Management & Privacy</a></li><li class="chapter-item expanded affix "><li class="part-title">Part III: Mesh Networking, Transports & Hardware</li><li class="chapter-item expanded "><a href="03-transport-routing-policy-engine-architecture.html"><strong aria-hidden="true">9.</strong> 03 — Transport & Routing Policy Engine</a></li><li class="chapter-item expanded "><a href="11-relay-self-hosted-infrastructure-architecture.html"><strong aria-hidden="true">10.</strong> 11 — Self-Hosted Relay & Coordination Infrastructure</a></li><li class="chapter-item expanded "><a href="12-multipath-networking-architecture.html"><strong aria-hidden="true">11.</strong> 12 — Multipath Networking & Link Aggregation</a></li><li class="chapter-item expanded "><a href="13-battery-aware-scheduling-architecture.html"><strong aria-hidden="true">12.</strong> 13 — Battery-Aware Scheduling & Power Profiles</a></li><li class="chapter-item expanded "><a href="14-proximity-abstraction-architecture.html"><strong aria-hidden="true">13.</strong> 14 — Proximity Abstraction (BLE, Wi-Fi Direct, LoRa)</a></li><li class="chapter-item expanded "><a href="15-qr-nfc-bootstrap-pairing-architecture.html"><strong aria-hidden="true">14.</strong> 15 — Out-of-Band QR & NFC Bootstrap Pairing</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IV: Delay-Tolerant Networking & Emergency Mesh</li><li class="chapter-item expanded "><a href="06-dtn-store-carry-forward-architecture.html"><strong aria-hidden="true">15.</strong> 06 — DTN Store-Carry-Forward & Bundle Forwarding</a></li><li class="chapter-item expanded "><a href="17-emergency-priority-classes-architecture.html"><strong aria-hidden="true">16.</strong> 17 — Emergency Priority Classes & Critical Alert Mesh</a></li><li class="chapter-item expanded affix "><li class="part-title">Part V: Storage, Outbox & Data Lifecycle</li><li class="chapter-item expanded "><a href="04-offline-event-log-architecture.html"><strong aria-hidden="true">17.</strong> 04 — Offline Event Log & Sync Engine</a></li><li class="chapter-item expanded "><a href="05-robust-file-blob-subsystem-architecture.html"><strong aria-hidden="true">18.</strong> 05 — Robust File & Blob Subsystem (Chunking & Resumption)</a></li><li class="chapter-item expanded "><a href="09-crash-recovery-architecture.html"><strong aria-hidden="true">19.</strong> 09 — Crash Recovery & State Integrity</a></li><li class="chapter-item expanded "><a href="32-search-indexing-local-knowledge-privacy-architecture.html"><strong aria-hidden="true">20.</strong> 32 — Search, Indexing & Local Privacy Retrieval</a></li><li class="chapter-item expanded "><a href="33-backup-restore-export-import-archival-portability-architecture.html"><strong aria-hidden="true">21.</strong> 33 — Backup, Restore, Export & Long-Term Archival</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VI: Realtime Media, Calling & Audio DSP</li><li class="chapter-item expanded "><a href="25-android-direct-hardware-surface-zero-copy-media-architecture.html"><strong aria-hidden="true">22.</strong> 25 — Android Direct Surface Zero-Copy Media</a></li><li class="chapter-item expanded "><a href="26-rust-first-audio-dsp-resampling-aec-ns-agc-architecture.html"><strong aria-hidden="true">23.</strong> 26 — Rust-First Audio DSP (AEC, NS, AGC, Resampling)</a></li><li class="chapter-item expanded "><a href="29-realtime-calls-media-session-protocol-architecture.html"><strong aria-hidden="true">24.</strong> 29 — Realtime Calls & Media Session Protocol</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VII: Ephemeral State, Presence & Notifications</li><li class="chapter-item expanded "><a href="30-presence-availability-typing-read-receipts-ephemeral-state-architecture.html"><strong aria-hidden="true">25.</strong> 30 — Presence, Availability, Typing & Read Receipts</a></li><li class="chapter-item expanded "><a href="31-notifications-push-background-delivery-lifecycle-architecture.html"><strong aria-hidden="true">26.</strong> 31 — Notifications, Push Wake & Background Delivery</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VIII: Native Runtimes, Daemons & Embedded Linux</li><li class="chapter-item expanded "><a href="16-daemon-headless-runtime-architecture.html"><strong aria-hidden="true">27.</strong> 16 — Headless Daemon & Background Runtime</a></li><li class="chapter-item expanded "><a href="19-c-abi-ffi-architecture.html"><strong aria-hidden="true">28.</strong> 19 — C-ABI FFI & Native Language Interop</a></li><li class="chapter-item expanded "><a href="20-embedded-linux-node-architecture.html"><strong aria-hidden="true">29.</strong> 20 — Embedded Linux Node & Resource-Constrained Targets</a></li><li class="chapter-item expanded "><a href="27-rust-driven-android-native-build-packaging-automation.html"><strong aria-hidden="true">30.</strong> 27 — Rust-Driven Android Native Build & Packaging Automation</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IX: Reliability, Testing, Fuzzing & Diagnostics</li><li class="chapter-item expanded "><a href="08-resource-limits-backpressure-architecture.html"><strong aria-hidden="true">31.</strong> 08 — Resource Limits, Quotas & Backpressure</a></li><li class="chapter-item expanded "><a href="10-fuzzing-protocol-test-suite-architecture.html"><strong aria-hidden="true">32.</strong> 10 — Fuzzing & Protocol Test Suite</a></li><li class="chapter-item expanded "><a href="18-network-diagnostics-path-visualization-architecture.html"><strong aria-hidden="true">33.</strong> 18 — Network Diagnostics & Path Visualization</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part X: UI/UX Client Architecture (Cross-Platform)</li><li class="chapter-item expanded "><a href="ui-ux-01-product-foundation-cross-platform-interaction-architecture.html"><strong aria-hidden="true">34.</strong> UI/UX 01 — Product UX Foundation & Cross-Platform Interaction</a></li><li class="chapter-item expanded "><a href="ui-ux-02-desktop-dioxus-app-shell-navigation-window-architecture.html"><strong aria-hidden="true">35.</strong> UI/UX 02 — Desktop Dioxus App Shell & Navigation</a></li><li class="chapter-item expanded "><a href="ui-ux-03-android-jetpack-compose-app-shell-navigation-lifecycle-architecture.html"><strong aria-hidden="true">36.</strong> UI/UX 03 — Android Jetpack Compose App Shell & Lifecycle</a></li><li class="chapter-item expanded "><a href="ui-ux-04-conversation-list-inbox-architecture.html"><strong aria-hidden="true">37.</strong> UI/UX 04 — Conversation List & Inbox UX</a></li><li class="chapter-item expanded "><a href="ui-ux-05-conversation-message-timeline-architecture.html"><strong aria-hidden="true">38.</strong> UI/UX 05 — Conversation Message Timeline UX</a></li><li class="chapter-item expanded "><a href="ui-ux-06-message-composer-attachments-voice-notes-drafts-architecture.html"><strong aria-hidden="true">39.</strong> UI/UX 06 — Message Composer, Attachments & Voice Notes</a></li><li class="chapter-item expanded "><a href="ui-ux-07-calls-realtime-media-architecture.html"><strong aria-hidden="true">40.</strong> UI/UX 07 — Calls & Realtime Media UX</a></li><li class="chapter-item expanded "><a href="ui-ux-08-contacts-requests-verification-identity-architecture.html"><strong aria-hidden="true">41.</strong> UI/UX 08 — Contacts, Requests, Verification & Identity</a></li><li class="chapter-item expanded "><a href="ui-ux-09-groups-membership-roles-architecture.html"><strong aria-hidden="true">42.</strong> UI/UX 09 — Groups, Membership & Roles UX</a></li><li class="chapter-item expanded "><a href="ui-ux-10-files-media-gallery-transfer-architecture.html"><strong aria-hidden="true">43.</strong> UI/UX 10 — Files, Media Gallery & Transfer UX</a></li><li class="chapter-item expanded "><a href="ui-ux-11-search-local-knowledge-retrieval-architecture.html"><strong aria-hidden="true">44.</strong> UI/UX 11 — Search & Local Knowledge Retrieval UX</a></li><li class="chapter-item expanded "><a href="ui-ux-12-nearby-qr-nfc-pairing-device-linking-architecture.html"><strong aria-hidden="true">45.</strong> UI/UX 12 — Nearby, QR/NFC Pairing & Device Linking UX</a></li><li class="chapter-item expanded "><a href="ui-ux-13-notifications-background-incoming-call-architecture.html"><strong aria-hidden="true">46.</strong> UI/UX 13 — Notifications, Background & Incoming Call UX</a></li><li class="chapter-item expanded "><a href="ui-ux-14-presence-typing-receipts-status-architecture.html"><strong aria-hidden="true">47.</strong> UI/UX 14 — Presence, Typing, Receipts & Status UX</a></li><li class="chapter-item expanded "><a href="ui-ux-15-security-center-devices-keys-recovery-architecture.html"><strong aria-hidden="true">48.</strong> UI/UX 15 — Security Center, Devices, Keys & Recovery UX</a></li><li class="chapter-item expanded "><a href="ui-ux-16-backup-restore-export-migration-architecture.html"><strong aria-hidden="true">49.</strong> UI/UX 16 — Backup, Restore, Export & Migration UX</a></li><li class="chapter-item expanded "><a href="ui-ux-17-emergency-sos-offline-mesh-architecture.html"><strong aria-hidden="true">50.</strong> UI/UX 17 — Emergency / SOS / Offline Mesh UX</a></li><li class="chapter-item expanded "><a href="ui-ux-18-settings-privacy-notifications-data-controls-architecture.html"><strong aria-hidden="true">51.</strong> UI/UX 18 — Settings, Privacy, Notifications & Data Controls</a></li><li class="chapter-item expanded "><a href="ui-ux-19-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">52.</strong> UI/UX 19 — Plugin & Module Ecosystem UX</a></li><li class="chapter-item expanded "><a href="ui-ux-20-diagnostics-network-paths-advanced-developer-architecture.html"><strong aria-hidden="true">53.</strong> UI/UX 20 — Diagnostics, Network Paths & Developer UX</a></li><li class="chapter-item expanded "><a href="ui-ux-21-accessibility-inclusive-interaction-architecture.html"><strong aria-hidden="true">54.</strong> UI/UX 21 — Accessibility & Inclusive Interaction</a></li><li class="chapter-item expanded "><a href="ui-ux-22-design-system-tokens-typography-icons-motion-architecture.html"><strong aria-hidden="true">55.</strong> UI/UX 22 — Design System, Tokens, Typography & Motion</a></li><li class="chapter-item expanded "><a href="ui-ux-23-responsive-adaptive-desktop-tablet-foldable-phone-layout-architecture.html"><strong aria-hidden="true">56.</strong> UI/UX 23 — Responsive & Adaptive Layouts (Desktop/Tablet/Foldable/Phone)</a></li><li class="chapter-item expanded "><a href="ui-ux-24-error-loading-empty-offline-degraded-state-architecture.html"><strong aria-hidden="true">57.</strong> UI/UX 24 — Error, Loading, Empty & Degraded-State UX</a></li><li class="chapter-item expanded "><a href="ui-ux-25-onboarding-first-run-permission-education-architecture.html"><strong aria-hidden="true">58.</strong> UI/UX 25 — Onboarding, First Run & Permission Education</a></li><li class="chapter-item expanded "><a href="ui-ux-26-performance-virtualization-large-data-ui-architecture.html"><strong aria-hidden="true">59.</strong> UI/UX 26 — Virtualization & Large-Data UI Performance</a></li><li class="chapter-item expanded "><a href="ui-ux-27-ui-testing-screenshot-interaction-release-quality-gates-architecture.html"><strong aria-hidden="true">60.</strong> UI/UX 27 — UI Testing, Screenshots & Release Quality Gates</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">SIAR System Architecture &amp; Technical Wiki</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar/edit/main/sys-arch/21-third-party-protocol-extensions-architecture.md" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="part-21--third-party-protocol-extensions-architecture"><a class="header" href="#part-21--third-party-protocol-extensions-architecture">Part 21 — Third-Party Protocol Extensions Architecture</a></h1>
+<h2 id="reusable-p2p-communication-platform"><a class="header" href="#reusable-p2p-communication-platform">Reusable P2P Communication Platform</a></h2>
+<p><strong>Status:</strong> Architecture specification<br />
+<strong>Part:</strong> 21 of 24<br />
+<strong>Primary language:</strong> Rust<br />
+<strong>Primary goals:</strong> safe third-party protocol extensibility, versioned namespaced extensions, capability negotiation, lifecycle isolation, bounded resources, permissioned access, crash containment, stable wire contracts, interoperability, conformance tooling, and prevention of policy bypass</p>
+<hr />
+<h1 id="1-purpose"><a class="header" href="#1-purpose">1. Purpose</a></h1>
+<p>A reusable communication platform becomes much more valuable when external developers can add protocol features without forking the core.</p>
+<p>Possible third-party extensions include:</p>
+<pre><code class="language-text">collaborative editing
+whiteboard
+game state sync
+ERP notifications
+document workflows
+IoT telemetry
+task coordination
+custom file metadata
+organization commands
+specialized emergency workflows
+remote-control protocols
+application-specific sync
+</code></pre>
+<p>But arbitrary extension code creates serious risks:</p>
+<pre><code class="language-text">wire incompatibility
+resource exhaustion
+identity bypass
+privacy leaks
+unsafe storage access
+protocol collisions
+crash propagation
+priority abuse
+unbounded queues
+plugin lock-in
+</code></pre>
+<p>Therefore third-party protocol support must be explicitly constrained.</p>
+<p>The core rule is:</p>
+<blockquote>
+<p><strong>Extensions may add protocol semantics, but they must not bypass the platform’s identity, routing, capability, resource, security, crash-recovery, or emergency-policy boundaries.</strong></p>
+</blockquote>
+<hr />
+<h1 id="2-architectural-position"><a class="header" href="#2-architectural-position">2. Architectural Position</a></h1>
+<pre><code class="language-text">Third-Party Extension
+        ↓
+Extension SDK
+        ↓
+Extension Host Boundary
+        ↓
+Protocol Extension Runtime
+        ↓
+Core Services
+├── Identity
+├── Capability Negotiation
+├── Routing
+├── Resource Limits
+├── Storage
+├── Event Log
+├── Diagnostics
+└── Transport
+</code></pre>
+<p>Extensions do not talk directly to:</p>
+<pre><code class="language-text">raw sockets
+database files
+identity private keys
+unbounded task spawning
+</code></pre>
+<p>unless explicitly granted through constrained APIs.</p>
+<hr />
+<h1 id="3-extension-categories"><a class="header" href="#3-extension-categories">3. Extension Categories</a></h1>
+<p>Recommended categories:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum ExtensionKind {
+    ApplicationProtocol,
+    DataSync,
+    FileMetadata,
+    ControlPlane,
+    Notification,
+    Collaboration,
+    DeviceIntegration,
+    Experimental,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>This classification helps permission policy and review.</p>
+<hr />
+<h1 id="4-namespaced-extension-ids"><a class="header" href="#4-namespaced-extension-ids">4. Namespaced Extension IDs</a></h1>
+<p>Every extension must have a globally collision-resistant identifier.</p>
+<p>Example:</p>
+<pre><code class="language-text">org.example.whiteboard
+com.company.erp.events
+dev.irshad.customsync
+</code></pre>
+<p>Represent internally:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct ExtensionId(String);
+<span class="boring">}</span></code></pre></pre>
+<p>Validate:</p>
+<pre><code class="language-text">ASCII/UTF-8 policy
+max length
+reverse-DNS style
+no reserved core prefixes
+</code></pre>
+<hr />
+<h1 id="5-reserved-namespaces"><a class="header" href="#5-reserved-namespaces">5. Reserved Namespaces</a></h1>
+<p>Core reserves:</p>
+<pre><code class="language-text">core.*
+iroh.*
+comm.*
+system.*
+</code></pre>
+<p>Third parties cannot register these.</p>
+<hr />
+<h1 id="6-extension-protocol-name"><a class="header" href="#6-extension-protocol-name">6. Extension Protocol Name</a></h1>
+<p>Wire protocol example:</p>
+<pre><code class="language-text">ext/org.example.whiteboard/1
+</code></pre>
+<p>where:</p>
+<pre><code class="language-text">extension namespace = org.example.whiteboard
+major version = 1
+</code></pre>
+<hr />
+<h1 id="7-semantic-versioning"><a class="header" href="#7-semantic-versioning">7. Semantic Versioning</a></h1>
+<p>Separate:</p>
+<pre><code class="language-text">extension package version
+wire protocol version
+storage schema version
+SDK compatibility version
+</code></pre>
+<p>Do not conflate them.</p>
+<hr />
+<h1 id="8-wire-major-version"><a class="header" href="#8-wire-major-version">8. Wire Major Version</a></h1>
+<p>Breaking wire change:</p>
+<pre><code class="language-text">major++
+</code></pre>
+<p>Examples:</p>
+<pre><code class="language-text">message layout incompatible
+state machine incompatible
+semantics changed
+</code></pre>
+<hr />
+<h1 id="9-wire-minor-version"><a class="header" href="#9-wire-minor-version">9. Wire Minor Version</a></h1>
+<p>Additive compatible capabilities may use:</p>
+<pre><code class="language-text">minor capability flags
+</code></pre>
+<p>without changing protocol major.</p>
+<hr />
+<h1 id="10-extension-manifest"><a class="header" href="#10-extension-manifest">10. Extension Manifest</a></h1>
+<p>Every extension provides a manifest.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct ExtensionManifest {
+    pub id: ExtensionId,
+    pub display_name: String,
+    pub package_version: Version,
+    pub protocol_versions: Vec&lt;ProtocolVersion&gt;,
+    pub sdk_requirement: SdkRequirement,
+    pub permissions: Vec&lt;ExtensionPermission&gt;,
+    pub resource_profile: ExtensionResourceProfile,
+    pub capabilities: Vec&lt;ExtensionCapability&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="11-manifest-must-be-declarative"><a class="header" href="#11-manifest-must-be-declarative">11. Manifest Must Be Declarative</a></h1>
+<p>The runtime should know before loading:</p>
+<pre><code class="language-text">what extension wants
+what protocols it exposes
+what resources it requests
+what permissions it needs
+</code></pre>
+<p>Do not discover everything only after executing extension code.</p>
+<hr />
+<h1 id="12-permission-model"><a class="header" href="#12-permission-model">12. Permission Model</a></h1>
+<p>Extensions request explicit capabilities.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum ExtensionPermission {
+    SendProtocolFrames,
+    ReceiveProtocolFrames,
+    ReadOwnState,
+    WriteOwnState,
+    ReadPeerIdentityBasic,
+    ReadTrustedContactMetadata,
+    UseFiles,
+    UseDtn,
+    UseProximity,
+    UseDiagnostics,
+    RegisterNotifications,
+    BackgroundExecution,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Sensitive permissions should require stronger user/admin approval.</p>
+<hr />
+<h1 id="13-no-raw-identity-keys"><a class="header" href="#13-no-raw-identity-keys">13. No Raw Identity Keys</a></h1>
+<p>There is no permission:</p>
+<pre><code class="language-text">ReadPrivateIdentityKey
+</code></pre>
+<p>Extensions instead request:</p>
+<pre><code class="language-text">sign operation
+authenticate session
+</code></pre>
+<p>through constrained services.</p>
+<hr />
+<h1 id="14-no-raw-database-access"><a class="header" href="#14-no-raw-database-access">14. No Raw Database Access</a></h1>
+<p>Extensions do not receive:</p>
+<pre><code class="language-text">SQLite connection
+DB path
+internal event tables
+</code></pre>
+<p>They use extension-owned state APIs.</p>
+<hr />
+<h1 id="15-extension-owned-storage"><a class="header" href="#15-extension-owned-storage">15. Extension-Owned Storage</a></h1>
+<p>Provide namespaced storage:</p>
+<pre><code class="language-text">extension_id
++
+version
++
+key/value or event namespace
+</code></pre>
+<p>Example:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait ExtensionStateStore {
+    async fn get(&amp;self, key: &amp;[u8]) -&gt; Result&lt;Option&lt;Vec&lt;u8&gt;&gt;, ExtensionStateError&gt;;
+    async fn put(&amp;self, key: &amp;[u8], value: &amp;[u8]) -&gt; Result&lt;(), ExtensionStateError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="16-storage-quotas"><a class="header" href="#16-storage-quotas">16. Storage Quotas</a></h1>
+<p>Every extension gets:</p>
+<pre><code class="language-text">max persistent bytes
+max cache bytes
+max value size
+max write rate
+</code></pre>
+<p>Part 08 enforces.</p>
+<hr />
+<h1 id="17-storage-schema-version"><a class="header" href="#17-storage-schema-version">17. Storage Schema Version</a></h1>
+<p>Extension manifest declares:</p>
+<pre><code class="language-text">storage_schema_version
+</code></pre>
+<p>Migrations run only inside its namespace.</p>
+<hr />
+<h1 id="18-migration-failure-isolation"><a class="header" href="#18-migration-failure-isolation">18. Migration Failure Isolation</a></h1>
+<p>If one extension migration fails:</p>
+<pre><code class="language-text">disable that extension
+</code></pre>
+<p>Do not corrupt core startup.</p>
+<hr />
+<h1 id="19-extension-state-is-not-core-state"><a class="header" href="#19-extension-state-is-not-core-state">19. Extension State Is Not Core State</a></h1>
+<p>Core should not require third-party extension state to recover messaging/files/identity.</p>
+<p>This preserves modularity.</p>
+<hr />
+<h1 id="20-extension-lifecycle"><a class="header" href="#20-extension-lifecycle">20. Extension Lifecycle</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum ExtensionLifecycleState {
+    Installed,
+    Disabled,
+    Starting,
+    Running,
+    Degraded,
+    Stopping,
+    Failed,
+    Quarantined,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="21-lifecycle-hooks"><a class="header" href="#21-lifecycle-hooks">21. Lifecycle Hooks</a></h1>
+<p>Conceptually:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait ProtocolExtension {
+    async fn start(&amp;mut self, ctx: ExtensionContext) -&gt; Result&lt;(), ExtensionError&gt;;
+    async fn stop(&amp;mut self) -&gt; Result&lt;(), ExtensionError&gt;;
+    async fn on_session(&amp;mut self, session: ExtensionSession) -&gt; Result&lt;(), ExtensionError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Actual plugin/module runtime may use FFI/WASM/IPC rather than Rust trait directly.</p>
+<hr />
+<h1 id="22-extension-context"><a class="header" href="#22-extension-context">22. Extension Context</a></h1>
+<p>Only expose approved services.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct ExtensionContext {
+    pub identity: ExtensionIdentityApi,
+    pub storage: ExtensionStateApi,
+    pub transport: ExtensionTransportApi,
+    pub files: Option&lt;ExtensionFilesApi&gt;,
+    pub diagnostics: ExtensionDiagnosticsApi,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>No access to internal runtime structs.</p>
+<hr />
+<h1 id="23-capability-negotiation"><a class="header" href="#23-capability-negotiation">23. Capability Negotiation</a></h1>
+<p>Part 07 is mandatory.</p>
+<p>Before using extension:</p>
+<pre><code class="language-text">local extension installed
+remote extension supported
+wire version compatible
+permissions/policy allow
+</code></pre>
+<p>Only then open extension protocol.</p>
+<hr />
+<h1 id="24-capability-advertisement"><a class="header" href="#24-capability-advertisement">24. Capability Advertisement</a></h1>
+<p>Peer advertises:</p>
+<pre><code class="language-text">extension ID
+supported major/minor
+optional features
+</code></pre>
+<p>through bounded capability metadata.</p>
+<hr />
+<h1 id="25-unknown-extension"><a class="header" href="#25-unknown-extension">25. Unknown Extension</a></h1>
+<p>If peer advertises unsupported extension:</p>
+<pre><code class="language-text">ignore safely
+</code></pre>
+<p>unless it is marked required for a specific application action.</p>
+<hr />
+<h1 id="26-required-extension"><a class="header" href="#26-required-extension">26. Required Extension</a></h1>
+<p>Application operation may say:</p>
+<pre><code class="language-text">requires org.example.whiteboard/1
+</code></pre>
+<p>If peer lacks it:</p>
+<pre><code class="language-text">typed UnsupportedExtension
+</code></pre>
+<p>not generic network error.</p>
+<hr />
+<h1 id="27-wire-isolation"><a class="header" href="#27-wire-isolation">27. Wire Isolation</a></h1>
+<p>Every extension gets a protocol namespace.</p>
+<p>Do not multiplex third-party payloads into core message types without explicit framing.</p>
+<hr />
+<h1 id="28-extension-frame-header"><a class="header" href="#28-extension-frame-header">28. Extension Frame Header</a></h1>
+<p>Conceptually:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct ExtensionFrameHeader {
+    pub extension_id: ExtensionIdHash,
+    pub protocol_major: u16,
+    pub message_type: u16,
+    pub payload_len: u32,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Payload remains bounded.</p>
+<hr />
+<h1 id="29-extension-id-hash"><a class="header" href="#29-extension-id-hash">29. Extension ID Hash</a></h1>
+<p>To reduce wire size:</p>
+<pre><code class="language-text">manifest namespace
+→ stable hash/assigned compact ID
+</code></pre>
+<p>Need collision-safe negotiation.</p>
+<p>Do not trust hash alone if collision ambiguity exists.</p>
+<hr />
+<h1 id="30-payload-limits"><a class="header" href="#30-payload-limits">30. Payload Limits</a></h1>
+<p>Each extension has:</p>
+<pre><code class="language-text">max frame size
+max message rate
+max stream count
+</code></pre>
+<p>The extension cannot raise these itself beyond platform policy.</p>
+<hr />
+<h1 id="31-streaming-extensions"><a class="header" href="#31-streaming-extensions">31. Streaming Extensions</a></h1>
+<p>Large data should use:</p>
+<pre><code class="language-text">stream API
+file/blob subsystem
+</code></pre>
+<p>rather than huge frame payloads.</p>
+<hr />
+<h1 id="32-file-reuse"><a class="header" href="#32-file-reuse">32. File Reuse</a></h1>
+<p>Third-party extension should reuse Part 05 for:</p>
+<pre><code class="language-text">attachments
+large snapshots
+binary assets
+</code></pre>
+<p>instead of inventing another file transport.</p>
+<hr />
+<h1 id="33-dtn-reuse"><a class="header" href="#33-dtn-reuse">33. DTN Reuse</a></h1>
+<p>If extension wants offline store-carry-forward:</p>
+<pre><code class="language-text">request UseDtn
+</code></pre>
+<p>and provide bounded DTN envelope semantics.</p>
+<p>Do not implement independent hidden DTN network.</p>
+<hr />
+<h1 id="34-routing-reuse"><a class="header" href="#34-routing-reuse">34. Routing Reuse</a></h1>
+<p>Extensions submit:</p>
+<pre><code class="language-text">delivery requirements
+</code></pre>
+<p>to Part 03.</p>
+<p>They do not choose raw network interfaces directly.</p>
+<hr />
+<h1 id="35-multipath-reuse"><a class="header" href="#35-multipath-reuse">35. Multipath Reuse</a></h1>
+<p>Extensions may request:</p>
+<pre><code class="language-text">allow multipath
+redundancy preference
+</code></pre>
+<p>but Part 12 decides actual paths.</p>
+<hr />
+<h1 id="36-battery-policy-reuse"><a class="header" href="#36-battery-policy-reuse">36. Battery Policy Reuse</a></h1>
+<p>Extension background work is subject to Part 13.</p>
+<p>It cannot force continuous scanning or multiple radios.</p>
+<hr />
+<h1 id="37-proximity-reuse"><a class="header" href="#37-proximity-reuse">37. Proximity Reuse</a></h1>
+<p>Extension can request nearby discovery through Part 14.</p>
+<p>It does not directly control BLE/Wi-Fi APIs.</p>
+<hr />
+<h1 id="38-emergency-priority-boundary"><a class="header" href="#38-emergency-priority-boundary">38. Emergency Priority Boundary</a></h1>
+<p>Third-party extensions cannot assign:</p>
+<pre><code class="language-text">AuthorityCritical
+</code></pre>
+<p>directly.</p>
+<p>They may request a priority class, but Part 17 authorizes effective priority.</p>
+<hr />
+<h1 id="39-priority-abuse-prevention"><a class="header" href="#39-priority-abuse-prevention">39. Priority Abuse Prevention</a></h1>
+<p>Extension manifest can declare:</p>
+<pre><code class="language-text">max requested priority
+</code></pre>
+<p>Example:</p>
+<pre><code class="language-text">Routine
+Important
+Urgent
+</code></pre>
+<p>Only trusted system/authority extensions may even request Critical.</p>
+<hr />
+<h1 id="40-identity-boundary"><a class="header" href="#40-identity-boundary">40. Identity Boundary</a></h1>
+<p>Extensions receive only minimum peer identity information.</p>
+<p>Default:</p>
+<pre><code class="language-text">opaque peer reference
+verified/unverified state
+optional display name after policy
+</code></pre>
+<p>Not full contact graph.</p>
+<hr />
+<h1 id="41-peer-reference"><a class="header" href="#41-peer-reference">41. Peer Reference</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct ExtensionPeerRef {
+    pub opaque_id: ExtensionScopedPeerId,
+    pub trust: PeerTrustClass,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="42-extension-scoped-peer-ids"><a class="header" href="#42-extension-scoped-peer-ids">42. Extension-Scoped Peer IDs</a></h1>
+<p>To reduce correlation:</p>
+<pre><code class="language-text">same peer
+</code></pre>
+<p>may map to different opaque ID per extension.</p>
+<p>This prevents cross-extension tracking.</p>
+<hr />
+<h1 id="43-stable-scope"><a class="header" href="#43-stable-scope">43. Stable Scope</a></h1>
+<p>Mapping can be:</p>
+<pre><code class="language-text">HMAC(platform_secret, extension_id || DeviceId)
+</code></pre>
+<p>or equivalent stable privacy-preserving derivation.</p>
+<p>Do not expose raw DeviceId unless permission requires it.</p>
+<hr />
+<h1 id="44-contact-metadata-permission"><a class="header" href="#44-contact-metadata-permission">44. Contact Metadata Permission</a></h1>
+<p>Sensitive extension may request:</p>
+<pre><code class="language-text">ReadTrustedContactMetadata
+</code></pre>
+<p>User/admin should explicitly approve.</p>
+<hr />
+<h1 id="45-message-content-access"><a class="header" href="#45-message-content-access">45. Message Content Access</a></h1>
+<p>Third-party extension should not automatically read core messaging history.</p>
+<p>If a future API allows it:</p>
+<pre><code class="language-text">separate high-risk permission
+</code></pre>
+<p>not default.</p>
+<hr />
+<h1 id="46-extension-messaging"><a class="header" href="#46-extension-messaging">46. Extension Messaging</a></h1>
+<p>Prefer:</p>
+<pre><code class="language-text">extension owns its own protocol payloads
+</code></pre>
+<p>rather than injecting arbitrary hidden metadata into core chat messages.</p>
+<hr />
+<h1 id="47-ui-integration"><a class="header" href="#47-ui-integration">47. UI Integration</a></h1>
+<p>Part 24 plugin/module ecosystem may expose UI.</p>
+<p>Part 21 protocol extension itself should remain UI-neutral.</p>
+<hr />
+<h1 id="48-headless-compatibility"><a class="header" href="#48-headless-compatibility">48. Headless Compatibility</a></h1>
+<p>Every third-party protocol should be able to run without Dioxus if it claims headless support.</p>
+<hr />
+<h1 id="49-execution-models"><a class="header" href="#49-execution-models">49. Execution Models</a></h1>
+<p>Possible extension implementations:</p>
+<pre><code class="language-text">native Rust crate linked at build time
+WASM component
+out-of-process plugin
+C ABI plugin
+remote service adapter
+</code></pre>
+<p>Part 21 defines semantics independent of implementation.</p>
+<hr />
+<h1 id="50-built-in-extension"><a class="header" href="#50-built-in-extension">50. Built-In Extension</a></h1>
+<p>A first-party feature can use the same extension interface.</p>
+<p>This is useful dogfooding.</p>
+<hr />
+<h1 id="51-statically-linked-extension"><a class="header" href="#51-statically-linked-extension">51. Statically Linked Extension</a></h1>
+<p>Best performance.</p>
+<p>Trade-off:</p>
+<pre><code class="language-text">requires application rebuild
+less runtime isolation
+</code></pre>
+<p>Useful for trusted enterprise/custom builds.</p>
+<hr />
+<h1 id="52-wasm-extension"><a class="header" href="#52-wasm-extension">52. WASM Extension</a></h1>
+<p>Potentially best for:</p>
+<pre><code class="language-text">sandboxing
+portable third-party logic
+resource control
+</code></pre>
+<p>Part 24 may define packaging/runtime details.</p>
+<hr />
+<h1 id="53-out-of-process-extension"><a class="header" href="#53-out-of-process-extension">53. Out-of-Process Extension</a></h1>
+<p>Strong isolation:</p>
+<pre><code class="language-text">extension host
++
+IPC
+</code></pre>
+<p>Good for untrusted native plugins.</p>
+<hr />
+<h1 id="54-native-in-process-extension-risk"><a class="header" href="#54-native-in-process-extension-risk">54. Native In-Process Extension Risk</a></h1>
+<p>A native plugin loaded into daemon process can:</p>
+<pre><code class="language-text">crash process
+read memory
+bypass sandbox
+</code></pre>
+<p>Therefore only trusted/signed extensions should run in-process.</p>
+<hr />
+<h1 id="55-trust-levels"><a class="header" href="#55-trust-levels">55. Trust Levels</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum ExtensionTrustLevel {
+    BuiltIn,
+    TrustedSigned,
+    SandboxedThirdParty,
+    DevelopmentOnly,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="56-trust-determines-execution"><a class="header" href="#56-trust-determines-execution">56. Trust Determines Execution</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">BuiltIn → native in-process
+TrustedSigned → native or WASM
+SandboxedThirdParty → WASM/out-of-process
+DevelopmentOnly → explicit dev mode
+</code></pre>
+<hr />
+<h1 id="57-extension-signing"><a class="header" href="#57-extension-signing">57. Extension Signing</a></h1>
+<p>Package may be signed.</p>
+<p>Manifest includes:</p>
+<pre><code class="language-text">publisher identity
+digest
+signature
+</code></pre>
+<p>Runtime verifies before install/load if policy requires.</p>
+<hr />
+<h1 id="58-publisher-identity"><a class="header" href="#58-publisher-identity">58. Publisher Identity</a></h1>
+<p>Separate from messaging identity.</p>
+<p>Use:</p>
+<pre><code class="language-text">extension publisher certificate/key
+</code></pre>
+<hr />
+<h1 id="59-signature-does-not-mean-safe"><a class="header" href="#59-signature-does-not-mean-safe">59. Signature Does Not Mean Safe</a></h1>
+<p>Signed means:</p>
+<pre><code class="language-text">publisher authenticated
+package untampered
+</code></pre>
+<p>not:</p>
+<pre><code class="language-text">bug-free
+trusted with all permissions
+</code></pre>
+<p>Still sandbox and permission-limit.</p>
+<hr />
+<h1 id="60-installation-policy"><a class="header" href="#60-installation-policy">60. Installation Policy</a></h1>
+<p>Consumer product can support:</p>
+<pre><code class="language-text">built-in only
+allowlisted publishers
+user-installable sandboxed
+enterprise-managed
+</code></pre>
+<hr />
+<h1 id="61-enterprise-allowlist"><a class="header" href="#61-enterprise-allowlist">61. Enterprise Allowlist</a></h1>
+<p>Organization can define:</p>
+<pre><code class="language-text">allowed extension IDs
+allowed publishers
+max versions
+permissions
+</code></pre>
+<hr />
+<h1 id="62-revocation"><a class="header" href="#62-revocation">62. Revocation</a></h1>
+<p>Extension can be revoked due to:</p>
+<pre><code class="language-text">security issue
+publisher compromise
+protocol abuse
+</code></pre>
+<p>Revocation policy can disable it on next config sync/start.</p>
+<hr />
+<h1 id="63-offline-revocation"><a class="header" href="#63-offline-revocation">63. Offline Revocation</a></h1>
+<p>For disconnected environments:</p>
+<pre><code class="language-text">signed revocation list
+</code></pre>
+<p>can propagate via DTN/admin provisioning.</p>
+<hr />
+<h1 id="64-extension-update"><a class="header" href="#64-extension-update">64. Extension Update</a></h1>
+<p>Update must consider:</p>
+<pre><code class="language-text">wire version
+storage schema
+SDK compatibility
+permission changes
+</code></pre>
+<hr />
+<h1 id="65-permission-expansion"><a class="header" href="#65-permission-expansion">65. Permission Expansion</a></h1>
+<p>If update requests new permission:</p>
+<pre><code class="language-text">require re-approval
+</code></pre>
+<p>Do not silently grant.</p>
+<hr />
+<h1 id="66-storage-migration"><a class="header" href="#66-storage-migration">66. Storage Migration</a></h1>
+<p>Update runs extension-local migration.</p>
+<p>Must be:</p>
+<pre><code class="language-text">bounded
+idempotent
+crash-safe
+</code></pre>
+<hr />
+<h1 id="67-rollback"><a class="header" href="#67-rollback">67. Rollback</a></h1>
+<p>Extension rollback requires compatibility with:</p>
+<pre><code class="language-text">storage schema
+wire state
+</code></pre>
+<p>If unsafe:</p>
+<pre><code class="language-text">refuse rollback
+</code></pre>
+<hr />
+<h1 id="68-extension-crash"><a class="header" href="#68-extension-crash">68. Extension Crash</a></h1>
+<p>If extension panics/fails:</p>
+<pre><code class="language-text">mark extension failed
+stop its sessions
+preserve core runtime
+</code></pre>
+<p>For in-process native plugin, full process isolation may not exist; this is why sandboxed execution is preferred.</p>
+<hr />
+<h1 id="69-quarantine"><a class="header" href="#69-quarantine">69. Quarantine</a></h1>
+<p>Repeated failures:</p>
+<pre><code class="language-text">Failed
+→ Quarantined
+</code></pre>
+<p>Requires user/admin action to re-enable.</p>
+<hr />
+<h1 id="70-crash-recovery"><a class="header" href="#70-crash-recovery">70. Crash Recovery</a></h1>
+<p>Part 09 should restore:</p>
+<pre><code class="language-text">core state first
+</code></pre>
+<p>then extension state.</p>
+<p>Extension recovery runs after core minimum invariants.</p>
+<hr />
+<h1 id="71-extension-recovery-hook"><a class="header" href="#71-extension-recovery-hook">71. Extension Recovery Hook</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait RecoverableExtension {
+    async fn recover(&amp;mut self, ctx: ExtensionRecoveryContext)
+        -&gt; Result&lt;ExtensionRecoveryReport, ExtensionError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="72-recovery-failure"><a class="header" href="#72-recovery-failure">72. Recovery Failure</a></h1>
+<p>If extension recovery fails:</p>
+<pre><code class="language-text">disable extension
+core stays usable
+</code></pre>
+<hr />
+<h1 id="73-event-log-integration"><a class="header" href="#73-event-log-integration">73. Event Log Integration</a></h1>
+<p>Third-party extension may register its own durable events.</p>
+<p>Use:</p>
+<pre><code class="language-text">extension event namespace
+</code></pre>
+<p>not arbitrary core event variants.</p>
+<hr />
+<h1 id="74-extension-event-envelope"><a class="header" href="#74-extension-event-envelope">74. Extension Event Envelope</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct ExtensionEvent {
+    pub extension: ExtensionId,
+    pub schema_version: u16,
+    pub event_type: u16,
+    pub payload: Bytes,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="75-event-limits"><a class="header" href="#75-event-limits">75. Event Limits</a></h1>
+<p>Bound:</p>
+<pre><code class="language-text">event size
+event rate
+storage quota
+</code></pre>
+<hr />
+<h1 id="76-event-immutability"><a class="header" href="#76-event-immutability">76. Event Immutability</a></h1>
+<p>Once committed, extension event schema meaning should remain stable.</p>
+<p>Use migration/upcast policy.</p>
+<hr />
+<h1 id="77-projection-support"><a class="header" href="#77-projection-support">77. Projection Support</a></h1>
+<p>Extensions can maintain namespaced projections.</p>
+<p>They cannot mutate core projections directly.</p>
+<hr />
+<h1 id="78-snapshot-support"><a class="header" href="#78-snapshot-support">78. Snapshot Support</a></h1>
+<p>Extension may create:</p>
+<pre><code class="language-text">own snapshot/checkpoint
+</code></pre>
+<p>under quota.</p>
+<hr />
+<h1 id="79-diagnostics-integration"><a class="header" href="#79-diagnostics-integration">79. Diagnostics Integration</a></h1>
+<p>Extension can publish:</p>
+<pre><code class="language-text">health
+reason codes
+basic metrics
+</code></pre>
+<p>through namespaced diagnostic API.</p>
+<hr />
+<h1 id="80-diagnostic-namespace"><a class="header" href="#80-diagnostic-namespace">80. Diagnostic Namespace</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">EXT-org.example.whiteboard-001
+</code></pre>
+<p>Avoid collisions with core reason codes.</p>
+<hr />
+<h1 id="81-diagnostic-privacy"><a class="header" href="#81-diagnostic-privacy">81. Diagnostic Privacy</a></h1>
+<p>Extension diagnostics also pass through Part 18 redaction.</p>
+<hr />
+<h1 id="82-logging"><a class="header" href="#82-logging">82. Logging</a></h1>
+<p>Extensions should use structured host logging API.</p>
+<p>Do not write arbitrary unbounded files.</p>
+<hr />
+<h1 id="83-log-quota"><a class="header" href="#83-log-quota">83. Log Quota</a></h1>
+<p>Rate-limit extension logs.</p>
+<p>Repeated spam can be dropped/coalesced.</p>
+<hr />
+<h1 id="84-metrics"><a class="header" href="#84-metrics">84. Metrics</a></h1>
+<p>Allow:</p>
+<pre><code class="language-text">counters
+gauges
+histograms
+</code></pre>
+<p>with bounded cardinality.</p>
+<p>No raw peer IDs in metric labels.</p>
+<hr />
+<h1 id="85-resource-profile"><a class="header" href="#85-resource-profile">85. Resource Profile</a></h1>
+<p>Manifest example:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct ExtensionResourceProfile {
+    pub max_memory_bytes: u64,
+    pub max_persistent_bytes: u64,
+    pub max_concurrent_sessions: u16,
+    pub max_streams: u16,
+    pub max_tasks: u16,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Host clamps to global maximum.</p>
+<hr />
+<h1 id="86-dynamic-resource-budget"><a class="header" href="#86-dynamic-resource-budget">86. Dynamic Resource Budget</a></h1>
+<p>Part 08 may reduce extension budget under:</p>
+<pre><code class="language-text">battery saver
+memory pressure
+emergency mode
+</code></pre>
+<hr />
+<h1 id="87-cpu-budget"><a class="header" href="#87-cpu-budget">87. CPU Budget</a></h1>
+<p>For sandboxed runtime:</p>
+<pre><code class="language-text">fuel
+instruction quota
+time slice
+</code></pre>
+<p>where execution engine supports.</p>
+<hr />
+<h1 id="88-network-budget"><a class="header" href="#88-network-budget">88. Network Budget</a></h1>
+<p>Per extension:</p>
+<pre><code class="language-text">bytes/sec
+streams
+connection attempts
+DTN bytes
+</code></pre>
+<hr />
+<h1 id="89-storage-budget"><a class="header" href="#89-storage-budget">89. Storage Budget</a></h1>
+<p>Separate:</p>
+<pre><code class="language-text">persistent
+cache
+temporary
+</code></pre>
+<hr />
+<h1 id="90-background-budget"><a class="header" href="#90-background-budget">90. Background Budget</a></h1>
+<p>Extensions cannot assume continuous execution.</p>
+<p>Part 13/16 lifecycle rules apply.</p>
+<hr />
+<h1 id="91-mobile-restrictions"><a class="header" href="#91-mobile-restrictions">91. Mobile Restrictions</a></h1>
+<p>On Android/iOS:</p>
+<pre><code class="language-text">extension background work
+</code></pre>
+<p>is subject to system-approved execution windows.</p>
+<hr />
+<h1 id="92-extension-session"><a class="header" href="#92-extension-session">92. Extension Session</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct ExtensionSession {
+    pub session_id: ExtensionSessionId,
+    pub peer: ExtensionPeerRef,
+    pub protocol_version: ProtocolVersion,
+    pub transport: ExtensionTransportHandle,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="93-session-authentication"><a class="header" href="#93-session-authentication">93. Session Authentication</a></h1>
+<p>Core authenticates peer before extension session if extension requires identity.</p>
+<p>Extension can declare:</p>
+<pre><code class="language-text">anonymous allowed
+verified peer required
+trusted contact required
+</code></pre>
+<hr />
+<h1 id="94-authentication-requirement"><a class="header" href="#94-authentication-requirement">94. Authentication Requirement</a></h1>
+<p>Manifest:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum ExtensionAuthRequirement {
+    AnonymousAllowed,
+    VerifiedDevice,
+    TrustedContact,
+    OrganizationMember,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="95-anonymous-protocols"><a class="header" href="#95-anonymous-protocols">95. Anonymous Protocols</a></h1>
+<p>If allowed:</p>
+<pre><code class="language-text">strict quotas
+small payloads
+no privileged priority
+</code></pre>
+<hr />
+<h1 id="96-session-authorization"><a class="header" href="#96-session-authorization">96. Session Authorization</a></h1>
+<p>Core can reject session based on:</p>
+<pre><code class="language-text">peer trust
+extension policy
+organization policy
+user blocklist
+</code></pre>
+<hr />
+<h1 id="97-session-limits"><a class="header" href="#97-session-limits">97. Session Limits</a></h1>
+<p>Per extension/per peer:</p>
+<pre><code class="language-text">max active sessions
+max streams
+</code></pre>
+<hr />
+<h1 id="98-protocol-state-machine"><a class="header" href="#98-protocol-state-machine">98. Protocol State Machine</a></h1>
+<p>Every extension must define explicit state machine.</p>
+<p>Example:</p>
+<pre><code class="language-text">Opening
+Ready
+Closing
+Closed
+</code></pre>
+<p>Application-specific states inside.</p>
+<hr />
+<h1 id="99-state-machine-test-requirement"><a class="header" href="#99-state-machine-test-requirement">99. State Machine Test Requirement</a></h1>
+<p>Extension cannot be considered stable without:</p>
+<pre><code class="language-text">valid transition tests
+invalid transition tests
+fuzzing
+</code></pre>
+<hr />
+<h1 id="100-extension-sdk"><a class="header" href="#100-extension-sdk">100. Extension SDK</a></h1>
+<p>Provide Rust SDK:</p>
+<pre><code class="language-text">comm-extension-sdk
+</code></pre>
+<p>with:</p>
+<pre><code class="language-text">manifest types
+protocol APIs
+storage API
+capability API
+diagnostics API
+test kit
+</code></pre>
+<hr />
+<h1 id="101-sdk-stability"><a class="header" href="#101-sdk-stability">101. SDK Stability</a></h1>
+<p>Extension SDK has its own semver.</p>
+<p>Do not expose unstable internal runtime APIs.</p>
+<hr />
+<h1 id="102-minimal-sdk-surface"><a class="header" href="#102-minimal-sdk-surface">102. Minimal SDK Surface</a></h1>
+<p>Start small.</p>
+<p>Good:</p>
+<pre><code class="language-text">send frame
+open stream
+store state
+publish event
+query peer trust
+register diagnostics
+</code></pre>
+<p>Avoid giant omnipotent SDK.</p>
+<hr />
+<h1 id="103-extension-context-capability-tokens"><a class="header" href="#103-extension-context-capability-tokens">103. Extension Context Capability Tokens</a></h1>
+<p>Internally, APIs can be capability objects.</p>
+<p>If extension lacks permission:</p>
+<pre><code class="language-text">field/API absent
+</code></pre>
+<p>or returns <code>PermissionDenied</code>.</p>
+<p>Capability-based design is preferable to a global god-object.</p>
+<hr />
+<h1 id="104-no-arbitrary-thread-spawn"><a class="header" href="#104-no-arbitrary-thread-spawn">104. No Arbitrary Thread Spawn</a></h1>
+<p>Extensions should use host task scheduler.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>ctx.spawn_task(...)
+<span class="boring">}</span></code></pre></pre>
+<p>subject to quotas.</p>
+<hr />
+<h1 id="105-task-supervision"><a class="header" href="#105-task-supervision">105. Task Supervision</a></h1>
+<p>Every extension task belongs to:</p>
+<pre><code class="language-text">extension session
+or
+extension lifecycle
+</code></pre>
+<p>Host can cancel all on disable/unload.</p>
+<hr />
+<h1 id="106-timer-api"><a class="header" href="#106-timer-api">106. Timer API</a></h1>
+<p>Provide host timer.</p>
+<p>Avoid extension creating uncontrolled busy loops.</p>
+<hr />
+<h1 id="107-clock-api"><a class="header" href="#107-clock-api">107. Clock API</a></h1>
+<p>Use host clock abstraction.</p>
+<p>This improves deterministic testing.</p>
+<hr />
+<h1 id="108-randomness-api"><a class="header" href="#108-randomness-api">108. Randomness API</a></h1>
+<p>For non-crypto random needs:</p>
+<pre><code class="language-text">host random
+</code></pre>
+<p>For crypto:</p>
+<pre><code class="language-text">use vetted crypto APIs
+</code></pre>
+<p>Do not expose raw platform entropy handles unnecessarily.</p>
+<hr />
+<h1 id="109-cryptography-api"><a class="header" href="#109-cryptography-api">109. Cryptography API</a></h1>
+<p>Extension should not invent security casually.</p>
+<p>Provide helper services for:</p>
+<pre><code class="language-text">hash
+signature verification
+session-bound authentication
+</code></pre>
+<p>where practical.</p>
+<hr />
+<h1 id="110-extension-e2ee"><a class="header" href="#110-extension-e2ee">110. Extension E2EE</a></h1>
+<p>If extension payload rides an already secure peer session:</p>
+<pre><code class="language-text">transport/session encryption
+</code></pre>
+<p>may be sufficient.</p>
+<p>If extension has special end-to-end semantics:</p>
+<pre><code class="language-text">define explicitly
+</code></pre>
+<p>and undergo security review.</p>
+<hr />
+<h1 id="111-secret-storage"><a class="header" href="#111-secret-storage">111. Secret Storage</a></h1>
+<p>Extensions may request namespaced secret storage.</p>
+<p>Example:</p>
+<pre><code class="language-text">extension API token
+private extension state
+</code></pre>
+<p>But never core identity key material.</p>
+<hr />
+<h1 id="112-secret-store-permission"><a class="header" href="#112-secret-store-permission">112. Secret Store Permission</a></h1>
+<p>Separate:</p>
+<pre><code class="language-text">ExtensionSecretStore
+</code></pre>
+<p>from ordinary state storage.</p>
+<hr />
+<h1 id="113-secret-export"><a class="header" href="#113-secret-export">113. Secret Export</a></h1>
+<p>Host should minimize raw secret reads where handle-based use is possible.</p>
+<hr />
+<h1 id="114-file-access"><a class="header" href="#114-file-access">114. File Access</a></h1>
+<p>Extensions should not receive arbitrary filesystem access.</p>
+<p>Use:</p>
+<pre><code class="language-text">file picker result
+blob handle
+sandboxed storage directory
+</code></pre>
+<hr />
+<h1 id="115-sandbox-directory"><a class="header" href="#115-sandbox-directory">115. Sandbox Directory</a></h1>
+<p>If native/sandbox runtime needs files:</p>
+<pre><code class="language-text">extensions/&lt;id&gt;/
+</code></pre>
+<p>with quota and permissions.</p>
+<hr />
+<h1 id="116-path-traversal-protection"><a class="header" href="#116-path-traversal-protection">116. Path Traversal Protection</a></h1>
+<p>Extension file paths are relative and normalized.</p>
+<p>Reject:</p>
+<pre><code class="language-text">../
+absolute path
+symlink escape
+</code></pre>
+<hr />
+<h1 id="117-ui-permission"><a class="header" href="#117-ui-permission">117. UI Permission</a></h1>
+<p>Part 24 may define:</p>
+<pre><code class="language-text">RegisterUiPanel
+</code></pre>
+<p>separately from protocol permissions.</p>
+<hr />
+<h1 id="118-notification-permission"><a class="header" href="#118-notification-permission">118. Notification Permission</a></h1>
+<p>Extension can request:</p>
+<pre><code class="language-text">RegisterNotifications
+</code></pre>
+<p>but host controls OS notification priority.</p>
+<hr />
+<h1 id="119-emergency-notification-restriction"><a class="header" href="#119-emergency-notification-restriction">119. Emergency Notification Restriction</a></h1>
+<p>Third-party notification cannot masquerade as:</p>
+<pre><code class="language-text">verified emergency authority alert
+</code></pre>
+<p>unless extension/publisher is explicitly trusted and policy grants it.</p>
+<hr />
+<h1 id="120-capability-negotiation-example"><a class="header" href="#120-capability-negotiation-example">120. Capability Negotiation Example</a></h1>
+<p>Local:</p>
+<pre><code class="language-text">org.example.whiteboard/1
+features:
+  snapshots
+  cursors
+</code></pre>
+<p>Remote:</p>
+<pre><code class="language-text">org.example.whiteboard/1
+features:
+  snapshots
+</code></pre>
+<p>Negotiated:</p>
+<pre><code class="language-text">snapshots
+</code></pre>
+<hr />
+<h1 id="121-fallback"><a class="header" href="#121-fallback">121. Fallback</a></h1>
+<p>If extension unavailable:</p>
+<pre><code class="language-text">application may degrade
+</code></pre>
+<p>Example:</p>
+<pre><code class="language-text">send exported image instead of collaborative whiteboard
+</code></pre>
+<p>Fallback belongs to product/extension design.</p>
+<hr />
+<h1 id="122-required-vs-optional-capability"><a class="header" href="#122-required-vs-optional-capability">122. Required vs Optional Capability</a></h1>
+<p>Manifest/protocol marks features:</p>
+<pre><code class="language-text">required
+optional
+</code></pre>
+<p>Unknown required capability:</p>
+<pre><code class="language-text">fail negotiation
+</code></pre>
+<hr />
+<h1 id="123-interoperability"><a class="header" href="#123-interoperability">123. Interoperability</a></h1>
+<p>Third-party protocol should be implementable by another language/runtime if publisher wants.</p>
+<p>Publish:</p>
+<pre><code class="language-text">wire spec
+state machine
+test vectors
+error codes
+</code></pre>
+<hr />
+<h1 id="124-conformance-suite"><a class="header" href="#124-conformance-suite">124. Conformance Suite</a></h1>
+<p>Part 23 infrastructure should allow extension-specific conformance packages.</p>
+<p>Example:</p>
+<pre><code class="language-text">conformance/extensions/org.example.whiteboard/
+</code></pre>
+<hr />
+<h1 id="125-golden-vectors"><a class="header" href="#125-golden-vectors">125. Golden Vectors</a></h1>
+<p>Stable extension should ship:</p>
+<pre><code class="language-text">valid frames
+invalid frames
+canonical encodings
+state-machine examples
+</code></pre>
+<hr />
+<h1 id="126-fuzz-targets"><a class="header" href="#126-fuzz-targets">126. Fuzz Targets</a></h1>
+<p>Required for parsers.</p>
+<p>Examples:</p>
+<pre><code class="language-text">extension frame
+manifest payload
+state snapshot
+</code></pre>
+<hr />
+<h1 id="127-resource-abuse-tests"><a class="header" href="#127-resource-abuse-tests">127. Resource Abuse Tests</a></h1>
+<p>Simulate extension sending:</p>
+<pre><code class="language-text">huge frame
+too many streams
+too many events
+too much storage
+</code></pre>
+<p>Host must contain it.</p>
+<hr />
+<h1 id="128-crash-tests"><a class="header" href="#128-crash-tests">128. Crash Tests</a></h1>
+<p>Kill extension host/process during:</p>
+<pre><code class="language-text">state write
+stream
+migration
+</code></pre>
+<p>Core remains correct.</p>
+<hr />
+<h1 id="129-version-compatibility-tests"><a class="header" href="#129-version-compatibility-tests">129. Version Compatibility Tests</a></h1>
+<p>Test:</p>
+<pre><code class="language-text">v1 ↔ v1
+v1 ↔ v1.1
+v1 ↔ unsupported v2
+</code></pre>
+<hr />
+<h1 id="130-extension-disable-mid-session"><a class="header" href="#130-extension-disable-mid-session">130. Extension Disable Mid-Session</a></h1>
+<p>Expected:</p>
+<pre><code class="language-text">cancel extension tasks
+close extension streams
+persist safe state
+release resources
+</code></pre>
+<p>Core peer connection may remain.</p>
+<hr />
+<h1 id="131-peer-lacks-extension"><a class="header" href="#131-peer-lacks-extension">131. Peer Lacks Extension</a></h1>
+<p>Opening extension protocol returns:</p>
+<pre><code class="language-text">UnsupportedByPeer
+</code></pre>
+<p>not crash.</p>
+<hr />
+<h1 id="132-extension-not-installed"><a class="header" href="#132-extension-not-installed">132. Extension Not Installed</a></h1>
+<p>Remote request:</p>
+<pre><code class="language-text">reject/ignore cleanly
+</code></pre>
+<hr />
+<h1 id="133-extension-permission-revoked"><a class="header" href="#133-extension-permission-revoked">133. Extension Permission Revoked</a></h1>
+<p>If user/admin revokes:</p>
+<pre><code class="language-text">stop affected sessions
+</code></pre>
+<p>and require re-approval to resume.</p>
+<hr />
+<h1 id="134-permission-changes-during-update"><a class="header" href="#134-permission-changes-during-update">134. Permission Changes During Update</a></h1>
+<p>New permission request blocks update activation until accepted.</p>
+<hr />
+<h1 id="135-extension-dependencies"><a class="header" href="#135-extension-dependencies">135. Extension Dependencies</a></h1>
+<p>Avoid arbitrary extension-to-extension dependency chains initially.</p>
+<p>If needed later:</p>
+<pre><code class="language-text">declare explicit dependency IDs/version ranges
+</code></pre>
+<hr />
+<h1 id="136-dependency-cycle"><a class="header" href="#136-dependency-cycle">136. Dependency Cycle</a></h1>
+<p>Reject:</p>
+<pre><code class="language-text">A requires B
+B requires A
+</code></pre>
+<p>unless host supports cycle semantics.</p>
+<p>Simpler:</p>
+<pre><code class="language-text">acyclic only
+</code></pre>
+<hr />
+<h1 id="137-core-dependency"><a class="header" href="#137-core-dependency">137. Core Dependency</a></h1>
+<p>Manifest states minimum platform SDK/runtime version.</p>
+<hr />
+<h1 id="138-optional-dependency"><a class="header" href="#138-optional-dependency">138. Optional Dependency</a></h1>
+<p>Extension may integrate with:</p>
+<pre><code class="language-text">files
+DTN
+proximity
+</code></pre>
+<p>if host build supports.</p>
+<hr />
+<h1 id="139-feature-degradation"><a class="header" href="#139-feature-degradation">139. Feature Degradation</a></h1>
+<p>If host lacks optional subsystem:</p>
+<pre><code class="language-text">extension still loads
+feature disabled
+</code></pre>
+<hr />
+<h1 id="140-extension-marketplace-is-separate"><a class="header" href="#140-extension-marketplace-is-separate">140. Extension Marketplace Is Separate</a></h1>
+<p>Part 21 defines protocol/runtime contract.</p>
+<p>Distribution marketplace/repository belongs to Part 24 ecosystem.</p>
+<hr />
+<h1 id="141-development-mode"><a class="header" href="#141-development-mode">141. Development Mode</a></h1>
+<p>Developers need:</p>
+<pre><code class="language-text">unsigned local extension
+hot reload
+verbose diagnostics
+</code></pre>
+<p>only in explicit dev mode.</p>
+<hr />
+<h1 id="142-dev-mode-warning"><a class="header" href="#142-dev-mode-warning">142. Dev Mode Warning</a></h1>
+<p>Never silently allow unsigned extension loading in production mode.</p>
+<hr />
+<h1 id="143-hot-reload"><a class="header" href="#143-hot-reload">143. Hot Reload</a></h1>
+<p>Useful for sandboxed extension development.</p>
+<p>Production reload must still preserve lifecycle correctness.</p>
+<hr />
+<h1 id="144-extension-debug-api"><a class="header" href="#144-extension-debug-api">144. Extension Debug API</a></h1>
+<p>Developer can inspect:</p>
+<pre><code class="language-text">state
+sessions
+resource use
+diagnostics
+</code></pre>
+<p>not other extension secrets.</p>
+<hr />
+<h1 id="145-extension-doctor"><a class="header" href="#145-extension-doctor">145. Extension Doctor</a></h1>
+<p>CLI:</p>
+<pre><code class="language-text">comm extension doctor org.example.whiteboard
+</code></pre>
+<p>Checks:</p>
+<pre><code class="language-text">manifest
+permissions
+protocol registration
+storage
+compatibility
+</code></pre>
+<hr />
+<h1 id="146-extension-list"><a class="header" href="#146-extension-list">146. Extension List</a></h1>
+<p>CLI:</p>
+<pre><code class="language-text">comm extension list
+</code></pre>
+<p>Shows:</p>
+<pre><code class="language-text">installed
+version
+status
+permissions
+</code></pre>
+<hr />
+<h1 id="147-extension-enabledisable"><a class="header" href="#147-extension-enabledisable">147. Extension Enable/Disable</a></h1>
+<p>Admin/user:</p>
+<pre><code class="language-text">comm extension disable &lt;id&gt;
+comm extension enable &lt;id&gt;
+</code></pre>
+<p>subject to policy.</p>
+<hr />
+<h1 id="148-extension-uninstall"><a class="header" href="#148-extension-uninstall">148. Extension Uninstall</a></h1>
+<p>Uninstall flow:</p>
+<pre><code class="language-text">stop
+revoke sessions
+optional export
+remove package
+handle extension state according to policy
+</code></pre>
+<hr />
+<h1 id="149-state-retention-on-uninstall"><a class="header" href="#149-state-retention-on-uninstall">149. State Retention on Uninstall</a></h1>
+<p>Options:</p>
+<pre><code class="language-text">keep state
+delete state
+export state
+</code></pre>
+<p>Product/admin policy decides.</p>
+<hr />
+<h1 id="150-secure-deletion"><a class="header" href="#150-secure-deletion">150. Secure Deletion</a></h1>
+<p>For secret extension state:</p>
+<pre><code class="language-text">best-effort secure deletion
+</code></pre>
+<p>subject to filesystem realities.</p>
+<hr />
+<h1 id="151-extension-package"><a class="header" href="#151-extension-package">151. Extension Package</a></h1>
+<p>Conceptual package:</p>
+<pre><code class="language-text">manifest.ron
+module.wasm / native library
+signature
+assets
+schemas
+test-vectors
+</code></pre>
+<p>Exact packaging belongs to Part 24.</p>
+<hr />
+<h1 id="152-manifest-format"><a class="header" href="#152-manifest-format">152. Manifest Format</a></h1>
+<p>RON is appropriate for local package metadata:</p>
+<pre><code class="language-text">human-readable
+Rust-friendly
+versioned
+</code></pre>
+<p>Wire protocol remains binary.</p>
+<hr />
+<h1 id="153-package-digest"><a class="header" href="#153-package-digest">153. Package Digest</a></h1>
+<p>Manifest/signature binds:</p>
+<pre><code class="language-text">all executable assets
+protocol schemas
+</code></pre>
+<hr />
+<h1 id="154-reproducible-extension-builds"><a class="header" href="#154-reproducible-extension-builds">154. Reproducible Extension Builds</a></h1>
+<p>Recommended for trusted ecosystem.</p>
+<p>Publish:</p>
+<pre><code class="language-text">source commit
+build metadata
+digest
+</code></pre>
+<hr />
+<h1 id="155-sbom"><a class="header" href="#155-sbom">155. SBOM</a></h1>
+<p>Extension package should include dependency/license metadata where possible.</p>
+<hr />
+<h1 id="156-license-policy"><a class="header" href="#156-license-policy">156. License Policy</a></h1>
+<p>Host may enforce:</p>
+<pre><code class="language-text">allowed licenses
+</code></pre>
+<p>for enterprise distribution.</p>
+<p>Protocol compatibility is independent of package license.</p>
+<hr />
+<h1 id="157-sandbox-execution"><a class="header" href="#157-sandbox-execution">157. Sandbox Execution</a></h1>
+<p>For third-party code, preferred:</p>
+<pre><code class="language-text">WASM component
+or
+out-of-process host
+</code></pre>
+<p>with:</p>
+<pre><code class="language-text">memory cap
+CPU/time cap
+no ambient filesystem
+no ambient network
+</code></pre>
+<hr />
+<h1 id="158-no-ambient-authority"><a class="header" href="#158-no-ambient-authority">158. No Ambient Authority</a></h1>
+<p>Sandbox principle:</p>
+<pre><code class="language-text">extension gets only capability handles explicitly granted
+</code></pre>
+<p>This is a major security goal.</p>
+<hr />
+<h1 id="159-native-plugin-exception"><a class="header" href="#159-native-plugin-exception">159. Native Plugin Exception</a></h1>
+<p>Native in-process extension only for:</p>
+<pre><code class="language-text">built-in
+trusted signed
+explicit deployment policy
+</code></pre>
+<p>because it can bypass memory/process isolation.</p>
+<hr />
+<h1 id="160-out-of-process-ipc"><a class="header" href="#160-out-of-process-ipc">160. Out-of-Process IPC</a></h1>
+<p>Extension host communicates through:</p>
+<pre><code class="language-text">versioned bounded local IPC
+</code></pre>
+<p>similar Part 16 principles.</p>
+<hr />
+<h1 id="161-host-crash"><a class="header" href="#161-host-crash">161. Host Crash</a></h1>
+<p>Extension host process crash:</p>
+<pre><code class="language-text">daemon continues
+extension marked failed
+</code></pre>
+<hr />
+<h1 id="162-host-restart"><a class="header" href="#162-host-restart">162. Host Restart</a></h1>
+<p>May restart sandboxed host with backoff.</p>
+<p>Persistent extension state remains in core-owned store.</p>
+<hr />
+<h1 id="163-secret-isolation"><a class="header" href="#163-secret-isolation">163. Secret Isolation</a></h1>
+<p>Out-of-process extension only receives scoped secret handles/data explicitly granted.</p>
+<hr />
+<h1 id="164-extension-network-access"><a class="header" href="#164-extension-network-access">164. Extension Network Access</a></h1>
+<p>Do not grant raw Internet socket access by default.</p>
+<p>Extension uses:</p>
+<pre><code class="language-text">peer protocol API
+</code></pre>
+<p>If external HTTP/API access is needed later:</p>
+<pre><code class="language-text">separate permission
+</code></pre>
+<hr />
+<h1 id="165-external-network-permission"><a class="header" href="#165-external-network-permission">165. External Network Permission</a></h1>
+<p>Possible:</p>
+<pre><code class="language-text">ExternalNetworkAccess(domains/policy)
+</code></pre>
+<p>but high-risk.</p>
+<p>Not necessary for v1 protocol extensions.</p>
+<hr />
+<h1 id="166-extension-to-server-architecture"><a class="header" href="#166-extension-to-server-architecture">166. Extension-to-Server Architecture</a></h1>
+<p>If extension needs its own backend:</p>
+<pre><code class="language-text">application may support external service
+</code></pre>
+<p>but this should not be hidden inside unrestricted raw sockets.</p>
+<hr />
+<h1 id="167-transport-independent-design"><a class="header" href="#167-transport-independent-design">167. Transport-Independent Design</a></h1>
+<p>Extension protocol should not assume:</p>
+<pre><code class="language-text">Iroh only
+BLE only
+relay only
+</code></pre>
+<p>Core delivery may change path.</p>
+<hr />
+<h1 id="168-session-reconnect"><a class="header" href="#168-session-reconnect">168. Session Reconnect</a></h1>
+<p>Extension should tolerate:</p>
+<pre><code class="language-text">path switch
+connection reconnect
+</code></pre>
+<p>without corrupting logical state.</p>
+<hr />
+<h1 id="169-stable-operation-ids"><a class="header" href="#169-stable-operation-ids">169. Stable Operation IDs</a></h1>
+<p>Extension long-lived operations should use stable IDs.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct ExtensionOperationId([u8; 16]);
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="170-duplicate-delivery"><a class="header" href="#170-duplicate-delivery">170. Duplicate Delivery</a></h1>
+<p>Extension protocol must define idempotency where retries are possible.</p>
+<hr />
+<h1 id="171-crash-recovery-contract"><a class="header" href="#171-crash-recovery-contract">171. Crash Recovery Contract</a></h1>
+<p>Extension must declare which operations are:</p>
+<pre><code class="language-text">durable
+ephemeral
+reconstructible
+</code></pre>
+<hr />
+<h1 id="172-durable-intent"><a class="header" href="#172-durable-intent">172. Durable Intent</a></h1>
+<p>If extension says operation accepted:</p>
+<pre><code class="language-text">persist before success
+</code></pre>
+<p>same Part 09 principle.</p>
+<hr />
+<h1 id="173-ephemeral-state"><a class="header" href="#173-ephemeral-state">173. Ephemeral State</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">cursor position
+typing
+live pointer
+</code></pre>
+<p>can be dropped on restart.</p>
+<hr />
+<h1 id="174-extension-priority-classes"><a class="header" href="#174-extension-priority-classes">174. Extension Priority Classes</a></h1>
+<p>By default:</p>
+<pre><code class="language-text">Routine
+Important
+</code></pre>
+<p>Higher classes require policy.</p>
+<hr />
+<h1 id="175-extension-scheduling"><a class="header" href="#175-extension-scheduling">175. Extension Scheduling</a></h1>
+<p>Work descriptor includes:</p>
+<pre><code class="language-text">priority
+energy class
+deadline
+durability
+</code></pre>
+<p>host maps to Part 08/13 scheduler.</p>
+<hr />
+<h1 id="176-extension-backpressure"><a class="header" href="#176-extension-backpressure">176. Extension Backpressure</a></h1>
+<p>Send API can return:</p>
+<pre><code class="language-text">WouldBlock
+Deferred
+QuotaExceeded
+</code></pre>
+<p>Extension must handle it.</p>
+<hr />
+<h1 id="177-no-hidden-infinite-retry"><a class="header" href="#177-no-hidden-infinite-retry">177. No Hidden Infinite Retry</a></h1>
+<p>Extension should not internally busy-loop on quota denial.</p>
+<p>Host retry scheduler can be used.</p>
+<hr />
+<h1 id="178-queue-ownership"><a class="header" href="#178-queue-ownership">178. Queue Ownership</a></h1>
+<p>Extension-owned queues are bounded and visible to host resource accounting.</p>
+<hr />
+<h1 id="179-extension-memory"><a class="header" href="#179-extension-memory">179. Extension Memory</a></h1>
+<p>Sandboxed runtime memory cap is hard.</p>
+<p>Native trusted extension still receives logical allocation budgets.</p>
+<hr />
+<h1 id="180-diagnostics-reason"><a class="header" href="#180-diagnostics-reason">180. Diagnostics Reason</a></h1>
+<p>If extension disabled by battery/resource policy:</p>
+<pre><code class="language-text">structured reason
+</code></pre>
+<p>available to UI/CLI.</p>
+<hr />
+<h1 id="181-user-consent"><a class="header" href="#181-user-consent">181. User Consent</a></h1>
+<p>First install may show:</p>
+<pre><code class="language-text">This extension can:
+- communicate with peers
+- store up to 100 MB
+- access nearby devices
+</code></pre>
+<p>No vague "full access" where avoidable.</p>
+<hr />
+<h1 id="182-permission-ux"><a class="header" href="#182-permission-ux">182. Permission UX</a></h1>
+<p>Group permissions by meaningful capability, not low-level implementation detail.</p>
+<hr />
+<h1 id="183-enterprise-policy-ux"><a class="header" href="#183-enterprise-policy-ux">183. Enterprise Policy UX</a></h1>
+<p>Managed organization can lock:</p>
+<pre><code class="language-text">mandatory
+optional
+forbidden
+</code></pre>
+<p>extensions.</p>
+<hr />
+<h1 id="184-mandatory-extension-risk"><a class="header" href="#184-mandatory-extension-risk">184. Mandatory Extension Risk</a></h1>
+<p>Even mandatory extension failure should not corrupt core.</p>
+<p>Application feature may become unavailable, but daemon remains healthy.</p>
+<hr />
+<h1 id="185-wire-registration"><a class="header" href="#185-wire-registration">185. Wire Registration</a></h1>
+<p>Extension protocol registry:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct ExtensionProtocolRegistry {
+    // id → descriptor
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Registration checks:</p>
+<pre><code class="language-text">namespace
+version overlap
+duplicate IDs
+permissions
+resource profile
+</code></pre>
+<hr />
+<h1 id="186-duplicate-registration"><a class="header" href="#186-duplicate-registration">186. Duplicate Registration</a></h1>
+<p>Two extensions claim same ID:</p>
+<pre><code class="language-text">reject second
+</code></pre>
+<hr />
+<h1 id="187-publisher-takeover"><a class="header" href="#187-publisher-takeover">187. Publisher Takeover</a></h1>
+<p>Namespace ownership alone is not globally enforceable without registry/signing infrastructure.</p>
+<p>For official ecosystem, bind:</p>
+<pre><code class="language-text">ExtensionId
+↔ publisher key
+</code></pre>
+<p>after first trusted publication.</p>
+<hr />
+<h1 id="188-trust-on-first-publisher-policy"><a class="header" href="#188-trust-on-first-publisher-policy">188. Trust-on-First-Publisher Policy</a></h1>
+<p>Official catalog may pin publisher key for an extension ID.</p>
+<p>Future package signed by different publisher:</p>
+<pre><code class="language-text">reject unless transfer process
+</code></pre>
+<hr />
+<h1 id="189-namespace-transfer"><a class="header" href="#189-namespace-transfer">189. Namespace Transfer</a></h1>
+<p>Should require explicit signed handoff from old publisher or catalog/admin override.</p>
+<hr />
+<h1 id="190-protocol-security-review"><a class="header" href="#190-protocol-security-review">190. Protocol Security Review</a></h1>
+<p>Extensions handling:</p>
+<pre><code class="language-text">identity
+money
+remote control
+emergency
+</code></pre>
+<p>deserve stricter review.</p>
+<hr />
+<h1 id="191-risk-classes"><a class="header" href="#191-risk-classes">191. Risk Classes</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum ExtensionRiskClass {
+    Low,
+    Medium,
+    High,
+    Critical,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Risk derived from requested permissions and semantics.</p>
+<hr />
+<h1 id="192-high-risk-extension"><a class="header" href="#192-high-risk-extension">192. High-Risk Extension</a></h1>
+<p>May require:</p>
+<pre><code class="language-text">manual install
+trusted publisher
+security audit
+native execution prohibited
+</code></pre>
+<hr />
+<h1 id="193-critical-extension"><a class="header" href="#193-critical-extension">193. Critical Extension</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">authority alerts
+remote device control
+financial approval
+</code></pre>
+<p>Should not be generally third-party-installable without strong governance.</p>
+<hr />
+<h1 id="194-protocol-fuzzing"><a class="header" href="#194-protocol-fuzzing">194. Protocol Fuzzing</a></h1>
+<p>Part 10 infrastructure can dynamically register extension fuzz targets/test corpora.</p>
+<hr />
+<h1 id="195-conformance-metadata"><a class="header" href="#195-conformance-metadata">195. Conformance Metadata</a></h1>
+<p>Manifest may point to:</p>
+<pre><code class="language-text">test vector version
+conformance suite version
+</code></pre>
+<hr />
+<h1 id="196-release-gate-for-stable-extension"><a class="header" href="#196-release-gate-for-stable-extension">196. Release Gate for Stable Extension</a></h1>
+<p>Must have:</p>
+<pre><code class="language-text">wire spec
+state machine spec
+golden vectors
+fuzz coverage
+resource tests
+compatibility tests
+</code></pre>
+<hr />
+<h1 id="197-external-implementation"><a class="header" href="#197-external-implementation">197. External Implementation</a></h1>
+<p>A publisher can implement same extension protocol in:</p>
+<pre><code class="language-text">Rust
+C++
+Kotlin
+Go
+</code></pre>
+<p>as long as wire conformance passes.</p>
+<hr />
+<h1 id="198-extension-sdk-for-other-languages"><a class="header" href="#198-extension-sdk-for-other-languages">198. Extension SDK for Other Languages</a></h1>
+<p>Part 19 C ABI can expose generic extension API.</p>
+<p>Do not force extension authors to use Rust.</p>
+<hr />
+<h1 id="199-c-abi-extension-api"><a class="header" href="#199-c-abi-extension-api">199. C ABI Extension API</a></h1>
+<p>Conceptually:</p>
+<pre><code class="language-c">comm_result_t comm_extension_open(
+    comm_runtime_handle_t runtime,
+    comm_bytes_view_t extension_id,
+    const comm_peer_ref_t* peer,
+    comm_extension_session_handle_t* out_session
+);
+</code></pre>
+<hr />
+<h1 id="200-generic-frame-send"><a class="header" href="#200-generic-frame-send">200. Generic Frame Send</a></h1>
+<pre><code class="language-c">comm_result_t comm_extension_send(
+    comm_extension_session_handle_t session,
+    uint16_t message_type,
+    comm_bytes_view_t payload
+);
+</code></pre>
+<p>Still bounded by host.</p>
+<hr />
+<h1 id="201-wasm-component-api"><a class="header" href="#201-wasm-component-api">201. WASM Component API</a></h1>
+<p>Future component interface can map same semantics:</p>
+<pre><code class="language-text">open session
+send
+receive
+state get/put
+diagnostics
+</code></pre>
+<hr />
+<h1 id="202-protocol-extension-vs-plugin"><a class="header" href="#202-protocol-extension-vs-plugin">202. Protocol Extension vs Plugin</a></h1>
+<p>Important distinction:</p>
+<h2 id="protocol-extension"><a class="header" href="#protocol-extension">Protocol extension</a></h2>
+<pre><code class="language-text">defines peer-to-peer wire semantics
+</code></pre>
+<h2 id="plugin"><a class="header" href="#plugin">Plugin</a></h2>
+<pre><code class="language-text">extends local product behavior/UI/workflow
+</code></pre>
+<p>Part 24 may combine them, but they are conceptually different.</p>
+<hr />
+<h1 id="203-protocol-extension-without-plugin"><a class="header" href="#203-protocol-extension-without-plugin">203. Protocol Extension Without Plugin</a></h1>
+<p>A built-in application may support external wire protocol extension statically.</p>
+<hr />
+<h1 id="204-plugin-without-protocol-extension"><a class="header" href="#204-plugin-without-protocol-extension">204. Plugin Without Protocol Extension</a></h1>
+<p>A UI plugin may only add:</p>
+<pre><code class="language-text">local automation
+</code></pre>
+<p>with no new wire protocol.</p>
+<hr />
+<h1 id="205-extension-revocation-mid-session"><a class="header" href="#205-extension-revocation-mid-session">205. Extension Revocation Mid-Session</a></h1>
+<p>Host:</p>
+<pre><code class="language-text">close extension streams
+cancel extension tasks
+persist safe state
+</code></pre>
+<p>Core transport may continue.</p>
+<hr />
+<h1 id="206-peer-revocation"><a class="header" href="#206-peer-revocation">206. Peer Revocation</a></h1>
+<p>If peer DeviceId revoked:</p>
+<pre><code class="language-text">all extension sessions close
+</code></pre>
+<p>automatically.</p>
+<hr />
+<h1 id="207-identity-change"><a class="header" href="#207-identity-change">207. Identity Change</a></h1>
+<p>Extension cannot keep stale authenticated session after account/device identity invalidates.</p>
+<hr />
+<h1 id="208-capability-change"><a class="header" href="#208-capability-change">208. Capability Change</a></h1>
+<p>If remote extension capability disappears after reconnect:</p>
+<pre><code class="language-text">operation degrades/fails cleanly
+</code></pre>
+<hr />
+<h1 id="209-path-change"><a class="header" href="#209-path-change">209. Path Change</a></h1>
+<p>Extension session may migrate over new transport without protocol restart if runtime supports.</p>
+<hr />
+<h1 id="210-offline-mode"><a class="header" href="#210-offline-mode">210. Offline Mode</a></h1>
+<p>Extensions can operate:</p>
+<pre><code class="language-text">LAN
+BLE
+DTN
+</code></pre>
+<p>if their delivery requirements allow.</p>
+<hr />
+<h1 id="211-dtn-safe-extension-requirement"><a class="header" href="#211-dtn-safe-extension-requirement">211. DTN-Safe Extension Requirement</a></h1>
+<p>To use DTN, extension must declare:</p>
+<pre><code class="language-text">payload idempotency
+expiry
+size bound
+replication semantics
+</code></pre>
+<hr />
+<h1 id="212-realtime-extension"><a class="header" href="#212-realtime-extension">212. Realtime Extension</a></h1>
+<p>Realtime protocols should declare:</p>
+<pre><code class="language-text">DTN not allowed
+low latency
+ephemeral
+</code></pre>
+<hr />
+<h1 id="213-file-oriented-extension"><a class="header" href="#213-file-oriented-extension">213. File-Oriented Extension</a></h1>
+<p>Should reference <code>BlobId</code> rather than embedding large bytes.</p>
+<hr />
+<h1 id="214-extension-protocol-example"><a class="header" href="#214-extension-protocol-example">214. Extension Protocol Example</a></h1>
+<p>Whiteboard:</p>
+<pre><code class="language-text">extension: org.example.whiteboard
+wire: v1
+
+frames:
+OpenBoard
+StrokeBatch
+Cursor
+SnapshotRef
+CloseBoard
+</code></pre>
+<p>Use:</p>
+<pre><code class="language-text">Cursor → ephemeral
+StrokeBatch → durable/idempotent
+SnapshotRef → Part 05 blob
+</code></pre>
+<hr />
+<h1 id="215-erp-example"><a class="header" href="#215-erp-example">215. ERP Example</a></h1>
+<pre><code class="language-text">extension: com.school.erp.notifications
+</code></pre>
+<p>Frames:</p>
+<pre><code class="language-text">InvoiceReady
+AttendanceAlert
+DocumentRequest
+</code></pre>
+<p>Could work as reusable application protocol without modifying core messaging.</p>
+<hr />
+<h1 id="216-iot-example"><a class="header" href="#216-iot-example">216. IoT Example</a></h1>
+<pre><code class="language-text">extension: org.example.sensor
+</code></pre>
+<p>Frames:</p>
+<pre><code class="language-text">TelemetryBatch
+Command
+Ack
+</code></pre>
+<p>Resource quotas prevent runaway sensor streams.</p>
+<hr />
+<h1 id="217-remote-control-warning"><a class="header" href="#217-remote-control-warning">217. Remote Control Warning</a></h1>
+<p>Extensions that actuate devices require:</p>
+<pre><code class="language-text">strong authorization
+replay protection
+audit
+rate limits
+</code></pre>
+<p>High-risk.</p>
+<hr />
+<h1 id="218-extension-audit-events"><a class="header" href="#218-extension-audit-events">218. Extension Audit Events</a></h1>
+<p>For privileged extension:</p>
+<pre><code class="language-text">installed
+enabled
+permission changed
+publisher changed
+security failure
+</code></pre>
+<p>recorded in admin audit.</p>
+<hr />
+<h1 id="219-user-data-export"><a class="header" href="#219-user-data-export">219. User Data Export</a></h1>
+<p>Extension should provide export hook for its own durable user state if meaningful.</p>
+<hr />
+<h1 id="220-data-portability"><a class="header" href="#220-data-portability">220. Data Portability</a></h1>
+<p>Avoid extension lock-in.</p>
+<p>Stable extension state export can use:</p>
+<pre><code class="language-text">RON/JSON/archive
+</code></pre>
+<p>depending audience.</p>
+<hr />
+<h1 id="221-uninstall-warning"><a class="header" href="#221-uninstall-warning">221. Uninstall Warning</a></h1>
+<p>If deleting extension data:</p>
+<pre><code class="language-text">show size
+export option
+</code></pre>
+<p>where user-facing product supports.</p>
+<hr />
+<h1 id="222-extension-backup"><a class="header" href="#222-extension-backup">222. Extension Backup</a></h1>
+<p>Core backup service can include extension state namespace.</p>
+<p>Secrets handled according to secure-store policy.</p>
+<hr />
+<h1 id="223-restore"><a class="header" href="#223-restore">223. Restore</a></h1>
+<p>Restore extension state only if:</p>
+<pre><code class="language-text">extension/version compatible
+</code></pre>
+<p>Otherwise keep quarantined data until extension installed.</p>
+<hr />
+<h1 id="224-unknown-extension-state"><a class="header" href="#224-unknown-extension-state">224. Unknown Extension State</a></h1>
+<p>Do not delete automatically just because extension temporarily missing.</p>
+<p>Policy can retain.</p>
+<hr />
+<h1 id="225-orphan-cleanup"><a class="header" href="#225-orphan-cleanup">225. Orphan Cleanup</a></h1>
+<p>Long-uninstalled extension state may be garbage-collected after:</p>
+<pre><code class="language-text">retention period
+explicit consent/admin policy
+</code></pre>
+<hr />
+<h1 id="226-multi-tenant-extension-state"><a class="header" href="#226-multi-tenant-extension-state">226. Multi-Tenant Extension State</a></h1>
+<p>Headless enterprise mode namespaces:</p>
+<pre><code class="language-text">TenantId
++
+ExtensionId
+</code></pre>
+<hr />
+<h1 id="227-per-tenant-permission"><a class="header" href="#227-per-tenant-permission">227. Per-Tenant Permission</a></h1>
+<p>Extension allowed for tenant A may be forbidden for tenant B.</p>
+<hr />
+<h1 id="228-resource-fairness"><a class="header" href="#228-resource-fairness">228. Resource Fairness</a></h1>
+<p>One extension/tenant cannot starve others.</p>
+<p>Hierarchical Part 08 quotas:</p>
+<pre><code class="language-text">global
+→ tenant
+→ extension
+→ peer/session
+</code></pre>
+<hr />
+<h1 id="229-security-invariants"><a class="header" href="#229-security-invariants">229. Security Invariants</a></h1>
+<ol>
+<li>Extensions cannot read core private keys.</li>
+<li>Extensions cannot mutate core DB directly.</li>
+<li>Extensions cannot open raw unbounded network paths by default.</li>
+<li>Unknown extension IDs are ignored/rejected safely.</li>
+<li>Resource usage is bounded per extension.</li>
+<li>Priority requests are re-authorized by core.</li>
+<li>Peer identity/session policy remains core-owned.</li>
+<li>Extension crash/recovery failure cannot corrupt core state.</li>
+<li>Permission expansion requires approval.</li>
+<li>Extension storage is namespaced.</li>
+<li>Stable wire versions are explicit.</li>
+<li>Native untrusted code is not loaded in-process by default.</li>
+<li>Extension diagnostics and telemetry obey privacy redaction.</li>
+<li>Extension disable/uninstall releases tasks, streams, and handles.</li>
+<li>Core remains usable when an optional extension fails.</li>
+</ol>
+<hr />
+<h1 id="230-suggested-workspace"><a class="header" href="#230-suggested-workspace">230. Suggested Workspace</a></h1>
+<pre><code class="language-text">crates/
+├── comm-extension-core/
+├── comm-extension-sdk/
+├── comm-extension-registry/
+├── comm-extension-storage/
+├── comm-extension-host/
+├── comm-extension-security/
+├── comm-extension-testkit/
+└── comm-extension-ffi/
+
+extensions/
+├── built-in/
+└── examples/
+
+conformance/
+└── extensions/
+</code></pre>
+<hr />
+<h1 id="231-comm-extension-core"><a class="header" href="#231-comm-extension-core">231. <code>comm-extension-core</code></a></h1>
+<p>Responsibilities:</p>
+<pre><code class="language-text">IDs
+manifest
+permissions
+lifecycle
+protocol registration
+capabilities
+</code></pre>
+<hr />
+<h1 id="232-comm-extension-sdk"><a class="header" href="#232-comm-extension-sdk">232. <code>comm-extension-sdk</code></a></h1>
+<p>Public developer API.</p>
+<hr />
+<h1 id="233-comm-extension-registry"><a class="header" href="#233-comm-extension-registry">233. <code>comm-extension-registry</code></a></h1>
+<p>Tracks:</p>
+<pre><code class="language-text">installed
+enabled
+version
+publisher
+trust
+</code></pre>
+<hr />
+<h1 id="234-comm-extension-storage"><a class="header" href="#234-comm-extension-storage">234. <code>comm-extension-storage</code></a></h1>
+<p>Namespaced state/secret store.</p>
+<hr />
+<h1 id="235-comm-extension-host"><a class="header" href="#235-comm-extension-host">235. <code>comm-extension-host</code></a></h1>
+<p>Runs:</p>
+<pre><code class="language-text">WASM
+out-of-process
+trusted native adapters
+</code></pre>
+<hr />
+<h1 id="236-comm-extension-security"><a class="header" href="#236-comm-extension-security">236. <code>comm-extension-security</code></a></h1>
+<p>Handles:</p>
+<pre><code class="language-text">signature verification
+publisher trust
+permission checks
+revocation
+</code></pre>
+<hr />
+<h1 id="237-comm-extension-testkit"><a class="header" href="#237-comm-extension-testkit">237. <code>comm-extension-testkit</code></a></h1>
+<p>Provides:</p>
+<pre><code class="language-text">fake peer
+fake clock
+resource limiter
+protocol harness
+golden-vector runner
+</code></pre>
+<hr />
+<h1 id="238-comm-extension-ffi"><a class="header" href="#238-comm-extension-ffi">238. <code>comm-extension-ffi</code></a></h1>
+<p>Generic cross-language extension API from Part 19.</p>
+<hr />
+<h1 id="239-developer-workflow"><a class="header" href="#239-developer-workflow">239. Developer Workflow</a></h1>
+<pre><code class="language-text">create manifest
+define wire protocol
+define state machine
+implement extension
+run local testkit
+run fuzzing
+run conformance
+package/sign
+install in dev mode
+</code></pre>
+<hr />
+<h1 id="240-extension-template"><a class="header" href="#240-extension-template">240. Extension Template</a></h1>
+<p>Provide:</p>
+<pre><code class="language-text">cargo generate
+</code></pre>
+<p>or template repo with:</p>
+<pre><code class="language-text">manifest.ron
+src/lib.rs
+tests/
+vectors/
+README.md
+</code></pre>
+<hr />
+<h1 id="241-documentation-requirements"><a class="header" href="#241-documentation-requirements">241. Documentation Requirements</a></h1>
+<p>Every extension should document:</p>
+<pre><code class="language-text">purpose
+protocol ID
+wire versions
+permissions
+resource usage
+security model
+offline behavior
+DTN behavior
+storage schema
+compatibility policy
+</code></pre>
+<hr />
+<h1 id="242-stable-protocol-spec"><a class="header" href="#242-stable-protocol-spec">242. Stable Protocol Spec</a></h1>
+<p>Publish separately from implementation where interoperability matters.</p>
+<hr />
+<h1 id="243-initial-production-scope"><a class="header" href="#243-initial-production-scope">243. Initial Production Scope</a></h1>
+<p>Implement first:</p>
+<pre><code class="language-text">ExtensionId namespace
+manifest
+permission model
+protocol registry
+capability negotiation integration
+extension-owned storage
+resource quotas
+lifecycle
+built-in/static Rust extension support
+sandbox-ready host abstraction
+generic diagnostics
+testkit
+</code></pre>
+<p>Then:</p>
+<pre><code class="language-text">WASM host
+out-of-process native host
+signed packages
+publisher trust
+generic C ABI extension API
+extension conformance packages
+</code></pre>
+<p>Defer initially:</p>
+<pre><code class="language-text">public marketplace
+arbitrary native in-process third-party plugins
+external raw network permissions
+complex extension dependency graphs
+</code></pre>
+<hr />
+<h1 id="244-implementation-phases"><a class="header" href="#244-implementation-phases">244. Implementation Phases</a></h1>
+<h2 id="phase-1--core-types"><a class="header" href="#phase-1--core-types">Phase 1 — Core Types</a></h2>
+<pre><code class="language-text">ExtensionId
+Manifest
+Permission
+Lifecycle
+</code></pre>
+<h2 id="phase-2--protocol-registry"><a class="header" href="#phase-2--protocol-registry">Phase 2 — Protocol Registry</a></h2>
+<pre><code class="language-text">namespace
+versions
+capabilities
+session open/close
+</code></pre>
+<h2 id="phase-3--storage--resources"><a class="header" href="#phase-3--storage--resources">Phase 3 — Storage / Resources</a></h2>
+<pre><code class="language-text">state namespace
+quota
+task/stream limits
+</code></pre>
+<h2 id="phase-4--built-in-sdk"><a class="header" href="#phase-4--built-in-sdk">Phase 4 — Built-In SDK</a></h2>
+<pre><code class="language-text">Rust extension trait
+testkit
+examples
+</code></pre>
+<h2 id="phase-5--security"><a class="header" href="#phase-5--security">Phase 5 — Security</a></h2>
+<pre><code class="language-text">publisher identity
+signatures
+trust levels
+revocation
+</code></pre>
+<h2 id="phase-6--sandboxed-host"><a class="header" href="#phase-6--sandboxed-host">Phase 6 — Sandboxed Host</a></h2>
+<pre><code class="language-text">WASM / out-of-process abstraction
+</code></pre>
+<h2 id="phase-7--cross-language"><a class="header" href="#phase-7--cross-language">Phase 7 — Cross-Language</a></h2>
+<pre><code class="language-text">Part 19 generic extension API
+</code></pre>
+<h2 id="phase-8--hardening"><a class="header" href="#phase-8--hardening">Phase 8 — Hardening</a></h2>
+<pre><code class="language-text">fuzz
+crash
+quota abuse
+permission revocation
+compatibility
+conformance
+</code></pre>
+<hr />
+<h1 id="245-definition-of-done"><a class="header" href="#245-definition-of-done">245. Definition of Done</a></h1>
+<p>Part 21 is complete when:</p>
+<ul>
+<li>every extension has a unique namespaced ID</li>
+<li>wire protocol versions are explicit</li>
+<li>extension capabilities negotiate through Part 07</li>
+<li>unknown extensions fail safely</li>
+<li>permissions are declared before activation</li>
+<li>extensions cannot access core private keys or raw databases</li>
+<li>extension state is namespaced and quota-limited</li>
+<li>extension tasks/streams are supervised and bounded</li>
+<li>third-party priority requests are re-authorized by Part 17</li>
+<li>routing/multipath/DTN/proximity use core services rather than raw transport access</li>
+<li>extension crash/recovery failure cannot corrupt core startup</li>
+<li>extension disable/revocation closes its sessions safely</li>
+<li>permission expansion requires re-approval</li>
+<li>trusted vs sandboxed execution is explicit</li>
+<li>signed package/publisher trust can be enforced</li>
+<li>stable extensions ship specs, golden vectors, fuzz tests, and conformance tests</li>
+<li>generic SDK/FFI can support non-Rust extension authors</li>
+<li>core messaging/files/identity remain fully usable when optional extensions fail</li>
+</ul>
+<hr />
+<h1 id="246-relationship-to-earlier-parts"><a class="header" href="#246-relationship-to-earlier-parts">246. Relationship to Earlier Parts</a></h1>
+<p>Part 21 builds on:</p>
+<pre><code class="language-text">01 — Protocol Extension System
+02 — Multi-Device Identity
+03 — Transport &amp; Routing Policy Engine
+04 — Offline Event Log
+05 — Robust File / Blob Subsystem
+06 — DTN / Store-Carry-Forward
+07 — Capability Negotiation
+08 — Resource Limits &amp; Backpressure
+09 — Crash Recovery
+10 — Fuzzing &amp; Protocol Test Suite
+11 — Relay / Self-Hosted Infrastructure
+12 — Multipath Networking
+13 — Battery-Aware Scheduling
+14 — Proximity Abstraction
+15 — QR / NFC Bootstrap
+16 — Daemon &amp; Headless Runtime
+17 — Emergency Priority Classes
+18 — Network Diagnostics &amp; Path Visualization
+19 — C ABI / FFI
+20 — Embedded Linux Node
+</code></pre>
+<p>It prepares:</p>
+<pre><code class="language-text">22 — External Interoperability Suite
+23 — Plugin / Module Packaging &amp; Distribution
+24 — Ecosystem Governance / Marketplace / Trust
+</code></pre>
+<hr />
+<h1 id="247-final-architecture"><a class="header" href="#247-final-architecture">247. Final Architecture</a></h1>
+<pre><code class="language-text">                THIRD-PARTY EXTENSION
+                         │
+                  Extension Manifest
+                         │
+              Permission / Trust Check
+                         │
+                 Extension Host
+                         │
+        ┌────────────────┼────────────────┐
+        │                │                │
+     Storage          Protocol         Diagnostics
+        │                │                │
+        └──────────── Core Services ──────┘
+                         │
+          Identity / Routing / DTN / Files
+                         │
+                    Peer Network
+</code></pre>
+<p>Safe sandbox path:</p>
+<pre><code class="language-text">Extension Package
+      ↓
+Signature Verify
+      ↓
+WASM / Out-of-Process Host
+      ↓
+Capability-Scoped APIs
+      ↓
+Core Runtime
+</code></pre>
+<hr />
+<h1 id="248-final-principle"><a class="header" href="#248-final-principle">248. Final Principle</a></h1>
+<p>A third-party extension should be able to add something substantial, such as:</p>
+<pre><code class="language-text">collaborative whiteboarding
+ERP event delivery
+IoT telemetry
+custom workflow synchronization
+</code></pre>
+<p>without being allowed to:</p>
+<pre><code class="language-text">read identity private keys
+bypass routing policy
+consume unlimited memory
+claim emergency authority
+write directly into core databases
+open arbitrary raw network sockets
+crash the whole daemon
+</code></pre>
+<p>The extension architecture should therefore provide:</p>
+<pre><code class="language-text">freedom at the protocol-semantic layer
++
+strict boundaries at the security/resource/runtime layer
+</code></pre>
+<p>That combination is what makes the platform extensible without turning it into an unsafe plugin host.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="07-capability-negotiation-architecture.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="22-wasm-compatible-components-architecture.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="07-capability-negotiation-architecture.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="22-wasm-compatible-components-architecture.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

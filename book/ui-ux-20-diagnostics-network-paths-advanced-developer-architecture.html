@@ -1,0 +1,2052 @@
+<!DOCTYPE HTML>
+<html lang="en" class="navy" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>UI/UX 20 — Diagnostics, Network Paths &amp; Developer UX - SIAR System Architecture &amp; Technical Wiki</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="Comprehensive system architecture, cryptographic protocols, DTN mesh networking, distributed storage, audio DSP pipelines, and UI/UX design specifications for SIAR.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="theme/custom.css">
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "navy";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('navy')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="Home.html">Architecture Portal & Reading Guide</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part I: Protocol Foundation & Extension Platform</li><li class="chapter-item expanded "><a href="01-protocol-extension-system-architecture.html"><strong aria-hidden="true">1.</strong> 01 — Protocol Extension System Architecture</a></li><li class="chapter-item expanded "><a href="07-capability-negotiation-architecture.html"><strong aria-hidden="true">2.</strong> 07 — Capability Negotiation & Protocol Upgrades</a></li><li class="chapter-item expanded "><a href="21-third-party-protocol-extensions-architecture.html"><strong aria-hidden="true">3.</strong> 21 — Third-Party Protocol Extensions</a></li><li class="chapter-item expanded "><a href="22-wasm-compatible-components-architecture.html"><strong aria-hidden="true">4.</strong> 22 — WebAssembly (WASM) Compatible Components</a></li><li class="chapter-item expanded "><a href="23-external-interoperability-suite-architecture.html"><strong aria-hidden="true">5.</strong> 23 — External Interoperability & Conformance Suite</a></li><li class="chapter-item expanded "><a href="24-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">6.</strong> 24 — Dynamic Plugin & Module Ecosystem</a></li><li class="chapter-item expanded affix "><li class="part-title">Part II: Identity, Trust & Cryptography</li><li class="chapter-item expanded "><a href="02-multi-device-identity-architecture.html"><strong aria-hidden="true">7.</strong> 02 — Multi-Device Identity & Trust Model</a></li><li class="chapter-item expanded "><a href="28-production-security-e2ee-key-management-privacy-architecture.html"><strong aria-hidden="true">8.</strong> 28 — Production Security, E2EE, Key Management & Privacy</a></li><li class="chapter-item expanded affix "><li class="part-title">Part III: Mesh Networking, Transports & Hardware</li><li class="chapter-item expanded "><a href="03-transport-routing-policy-engine-architecture.html"><strong aria-hidden="true">9.</strong> 03 — Transport & Routing Policy Engine</a></li><li class="chapter-item expanded "><a href="11-relay-self-hosted-infrastructure-architecture.html"><strong aria-hidden="true">10.</strong> 11 — Self-Hosted Relay & Coordination Infrastructure</a></li><li class="chapter-item expanded "><a href="12-multipath-networking-architecture.html"><strong aria-hidden="true">11.</strong> 12 — Multipath Networking & Link Aggregation</a></li><li class="chapter-item expanded "><a href="13-battery-aware-scheduling-architecture.html"><strong aria-hidden="true">12.</strong> 13 — Battery-Aware Scheduling & Power Profiles</a></li><li class="chapter-item expanded "><a href="14-proximity-abstraction-architecture.html"><strong aria-hidden="true">13.</strong> 14 — Proximity Abstraction (BLE, Wi-Fi Direct, LoRa)</a></li><li class="chapter-item expanded "><a href="15-qr-nfc-bootstrap-pairing-architecture.html"><strong aria-hidden="true">14.</strong> 15 — Out-of-Band QR & NFC Bootstrap Pairing</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IV: Delay-Tolerant Networking & Emergency Mesh</li><li class="chapter-item expanded "><a href="06-dtn-store-carry-forward-architecture.html"><strong aria-hidden="true">15.</strong> 06 — DTN Store-Carry-Forward & Bundle Forwarding</a></li><li class="chapter-item expanded "><a href="17-emergency-priority-classes-architecture.html"><strong aria-hidden="true">16.</strong> 17 — Emergency Priority Classes & Critical Alert Mesh</a></li><li class="chapter-item expanded affix "><li class="part-title">Part V: Storage, Outbox & Data Lifecycle</li><li class="chapter-item expanded "><a href="04-offline-event-log-architecture.html"><strong aria-hidden="true">17.</strong> 04 — Offline Event Log & Sync Engine</a></li><li class="chapter-item expanded "><a href="05-robust-file-blob-subsystem-architecture.html"><strong aria-hidden="true">18.</strong> 05 — Robust File & Blob Subsystem (Chunking & Resumption)</a></li><li class="chapter-item expanded "><a href="09-crash-recovery-architecture.html"><strong aria-hidden="true">19.</strong> 09 — Crash Recovery & State Integrity</a></li><li class="chapter-item expanded "><a href="32-search-indexing-local-knowledge-privacy-architecture.html"><strong aria-hidden="true">20.</strong> 32 — Search, Indexing & Local Privacy Retrieval</a></li><li class="chapter-item expanded "><a href="33-backup-restore-export-import-archival-portability-architecture.html"><strong aria-hidden="true">21.</strong> 33 — Backup, Restore, Export & Long-Term Archival</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VI: Realtime Media, Calling & Audio DSP</li><li class="chapter-item expanded "><a href="25-android-direct-hardware-surface-zero-copy-media-architecture.html"><strong aria-hidden="true">22.</strong> 25 — Android Direct Surface Zero-Copy Media</a></li><li class="chapter-item expanded "><a href="26-rust-first-audio-dsp-resampling-aec-ns-agc-architecture.html"><strong aria-hidden="true">23.</strong> 26 — Rust-First Audio DSP (AEC, NS, AGC, Resampling)</a></li><li class="chapter-item expanded "><a href="29-realtime-calls-media-session-protocol-architecture.html"><strong aria-hidden="true">24.</strong> 29 — Realtime Calls & Media Session Protocol</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VII: Ephemeral State, Presence & Notifications</li><li class="chapter-item expanded "><a href="30-presence-availability-typing-read-receipts-ephemeral-state-architecture.html"><strong aria-hidden="true">25.</strong> 30 — Presence, Availability, Typing & Read Receipts</a></li><li class="chapter-item expanded "><a href="31-notifications-push-background-delivery-lifecycle-architecture.html"><strong aria-hidden="true">26.</strong> 31 — Notifications, Push Wake & Background Delivery</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VIII: Native Runtimes, Daemons & Embedded Linux</li><li class="chapter-item expanded "><a href="16-daemon-headless-runtime-architecture.html"><strong aria-hidden="true">27.</strong> 16 — Headless Daemon & Background Runtime</a></li><li class="chapter-item expanded "><a href="19-c-abi-ffi-architecture.html"><strong aria-hidden="true">28.</strong> 19 — C-ABI FFI & Native Language Interop</a></li><li class="chapter-item expanded "><a href="20-embedded-linux-node-architecture.html"><strong aria-hidden="true">29.</strong> 20 — Embedded Linux Node & Resource-Constrained Targets</a></li><li class="chapter-item expanded "><a href="27-rust-driven-android-native-build-packaging-automation.html"><strong aria-hidden="true">30.</strong> 27 — Rust-Driven Android Native Build & Packaging Automation</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IX: Reliability, Testing, Fuzzing & Diagnostics</li><li class="chapter-item expanded "><a href="08-resource-limits-backpressure-architecture.html"><strong aria-hidden="true">31.</strong> 08 — Resource Limits, Quotas & Backpressure</a></li><li class="chapter-item expanded "><a href="10-fuzzing-protocol-test-suite-architecture.html"><strong aria-hidden="true">32.</strong> 10 — Fuzzing & Protocol Test Suite</a></li><li class="chapter-item expanded "><a href="18-network-diagnostics-path-visualization-architecture.html"><strong aria-hidden="true">33.</strong> 18 — Network Diagnostics & Path Visualization</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part X: UI/UX Client Architecture (Cross-Platform)</li><li class="chapter-item expanded "><a href="ui-ux-01-product-foundation-cross-platform-interaction-architecture.html"><strong aria-hidden="true">34.</strong> UI/UX 01 — Product UX Foundation & Cross-Platform Interaction</a></li><li class="chapter-item expanded "><a href="ui-ux-02-desktop-dioxus-app-shell-navigation-window-architecture.html"><strong aria-hidden="true">35.</strong> UI/UX 02 — Desktop Dioxus App Shell & Navigation</a></li><li class="chapter-item expanded "><a href="ui-ux-03-android-jetpack-compose-app-shell-navigation-lifecycle-architecture.html"><strong aria-hidden="true">36.</strong> UI/UX 03 — Android Jetpack Compose App Shell & Lifecycle</a></li><li class="chapter-item expanded "><a href="ui-ux-04-conversation-list-inbox-architecture.html"><strong aria-hidden="true">37.</strong> UI/UX 04 — Conversation List & Inbox UX</a></li><li class="chapter-item expanded "><a href="ui-ux-05-conversation-message-timeline-architecture.html"><strong aria-hidden="true">38.</strong> UI/UX 05 — Conversation Message Timeline UX</a></li><li class="chapter-item expanded "><a href="ui-ux-06-message-composer-attachments-voice-notes-drafts-architecture.html"><strong aria-hidden="true">39.</strong> UI/UX 06 — Message Composer, Attachments & Voice Notes</a></li><li class="chapter-item expanded "><a href="ui-ux-07-calls-realtime-media-architecture.html"><strong aria-hidden="true">40.</strong> UI/UX 07 — Calls & Realtime Media UX</a></li><li class="chapter-item expanded "><a href="ui-ux-08-contacts-requests-verification-identity-architecture.html"><strong aria-hidden="true">41.</strong> UI/UX 08 — Contacts, Requests, Verification & Identity</a></li><li class="chapter-item expanded "><a href="ui-ux-09-groups-membership-roles-architecture.html"><strong aria-hidden="true">42.</strong> UI/UX 09 — Groups, Membership & Roles UX</a></li><li class="chapter-item expanded "><a href="ui-ux-10-files-media-gallery-transfer-architecture.html"><strong aria-hidden="true">43.</strong> UI/UX 10 — Files, Media Gallery & Transfer UX</a></li><li class="chapter-item expanded "><a href="ui-ux-11-search-local-knowledge-retrieval-architecture.html"><strong aria-hidden="true">44.</strong> UI/UX 11 — Search & Local Knowledge Retrieval UX</a></li><li class="chapter-item expanded "><a href="ui-ux-12-nearby-qr-nfc-pairing-device-linking-architecture.html"><strong aria-hidden="true">45.</strong> UI/UX 12 — Nearby, QR/NFC Pairing & Device Linking UX</a></li><li class="chapter-item expanded "><a href="ui-ux-13-notifications-background-incoming-call-architecture.html"><strong aria-hidden="true">46.</strong> UI/UX 13 — Notifications, Background & Incoming Call UX</a></li><li class="chapter-item expanded "><a href="ui-ux-14-presence-typing-receipts-status-architecture.html"><strong aria-hidden="true">47.</strong> UI/UX 14 — Presence, Typing, Receipts & Status UX</a></li><li class="chapter-item expanded "><a href="ui-ux-15-security-center-devices-keys-recovery-architecture.html"><strong aria-hidden="true">48.</strong> UI/UX 15 — Security Center, Devices, Keys & Recovery UX</a></li><li class="chapter-item expanded "><a href="ui-ux-16-backup-restore-export-migration-architecture.html"><strong aria-hidden="true">49.</strong> UI/UX 16 — Backup, Restore, Export & Migration UX</a></li><li class="chapter-item expanded "><a href="ui-ux-17-emergency-sos-offline-mesh-architecture.html"><strong aria-hidden="true">50.</strong> UI/UX 17 — Emergency / SOS / Offline Mesh UX</a></li><li class="chapter-item expanded "><a href="ui-ux-18-settings-privacy-notifications-data-controls-architecture.html"><strong aria-hidden="true">51.</strong> UI/UX 18 — Settings, Privacy, Notifications & Data Controls</a></li><li class="chapter-item expanded "><a href="ui-ux-19-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">52.</strong> UI/UX 19 — Plugin & Module Ecosystem UX</a></li><li class="chapter-item expanded "><a href="ui-ux-20-diagnostics-network-paths-advanced-developer-architecture.html" class="active"><strong aria-hidden="true">53.</strong> UI/UX 20 — Diagnostics, Network Paths & Developer UX</a></li><li class="chapter-item expanded "><a href="ui-ux-21-accessibility-inclusive-interaction-architecture.html"><strong aria-hidden="true">54.</strong> UI/UX 21 — Accessibility & Inclusive Interaction</a></li><li class="chapter-item expanded "><a href="ui-ux-22-design-system-tokens-typography-icons-motion-architecture.html"><strong aria-hidden="true">55.</strong> UI/UX 22 — Design System, Tokens, Typography & Motion</a></li><li class="chapter-item expanded "><a href="ui-ux-23-responsive-adaptive-desktop-tablet-foldable-phone-layout-architecture.html"><strong aria-hidden="true">56.</strong> UI/UX 23 — Responsive & Adaptive Layouts (Desktop/Tablet/Foldable/Phone)</a></li><li class="chapter-item expanded "><a href="ui-ux-24-error-loading-empty-offline-degraded-state-architecture.html"><strong aria-hidden="true">57.</strong> UI/UX 24 — Error, Loading, Empty & Degraded-State UX</a></li><li class="chapter-item expanded "><a href="ui-ux-25-onboarding-first-run-permission-education-architecture.html"><strong aria-hidden="true">58.</strong> UI/UX 25 — Onboarding, First Run & Permission Education</a></li><li class="chapter-item expanded "><a href="ui-ux-26-performance-virtualization-large-data-ui-architecture.html"><strong aria-hidden="true">59.</strong> UI/UX 26 — Virtualization & Large-Data UI Performance</a></li><li class="chapter-item expanded "><a href="ui-ux-27-ui-testing-screenshot-interaction-release-quality-gates-architecture.html"><strong aria-hidden="true">60.</strong> UI/UX 27 — UI Testing, Screenshots & Release Quality Gates</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">SIAR System Architecture &amp; Technical Wiki</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar/edit/main/sys-arch/ui-ux-20-diagnostics-network-paths-advanced-developer-architecture.md" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="uiux-part-20--diagnostics-network-paths--advanced-developer-ux-architecture"><a class="header" href="#uiux-part-20--diagnostics-network-paths--advanced-developer-ux-architecture">UI/UX Part 20 — Diagnostics, Network Paths &amp; Advanced Developer UX Architecture</a></h1>
+<h2 id="reusable-p2p-communication-platform"><a class="header" href="#reusable-p2p-communication-platform">Reusable P2P Communication Platform</a></h2>
+<p><strong>Status:</strong> UI/UX architecture specification<br />
+<strong>UI Series:</strong> Part 20<br />
+<strong>Desktop UI:</strong> Dioxus<br />
+<strong>Android UI:</strong> Kotlin + Jetpack Compose<br />
+<strong>Core runtime:</strong> Rust<br />
+<strong>Primary purpose:</strong> define the complete diagnostics, observability, network-path visualization, connectivity health, call/media metrics, transfer diagnostics, background-delivery state, plugin/runtime health, support-bundle generation, privacy/redaction, developer tools, structured logs, safe repair actions, and Rust presentation contracts across desktop and Android.</p>
+<hr />
+<h1 id="1-purpose"><a class="header" href="#1-purpose">1. Purpose</a></h1>
+<p>A production communication platform needs enough visibility to answer questions like:</p>
+<pre><code class="language-text">Why is this message still queued?
+Why is this call reconnecting?
+Am I connected directly or through a relay?
+Is the peer reachable over LAN?
+Is Bluetooth mesh active?
+Why is a transfer slow?
+Is Android background delivery restricted?
+Is a plugin failing?
+Is the local database healthy?
+Is the search index rebuilding?
+Did a security event block communication?
+</code></pre>
+<p>The product must expose this information without turning normal users into protocol engineers.</p>
+<p>The governing principle is:</p>
+<blockquote>
+<p><strong>Diagnostics should explain system health and actionable failure causes while keeping private content, cryptographic secrets, and low-level implementation noise out of ordinary UX.</strong></p>
+</blockquote>
+<hr />
+<h1 id="2-architectural-position"><a class="header" href="#2-architectural-position">2. Architectural Position</a></h1>
+<pre><code class="language-text">Rust Core / Runtime
+      │
+      ├── transport health
+      ├── path observations
+      ├── relay state
+      ├── LAN / proximity state
+      ├── sync / delivery state
+      ├── call/media metrics
+      ├── transfer metrics
+      ├── storage health
+      ├── plugin health
+      ├── security state
+      └── logs / traces / counters
+      │
+      ▼
+Diagnostics Presentation Service
+      │
+   ┌──┴─────────────┐
+   │                │
+Dioxus           Compose
+Desktop          Android
+</code></pre>
+<hr />
+<h1 id="3-two-diagnostic-layers"><a class="header" href="#3-two-diagnostic-layers">3. Two Diagnostic Layers</a></h1>
+<p>The product should have:</p>
+<pre><code class="language-text">User Diagnostics
+Developer Diagnostics
+</code></pre>
+<p>These are different surfaces.</p>
+<hr />
+<h1 id="4-user-diagnostics"><a class="header" href="#4-user-diagnostics">4. User Diagnostics</a></h1>
+<p>Purpose:</p>
+<pre><code class="language-text">understand whether something is working
+understand what to try next
+share safe support information
+</code></pre>
+<hr />
+<h1 id="5-developer-diagnostics"><a class="header" href="#5-developer-diagnostics">5. Developer Diagnostics</a></h1>
+<p>Purpose:</p>
+<pre><code class="language-text">inspect internal IDs
+protocol path state
+timings
+counters
+logs
+event streams
+resource usage
+</code></pre>
+<p>Protected by:</p>
+<pre><code class="language-text">Developer Mode
+</code></pre>
+<hr />
+<h1 id="6-normal-user-vs-developer-language"><a class="header" href="#6-normal-user-vs-developer-language">6. Normal User vs Developer Language</a></h1>
+<p>Normal:</p>
+<pre><code class="language-text">Connected through relay
+</code></pre>
+<p>Developer:</p>
+<pre><code class="language-text">Path: Relay
+RTT: 112 ms
+ALPN: comm/msg/v1
+QUIC session: established
+</code></pre>
+<hr />
+<h1 id="7-main-diagnostics-categories"><a class="header" href="#7-main-diagnostics-categories">7. Main Diagnostics Categories</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">Overview
+Network
+Messages &amp; Sync
+Calls &amp; Media
+Files &amp; Transfers
+Background Delivery
+Storage
+Search
+Plugins
+Security
+System
+Logs
+Support Bundle
+Developer Tools
+</code></pre>
+<hr />
+<h1 id="8-diagnostics-overview"><a class="header" href="#8-diagnostics-overview">8. Diagnostics Overview</a></h1>
+<p>Show high-level health:</p>
+<pre><code class="language-text">Network: Connected
+Messages: Healthy
+Calls: Ready
+Background Delivery: Available
+Storage: Healthy
+Search: Ready
+Plugins: 1 warning
+Security: Healthy
+</code></pre>
+<hr />
+<h1 id="9-health-model"><a class="header" href="#9-health-model">9. Health Model</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum DiagnosticHealth {
+    Healthy,
+    Degraded,
+    Attention,
+    Failed,
+    Unknown,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="10-health-must-be-actionable"><a class="header" href="#10-health-must-be-actionable">10. Health Must Be Actionable</a></h1>
+<p>Bad:</p>
+<pre><code class="language-text">Network: 72%
+</code></pre>
+<p>Good:</p>
+<pre><code class="language-text">Network: Relay only
+Direct connection unavailable
+</code></pre>
+<hr />
+<h1 id="11-diagnostic-issue"><a class="header" href="#11-diagnostic-issue">11. Diagnostic Issue</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct DiagnosticIssueView {
+    pub id: DiagnosticIssueId,
+    pub area: DiagnosticArea,
+    pub severity: DiagnosticSeverity,
+    pub title: String,
+    pub summary: String,
+    pub actions: Vec&lt;DiagnosticActionView&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="12-diagnostic-severity"><a class="header" href="#12-diagnostic-severity">12. Diagnostic Severity</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum DiagnosticSeverity {
+    Info,
+    Warning,
+    Error,
+    Critical,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="13-network-diagnostics"><a class="header" href="#13-network-diagnostics">13. Network Diagnostics</a></h1>
+<p>Core questions:</p>
+<pre><code class="language-text">Is there Internet?
+Is LAN available?
+Is nearby discovery available?
+Is relay reachable?
+Is direct P2P possible?
+Is DTN/mesh available?
+Which route is currently used?
+</code></pre>
+<hr />
+<h1 id="14-network-health-snapshot"><a class="header" href="#14-network-health-snapshot">14. Network Health Snapshot</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct NetworkDiagnosticView {
+    pub internet: ConnectivityState,
+    pub lan: ConnectivityState,
+    pub relay: ConnectivityState,
+    pub proximity: ConnectivityState,
+    pub mesh: ConnectivityState,
+    pub preferred_path: Option&lt;NetworkPathView&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="15-connectivity-state"><a class="header" href="#15-connectivity-state">15. Connectivity State</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum ConnectivityState {
+    Available,
+    Degraded,
+    Unavailable,
+    Disabled,
+    Unknown,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="16-network-path-types"><a class="header" href="#16-network-path-types">16. Network Path Types</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum NetworkPathKind {
+    DirectInternet,
+    Relay,
+    Lan,
+    WifiDirect,
+    Bluetooth,
+    Mesh,
+    Dtn,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="17-normal-path-ux"><a class="header" href="#17-normal-path-ux">17. Normal Path UX</a></h1>
+<p>Show:</p>
+<pre><code class="language-text">Direct
+Relay
+Local network
+Nearby
+Offline relay
+</code></pre>
+<hr />
+<h1 id="18-developer-path-ux"><a class="header" href="#18-developer-path-ux">18. Developer Path UX</a></h1>
+<p>May show:</p>
+<pre><code class="language-text">local endpoint
+remote endpoint class
+relay region
+candidate path
+RTT
+loss
+last path switch
+</code></pre>
+<p>without revealing private IPs unless explicitly enabled and safe.</p>
+<hr />
+<h1 id="19-path-visualization"><a class="header" href="#19-path-visualization">19. Path Visualization</a></h1>
+<p>Recommended conceptual diagram:</p>
+<pre><code class="language-text">You
+ │
+ ├── Direct ─────── Peer
+ │
+ └── Relay ─────── Relay ─────── Peer
+</code></pre>
+<p>or:</p>
+<pre><code class="language-text">You
+ ↓
+LAN
+ ↓
+Peer
+</code></pre>
+<hr />
+<h1 id="20-multi-path-visualization"><a class="header" href="#20-multi-path-visualization">20. Multi-Path Visualization</a></h1>
+<p>If multiple paths active:</p>
+<pre><code class="language-text">Primary: Direct
+Fallback: Relay
+Nearby: Available
+</code></pre>
+<hr />
+<h1 id="21-do-not-overanimate-paths"><a class="header" href="#21-do-not-overanimate-paths">21. Do Not Overanimate Paths</a></h1>
+<p>Network path updates can be frequent.</p>
+<p>Use stable status cards.</p>
+<hr />
+<h1 id="22-path-switch-event"><a class="header" href="#22-path-switch-event">22. Path Switch Event</a></h1>
+<p>Normal UI:</p>
+<pre><code class="language-text">Connection switched to relay
+</code></pre>
+<p>only if user is troubleshooting.</p>
+<p>Ordinary product UX hides it.</p>
+<hr />
+<h1 id="23-direct-connection-failure"><a class="header" href="#23-direct-connection-failure">23. Direct Connection Failure</a></h1>
+<p>Possible user-facing explanation:</p>
+<pre><code class="language-text">Direct connection unavailable
+Messages can still use relay.
+</code></pre>
+<hr />
+<h1 id="24-relay-failure"><a class="header" href="#24-relay-failure">24. Relay Failure</a></h1>
+<pre><code class="language-text">Relay unavailable
+Trying direct/local paths
+</code></pre>
+<hr />
+<h1 id="25-no-internet--lan"><a class="header" href="#25-no-internet--lan">25. No Internet + LAN</a></h1>
+<p>Correct status:</p>
+<pre><code class="language-text">Internet unavailable
+Local network connection available
+</code></pre>
+<hr />
+<h1 id="26-no-internet--nearby-mesh"><a class="header" href="#26-no-internet--nearby-mesh">26. No Internet + Nearby Mesh</a></h1>
+<pre><code class="language-text">Internet unavailable
+Nearby offline relay available
+</code></pre>
+<hr />
+<h1 id="27-no-route"><a class="header" href="#27-no-route">27. No Route</a></h1>
+<pre><code class="language-text">No route currently available
+Messages remain queued
+</code></pre>
+<hr />
+<h1 id="28-peer-reachability-diagnostics"><a class="header" href="#28-peer-reachability-diagnostics">28. Peer Reachability Diagnostics</a></h1>
+<p>For a selected conversation/contact:</p>
+<pre><code class="language-text">Reachable
+Last route
+Relay available
+Nearby available
+Unknown
+</code></pre>
+<hr />
+<h1 id="29-never-equate-reachability-with-presence"><a class="header" href="#29-never-equate-reachability-with-presence">29. Never Equate Reachability with Presence</a></h1>
+<p>Reachability diagnostics are transport state.</p>
+<p>Presence is Part 14.</p>
+<hr />
+<h1 id="30-path-history"><a class="header" href="#30-path-history">30. Path History</a></h1>
+<p>Developer mode can show recent transitions:</p>
+<pre><code class="language-text">19:32 Direct
+19:34 Relay
+19:36 LAN
+</code></pre>
+<p>bounded history only.</p>
+<hr />
+<h1 id="31-network-test"><a class="header" href="#31-network-test">31. Network Test</a></h1>
+<p>Safe user action:</p>
+<pre><code class="language-text">Run Connection Test
+</code></pre>
+<hr />
+<h1 id="32-connection-test-phases"><a class="header" href="#32-connection-test-phases">32. Connection Test Phases</a></h1>
+<pre><code class="language-text">Checking local network
+Checking relay
+Checking direct connectivity
+Checking nearby capability
+</code></pre>
+<hr />
+<h1 id="33-test-result"><a class="header" href="#33-test-result">33. Test Result</a></h1>
+<p>Show recommendations:</p>
+<pre><code class="language-text">Relay works
+Direct connections blocked by network
+Messaging should still work
+</code></pre>
+<hr />
+<h1 id="34-do-not-tell-users-to-disable-firewall-blindly"><a class="header" href="#34-do-not-tell-users-to-disable-firewall-blindly">34. Do Not Tell Users to Disable Firewall Blindly</a></h1>
+<p>If network policy blocks direct traffic:</p>
+<pre><code class="language-text">direct connections may be unavailable
+</code></pre>
+<p>Use relay fallback.</p>
+<hr />
+<h1 id="35-advanced-nat-diagnostics"><a class="header" href="#35-advanced-nat-diagnostics">35. Advanced NAT Diagnostics</a></h1>
+<p>Developer mode only:</p>
+<pre><code class="language-text">NAT type
+candidate gathering
+hole-punch attempt
+</code></pre>
+<p>if backend exposes safely.</p>
+<hr />
+<h1 id="36-raw-ip-address-privacy"><a class="header" href="#36-raw-ip-address-privacy">36. Raw IP Address Privacy</a></h1>
+<p>Hidden by default.</p>
+<hr />
+<h1 id="37-messages--sync-diagnostics"><a class="header" href="#37-messages--sync-diagnostics">37. Messages &amp; Sync Diagnostics</a></h1>
+<p>Questions:</p>
+<pre><code class="language-text">Is the outbox healthy?
+Are messages queued?
+Is sync caught up?
+Are duplicates being suppressed?
+Is the local database writable?
+</code></pre>
+<hr />
+<h1 id="38-message-diagnostic-snapshot"><a class="header" href="#38-message-diagnostic-snapshot">38. Message Diagnostic Snapshot</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct MessageDiagnosticView {
+    pub outbox_queued: u32,
+    pub outbox_failed: u32,
+    pub sync_state: SyncHealth,
+    pub last_successful_sync: Option&lt;Timestamp&gt;,
+    pub storage_writable: bool,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="39-sync-health"><a class="header" href="#39-sync-health">39. Sync Health</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum SyncHealth {
+    Healthy,
+    CatchingUp,
+    WaitingForRoute,
+    Degraded,
+    Failed,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="40-queued-messages"><a class="header" href="#40-queued-messages">40. Queued Messages</a></h1>
+<p>Show:</p>
+<pre><code class="language-text">3 messages waiting for connection
+</code></pre>
+<hr />
+<h1 id="41-failed-messages"><a class="header" href="#41-failed-messages">41. Failed Messages</a></h1>
+<p>Show:</p>
+<pre><code class="language-text">2 messages need attention
+</code></pre>
+<p>with:</p>
+<pre><code class="language-text">Open Outbox
+Retry
+</code></pre>
+<hr />
+<h1 id="42-outbox-details"><a class="header" href="#42-outbox-details">42. Outbox Details</a></h1>
+<p>Developer mode may show:</p>
+<pre><code class="language-text">MessageId
+retry count
+next retry
+last error class
+route attempts
+</code></pre>
+<p>No content preview by default.</p>
+<hr />
+<h1 id="43-sync-catch-up"><a class="header" href="#43-sync-catch-up">43. Sync Catch-Up</a></h1>
+<p>Show:</p>
+<pre><code class="language-text">Syncing recent changes…
+</code></pre>
+<hr />
+<h1 id="44-last-successful-sync"><a class="header" href="#44-last-successful-sync">44. Last Successful Sync</a></h1>
+<p>Useful for support.</p>
+<hr />
+<h1 id="45-local-database-health"><a class="header" href="#45-local-database-health">45. Local Database Health</a></h1>
+<p>User-facing:</p>
+<pre><code class="language-text">Local data store healthy
+</code></pre>
+<p>or:</p>
+<pre><code class="language-text">Local data store needs repair
+</code></pre>
+<hr />
+<h1 id="46-database-diagnostics"><a class="header" href="#46-database-diagnostics">46. Database Diagnostics</a></h1>
+<p>Developer mode:</p>
+<pre><code class="language-text">schema version
+migration version
+WAL/checkpoint state
+database size
+integrity result
+</code></pre>
+<p>depending actual DB.</p>
+<hr />
+<h1 id="47-safe-database-check"><a class="header" href="#47-safe-database-check">47. Safe Database Check</a></h1>
+<p>Action:</p>
+<pre><code class="language-text">Check Local Data
+</code></pre>
+<p>must be read-only unless user chooses repair.</p>
+<hr />
+<h1 id="48-repair-action"><a class="header" href="#48-repair-action">48. Repair Action</a></h1>
+<p>Only if backend has safe transactional repair.</p>
+<hr />
+<h1 id="49-never-offer-delete-database-as-first-fix"><a class="header" href="#49-never-offer-delete-database-as-first-fix">49. Never Offer "Delete Database" as First Fix</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="50-calls--media-diagnostics"><a class="header" href="#50-calls--media-diagnostics">50. Calls &amp; Media Diagnostics</a></h1>
+<p>Questions:</p>
+<pre><code class="language-text">Why is audio bad?
+Is microphone available?
+Which codec is active?
+Is video hardware accelerated?
+Is packet loss high?
+Is relay being used?
+</code></pre>
+<hr />
+<h1 id="51-call-diagnostic-snapshot"><a class="header" href="#51-call-diagnostic-snapshot">51. Call Diagnostic Snapshot</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct CallDiagnosticView {
+    pub call_id: CallId,
+    pub route: NetworkPathKind,
+    pub rtt_ms: Option&lt;u32&gt;,
+    pub jitter_ms: Option&lt;u32&gt;,
+    pub packet_loss_pct: Option&lt;f32&gt;,
+    pub audio_codec: Option&lt;String&gt;,
+    pub video_codec: Option&lt;String&gt;,
+    pub video_resolution: Option&lt;VideoResolutionView&gt;,
+    pub video_fps: Option&lt;f32&gt;,
+    pub hw_video_decode: Option&lt;bool&gt;,
+    pub hw_video_encode: Option&lt;bool&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="52-normal-call-diagnostics"><a class="header" href="#52-normal-call-diagnostics">52. Normal Call Diagnostics</a></h1>
+<p>Show semantic:</p>
+<pre><code class="language-text">Connection: Good
+Audio: Good
+Video: Reduced quality
+Route: Relay
+</code></pre>
+<hr />
+<h1 id="53-developer-call-diagnostics"><a class="header" href="#53-developer-call-diagnostics">53. Developer Call Diagnostics</a></h1>
+<p>Show numeric metrics.</p>
+<hr />
+<h1 id="54-audio-device-test"><a class="header" href="#54-audio-device-test">54. Audio Device Test</a></h1>
+<p>Desktop:</p>
+<pre><code class="language-text">Test microphone
+Test speaker
+</code></pre>
+<hr />
+<h1 id="55-android-audio-test"><a class="header" href="#55-android-audio-test">55. Android Audio Test</a></h1>
+<p>Can test:</p>
+<pre><code class="language-text">microphone permission
+audio route availability
+</code></pre>
+<p>without awkward loopback if unnecessary.</p>
+<hr />
+<h1 id="56-camera-test"><a class="header" href="#56-camera-test">56. Camera Test</a></h1>
+<p>Preview local camera.</p>
+<hr />
+<h1 id="57-camera-test-privacy"><a class="header" href="#57-camera-test-privacy">57. Camera Test Privacy</a></h1>
+<p>No media leaves device.</p>
+<hr />
+<h1 id="58-codec-test"><a class="header" href="#58-codec-test">58. Codec Test</a></h1>
+<p>Developer mode:</p>
+<pre><code class="language-text">supported encode/decode codecs
+hardware/software paths
+</code></pre>
+<hr />
+<h1 id="59-call-reconnect-history"><a class="header" href="#59-call-reconnect-history">59. Call Reconnect History</a></h1>
+<p>Developer mode can show:</p>
+<pre><code class="language-text">reconnect count
+last reconnect duration
+path transitions
+</code></pre>
+<hr />
+<h1 id="60-files--transfer-diagnostics"><a class="header" href="#60-files--transfer-diagnostics">60. Files &amp; Transfer Diagnostics</a></h1>
+<p>Questions:</p>
+<pre><code class="language-text">Why is file waiting?
+Is source available?
+Is storage full?
+Is verification failing?
+</code></pre>
+<hr />
+<h1 id="61-transfer-diagnostic-view"><a class="header" href="#61-transfer-diagnostic-view">61. Transfer Diagnostic View</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct TransferDiagnosticView {
+    pub transfer_id: TransferId,
+    pub state: TransferState,
+    pub route: Option&lt;NetworkPathKind&gt;,
+    pub completed_bytes: u64,
+    pub total_bytes: u64,
+    pub retry_count: u32,
+    pub source_available: Option&lt;bool&gt;,
+    pub verification_state: Option&lt;BackupVerificationState&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="62-user-transfer-diagnostic"><a class="header" href="#62-user-transfer-diagnostic">62. User Transfer Diagnostic</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">Waiting for sender
+Waiting for Wi-Fi
+Paused by battery saver
+Not enough storage
+Integrity verification failed
+</code></pre>
+<hr />
+<h1 id="63-developer-transfer-detail"><a class="header" href="#63-developer-transfer-detail">63. Developer Transfer Detail</a></h1>
+<p>May show:</p>
+<pre><code class="language-text">chunk counts
+throughput
+resume checkpoint
+path
+retry backoff
+</code></pre>
+<hr />
+<h1 id="64-storage-diagnostics"><a class="header" href="#64-storage-diagnostics">64. Storage Diagnostics</a></h1>
+<p>Questions:</p>
+<pre><code class="language-text">How much storage is used?
+What is reclaimable?
+Is there corruption?
+Are temporary files stuck?
+</code></pre>
+<hr />
+<h1 id="65-storage-health"><a class="header" href="#65-storage-health">65. Storage Health</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct StorageDiagnosticView {
+    pub total_used: u64,
+    pub free_space: Option&lt;u64&gt;,
+    pub reclaimable_cache: u64,
+    pub partial_transfer_bytes: u64,
+    pub search_index_bytes: u64,
+    pub orphaned_blob_count: u64,
+    pub health: DiagnosticHealth,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="66-user-storage-actions"><a class="header" href="#66-user-storage-actions">66. User Storage Actions</a></h1>
+<p>Safe:</p>
+<pre><code class="language-text">Manage Storage
+Clear Cache
+Clear Partial Transfers
+Rebuild Search Index
+</code></pre>
+<hr />
+<h1 id="67-orphan-cleanup"><a class="header" href="#67-orphan-cleanup">67. Orphan Cleanup</a></h1>
+<p>If backend detects reclaimable unreferenced blobs:</p>
+<pre><code class="language-text">Clean Up
+</code></pre>
+<p>after validation.</p>
+<hr />
+<h1 id="68-do-not-expose-cas-internals"><a class="header" href="#68-do-not-expose-cas-internals">68. Do Not Expose CAS Internals</a></h1>
+<p>Normal users should not see:</p>
+<pre><code class="language-text">blob hash path
+refcount table
+chunk directory
+</code></pre>
+<hr />
+<h1 id="69-search-diagnostics"><a class="header" href="#69-search-diagnostics">69. Search Diagnostics</a></h1>
+<p>From Part 11:</p>
+<pre><code class="language-text">Ready
+Building
+Stale
+Corrupt
+Disabled
+</code></pre>
+<hr />
+<h1 id="70-search-diagnostic-view"><a class="header" href="#70-search-diagnostic-view">70. Search Diagnostic View</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct SearchDiagnosticView {
+    pub state: SearchIndexState,
+    pub indexed_messages: Option&lt;u64&gt;,
+    pub indexed_files: Option&lt;u64&gt;,
+    pub index_size: u64,
+    pub last_update: Option&lt;Timestamp&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="71-search-repair"><a class="header" href="#71-search-repair">71. Search Repair</a></h1>
+<p>Action:</p>
+<pre><code class="language-text">Rebuild Search Index
+</code></pre>
+<hr />
+<h1 id="72-background-delivery-diagnostics"><a class="header" href="#72-background-delivery-diagnostics">72. Background Delivery Diagnostics</a></h1>
+<p>Important on Android.</p>
+<p>Questions:</p>
+<pre><code class="language-text">Are notifications allowed?
+Is push/wake registered?
+Is battery restriction blocking work?
+Is foreground-call service allowed?
+When was last background sync?
+</code></pre>
+<hr />
+<h1 id="73-background-diagnostic-snapshot"><a class="header" href="#73-background-diagnostic-snapshot">73. Background Diagnostic Snapshot</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct BackgroundDiagnosticView {
+    pub notification_permission: PermissionDiagnosticState,
+    pub background_restricted: bool,
+    pub push_registration: ServiceDiagnosticState,
+    pub last_background_sync: Option&lt;Timestamp&gt;,
+    pub call_background_ready: bool,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="74-android-diagnostics-actions"><a class="header" href="#74-android-diagnostics-actions">74. Android Diagnostics Actions</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">Open Notification Settings
+Open Battery Settings
+Open App Permissions
+Test Notification
+Run Background Test
+</code></pre>
+<hr />
+<h1 id="75-background-test"><a class="header" href="#75-background-test">75. Background Test</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">schedule a safe local diagnostic wake
+</code></pre>
+<p>if platform allows.</p>
+<p>Do not simulate by sending private network data unnecessarily.</p>
+<hr />
+<h1 id="76-notification-test"><a class="header" href="#76-notification-test">76. Notification Test</a></h1>
+<p>Send:</p>
+<pre><code class="language-text">Test notification
+</code></pre>
+<p>clearly labeled as test.</p>
+<hr />
+<h1 id="77-incoming-call-test"><a class="header" href="#77-incoming-call-test">77. Incoming Call Test</a></h1>
+<p>Optional local test mode.</p>
+<p>Must not contact another person.</p>
+<hr />
+<h1 id="78-desktop-background-diagnostics"><a class="header" href="#78-desktop-background-diagnostics">78. Desktop Background Diagnostics</a></h1>
+<p>Show:</p>
+<pre><code class="language-text">daemon running
+tray enabled
+autostart enabled
+UI connected to daemon
+</code></pre>
+<hr />
+<h1 id="79-daemon-state"><a class="header" href="#79-daemon-state">79. Daemon State</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum DaemonHealth {
+    Running,
+    Starting,
+    Stopped,
+    Failed,
+    Unsupported,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="80-daemon-restart"><a class="header" href="#80-daemon-restart">80. Daemon Restart</a></h1>
+<p>Action:</p>
+<pre><code class="language-text">Restart Background Service
+</code></pre>
+<p>if safe.</p>
+<hr />
+<h1 id="81-plugin-diagnostics"><a class="header" href="#81-plugin-diagnostics">81. Plugin Diagnostics</a></h1>
+<p>Part 19.</p>
+<p>Show:</p>
+<pre><code class="language-text">enabled
+crashed
+slow
+quarantined
+resource pressure
+</code></pre>
+<hr />
+<h1 id="82-plugin-detail-diagnostics"><a class="header" href="#82-plugin-detail-diagnostics">82. Plugin Detail Diagnostics</a></h1>
+<p>Developer:</p>
+<pre><code class="language-text">CPU time
+memory
+event queue depth
+last error
+capability violations
+</code></pre>
+<hr />
+<h1 id="83-core-isolation"><a class="header" href="#83-core-isolation">83. Core Isolation</a></h1>
+<p>Plugin diagnostic failure must not break diagnostic screen.</p>
+<hr />
+<h1 id="84-security-diagnostics"><a class="header" href="#84-security-diagnostics">84. Security Diagnostics</a></h1>
+<p>Show:</p>
+<pre><code class="language-text">Security Center health
+unresolved events
+device trust status
+recovery readiness
+</code></pre>
+<hr />
+<h1 id="85-security-diagnostics-must-not-dump-keys"><a class="header" href="#85-security-diagnostics-must-not-dump-keys">85. Security Diagnostics Must Not Dump Keys</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="86-identity-detail"><a class="header" href="#86-identity-detail">86. Identity Detail</a></h1>
+<p>Developer mode may show:</p>
+<pre><code class="language-text">short AccountId
+short DeviceId
+key generation/version
+</code></pre>
+<p>but never private key material.</p>
+<hr />
+<h1 id="87-security-event-trace"><a class="header" href="#87-security-event-trace">87. Security Event Trace</a></h1>
+<p>Useful:</p>
+<pre><code class="language-text">DeviceLinked
+DeviceRevoked
+IdentityChanged
+</code></pre>
+<p>with IDs/time.</p>
+<hr />
+<h1 id="88-system-diagnostics"><a class="header" href="#88-system-diagnostics">88. System Diagnostics</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">app version
+build ID
+OS version
+architecture
+runtime mode
+database schema version
+protocol versions
+available codecs
+available transports
+</code></pre>
+<hr />
+<h1 id="89-android-system-diagnostics"><a class="header" href="#89-android-system-diagnostics">89. Android System Diagnostics</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">Android version
+ABI
+battery restriction
+notification permission
+camera/mic permission
+Bluetooth capability
+NFC capability
+</code></pre>
+<hr />
+<h1 id="90-desktop-system-diagnostics"><a class="header" href="#90-desktop-system-diagnostics">90. Desktop System Diagnostics</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">OS
+Wayland/X11/Windows/macOS
+audio backend
+GPU renderer
+daemon mode
+</code></pre>
+<hr />
+<h1 id="91-hardware-information-privacy"><a class="header" href="#91-hardware-information-privacy">91. Hardware Information Privacy</a></h1>
+<p>Do not include unnecessary serial numbers or globally identifying hardware IDs.</p>
+<hr />
+<h1 id="92-runtime-mode"><a class="header" href="#92-runtime-mode">92. Runtime Mode</a></h1>
+<p>Show:</p>
+<pre><code class="language-text">Standalone
+Daemon
+Client/Server
+</code></pre>
+<p>if architecture supports multiple modes.</p>
+<hr />
+<h1 id="93-protocol-compatibility"><a class="header" href="#93-protocol-compatibility">93. Protocol Compatibility</a></h1>
+<p>Developer mode:</p>
+<pre><code class="language-text">message protocol vN
+call protocol vN
+plugin API vN
+backup format vN
+</code></pre>
+<hr />
+<h1 id="94-diagnostics-search"><a class="header" href="#94-diagnostics-search">94. Diagnostics Search</a></h1>
+<p>Developer screen can search:</p>
+<pre><code class="language-text">issue
+component
+ID
+error code
+</code></pre>
+<hr />
+<h1 id="95-structured-logs"><a class="header" href="#95-structured-logs">95. Structured Logs</a></h1>
+<p>Logs should be structured and level-based.</p>
+<hr />
+<h1 id="96-log-levels"><a class="header" href="#96-log-levels">96. Log Levels</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum DiagnosticLogLevel {
+    Error,
+    Warn,
+    Info,
+    Debug,
+    Trace,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="97-default-production-logging"><a class="header" href="#97-default-production-logging">97. Default Production Logging</a></h1>
+<p>Keep:</p>
+<pre><code class="language-text">Error
+Warn
+bounded Info
+</code></pre>
+<p>with redaction.</p>
+<hr />
+<h1 id="98-debug-logging"><a class="header" href="#98-debug-logging">98. Debug Logging</a></h1>
+<p>Temporary developer option.</p>
+<hr />
+<h1 id="99-trace-logging"><a class="header" href="#99-trace-logging">99. Trace Logging</a></h1>
+<p>Very temporary, developer-only.</p>
+<hr />
+<h1 id="100-sensitive-logging-boundary"><a class="header" href="#100-sensitive-logging-boundary">100. Sensitive Logging Boundary</a></h1>
+<p>Never log:</p>
+<pre><code class="language-text">message plaintext
+attachment plaintext
+private keys
+recovery keys
+full auth tokens
+SAS
+QR device-link payloads
+precise emergency location
+</code></pre>
+<hr />
+<h1 id="101-identifier-redaction"><a class="header" href="#101-identifier-redaction">101. Identifier Redaction</a></h1>
+<p>Default support logs may use:</p>
+<pre><code class="language-text">short hashed IDs
+</code></pre>
+<hr />
+<h1 id="102-log-viewer--desktop"><a class="header" href="#102-log-viewer--desktop">102. Log Viewer — Desktop</a></h1>
+<p>Developer mode may provide:</p>
+<pre><code class="language-text">filter by component
+level
+time
+search
+pause
+copy selected
+</code></pre>
+<hr />
+<h1 id="103-log-viewer--android"><a class="header" href="#103-log-viewer--android">103. Log Viewer — Android</a></h1>
+<p>Keep simpler:</p>
+<pre><code class="language-text">recent issues
+export diagnostics
+</code></pre>
+<p>Full live trace viewer is optional.</p>
+<hr />
+<h1 id="104-live-event-inspector"><a class="header" href="#104-live-event-inspector">104. Live Event Inspector</a></h1>
+<p>Developer desktop feature.</p>
+<p>Can inspect typed events:</p>
+<pre><code class="language-text">CallUiEvent
+TransferUiEvent
+PresenceUiEvent
+PluginUiEvent
+</code></pre>
+<p>with sensitive fields redacted.</p>
+<hr />
+<h1 id="105-do-not-expose-internal-event-bus-to-plugins"><a class="header" href="#105-do-not-expose-internal-event-bus-to-plugins">105. Do Not Expose Internal Event Bus to Plugins</a></h1>
+<p>Developer inspector is host-only.</p>
+<hr />
+<h1 id="106-performance-diagnostics"><a class="header" href="#106-performance-diagnostics">106. Performance Diagnostics</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">CPU
+memory
+thread/task counts
+event queue sizes
+render latency
+frame time
+database latency
+search latency
+network throughput
+</code></pre>
+<hr />
+<h1 id="107-user-performance-ux"><a class="header" href="#107-user-performance-ux">107. User Performance UX</a></h1>
+<p>Normal:</p>
+<pre><code class="language-text">App performance is normal
+</code></pre>
+<p>or:</p>
+<pre><code class="language-text">Background indexing is using resources
+</code></pre>
+<hr />
+<h1 id="108-developer-performance-overlay"><a class="header" href="#108-developer-performance-overlay">108. Developer Performance Overlay</a></h1>
+<p>Desktop:</p>
+<pre><code class="language-text">FPS
+render time
+memory
+event rate
+</code></pre>
+<hr />
+<h1 id="109-android-performance-diagnostics"><a class="header" href="#109-android-performance-diagnostics">109. Android Performance Diagnostics</a></h1>
+<p>May show:</p>
+<pre><code class="language-text">recomposition hotspots? developer-only
+battery use class
+background work
+memory pressure
+</code></pre>
+<p>Do not rely on unstable platform internals.</p>
+<hr />
+<h1 id="110-ui-render-health"><a class="header" href="#110-ui-render-health">110. UI Render Health</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct UiPerformanceView {
+    pub frame_time_p95_ms: Option&lt;f32&gt;,
+    pub dropped_frame_rate: Option&lt;f32&gt;,
+    pub event_backlog: u32,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="111-ui-event-backlog"><a class="header" href="#111-ui-event-backlog">111. UI Event Backlog</a></h1>
+<p>Important for diagnosing:</p>
+<pre><code class="language-text">progress spam
+presence updates
+plugin event floods
+</code></pre>
+<hr />
+<h1 id="112-actor-queue-diagnostics"><a class="header" href="#112-actor-queue-diagnostics">112. Actor Queue Diagnostics</a></h1>
+<p>Rust can expose bounded queue occupancy.</p>
+<p>Developer-only.</p>
+<hr />
+<h1 id="113-backpressure-diagnostics"><a class="header" href="#113-backpressure-diagnostics">113. Backpressure Diagnostics</a></h1>
+<p>Show:</p>
+<pre><code class="language-text">Healthy
+Approaching limit
+Throttling
+</code></pre>
+<hr />
+<h1 id="114-resource-pressure"><a class="header" href="#114-resource-pressure">114. Resource Pressure</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum ResourcePressure {
+    Normal,
+    Memory,
+    Storage,
+    Cpu,
+    Thermal,
+    Battery,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="115-android-thermal-state"><a class="header" href="#115-android-thermal-state">115. Android Thermal State</a></h1>
+<p>Use semantic classification.</p>
+<hr />
+<h1 id="116-resource-pressure-ux"><a class="header" href="#116-resource-pressure-ux">116. Resource Pressure UX</a></h1>
+<p>Normal:</p>
+<pre><code class="language-text">Video quality reduced to protect performance
+</code></pre>
+<p>Developer:</p>
+<pre><code class="language-text">Thermal pressure: Severe
+</code></pre>
+<hr />
+<h1 id="117-diagnostic-actions"><a class="header" href="#117-diagnostic-actions">117. Diagnostic Actions</a></h1>
+<p>Actions should be classified.</p>
+<hr />
+<h1 id="118-safe-actions"><a class="header" href="#118-safe-actions">118. Safe Actions</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">Retry
+Reconnect
+Rebuild Search
+Clear Cache
+Restart Plugin
+Restart Daemon
+Run Connection Test
+</code></pre>
+<hr />
+<h1 id="119-destructive-actions"><a class="header" href="#119-destructive-actions">119. Destructive Actions</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">Reset Local Database
+Clear All Local Data
+Reset Security State
+</code></pre>
+<p>should not live in normal diagnostics.</p>
+<hr />
+<h1 id="120-dangerous-repair-actions"><a class="header" href="#120-dangerous-repair-actions">120. Dangerous Repair Actions</a></h1>
+<p>Developer-only and separately confirmed.</p>
+<hr />
+<h1 id="121-diagnostic-action-model"><a class="header" href="#121-diagnostic-action-model">121. Diagnostic Action Model</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum DiagnosticActionView {
+    RetryComponent(DiagnosticComponent),
+    RunConnectionTest,
+    RebuildSearch,
+    ClearCache,
+    RestartDaemon,
+    RestartPlugin(PluginId),
+    OpenSystemSettings(SystemSettingsTarget),
+    ExportSupportBundle,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="122-diagnostics-must-not-guess-repair"><a class="header" href="#122-diagnostics-must-not-guess-repair">122. Diagnostics Must Not Guess Repair</a></h1>
+<p>Rust decides which actions are safe for issue.</p>
+<hr />
+<h1 id="123-issue-to-action-mapping"><a class="header" href="#123-issue-to-action-mapping">123. Issue to Action Mapping</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">Notification permission denied
+→ Open Notification Settings
+</code></pre>
+<p>not:</p>
+<pre><code class="language-text">Reset App
+</code></pre>
+<hr />
+<h1 id="124-support-bundle"><a class="header" href="#124-support-bundle">124. Support Bundle</a></h1>
+<p>One of the most important support features.</p>
+<hr />
+<h1 id="125-support-bundle-contents"><a class="header" href="#125-support-bundle-contents">125. Support Bundle Contents</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">app/build version
+OS/runtime metadata
+diagnostic health snapshots
+redacted logs
+recent error classes
+protocol versions
+database schema version
+network path summaries
+plugin health
+</code></pre>
+<hr />
+<h1 id="126-excluded-by-default"><a class="header" href="#126-excluded-by-default">126. Excluded by Default</a></h1>
+<p>Never include:</p>
+<pre><code class="language-text">message content
+file content
+private keys
+recovery secrets
+full contact list
+precise location
+full IP history
+</code></pre>
+<hr />
+<h1 id="127-support-bundle-preview"><a class="header" href="#127-support-bundle-preview">127. Support Bundle Preview</a></h1>
+<p>Before export:</p>
+<pre><code class="language-text">View included data
+</code></pre>
+<hr />
+<h1 id="128-user-consent"><a class="header" href="#128-user-consent">128. User Consent</a></h1>
+<p>Explicit:</p>
+<pre><code class="language-text">Create Support Bundle
+</code></pre>
+<hr />
+<h1 id="129-redaction-level"><a class="header" href="#129-redaction-level">129. Redaction Level</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">Standard
+Extra Private
+Developer
+</code></pre>
+<p>Recommendation:</p>
+<pre><code class="language-text">Standard
+</code></pre>
+<p>only for normal users.</p>
+<hr />
+<h1 id="130-developer-bundle"><a class="header" href="#130-developer-bundle">130. Developer Bundle</a></h1>
+<p>May include additional technical identifiers after clear warning.</p>
+<hr />
+<h1 id="131-bundle-format"><a class="header" href="#131-bundle-format">131. Bundle Format</a></h1>
+<p>Could be:</p>
+<pre><code class="language-text">ZIP/TAR-like diagnostic archive
+</code></pre>
+<p>with structured JSON/RON/log files internally.</p>
+<p>UI need not care.</p>
+<hr />
+<h1 id="132-bundle-export--android"><a class="header" href="#132-bundle-export--android">132. Bundle Export — Android</a></h1>
+<p>Use SAF/share sheet.</p>
+<hr />
+<h1 id="133-bundle-export--desktop"><a class="header" href="#133-bundle-export--desktop">133. Bundle Export — Desktop</a></h1>
+<p>Native Save dialog.</p>
+<hr />
+<h1 id="134-no-automatic-upload"><a class="header" href="#134-no-automatic-upload">134. No Automatic Upload</a></h1>
+<p>Hard rule unless user explicitly chooses a support provider integration.</p>
+<hr />
+<h1 id="135-support-upload"><a class="header" href="#135-support-upload">135. Support Upload</a></h1>
+<p>If later added:</p>
+<pre><code class="language-text">preview
+consent
+destination
+</code></pre>
+<p>before upload.</p>
+<hr />
+<h1 id="136-support-bundle-encryption"><a class="header" href="#136-support-bundle-encryption">136. Support Bundle Encryption</a></h1>
+<p>Optional if support workflow requires.</p>
+<hr />
+<h1 id="137-bundle-lifetime"><a class="header" href="#137-bundle-lifetime">137. Bundle Lifetime</a></h1>
+<p>Temporary staging cleaned after export/upload.</p>
+<hr />
+<h1 id="138-diagnostic-snapshot"><a class="header" href="#138-diagnostic-snapshot">138. Diagnostic Snapshot</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct DiagnosticOverviewView {
+    pub overall: DiagnosticHealth,
+    pub areas: Vec&lt;DiagnosticAreaSummary&gt;,
+    pub issues: Vec&lt;DiagnosticIssueView&gt;,
+    pub generated_at: Timestamp,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="139-diagnostic-areas"><a class="header" href="#139-diagnostic-areas">139. Diagnostic Areas</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum DiagnosticArea {
+    Network,
+    Messaging,
+    Calls,
+    Transfers,
+    Background,
+    Storage,
+    Search,
+    Plugins,
+    Security,
+    System,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="140-diagnostics-presentation-api"><a class="header" href="#140-diagnostics-presentation-api">140. Diagnostics Presentation API</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait DiagnosticsPresentation {
+    async fn overview(
+        &amp;self,
+    ) -&gt; Result&lt;DiagnosticOverviewView, UiError&gt;;
+
+    async fn area(
+        &amp;self,
+        area: DiagnosticArea,
+    ) -&gt; Result&lt;DiagnosticAreaDetailView, UiError&gt;;
+
+    async fn run_action(
+        &amp;self,
+        action: DiagnosticActionView,
+    ) -&gt; Result&lt;DiagnosticActionResult, UiError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="141-network-diagnostics-api"><a class="header" href="#141-network-diagnostics-api">141. Network Diagnostics API</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait NetworkDiagnosticsPresentation {
+    async fn snapshot(
+        &amp;self,
+    ) -&gt; Result&lt;NetworkDiagnosticView, UiError&gt;;
+
+    async fn path_for_peer(
+        &amp;self,
+        peer: AccountId,
+    ) -&gt; Result&lt;PeerPathDiagnosticView, UiError&gt;;
+
+    async fn run_connection_test(
+        &amp;self,
+    ) -&gt; Result&lt;ConnectionTestView, UiError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="142-call-diagnostics-api"><a class="header" href="#142-call-diagnostics-api">142. Call Diagnostics API</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait CallDiagnosticsPresentation {
+    async fn current(
+        &amp;self,
+        call: CallId,
+    ) -&gt; Result&lt;CallDiagnosticView, UiError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="143-transfer-diagnostics-api"><a class="header" href="#143-transfer-diagnostics-api">143. Transfer Diagnostics API</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait TransferDiagnosticsPresentation {
+    async fn transfer(
+        &amp;self,
+        id: TransferId,
+    ) -&gt; Result&lt;TransferDiagnosticView, UiError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="144-support-bundle-api"><a class="header" href="#144-support-bundle-api">144. Support Bundle API</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait SupportBundlePresentation {
+    async fn preview(
+        &amp;self,
+        options: SupportBundleOptions,
+    ) -&gt; Result&lt;SupportBundlePreviewView, UiError&gt;;
+
+    async fn create(
+        &amp;self,
+        options: SupportBundleOptions,
+    ) -&gt; Result&lt;SupportBundleHandle, UiError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="145-log-presentation-api"><a class="header" href="#145-log-presentation-api">145. Log Presentation API</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait DiagnosticLogPresentation {
+    async fn query(
+        &amp;self,
+        filter: DiagnosticLogFilter,
+    ) -&gt; Result&lt;DiagnosticLogPage, UiError&gt;;
+
+    async fn set_temporary_level(
+        &amp;self,
+        level: DiagnosticLogLevel,
+        duration: Duration,
+    ) -&gt; Result&lt;(), UiError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="146-temporary-debug-level"><a class="header" href="#146-temporary-debug-level">146. Temporary Debug Level</a></h1>
+<p>Debug/trace should expire automatically.</p>
+<hr />
+<h1 id="147-developer-mode"><a class="header" href="#147-developer-mode">147. Developer Mode</a></h1>
+<p>Unlocks:</p>
+<pre><code class="language-text">IDs
+protocol versions
+network metrics
+logs
+event inspector
+performance overlay
+plugin internals
+manual test tools
+</code></pre>
+<hr />
+<h1 id="148-developer-mode-access"><a class="header" href="#148-developer-mode-access">148. Developer Mode Access</a></h1>
+<p>Settings → Advanced → Developer Mode.</p>
+<hr />
+<h1 id="149-developer-mode-warning"><a class="header" href="#149-developer-mode-warning">149. Developer Mode Warning</a></h1>
+<pre><code class="language-text">Developer diagnostics may expose technical metadata.
+Do not share screenshots or logs without reviewing them.
+</code></pre>
+<hr />
+<h1 id="150-developer-mode-is-not-security-bypass"><a class="header" href="#150-developer-mode-is-not-security-bypass">150. Developer Mode Is Not Security Bypass</a></h1>
+<p>It must not reveal:</p>
+<pre><code class="language-text">private keys
+recovery secrets
+plaintext encrypted blobs
+</code></pre>
+<hr />
+<h1 id="151-copy-technical-id"><a class="header" href="#151-copy-technical-id">151. Copy Technical ID</a></h1>
+<p>Developer mode can copy:</p>
+<pre><code class="language-text">MessageId
+ConversationId
+AccountId
+DeviceId
+TransferId
+CallId
+</code></pre>
+<p>with warning where sensitive.</p>
+<hr />
+<h1 id="152-short-ids-by-default"><a class="header" href="#152-short-ids-by-default">152. Short IDs by Default</a></h1>
+<p>Display:</p>
+<pre><code class="language-text">a8f2…91c0
+</code></pre>
+<p>Full copy only on action.</p>
+<hr />
+<h1 id="153-protocol-inspector"><a class="header" href="#153-protocol-inspector">153. Protocol Inspector</a></h1>
+<p>Developer desktop feature:</p>
+<pre><code class="language-text">active ALPN
+protocol version
+capability negotiation
+</code></pre>
+<hr />
+<h1 id="154-packet-inspector"><a class="header" href="#154-packet-inspector">154. Packet Inspector</a></h1>
+<p>Do not expose raw encrypted packets in normal developer UI by default.</p>
+<p>If ever supported:</p>
+<pre><code class="language-text">strictly local
+advanced
+bounded
+</code></pre>
+<hr />
+<h1 id="155-event-timeline"><a class="header" href="#155-event-timeline">155. Event Timeline</a></h1>
+<p>Developer mode can correlate:</p>
+<pre><code class="language-text">message queued
+route discovered
+send attempt
+delivery ACK
+read cursor
+</code></pre>
+<p>without message body.</p>
+<hr />
+<h1 id="156-correlation-id"><a class="header" href="#156-correlation-id">156. Correlation ID</a></h1>
+<p>Use:</p>
+<pre><code class="language-text">CommandId / MessageId / TransferId / CallId
+</code></pre>
+<hr />
+<h1 id="157-diagnostics-for-local-first-state"><a class="header" href="#157-diagnostics-for-local-first-state">157. Diagnostics for Local-First State</a></h1>
+<p>Show:</p>
+<pre><code class="language-text">local authoritative snapshot
+pending sync changes
+remote/source-of-truth state if applicable
+</code></pre>
+<p>where relevant.</p>
+<hr />
+<h1 id="158-conflict-diagnostics"><a class="header" href="#158-conflict-diagnostics">158. Conflict Diagnostics</a></h1>
+<p>Developer mode may show:</p>
+<pre><code class="language-text">conflict count
+resolution class
+</code></pre>
+<p>not raw private record content.</p>
+<hr />
+<h1 id="159-backup-diagnostics"><a class="header" href="#159-backup-diagnostics">159. Backup Diagnostics</a></h1>
+<p>Part 16:</p>
+<pre><code class="language-text">last backup
+verification
+last restore
+format compatibility
+</code></pre>
+<hr />
+<h1 id="160-backup-repair"><a class="header" href="#160-backup-repair">160. Backup Repair</a></h1>
+<p>Only safe verify/retry actions.</p>
+<hr />
+<h1 id="161-emergency-diagnostics"><a class="header" href="#161-emergency-diagnostics">161. Emergency Diagnostics</a></h1>
+<p>Part 17:</p>
+<pre><code class="language-text">relay readiness
+background permission
+location permission
+last route
+</code></pre>
+<p>No precise location log by default.</p>
+<hr />
+<h1 id="162-nearby-diagnostics"><a class="header" href="#162-nearby-diagnostics">162. Nearby Diagnostics</a></h1>
+<p>Part 12:</p>
+<pre><code class="language-text">Bluetooth available
+Wi-Fi nearby available
+NFC available
+camera scanner available
+</code></pre>
+<hr />
+<h1 id="163-permission-diagnostics"><a class="header" href="#163-permission-diagnostics">163. Permission Diagnostics</a></h1>
+<p>Android:</p>
+<pre><code class="language-text">Notifications
+Camera
+Microphone
+Nearby
+Location
+</code></pre>
+<p>Show current state.</p>
+<hr />
+<h1 id="164-permission-action"><a class="header" href="#164-permission-action">164. Permission Action</a></h1>
+<pre><code class="language-text">Open Settings
+</code></pre>
+<p>where permission can no longer be requested inline.</p>
+<hr />
+<h1 id="165-desktop-permission-diagnostics"><a class="header" href="#165-desktop-permission-diagnostics">165. Desktop Permission Diagnostics</a></h1>
+<p>Where relevant:</p>
+<pre><code class="language-text">Camera
+Microphone
+Screen capture
+Notifications
+</code></pre>
+<hr />
+<h1 id="166-system-clock"><a class="header" href="#166-system-clock">166. System Clock</a></h1>
+<p>If severe clock skew detected:</p>
+<pre><code class="language-text">Device time appears incorrect
+</code></pre>
+<p>can matter for signatures/expiry.</p>
+<hr />
+<h1 id="167-clock-diagnostic"><a class="header" href="#167-clock-diagnostic">167. Clock Diagnostic</a></h1>
+<p>Do not claim authoritative external time if unavailable.</p>
+<hr />
+<h1 id="168-disk-timefilesystem-errors"><a class="header" href="#168-disk-timefilesystem-errors">168. Disk Time/Filesystem Errors</a></h1>
+<p>Show semantic:</p>
+<pre><code class="language-text">Storage unavailable
+</code></pre>
+<hr />
+<h1 id="169-network-dns"><a class="header" href="#169-network-dns">169. Network DNS</a></h1>
+<p>If relay hostname lookup fails:</p>
+<pre><code class="language-text">Network name resolution failed
+</code></pre>
+<p>developer detail only if helpful.</p>
+<hr />
+<h1 id="170-tlscertificate-diagnostics"><a class="header" href="#170-tlscertificate-diagnostics">170. TLS/Certificate Diagnostics</a></h1>
+<p>If external integration fails:</p>
+<pre><code class="language-text">Secure connection could not be established
+</code></pre>
+<p>No bypass button for invalid certificate in normal UX.</p>
+<hr />
+<h1 id="171-plugin-network-diagnostics"><a class="header" href="#171-plugin-network-diagnostics">171. Plugin Network Diagnostics</a></h1>
+<p>Plugin network errors remain plugin-scoped.</p>
+<hr />
+<h1 id="172-core-relay-diagnostics"><a class="header" href="#172-core-relay-diagnostics">172. Core Relay Diagnostics</a></h1>
+<p>Core transport separate from plugin integrations.</p>
+<hr />
+<h1 id="173-diagnostics-refresh"><a class="header" href="#173-diagnostics-refresh">173. Diagnostics Refresh</a></h1>
+<p>Use:</p>
+<pre><code class="language-text">live updates
++
+manual refresh
+</code></pre>
+<p>depending area.</p>
+<hr />
+<h1 id="174-event-rate"><a class="header" href="#174-event-rate">174. Event Rate</a></h1>
+<p>Do not update full diagnostics tree on every packet.</p>
+<hr />
+<h1 id="175-snapshot-frequency"><a class="header" href="#175-snapshot-frequency">175. Snapshot Frequency</a></h1>
+<p>Normal overview:</p>
+<pre><code class="language-text">1–5 seconds
+</code></pre>
+<p>while visible.</p>
+<p>Developer live metrics can be faster but bounded.</p>
+<hr />
+<h1 id="176-background-diagnostics-screen"><a class="header" href="#176-background-diagnostics-screen">176. Background Diagnostics Screen</a></h1>
+<p>When not visible:</p>
+<pre><code class="language-text">stop expensive polling
+</code></pre>
+<hr />
+<h1 id="177-event-driven-preferred"><a class="header" href="#177-event-driven-preferred">177. Event-Driven Preferred</a></h1>
+<p>Rust emits health changes.</p>
+<p>UI samples metrics only for graphs/live views.</p>
+<hr />
+<h1 id="178-graphs"><a class="header" href="#178-graphs">178. Graphs</a></h1>
+<p>Use sparingly.</p>
+<p>Potential:</p>
+<pre><code class="language-text">RTT over time
+transfer throughput
+memory usage
+</code></pre>
+<p>developer-only.</p>
+<hr />
+<h1 id="179-no-sparkline-overload"><a class="header" href="#179-no-sparkline-overload">179. No Sparkline Overload</a></h1>
+<p>Normal users need semantic status.</p>
+<hr />
+<h1 id="180-android-diagnostics-layout"><a class="header" href="#180-android-diagnostics-layout">180. Android Diagnostics Layout</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">Overview cards
+Issues
+Network
+Background
+Storage
+System
+Export Diagnostics
+</code></pre>
+<p>Developer sections nested deeper.</p>
+<hr />
+<h1 id="181-desktop-diagnostics-layout"><a class="header" href="#181-desktop-diagnostics-layout">181. Desktop Diagnostics Layout</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">Left navigation
+Overview
+Network
+Messages
+Calls
+Transfers
+Storage
+Search
+Plugins
+Security
+Logs
+Developer
+</code></pre>
+<p>Wide detail panels/tables.</p>
+<hr />
+<h1 id="182-tabletfoldable"><a class="header" href="#182-tabletfoldable">182. Tablet/Foldable</a></h1>
+<p>List/detail.</p>
+<hr />
+<h1 id="183-accessibility--diagnostic-health"><a class="header" href="#183-accessibility--diagnostic-health">183. Accessibility — Diagnostic Health</a></h1>
+<p>Screen reader:</p>
+<pre><code class="language-text">Network, degraded. Relay available. Direct connection unavailable.
+</code></pre>
+<hr />
+<h1 id="184-diagnostic-issue-accessibility"><a class="header" href="#184-diagnostic-issue-accessibility">184. Diagnostic Issue Accessibility</a></h1>
+<p>Title + cause + action.</p>
+<hr />
+<h1 id="185-charts-accessibility"><a class="header" href="#185-charts-accessibility">185. Charts Accessibility</a></h1>
+<p>Provide textual summary.</p>
+<hr />
+<h1 id="186-large-font"><a class="header" href="#186-large-font">186. Large Font</a></h1>
+<p>Tables should degrade to stacked rows.</p>
+<hr />
+<h1 id="187-rtl"><a class="header" href="#187-rtl">187. RTL</a></h1>
+<p>Diagnostic prose mirrors.</p>
+<p>Technical IDs/log lines preserve canonical direction.</p>
+<hr />
+<h1 id="188-reduced-motion"><a class="header" href="#188-reduced-motion">188. Reduced Motion</a></h1>
+<p>No animated network topology required.</p>
+<hr />
+<h1 id="189-color-independence"><a class="header" href="#189-color-independence">189. Color Independence</a></h1>
+<p>Healthy/degraded/error always include:</p>
+<pre><code class="language-text">text
+icon
+</code></pre>
+<hr />
+<h1 id="190-keyboard-desktop"><a class="header" href="#190-keyboard-desktop">190. Keyboard Desktop</a></h1>
+<p>Support:</p>
+<pre><code class="language-text">Ctrl/Cmd+F
+arrow navigation
+Enter
+copy selected ID
+pause/resume logs
+</code></pre>
+<hr />
+<h1 id="191-android-talkback"><a class="header" href="#191-android-talkback">191. Android TalkBack</a></h1>
+<p>All test/repair actions clearly labeled.</p>
+<hr />
+<h1 id="192-diagnostic-action-confirmation"><a class="header" href="#192-diagnostic-action-confirmation">192. Diagnostic Action Confirmation</a></h1>
+<p>Safe read-only tests need no confirmation.</p>
+<hr />
+<h1 id="193-stateful-repair"><a class="header" href="#193-stateful-repair">193. Stateful Repair</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">restart daemon
+clear cache
+rebuild index
+</code></pre>
+<p>can use light confirmation.</p>
+<hr />
+<h1 id="194-data-destructive-repair"><a class="header" href="#194-data-destructive-repair">194. Data-Destructive Repair</a></h1>
+<p>Not part of normal diagnostics.</p>
+<hr />
+<h1 id="195-testing-matrix"><a class="header" href="#195-testing-matrix">195. Testing Matrix</a></h1>
+<p>Required:</p>
+<pre><code class="language-text">healthy system
+relay-only network
+LAN-only
+no route
+queued messages
+failed outbox
+call packet loss
+transfer storage full
+search corrupt
+Android notification denied
+daemon stopped
+plugin crash
+security warning
+</code></pre>
+<hr />
+<h1 id="196-android-tests"><a class="header" href="#196-android-tests">196. Android Tests</a></h1>
+<p>Verify:</p>
+<pre><code class="language-text">permission diagnostics
+battery restriction
+background delivery
+notification test
+process death
+TalkBack
+large font
+SAF support bundle export
+</code></pre>
+<hr />
+<h1 id="197-desktop-tests"><a class="header" href="#197-desktop-tests">197. Desktop Tests</a></h1>
+<p>Verify:</p>
+<pre><code class="language-text">daemon diagnostics
+network path view
+log viewer
+keyboard
+support bundle
+developer mode
+multi-window
+</code></pre>
+<hr />
+<h1 id="198-privacy-tests"><a class="header" href="#198-privacy-tests">198. Privacy Tests</a></h1>
+<p>Ensure support bundle excludes:</p>
+<pre><code class="language-text">message content
+file content
+keys
+recovery secrets
+precise emergency location
+</code></pre>
+<hr />
+<h1 id="199-redaction-tests"><a class="header" href="#199-redaction-tests">199. Redaction Tests</a></h1>
+<p>Known sensitive fields are replaced/omitted.</p>
+<hr />
+<h1 id="200-developer-mode-tests"><a class="header" href="#200-developer-mode-tests">200. Developer Mode Tests</a></h1>
+<p>Enabling developer mode exposes technical metadata but never secrets.</p>
+<hr />
+<h1 id="201-connection-test"><a class="header" href="#201-connection-test">201. Connection Test</a></h1>
+<p>Verify no destructive side effects.</p>
+<hr />
+<h1 id="202-repair-tests"><a class="header" href="#202-repair-tests">202. Repair Tests</a></h1>
+<p>Rebuild search/clear cache/restart daemon do not damage authoritative data.</p>
+<hr />
+<h1 id="203-scale-tests"><a class="header" href="#203-scale-tests">203. Scale Tests</a></h1>
+<p>Diagnostics remain responsive with:</p>
+<pre><code class="language-text">many transfers
+many plugins
+large logs
+large message outbox
+</code></pre>
+<hr />
+<h1 id="204-log-paging"><a class="header" href="#204-log-paging">204. Log Paging</a></h1>
+<p>Cursor-based.</p>
+<hr />
+<h1 id="205-live-log-backpressure"><a class="header" href="#205-live-log-backpressure">205. Live Log Backpressure</a></h1>
+<p>If UI cannot keep up:</p>
+<pre><code class="language-text">drop/coalesce debug entries
+</code></pre>
+<p>never block core runtime.</p>
+<hr />
+<h1 id="206-diagnostic-event-priority"><a class="header" href="#206-diagnostic-event-priority">206. Diagnostic Event Priority</a></h1>
+<p>Diagnostics are lower priority than:</p>
+<pre><code class="language-text">calls
+messages
+security
+emergency
+</code></pre>
+<hr />
+<h1 id="207-telemetry-vs-diagnostics"><a class="header" href="#207-telemetry-vs-diagnostics">207. Telemetry vs Diagnostics</a></h1>
+<p>Diagnostics are primarily local.</p>
+<p>Telemetry, if any, is a separate opt-in/product policy.</p>
+<hr />
+<h1 id="208-no-automatic-support-upload"><a class="header" href="#208-no-automatic-support-upload">208. No Automatic Support Upload</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="209-exported-support-bundle"><a class="header" href="#209-exported-support-bundle">209. Exported Support Bundle</a></h1>
+<p>User controls where it goes.</p>
+<hr />
+<h1 id="210-diagnostic-persistence"><a class="header" href="#210-diagnostic-persistence">210. Diagnostic Persistence</a></h1>
+<p>Health state may be current/recent.</p>
+<p>Do not retain detailed traces forever.</p>
+<hr />
+<h1 id="211-retention"><a class="header" href="#211-retention">211. Retention</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">recent errors: 7 days
+debug logs: 1 day
+trace logs: temporary
+</code></pre>
+<p>depending policy.</p>
+<hr />
+<h1 id="212-crash-diagnostics"><a class="header" href="#212-crash-diagnostics">212. Crash Diagnostics</a></h1>
+<p>Crash record can include:</p>
+<pre><code class="language-text">component
+build
+stack trace if available
+redacted context
+</code></pre>
+<hr />
+<h1 id="213-plugin-crash-attribution"><a class="header" href="#213-plugin-crash-attribution">213. Plugin Crash Attribution</a></h1>
+<p>If safe/confident:</p>
+<pre><code class="language-text">Plugin X crashed
+</code></pre>
+<hr />
+<h1 id="214-core-crash-attribution"><a class="header" href="#214-core-crash-attribution">214. Core Crash Attribution</a></h1>
+<p>Do not blame network/plugin without evidence.</p>
+<hr />
+<h1 id="215-user-facing-root-cause"><a class="header" href="#215-user-facing-root-cause">215. User-Facing Root Cause</a></h1>
+<p>Prefer:</p>
+<pre><code class="language-text">Background delivery is restricted by Android
+</code></pre>
+<p>over vague:</p>
+<pre><code class="language-text">Something went wrong
+</code></pre>
+<hr />
+<h1 id="216-confidence"><a class="header" href="#216-confidence">216. Confidence</a></h1>
+<p>If cause uncertain:</p>
+<pre><code class="language-text">Possible cause
+</code></pre>
+<p>rather than certainty.</p>
+<hr />
+<h1 id="217-diagnostic-recommendation-model"><a class="header" href="#217-diagnostic-recommendation-model">217. Diagnostic Recommendation Model</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct DiagnosticRecommendationView {
+    pub title: String,
+    pub reason: String,
+    pub action: Option&lt;DiagnosticActionView&gt;,
+    pub confidence: DiagnosticConfidence,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="218-diagnostic-confidence"><a class="header" href="#218-diagnostic-confidence">218. Diagnostic Confidence</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum DiagnosticConfidence {
+    Confirmed,
+    Likely,
+    Possible,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="219-example"><a class="header" href="#219-example">219. Example</a></h1>
+<pre><code class="language-text">Likely cause:
+Android battery restrictions may be delaying background delivery.
+</code></pre>
+<hr />
+<h1 id="220-do-not-encourage-risky-system-changes"><a class="header" href="#220-do-not-encourage-risky-system-changes">220. Do Not Encourage Risky System Changes</a></h1>
+<p>Avoid:</p>
+<pre><code class="language-text">disable firewall
+disable OS security
+turn off battery protection globally
+</code></pre>
+<p>unless narrowly justified.</p>
+<hr />
+<h1 id="221-suggested-fix-order"><a class="header" href="#221-suggested-fix-order">221. Suggested Fix Order</a></h1>
+<p>Prefer:</p>
+<pre><code class="language-text">app-local safe action
+platform setting
+advanced diagnostics
+</code></pre>
+<hr />
+<h1 id="222-initial-production-scope"><a class="header" href="#222-initial-production-scope">222. Initial Production Scope</a></h1>
+<p>Ship:</p>
+<pre><code class="language-text">diagnostics overview
+network/direct/relay/LAN status
+connection test
+message/outbox health
+call quality diagnostics
+transfer diagnostics
+Android background/notification permission diagnostics
+desktop daemon health
+storage/search health
+plugin health
+security summary
+support bundle export
+developer mode
+structured logs
+safe repair actions
+</code></pre>
+<p>Defer:</p>
+<pre><code class="language-text">raw packet capture UI
+full protocol debugger
+remote live-support tunnel
+automatic support upload
+deep OS kernel diagnostics
+</code></pre>
+<p>unless explicitly needed.</p>
+<hr />
+<h1 id="223-definition-of-done"><a class="header" href="#223-definition-of-done">223. Definition of Done</a></h1>
+<p>UI/UX Part 20 is complete when:</p>
+<ul>
+<li>user diagnostics and developer diagnostics are separate</li>
+<li>overview provides actionable semantic health rather than meaningless scores</li>
+<li>direct, relay, LAN, nearby, mesh, and DTN paths are represented without confusing normal users</li>
+<li>network path visualization does not expose raw IPs by default</li>
+<li>message/outbox/sync health is visible without message content</li>
+<li>call/media diagnostics provide semantic quality normally and numeric metrics in developer mode</li>
+<li>transfer/storage/search/plugin/security/background-delivery health are integrated</li>
+<li>Android notification/battery/background restrictions can be diagnosed and linked to system settings</li>
+<li>desktop daemon/tray/runtime health is explicit</li>
+<li>support bundles are previewable, redacted, local-first, and never uploaded automatically</li>
+<li>debug/trace logging is temporary and cannot capture secrets</li>
+<li>developer mode exposes IDs/protocol versions/metrics but not cryptographic private material</li>
+<li>safe repair actions are Rust-provided and clearly separated from destructive operations</li>
+<li>diagnostics cannot starve calls/messages/security/emergency traffic</li>
+<li>accessibility, RTL, large font, chart summaries, keyboard/TalkBack, and color independence are defined</li>
+<li>Rust diagnostics, network, call, transfer, support-bundle, and log presentation APIs are specified</li>
+<li>privacy, redaction, backpressure, scale, repair, platform-permission, and developer-mode tests are included</li>
+</ul>
+<hr />
+<h1 id="224-final-architecture"><a class="header" href="#224-final-architecture">224. Final Architecture</a></h1>
+<pre><code class="language-text">                    RUST OBSERVABILITY CORE
+                             │
+       ┌─────────────────────┼─────────────────────┐
+       │                     │                     │
+    Health                Metrics                Logs
+       │                     │                     │
+ Network/Sync         Call/Transfer/CPU      Structured/Redacted
+ Storage/Search       Queue/Latency          Bounded Retention
+       │                     │                     │
+       └─────────────────────┼─────────────────────┘
+                             │
+                 Diagnostics Presentation
+                    ┌────────┴────────┐
+                    │                 │
+                 Dioxus            Compose
+                    │                 │
+           Desktop Diagnostics   Android Diagnostics
+</code></pre>
+<p>Support path:</p>
+<pre><code class="language-text">Local Diagnostic State
+      │
+      ▼
+Redaction
+      │
+      ▼
+Preview
+      │
+      ▼
+User Explicit Export
+</code></pre>
+<p>Never:</p>
+<pre><code class="language-text">diagnostics
+→ automatic upload of private logs/content
+</code></pre>
+<hr />
+<h1 id="225-final-principle"><a class="header" href="#225-final-principle">225. Final Principle</a></h1>
+<p>Diagnostics should make failures understandable without weakening the privacy or security model.</p>
+<p>The correct approach is:</p>
+<pre><code class="language-text">semantic health
++
+actionable root cause
++
+safe repair
++
+developer detail when requested
++
+strict redaction
+</code></pre>
+<p>not:</p>
+<pre><code class="language-text">dump every internal log and network detail onto the user
+</code></pre>
+<p>This gives Dioxus desktop and Android Compose a production-grade troubleshooting surface while keeping the Rust core authoritative for health, metrics, path state, repair actions, and privacy boundaries.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="ui-ux-19-plugin-module-ecosystem-architecture.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="ui-ux-21-accessibility-inclusive-interaction-architecture.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="ui-ux-19-plugin-module-ecosystem-architecture.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="ui-ux-21-accessibility-inclusive-interaction-architecture.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

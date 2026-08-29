@@ -1,0 +1,1976 @@
+<!DOCTYPE HTML>
+<html lang="en" class="navy" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>UI/UX 07 — Calls &amp; Realtime Media UX - SIAR System Architecture &amp; Technical Wiki</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="Comprehensive system architecture, cryptographic protocols, DTN mesh networking, distributed storage, audio DSP pipelines, and UI/UX design specifications for SIAR.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="theme/custom.css">
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "navy";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('navy')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="Home.html">Architecture Portal & Reading Guide</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part I: Protocol Foundation & Extension Platform</li><li class="chapter-item expanded "><a href="01-protocol-extension-system-architecture.html"><strong aria-hidden="true">1.</strong> 01 — Protocol Extension System Architecture</a></li><li class="chapter-item expanded "><a href="07-capability-negotiation-architecture.html"><strong aria-hidden="true">2.</strong> 07 — Capability Negotiation & Protocol Upgrades</a></li><li class="chapter-item expanded "><a href="21-third-party-protocol-extensions-architecture.html"><strong aria-hidden="true">3.</strong> 21 — Third-Party Protocol Extensions</a></li><li class="chapter-item expanded "><a href="22-wasm-compatible-components-architecture.html"><strong aria-hidden="true">4.</strong> 22 — WebAssembly (WASM) Compatible Components</a></li><li class="chapter-item expanded "><a href="23-external-interoperability-suite-architecture.html"><strong aria-hidden="true">5.</strong> 23 — External Interoperability & Conformance Suite</a></li><li class="chapter-item expanded "><a href="24-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">6.</strong> 24 — Dynamic Plugin & Module Ecosystem</a></li><li class="chapter-item expanded affix "><li class="part-title">Part II: Identity, Trust & Cryptography</li><li class="chapter-item expanded "><a href="02-multi-device-identity-architecture.html"><strong aria-hidden="true">7.</strong> 02 — Multi-Device Identity & Trust Model</a></li><li class="chapter-item expanded "><a href="28-production-security-e2ee-key-management-privacy-architecture.html"><strong aria-hidden="true">8.</strong> 28 — Production Security, E2EE, Key Management & Privacy</a></li><li class="chapter-item expanded affix "><li class="part-title">Part III: Mesh Networking, Transports & Hardware</li><li class="chapter-item expanded "><a href="03-transport-routing-policy-engine-architecture.html"><strong aria-hidden="true">9.</strong> 03 — Transport & Routing Policy Engine</a></li><li class="chapter-item expanded "><a href="11-relay-self-hosted-infrastructure-architecture.html"><strong aria-hidden="true">10.</strong> 11 — Self-Hosted Relay & Coordination Infrastructure</a></li><li class="chapter-item expanded "><a href="12-multipath-networking-architecture.html"><strong aria-hidden="true">11.</strong> 12 — Multipath Networking & Link Aggregation</a></li><li class="chapter-item expanded "><a href="13-battery-aware-scheduling-architecture.html"><strong aria-hidden="true">12.</strong> 13 — Battery-Aware Scheduling & Power Profiles</a></li><li class="chapter-item expanded "><a href="14-proximity-abstraction-architecture.html"><strong aria-hidden="true">13.</strong> 14 — Proximity Abstraction (BLE, Wi-Fi Direct, LoRa)</a></li><li class="chapter-item expanded "><a href="15-qr-nfc-bootstrap-pairing-architecture.html"><strong aria-hidden="true">14.</strong> 15 — Out-of-Band QR & NFC Bootstrap Pairing</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IV: Delay-Tolerant Networking & Emergency Mesh</li><li class="chapter-item expanded "><a href="06-dtn-store-carry-forward-architecture.html"><strong aria-hidden="true">15.</strong> 06 — DTN Store-Carry-Forward & Bundle Forwarding</a></li><li class="chapter-item expanded "><a href="17-emergency-priority-classes-architecture.html"><strong aria-hidden="true">16.</strong> 17 — Emergency Priority Classes & Critical Alert Mesh</a></li><li class="chapter-item expanded affix "><li class="part-title">Part V: Storage, Outbox & Data Lifecycle</li><li class="chapter-item expanded "><a href="04-offline-event-log-architecture.html"><strong aria-hidden="true">17.</strong> 04 — Offline Event Log & Sync Engine</a></li><li class="chapter-item expanded "><a href="05-robust-file-blob-subsystem-architecture.html"><strong aria-hidden="true">18.</strong> 05 — Robust File & Blob Subsystem (Chunking & Resumption)</a></li><li class="chapter-item expanded "><a href="09-crash-recovery-architecture.html"><strong aria-hidden="true">19.</strong> 09 — Crash Recovery & State Integrity</a></li><li class="chapter-item expanded "><a href="32-search-indexing-local-knowledge-privacy-architecture.html"><strong aria-hidden="true">20.</strong> 32 — Search, Indexing & Local Privacy Retrieval</a></li><li class="chapter-item expanded "><a href="33-backup-restore-export-import-archival-portability-architecture.html"><strong aria-hidden="true">21.</strong> 33 — Backup, Restore, Export & Long-Term Archival</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VI: Realtime Media, Calling & Audio DSP</li><li class="chapter-item expanded "><a href="25-android-direct-hardware-surface-zero-copy-media-architecture.html"><strong aria-hidden="true">22.</strong> 25 — Android Direct Surface Zero-Copy Media</a></li><li class="chapter-item expanded "><a href="26-rust-first-audio-dsp-resampling-aec-ns-agc-architecture.html"><strong aria-hidden="true">23.</strong> 26 — Rust-First Audio DSP (AEC, NS, AGC, Resampling)</a></li><li class="chapter-item expanded "><a href="29-realtime-calls-media-session-protocol-architecture.html"><strong aria-hidden="true">24.</strong> 29 — Realtime Calls & Media Session Protocol</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VII: Ephemeral State, Presence & Notifications</li><li class="chapter-item expanded "><a href="30-presence-availability-typing-read-receipts-ephemeral-state-architecture.html"><strong aria-hidden="true">25.</strong> 30 — Presence, Availability, Typing & Read Receipts</a></li><li class="chapter-item expanded "><a href="31-notifications-push-background-delivery-lifecycle-architecture.html"><strong aria-hidden="true">26.</strong> 31 — Notifications, Push Wake & Background Delivery</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VIII: Native Runtimes, Daemons & Embedded Linux</li><li class="chapter-item expanded "><a href="16-daemon-headless-runtime-architecture.html"><strong aria-hidden="true">27.</strong> 16 — Headless Daemon & Background Runtime</a></li><li class="chapter-item expanded "><a href="19-c-abi-ffi-architecture.html"><strong aria-hidden="true">28.</strong> 19 — C-ABI FFI & Native Language Interop</a></li><li class="chapter-item expanded "><a href="20-embedded-linux-node-architecture.html"><strong aria-hidden="true">29.</strong> 20 — Embedded Linux Node & Resource-Constrained Targets</a></li><li class="chapter-item expanded "><a href="27-rust-driven-android-native-build-packaging-automation.html"><strong aria-hidden="true">30.</strong> 27 — Rust-Driven Android Native Build & Packaging Automation</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IX: Reliability, Testing, Fuzzing & Diagnostics</li><li class="chapter-item expanded "><a href="08-resource-limits-backpressure-architecture.html"><strong aria-hidden="true">31.</strong> 08 — Resource Limits, Quotas & Backpressure</a></li><li class="chapter-item expanded "><a href="10-fuzzing-protocol-test-suite-architecture.html"><strong aria-hidden="true">32.</strong> 10 — Fuzzing & Protocol Test Suite</a></li><li class="chapter-item expanded "><a href="18-network-diagnostics-path-visualization-architecture.html"><strong aria-hidden="true">33.</strong> 18 — Network Diagnostics & Path Visualization</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part X: UI/UX Client Architecture (Cross-Platform)</li><li class="chapter-item expanded "><a href="ui-ux-01-product-foundation-cross-platform-interaction-architecture.html"><strong aria-hidden="true">34.</strong> UI/UX 01 — Product UX Foundation & Cross-Platform Interaction</a></li><li class="chapter-item expanded "><a href="ui-ux-02-desktop-dioxus-app-shell-navigation-window-architecture.html"><strong aria-hidden="true">35.</strong> UI/UX 02 — Desktop Dioxus App Shell & Navigation</a></li><li class="chapter-item expanded "><a href="ui-ux-03-android-jetpack-compose-app-shell-navigation-lifecycle-architecture.html"><strong aria-hidden="true">36.</strong> UI/UX 03 — Android Jetpack Compose App Shell & Lifecycle</a></li><li class="chapter-item expanded "><a href="ui-ux-04-conversation-list-inbox-architecture.html"><strong aria-hidden="true">37.</strong> UI/UX 04 — Conversation List & Inbox UX</a></li><li class="chapter-item expanded "><a href="ui-ux-05-conversation-message-timeline-architecture.html"><strong aria-hidden="true">38.</strong> UI/UX 05 — Conversation Message Timeline UX</a></li><li class="chapter-item expanded "><a href="ui-ux-06-message-composer-attachments-voice-notes-drafts-architecture.html"><strong aria-hidden="true">39.</strong> UI/UX 06 — Message Composer, Attachments & Voice Notes</a></li><li class="chapter-item expanded "><a href="ui-ux-07-calls-realtime-media-architecture.html" class="active"><strong aria-hidden="true">40.</strong> UI/UX 07 — Calls & Realtime Media UX</a></li><li class="chapter-item expanded "><a href="ui-ux-08-contacts-requests-verification-identity-architecture.html"><strong aria-hidden="true">41.</strong> UI/UX 08 — Contacts, Requests, Verification & Identity</a></li><li class="chapter-item expanded "><a href="ui-ux-09-groups-membership-roles-architecture.html"><strong aria-hidden="true">42.</strong> UI/UX 09 — Groups, Membership & Roles UX</a></li><li class="chapter-item expanded "><a href="ui-ux-10-files-media-gallery-transfer-architecture.html"><strong aria-hidden="true">43.</strong> UI/UX 10 — Files, Media Gallery & Transfer UX</a></li><li class="chapter-item expanded "><a href="ui-ux-11-search-local-knowledge-retrieval-architecture.html"><strong aria-hidden="true">44.</strong> UI/UX 11 — Search & Local Knowledge Retrieval UX</a></li><li class="chapter-item expanded "><a href="ui-ux-12-nearby-qr-nfc-pairing-device-linking-architecture.html"><strong aria-hidden="true">45.</strong> UI/UX 12 — Nearby, QR/NFC Pairing & Device Linking UX</a></li><li class="chapter-item expanded "><a href="ui-ux-13-notifications-background-incoming-call-architecture.html"><strong aria-hidden="true">46.</strong> UI/UX 13 — Notifications, Background & Incoming Call UX</a></li><li class="chapter-item expanded "><a href="ui-ux-14-presence-typing-receipts-status-architecture.html"><strong aria-hidden="true">47.</strong> UI/UX 14 — Presence, Typing, Receipts & Status UX</a></li><li class="chapter-item expanded "><a href="ui-ux-15-security-center-devices-keys-recovery-architecture.html"><strong aria-hidden="true">48.</strong> UI/UX 15 — Security Center, Devices, Keys & Recovery UX</a></li><li class="chapter-item expanded "><a href="ui-ux-16-backup-restore-export-migration-architecture.html"><strong aria-hidden="true">49.</strong> UI/UX 16 — Backup, Restore, Export & Migration UX</a></li><li class="chapter-item expanded "><a href="ui-ux-17-emergency-sos-offline-mesh-architecture.html"><strong aria-hidden="true">50.</strong> UI/UX 17 — Emergency / SOS / Offline Mesh UX</a></li><li class="chapter-item expanded "><a href="ui-ux-18-settings-privacy-notifications-data-controls-architecture.html"><strong aria-hidden="true">51.</strong> UI/UX 18 — Settings, Privacy, Notifications & Data Controls</a></li><li class="chapter-item expanded "><a href="ui-ux-19-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">52.</strong> UI/UX 19 — Plugin & Module Ecosystem UX</a></li><li class="chapter-item expanded "><a href="ui-ux-20-diagnostics-network-paths-advanced-developer-architecture.html"><strong aria-hidden="true">53.</strong> UI/UX 20 — Diagnostics, Network Paths & Developer UX</a></li><li class="chapter-item expanded "><a href="ui-ux-21-accessibility-inclusive-interaction-architecture.html"><strong aria-hidden="true">54.</strong> UI/UX 21 — Accessibility & Inclusive Interaction</a></li><li class="chapter-item expanded "><a href="ui-ux-22-design-system-tokens-typography-icons-motion-architecture.html"><strong aria-hidden="true">55.</strong> UI/UX 22 — Design System, Tokens, Typography & Motion</a></li><li class="chapter-item expanded "><a href="ui-ux-23-responsive-adaptive-desktop-tablet-foldable-phone-layout-architecture.html"><strong aria-hidden="true">56.</strong> UI/UX 23 — Responsive & Adaptive Layouts (Desktop/Tablet/Foldable/Phone)</a></li><li class="chapter-item expanded "><a href="ui-ux-24-error-loading-empty-offline-degraded-state-architecture.html"><strong aria-hidden="true">57.</strong> UI/UX 24 — Error, Loading, Empty & Degraded-State UX</a></li><li class="chapter-item expanded "><a href="ui-ux-25-onboarding-first-run-permission-education-architecture.html"><strong aria-hidden="true">58.</strong> UI/UX 25 — Onboarding, First Run & Permission Education</a></li><li class="chapter-item expanded "><a href="ui-ux-26-performance-virtualization-large-data-ui-architecture.html"><strong aria-hidden="true">59.</strong> UI/UX 26 — Virtualization & Large-Data UI Performance</a></li><li class="chapter-item expanded "><a href="ui-ux-27-ui-testing-screenshot-interaction-release-quality-gates-architecture.html"><strong aria-hidden="true">60.</strong> UI/UX 27 — UI Testing, Screenshots & Release Quality Gates</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">SIAR System Architecture &amp; Technical Wiki</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar/edit/main/sys-arch/ui-ux-07-calls-realtime-media-architecture.md" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="uiux-part-07--calls--realtime-media-ux-architecture"><a class="header" href="#uiux-part-07--calls--realtime-media-ux-architecture">UI/UX Part 07 — Calls &amp; Realtime Media UX Architecture</a></h1>
+<h2 id="reusable-p2p-communication-platform"><a class="header" href="#reusable-p2p-communication-platform">Reusable P2P Communication Platform</a></h2>
+<p><strong>Status:</strong> UI/UX architecture specification<br />
+<strong>UI Series:</strong> Part 07<br />
+<strong>Desktop UI:</strong> Dioxus<br />
+<strong>Android UI:</strong> Kotlin + Jetpack Compose<br />
+<strong>Core runtime:</strong> Rust<br />
+<strong>Primary purpose:</strong> define the complete user-facing call and realtime media experience across desktop and Android, including incoming/outgoing call UX, ringing, connecting, active-call controls, audio/video routing, screen sharing, reconnect states, call waiting, hold/resume, Picture-in-Picture, floating desktop call windows, media quality presentation, permissions, accessibility, lifecycle recovery, and the Rust presentation contract that drives both UIs.</p>
+<hr />
+<h1 id="1-purpose"><a class="header" href="#1-purpose">1. Purpose</a></h1>
+<p>Realtime communication is one of the most failure-sensitive parts of the product.</p>
+<p>A call UI must remain understandable when:</p>
+<pre><code class="language-text">peer is ringing
+peer accepts
+media initializes slowly
+network changes
+video fails
+audio route changes
+camera permission is denied
+Bluetooth connects/disconnects
+screen sharing starts
+call reconnects
+another call arrives
+app backgrounds
+Activity recreates
+desktop window closes
+</code></pre>
+<p>The governing principle is:</p>
+<blockquote>
+<p><strong>The UI represents one logical call session even while transport paths, codecs, surfaces, routes, and platform windows change underneath it.</strong></p>
+</blockquote>
+<hr />
+<h1 id="2-architectural-position"><a class="header" href="#2-architectural-position">2. Architectural Position</a></h1>
+<pre><code class="language-text">Rust Call Controller
+      │
+      ├── CallState
+      ├── Participant State
+      ├── Media State
+      ├── Security State
+      ├── Reconnect State
+      └── Quality State
+      │
+      ▼
+Call Presentation Service
+      │
+ ┌────┴─────┐
+ │          │
+Dioxus    Compose
+Desktop   Android
+</code></pre>
+<p>Platform services:</p>
+<pre><code class="language-text">Desktop:
+    windows
+    audio-device chooser
+    screen capture
+    notifications
+
+Android:
+    foreground service
+    PiP
+    audio route
+    camera/microphone permissions
+    notification actions
+</code></pre>
+<hr />
+<h1 id="3-core-call-ux-states"><a class="header" href="#3-core-call-ux-states">3. Core Call UX States</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum CallUiState {
+    Incoming,
+    OutgoingRinging,
+    Negotiating,
+    Connecting,
+    Active,
+    Reconnecting,
+    Held,
+    Ending,
+    Ended,
+    Failed,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>These should map directly from Part 29 call semantics.</p>
+<hr />
+<h1 id="4-call-ui-must-not-infer-state"><a class="header" href="#4-call-ui-must-not-infer-state">4. Call UI Must Not Infer State</a></h1>
+<p>Bad:</p>
+<pre><code class="language-text">no media packets for 2 seconds
+→ UI assumes call ended
+</code></pre>
+<p>Correct:</p>
+<pre><code class="language-text">Rust CallController
+→ state update
+→ UI reflects state
+</code></pre>
+<hr />
+<h1 id="5-shared-call-snapshot"><a class="header" href="#5-shared-call-snapshot">5. Shared Call Snapshot</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct CallScreenSnapshot {
+    pub call_id: CallId,
+    pub state: CallUiState,
+    pub peer: CallPeerView,
+    pub kind: CallKind,
+    pub duration: Option&lt;Duration&gt;,
+    pub media: CallMediaView,
+    pub controls: CallControlAvailability,
+    pub quality: CallQualityView,
+    pub security: CallSecurityView,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="6-incoming-call-ux"><a class="header" href="#6-incoming-call-ux">6. Incoming Call UX</a></h1>
+<p>Must show:</p>
+<pre><code class="language-text">caller identity
+avatar
+audio/video type
+verification state if relevant
+Accept
+Decline
+</code></pre>
+<p>Optional:</p>
+<pre><code class="language-text">Message
+Remind me later
+</code></pre>
+<p>later.</p>
+<hr />
+<h1 id="7-caller-identity"><a class="header" href="#7-caller-identity">7. Caller Identity</a></h1>
+<p>Display comes from authenticated contact/account mapping.</p>
+<p>Never trust arbitrary call-offer display name.</p>
+<hr />
+<h1 id="8-unknown-caller"><a class="header" href="#8-unknown-caller">8. Unknown Caller</a></h1>
+<p>Clearly show:</p>
+<pre><code class="language-text">Unknown caller
+</code></pre>
+<p>or:</p>
+<pre><code class="language-text">Message request caller
+</code></pre>
+<p>with reduced trust visual language.</p>
+<hr />
+<h1 id="9-incoming-call-security-warning"><a class="header" href="#9-incoming-call-security-warning">9. Incoming Call Security Warning</a></h1>
+<p>If identity changed/unverified:</p>
+<pre><code class="language-text">Identity changed
+</code></pre>
+<p>should be visible before accept if security policy requires.</p>
+<hr />
+<h1 id="10-incoming-video-call"><a class="header" href="#10-incoming-video-call">10. Incoming Video Call</a></h1>
+<p>Show:</p>
+<pre><code class="language-text">Video call
+</code></pre>
+<p>but camera should not activate before user accepts.</p>
+<hr />
+<h1 id="11-incoming-audio-call"><a class="header" href="#11-incoming-audio-call">11. Incoming Audio Call</a></h1>
+<p>No camera resources allocated.</p>
+<hr />
+<h1 id="12-android-incoming-call-ux"><a class="header" href="#12-android-incoming-call-ux">12. Android Incoming Call UX</a></h1>
+<p>Potential surfaces:</p>
+<pre><code class="language-text">heads-up notification
+full-screen intent where policy/platform allows
+lock-screen call UI
+Compose full call screen
+</code></pre>
+<p>Actual use depends Android rules and user notification permission.</p>
+<hr />
+<h1 id="13-desktop-incoming-call-ux"><a class="header" href="#13-desktop-incoming-call-ux">13. Desktop Incoming Call UX</a></h1>
+<p>Possible:</p>
+<pre><code class="language-text">desktop notification
+in-app banner
+floating incoming-call window
+</code></pre>
+<p>if app is visible.</p>
+<hr />
+<h1 id="14-ringing-priority"><a class="header" href="#14-ringing-priority">14. Ringing Priority</a></h1>
+<p>A valid incoming call should be visually prominent.</p>
+<p>But rate limits prevent abuse.</p>
+<hr />
+<h1 id="15-accept"><a class="header" href="#15-accept">15. Accept</a></h1>
+<p>User action:</p>
+<pre><code class="language-text">Accept
+</code></pre>
+<p>routes to:</p>
+<pre><code class="language-text">Rust CallController.accept(CallId)
+</code></pre>
+<p>UI does not directly start media.</p>
+<hr />
+<h1 id="16-accept-video-call"><a class="header" href="#16-accept-video-call">16. Accept Video Call</a></h1>
+<p>If camera permission missing:</p>
+<pre><code class="language-text">accept audio first
+then request/enable camera
+</code></pre>
+<p>or:</p>
+<pre><code class="language-text">request permission before full video accept
+</code></pre>
+<p>depending product policy.</p>
+<p>Recommendation:</p>
+<pre><code class="language-text">accept call with audio if possible
+request camera immediately afterward
+</code></pre>
+<p>to reduce connection delay.</p>
+<hr />
+<h1 id="17-decline"><a class="header" href="#17-decline">17. Decline</a></h1>
+<p>Routes to Rust.</p>
+<p>UI transitions to:</p>
+<pre><code class="language-text">Ended / declined
+</code></pre>
+<hr />
+<h1 id="18-answered-elsewhere"><a class="header" href="#18-answered-elsewhere">18. Answered Elsewhere</a></h1>
+<p>If another device answers:</p>
+<pre><code class="language-text">call UI closes
+</code></pre>
+<p>with optional small message:</p>
+<pre><code class="language-text">Answered on another device
+</code></pre>
+<hr />
+<h1 id="19-outgoing-call-ux"><a class="header" href="#19-outgoing-call-ux">19. Outgoing Call UX</a></h1>
+<p>States:</p>
+<pre><code class="language-text">Calling…
+Ringing…
+Connecting…
+</code></pre>
+<p>These should remain distinct.</p>
+<hr />
+<h1 id="20-calling-vs-ringing"><a class="header" href="#20-calling-vs-ringing">20. Calling vs Ringing</a></h1>
+<p><code>Calling…</code></p>
+<p>means:</p>
+<pre><code class="language-text">offer sent / waiting for remote ringing state
+</code></pre>
+<p><code>Ringing…</code></p>
+<p>means:</p>
+<pre><code class="language-text">remote is actively being alerted
+</code></pre>
+<p>if protocol exposes it.</p>
+<hr />
+<h1 id="21-outgoing-cancel"><a class="header" href="#21-outgoing-cancel">21. Outgoing Cancel</a></h1>
+<p>User can cancel before active.</p>
+<p>Action:</p>
+<pre><code class="language-text">Cancel
+</code></pre>
+<hr />
+<h1 id="22-busy"><a class="header" href="#22-busy">22. Busy</a></h1>
+<p>Show:</p>
+<pre><code class="language-text">Busy
+</code></pre>
+<p>then end screen.</p>
+<hr />
+<h1 id="23-declined"><a class="header" href="#23-declined">23. Declined</a></h1>
+<p>Show:</p>
+<pre><code class="language-text">Call declined
+</code></pre>
+<hr />
+<h1 id="24-timeout"><a class="header" href="#24-timeout">24. Timeout</a></h1>
+<p>Show:</p>
+<pre><code class="language-text">No answer
+</code></pre>
+<p>not generic failure.</p>
+<hr />
+<h1 id="25-unsupported"><a class="header" href="#25-unsupported">25. Unsupported</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">Video is unavailable on this device
+</code></pre>
+<p>Offer:</p>
+<pre><code class="language-text">Try audio call
+</code></pre>
+<p>if possible.</p>
+<hr />
+<h1 id="26-negotiating-state"><a class="header" href="#26-negotiating-state">26. Negotiating State</a></h1>
+<p>Usually brief.</p>
+<p>Do not expose:</p>
+<pre><code class="language-text">codec negotiation
+key exchange
+path probing
+</code></pre>
+<p>to ordinary users.</p>
+<p>Show:</p>
+<pre><code class="language-text">Connecting…
+</code></pre>
+<p>unless diagnostic mode.</p>
+<hr />
+<h1 id="27-active-call-screen"><a class="header" href="#27-active-call-screen">27. Active Call Screen</a></h1>
+<p>Core regions:</p>
+<pre><code class="language-text">participant/media area
+status/duration
+quality/reconnect indicator
+control bar
+optional secondary controls
+</code></pre>
+<hr />
+<h1 id="28-audio-call-layout"><a class="header" href="#28-audio-call-layout">28. Audio Call Layout</a></h1>
+<p>Main focus:</p>
+<pre><code class="language-text">avatar
+name
+duration
+status
+</code></pre>
+<p>Controls:</p>
+<pre><code class="language-text">Mute
+Speaker/Audio Route
+Video
+More
+Hang Up
+</code></pre>
+<hr />
+<h1 id="29-video-call-layout"><a class="header" href="#29-video-call-layout">29. Video Call Layout</a></h1>
+<p>Main focus:</p>
+<pre><code class="language-text">remote video
+local preview
+participant overlays
+controls
+</code></pre>
+<hr />
+<h1 id="30-local-preview"><a class="header" href="#30-local-preview">30. Local Preview</a></h1>
+<p>Small picture-in-picture-style overlay.</p>
+<p>Draggable where useful.</p>
+<hr />
+<h1 id="31-local-preview-disable"><a class="header" href="#31-local-preview-disable">31. Local Preview Disable</a></h1>
+<p>If local camera off:</p>
+<pre><code class="language-text">avatar/placeholder
+</code></pre>
+<hr />
+<h1 id="32-camera-flip"><a class="header" href="#32-camera-flip">32. Camera Flip</a></h1>
+<p>Android:</p>
+<pre><code class="language-text">front ↔ rear
+</code></pre>
+<p>through semantic command.</p>
+<p>Desktop:</p>
+<pre><code class="language-text">select camera
+</code></pre>
+<p>instead.</p>
+<hr />
+<h1 id="33-camera-selection"><a class="header" href="#33-camera-selection">33. Camera Selection</a></h1>
+<p>Desktop may expose device chooser.</p>
+<p>Android usually offers:</p>
+<pre><code class="language-text">front/rear
+</code></pre>
+<p>rather than raw camera list.</p>
+<hr />
+<h1 id="34-mute"><a class="header" href="#34-mute">34. Mute</a></h1>
+<p>Mute button must clearly reflect state:</p>
+<pre><code class="language-text">Muted
+Unmuted
+</code></pre>
+<hr />
+<h1 id="35-mute-action"><a class="header" href="#35-mute-action">35. Mute Action</a></h1>
+<p>Routes to Rust.</p>
+<p>Audio backend handles capture behavior.</p>
+<hr />
+<h1 id="36-video-toggle"><a class="header" href="#36-video-toggle">36. Video Toggle</a></h1>
+<pre><code class="language-text">Enable video
+Disable video
+</code></pre>
+<p>without restarting logical call.</p>
+<hr />
+<h1 id="37-hang-up"><a class="header" href="#37-hang-up">37. Hang Up</a></h1>
+<p>Always easy to find.</p>
+<p>Use visually distinct destructive control.</p>
+<hr />
+<h1 id="38-audio-route"><a class="header" href="#38-audio-route">38. Audio Route</a></h1>
+<p>Potential routes:</p>
+<pre><code class="language-text">Earpiece
+Speaker
+Bluetooth
+Wired headset
+USB
+</code></pre>
+<p>depending platform.</p>
+<hr />
+<h1 id="39-android-audio-route-ux"><a class="header" href="#39-android-audio-route-ux">39. Android Audio Route UX</a></h1>
+<p>Use:</p>
+<pre><code class="language-text">bottom sheet
+</code></pre>
+<p>or compact route selector.</p>
+<hr />
+<h1 id="40-desktop-audio-device-ux"><a class="header" href="#40-desktop-audio-device-ux">40. Desktop Audio Device UX</a></h1>
+<p>Separate:</p>
+<pre><code class="language-text">Input device
+Output device
+</code></pre>
+<p>in call settings / device menu.</p>
+<hr />
+<h1 id="41-audio-route-changes"><a class="header" href="#41-audio-route-changes">41. Audio Route Changes</a></h1>
+<p>Should not interrupt call UI.</p>
+<p>Display small transient:</p>
+<pre><code class="language-text">Bluetooth headset connected
+</code></pre>
+<p>if useful.</p>
+<hr />
+<h1 id="42-bluetooth-disconnect"><a class="header" href="#42-bluetooth-disconnect">42. Bluetooth Disconnect</a></h1>
+<p>If route changes automatically:</p>
+<pre><code class="language-text">Audio switched to speaker
+</code></pre>
+<p>small snackbar/banner.</p>
+<hr />
+<h1 id="43-screen-share"><a class="header" href="#43-screen-share">43. Screen Share</a></h1>
+<p>State:</p>
+<pre><code class="language-text">Off
+Starting
+Active
+Stopping
+</code></pre>
+<hr />
+<h1 id="44-android-screen-share"><a class="header" href="#44-android-screen-share">44. Android Screen Share</a></h1>
+<p>Requires OS capture consent.</p>
+<p>Flow:</p>
+<pre><code class="language-text">tap Share Screen
+→ platform permission/capture prompt
+→ result
+→ Rust call command
+</code></pre>
+<hr />
+<h1 id="45-desktop-screen-share"><a class="header" href="#45-desktop-screen-share">45. Desktop Screen Share</a></h1>
+<p>May offer:</p>
+<pre><code class="language-text">Entire Screen
+Window
+Region
+</code></pre>
+<p>through native platform capture UI.</p>
+<hr />
+<h1 id="46-screen-share-indicator"><a class="header" href="#46-screen-share-indicator">46. Screen Share Indicator</a></h1>
+<p>Always clearly visible while active.</p>
+<hr />
+<h1 id="47-privacy-while-sharing"><a class="header" href="#47-privacy-while-sharing">47. Privacy While Sharing</a></h1>
+<p>Notification preview policy may switch to:</p>
+<pre><code class="language-text">Generic
+</code></pre>
+<p>during active share.</p>
+<hr />
+<h1 id="48-screen-share-priority"><a class="header" href="#48-screen-share-priority">48. Screen Share Priority</a></h1>
+<p>UI should make clear:</p>
+<pre><code class="language-text">screen share is active
+</code></pre>
+<p>and provide easy stop control.</p>
+<hr />
+<h1 id="49-camera--screen-share"><a class="header" href="#49-camera--screen-share">49. Camera + Screen Share</a></h1>
+<p>If both active:</p>
+<pre><code class="language-text">screen main
+camera thumbnail
+</code></pre>
+<p>or vice versa depending use case.</p>
+<hr />
+<h1 id="50-media-layout-switching"><a class="header" href="#50-media-layout-switching">50. Media Layout Switching</a></h1>
+<p>Possible layouts:</p>
+<pre><code class="language-text">Remote Focus
+Screen Share Focus
+Grid
+Speaker Focus
+</code></pre>
+<hr />
+<h1 id="51-11-video"><a class="header" href="#51-11-video">51. 1:1 Video</a></h1>
+<p>Default:</p>
+<pre><code class="language-text">remote video fills available space
+local preview floating
+</code></pre>
+<hr />
+<h1 id="52-small-group-call"><a class="header" href="#52-small-group-call">52. Small Group Call</a></h1>
+<p>Grid layout.</p>
+<hr />
+<h1 id="53-active-speaker"><a class="header" href="#53-active-speaker">53. Active Speaker</a></h1>
+<p>For group calls:</p>
+<pre><code class="language-text">highlight active speaker
+</code></pre>
+<p>from Part 26 VAD/audio levels.</p>
+<hr />
+<h1 id="54-speaker-highlight-accessibility"><a class="header" href="#54-speaker-highlight-accessibility">54. Speaker Highlight Accessibility</a></h1>
+<p>Do not use color only.</p>
+<p>Use:</p>
+<pre><code class="language-text">border
+label
+screen-reader state
+</code></pre>
+<hr />
+<h1 id="55-group-participant-tile"><a class="header" href="#55-group-participant-tile">55. Group Participant Tile</a></h1>
+<p>Shows:</p>
+<pre><code class="language-text">avatar/video
+name
+mute
+connection state
+</code></pre>
+<hr />
+<h1 id="56-participant-list"><a class="header" href="#56-participant-list">56. Participant List</a></h1>
+<p>Optional panel/sheet.</p>
+<hr />
+<h1 id="57-group-controls"><a class="header" href="#57-group-controls">57. Group Controls</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">Mute
+Video
+Screen Share
+Participants
+More
+Hang Up / Leave
+</code></pre>
+<hr />
+<h1 id="58-host-controls"><a class="header" href="#58-host-controls">58. Host Controls</a></h1>
+<p>Future:</p>
+<pre><code class="language-text">remove participant
+mute request
+lock room
+</code></pre>
+<p>only if user has role.</p>
+<hr />
+<h1 id="59-call-waiting"><a class="header" href="#59-call-waiting">59. Call Waiting</a></h1>
+<p>If another call arrives:</p>
+<pre><code class="language-text">incoming call banner/sheet
+</code></pre>
+<p>over active call.</p>
+<p>Options:</p>
+<pre><code class="language-text">Decline
+End current &amp; answer
+Hold current &amp; answer
+</code></pre>
+<p>if hold supported.</p>
+<hr />
+<h1 id="60-hold"><a class="header" href="#60-hold">60. Hold</a></h1>
+<p>Active call may enter:</p>
+<pre><code class="language-text">On hold
+</code></pre>
+<hr />
+<h1 id="61-local-hold-ux"><a class="header" href="#61-local-hold-ux">61. Local Hold UX</a></h1>
+<p>Show:</p>
+<pre><code class="language-text">Call on hold
+Resume
+</code></pre>
+<hr />
+<h1 id="62-remote-hold-ux"><a class="header" href="#62-remote-hold-ux">62. Remote Hold UX</a></h1>
+<p>Show:</p>
+<pre><code class="language-text">Alice put the call on hold
+</code></pre>
+<p>if protocol exposes.</p>
+<hr />
+<h1 id="63-resume"><a class="header" href="#63-resume">63. Resume</a></h1>
+<p>Returns to active call without creating new CallId.</p>
+<hr />
+<h1 id="64-reconnecting"><a class="header" href="#64-reconnecting">64. Reconnecting</a></h1>
+<p>One of the most important states.</p>
+<p>Show:</p>
+<pre><code class="language-text">Reconnecting…
+</code></pre>
+<p>without immediately ending call.</p>
+<hr />
+<h1 id="65-reconnecting-layout"><a class="header" href="#65-reconnecting-layout">65. Reconnecting Layout</a></h1>
+<p>Keep:</p>
+<pre><code class="language-text">participant identity
+duration
+mute/hangup controls
+</code></pre>
+<p>Visible.</p>
+<p>Video may freeze/placeholder.</p>
+<hr />
+<h1 id="66-reconnect-quality"><a class="header" href="#66-reconnect-quality">66. Reconnect Quality</a></h1>
+<p>Do not show misleading video as live if frozen.</p>
+<p>Overlay:</p>
+<pre><code class="language-text">Connection interrupted
+</code></pre>
+<hr />
+<h1 id="67-reconnect-recovery"><a class="header" href="#67-reconnect-recovery">67. Reconnect Recovery</a></h1>
+<p>When resumed:</p>
+<pre><code class="language-text">remove overlay
+continue same call
+</code></pre>
+<hr />
+<h1 id="68-reconnect-failure"><a class="header" href="#68-reconnect-failure">68. Reconnect Failure</a></h1>
+<p>After backend grace window:</p>
+<pre><code class="language-text">Call ended — connection lost
+</code></pre>
+<hr />
+<h1 id="69-directrelay-changes"><a class="header" href="#69-directrelay-changes">69. Direct/Relay Changes</a></h1>
+<p>Ordinary users should not see:</p>
+<pre><code class="language-text">Switched to relay
+</code></pre>
+<p>unless diagnostics.</p>
+<p>Call remains visually continuous.</p>
+<hr />
+<h1 id="70-quality-indicator"><a class="header" href="#70-quality-indicator">70. Quality Indicator</a></h1>
+<p>Simple semantic classes:</p>
+<pre><code class="language-text">Excellent
+Good
+Fair
+Poor
+Reconnecting
+</code></pre>
+<hr />
+<h1 id="71-quality-ui"><a class="header" href="#71-quality-ui">71. Quality UI</a></h1>
+<p>Use small icon or label.</p>
+<p>Only surface prominently when poor.</p>
+<hr />
+<h1 id="72-advanced-diagnostics"><a class="header" href="#72-advanced-diagnostics">72. Advanced Diagnostics</a></h1>
+<p>Optional sheet:</p>
+<pre><code class="language-text">codec
+resolution
+FPS
+RTT
+loss
+jitter
+route
+hardware/software codec
+</code></pre>
+<hr />
+<h1 id="73-do-not-overload-normal-ui"><a class="header" href="#73-do-not-overload-normal-ui">73. Do Not Overload Normal UI</a></h1>
+<p>No packet-loss graph in standard call screen.</p>
+<hr />
+<h1 id="74-video-quality-adaptation"><a class="header" href="#74-video-quality-adaptation">74. Video Quality Adaptation</a></h1>
+<p>Resolution/FPS can change silently.</p>
+<p>Avoid visual notifications for every adaptation.</p>
+<hr />
+<h1 id="75-audio-degradation"><a class="header" href="#75-audio-degradation">75. Audio Degradation</a></h1>
+<p>If backend drops video to preserve audio:</p>
+<pre><code class="language-text">Video paused due to connection
+</code></pre>
+<p>small banner.</p>
+<hr />
+<h1 id="76-audio-only-fallback"><a class="header" href="#76-audio-only-fallback">76. Audio-Only Fallback</a></h1>
+<p>If video becomes unavailable:</p>
+<pre><code class="language-text">call continues as audio
+</code></pre>
+<hr />
+<h1 id="77-camera-failure"><a class="header" href="#77-camera-failure">77. Camera Failure</a></h1>
+<p>Show:</p>
+<pre><code class="language-text">Camera unavailable
+</code></pre>
+<p>with:</p>
+<pre><code class="language-text">Retry
+Switch camera
+Continue audio
+</code></pre>
+<p>where applicable.</p>
+<hr />
+<h1 id="78-microphone-failure"><a class="header" href="#78-microphone-failure">78. Microphone Failure</a></h1>
+<p>Show:</p>
+<pre><code class="language-text">Microphone unavailable
+</code></pre>
+<p>and keep receive-only call if meaningful.</p>
+<hr />
+<h1 id="79-permission-denied--camera"><a class="header" href="#79-permission-denied--camera">79. Permission Denied — Camera</a></h1>
+<p>Do not end audio call.</p>
+<p>Show:</p>
+<pre><code class="language-text">Camera permission is required for video
+Open Settings / Not now
+</code></pre>
+<hr />
+<h1 id="80-permission-denied--microphone"><a class="header" href="#80-permission-denied--microphone">80. Permission Denied — Microphone</a></h1>
+<p>Incoming call may become listen-only if supported.</p>
+<p>Otherwise show clear limitation.</p>
+<hr />
+<h1 id="81-android-permission-timing"><a class="header" href="#81-android-permission-timing">81. Android Permission Timing</a></h1>
+<p>Request only when user invokes:</p>
+<pre><code class="language-text">video
+microphone
+screen share
+</code></pre>
+<hr />
+<h1 id="82-desktop-device-permission"><a class="header" href="#82-desktop-device-permission">82. Desktop Device Permission</a></h1>
+<p>Handle OS permission if platform requires.</p>
+<hr />
+<h1 id="83-android-foreground-service"><a class="header" href="#83-android-foreground-service">83. Android Foreground Service</a></h1>
+<p>Active call persists through:</p>
+<pre><code class="language-text">Activity background
+screen off
+navigation
+</code></pre>
+<p>as platform permits.</p>
+<hr />
+<h1 id="84-foreground-service-notification"><a class="header" href="#84-foreground-service-notification">84. Foreground Service Notification</a></h1>
+<p>Shows:</p>
+<pre><code class="language-text">ongoing call
+mute
+hang up
+</code></pre>
+<p>where supported.</p>
+<hr />
+<h1 id="85-compose-activity-recreation"><a class="header" href="#85-compose-activity-recreation">85. Compose Activity Recreation</a></h1>
+<p>Call survives:</p>
+<pre><code class="language-text">rotation
+theme change
+window resize
+</code></pre>
+<hr />
+<h1 id="86-activity-reattachment"><a class="header" href="#86-activity-reattachment">86. Activity Reattachment</a></h1>
+<p>New call screen requests:</p>
+<pre><code class="language-text">CallScreenSnapshot
+</code></pre>
+<p>from Rust.</p>
+<hr />
+<h1 id="87-pip"><a class="header" href="#87-pip">87. PiP</a></h1>
+<p>Video call may enter Picture-in-Picture.</p>
+<hr />
+<h1 id="88-pip-trigger"><a class="header" href="#88-pip-trigger">88. PiP Trigger</a></h1>
+<p>Could enter when:</p>
+<pre><code class="language-text">user presses Home
+</code></pre>
+<p>if active video call.</p>
+<hr />
+<h1 id="89-pip-content"><a class="header" href="#89-pip-content">89. PiP Content</a></h1>
+<p>Minimal:</p>
+<pre><code class="language-text">remote video
+call state
+</code></pre>
+<p>with system-supported actions where useful.</p>
+<hr />
+<h1 id="90-pip-controls"><a class="header" href="#90-pip-controls">90. PiP Controls</a></h1>
+<p>Avoid too many.</p>
+<p>Possible:</p>
+<pre><code class="language-text">Mute
+Hang up
+</code></pre>
+<hr />
+<h1 id="91-return-from-pip"><a class="header" href="#91-return-from-pip">91. Return from PiP</a></h1>
+<p>Compose reconstructs full call UI from Rust state.</p>
+<hr />
+<h1 id="92-audio-call-background"><a class="header" href="#92-audio-call-background">92. Audio Call Background</a></h1>
+<p>No full-screen UI required.</p>
+<p>Ongoing-call notification/compact app bar sufficient.</p>
+<hr />
+<h1 id="93-desktop-minimized-call"><a class="header" href="#93-desktop-minimized-call">93. Desktop Minimized Call</a></h1>
+<p>When navigating away:</p>
+<pre><code class="language-text">persistent call bar
+</code></pre>
+<p>in main window.</p>
+<hr />
+<h1 id="94-desktop-floating-call-window"><a class="header" href="#94-desktop-floating-call-window">94. Desktop Floating Call Window</a></h1>
+<p>Optional compact floating window.</p>
+<hr />
+<h1 id="95-floating-window-contents"><a class="header" href="#95-floating-window-contents">95. Floating Window Contents</a></h1>
+<pre><code class="language-text">remote video/avatar
+mute
+video
+return
+hang up
+</code></pre>
+<hr />
+<h1 id="96-desktop-close-call-window"><a class="header" href="#96-desktop-close-call-window">96. Desktop Close Call Window</a></h1>
+<p>Should not automatically hang up.</p>
+<p>Use explicit:</p>
+<pre><code class="language-text">Hang up
+</code></pre>
+<hr />
+<h1 id="97-desktop-main-window-close"><a class="header" href="#97-desktop-main-window-close">97. Desktop Main Window Close</a></h1>
+<p>If configured to hide to tray:</p>
+<pre><code class="language-text">call continues
+</code></pre>
+<hr />
+<h1 id="98-desktop-quit-during-call"><a class="header" href="#98-desktop-quit-during-call">98. Desktop Quit During Call</a></h1>
+<p>Confirmation:</p>
+<pre><code class="language-text">End call and quit?
+</code></pre>
+<hr />
+<h1 id="99-android-back-during-call"><a class="header" href="#99-android-back-during-call">99. Android Back During Call</a></h1>
+<p>Back:</p>
+<pre><code class="language-text">leave full call screen
+</code></pre>
+<p>call continues.</p>
+<hr />
+<h1 id="100-android-home"><a class="header" href="#100-android-home">100. Android Home</a></h1>
+<p>Call continues through foreground service.</p>
+<hr />
+<h1 id="101-app-process-death-during-call"><a class="header" href="#101-app-process-death-during-call">101. App Process Death During Call</a></h1>
+<p>If process hosting Rust call dies:</p>
+<pre><code class="language-text">call ends
+</code></pre>
+<p>unless separate persistent native/service process architecture preserves it.</p>
+<p>UI must not pretend otherwise.</p>
+<hr />
+<h1 id="102-app-restart-after-crash"><a class="header" href="#102-app-restart-after-crash">102. App Restart After Crash</a></h1>
+<p>Show:</p>
+<pre><code class="language-text">Call ended unexpectedly
+</code></pre>
+<p>in history if known.</p>
+<hr />
+<h1 id="103-call-duration"><a class="header" href="#103-call-duration">103. Call Duration</a></h1>
+<p>Starts at:</p>
+<pre><code class="language-text">connected/active
+</code></pre>
+<p>not outgoing ring start.</p>
+<hr />
+<h1 id="104-duration-timer"><a class="header" href="#104-duration-timer">104. Duration Timer</a></h1>
+<p>UI timer derives from:</p>
+<pre><code class="language-text">connected_at
+</code></pre>
+<p>No backend event every second.</p>
+<hr />
+<h1 id="105-timer-efficiency"><a class="header" href="#105-timer-efficiency">105. Timer Efficiency</a></h1>
+<p>One local timer per active call screen is fine.</p>
+<hr />
+<h1 id="106-incoming-call-timeout"><a class="header" href="#106-incoming-call-timeout">106. Incoming Call Timeout</a></h1>
+<p>UI closes when backend says:</p>
+<pre><code class="language-text">timeout
+</code></pre>
+<hr />
+<h1 id="107-missed-call"><a class="header" href="#107-missed-call">107. Missed Call</a></h1>
+<p>After timeout:</p>
+<pre><code class="language-text">Missed call
+</code></pre>
+<p>notification/history.</p>
+<hr />
+<h1 id="108-call-end-screen"><a class="header" href="#108-call-end-screen">108. Call End Screen</a></h1>
+<p>Brief summary:</p>
+<pre><code class="language-text">Call ended
+Duration
+Call back
+</code></pre>
+<p>Optional.</p>
+<hr />
+<h1 id="109-end-reasons"><a class="header" href="#109-end-reasons">109. End Reasons</a></h1>
+<p>User-facing mappings:</p>
+<pre><code class="language-text">Declined
+Busy
+No answer
+Connection lost
+Call ended
+Security problem
+</code></pre>
+<hr />
+<h1 id="110-do-not-show-internal-errors"><a class="header" href="#110-do-not-show-internal-errors">110. Do Not Show Internal Errors</a></h1>
+<p>Avoid:</p>
+<pre><code class="language-text">QUIC stream reset 0x1f
+</code></pre>
+<p>in normal UI.</p>
+<hr />
+<h1 id="111-security-failure"><a class="header" href="#111-security-failure">111. Security Failure</a></h1>
+<p>Strong message:</p>
+<pre><code class="language-text">Call ended because identity could not be verified
+Review security
+</code></pre>
+<p>if applicable.</p>
+<hr />
+<h1 id="112-device-revoked-mid-call"><a class="header" href="#112-device-revoked-mid-call">112. Device Revoked Mid-Call</a></h1>
+<p>Show:</p>
+<pre><code class="language-text">Call ended for security reasons
+</code></pre>
+<hr />
+<h1 id="113-encryption-indicator"><a class="header" href="#113-encryption-indicator">113. Encryption Indicator</a></h1>
+<p>Normal UI can show:</p>
+<pre><code class="language-text">End-to-end encrypted
+</code></pre>
+<p>in call info/details.</p>
+<p>Not giant lock icon during whole call.</p>
+<hr />
+<h1 id="114-verified-contact"><a class="header" href="#114-verified-contact">114. Verified Contact</a></h1>
+<p>Optional subtle verification badge near name.</p>
+<hr />
+<h1 id="115-call-recording"><a class="header" href="#115-call-recording">115. Call Recording</a></h1>
+<p>Future optional feature.</p>
+<p>If enabled:</p>
+<pre><code class="language-text">visible recording indicator
+</code></pre>
+<p>must never be hidden.</p>
+<hr />
+<h1 id="116-recording-consent"><a class="header" href="#116-recording-consent">116. Recording Consent</a></h1>
+<p>Product/legal policy determines participant notification.</p>
+<hr />
+<h1 id="117-call-captions"><a class="header" href="#117-call-captions">117. Call Captions</a></h1>
+<p>Future.</p>
+<p>Could show live captions if local speech recognition exists.</p>
+<hr />
+<h1 id="118-captions-accessibility"><a class="header" href="#118-captions-accessibility">118. Captions Accessibility</a></h1>
+<p>If added:</p>
+<pre><code class="language-text">font size
+contrast
+speaker labels
+</code></pre>
+<hr />
+<h1 id="119-call-transcription"><a class="header" href="#119-call-transcription">119. Call Transcription</a></h1>
+<p>Not part of v1.</p>
+<p>Do not upload audio to cloud silently.</p>
+<hr />
+<h1 id="120-accessibility--call-controls"><a class="header" href="#120-accessibility--call-controls">120. Accessibility — Call Controls</a></h1>
+<p>Every control needs:</p>
+<pre><code class="language-text">label
+state
+action
+</code></pre>
+<p>Examples:</p>
+<pre><code class="language-text">Mute microphone, off
+Turn camera off
+End call
+</code></pre>
+<hr />
+<h1 id="121-android-talkback"><a class="header" href="#121-android-talkback">121. Android TalkBack</a></h1>
+<p>Control bar order should be logical and stable.</p>
+<hr />
+<h1 id="122-desktop-screen-reader"><a class="header" href="#122-desktop-screen-reader">122. Desktop Screen Reader</a></h1>
+<p>Focused control announces state.</p>
+<hr />
+<h1 id="123-keyboard-shortcuts-desktop"><a class="header" href="#123-keyboard-shortcuts-desktop">123. Keyboard Shortcuts Desktop</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">Ctrl/Cmd+Shift+M → Mute
+Ctrl/Cmd+Shift+V → Video
+Ctrl/Cmd+Shift+S → Screen share
+Ctrl/Cmd+Shift+H → Hang up
+</code></pre>
+<hr />
+<h1 id="124-shortcut-discoverability"><a class="header" href="#124-shortcut-discoverability">124. Shortcut Discoverability</a></h1>
+<p>Show in:</p>
+<pre><code class="language-text">tooltips
+menu
+keyboard shortcut reference
+</code></pre>
+<hr />
+<h1 id="125-android-accessibility-actions"><a class="header" href="#125-android-accessibility-actions">125. Android Accessibility Actions</a></h1>
+<p>No feature should require:</p>
+<pre><code class="language-text">drag-only
+swipe-only
+</code></pre>
+<hr />
+<h1 id="126-large-touch-targets"><a class="header" href="#126-large-touch-targets">126. Large Touch Targets</a></h1>
+<p>Call controls must be easy to hit.</p>
+<p>Especially:</p>
+<pre><code class="language-text">Hang Up
+Mute
+</code></pre>
+<hr />
+<h1 id="127-color-independence"><a class="header" href="#127-color-independence">127. Color Independence</a></h1>
+<p>Muted/connected/reconnecting states need:</p>
+<pre><code class="language-text">icons
+labels
+shape
+</code></pre>
+<p>not color alone.</p>
+<hr />
+<h1 id="128-large-font"><a class="header" href="#128-large-font">128. Large Font</a></h1>
+<p>Name/status/control labels must remain usable.</p>
+<p>Video can shrink to preserve controls.</p>
+<hr />
+<h1 id="129-landscape-android"><a class="header" href="#129-landscape-android">129. Landscape Android</a></h1>
+<p>Controls may move to side/bottom based on available space.</p>
+<hr />
+<h1 id="130-tablet-call-layout"><a class="header" href="#130-tablet-call-layout">130. Tablet Call Layout</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">large media region
+participant panel
+controls
+</code></pre>
+<hr />
+<h1 id="131-foldable-call-layout"><a class="header" href="#131-foldable-call-layout">131. Foldable Call Layout</a></h1>
+<p>Use hinge-aware placement.</p>
+<hr />
+<h1 id="132-desktop-wide-layout"><a class="header" href="#132-desktop-wide-layout">132. Desktop Wide Layout</a></h1>
+<p>Can show:</p>
+<pre><code class="language-text">video
+participant list
+chat side panel
+</code></pre>
+<p>if call-chat integration added.</p>
+<hr />
+<h1 id="133-in-call-chat"><a class="header" href="#133-in-call-chat">133. In-Call Chat</a></h1>
+<p>Future optional.</p>
+<p>Could expose existing conversation in side panel.</p>
+<p>No separate message system.</p>
+<hr />
+<h1 id="134-call--conversation"><a class="header" href="#134-call--conversation">134. Call + Conversation</a></h1>
+<p>Desktop can open conversation inspector beside call.</p>
+<p>Android can offer:</p>
+<pre><code class="language-text">Open chat
+</code></pre>
+<p>sheet/destination without ending call.</p>
+<hr />
+<h1 id="135-media-device-selector-desktop"><a class="header" href="#135-media-device-selector-desktop">135. Media Device Selector Desktop</a></h1>
+<p>Can be in:</p>
+<pre><code class="language-text">More
+→ Audio &amp; Video Settings
+</code></pre>
+<hr />
+<h1 id="136-device-selector-fields"><a class="header" href="#136-device-selector-fields">136. Device Selector Fields</a></h1>
+<pre><code class="language-text">Microphone
+Speaker
+Camera
+</code></pre>
+<hr />
+<h1 id="137-test-device-preview"><a class="header" href="#137-test-device-preview">137. Test Device Preview</a></h1>
+<p>Settings can provide local preview outside active call.</p>
+<hr />
+<h1 id="138-android-device-selection"><a class="header" href="#138-android-device-selection">138. Android Device Selection</a></h1>
+<p>Camera:</p>
+<pre><code class="language-text">front/rear
+</code></pre>
+<p>Audio:</p>
+<pre><code class="language-text">route
+</code></pre>
+<p>No unnecessary low-level device list.</p>
+<hr />
+<h1 id="139-screen-share-source-picker-desktop"><a class="header" href="#139-screen-share-source-picker-desktop">139. Screen Share Source Picker Desktop</a></h1>
+<p>Native/system-style picker preferred.</p>
+<hr />
+<h1 id="140-share-stop"><a class="header" href="#140-share-stop">140. Share Stop</a></h1>
+<p>Persistent visible action.</p>
+<hr />
+<h1 id="141-local-preview-mirroring"><a class="header" href="#141-local-preview-mirroring">141. Local Preview Mirroring</a></h1>
+<p>Front camera preview may be mirrored locally.</p>
+<p>Remote stream should not necessarily be mirrored.</p>
+<hr />
+<h1 id="142-camera-orientation"><a class="header" href="#142-camera-orientation">142. Camera Orientation</a></h1>
+<p>Android renderer adapts rotation without call restart.</p>
+<hr />
+<h1 id="143-video-surface-loss"><a class="header" href="#143-video-surface-loss">143. Video Surface Loss</a></h1>
+<p>If Compose destination recreates:</p>
+<pre><code class="language-text">show placeholder briefly
+rebind Surface
+</code></pre>
+<p>call remains.</p>
+<hr />
+<h1 id="144-desktop-renderer-rebind"><a class="header" href="#144-desktop-renderer-rebind">144. Desktop Renderer Rebind</a></h1>
+<p>Same principle for window changes.</p>
+<hr />
+<h1 id="145-remote-video-freeze"><a class="header" href="#145-remote-video-freeze">145. Remote Video Freeze</a></h1>
+<p>Backend may report:</p>
+<pre><code class="language-text">video stalled
+</code></pre>
+<p>UI overlays:</p>
+<pre><code class="language-text">Video paused
+</code></pre>
+<p>without implying call ended.</p>
+<hr />
+<h1 id="146-screen-off"><a class="header" href="#146-screen-off">146. Screen Off</a></h1>
+<p>Android audio call continues.</p>
+<p>Video capture may pause according to policy/platform.</p>
+<hr />
+<h1 id="147-battery-saver"><a class="header" href="#147-battery-saver">147. Battery Saver</a></h1>
+<p>If backend reduces video:</p>
+<pre><code class="language-text">no alarming message
+</code></pre>
+<p>unless user-visible effect significant.</p>
+<hr />
+<h1 id="148-thermal-event"><a class="header" href="#148-thermal-event">148. Thermal Event</a></h1>
+<p>If video disabled:</p>
+<pre><code class="language-text">Video turned off to cool device
+</code></pre>
+<p>small banner.</p>
+<hr />
+<h1 id="149-media-error-prioritization"><a class="header" href="#149-media-error-prioritization">149. Media Error Prioritization</a></h1>
+<p>Audio is more important.</p>
+<p>UI should reflect:</p>
+<pre><code class="language-text">Video unavailable, audio continues
+</code></pre>
+<p>rather than presenting full call failure.</p>
+<hr />
+<h1 id="150-reconnect-ux-during-network-switch"><a class="header" href="#150-reconnect-ux-during-network-switch">150. Reconnect UX During Network Switch</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">Wi-Fi → cellular
+</code></pre>
+<p>UI may briefly show:</p>
+<pre><code class="language-text">Reconnecting…
+</code></pre>
+<p>only if media interruption noticeable.</p>
+<hr />
+<h1 id="151-connectivity-indicator"><a class="header" href="#151-connectivity-indicator">151. Connectivity Indicator</a></h1>
+<p>Avoid showing raw transport names unless diagnostics.</p>
+<hr />
+<h1 id="152-call-quality-details"><a class="header" href="#152-call-quality-details">152. Call Quality Details</a></h1>
+<p>Advanced panel can show:</p>
+<pre><code class="language-text">Direct
+Relay
+LAN
+Codec
+Bitrate
+Packet loss
+RTT
+</code></pre>
+<hr />
+<h1 id="153-user-friendly-quality"><a class="header" href="#153-user-friendly-quality">153. User-Friendly Quality</a></h1>
+<p>Normal UI:</p>
+<pre><code class="language-text">Good connection
+Poor connection
+</code></pre>
+<p>only if needed.</p>
+<hr />
+<h1 id="154-call-notifications"><a class="header" href="#154-call-notifications">154. Call Notifications</a></h1>
+<p>Part 31.</p>
+<p>When app foreground but not on call screen:</p>
+<pre><code class="language-text">incoming call banner/full-screen flow
+</code></pre>
+<hr />
+<h1 id="155-ongoing-call-notification"><a class="header" href="#155-ongoing-call-notification">155. Ongoing Call Notification</a></h1>
+<p>Android required by foreground service.</p>
+<hr />
+<h1 id="156-notification-actions"><a class="header" href="#156-notification-actions">156. Notification Actions</a></h1>
+<pre><code class="language-text">Mute
+Hang up
+</code></pre>
+<p>where safe.</p>
+<hr />
+<h1 id="157-lock-screen-call-ux"><a class="header" href="#157-lock-screen-call-ux">157. Lock-Screen Call UX</a></h1>
+<p>Must not reveal sensitive identity details beyond notification privacy settings.</p>
+<hr />
+<h1 id="158-unknown-caller-privacy"><a class="header" href="#158-unknown-caller-privacy">158. Unknown Caller Privacy</a></h1>
+<p>Could show:</p>
+<pre><code class="language-text">Incoming call
+</code></pre>
+<p>with generic identity if user chooses strict preview privacy.</p>
+<hr />
+<h1 id="159-call-history-navigation"><a class="header" href="#159-call-history-navigation">159. Call History Navigation</a></h1>
+<p>After missed/ended call:</p>
+<pre><code class="language-text">tap event
+→ call detail / conversation
+</code></pre>
+<hr />
+<h1 id="160-call-detail"><a class="header" href="#160-call-detail">160. Call Detail</a></h1>
+<p>Could show:</p>
+<pre><code class="language-text">type
+time
+duration
+end reason
+call back
+</code></pre>
+<hr />
+<h1 id="161-call-history-privacy"><a class="header" href="#161-call-history-privacy">161. Call History Privacy</a></h1>
+<p>Call metadata is sensitive.</p>
+<p>Follow local storage/preview policy.</p>
+<hr />
+<h1 id="162-multi-device-incoming-call"><a class="header" href="#162-multi-device-incoming-call">162. Multi-Device Incoming Call</a></h1>
+<p>Several devices may ring.</p>
+<p>UI state should handle:</p>
+<pre><code class="language-text">answered elsewhere
+declined elsewhere if policy
+</code></pre>
+<hr />
+<h1 id="163-local-device-priority"><a class="header" href="#163-local-device-priority">163. Local Device Priority</a></h1>
+<p>Optional future:</p>
+<pre><code class="language-text">prefer active device
+</code></pre>
+<p>backend policy.</p>
+<p>UI only renders outcome.</p>
+<hr />
+<h1 id="164-call-transfer-between-devices"><a class="header" href="#164-call-transfer-between-devices">164. Call Transfer Between Devices</a></h1>
+<p>Future advanced feature.</p>
+<p>Not v1.</p>
+<p>Could allow:</p>
+<pre><code class="language-text">Move call to phone
+</code></pre>
+<p>with secure handoff.</p>
+<hr />
+<h1 id="165-call-handoff-ux"><a class="header" href="#165-call-handoff-ux">165. Call Handoff UX</a></h1>
+<p>If added:</p>
+<pre><code class="language-text">choose device
+confirm
+new device connects
+old device exits
+</code></pre>
+<hr />
+<h1 id="166-group-call-entry"><a class="header" href="#166-group-call-entry">166. Group Call Entry</a></h1>
+<p>Could start from:</p>
+<pre><code class="language-text">group header
+call history
+active group call banner
+</code></pre>
+<hr />
+<h1 id="167-group-call-banner"><a class="header" href="#167-group-call-banner">167. Group Call Banner</a></h1>
+<p>If group call active:</p>
+<pre><code class="language-text">3 people in call
+Join
+</code></pre>
+<p>future if architecture supports.</p>
+<hr />
+<h1 id="168-join-group-call"><a class="header" href="#168-join-group-call">168. Join Group Call</a></h1>
+<p>Rust validates membership/security.</p>
+<hr />
+<h1 id="169-participant-joining"><a class="header" href="#169-participant-joining">169. Participant Joining</a></h1>
+<p>UI can show subtle:</p>
+<pre><code class="language-text">Alice joined
+</code></pre>
+<hr />
+<h1 id="170-participant-leaving"><a class="header" href="#170-participant-leaving">170. Participant Leaving</a></h1>
+<p>Likewise.</p>
+<hr />
+<h1 id="171-avoid-modal-spam"><a class="header" href="#171-avoid-modal-spam">171. Avoid Modal Spam</a></h1>
+<p>Do not show dialog for every group participant event.</p>
+<hr />
+<h1 id="172-raised-hand"><a class="header" href="#172-raised-hand">172. Raised Hand</a></h1>
+<p>Future conference feature.</p>
+<p>Not needed initially.</p>
+<hr />
+<h1 id="173-moderator-controls"><a class="header" href="#173-moderator-controls">173. Moderator Controls</a></h1>
+<p>Future.</p>
+<p>Keep architecture extensible.</p>
+<hr />
+<h1 id="174-reactions-in-call"><a class="header" href="#174-reactions-in-call">174. Reactions in Call</a></h1>
+<p>Future lightweight ephemeral reactions.</p>
+<p>Not v1.</p>
+<hr />
+<h1 id="175-media-control-availability"><a class="header" href="#175-media-control-availability">175. Media Control Availability</a></h1>
+<p>Rust supplies:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct CallControlAvailability {
+    pub can_mute: bool,
+    pub can_video: bool,
+    pub can_switch_camera: bool,
+    pub can_screen_share: bool,
+    pub can_hold: bool,
+    pub can_change_audio_route: bool,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="176-ui-must-respect-capability"><a class="header" href="#176-ui-must-respect-capability">176. UI Must Respect Capability</a></h1>
+<p>Do not show enabled video button if backend says unsupported.</p>
+<hr />
+<h1 id="177-disabled-control"><a class="header" href="#177-disabled-control">177. Disabled Control</a></h1>
+<p>If useful, show disabled with explanation.</p>
+<hr />
+<h1 id="178-hidden-vs-disabled"><a class="header" href="#178-hidden-vs-disabled">178. Hidden vs Disabled</a></h1>
+<p>Hide:</p>
+<pre><code class="language-text">feature fundamentally unsupported
+</code></pre>
+<p>Disable:</p>
+<pre><code class="language-text">temporarily unavailable
+</code></pre>
+<p>with reason.</p>
+<hr />
+<h1 id="179-call-media-view"><a class="header" href="#179-call-media-view">179. Call Media View</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct CallMediaView {
+    pub microphone_muted: bool,
+    pub camera_enabled: bool,
+    pub screen_share: ScreenShareView,
+    pub audio_route: AudioRouteView,
+    pub local_renderer: Option&lt;RendererId&gt;,
+    pub remote_renderers: Vec&lt;ParticipantRendererView&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="180-call-quality-view"><a class="header" href="#180-call-quality-view">180. Call Quality View</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct CallQualityView {
+    pub class: CallQualityClass,
+    pub video_degraded: bool,
+    pub audio_degraded: bool,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="181-security-view"><a class="header" href="#181-security-view">181. Security View</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct CallSecurityView {
+    pub encrypted: bool,
+    pub verified_peer: bool,
+    pub warning: Option&lt;SecurityWarningView&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="182-call-events"><a class="header" href="#182-call-events">182. Call Events</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum CallUiEvent {
+    StateChanged(CallUiState),
+    MediaChanged(CallMediaView),
+    QualityChanged(CallQualityView),
+    ParticipantChanged(CallParticipantView),
+    SecurityChanged(CallSecurityView),
+    Ended(CallEndReasonView),
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="183-event-granularity"><a class="header" href="#183-event-granularity">183. Event Granularity</a></h1>
+<p>Update only affected UI region.</p>
+<hr />
+<h1 id="184-android-viewmodel"><a class="header" href="#184-android-viewmodel">184. Android ViewModel</a></h1>
+<p>Owns:</p>
+<pre><code class="language-text">temporary sheet state
+permission effects
+PiP request
+selected audio route sheet
+local control focus
+</code></pre>
+<p>Rust owns call truth.</p>
+<hr />
+<h1 id="185-dioxus-presenter"><a class="header" href="#185-dioxus-presenter">185. Dioxus Presenter</a></h1>
+<p>Owns:</p>
+<pre><code class="language-text">floating window state
+inspector visibility
+control overlay visibility
+selected participant tile
+</code></pre>
+<hr />
+<h1 id="186-control-overlay-auto-hide"><a class="header" href="#186-control-overlay-auto-hide">186. Control Overlay Auto-Hide</a></h1>
+<p>Video call can hide controls after inactivity.</p>
+<hr />
+<h1 id="187-desktop-auto-hide"><a class="header" href="#187-desktop-auto-hide">187. Desktop Auto-Hide</a></h1>
+<p>Mouse move reveals.</p>
+<p>Keyboard focus keeps visible.</p>
+<hr />
+<h1 id="188-android-auto-hide"><a class="header" href="#188-android-auto-hide">188. Android Auto-Hide</a></h1>
+<p>Tap video reveals.</p>
+<p>Do not hide while accessibility focus active.</p>
+<hr />
+<h1 id="189-audio-call-controls"><a class="header" href="#189-audio-call-controls">189. Audio Call Controls</a></h1>
+<p>No auto-hide needed.</p>
+<hr />
+<h1 id="190-end-call-confirmation"><a class="header" href="#190-end-call-confirmation">190. End Call Confirmation</a></h1>
+<p>Usually:</p>
+<pre><code class="language-text">no confirmation
+</code></pre>
+<p>because hanging up is expected and reversible only by calling again.</p>
+<p>Exception:</p>
+<pre><code class="language-text">host ending call for everyone
+</code></pre>
+<p>may need confirmation.</p>
+<hr />
+<h1 id="191-screen-share-start-confirmation"><a class="header" href="#191-screen-share-start-confirmation">191. Screen Share Start Confirmation</a></h1>
+<p>OS capture prompt provides confirmation.</p>
+<hr />
+<h1 id="192-device-revocation-security-event"><a class="header" href="#192-device-revocation-security-event">192. Device Revocation Security Event</a></h1>
+<p>Call ends immediately if Rust policy says so.</p>
+<p>UI does not override.</p>
+<hr />
+<h1 id="193-call-reauthentication"><a class="header" href="#193-call-reauthentication">193. Call Reauthentication</a></h1>
+<p>If backend rekeys transparently:</p>
+<pre><code class="language-text">no UI
+</code></pre>
+<p>unless security failure.</p>
+<hr />
+<h1 id="194-accessibility-live-updates"><a class="header" href="#194-accessibility-live-updates">194. Accessibility Live Updates</a></h1>
+<p>Announce:</p>
+<pre><code class="language-text">Call connected
+Reconnecting
+Call ended
+Muted
+</code></pre>
+<p>carefully.</p>
+<hr />
+<h1 id="195-avoid-excessive-announcements"><a class="header" href="#195-avoid-excessive-announcements">195. Avoid Excessive Announcements</a></h1>
+<p>Do not announce every bitrate change.</p>
+<hr />
+<h1 id="196-call-status-region"><a class="header" href="#196-call-status-region">196. Call Status Region</a></h1>
+<p>Screen reader live region can report important state transitions.</p>
+<hr />
+<h1 id="197-haptics-android"><a class="header" href="#197-haptics-android">197. Haptics Android</a></h1>
+<p>Use sparingly:</p>
+<pre><code class="language-text">call accepted
+mute toggle
+hang up
+</code></pre>
+<p>according to platform norms.</p>
+<hr />
+<h1 id="198-ringvibration"><a class="header" href="#198-ringvibration">198. Ring/Vibration</a></h1>
+<p>Controlled by notification/call policy.</p>
+<hr />
+<h1 id="199-desktop-sound"><a class="header" href="#199-desktop-sound">199. Desktop Sound</a></h1>
+<p>Incoming ring through selected/system output.</p>
+<hr />
+<h1 id="200-ring-output-device"><a class="header" href="#200-ring-output-device">200. Ring Output Device</a></h1>
+<p>May differ from call output in advanced settings.</p>
+<hr />
+<h1 id="201-incoming-call-audio-focus-android"><a class="header" href="#201-incoming-call-audio-focus-android">201. Incoming Call Audio Focus Android</a></h1>
+<p>Platform call integration handles.</p>
+<hr />
+<h1 id="202-call-volume"><a class="header" href="#202-call-volume">202. Call Volume</a></h1>
+<p>Use system communication volume where appropriate.</p>
+<hr />
+<h1 id="203-app-volume-controls"><a class="header" href="#203-app-volume-controls">203. App Volume Controls</a></h1>
+<p>Do not reinvent OS volume control in v1.</p>
+<hr />
+<h1 id="204-media-permission-education"><a class="header" href="#204-media-permission-education">204. Media Permission Education</a></h1>
+<p>If user denies:</p>
+<pre><code class="language-text">explain why feature needs permission
+</code></pre>
+<p>without blocking unrelated functionality.</p>
+<hr />
+<h1 id="205-camera-preview-before-call"><a class="header" href="#205-camera-preview-before-call">205. Camera Preview Before Call</a></h1>
+<p>Outgoing video call may show local preview optionally.</p>
+<p>But do not delay call too much.</p>
+<hr />
+<h1 id="206-pre-call-screen"><a class="header" href="#206-pre-call-screen">206. Pre-Call Screen</a></h1>
+<p>Future optional:</p>
+<pre><code class="language-text">camera preview
+mic selector
+background
+</code></pre>
+<p>for conference-style calling.</p>
+<p>Not required for simple 1:1 v1.</p>
+<hr />
+<h1 id="207-initial-v1-call-ux"><a class="header" href="#207-initial-v1-call-ux">207. Initial v1 Call UX</a></h1>
+<p>Prioritize:</p>
+<pre><code class="language-text">1:1 audio
+1:1 video
+incoming/outgoing
+mute
+video
+route
+camera switch
+reconnect
+PiP/background
+desktop call bar/window
+</code></pre>
+<hr />
+<h1 id="208-defer-initially"><a class="header" href="#208-defer-initially">208. Defer Initially</a></h1>
+<pre><code class="language-text">large group grid
+SFU-specific controls
+call recording
+live captions
+background effects
+virtual backgrounds
+device handoff
+complex moderator controls
+</code></pre>
+<hr />
+<h1 id="209-testing-matrix"><a class="header" href="#209-testing-matrix">209. Testing Matrix</a></h1>
+<p>Required:</p>
+<pre><code class="language-text">incoming audio
+incoming video
+outgoing audio
+outgoing video
+decline
+busy
+timeout
+active
+mute
+video toggle
+camera switch
+audio route
+screen share
+reconnecting
+connection lost
+answered elsewhere
+permission denied
+surface recreation
+PiP
+desktop window close
+</code></pre>
+<hr />
+<h1 id="210-android-tests"><a class="header" href="#210-android-tests">210. Android Tests</a></h1>
+<p>Verify:</p>
+<pre><code class="language-text">Activity recreation
+background/foreground
+PiP
+foreground service
+notification accept
+notification decline
+camera permission
+mic permission
+Bluetooth route change
+screen-share permission
+TalkBack
+large font
+foldable
+</code></pre>
+<hr />
+<h1 id="211-desktop-tests"><a class="header" href="#211-desktop-tests">211. Desktop Tests</a></h1>
+<p>Verify:</p>
+<pre><code class="language-text">floating call window
+persistent call bar
+window close
+system tray
+keyboard shortcuts
+camera/audio device chooser
+screen-share source picker
+</code></pre>
+<hr />
+<h1 id="212-reconnect-test"><a class="header" href="#212-reconnect-test">212. Reconnect Test</a></h1>
+<p>Kill Wi-Fi / switch network.</p>
+<p>Expected:</p>
+<pre><code class="language-text">same CallId
+Reconnecting…
+resume
+</code></pre>
+<hr />
+<h1 id="213-video-failure-test"><a class="header" href="#213-video-failure-test">213. Video Failure Test</a></h1>
+<p>Force video codec failure.</p>
+<p>Expected:</p>
+<pre><code class="language-text">audio continues
+video warning/fallback
+</code></pre>
+<hr />
+<h1 id="214-surface-loss-test"><a class="header" href="#214-surface-loss-test">214. Surface Loss Test</a></h1>
+<p>Destroy/recreate renderer.</p>
+<p>Call continues.</p>
+<hr />
+<h1 id="215-permission-denied-test"><a class="header" href="#215-permission-denied-test">215. Permission Denied Test</a></h1>
+<p>Video denied.</p>
+<p>Audio continues.</p>
+<hr />
+<h1 id="216-bluetooth-disconnect-test"><a class="header" href="#216-bluetooth-disconnect-test">216. Bluetooth Disconnect Test</a></h1>
+<p>Route switches.</p>
+<p>UI reflects new route.</p>
+<hr />
+<h1 id="217-answered-elsewhere-test"><a class="header" href="#217-answered-elsewhere-test">217. Answered Elsewhere Test</a></h1>
+<p>Phone and desktop ring.</p>
+<p>Desktop answers.</p>
+<p>Phone exits incoming state.</p>
+<hr />
+<h1 id="218-hold-test"><a class="header" href="#218-hold-test">218. Hold Test</a></h1>
+<p>Current call held/resumed without new call identity.</p>
+<hr />
+<h1 id="219-call-waiting-test"><a class="header" href="#219-call-waiting-test">219. Call Waiting Test</a></h1>
+<p>Second call arrives.</p>
+<p>Actions behave deterministically.</p>
+<hr />
+<h1 id="220-accessibility-test"><a class="header" href="#220-accessibility-test">220. Accessibility Test</a></h1>
+<p>Full call flow must be possible without visual-only cues.</p>
+<hr />
+<h1 id="221-rust-presentation-api"><a class="header" href="#221-rust-presentation-api">221. Rust Presentation API</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait CallPresentation {
+    async fn snapshot(
+        &amp;self,
+        call: CallId,
+    ) -&gt; Result&lt;CallScreenSnapshot, UiError&gt;;
+
+    async fn accept(
+        &amp;self,
+        call: CallId,
+    ) -&gt; Result&lt;(), UiError&gt;;
+
+    async fn decline(
+        &amp;self,
+        call: CallId,
+    ) -&gt; Result&lt;(), UiError&gt;;
+
+    async fn hangup(
+        &amp;self,
+        call: CallId,
+    ) -&gt; Result&lt;(), UiError&gt;;
+
+    async fn set_muted(
+        &amp;self,
+        call: CallId,
+        muted: bool,
+    ) -&gt; Result&lt;(), UiError&gt;;
+
+    async fn set_video(
+        &amp;self,
+        call: CallId,
+        enabled: bool,
+    ) -&gt; Result&lt;(), UiError&gt;;
+
+    async fn set_hold(
+        &amp;self,
+        call: CallId,
+        held: bool,
+    ) -&gt; Result&lt;(), UiError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="222-screen-share-api"><a class="header" href="#222-screen-share-api">222. Screen Share API</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait ScreenSharePresentation {
+    async fn start(
+        &amp;self,
+        call: CallId,
+        source: ScreenShareSource,
+    ) -&gt; Result&lt;(), UiError&gt;;
+
+    async fn stop(
+        &amp;self,
+        call: CallId,
+    ) -&gt; Result&lt;(), UiError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Platform adapter supplies source selection/permission.</p>
+<hr />
+<h1 id="223-audio-route-api"><a class="header" href="#223-audio-route-api">223. Audio Route API</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait AudioRoutePresentation {
+    async fn available_routes(
+        &amp;self,
+        call: CallId,
+    ) -&gt; Result&lt;Vec&lt;AudioRouteView&gt;, UiError&gt;;
+
+    async fn select_route(
+        &amp;self,
+        call: CallId,
+        route: AudioRouteId,
+    ) -&gt; Result&lt;(), UiError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="224-camera-api"><a class="header" href="#224-camera-api">224. Camera API</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait CameraPresentation {
+    async fn switch_camera(
+        &amp;self,
+        call: CallId,
+    ) -&gt; Result&lt;(), UiError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Desktop may expose explicit device selection.</p>
+<hr />
+<h1 id="225-android-platform-effects"><a class="header" href="#225-android-platform-effects">225. Android Platform Effects</a></h1>
+<p>ViewModel may emit:</p>
+<pre><code class="language-text">RequestCameraPermission
+RequestMicrophonePermission
+RequestScreenCapture
+EnterPiP
+OpenBluetoothSettings
+</code></pre>
+<hr />
+<h1 id="226-desktop-platform-effects"><a class="header" href="#226-desktop-platform-effects">226. Desktop Platform Effects</a></h1>
+<p>Presenter may emit:</p>
+<pre><code class="language-text">OpenScreenSharePicker
+OpenAudioDeviceMenu
+CreateCallWindow
+RaiseCallWindow
+</code></pre>
+<hr />
+<h1 id="227-no-direct-platform-calls-from-rust-domain"><a class="header" href="#227-no-direct-platform-calls-from-rust-domain">227. No Direct Platform Calls from Rust Domain</a></h1>
+<p>Rust can request semantic action.</p>
+<p>Platform UI executes it.</p>
+<hr />
+<h1 id="228-call-ui-error-mapping"><a class="header" href="#228-call-ui-error-mapping">228. Call UI Error Mapping</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">PermissionRequired
+MediaUnavailable
+PeerUnavailable
+SecurityBlocked
+CallExpired
+RouteUnavailable
+</code></pre>
+<hr />
+<h1 id="229-error-presentation"><a class="header" href="#229-error-presentation">229. Error Presentation</a></h1>
+<p>Permission:</p>
+<pre><code class="language-text">contextual action
+</code></pre>
+<p>Media failure:</p>
+<pre><code class="language-text">degrade if possible
+</code></pre>
+<p>Security:</p>
+<pre><code class="language-text">strong warning
+</code></pre>
+<p>Expired call:</p>
+<pre><code class="language-text">call ended/missed
+</code></pre>
+<hr />
+<h1 id="230-metrics"><a class="header" href="#230-metrics">230. Metrics</a></h1>
+<p>Safe local metrics:</p>
+<pre><code class="language-text">call screen open latency
+accept-to-audio time
+first-video-frame time
+PiP transition
+reconnect duration
+</code></pre>
+<p>No media content.</p>
+<hr />
+<h1 id="231-diagnostics-privacy"><a class="header" href="#231-diagnostics-privacy">231. Diagnostics Privacy</a></h1>
+<p>Do not log:</p>
+<pre><code class="language-text">raw audio
+video frames
+private keys
+</code></pre>
+<hr />
+<h1 id="232-screenshot-testing"><a class="header" href="#232-screenshot-testing">232. Screenshot Testing</a></h1>
+<p>Required states:</p>
+<pre><code class="language-text">incoming
+outgoing ringing
+connecting
+active audio
+active video
+muted
+video off
+screen sharing
+reconnecting
+poor connection
+permission denied
+ended
+group grid
+PiP conceptual
+dark mode
+large font
+RTL
+</code></pre>
+<hr />
+<h1 id="233-uiux-part-07-definition-of-done"><a class="header" href="#233-uiux-part-07-definition-of-done">233. UI/UX Part 07 Definition of Done</a></h1>
+<p>Part 07 is complete when:</p>
+<ul>
+<li>incoming/outgoing call states map directly from Rust call state</li>
+<li>caller identity is authenticated before normal trusted presentation</li>
+<li>audio/video calls have distinct but consistent layouts</li>
+<li>mute, video, camera switch, audio route, screen share, hold, and hangup are semantic Rust commands</li>
+<li>call remains one logical session through path, route, surface, and codec changes</li>
+<li>reconnecting is visible without prematurely ending call</li>
+<li>video failure can degrade to audio</li>
+<li>Android Activity recreation, PiP, foreground service, and notification actions are defined</li>
+<li>desktop persistent call bar and floating call window behavior are defined</li>
+<li>closing a call window does not automatically hang up</li>
+<li>accessibility, keyboard, TalkBack, large touch targets, large font, and reduced motion are explicit</li>
+<li>permissions are requested contextually and do not destroy call state</li>
+<li>group-call layout can evolve without changing 1:1 semantics</li>
+<li>normal UI hides low-level transport/codec details while diagnostics can expose them</li>
+<li>answer-elsewhere, call waiting, hold, device revocation, connection loss, surface loss, and Bluetooth route changes are tested</li>
+<li>raw media never flows through ordinary Dioxus/Compose state</li>
+<li>the exact Rust presentation APIs and platform effects are defined</li>
+</ul>
+<hr />
+<h1 id="234-final-architecture"><a class="header" href="#234-final-architecture">234. Final Architecture</a></h1>
+<pre><code class="language-text">                    RUST CALL CONTROLLER
+                              │
+                    CallScreenSnapshot
+                              │
+             ┌────────────────┴────────────────┐
+             │                                 │
+          Dioxus                            Compose
+             │                                 │
+ Desktop Call Window                    Android Call Screen
+ Persistent Call Bar                    PiP / Foreground Service
+             │                                 │
+             └──────────────┬──────────────────┘
+                            │
+                    Semantic Commands
+                            │
+           Mute / Video / Route / Share / Hold
+                            │
+                     Rust Media Runtime
+</code></pre>
+<p>Platform-owned mechanics:</p>
+<pre><code class="language-text">Desktop:
+    windows
+    device menus
+    screen picker
+
+Android:
+    permissions
+    foreground service
+    notification actions
+    PiP
+    system capture
+</code></pre>
+<p>Call truth remains:</p>
+<pre><code class="language-text">CallId
+CallState
+MediaState
+SecurityState
+</code></pre>
+<p>inside Rust.</p>
+<hr />
+<h1 id="235-final-principle"><a class="header" href="#235-final-principle">235. Final Principle</a></h1>
+<p>The call UI should remain calm and stable even when the media system is adapting aggressively underneath it.</p>
+<p>The right user-facing model is:</p>
+<pre><code class="language-text">one call
++
+clear participant identity
++
+few reliable controls
++
+graceful reconnect/degradation
++
+platform-native background behavior
+</code></pre>
+<p>not:</p>
+<pre><code class="language-text">one UI state per codec, transport path, or renderer implementation
+</code></pre>
+<p>That separation gives Dioxus desktop and Android Compose a polished realtime communication experience while preserving the transport-independent Rust call architecture.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="ui-ux-06-message-composer-attachments-voice-notes-drafts-architecture.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="ui-ux-08-contacts-requests-verification-identity-architecture.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="ui-ux-06-message-composer-attachments-voice-notes-drafts-architecture.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="ui-ux-08-contacts-requests-verification-identity-architecture.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

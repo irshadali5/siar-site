@@ -1,0 +1,1472 @@
+<!DOCTYPE HTML>
+<html lang="en" class="navy" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>04 — Offline Event Log &amp; Sync Engine - SIAR System Architecture &amp; Technical Wiki</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="Comprehensive system architecture, cryptographic protocols, DTN mesh networking, distributed storage, audio DSP pipelines, and UI/UX design specifications for SIAR.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="theme/custom.css">
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "navy";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('navy')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="Home.html">Architecture Portal & Reading Guide</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part I: Protocol Foundation & Extension Platform</li><li class="chapter-item expanded "><a href="01-protocol-extension-system-architecture.html"><strong aria-hidden="true">1.</strong> 01 — Protocol Extension System Architecture</a></li><li class="chapter-item expanded "><a href="07-capability-negotiation-architecture.html"><strong aria-hidden="true">2.</strong> 07 — Capability Negotiation & Protocol Upgrades</a></li><li class="chapter-item expanded "><a href="21-third-party-protocol-extensions-architecture.html"><strong aria-hidden="true">3.</strong> 21 — Third-Party Protocol Extensions</a></li><li class="chapter-item expanded "><a href="22-wasm-compatible-components-architecture.html"><strong aria-hidden="true">4.</strong> 22 — WebAssembly (WASM) Compatible Components</a></li><li class="chapter-item expanded "><a href="23-external-interoperability-suite-architecture.html"><strong aria-hidden="true">5.</strong> 23 — External Interoperability & Conformance Suite</a></li><li class="chapter-item expanded "><a href="24-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">6.</strong> 24 — Dynamic Plugin & Module Ecosystem</a></li><li class="chapter-item expanded affix "><li class="part-title">Part II: Identity, Trust & Cryptography</li><li class="chapter-item expanded "><a href="02-multi-device-identity-architecture.html"><strong aria-hidden="true">7.</strong> 02 — Multi-Device Identity & Trust Model</a></li><li class="chapter-item expanded "><a href="28-production-security-e2ee-key-management-privacy-architecture.html"><strong aria-hidden="true">8.</strong> 28 — Production Security, E2EE, Key Management & Privacy</a></li><li class="chapter-item expanded affix "><li class="part-title">Part III: Mesh Networking, Transports & Hardware</li><li class="chapter-item expanded "><a href="03-transport-routing-policy-engine-architecture.html"><strong aria-hidden="true">9.</strong> 03 — Transport & Routing Policy Engine</a></li><li class="chapter-item expanded "><a href="11-relay-self-hosted-infrastructure-architecture.html"><strong aria-hidden="true">10.</strong> 11 — Self-Hosted Relay & Coordination Infrastructure</a></li><li class="chapter-item expanded "><a href="12-multipath-networking-architecture.html"><strong aria-hidden="true">11.</strong> 12 — Multipath Networking & Link Aggregation</a></li><li class="chapter-item expanded "><a href="13-battery-aware-scheduling-architecture.html"><strong aria-hidden="true">12.</strong> 13 — Battery-Aware Scheduling & Power Profiles</a></li><li class="chapter-item expanded "><a href="14-proximity-abstraction-architecture.html"><strong aria-hidden="true">13.</strong> 14 — Proximity Abstraction (BLE, Wi-Fi Direct, LoRa)</a></li><li class="chapter-item expanded "><a href="15-qr-nfc-bootstrap-pairing-architecture.html"><strong aria-hidden="true">14.</strong> 15 — Out-of-Band QR & NFC Bootstrap Pairing</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IV: Delay-Tolerant Networking & Emergency Mesh</li><li class="chapter-item expanded "><a href="06-dtn-store-carry-forward-architecture.html"><strong aria-hidden="true">15.</strong> 06 — DTN Store-Carry-Forward & Bundle Forwarding</a></li><li class="chapter-item expanded "><a href="17-emergency-priority-classes-architecture.html"><strong aria-hidden="true">16.</strong> 17 — Emergency Priority Classes & Critical Alert Mesh</a></li><li class="chapter-item expanded affix "><li class="part-title">Part V: Storage, Outbox & Data Lifecycle</li><li class="chapter-item expanded "><a href="04-offline-event-log-architecture.html" class="active"><strong aria-hidden="true">17.</strong> 04 — Offline Event Log & Sync Engine</a></li><li class="chapter-item expanded "><a href="05-robust-file-blob-subsystem-architecture.html"><strong aria-hidden="true">18.</strong> 05 — Robust File & Blob Subsystem (Chunking & Resumption)</a></li><li class="chapter-item expanded "><a href="09-crash-recovery-architecture.html"><strong aria-hidden="true">19.</strong> 09 — Crash Recovery & State Integrity</a></li><li class="chapter-item expanded "><a href="32-search-indexing-local-knowledge-privacy-architecture.html"><strong aria-hidden="true">20.</strong> 32 — Search, Indexing & Local Privacy Retrieval</a></li><li class="chapter-item expanded "><a href="33-backup-restore-export-import-archival-portability-architecture.html"><strong aria-hidden="true">21.</strong> 33 — Backup, Restore, Export & Long-Term Archival</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VI: Realtime Media, Calling & Audio DSP</li><li class="chapter-item expanded "><a href="25-android-direct-hardware-surface-zero-copy-media-architecture.html"><strong aria-hidden="true">22.</strong> 25 — Android Direct Surface Zero-Copy Media</a></li><li class="chapter-item expanded "><a href="26-rust-first-audio-dsp-resampling-aec-ns-agc-architecture.html"><strong aria-hidden="true">23.</strong> 26 — Rust-First Audio DSP (AEC, NS, AGC, Resampling)</a></li><li class="chapter-item expanded "><a href="29-realtime-calls-media-session-protocol-architecture.html"><strong aria-hidden="true">24.</strong> 29 — Realtime Calls & Media Session Protocol</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VII: Ephemeral State, Presence & Notifications</li><li class="chapter-item expanded "><a href="30-presence-availability-typing-read-receipts-ephemeral-state-architecture.html"><strong aria-hidden="true">25.</strong> 30 — Presence, Availability, Typing & Read Receipts</a></li><li class="chapter-item expanded "><a href="31-notifications-push-background-delivery-lifecycle-architecture.html"><strong aria-hidden="true">26.</strong> 31 — Notifications, Push Wake & Background Delivery</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VIII: Native Runtimes, Daemons & Embedded Linux</li><li class="chapter-item expanded "><a href="16-daemon-headless-runtime-architecture.html"><strong aria-hidden="true">27.</strong> 16 — Headless Daemon & Background Runtime</a></li><li class="chapter-item expanded "><a href="19-c-abi-ffi-architecture.html"><strong aria-hidden="true">28.</strong> 19 — C-ABI FFI & Native Language Interop</a></li><li class="chapter-item expanded "><a href="20-embedded-linux-node-architecture.html"><strong aria-hidden="true">29.</strong> 20 — Embedded Linux Node & Resource-Constrained Targets</a></li><li class="chapter-item expanded "><a href="27-rust-driven-android-native-build-packaging-automation.html"><strong aria-hidden="true">30.</strong> 27 — Rust-Driven Android Native Build & Packaging Automation</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IX: Reliability, Testing, Fuzzing & Diagnostics</li><li class="chapter-item expanded "><a href="08-resource-limits-backpressure-architecture.html"><strong aria-hidden="true">31.</strong> 08 — Resource Limits, Quotas & Backpressure</a></li><li class="chapter-item expanded "><a href="10-fuzzing-protocol-test-suite-architecture.html"><strong aria-hidden="true">32.</strong> 10 — Fuzzing & Protocol Test Suite</a></li><li class="chapter-item expanded "><a href="18-network-diagnostics-path-visualization-architecture.html"><strong aria-hidden="true">33.</strong> 18 — Network Diagnostics & Path Visualization</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part X: UI/UX Client Architecture (Cross-Platform)</li><li class="chapter-item expanded "><a href="ui-ux-01-product-foundation-cross-platform-interaction-architecture.html"><strong aria-hidden="true">34.</strong> UI/UX 01 — Product UX Foundation & Cross-Platform Interaction</a></li><li class="chapter-item expanded "><a href="ui-ux-02-desktop-dioxus-app-shell-navigation-window-architecture.html"><strong aria-hidden="true">35.</strong> UI/UX 02 — Desktop Dioxus App Shell & Navigation</a></li><li class="chapter-item expanded "><a href="ui-ux-03-android-jetpack-compose-app-shell-navigation-lifecycle-architecture.html"><strong aria-hidden="true">36.</strong> UI/UX 03 — Android Jetpack Compose App Shell & Lifecycle</a></li><li class="chapter-item expanded "><a href="ui-ux-04-conversation-list-inbox-architecture.html"><strong aria-hidden="true">37.</strong> UI/UX 04 — Conversation List & Inbox UX</a></li><li class="chapter-item expanded "><a href="ui-ux-05-conversation-message-timeline-architecture.html"><strong aria-hidden="true">38.</strong> UI/UX 05 — Conversation Message Timeline UX</a></li><li class="chapter-item expanded "><a href="ui-ux-06-message-composer-attachments-voice-notes-drafts-architecture.html"><strong aria-hidden="true">39.</strong> UI/UX 06 — Message Composer, Attachments & Voice Notes</a></li><li class="chapter-item expanded "><a href="ui-ux-07-calls-realtime-media-architecture.html"><strong aria-hidden="true">40.</strong> UI/UX 07 — Calls & Realtime Media UX</a></li><li class="chapter-item expanded "><a href="ui-ux-08-contacts-requests-verification-identity-architecture.html"><strong aria-hidden="true">41.</strong> UI/UX 08 — Contacts, Requests, Verification & Identity</a></li><li class="chapter-item expanded "><a href="ui-ux-09-groups-membership-roles-architecture.html"><strong aria-hidden="true">42.</strong> UI/UX 09 — Groups, Membership & Roles UX</a></li><li class="chapter-item expanded "><a href="ui-ux-10-files-media-gallery-transfer-architecture.html"><strong aria-hidden="true">43.</strong> UI/UX 10 — Files, Media Gallery & Transfer UX</a></li><li class="chapter-item expanded "><a href="ui-ux-11-search-local-knowledge-retrieval-architecture.html"><strong aria-hidden="true">44.</strong> UI/UX 11 — Search & Local Knowledge Retrieval UX</a></li><li class="chapter-item expanded "><a href="ui-ux-12-nearby-qr-nfc-pairing-device-linking-architecture.html"><strong aria-hidden="true">45.</strong> UI/UX 12 — Nearby, QR/NFC Pairing & Device Linking UX</a></li><li class="chapter-item expanded "><a href="ui-ux-13-notifications-background-incoming-call-architecture.html"><strong aria-hidden="true">46.</strong> UI/UX 13 — Notifications, Background & Incoming Call UX</a></li><li class="chapter-item expanded "><a href="ui-ux-14-presence-typing-receipts-status-architecture.html"><strong aria-hidden="true">47.</strong> UI/UX 14 — Presence, Typing, Receipts & Status UX</a></li><li class="chapter-item expanded "><a href="ui-ux-15-security-center-devices-keys-recovery-architecture.html"><strong aria-hidden="true">48.</strong> UI/UX 15 — Security Center, Devices, Keys & Recovery UX</a></li><li class="chapter-item expanded "><a href="ui-ux-16-backup-restore-export-migration-architecture.html"><strong aria-hidden="true">49.</strong> UI/UX 16 — Backup, Restore, Export & Migration UX</a></li><li class="chapter-item expanded "><a href="ui-ux-17-emergency-sos-offline-mesh-architecture.html"><strong aria-hidden="true">50.</strong> UI/UX 17 — Emergency / SOS / Offline Mesh UX</a></li><li class="chapter-item expanded "><a href="ui-ux-18-settings-privacy-notifications-data-controls-architecture.html"><strong aria-hidden="true">51.</strong> UI/UX 18 — Settings, Privacy, Notifications & Data Controls</a></li><li class="chapter-item expanded "><a href="ui-ux-19-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">52.</strong> UI/UX 19 — Plugin & Module Ecosystem UX</a></li><li class="chapter-item expanded "><a href="ui-ux-20-diagnostics-network-paths-advanced-developer-architecture.html"><strong aria-hidden="true">53.</strong> UI/UX 20 — Diagnostics, Network Paths & Developer UX</a></li><li class="chapter-item expanded "><a href="ui-ux-21-accessibility-inclusive-interaction-architecture.html"><strong aria-hidden="true">54.</strong> UI/UX 21 — Accessibility & Inclusive Interaction</a></li><li class="chapter-item expanded "><a href="ui-ux-22-design-system-tokens-typography-icons-motion-architecture.html"><strong aria-hidden="true">55.</strong> UI/UX 22 — Design System, Tokens, Typography & Motion</a></li><li class="chapter-item expanded "><a href="ui-ux-23-responsive-adaptive-desktop-tablet-foldable-phone-layout-architecture.html"><strong aria-hidden="true">56.</strong> UI/UX 23 — Responsive & Adaptive Layouts (Desktop/Tablet/Foldable/Phone)</a></li><li class="chapter-item expanded "><a href="ui-ux-24-error-loading-empty-offline-degraded-state-architecture.html"><strong aria-hidden="true">57.</strong> UI/UX 24 — Error, Loading, Empty & Degraded-State UX</a></li><li class="chapter-item expanded "><a href="ui-ux-25-onboarding-first-run-permission-education-architecture.html"><strong aria-hidden="true">58.</strong> UI/UX 25 — Onboarding, First Run & Permission Education</a></li><li class="chapter-item expanded "><a href="ui-ux-26-performance-virtualization-large-data-ui-architecture.html"><strong aria-hidden="true">59.</strong> UI/UX 26 — Virtualization & Large-Data UI Performance</a></li><li class="chapter-item expanded "><a href="ui-ux-27-ui-testing-screenshot-interaction-release-quality-gates-architecture.html"><strong aria-hidden="true">60.</strong> UI/UX 27 — UI Testing, Screenshots & Release Quality Gates</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">SIAR System Architecture &amp; Technical Wiki</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar/edit/main/sys-arch/04-offline-event-log-architecture.md" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="part-04--offline-event-log-architecture"><a class="header" href="#part-04--offline-event-log-architecture">Part 04 — Offline Event Log Architecture</a></h1>
+<h2 id="reusable-p2p-communication-platform"><a class="header" href="#reusable-p2p-communication-platform">Reusable P2P Communication Platform</a></h2>
+<p><strong>Status:</strong> Architecture specification<br />
+<strong>Part:</strong> 04 of 24<br />
+<strong>Primary language:</strong> Rust<br />
+<strong>Primary goals:</strong> durable offline-first state, crash recovery, replayable history, deterministic projections, synchronization, idempotency, auditability, reuse across messaging/files/identity/DTN/emergency/custom products</p>
+<hr />
+<h1 id="1-purpose"><a class="header" href="#1-purpose">1. Purpose</a></h1>
+<p>A resilient communication platform must keep working when Internet access, peers, radios, or even the process itself disappear.</p>
+<p>The offline event log is the durable local backbone that lets the system accept work first, persist it, and perform remote side effects later.</p>
+<p>Core rule:</p>
+<blockquote>
+<p><strong>Persist accepted intent before depending on the network.</strong></p>
+</blockquote>
+<p>The event log supports:</p>
+<ul>
+<li>messaging outbox</li>
+<li>delivery state</li>
+<li>file-transfer lifecycle</li>
+<li>multi-device identity changes</li>
+<li>group membership</li>
+<li>emergency reports</li>
+<li>DTN bundle lifecycle</li>
+<li>synchronization</li>
+<li>future product-specific domains</li>
+</ul>
+<p>It must remain reusable and independent of Dioxus, Android, Kotlin, Iroh, or any one database.</p>
+<hr />
+<h1 id="2-do-not-event-source-everything"><a class="header" href="#2-do-not-event-source-everything">2. Do Not Event-Source Everything</a></h1>
+<p>Use an event log where history and recovery matter:</p>
+<pre><code class="language-text">messages
+device lifecycle
+group membership
+transfer lifecycle
+emergency state
+DTN state
+replication state
+security-sensitive transitions
+</code></pre>
+<p>Use ordinary projections/tables for:</p>
+<pre><code class="language-text">chat-list summaries
+search indexes
+cached counters
+temporary routing metrics
+ephemeral presence
+</code></pre>
+<p>Recommended model:</p>
+<pre><code class="language-text">Durable Event Journal
+        ↓
+Projections / Materialized Views
+        ↓
+UI / Query APIs / Work Queues
+</code></pre>
+<hr />
+<h1 id="3-command-vs-event"><a class="header" href="#3-command-vs-event">3. Command vs Event</a></h1>
+<p>A command asks for change:</p>
+<pre><code class="language-text">SendMessage
+StartFileTransfer
+RevokeDevice
+MarkRead
+CreateSOS
+</code></pre>
+<p>An event records an accepted transition:</p>
+<pre><code class="language-text">MessageQueued
+TransferCreated
+DeviceRevoked
+ReadAdvanced
+EmergencyReportCreated
+</code></pre>
+<p>Commands may fail.</p>
+<p>Committed events are immutable historical facts.</p>
+<hr />
+<h1 id="4-core-event-envelope"><a class="header" href="#4-core-event-envelope">4. Core Event Envelope</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct EventEnvelope {
+    pub event_id: EventId,
+    pub stream_id: StreamId,
+    pub stream_version: u64,
+    pub event_type: EventTypeId,
+    pub schema_version: u16,
+    pub created_at: Timestamp,
+    pub origin: EventOrigin,
+    pub correlation_id: Option&lt;CorrelationId&gt;,
+    pub causation_id: Option&lt;EventId&gt;,
+    pub payload: Bytes,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Use strong IDs:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct EventId([u8; 16]);
+pub struct StreamId([u8; 32]);
+pub struct CorrelationId([u8; 16]);
+pub struct EventTypeId(u32);
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="5-streams"><a class="header" href="#5-streams">5. Streams</a></h1>
+<p>Events belong to logical streams:</p>
+<pre><code class="language-text">conversation/&lt;id&gt;
+transfer/&lt;id&gt;
+account/&lt;id&gt;
+device/&lt;id&gt;
+group/&lt;id&gt;
+dtn/&lt;id&gt;
+emergency/&lt;id&gt;
+</code></pre>
+<p>Each stream has its own monotonic version:</p>
+<pre><code class="language-text">1
+2
+3
+...
+</code></pre>
+<p>This gives deterministic local ordering without depending on wall-clock time.</p>
+<hr />
+<h1 id="6-local-global-offset"><a class="header" href="#6-local-global-offset">6. Local Global Offset</a></h1>
+<p>Also maintain a device-local append offset:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct LocalLogOffset(u64);
+<span class="boring">}</span></code></pre></pre>
+<p>This is useful for:</p>
+<ul>
+<li>projections</li>
+<li>incremental backup</li>
+<li>local replay</li>
+<li>checkpointing</li>
+</ul>
+<p>It is never global truth across devices.</p>
+<hr />
+<h1 id="7-event-origin"><a class="header" href="#7-event-origin">7. Event Origin</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum EventOrigin {
+    LocalDevice(DeviceId),
+    RemoteDevice(DeviceId),
+    Imported,
+    Recovery,
+    System,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Remote-origin events are trusted only after identity, authorization, and protocol validation.</p>
+<hr />
+<h1 id="8-correlation-and-causation"><a class="header" href="#8-correlation-and-causation">8. Correlation and Causation</a></h1>
+<p>Correlation ties one workflow together:</p>
+<pre><code class="language-text">MessageCreated
+MessageQueued
+MessageSent
+MessageDelivered
+</code></pre>
+<p>Causation records which event led to which event.</p>
+<p>This improves:</p>
+<ul>
+<li>diagnostics</li>
+<li>recovery analysis</li>
+<li>audit trails</li>
+<li>testability</li>
+</ul>
+<hr />
+<h1 id="9-versioned-event-schemas"><a class="header" href="#9-versioned-event-schemas">9. Versioned Event Schemas</a></h1>
+<p>Never permanently serialize current domain structs.</p>
+<p>Use explicit schemas:</p>
+<pre><code class="language-text">MessageQueuedV1
+TransferCreatedV1
+DeviceRevokedV1
+</code></pre>
+<p>If semantics change:</p>
+<pre><code class="language-text">V1 → V2
+</code></pre>
+<p>or upcast old data deterministically.</p>
+<p>Do not silently reinterpret old bytes using changed Rust structs.</p>
+<hr />
+<h1 id="10-append-only-semantics"><a class="header" href="#10-append-only-semantics">10. Append-Only Semantics</a></h1>
+<p>Committed events should not be modified in ordinary operation.</p>
+<p>Correction occurs through new events:</p>
+<pre><code class="language-text">MessageCreated
+MessageEdited
+</code></pre>
+<p>not by rewriting the old record.</p>
+<p>Storage compaction and legal/privacy deletion are separate retention operations.</p>
+<hr />
+<h1 id="11-atomic-append"><a class="header" href="#11-atomic-append">11. Atomic Append</a></h1>
+<p>A durable append should be transactional:</p>
+<pre><code class="language-text">BEGIN
+  verify expected stream version
+  insert event
+  update stream head
+  assign local offset
+COMMIT
+</code></pre>
+<p>Failure means no partial logical event.</p>
+<hr />
+<h1 id="12-optimistic-concurrency"><a class="header" href="#12-optimistic-concurrency">12. Optimistic Concurrency</a></h1>
+<p>Support:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>append(stream, expected_version, events)
+<span class="boring">}</span></code></pre></pre>
+<p>If current version differs:</p>
+<pre><code class="language-text">ConcurrencyConflict
+</code></pre>
+<p>This protects local concurrent writers.</p>
+<hr />
+<h1 id="13-local-first-command-flow"><a class="header" href="#13-local-first-command-flow">13. Local-First Command Flow</a></h1>
+<p>Correct:</p>
+<pre><code class="language-text">User action
+ ↓
+validate
+ ↓
+append event
+ ↓ COMMIT
+update projection
+ ↓
+show UI
+ ↓
+network effect later
+</code></pre>
+<p>Wrong:</p>
+<pre><code class="language-text">try network
+ ↓
+persist only after success
+</code></pre>
+<hr />
+<h1 id="14-transactional-outbox"><a class="header" href="#14-transactional-outbox">14. Transactional Outbox</a></h1>
+<p>Recommended hybrid:</p>
+<pre><code class="language-text">event log = semantic history
+outbox table = efficient pending-work queue
+</code></pre>
+<p>One transaction may commit:</p>
+<pre><code class="language-text">MessageQueued
+OutboxOperation
+message projection
+conversation summary
+</code></pre>
+<p>If the process dies, the outbox still exists.</p>
+<hr />
+<h1 id="15-event-log-is-not-a-job-queue"><a class="header" href="#15-event-log-is-not-a-job-queue">15. Event Log Is Not a Job Queue</a></h1>
+<p>Do not scan millions of old events to find work.</p>
+<p>Use dedicated projections/work tables for:</p>
+<pre><code class="language-text">outbox
+retry schedule
+transfer chunks
+pending DTN forwards
+</code></pre>
+<p>The log preserves meaning. The work queue optimizes execution.</p>
+<hr />
+<h1 id="16-projection-architecture"><a class="header" href="#16-projection-architecture">16. Projection Architecture</a></h1>
+<pre><code class="language-text">Event Journal
+    ↓
+Projection Runner
+    ↓
+Materialized Views
+</code></pre>
+<p>Examples:</p>
+<pre><code class="language-text">messages
+conversation_summary
+transfer_state
+device_directory
+group_state
+dtn_bundle_state
+emergency_state
+</code></pre>
+<p>Projections must be:</p>
+<ul>
+<li>deterministic</li>
+<li>idempotent</li>
+<li>rebuildable</li>
+<li>versioned</li>
+</ul>
+<hr />
+<h1 id="17-projection-checkpoints"><a class="header" href="#17-projection-checkpoints">17. Projection Checkpoints</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct ProjectionCheckpoint {
+    pub projection_id: ProjectionId,
+    pub last_log_offset: LocalLogOffset,
+    pub projection_version: u16,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>After restart, a projector resumes from its checkpoint.</p>
+<hr />
+<h1 id="18-read-your-writes"><a class="header" href="#18-read-your-writes">18. Read-Your-Writes</a></h1>
+<p>For core UX, accepted local operations should become queryable immediately.</p>
+<p>Example:</p>
+<pre><code class="language-text">SendMessage succeeds locally
+→ conversation immediately shows message
+</code></pre>
+<p>This generally means critical projections update in the same transaction as the event.</p>
+<hr />
+<h1 id="19-event-store-backend"><a class="header" href="#19-event-store-backend">19. Event Store Backend</a></h1>
+<p>Recommended initial backend:</p>
+<pre><code class="language-text">SQLite
+</code></pre>
+<p>because it provides:</p>
+<ul>
+<li>ACID transactions</li>
+<li>WAL</li>
+<li>recovery</li>
+<li>indexes</li>
+<li>mature mobile/desktop support</li>
+<li>migration tooling</li>
+</ul>
+<p>Keep the architecture backend-neutral.</p>
+<hr />
+<h1 id="20-event-store-trait"><a class="header" href="#20-event-store-trait">20. Event Store Trait</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait EventStore: Send + Sync {
+    async fn append(
+        &amp;self,
+        request: AppendRequest,
+    ) -&gt; Result&lt;AppendResult, EventStoreError&gt;;
+
+    async fn read_stream(
+        &amp;self,
+        stream: StreamId,
+        from_version: u64,
+        limit: usize,
+    ) -&gt; Result&lt;Vec&lt;StoredEvent&gt;, EventStoreError&gt;;
+
+    async fn read_log(
+        &amp;self,
+        from_offset: LocalLogOffset,
+        limit: usize,
+    ) -&gt; Result&lt;Vec&lt;StoredEvent&gt;, EventStoreError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="21-batch-append"><a class="header" href="#21-batch-append">21. Batch Append</a></h1>
+<p>Support multiple events in one transaction:</p>
+<pre><code class="language-text">MessageCreated
+MessageQueued
+AttachmentReferenced
+</code></pre>
+<p>This is both faster and more consistent.</p>
+<hr />
+<h1 id="22-integrity"><a class="header" href="#22-integrity">22. Integrity</a></h1>
+<p>Optional integrity mechanisms:</p>
+<pre><code class="language-text">payload checksum
+record checksum
+per-stream hash chain
+</code></pre>
+<p>Security-critical domains such as device identity may already use signed/hash-chained state from Part 02.</p>
+<p>Do not sign every trivial local event unless there is a reason.</p>
+<hr />
+<h1 id="23-remote-event-ingestion"><a class="header" href="#23-remote-event-ingestion">23. Remote Event Ingestion</a></h1>
+<p>Safe flow:</p>
+<pre><code class="language-text">receive
+ ↓
+protocol validation
+ ↓
+identity verification
+ ↓
+authorization
+ ↓
+deduplication
+ ↓
+domain validation
+ ↓
+append
+ ↓
+projection
+ ↓
+durable ACK
+</code></pre>
+<p>For durable delivery semantics, ACK only after persistence.</p>
+<hr />
+<h1 id="24-idempotency"><a class="header" href="#24-idempotency">24. Idempotency</a></h1>
+<p>Remote events may arrive repeatedly.</p>
+<p>Require stable:</p>
+<pre><code class="language-text">EventId
+</code></pre>
+<p>and enforce uniqueness in storage.</p>
+<p>Duplicate valid input should normally become an idempotent no-op.</p>
+<hr />
+<h1 id="25-out-of-order-events"><a class="header" href="#25-out-of-order-events">25. Out-of-Order Events</a></h1>
+<p>Remote events can arrive out of order.</p>
+<p>Possible handling:</p>
+<pre><code class="language-text">hold unresolved
+request missing predecessor
+apply only after dependency satisfied
+</code></pre>
+<p>Do not silently discard valid future events.</p>
+<hr />
+<h1 id="26-gap-detection"><a class="header" href="#26-gap-detection">26. Gap Detection</a></h1>
+<p>If a stream expects:</p>
+<pre><code class="language-text">version 44
+</code></pre>
+<p>but receives:</p>
+<pre><code class="language-text">46
+</code></pre>
+<p>mark the stream incomplete and request reconciliation.</p>
+<hr />
+<h1 id="27-logical-clocks"><a class="header" href="#27-logical-clocks">27. Logical Clocks</a></h1>
+<p>Wall clocks are useful for display, not universal ordering.</p>
+<p>Use:</p>
+<pre><code class="language-text">stream version
+generation
+domain sequence
+logical clock
+</code></pre>
+<p>where necessary.</p>
+<p>A hybrid logical clock can be added later if cross-device approximate chronology becomes valuable.</p>
+<hr />
+<h1 id="28-offline-ids"><a class="header" href="#28-offline-ids">28. Offline IDs</a></h1>
+<p>IDs must be generated locally without server coordination.</p>
+<p>Requirements:</p>
+<ul>
+<li>collision resistant</li>
+<li>offline</li>
+<li>portable</li>
+<li>stable across retries</li>
+</ul>
+<p>A time-sortable 128-bit identifier can improve database locality, but correctness must not depend on accurate wall time.</p>
+<hr />
+<h1 id="29-pure-decision-functions"><a class="header" href="#29-pure-decision-functions">29. Pure Decision Functions</a></h1>
+<p>Where practical:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn decide(
+    state: &amp;State,
+    command: Command,
+) -&gt; Result&lt;Vec&lt;DomainEvent&gt;, DomainError&gt;
+<span class="boring">}</span></code></pre></pre>
+<p>This makes domain logic easy to test.</p>
+<p>Effects remain separate.</p>
+<hr />
+<h1 id="30-effect-processing"><a class="header" href="#30-effect-processing">30. Effect Processing</a></h1>
+<p>Events may schedule external work:</p>
+<pre><code class="language-text">MessageQueued
+ → send effect
+
+TransferCreated
+ → transfer effect
+
+EmergencyReportCreated
+ → routing/DTN effect
+</code></pre>
+<p>Effects are asynchronous, retryable, and idempotent.</p>
+<hr />
+<h1 id="31-exactly-once-is-not-the-goal"><a class="header" href="#31-exactly-once-is-not-the-goal">31. Exactly-Once Is Not the Goal</a></h1>
+<p>Across distributed systems, use:</p>
+<pre><code class="language-text">at-least-once attempts
++
+stable IDs
++
+receiver deduplication
+=
+effectively-once logical outcome
+</code></pre>
+<p>Do not claim true exactly-once network delivery.</p>
+<hr />
+<h1 id="32-retry-event-granularity"><a class="header" href="#32-retry-event-granularity">32. Retry Event Granularity</a></h1>
+<p>Do not append one durable event per tiny transport retry.</p>
+<p>Permanent history should record meaningful transitions:</p>
+<pre><code class="language-text">MessageDeferred
+RouteChanged
+TransferPaused
+TransferFailed
+</code></pre>
+<p>Low-level attempts belong in tracing/metrics.</p>
+<hr />
+<h1 id="33-messaging-events"><a class="header" href="#33-messaging-events">33. Messaging Events</a></h1>
+<p>Typical semantic events:</p>
+<pre><code class="language-text">MessageCreated
+MessageQueued
+MessageReceived
+MessageDelivered
+MessageRead
+MessageEdited
+MessageDeleted
+ReactionAdded
+ReactionRemoved
+</code></pre>
+<hr />
+<h1 id="34-file-events"><a class="header" href="#34-file-events">34. File Events</a></h1>
+<p>Typical:</p>
+<pre><code class="language-text">TransferCreated
+TransferAccepted
+TransferStarted
+TransferPaused
+TransferResumed
+TransferCompleted
+TransferCancelled
+TransferFailed
+BlobVerified
+</code></pre>
+<p>Chunk completion should usually live in a resumable transfer journal/projection, not as millions of permanent events.</p>
+<hr />
+<h1 id="35-identity-events"><a class="header" href="#35-identity-events">35. Identity Events</a></h1>
+<p>Part 02 naturally maps to durable events:</p>
+<pre><code class="language-text">DeviceAdded
+DeviceRevoked
+DeviceSuspended
+RootRotated
+RecoveryUsed
+</code></pre>
+<p>These may require signatures and stronger retention.</p>
+<hr />
+<h1 id="36-dtn-events"><a class="header" href="#36-dtn-events">36. DTN Events</a></h1>
+<p>Possible:</p>
+<pre><code class="language-text">BundleCreated
+BundleStored
+BundleForwarded
+DestinationReached
+BundleExpired
+BundleEvicted
+</code></pre>
+<p>Do not permanently log every proximity encounter.</p>
+<hr />
+<h1 id="37-emergency-events"><a class="header" href="#37-emergency-events">37. Emergency Events</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">EmergencyReportCreated
+EmergencyReportUpdated
+SOSCancelled
+AuthorityAlertReceived
+EmergencyDeliveryConfirmed
+</code></pre>
+<p>Emergency events may have stronger audit and retention policy.</p>
+<hr />
+<h1 id="38-snapshotting"><a class="header" href="#38-snapshotting">38. Snapshotting</a></h1>
+<p>Large streams can use snapshots:</p>
+<pre><code class="language-text">events 1..10000
+ ↓
+snapshot @ 10000
+ ↓
+replay 10001+
+</code></pre>
+<p>Snapshot is derived state, not authoritative history.</p>
+<hr />
+<h1 id="39-snapshot-structure"><a class="header" href="#39-snapshot-structure">39. Snapshot Structure</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct Snapshot {
+    pub stream_id: StreamId,
+    pub stream_version: u64,
+    pub projection_version: u16,
+    pub state: Bytes,
+    pub checksum: Hash,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>If invalid:</p>
+<pre><code class="language-text">discard
+rebuild from log
+</code></pre>
+<hr />
+<h1 id="40-compaction"><a class="header" href="#40-compaction">40. Compaction</a></h1>
+<p>Retention is domain-specific.</p>
+<p>Possible classes:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum RetentionClass {
+    Permanent,
+    SecurityAudit,
+    UserControlled,
+    OperationalShortTerm,
+    Ephemeral,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Examples:</p>
+<pre><code class="language-text">device revocation → long retention
+completed transfer operational noise → compactable
+typing status → never journal
+</code></pre>
+<hr />
+<h1 id="41-privacy-and-deletion"><a class="header" href="#41-privacy-and-deletion">41. Privacy and Deletion</a></h1>
+<p>Append-only design must not become an excuse to ignore deletion requirements.</p>
+<p>Options include:</p>
+<pre><code class="language-text">logical deletion event
+projection deletion
+physical retention policy
+crypto-erasure for sensitive retained payloads
+</code></pre>
+<p>Exact behavior depends on product/legal requirements.</p>
+<hr />
+<h1 id="42-event-encryption"><a class="header" href="#42-event-encryption">42. Event Encryption</a></h1>
+<p>Local database encryption is recommended.</p>
+<p>Particularly sensitive event payloads may also be application-encrypted.</p>
+<p>Keep cryptographic key management outside event-store internals.</p>
+<hr />
+<h1 id="43-blob-references"><a class="header" href="#43-blob-references">43. Blob References</a></h1>
+<p>Large binary data never belongs directly in the journal.</p>
+<p>Events should reference:</p>
+<pre><code class="language-text">BlobId
+ContentHash
+</code></pre>
+<p>Part 05 will define the blob subsystem.</p>
+<hr />
+<h1 id="44-search-as-projection"><a class="header" href="#44-search-as-projection">44. Search as Projection</a></h1>
+<p>Full-text search is a rebuildable projection:</p>
+<pre><code class="language-text">MessageCreated
+MessageEdited
+MessageDeleted
+ ↓
+FTS index
+</code></pre>
+<p>If search corrupts, rebuild it.</p>
+<hr />
+<h1 id="45-replay-must-not-re-run-side-effects"><a class="header" href="#45-replay-must-not-re-run-side-effects">45. Replay Must Not Re-run Side Effects</a></h1>
+<p>Projection replay:</p>
+<pre><code class="language-text">must not resend messages
+must not restart transfers
+must not rebroadcast SOS
+</code></pre>
+<p>Effect execution and projection replay are separate.</p>
+<hr />
+<h1 id="46-replay-modes"><a class="header" href="#46-replay-modes">46. Replay Modes</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum ReplayMode {
+    ProjectionOnly,
+    Recovery,
+    Live,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Only recovery/live mode may schedule external work according to durable pending state.</p>
+<hr />
+<h1 id="47-startup-recovery"><a class="header" href="#47-startup-recovery">47. Startup Recovery</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">open DB
+ ↓
+verify migrations
+ ↓
+resume projections
+ ↓
+reconcile work queues
+ ↓
+load local read models
+ ↓
+render UI
+ ↓
+start networking
+</code></pre>
+<p>No remote connection is required before local state becomes usable.</p>
+<hr />
+<h1 id="48-work-queue-reconciliation"><a class="header" href="#48-work-queue-reconciliation">48. Work Queue Reconciliation</a></h1>
+<p>If an event indicates a pending operation but the optimized work table is missing/corrupt:</p>
+<pre><code class="language-text">recovery reconciler
+</code></pre>
+<p>can reconstruct it.</p>
+<p>This is a key advantage of retaining semantic history.</p>
+<hr />
+<h1 id="49-replication-scope"><a class="header" href="#49-replication-scope">49. Replication Scope</a></h1>
+<p>Not every local event should leave the device.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum ReplicationScope {
+    LocalOnly,
+    OwnDevices,
+    ConversationPeers,
+    GroupMembers,
+    ExplicitRecipients,
+    PublicSigned,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Examples:</p>
+<pre><code class="language-text">local diagnostic → LocalOnly
+read state → OwnDevices/ConversationPeers
+device update → OwnDevices + authorized peers
+SOS → Explicit/PublicSigned depending mode
+</code></pre>
+<hr />
+<h1 id="50-own-device-sync"><a class="header" href="#50-own-device-sync">50. Own-Device Sync</a></h1>
+<p>Suitable event classes:</p>
+<pre><code class="language-text">messages
+read state
+device state
+group state
+selected settings
+</code></pre>
+<p>Draft sync should remain optional.</p>
+<hr />
+<h1 id="51-peer-and-group-sync"><a class="header" href="#51-peer-and-group-sync">51. Peer and Group Sync</a></h1>
+<p>Remote replication must check:</p>
+<pre><code class="language-text">authorization
+membership
+epoch/version
+history visibility policy
+</code></pre>
+<p>before sending or appending events.</p>
+<hr />
+<h1 id="52-local-storage-envelope-vs-network-envelope"><a class="header" href="#52-local-storage-envelope-vs-network-envelope">52. Local Storage Envelope vs Network Envelope</a></h1>
+<p>Do not require:</p>
+<pre><code class="language-text">StoredEvent == WireEvent
+</code></pre>
+<p>Recommended:</p>
+<pre><code class="language-text">LocalStoredEvent
+      ↓ transform
+ReplicationEventV1
+      ↓
+E2EE / protocol
+</code></pre>
+<p>This keeps storage evolution independent from wire compatibility.</p>
+<hr />
+<h1 id="53-sync-cursors"><a class="header" href="#53-sync-cursors">53. Sync Cursors</a></h1>
+<p>Where stream ordering supports it:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct SyncCursor {
+    pub peer: DeviceId,
+    pub stream: StreamId,
+    pub acknowledged_version: u64,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>For more complex sparse state, later add Merkle/set reconciliation.</p>
+<hr />
+<h1 id="54-conflicts-are-domain-specific"><a class="header" href="#54-conflicts-are-domain-specific">54. Conflicts Are Domain-Specific</a></h1>
+<p>Do not build one generic conflict resolver.</p>
+<p>Examples:</p>
+<pre><code class="language-text">two new messages → both valid
+two device revocations → merge conservatively
+two profile edits → explicit rule
+group membership → authenticated state machine
+</code></pre>
+<p>The event store records facts; the domain resolves meaning.</p>
+<hr />
+<h1 id="55-event-size-limits"><a class="header" href="#55-event-size-limits">55. Event Size Limits</a></h1>
+<p>Every event type must have a maximum size.</p>
+<p>Do not allow:</p>
+<pre><code class="language-text">huge file
+huge recursive object
+unbounded metadata
+</code></pre>
+<p>inside a journal event.</p>
+<hr />
+<h1 id="56-durability-classes"><a class="header" href="#56-durability-classes">56. Durability Classes</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum DurabilityClass {
+    Critical,
+    Durable,
+    BestEffort,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Examples:</p>
+<pre><code class="language-text">DeviceRevoked → Critical
+MessageQueued → Durable
+typing → not journaled / BestEffort
+</code></pre>
+<p>Durability policy must balance safety with mobile battery/performance.</p>
+<hr />
+<h1 id="57-sql-schema"><a class="header" href="#57-sql-schema">57. SQL Schema</a></h1>
+<p>Conceptual SQLite schema:</p>
+<pre><code class="language-sql">events(
+    local_offset INTEGER PRIMARY KEY,
+    event_id BLOB UNIQUE NOT NULL,
+    stream_id BLOB NOT NULL,
+    stream_version INTEGER NOT NULL,
+    event_type INTEGER NOT NULL,
+    schema_version INTEGER NOT NULL,
+    created_at INTEGER NOT NULL,
+    origin BLOB,
+    correlation_id BLOB,
+    causation_id BLOB,
+    payload BLOB NOT NULL,
+    checksum BLOB,
+    UNIQUE(stream_id, stream_version)
+)
+</code></pre>
+<p>Supporting tables:</p>
+<pre><code class="language-text">stream_heads
+projection_checkpoints
+snapshots
+outbox
+</code></pre>
+<hr />
+<h1 id="58-indexes"><a class="header" href="#58-indexes">58. Indexes</a></h1>
+<p>Minimum:</p>
+<pre><code class="language-text">event_id
+(stream_id, stream_version)
+local_offset
+</code></pre>
+<p>Avoid indexing everything by default.</p>
+<hr />
+<h1 id="59-memory-discipline"><a class="header" href="#59-memory-discipline">59. Memory Discipline</a></h1>
+<p>Replay in bounded batches:</p>
+<pre><code class="language-text">read batch
+ ↓
+apply
+ ↓
+discard
+ ↓
+next batch
+</code></pre>
+<p>Never read years of history into memory.</p>
+<hr />
+<h1 id="60-projection-isolation"><a class="header" href="#60-projection-isolation">60. Projection Isolation</a></h1>
+<p>One broken secondary projection must not stop durable appends.</p>
+<p>Example:</p>
+<pre><code class="language-text">search index projector fails
+</code></pre>
+<p>Messaging still works.</p>
+<p>Projection catches up later from checkpoint.</p>
+<hr />
+<h1 id="61-internal-event-notifications"><a class="header" href="#61-internal-event-notifications">61. Internal Event Notifications</a></h1>
+<p>After commit:</p>
+<pre><code class="language-text">wake projectors/effect workers
+</code></pre>
+<p>But durability never depends on the in-memory notification.</p>
+<p>If the signal is missed, checkpointed readers catch up later.</p>
+<hr />
+<h1 id="62-unknown-events"><a class="header" href="#62-unknown-events">62. Unknown Events</a></h1>
+<p>Unknown event handling must be explicit.</p>
+<p>Possible:</p>
+<pre><code class="language-text">optional unknown → store/ignore safely
+required semantic unknown → block stream until upgrade
+</code></pre>
+<p>Never deserialize into arbitrary current types.</p>
+<hr />
+<h1 id="63-namespaced-custom-events"><a class="header" href="#63-namespaced-custom-events">63. Namespaced Custom Events</a></h1>
+<p>Third-party products may register:</p>
+<pre><code class="language-text">com.example.erp.approval_created
+</code></pre>
+<p>through a stable namespace/event registry.</p>
+<p>This lets the event log remain reusable.</p>
+<hr />
+<h1 id="64-multi-tenant-isolation"><a class="header" href="#64-multi-tenant-isolation">64. Multi-Tenant Isolation</a></h1>
+<p>For multi-tenant consumers:</p>
+<pre><code class="language-text">TenantId
+</code></pre>
+<p>must participate in storage/stream namespace.</p>
+<p>One tenant must never see another tenant's streams or projections.</p>
+<hr />
+<h1 id="65-multiple-identities"><a class="header" href="#65-multiple-identities">65. Multiple Identities</a></h1>
+<p>Personal/work identities on one device require isolated:</p>
+<pre><code class="language-text">stream namespace
+projections
+replication policy
+outbox
+</code></pre>
+<p>Do not accidentally share event state.</p>
+<hr />
+<h1 id="66-security"><a class="header" href="#66-security">66. Security</a></h1>
+<p>Protect against:</p>
+<pre><code class="language-text">malformed imported event
+duplicate/replay
+rollback
+oversized payload
+unauthorized remote event
+projection poisoning
+local corruption
+</code></pre>
+<p>Security-critical event domains may use signatures/hash chains.</p>
+<hr />
+<h1 id="67-event-store-errors"><a class="header" href="#67-event-store-errors">67. Event Store Errors</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum EventStoreError {
+    ConcurrencyConflict,
+    DuplicateEvent,
+    StorageFull,
+    Corrupt,
+    ReadOnly,
+    MigrationRequired,
+    Io,
+    Serialization,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Keep domain errors separate.</p>
+<hr />
+<h1 id="68-storage-full-behavior"><a class="header" href="#68-storage-full-behavior">68. Storage Full Behavior</a></h1>
+<p>If storage is full:</p>
+<pre><code class="language-text">do not report "queued"
+</code></pre>
+<p>unless the durable append succeeded.</p>
+<p>The UI should expose a recoverable storage error.</p>
+<hr />
+<h1 id="69-read-only-recovery-mode"><a class="header" href="#69-read-only-recovery-mode">69. Read-Only Recovery Mode</a></h1>
+<p>If the database is damaged:</p>
+<pre><code class="language-text">read-only mode
+</code></pre>
+<p>may allow:</p>
+<ul>
+<li>viewing</li>
+<li>export</li>
+<li>diagnostics</li>
+</ul>
+<p>without risking additional corruption.</p>
+<hr />
+<h1 id="70-backup"><a class="header" href="#70-backup">70. Backup</a></h1>
+<p>Incremental backup can use:</p>
+<pre><code class="language-text">LocalLogOffset
+</code></pre>
+<p>to export new events since last backup.</p>
+<p>Restore should:</p>
+<pre><code class="language-text">verify
+restore log
+restore blobs
+rebuild projections
+reconcile pending work carefully
+</code></pre>
+<hr />
+<h1 id="71-restore-safety"><a class="header" href="#71-restore-safety">71. Restore Safety</a></h1>
+<p>Do not blindly re-run all previously pending effects after restore.</p>
+<p>Check:</p>
+<pre><code class="language-text">expiry
+delivery state
+revocation
+already-completed operation IDs
+</code></pre>
+<p>first.</p>
+<hr />
+<h1 id="72-analytics-separation"><a class="header" href="#72-analytics-separation">72. Analytics Separation</a></h1>
+<p>Never upload the raw event journal as analytics.</p>
+<p>Analytics must use a privacy-filtered projection.</p>
+<hr />
+<h1 id="73-dioxus-boundary"><a class="header" href="#73-dioxus-boundary">73. Dioxus Boundary</a></h1>
+<p>Dioxus sends:</p>
+<pre><code class="language-text">ApplicationCommand
+</code></pre>
+<p>and reads:</p>
+<pre><code class="language-text">ViewModel / projection
+</code></pre>
+<p>It never writes event records directly.</p>
+<hr />
+<h1 id="74-kotlin--ios-boundary"><a class="header" href="#74-kotlin--ios-boundary">74. Kotlin / iOS Boundary</a></h1>
+<p>Platform code may report:</p>
+<pre><code class="language-text">NetworkChanged
+AppBackgrounded
+LowMemory
+</code></pre>
+<p>Rust decides whether a durable domain event is required.</p>
+<p>Do not duplicate event semantics in Kotlin or Swift.</p>
+<hr />
+<h1 id="75-daemon-compatibility"><a class="header" href="#75-daemon-compatibility">75. Daemon Compatibility</a></h1>
+<p>Part 16 may move event ownership into a daemon.</p>
+<p>Then:</p>
+<pre><code class="language-text">daemon = sole writer
+GUI/CLI = command/query clients
+</code></pre>
+<p>Same event APIs should support in-process and daemon modes.</p>
+<hr />
+<h1 id="76-headless-compatibility"><a class="header" href="#76-headless-compatibility">76. Headless Compatibility</a></h1>
+<p>A headless node can use the log for:</p>
+<pre><code class="language-text">file transfers
+DTN bundles
+identity state
+relay operations
+</code></pre>
+<p>without any UI.</p>
+<hr />
+<h1 id="77-routing-integration"><a class="header" href="#77-routing-integration">77. Routing Integration</a></h1>
+<p>Part 03 routing consumes pending durable work.</p>
+<p>Typical flow:</p>
+<pre><code class="language-text">MessageQueued
+ ↓
+router selects path
+ ↓
+send attempt
+ ↓
+meaningful result event
+</code></pre>
+<p>Do not persist every RTT/path probe as semantic history.</p>
+<hr />
+<h1 id="78-file-integration"><a class="header" href="#78-file-integration">78. File Integration</a></h1>
+<p>Part 05 should use:</p>
+<pre><code class="language-text">semantic transfer events
++
+high-frequency chunk journal/projection
+</code></pre>
+<p>not one permanent event per chunk.</p>
+<hr />
+<h1 id="79-dtn-integration"><a class="header" href="#79-dtn-integration">79. DTN Integration</a></h1>
+<p>Part 06 should persist:</p>
+<pre><code class="language-text">bundle creation
+store
+forward
+delivery
+expiry
+</code></pre>
+<p>while keeping peer-encounter telemetry mostly operational.</p>
+<hr />
+<h1 id="80-emergency-integration"><a class="header" href="#80-emergency-integration">80. Emergency Integration</a></h1>
+<p>Emergency reports must be persisted <strong>before</strong> radio/network attempts.</p>
+<p>Example:</p>
+<pre><code class="language-text">SOS created
+ ↓ COMMIT
+device loses connectivity
+ ↓
+restart
+ ↓
+SOS still pending until delivered/expired/cancelled
+</code></pre>
+<hr />
+<h1 id="81-diagnostics"><a class="header" href="#81-diagnostics">81. Diagnostics</a></h1>
+<p>Expose:</p>
+<pre><code class="language-text">latest local offset
+event-store health
+projection lag
+pending effect count
+last successful compaction
+</code></pre>
+<p>without exposing content.</p>
+<hr />
+<h1 id="82-metrics"><a class="header" href="#82-metrics">82. Metrics</a></h1>
+<p>Useful local metrics:</p>
+<pre><code class="language-text">append latency
+commit latency
+events/sec
+projection lag
+replay rate
+event-store size
+duplicate rate
+projection failures
+</code></pre>
+<hr />
+<h1 id="83-property-tests"><a class="header" href="#83-property-tests">83. Property Tests</a></h1>
+<p>Important invariants:</p>
+<pre><code class="language-text">duplicate event does not duplicate projection state
+projection rebuild equals live projection
+stream versions strictly increase
+failed transaction creates no partial event
+checkpoint never advances past committed projection
+expired pending work is not resurrected
+</code></pre>
+<hr />
+<h1 id="84-crash-injection-tests"><a class="header" href="#84-crash-injection-tests">84. Crash Injection Tests</a></h1>
+<p>Inject process failure:</p>
+<pre><code class="language-text">before append
+inside transaction
+after event before projection
+after projection before network effect
+after network effect before success marker
+</code></pre>
+<p>Then verify deterministic recovery.</p>
+<hr />
+<h1 id="85-fuzzing"><a class="header" href="#85-fuzzing">85. Fuzzing</a></h1>
+<p>Fuzz:</p>
+<pre><code class="language-text">event envelope decoder
+event payload decoders
+snapshot decoder
+backup/import
+event upcasters
+</code></pre>
+<p>All allocations must be bounded.</p>
+<hr />
+<h1 id="86-golden-event-tests"><a class="header" href="#86-golden-event-tests">86. Golden Event Tests</a></h1>
+<p>Stable event schemas should have golden encodings.</p>
+<p>Changing bytes for a stable schema should require explicit protocol/storage review.</p>
+<hr />
+<h1 id="87-recovery-acceptance-test"><a class="header" href="#87-recovery-acceptance-test">87. Recovery Acceptance Test</a></h1>
+<pre><code class="language-text">MessageQueued committed
+process killed
+restart
+projection restored
+outbox reconstructed
+route found
+same MessageId sent
+recipient deduplicates
+MessageDelivered committed
+</code></pre>
+<p>This is a key production gate.</p>
+<hr />
+<h1 id="88-multi-device-offline-test"><a class="header" href="#88-multi-device-offline-test">88. Multi-Device Offline Test</a></h1>
+<pre><code class="language-text">Phone offline
+Laptop offline
+
+Phone appends events
+Laptop appends independent events
+
+Later reconnect
+ ↓
+authorized events replicate
+ ↓
+domain conflict rules apply
+ ↓
+both converge
+</code></pre>
+<p>No central clock is required.</p>
+<hr />
+<h1 id="89-suggested-crate-structure"><a class="header" href="#89-suggested-crate-structure">89. Suggested Crate Structure</a></h1>
+<pre><code class="language-text">crates/comm-event-log/
+├── src/
+│   ├── lib.rs
+│   ├── event.rs
+│   ├── envelope.rs
+│   ├── stream.rs
+│   ├── store.rs
+│   ├── append.rs
+│   ├── codec.rs
+│   ├── registry.rs
+│   ├── projection.rs
+│   ├── snapshot.rs
+│   ├── checkpoint.rs
+│   ├── retention.rs
+│   ├── replay.rs
+│   ├── diagnostics.rs
+│   └── error.rs
+└── Cargo.toml
+</code></pre>
+<p>Optional backend crate:</p>
+<pre><code class="language-text">comm-event-log-sqlite
+</code></pre>
+<hr />
+<h1 id="90-public-api"><a class="header" href="#90-public-api">90. Public API</a></h1>
+<p>Keep small:</p>
+<pre><code class="language-text">EventStore
+EventAppender
+EventReader
+ProjectionRunner
+SnapshotStore
+</code></pre>
+<p>Most products should use domain services rather than appending arbitrary events directly.</p>
+<hr />
+<h1 id="91-initial-production-scope"><a class="header" href="#91-initial-production-scope">91. Initial Production Scope</a></h1>
+<p>Implement first:</p>
+<pre><code class="language-text">SQLite event store
+stream versioning
+global local offset
+unique event IDs
+batch append
+critical projections
+outbox integration
+projection checkpoints
+replay
+basic snapshots
+schema versioning
+</code></pre>
+<p>Defer initially:</p>
+<pre><code class="language-text">Merkle replication
+complex crypto-erasure
+segment-file backend
+full compliance mode
+</code></pre>
+<hr />
+<h1 id="92-implementation-phases"><a class="header" href="#92-implementation-phases">92. Implementation Phases</a></h1>
+<h2 id="phase-1"><a class="header" href="#phase-1">Phase 1</a></h2>
+<pre><code class="language-text">EventId
+StreamId
+EventEnvelope
+LocalLogOffset
+EventStore trait
+</code></pre>
+<h2 id="phase-2"><a class="header" href="#phase-2">Phase 2</a></h2>
+<pre><code class="language-text">SQLite backend
+events
+stream heads
+transactions
+indexes
+</code></pre>
+<h2 id="phase-3"><a class="header" href="#phase-3">Phase 3</a></h2>
+<pre><code class="language-text">messaging
+files
+identity integration
+</code></pre>
+<h2 id="phase-4"><a class="header" href="#phase-4">Phase 4</a></h2>
+<pre><code class="language-text">projections
+checkpoints
+rebuild
+</code></pre>
+<h2 id="phase-5"><a class="header" href="#phase-5">Phase 5</a></h2>
+<pre><code class="language-text">outbox
+effects
+retry
+recovery
+</code></pre>
+<h2 id="phase-6"><a class="header" href="#phase-6">Phase 6</a></h2>
+<pre><code class="language-text">replication scopes
+stream heads
+sync hooks
+</code></pre>
+<h2 id="phase-7"><a class="header" href="#phase-7">Phase 7</a></h2>
+<pre><code class="language-text">snapshots
+compaction
+migration tests
+crash injection
+fuzzing
+benchmarks
+</code></pre>
+<hr />
+<h1 id="93-definition-of-done"><a class="header" href="#93-definition-of-done">93. Definition of Done</a></h1>
+<p>Part 04 is complete when:</p>
+<ul>
+<li>accepted local commands survive process death</li>
+<li>operations can be accepted without Internet</li>
+<li>IDs require no central server</li>
+<li>stream versions provide deterministic ordering</li>
+<li>duplicate remote events are idempotent</li>
+<li>projections rebuild deterministically</li>
+<li>checkpoints recover after crashes</li>
+<li>UI reads optimized projections</li>
+<li>large data is referenced via blobs</li>
+<li>message outbox survives restart</li>
+<li>file semantic state survives restart</li>
+<li>device lifecycle remains auditable</li>
+<li>SOS is persisted before transmission</li>
+<li>DTN lifecycle is durable</li>
+<li>replication scope is explicit</li>
+<li>event schemas are versioned</li>
+<li>replay never accidentally re-runs external effects</li>
+<li>storage-full is handled safely</li>
+<li>no external side effect occurs before durable commit</li>
+<li>crash/property/fuzz tests exist</li>
+<li>the subsystem works outside the messenger</li>
+</ul>
+<hr />
+<h1 id="94-relationship-to-other-parts"><a class="header" href="#94-relationship-to-other-parts">94. Relationship to Other Parts</a></h1>
+<p>Part 04 builds on:</p>
+<pre><code class="language-text">01 — Protocol Extension System
+02 — Multi-Device Identity
+03 — Transport &amp; Routing Policy Engine
+</code></pre>
+<p>It directly supports:</p>
+<pre><code class="language-text">05 — Robust File / Blob Subsystem
+06 — DTN / Store-Carry-Forward
+07 — Capability Negotiation Expansion
+08 — Resource Limits &amp; Backpressure
+09 — Crash Recovery
+10 — Protocol Fuzzing &amp; Test Suite
+13 — Battery-Aware Scheduling
+16 — Daemon &amp; Headless Runtime
+17 — Emergency Priority Architecture
+18 — Network Diagnostics &amp; Path Visualization
+20 — Embedded Linux Node
+23 — External Interoperability Suite
+</code></pre>
+<hr />
+<h1 id="95-final-principle"><a class="header" href="#95-final-principle">95. Final Principle</a></h1>
+<p>The offline event log should make this guarantee true:</p>
+<blockquote>
+<p><strong>If the application tells the user that a durable operation has been accepted locally, that intent survives network loss and process termination.</strong></p>
+</blockquote>
+<p>The architecture is:</p>
+<pre><code class="language-text">User action
+ ↓
+validate
+ ↓
+append durable event
+ ↓ COMMIT
+update projection
+ ↓
+show local result
+ ↓
+perform network/file/DTN effects asynchronously
+</code></pre>
+<p>This is the foundation that turns the platform into a genuinely local-first, crash-recoverable, offline-capable communication system rather than an online application that merely caches some state.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="17-emergency-priority-classes-architecture.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="05-robust-file-blob-subsystem-architecture.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="17-emergency-priority-classes-architecture.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="05-robust-file-blob-subsystem-architecture.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIAR CI/CD Release Pipeline & Build Matrix Engine</title>
+  <meta name="description" content="Multi-arch cross-compilation pipeline, SLSA Level 3 provenance signing, repository index regeneration, and atomic Edge CDN invalidation for SIAR.">
+
+  <!-- OpenGraph / Social Metadata -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://siar.irshad.org.in/pipeline.html">
+  <meta property="og:title" content="SIAR CI/CD Release Automation Pipeline">
+  <meta property="og:description" content="Automated multi-arch compilation across 7+ targets, cryptographic provenance generation, and zero-downtime CDN rollout.">
+
+  <!-- Favicon and CSS -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2300f2fe'><path d='M19.48 12.35c-1.57-.56-2-1.9-2-3.35V6c0-1.66-1.34-3-3-3H9.52c-1.66 0-3 1.34-3 3v3c0 1.45-.43 2.79-2 3.35C2.65 13.02 1.5 14.88 1.5 17c0 2.76 2.24 5 5 5h11c2.76 0 5-2.24 5-5 0-2.12-1.15-3.98-3.02-4.65z'/></svg>">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Top Telemetry Live Bar -->
+  <div class="telemetry-ticker" aria-label="Live CI/CD Automation Telemetry">
+    <div class="container">
+      <div class="ticker-wrap">
+        <div class="ticker-content">
+          <div class="ticker-item">
+            <span class="ticker-pulse"></span>
+            <span class="ticker-label">Release Trigger:</span>
+            <span class="ticker-val">refs/tags/v*.*.* (GPG Signed)</span>
+          </div>
+          <div class="ticker-item">
+            <span class="ticker-label">Cross-Compiler:</span>
+            <span class="ticker-val">cargo-zigbuild (Static Musl) + cargo-ndk</span>
+          </div>
+          <div class="ticker-item">
+            <span class="ticker-label">Supply Chain:</span>
+            <span class="ticker-val">SLSA Level 3+ • Cosign • Minisign</span>
+          </div>
+          <div class="ticker-item">
+            <span class="ticker-label">Parallel Targets:</span>
+            <span class="ticker-val">7 Architectures (x86_64, ARM64, RISC-V, WASM)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header & Navigation -->
+  <header class="header-nav">
+    <div class="container nav-inner">
+      <a href="index.html" class="brand-logo" aria-label="SIAR Home">
+        <div class="brand-icon">
+          <svg viewBox="0 0 24 24"><path d="M19.48 12.35c-1.57-.56-2-1.9-2-3.35V6c0-1.66-1.34-3-3-3H9.52c-1.66 0-3 1.34-3 3v3c0 1.45-.43 2.79-2 3.35C2.65 13.02 1.5 14.88 1.5 17c0 2.76 2.24 5 5 5h11c2.76 0 5-2.24 5-5 0-2.12-1.15-3.98-3.02-4.65z"/></svg>
+        </div>
+        <span class="brand-text">SIAR</span>
+        <span class="brand-badge">PIPELINE</span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="index.html" class="nav-link">Showcase</a></li>
+        <li><a href="packages.html" class="nav-link">Packages</a></li>
+        <li><a href="plugins.html" class="nav-link">Plugins</a></li>
+        <li><a href="verify.html" class="nav-link">SLSA Verifier</a></li>
+        <li><a href="simulator.html" class="nav-link">WASM Lab</a></li>
+        <li><a href="infra.html" class="nav-link">Infra</a></li>
+        <li><a href="#pipeline-sim" class="nav-link">Pipeline Simulator</a></li>
+        <li><a href="#build-matrix" class="nav-link">Build Matrix</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <!-- OLED Black Mode Toggle -->
+        <button id="btnToggleOled" class="btn-icon" title="Toggle OLED Pure-Black Mode" aria-label="Toggle OLED Mode">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.81.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/>
+          </svg>
+        </button>
+
+        <a href="#pipeline-sim" class="btn btn-primary btn-sm">Run Simulation</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container" style="padding-top: 56px;">
+    
+    <!-- Hero Header -->
+    <div style="text-align: center; max-width: 860px; margin: 0 auto 48px;">
+      <span class="section-eyebrow">AUTOMATED CROSS-COMPILATION ENGINE</span>
+      <h1 class="hero-title" style="font-size: 2.8rem;">
+        CI/CD Release Automation & Build Pipeline
+      </h1>
+      <p class="hero-subtitle">
+        Transforming signed Git release tags into cryptographically verified, cross-compiled binaries across 7 architectures within minutes, complete with SLSA Level 3 provenance and zero-downtime Edge CDN invalidation.
+      </p>
+    </div>
+
+    <!-- Section 1: Interactive 6-Stage Release Pipeline Stepper -->
+    <section id="pipeline-sim" style="margin-bottom: 64px;">
+      <div class="siar-glass-card" style="padding: 28px; border-color: rgba(0, 242, 254, 0.3);">
+        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; margin-bottom: 24px;">
+          <div>
+            <span class="section-eyebrow">REPRODUCIBLE RELEASE RUNNER</span>
+            <h2 style="font-family: var(--font-display); font-size: 1.6rem; color: #ffffff; margin-top: 4px;">
+              Live CI/CD Release Pipeline Simulator
+            </h2>
+            <p style="font-size: 0.88rem; color: var(--siar-text-secondary);">
+              Step through the 6 stages of the automated SIAR release pipeline with real-time runner log streaming.
+            </p>
+          </div>
+
+          <button id="btnTriggerPipeline" class="btn btn-primary" style="padding: 12px 24px; font-size: 0.95rem;">
+            🚀 Trigger Release Pipeline Simulation
+          </button>
+        </div>
+
+        <!-- 6-Stage Stepper -->
+        <div class="pipeline-stepper">
+          <div class="pipeline-stage-card">
+            <div class="stage-num">1</div>
+            <div class="stage-title">Tag Push</div>
+            <div class="stage-desc">GPG Signature Auth</div>
+          </div>
+          <div class="pipeline-stage-card">
+            <div class="stage-num">2</div>
+            <div class="stage-title">Quality Gates</div>
+            <div class="stage-desc">Tests, Clippy & Fuzz</div>
+          </div>
+          <div class="pipeline-stage-card">
+            <div class="stage-num">3</div>
+            <div class="stage-title">Matrix Build</div>
+            <div class="stage-desc">7 Parallel Targets</div>
+          </div>
+          <div class="pipeline-stage-card">
+            <div class="stage-num">4</div>
+            <div class="stage-title">Sign & Attest</div>
+            <div class="stage-desc">SLSA L3 + Minisign</div>
+          </div>
+          <div class="pipeline-stage-card">
+            <div class="stage-num">5</div>
+            <div class="stage-title">Repo Sync</div>
+            <div class="stage-desc">APT & RPM Indices</div>
+          </div>
+          <div class="pipeline-stage-card">
+            <div class="stage-num">6</div>
+            <div class="stage-title">CDN Purge</div>
+            <div class="stage-desc">Atomic Rollout & Smoke</div>
+          </div>
+        </div>
+
+        <!-- Live Terminal Log Output -->
+        <div>
+          <span class="pkg-meta-label">GitHub Actions Runner Output Stream:</span>
+          <div id="pipelineTerminalLog" style="background: #030508; border: 1px solid var(--siar-border-subtle); border-radius: var(--radius-sm); padding: 16px; height: 220px; overflow-y: auto; font-family: var(--font-mono); font-size: 0.76rem; color: #38bdf8; margin-top: 6px;">
+            <div style="color: var(--siar-text-muted);">Pipeline ready. Click "Trigger Release Pipeline Simulation" to start execution...</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 2: Multi-Arch Build Matrix Explorer -->
+    <section id="build-matrix" style="margin-bottom: 64px;">
+      <div class="section-head" style="text-align: left; margin-bottom: 24px;">
+        <span class="section-eyebrow">CROSS-COMPILATION MATRICES</span>
+        <h2 class="section-title" style="font-size: 1.8rem;">Multi-Architecture Compiler Recipes</h2>
+        <p class="section-desc">
+          Zero glibc dynamic dependencies achieved via Zigbuild musl static linking and NDK toolchains.
+        </p>
+      </div>
+
+      <div class="siar-glass-card" style="padding: 24px;">
+        <div style="margin-bottom: 20px;">
+          <label style="font-family: var(--font-mono); font-size: 0.78rem; color: var(--siar-text-muted); display: block; margin-bottom: 6px;">
+            Select Target Platform & Toolchain:
+          </label>
+          <select id="selectMatrixTarget" class="select-control" style="width: 100%; max-width: 360px;">
+            <option value="linux_x86_64">Linux x86_64 (Static Musl)</option>
+            <option value="linux_arm64">Linux ARM64 / AArch64 (Static Musl)</option>
+            <option value="linux_riscv">Linux RISC-V 64 (Embedded)</option>
+            <option value="macos_universal">macOS Universal (Apple Silicon + Intel)</option>
+            <option value="windows_x64">Windows 10/11 x64 (MSVC)</option>
+            <option value="android_ndk">Android Mobile (ARM64-v8a + ARMv7a)</option>
+            <option value="wasm_core">WebAssembly Browser Core (WASM)</option>
+          </select>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 16px; font-family: var(--font-mono); font-size: 0.8rem;">
+          <div class="siar-glass-card" style="padding: 14px;">
+            <span style="color: var(--siar-text-muted);">Target Triple:</span>
+            <div id="matrixOutTarget" style="color: var(--siar-cyan-glow); font-weight: 700; margin-top: 4px;">x86_64-unknown-linux-musl</div>
+          </div>
+          <div class="siar-glass-card" style="padding: 14px;">
+            <span style="color: var(--siar-text-muted);">Compiler Engine:</span>
+            <div id="matrixOutCompiler" style="color: var(--siar-emerald-online); font-weight: 700; margin-top: 4px;">cargo-zigbuild 0.18 + rustc 1.80</div>
+          </div>
+        </div>
+
+        <div>
+          <span class="pkg-meta-label">Compilation Command:</span>
+          <pre id="matrixOutCmd" class="spec-content-pre" style="padding: 12px; font-size: 0.78rem; margin-top: 6px;">cargo zigbuild --target x86_64-unknown-linux-musl --release -p siar-cli -p siar-emergency-node</pre>
+        </div>
+
+        <div style="margin-top: 14px;">
+          <span class="pkg-meta-label">Generated Binary Artifact:</span>
+          <div id="matrixOutArtifact" style="background: #030508; border: 1px solid var(--siar-border-subtle); border-radius: 4px; padding: 10px 14px; font-family: var(--font-mono); font-size: 0.78rem; color: #cbd5e1; margin-top: 6px;">
+            target/x86_64-unknown-linux-musl/release/siar-cli (7.8 MB, statically linked, 0 glibc deps)
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 3: Automated Verification Smoke Test Runner -->
+    <section style="margin-bottom: 64px;">
+      <div class="siar-glass-card" style="padding: 24px;">
+        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; margin-bottom: 16px;">
+          <div>
+            <h3 style="font-family: var(--font-display); font-size: 1.3rem; color: #ffffff; margin: 0;">
+              🧪 Automated Release Verification Smoke Test
+            </h3>
+            <p style="font-size: 0.84rem; color: var(--siar-text-secondary); margin-top: 4px;">
+              Executes the authoritative shell installer verification test against live edge release artifacts.
+            </p>
+          </div>
+
+          <button id="btnRunSmokeTest" class="btn btn-secondary btn-sm">
+            ▶ Run Smoke Test ($ sh --test)
+          </button>
+        </div>
+
+        <div id="smokeTestOutput" style="background: #030508; border: 1px solid var(--siar-border-subtle); border-radius: var(--radius-sm); padding: 14px;">
+          <span style="font-family: var(--font-mono); font-size: 0.78rem; color: var(--siar-text-muted);">
+            Click "Run Smoke Test" to test live installer checksum matching.
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 4: CI/CD Workflows as Code -->
+    <section style="margin-bottom: 64px;">
+      <div class="section-head" style="text-align: left; margin-bottom: 20px;">
+        <span class="section-eyebrow">WORKFLOW AS CODE</span>
+        <h2 class="section-title" style="font-size: 1.8rem;">GitHub Actions Workflow Files</h2>
+      </div>
+
+      <div class="siar-glass-card" style="padding: 20px;">
+        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+          <a href=".github/workflows/release.yml" download class="btn btn-secondary btn-sm">📥 .github/workflows/release.yml</a>
+          <a href=".github/workflows/ci.yml" download class="btn btn-secondary btn-sm">📥 .github/workflows/ci.yml</a>
+          <a href=".github/workflows/fuzz.yml" download class="btn btn-secondary btn-sm">📥 .github/workflows/fuzz.yml</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="brand-logo">
+            <div class="brand-icon">
+              <svg viewBox="0 0 24 24"><path d="M19.48 12.35c-1.57-.56-2-1.9-2-3.35V6c0-1.66-1.34-3-3-3H9.52c-1.66 0-3 1.34-3 3v3c0 1.45-.43 2.79-2 3.35C2.65 13.02 1.5 14.88 1.5 17c0 2.76 2.24 5 5 5h11c2.76 0 5-2.24 5-5 0-2.12-1.15-3.98-3.02-4.65z"/></svg>
+            </div>
+            <span class="brand-text">SIAR</span>
+          </div>
+          <p>
+            Release Automation & CI/CD Pipeline. 100% reproducible multi-arch cross-compilation with SLSA L3 attestation.
+          </p>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">CI/CD</h4>
+          <ul class="footer-links">
+            <li><a href="#pipeline-sim">Pipeline Simulator</a></li>
+            <li><a href="#build-matrix">Build Matrix</a></li>
+            <li><a href=".github/workflows/release.yml">Release Workflow</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">Portals</h4>
+          <ul class="footer-links">
+            <li><a href="index.html">Showcase</a></li>
+            <li><a href="packages.html">Packages</a></li>
+            <li><a href="verify.html">SLSA Verifier</a></li>
+            <li><a href="infra.html">Edge Infra</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">Open Source</h4>
+          <ul class="footer-links">
+            <li><a href="https://github.com/irshadali5/siar">GitHub Repository</a></li>
+            <li><a href="install.sh">Shell Installer</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>
+          © 2026 SIAR Project & Irshad Ali. Released under dual <strong>Apache-2.0</strong> & <strong>MIT</strong> License.
+        </div>
+        <div style="display: flex; gap: 16px; align-items: center;">
+          <span style="color: var(--siar-emerald-online);">● SLSA Level 3+ Verified</span>
+          <span>•</span>
+          <span>7 Parallel Architectures</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/pipeline-simulator.js"></script>
+</body>
+</html>

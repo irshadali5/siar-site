@@ -1,0 +1,2371 @@
+<!DOCTYPE HTML>
+<html lang="en" class="navy" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>06 — DTN Store-Carry-Forward &amp; Bundle Forwarding - SIAR System Architecture &amp; Technical Wiki</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="Comprehensive system architecture, cryptographic protocols, DTN mesh networking, distributed storage, audio DSP pipelines, and UI/UX design specifications for SIAR.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="theme/custom.css">
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "navy";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('navy')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="Home.html">Architecture Portal & Reading Guide</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part I: Protocol Foundation & Extension Platform</li><li class="chapter-item expanded "><a href="01-protocol-extension-system-architecture.html"><strong aria-hidden="true">1.</strong> 01 — Protocol Extension System Architecture</a></li><li class="chapter-item expanded "><a href="07-capability-negotiation-architecture.html"><strong aria-hidden="true">2.</strong> 07 — Capability Negotiation & Protocol Upgrades</a></li><li class="chapter-item expanded "><a href="21-third-party-protocol-extensions-architecture.html"><strong aria-hidden="true">3.</strong> 21 — Third-Party Protocol Extensions</a></li><li class="chapter-item expanded "><a href="22-wasm-compatible-components-architecture.html"><strong aria-hidden="true">4.</strong> 22 — WebAssembly (WASM) Compatible Components</a></li><li class="chapter-item expanded "><a href="23-external-interoperability-suite-architecture.html"><strong aria-hidden="true">5.</strong> 23 — External Interoperability & Conformance Suite</a></li><li class="chapter-item expanded "><a href="24-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">6.</strong> 24 — Dynamic Plugin & Module Ecosystem</a></li><li class="chapter-item expanded affix "><li class="part-title">Part II: Identity, Trust & Cryptography</li><li class="chapter-item expanded "><a href="02-multi-device-identity-architecture.html"><strong aria-hidden="true">7.</strong> 02 — Multi-Device Identity & Trust Model</a></li><li class="chapter-item expanded "><a href="28-production-security-e2ee-key-management-privacy-architecture.html"><strong aria-hidden="true">8.</strong> 28 — Production Security, E2EE, Key Management & Privacy</a></li><li class="chapter-item expanded affix "><li class="part-title">Part III: Mesh Networking, Transports & Hardware</li><li class="chapter-item expanded "><a href="03-transport-routing-policy-engine-architecture.html"><strong aria-hidden="true">9.</strong> 03 — Transport & Routing Policy Engine</a></li><li class="chapter-item expanded "><a href="11-relay-self-hosted-infrastructure-architecture.html"><strong aria-hidden="true">10.</strong> 11 — Self-Hosted Relay & Coordination Infrastructure</a></li><li class="chapter-item expanded "><a href="12-multipath-networking-architecture.html"><strong aria-hidden="true">11.</strong> 12 — Multipath Networking & Link Aggregation</a></li><li class="chapter-item expanded "><a href="13-battery-aware-scheduling-architecture.html"><strong aria-hidden="true">12.</strong> 13 — Battery-Aware Scheduling & Power Profiles</a></li><li class="chapter-item expanded "><a href="14-proximity-abstraction-architecture.html"><strong aria-hidden="true">13.</strong> 14 — Proximity Abstraction (BLE, Wi-Fi Direct, LoRa)</a></li><li class="chapter-item expanded "><a href="15-qr-nfc-bootstrap-pairing-architecture.html"><strong aria-hidden="true">14.</strong> 15 — Out-of-Band QR & NFC Bootstrap Pairing</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IV: Delay-Tolerant Networking & Emergency Mesh</li><li class="chapter-item expanded "><a href="06-dtn-store-carry-forward-architecture.html" class="active"><strong aria-hidden="true">15.</strong> 06 — DTN Store-Carry-Forward & Bundle Forwarding</a></li><li class="chapter-item expanded "><a href="17-emergency-priority-classes-architecture.html"><strong aria-hidden="true">16.</strong> 17 — Emergency Priority Classes & Critical Alert Mesh</a></li><li class="chapter-item expanded affix "><li class="part-title">Part V: Storage, Outbox & Data Lifecycle</li><li class="chapter-item expanded "><a href="04-offline-event-log-architecture.html"><strong aria-hidden="true">17.</strong> 04 — Offline Event Log & Sync Engine</a></li><li class="chapter-item expanded "><a href="05-robust-file-blob-subsystem-architecture.html"><strong aria-hidden="true">18.</strong> 05 — Robust File & Blob Subsystem (Chunking & Resumption)</a></li><li class="chapter-item expanded "><a href="09-crash-recovery-architecture.html"><strong aria-hidden="true">19.</strong> 09 — Crash Recovery & State Integrity</a></li><li class="chapter-item expanded "><a href="32-search-indexing-local-knowledge-privacy-architecture.html"><strong aria-hidden="true">20.</strong> 32 — Search, Indexing & Local Privacy Retrieval</a></li><li class="chapter-item expanded "><a href="33-backup-restore-export-import-archival-portability-architecture.html"><strong aria-hidden="true">21.</strong> 33 — Backup, Restore, Export & Long-Term Archival</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VI: Realtime Media, Calling & Audio DSP</li><li class="chapter-item expanded "><a href="25-android-direct-hardware-surface-zero-copy-media-architecture.html"><strong aria-hidden="true">22.</strong> 25 — Android Direct Surface Zero-Copy Media</a></li><li class="chapter-item expanded "><a href="26-rust-first-audio-dsp-resampling-aec-ns-agc-architecture.html"><strong aria-hidden="true">23.</strong> 26 — Rust-First Audio DSP (AEC, NS, AGC, Resampling)</a></li><li class="chapter-item expanded "><a href="29-realtime-calls-media-session-protocol-architecture.html"><strong aria-hidden="true">24.</strong> 29 — Realtime Calls & Media Session Protocol</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VII: Ephemeral State, Presence & Notifications</li><li class="chapter-item expanded "><a href="30-presence-availability-typing-read-receipts-ephemeral-state-architecture.html"><strong aria-hidden="true">25.</strong> 30 — Presence, Availability, Typing & Read Receipts</a></li><li class="chapter-item expanded "><a href="31-notifications-push-background-delivery-lifecycle-architecture.html"><strong aria-hidden="true">26.</strong> 31 — Notifications, Push Wake & Background Delivery</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VIII: Native Runtimes, Daemons & Embedded Linux</li><li class="chapter-item expanded "><a href="16-daemon-headless-runtime-architecture.html"><strong aria-hidden="true">27.</strong> 16 — Headless Daemon & Background Runtime</a></li><li class="chapter-item expanded "><a href="19-c-abi-ffi-architecture.html"><strong aria-hidden="true">28.</strong> 19 — C-ABI FFI & Native Language Interop</a></li><li class="chapter-item expanded "><a href="20-embedded-linux-node-architecture.html"><strong aria-hidden="true">29.</strong> 20 — Embedded Linux Node & Resource-Constrained Targets</a></li><li class="chapter-item expanded "><a href="27-rust-driven-android-native-build-packaging-automation.html"><strong aria-hidden="true">30.</strong> 27 — Rust-Driven Android Native Build & Packaging Automation</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IX: Reliability, Testing, Fuzzing & Diagnostics</li><li class="chapter-item expanded "><a href="08-resource-limits-backpressure-architecture.html"><strong aria-hidden="true">31.</strong> 08 — Resource Limits, Quotas & Backpressure</a></li><li class="chapter-item expanded "><a href="10-fuzzing-protocol-test-suite-architecture.html"><strong aria-hidden="true">32.</strong> 10 — Fuzzing & Protocol Test Suite</a></li><li class="chapter-item expanded "><a href="18-network-diagnostics-path-visualization-architecture.html"><strong aria-hidden="true">33.</strong> 18 — Network Diagnostics & Path Visualization</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part X: UI/UX Client Architecture (Cross-Platform)</li><li class="chapter-item expanded "><a href="ui-ux-01-product-foundation-cross-platform-interaction-architecture.html"><strong aria-hidden="true">34.</strong> UI/UX 01 — Product UX Foundation & Cross-Platform Interaction</a></li><li class="chapter-item expanded "><a href="ui-ux-02-desktop-dioxus-app-shell-navigation-window-architecture.html"><strong aria-hidden="true">35.</strong> UI/UX 02 — Desktop Dioxus App Shell & Navigation</a></li><li class="chapter-item expanded "><a href="ui-ux-03-android-jetpack-compose-app-shell-navigation-lifecycle-architecture.html"><strong aria-hidden="true">36.</strong> UI/UX 03 — Android Jetpack Compose App Shell & Lifecycle</a></li><li class="chapter-item expanded "><a href="ui-ux-04-conversation-list-inbox-architecture.html"><strong aria-hidden="true">37.</strong> UI/UX 04 — Conversation List & Inbox UX</a></li><li class="chapter-item expanded "><a href="ui-ux-05-conversation-message-timeline-architecture.html"><strong aria-hidden="true">38.</strong> UI/UX 05 — Conversation Message Timeline UX</a></li><li class="chapter-item expanded "><a href="ui-ux-06-message-composer-attachments-voice-notes-drafts-architecture.html"><strong aria-hidden="true">39.</strong> UI/UX 06 — Message Composer, Attachments & Voice Notes</a></li><li class="chapter-item expanded "><a href="ui-ux-07-calls-realtime-media-architecture.html"><strong aria-hidden="true">40.</strong> UI/UX 07 — Calls & Realtime Media UX</a></li><li class="chapter-item expanded "><a href="ui-ux-08-contacts-requests-verification-identity-architecture.html"><strong aria-hidden="true">41.</strong> UI/UX 08 — Contacts, Requests, Verification & Identity</a></li><li class="chapter-item expanded "><a href="ui-ux-09-groups-membership-roles-architecture.html"><strong aria-hidden="true">42.</strong> UI/UX 09 — Groups, Membership & Roles UX</a></li><li class="chapter-item expanded "><a href="ui-ux-10-files-media-gallery-transfer-architecture.html"><strong aria-hidden="true">43.</strong> UI/UX 10 — Files, Media Gallery & Transfer UX</a></li><li class="chapter-item expanded "><a href="ui-ux-11-search-local-knowledge-retrieval-architecture.html"><strong aria-hidden="true">44.</strong> UI/UX 11 — Search & Local Knowledge Retrieval UX</a></li><li class="chapter-item expanded "><a href="ui-ux-12-nearby-qr-nfc-pairing-device-linking-architecture.html"><strong aria-hidden="true">45.</strong> UI/UX 12 — Nearby, QR/NFC Pairing & Device Linking UX</a></li><li class="chapter-item expanded "><a href="ui-ux-13-notifications-background-incoming-call-architecture.html"><strong aria-hidden="true">46.</strong> UI/UX 13 — Notifications, Background & Incoming Call UX</a></li><li class="chapter-item expanded "><a href="ui-ux-14-presence-typing-receipts-status-architecture.html"><strong aria-hidden="true">47.</strong> UI/UX 14 — Presence, Typing, Receipts & Status UX</a></li><li class="chapter-item expanded "><a href="ui-ux-15-security-center-devices-keys-recovery-architecture.html"><strong aria-hidden="true">48.</strong> UI/UX 15 — Security Center, Devices, Keys & Recovery UX</a></li><li class="chapter-item expanded "><a href="ui-ux-16-backup-restore-export-migration-architecture.html"><strong aria-hidden="true">49.</strong> UI/UX 16 — Backup, Restore, Export & Migration UX</a></li><li class="chapter-item expanded "><a href="ui-ux-17-emergency-sos-offline-mesh-architecture.html"><strong aria-hidden="true">50.</strong> UI/UX 17 — Emergency / SOS / Offline Mesh UX</a></li><li class="chapter-item expanded "><a href="ui-ux-18-settings-privacy-notifications-data-controls-architecture.html"><strong aria-hidden="true">51.</strong> UI/UX 18 — Settings, Privacy, Notifications & Data Controls</a></li><li class="chapter-item expanded "><a href="ui-ux-19-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">52.</strong> UI/UX 19 — Plugin & Module Ecosystem UX</a></li><li class="chapter-item expanded "><a href="ui-ux-20-diagnostics-network-paths-advanced-developer-architecture.html"><strong aria-hidden="true">53.</strong> UI/UX 20 — Diagnostics, Network Paths & Developer UX</a></li><li class="chapter-item expanded "><a href="ui-ux-21-accessibility-inclusive-interaction-architecture.html"><strong aria-hidden="true">54.</strong> UI/UX 21 — Accessibility & Inclusive Interaction</a></li><li class="chapter-item expanded "><a href="ui-ux-22-design-system-tokens-typography-icons-motion-architecture.html"><strong aria-hidden="true">55.</strong> UI/UX 22 — Design System, Tokens, Typography & Motion</a></li><li class="chapter-item expanded "><a href="ui-ux-23-responsive-adaptive-desktop-tablet-foldable-phone-layout-architecture.html"><strong aria-hidden="true">56.</strong> UI/UX 23 — Responsive & Adaptive Layouts (Desktop/Tablet/Foldable/Phone)</a></li><li class="chapter-item expanded "><a href="ui-ux-24-error-loading-empty-offline-degraded-state-architecture.html"><strong aria-hidden="true">57.</strong> UI/UX 24 — Error, Loading, Empty & Degraded-State UX</a></li><li class="chapter-item expanded "><a href="ui-ux-25-onboarding-first-run-permission-education-architecture.html"><strong aria-hidden="true">58.</strong> UI/UX 25 — Onboarding, First Run & Permission Education</a></li><li class="chapter-item expanded "><a href="ui-ux-26-performance-virtualization-large-data-ui-architecture.html"><strong aria-hidden="true">59.</strong> UI/UX 26 — Virtualization & Large-Data UI Performance</a></li><li class="chapter-item expanded "><a href="ui-ux-27-ui-testing-screenshot-interaction-release-quality-gates-architecture.html"><strong aria-hidden="true">60.</strong> UI/UX 27 — UI Testing, Screenshots & Release Quality Gates</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">SIAR System Architecture &amp; Technical Wiki</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar/edit/main/sys-arch/06-dtn-store-carry-forward-architecture.md" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="part-06--dtn--store-carry-forward-architecture"><a class="header" href="#part-06--dtn--store-carry-forward-architecture">Part 06 — DTN / Store-Carry-Forward Architecture</a></h1>
+<h2 id="reusable-p2p-communication-platform"><a class="header" href="#reusable-p2p-communication-platform">Reusable P2P Communication Platform</a></h2>
+<p><strong>Status:</strong> Architecture specification<br />
+<strong>Part:</strong> 06 of 24<br />
+<strong>Primary language:</strong> Rust<br />
+<strong>Primary goals:</strong> communication without continuous end-to-end connectivity, store-carry-forward, opportunistic routing, transport independence, emergency resilience, bounded replication, privacy, crash safety, reusable across messaging/files/ERP/custom applications</p>
+<hr />
+<h1 id="1-purpose"><a class="header" href="#1-purpose">1. Purpose</a></h1>
+<p>A normal network assumes that a route exists between sender and receiver at the time of communication.</p>
+<p>A disaster-resilient P2P system cannot make that assumption.</p>
+<p>A sender may have:</p>
+<pre><code class="language-text">no Internet
+no router
+no direct Wi-Fi path
+no direct Bluetooth path to destination
+</code></pre>
+<p>yet there may still be a sequence of future encounters:</p>
+<pre><code class="language-text">Alice
+ ↓
+Bob
+ ↓
+Carol
+ ↓
+Gateway
+ ↓
+Destination
+</code></pre>
+<p>The DTN subsystem provides this behavior.</p>
+<p>DTN means:</p>
+<blockquote>
+<p><strong>Persist the payload locally, carry it across time, and forward it when useful connectivity appears.</strong></p>
+</blockquote>
+<p>This architecture must work with:</p>
+<ul>
+<li>text messages</li>
+<li>message receipts</li>
+<li>emergency reports</li>
+<li>SOS</li>
+<li>small file metadata</li>
+<li>selected file chunks</li>
+<li>authority alerts</li>
+<li>custom application events</li>
+</ul>
+<p>It must not require a central server.</p>
+<hr />
+<h1 id="2-fundamental-principle"><a class="header" href="#2-fundamental-principle">2. Fundamental Principle</a></h1>
+<p>Do not design DTN as:</p>
+<pre><code class="language-text">Bluetooth forwarding logic
+</code></pre>
+<p>or:</p>
+<pre><code class="language-text">Emergency-only forwarding
+</code></pre>
+<p>Instead:</p>
+<pre><code class="language-text">Application Payload
+      ↓
+DTN Bundle
+      ↓
+Durable Relay Store
+      ↓
+Encounter Protocol
+      ↓
+Forwarding Policy
+      ↓
+Any Available Transport
+</code></pre>
+<p>Transport can be:</p>
+<pre><code class="language-text">BLE
+Bluetooth Classic
+Wi-Fi Direct
+Wi-Fi Aware
+LAN
+Iroh
+future radio
+</code></pre>
+<p>DTN is a routing/delivery model, not a radio technology.</p>
+<hr />
+<h1 id="3-architectural-position"><a class="header" href="#3-architectural-position">3. Architectural Position</a></h1>
+<pre><code class="language-text">Messaging / Files / Emergency / Custom App
+                  ↓
+           Delivery Intent
+                  ↓
+       Transport/Routing Engine
+                  ↓
+       DTN Adapter / DTN Engine
+                  ↓
+      Durable Bundle Store
+                  ↓
+     Encounter / Reconciliation
+                  ↓
+   BLE / Wi-Fi / LAN / Iroh / Relay
+</code></pre>
+<p>Part 03 decides whether DTN is allowed.</p>
+<p>Part 06 decides how DTN forwarding happens.</p>
+<hr />
+<h1 id="4-dtn-responsibilities"><a class="header" href="#4-dtn-responsibilities">4. DTN Responsibilities</a></h1>
+<p>The DTN subsystem owns:</p>
+<ul>
+<li>bundle creation</li>
+<li>durable bundle persistence</li>
+<li>expiry</li>
+<li>hop/replication limits</li>
+<li>peer encounter exchange</li>
+<li>inventory summaries</li>
+<li>bundle deduplication</li>
+<li>opportunistic forwarding</li>
+<li>relay storage quotas</li>
+<li>next-hop scoring</li>
+<li>custody-like state</li>
+<li>gateway handoff</li>
+<li>delivery confirmation propagation</li>
+<li>eviction</li>
+<li>route history</li>
+<li>privacy-aware routing metadata</li>
+<li>priority scheduling</li>
+<li>multi-transport handoff</li>
+</ul>
+<p>It does not own:</p>
+<ul>
+<li>chat semantics</li>
+<li>message rendering</li>
+<li>file decoding</li>
+<li>account UI</li>
+<li>codec logic</li>
+<li>raw Bluetooth APIs</li>
+</ul>
+<hr />
+<h1 id="5-bundle-concept"><a class="header" href="#5-bundle-concept">5. Bundle Concept</a></h1>
+<p>A DTN bundle is an opaque transferable object.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct BundleId([u8; 32]);
+<span class="boring">}</span></code></pre></pre>
+<p>A bundle represents:</p>
+<pre><code class="language-text">payload + routing metadata + security metadata + delivery policy
+</code></pre>
+<p>The relay does not need to understand the application payload.</p>
+<hr />
+<h1 id="6-bundle-structure"><a class="header" href="#6-bundle-structure">6. Bundle Structure</a></h1>
+<p>Conceptually:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct DtnBundle {
+    pub bundle_id: BundleId,
+    pub source: DtnSource,
+    pub destination: DtnDestination,
+    pub payload_type: PayloadTypeId,
+    pub created_at: Timestamp,
+    pub expires_at: Timestamp,
+    pub priority: DtnPriority,
+    pub hop_limit: u8,
+    pub replication_budget: u8,
+    pub forwarding_class: ForwardingClass,
+    pub payload_ref: PayloadReference,
+    pub integrity: BundleIntegrity,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Large content should usually be referenced by blob/chunk identity rather than embedded directly.</p>
+<hr />
+<h1 id="7-bundle-payload"><a class="header" href="#7-bundle-payload">7. Bundle Payload</a></h1>
+<p>Supported forms:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum PayloadReference {
+    Inline(Bytes),
+    Blob(BlobId),
+    Chunk {
+        blob: BlobId,
+        chunk_index: u32,
+    },
+    Event(EventId),
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Inline payloads must be strictly bounded.</p>
+<hr />
+<h1 id="8-bundle-security-principle"><a class="header" href="#8-bundle-security-principle">8. Bundle Security Principle</a></h1>
+<p>Private payloads should already be end-to-end encrypted before entering DTN.</p>
+<p>Flow:</p>
+<pre><code class="language-text">plaintext
+ ↓
+application E2EE
+ ↓
+ciphertext payload
+ ↓
+DTN bundle
+ ↓
+unknown relay peers
+</code></pre>
+<p>Relay nodes should not need conversation/file decryption keys.</p>
+<hr />
+<h1 id="9-relay-trust-model"><a class="header" href="#9-relay-trust-model">9. Relay Trust Model</a></h1>
+<p>A relay may be:</p>
+<pre><code class="language-text">unknown
+known contact
+trusted device
+organization node
+emergency gateway
+</code></pre>
+<p>But forwarding private ciphertext should not require trusting the relay with plaintext.</p>
+<p>Separate:</p>
+<pre><code class="language-text">trusted to carry
+</code></pre>
+<p>from:</p>
+<pre><code class="language-text">trusted to read
+</code></pre>
+<hr />
+<h1 id="10-bundle-destination"><a class="header" href="#10-bundle-destination">10. Bundle Destination</a></h1>
+<p>Use opaque destination identifiers.</p>
+<p>Avoid plaintext:</p>
+<pre><code class="language-text">phone number
+email
+display name
+</code></pre>
+<p>in relay-visible headers.</p>
+<p>Possible destination forms:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum DtnDestination {
+    DeviceOpaque(RouteToken),
+    AccountOpaque(RouteToken),
+    GroupOpaque(RouteToken),
+    LocalBroadcast(BroadcastScope),
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="11-routing-tokens"><a class="header" href="#11-routing-tokens">11. Routing Tokens</a></h1>
+<p>A routing token should be:</p>
+<ul>
+<li>opaque</li>
+<li>short-lived where possible</li>
+<li>difficult to correlate long-term</li>
+<li>sufficient for authorized forwarding</li>
+</ul>
+<p>Permanent account IDs should not be advertised unnecessarily in public BLE beacons or relay headers.</p>
+<hr />
+<h1 id="12-bundle-id"><a class="header" href="#12-bundle-id">12. Bundle ID</a></h1>
+<p><code>BundleId</code> must be stable across retries and replicas.</p>
+<p>This enables:</p>
+<pre><code class="language-text">deduplication
+delivery tracking
+idempotency
+</code></pre>
+<p>Do not create a new BundleId for every hop.</p>
+<hr />
+<h1 id="13-bundle-immutability"><a class="header" href="#13-bundle-immutability">13. Bundle Immutability</a></h1>
+<p>Once created, routing-critical bundle fields should be immutable except hop-local metadata.</p>
+<p>Example immutable:</p>
+<pre><code class="language-text">bundle_id
+destination
+expiry
+payload identity
+origin signature
+</code></pre>
+<p>Hop-local mutable state:</p>
+<pre><code class="language-text">remaining replication copies
+local forwarding history
+last-seen timestamp
+</code></pre>
+<p>Keep these separate.</p>
+<hr />
+<h1 id="14-bundle-envelope-vs-local-record"><a class="header" href="#14-bundle-envelope-vs-local-record">14. Bundle Envelope vs Local Record</a></h1>
+<p>Separate:</p>
+<pre><code class="language-text">WireBundle
+</code></pre>
+<p>from:</p>
+<pre><code class="language-text">LocalBundleRecord
+</code></pre>
+<p>Local record may contain:</p>
+<pre><code class="language-text">storage path
+local retry count
+peer history
+custody state
+</code></pre>
+<p>These do not belong on wire.</p>
+<hr />
+<h1 id="15-durable-store"><a class="header" href="#15-durable-store">15. Durable Store</a></h1>
+<p>Every accepted DTN bundle must be persisted before claiming it is being carried.</p>
+<pre><code class="language-text">Create bundle
+ ↓
+write durable record
+ ↓ COMMIT
+eligible for forwarding
+</code></pre>
+<p>Part 04 event log can record semantic lifecycle transitions.</p>
+<hr />
+<h1 id="16-bundle-store-interface"><a class="header" href="#16-bundle-store-interface">16. Bundle Store Interface</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait BundleStore: Send + Sync {
+    async fn put(&amp;self, bundle: StoredBundle) -&gt; Result&lt;(), DtnStoreError&gt;;
+    async fn get(&amp;self, id: BundleId) -&gt; Result&lt;Option&lt;StoredBundle&gt;, DtnStoreError&gt;;
+    async fn mark_forwarded(&amp;self, ...);
+    async fn mark_delivered(&amp;self, ...);
+    async fn remove(&amp;self, id: BundleId) -&gt; Result&lt;(), DtnStoreError&gt;;
+    async fn list_candidates(&amp;self, query: ForwardQuery)
+        -&gt; Result&lt;Vec&lt;StoredBundle&gt;, DtnStoreError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="17-storage-classes"><a class="header" href="#17-storage-classes">17. Storage Classes</a></h1>
+<p>Bundles can be:</p>
+<pre><code class="language-text">LocalOrigin
+Relay
+CriticalEmergency
+DeliveryReceipt
+</code></pre>
+<p>Each can have different retention and eviction policies.</p>
+<hr />
+<h1 id="18-bundle-state-machine"><a class="header" href="#18-bundle-state-machine">18. Bundle State Machine</a></h1>
+<pre><code class="language-text">Created
+ ↓
+Stored
+ ↓
+Eligible
+ ↓
+Forwarded
+ ↓
+ForwardedAgain
+ ↓
+DestinationReached
+ ↓
+Acknowledged
+ ↓
+Completed
+</code></pre>
+<p>Alternative terminal states:</p>
+<pre><code class="language-text">Expired
+Evicted
+Cancelled
+Rejected
+</code></pre>
+<hr />
+<h1 id="19-delivery-semantics"><a class="header" href="#19-delivery-semantics">19. Delivery Semantics</a></h1>
+<p>Do not equate:</p>
+<pre><code class="language-text">forwarded
+</code></pre>
+<p>with:</p>
+<pre><code class="language-text">delivered
+</code></pre>
+<p>The UI and API must distinguish:</p>
+<pre><code class="language-text">Stored locally
+Carried by relay
+Reached gateway
+Reached destination device
+Acknowledged by destination
+</code></pre>
+<hr />
+<h1 id="20-expiry"><a class="header" href="#20-expiry">20. Expiry</a></h1>
+<p>Every DTN bundle should have explicit expiry.</p>
+<p>Examples:</p>
+<pre><code class="language-text">typing indicator → not DTN
+SOS → 24–72h
+normal message → application-defined
+temporary route hint → minutes
+</code></pre>
+<p>Expired bundles are never forwarded.</p>
+<hr />
+<h1 id="21-hop-limit"><a class="header" href="#21-hop-limit">21. Hop Limit</a></h1>
+<p>Each bundle may have:</p>
+<pre><code class="language-text">hop_limit
+</code></pre>
+<p>Every forward decrements local remaining hop budget.</p>
+<p>At zero:</p>
+<pre><code class="language-text">do not forward further
+</code></pre>
+<p>This prevents uncontrolled propagation.</p>
+<hr />
+<h1 id="22-replication-budget"><a class="header" href="#22-replication-budget">22. Replication Budget</a></h1>
+<p>Hop count alone is insufficient.</p>
+<p>Use:</p>
+<pre><code class="language-text">replication_budget
+</code></pre>
+<p>Example:</p>
+<pre><code class="language-text">normal message = 2
+important message = 4
+SOS = 8
+</code></pre>
+<p>This bounds duplicate copies.</p>
+<hr />
+<h1 id="23-spray-and-wait-baseline"><a class="header" href="#23-spray-and-wait-baseline">23. Spray-and-Wait Baseline</a></h1>
+<p>A good initial opportunistic strategy is:</p>
+<pre><code class="language-text">Spray:
+create a limited number of copies
+
+Wait:
+copies seek destination/gateway
+</code></pre>
+<p>This is more controlled than epidemic flooding.</p>
+<hr />
+<h1 id="24-epidemic-routing"><a class="header" href="#24-epidemic-routing">24. Epidemic Routing</a></h1>
+<p>Full epidemic routing:</p>
+<pre><code class="language-text">send everything to everyone
+</code></pre>
+<p>is unsuitable as the default because it causes:</p>
+<ul>
+<li>battery drain</li>
+<li>bandwidth waste</li>
+<li>storage explosion</li>
+<li>metadata leakage</li>
+</ul>
+<p>Use only for tightly bounded critical emergency classes, if at all.</p>
+<hr />
+<h1 id="25-direct-delivery"><a class="header" href="#25-direct-delivery">25. Direct Delivery</a></h1>
+<p>If encountered peer is the destination:</p>
+<pre><code class="language-text">deliver immediately
+</code></pre>
+<p>This always outranks relay forwarding.</p>
+<hr />
+<h1 id="26-gateway-delivery"><a class="header" href="#26-gateway-delivery">26. Gateway Delivery</a></h1>
+<p>If peer has reliable Internet or destination reachability:</p>
+<pre><code class="language-text">forward to gateway
+</code></pre>
+<p>Gateway can bridge:</p>
+<pre><code class="language-text">BLE → Iroh
+Wi-Fi → Internet
+LAN → remote peer
+</code></pre>
+<p>without decrypting private content.</p>
+<hr />
+<h1 id="27-encounter-protocol"><a class="header" href="#27-encounter-protocol">27. Encounter Protocol</a></h1>
+<p>When two DTN-capable peers meet:</p>
+<pre><code class="language-text">HELLO
+ ↓
+authenticated capability exchange
+ ↓
+inventory summary
+ ↓
+request useful bundles
+ ↓
+transfer
+ ↓
+acknowledge stored copies
+</code></pre>
+<p>Do not immediately dump all bundles.</p>
+<hr />
+<h1 id="28-encounter-identity"><a class="header" href="#28-encounter-identity">28. Encounter Identity</a></h1>
+<p>Nearby discovery can use ephemeral IDs.</p>
+<p>Before forwarding sensitive bundles:</p>
+<pre><code class="language-text">authenticate peer/session
+</code></pre>
+<p>when policy requires.</p>
+<p>Unknown relays may still be eligible for opaque emergency/relay traffic according to application policy.</p>
+<hr />
+<h1 id="29-inventory-summary"><a class="header" href="#29-inventory-summary">29. Inventory Summary</a></h1>
+<p>Do not exchange full BundleId lists if store is large.</p>
+<p>Initial options:</p>
+<pre><code class="language-text">Bloom filter
+range summary
+bounded recent-ID list
+</code></pre>
+<p>Later:</p>
+<pre><code class="language-text">IBLT
+Merkle-set reconciliation
+</code></pre>
+<hr />
+<h1 id="30-bloom-filter-use"><a class="header" href="#30-bloom-filter-use">30. Bloom Filter Use</a></h1>
+<p>A Bloom filter can summarize:</p>
+<pre><code class="language-text">bundles I already have
+</code></pre>
+<p>False positives are acceptable if they only cause missed redundant transfer opportunities.</p>
+<p>Do not use Bloom filters for authorization/security decisions.</p>
+<hr />
+<h1 id="31-reconciliation-flow"><a class="header" href="#31-reconciliation-flow">31. Reconciliation Flow</a></h1>
+<pre><code class="language-text">Peer A summary
+ ↓
+Peer B identifies potentially useful missing bundles
+ ↓
+B requests IDs or classes
+ ↓
+A sends selected bundles
+</code></pre>
+<p>Selection depends on:</p>
+<pre><code class="language-text">priority
+expiry
+destination likelihood
+replication budget
+storage
+battery
+transport bandwidth
+</code></pre>
+<hr />
+<h1 id="32-peer-utility-score"><a class="header" href="#32-peer-utility-score">32. Peer Utility Score</a></h1>
+<p>A peer can receive a forwarding score.</p>
+<p>Conceptually:</p>
+<pre><code class="language-text">score =
+    destination likelihood
+  + gateway probability
+  + recent encounter usefulness
+  + available storage
+  + connectivity quality
+  + energy capacity
+  - congestion
+</code></pre>
+<p>Use deterministic heuristics initially.</p>
+<hr />
+<h1 id="33-destination-likelihood"><a class="header" href="#33-destination-likelihood">33. Destination Likelihood</a></h1>
+<p>Useful hints:</p>
+<pre><code class="language-text">peer recently saw destination
+peer is destination's own device
+peer is known gateway
+peer belongs to same local group
+</code></pre>
+<p>Do not require a global social graph.</p>
+<hr />
+<h1 id="34-encounter-history"><a class="header" href="#34-encounter-history">34. Encounter History</a></h1>
+<p>Maintain bounded history:</p>
+<pre><code class="language-text">peer
+last_seen
+frequency
+successful forwards
+gateway_seen
+</code></pre>
+<p>This can improve forwarding.</p>
+<p>Do not retain unlimited mobility history.</p>
+<hr />
+<h1 id="35-privacy-of-encounter-history"><a class="header" href="#35-privacy-of-encounter-history">35. Privacy of Encounter History</a></h1>
+<p>Encounter logs can reveal movement patterns.</p>
+<p>Keep:</p>
+<ul>
+<li>local</li>
+<li>bounded</li>
+<li>coarse</li>
+<li>retention-limited</li>
+</ul>
+<p>Do not upload them by default.</p>
+<hr />
+<h1 id="36-dtn-priority"><a class="header" href="#36-dtn-priority">36. DTN Priority</a></h1>
+<p>Recommended:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum DtnPriority {
+    Critical,
+    High,
+    Normal,
+    Low,
+    Bulk,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Examples:</p>
+<pre><code class="language-text">SOS → Critical
+delivery receipt → High
+text → Normal
+thumbnail → Low/Normal
+large file chunk → Bulk
+</code></pre>
+<hr />
+<h1 id="37-scheduler"><a class="header" href="#37-scheduler">37. Scheduler</a></h1>
+<p>Per encounter:</p>
+<pre><code class="language-text">Critical
+ ↓
+Control/ACK
+ ↓
+Text
+ ↓
+Small emergency media
+ ↓
+Voice
+ ↓
+Thumbnail
+ ↓
+Bulk chunks
+</code></pre>
+<p>Use weighted fairness to avoid total starvation.</p>
+<hr />
+<h1 id="38-transport-aware-scheduling"><a class="header" href="#38-transport-aware-scheduling">38. Transport-Aware Scheduling</a></h1>
+<p>BLE:</p>
+<pre><code class="language-text">small bundles only
+</code></pre>
+<p>Wi-Fi Direct:</p>
+<pre><code class="language-text">larger bundles/chunks
+</code></pre>
+<p>Iroh:</p>
+<pre><code class="language-text">full functionality
+</code></pre>
+<p>DTN scheduler must understand transport capacity.</p>
+<hr />
+<h1 id="39-bundle-size-classes"><a class="header" href="#39-bundle-size-classes">39. Bundle Size Classes</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">Tiny &lt; 4 KiB
+Small &lt; 64 KiB
+Medium &lt; 1 MiB
+Large &gt;= 1 MiB
+</code></pre>
+<p>These are tunable.</p>
+<p>Routing policy can forbid large bundles on BLE.</p>
+<hr />
+<h1 id="40-file-integration"><a class="header" href="#40-file-integration">40. File Integration</a></h1>
+<p>Part 05 blob subsystem should provide:</p>
+<pre><code class="language-text">BlobId
+ChunkId
+Thumbnail BlobId
+</code></pre>
+<p>DTN may carry:</p>
+<pre><code class="language-text">manifest
+thumbnail
+selected chunks
+</code></pre>
+<p>rather than full multi-gigabyte file by default.</p>
+<hr />
+<h1 id="41-chunk-carriage"><a class="header" href="#41-chunk-carriage">41. Chunk Carriage</a></h1>
+<p>A DTN bundle can wrap:</p>
+<pre><code class="language-text">Blob X
+Chunk 17
+</code></pre>
+<p>The receiving node stores opaque chunk ciphertext.</p>
+<p>Later it can forward or deliver it.</p>
+<hr />
+<h1 id="42-chunk-deduplication"><a class="header" href="#42-chunk-deduplication">42. Chunk Deduplication</a></h1>
+<p>Chunk identity enables:</p>
+<pre><code class="language-text">same chunk seen twice
+→ store once
+</code></pre>
+<p>This reduces relay storage.</p>
+<hr />
+<h1 id="43-manifest-first"><a class="header" href="#43-manifest-first">43. Manifest First</a></h1>
+<p>For large files:</p>
+<pre><code class="language-text">manifest
+ ↓
+recipient/relay decides useful chunks
+</code></pre>
+<p>Do not blindly send random chunks without object context.</p>
+<hr />
+<h1 id="44-thumbnail-first-emergency-media"><a class="header" href="#44-thumbnail-first-emergency-media">44. Thumbnail-First Emergency Media</a></h1>
+<p>Emergency photo flow:</p>
+<pre><code class="language-text">SOS
+ ↓
+8–20 KB thumbnail
+ ↓
+preview
+ ↓
+full photo later on fast path
+</code></pre>
+<p>This greatly improves utility over constrained mesh.</p>
+<hr />
+<h1 id="45-voice-notes"><a class="header" href="#45-voice-notes">45. Voice Notes</a></h1>
+<p>Low-bitrate Opus voice can be DTN-carried in chunks.</p>
+<p>Priority typically above full-resolution images but below text/location.</p>
+<hr />
+<h1 id="46-realtime-media"><a class="header" href="#46-realtime-media">46. Realtime Media</a></h1>
+<p>DTN does not carry realtime call frames.</p>
+<p>Calls require:</p>
+<pre><code class="language-text">continuous path
+</code></pre>
+<p>If unavailable:</p>
+<pre><code class="language-text">voice note
+text
+SOS
+</code></pre>
+<p>becomes fallback.</p>
+<hr />
+<h1 id="47-message-integration"><a class="header" href="#47-message-integration">47. Message Integration</a></h1>
+<p>Messaging creates:</p>
+<pre><code class="language-text">MessageQueued
+</code></pre>
+<p>If no direct route:</p>
+<pre><code class="language-text">routing engine chooses DTN
+ ↓
+DTN bundle created
+</code></pre>
+<p>The original MessageId remains stable.</p>
+<hr />
+<h1 id="48-message-deduplication"><a class="header" href="#48-message-deduplication">48. Message Deduplication</a></h1>
+<p>Destination may receive same message via:</p>
+<pre><code class="language-text">Internet
++
+DTN relay
+</code></pre>
+<p>Recipient deduplicates by MessageId.</p>
+<p>Bundle deduplication and message deduplication are distinct.</p>
+<hr />
+<h1 id="49-delivery-ack"><a class="header" href="#49-delivery-ack">49. Delivery ACK</a></h1>
+<p>Destination emits a delivery acknowledgement.</p>
+<p>ACK itself can be:</p>
+<pre><code class="language-text">direct
+or DTN-carried
+</code></pre>
+<p>This lets origin eventually know destination reached.</p>
+<hr />
+<h1 id="50-ack-compression"><a class="header" href="#50-ack-compression">50. ACK Compression</a></h1>
+<p>Acknowledgements can aggregate:</p>
+<pre><code class="language-text">multiple delivered BundleIds
+</code></pre>
+<p>into compact summaries.</p>
+<p>Useful in low-bandwidth encounters.</p>
+<hr />
+<h1 id="51-custody-like-transfer"><a class="header" href="#51-custody-like-transfer">51. Custody-Like Transfer</a></h1>
+<p>A relay may say:</p>
+<pre><code class="language-text">I have durably stored this bundle
+</code></pre>
+<p>Origin can then reduce its replication pressure.</p>
+<p>Do not call this strict DTN custody transfer unless implementing full custody semantics.</p>
+<p>Use a simpler term such as:</p>
+<pre><code class="language-text">DurableRelayAck
+</code></pre>
+<p>initially.</p>
+<hr />
+<h1 id="52-durable-relay-ack"><a class="header" href="#52-durable-relay-ack">52. Durable Relay Ack</a></h1>
+<p>Means:</p>
+<pre><code class="language-text">relay persisted bundle
+</code></pre>
+<p>not:</p>
+<pre><code class="language-text">destination received
+</code></pre>
+<p>These must never be confused.</p>
+<hr />
+<h1 id="53-copy-retirement"><a class="header" href="#53-copy-retirement">53. Copy Retirement</a></h1>
+<p>Origin may retire redundant copies after:</p>
+<pre><code class="language-text">destination ACK
+</code></pre>
+<p>or according to policy after sufficient durable relay acknowledgements.</p>
+<p>Critical data may retain extra copies longer.</p>
+<hr />
+<h1 id="54-eviction"><a class="header" href="#54-eviction">54. Eviction</a></h1>
+<p>Relay storage eviction order:</p>
+<pre><code class="language-text">expired
+ ↓
+delivered
+ ↓
+cancelled
+ ↓
+bulk low-priority
+ ↓
+old normal
+ ↓
+high
+ ↓
+critical last
+</code></pre>
+<p>Never use FIFO blindly.</p>
+<hr />
+<h1 id="55-storage-quotas"><a class="header" href="#55-storage-quotas">55. Storage Quotas</a></h1>
+<p>Per node:</p>
+<pre><code class="language-text">max DTN bytes
+max bundles
+max per-peer bytes
+max critical reserve
+</code></pre>
+<p>Unknown peers should have stricter quotas.</p>
+<hr />
+<h1 id="56-critical-reserve"><a class="header" href="#56-critical-reserve">56. Critical Reserve</a></h1>
+<p>Reserve storage for:</p>
+<pre><code class="language-text">SOS
+authority alerts
+delivery ACKs
+</code></pre>
+<p>so bulk content cannot consume all relay capacity.</p>
+<hr />
+<h1 id="57-per-peer-quota"><a class="header" href="#57-per-peer-quota">57. Per-Peer Quota</a></h1>
+<p>Prevent one malicious peer from filling store.</p>
+<pre><code class="language-text">unknown peer = low quota
+verified contact = moderate quota
+trusted authority = policy-defined
+</code></pre>
+<p>Authorization and quota are separate.</p>
+<hr />
+<h1 id="58-admission-control"><a class="header" href="#58-admission-control">58. Admission Control</a></h1>
+<p>Before accepting a relay bundle:</p>
+<pre><code class="language-text">validate size
+verify envelope
+check expiry
+check replication budget
+check quota
+check forwarding policy
+check duplicate
+</code></pre>
+<p>Only then persist.</p>
+<hr />
+<h1 id="59-bundle-validation"><a class="header" href="#59-bundle-validation">59. Bundle Validation</a></h1>
+<p>Validate:</p>
+<pre><code class="language-text">version
+header size
+payload size
+expiry
+hop limit
+signature/integrity
+destination format
+</code></pre>
+<p>Remote input is hostile.</p>
+<hr />
+<h1 id="60-oversized-bundle"><a class="header" href="#60-oversized-bundle">60. Oversized Bundle</a></h1>
+<p>Reject before allocation/storage reservation.</p>
+<p>Never trust remote size fields.</p>
+<hr />
+<h1 id="61-malformed-metadata"><a class="header" href="#61-malformed-metadata">61. Malformed Metadata</a></h1>
+<p>Malformed bundle should not affect other stored bundles.</p>
+<p>Parsing must be isolated and bounded.</p>
+<hr />
+<h1 id="62-bundle-encryption"><a class="header" href="#62-bundle-encryption">62. Bundle Encryption</a></h1>
+<p>Relay-visible header should reveal only what is needed.</p>
+<p>Private payload remains E2EE ciphertext.</p>
+<p>Potentially sensitive metadata such as original sender identity may also be minimized/obfuscated depending on routing design.</p>
+<hr />
+<h1 id="63-source-privacy"><a class="header" href="#63-source-privacy">63. Source Privacy</a></h1>
+<p>Permanent source identity may not need to be visible to relay.</p>
+<p>Use:</p>
+<pre><code class="language-text">opaque origin reference
+</code></pre>
+<p>if protocol can still authenticate end-to-end.</p>
+<hr />
+<h1 id="64-destination-privacy"><a class="header" href="#64-destination-privacy">64. Destination Privacy</a></h1>
+<p>Avoid stable public destination tags.</p>
+<p>Use rotating capability/routing tokens where feasible.</p>
+<p>Part 14 proximity/discovery architecture can help here.</p>
+<hr />
+<h1 id="65-linkability-trade-off"><a class="header" href="#65-linkability-trade-off">65. Linkability Trade-Off</a></h1>
+<p>Perfect unlinkability can conflict with efficient routing.</p>
+<p>Architecture should document trade-offs explicitly.</p>
+<p>Do not claim anonymity simply because payloads are encrypted.</p>
+<hr />
+<h1 id="66-replay-protection"><a class="header" href="#66-replay-protection">66. Replay Protection</a></h1>
+<p>Same BundleId received repeatedly:</p>
+<pre><code class="language-text">do not duplicate storage
+</code></pre>
+<p>But metadata differences for same ID indicate:</p>
+<pre><code class="language-text">protocol violation/tampering
+</code></pre>
+<hr />
+<h1 id="67-bundle-integrity"><a class="header" href="#67-bundle-integrity">67. Bundle Integrity</a></h1>
+<p>Bundle should authenticate:</p>
+<pre><code class="language-text">bundle_id
+destination
+expiry
+payload reference
+priority
+origin binding
+</code></pre>
+<p>so relays cannot alter routing-critical fields unnoticed.</p>
+<hr />
+<h1 id="68-hop-local-metadata"><a class="header" href="#68-hop-local-metadata">68. Hop-Local Metadata</a></h1>
+<p>Fields changed per hop must not be covered as immutable origin-authenticated data unless represented separately.</p>
+<p>Example:</p>
+<pre><code class="language-text">remaining copy budget
+local receipt state
+</code></pre>
+<hr />
+<h1 id="69-cancel-bundle"><a class="header" href="#69-cancel-bundle">69. Cancel Bundle</a></h1>
+<p>Origin may issue:</p>
+<pre><code class="language-text">BundleCancel
+</code></pre>
+<p>for still-undelivered bundles.</p>
+<p>Cancellation propagation is best effort.</p>
+<p>Cannot erase already-delivered plaintext.</p>
+<hr />
+<h1 id="70-expired-bundle-handling"><a class="header" href="#70-expired-bundle-handling">70. Expired Bundle Handling</a></h1>
+<p>Expired bundles:</p>
+<pre><code class="language-text">do not forward
+delete according to retention policy
+</code></pre>
+<p>Optional compact expiry summary can help peers discard stale references.</p>
+<hr />
+<h1 id="71-time-without-internet"><a class="header" href="#71-time-without-internet">71. Time Without Internet</a></h1>
+<p>Device clocks may be wrong.</p>
+<p>Use:</p>
+<pre><code class="language-text">creation timestamp
++
+monotonic local age
++
+bounded tolerance
+</code></pre>
+<p>where possible.</p>
+<p>For security-critical expiry, avoid relying solely on untrusted remote wall clock.</p>
+<hr />
+<h1 id="72-relative-lifetime"><a class="header" href="#72-relative-lifetime">72. Relative Lifetime</a></h1>
+<p>Bundle can include:</p>
+<pre><code class="language-text">lifetime duration
+</code></pre>
+<p>in addition to creation time.</p>
+<p>Local node computes age relative to first trusted observation where appropriate.</p>
+<hr />
+<h1 id="73-gateway-detection"><a class="header" href="#73-gateway-detection">73. Gateway Detection</a></h1>
+<p>A peer may advertise:</p>
+<pre><code class="language-text">Internet gateway available
+</code></pre>
+<p>as capability.</p>
+<p>Routing must verify the path works before trusting strongly.</p>
+<hr />
+<h1 id="74-gateway-capability"><a class="header" href="#74-gateway-capability">74. Gateway Capability</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct GatewayCapability {
+    pub internet: bool,
+    pub relay_access: bool,
+    pub estimated_capacity: CapacityClass,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>This is a hint, not identity.</p>
+<hr />
+<h1 id="75-gateway-forwarding"><a class="header" href="#75-gateway-forwarding">75. Gateway Forwarding</a></h1>
+<p>Gateway flow:</p>
+<pre><code class="language-text">receive encrypted bundle
+ ↓
+persist
+ ↓
+obtain Internet
+ ↓
+resolve destination
+ ↓
+Iroh/relay/direct delivery
+ ↓
+receive destination ACK
+ ↓
+propagate ACK back via DTN if necessary
+</code></pre>
+<hr />
+<h1 id="76-cross-transport-bridge"><a class="header" href="#76-cross-transport-bridge">76. Cross-Transport Bridge</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">Phone A
+ ↓ BLE
+Phone B
+ ↓ Wi-Fi Direct
+Laptop C
+ ↓ LAN
+Gateway D
+ ↓ Iroh
+Destination
+</code></pre>
+<p>Same bundle survives all hops.</p>
+<hr />
+<h1 id="77-transport-upgrade"><a class="header" href="#77-transport-upgrade">77. Transport Upgrade</a></h1>
+<p>During encounter:</p>
+<pre><code class="language-text">discover over BLE
+ ↓
+both support Wi-Fi Direct
+ ↓
+upgrade bulk transfer to Wi-Fi
+</code></pre>
+<p>DTN session retains bundle semantics.</p>
+<hr />
+<h1 id="78-transport-downgrade"><a class="header" href="#78-transport-downgrade">78. Transport Downgrade</a></h1>
+<p>If Wi-Fi fails:</p>
+<pre><code class="language-text">continue small critical bundles over BLE
+bulk pauses
+</code></pre>
+<p>No data model reset.</p>
+<hr />
+<h1 id="79-encounter-session"><a class="header" href="#79-encounter-session">79. Encounter Session</a></h1>
+<p>Define:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct EncounterSession {
+    pub peer: PeerSession,
+    pub transport: TransportKind,
+    pub capacity: EncounterCapacity,
+    pub expires_at: Option&lt;Timestamp&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="80-encounter-capacity"><a class="header" href="#80-encounter-capacity">80. Encounter Capacity</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct EncounterCapacity {
+    pub max_bytes: u64,
+    pub estimated_duration: Option&lt;Duration&gt;,
+    pub bandwidth_class: BandwidthClass,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Useful for deciding what to exchange first.</p>
+<hr />
+<h1 id="81-encounter-deadline"><a class="header" href="#81-encounter-deadline">81. Encounter Deadline</a></h1>
+<p>A BLE/Wi-Fi peer may disappear quickly.</p>
+<p>Scheduler should prioritize:</p>
+<pre><code class="language-text">small critical objects first
+</code></pre>
+<p>rather than starting one giant file.</p>
+<hr />
+<h1 id="82-contact-duration-prediction"><a class="header" href="#82-contact-duration-prediction">82. Contact Duration Prediction</a></h1>
+<p>Optional heuristic:</p>
+<pre><code class="language-text">recent encounter history
+signal trend
+transport type
+</code></pre>
+<p>can estimate contact duration.</p>
+<p>Do not overcomplicate v1.</p>
+<hr />
+<h1 id="83-store-and-forward-policy"><a class="header" href="#83-store-and-forward-policy">83. Store-and-Forward Policy</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct ForwardingPolicy {
+    pub allow_unknown_relays: bool,
+    pub max_hops: u8,
+    pub replication_budget: u8,
+    pub max_bundle_size: u64,
+    pub expiry: Duration,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Applications can override safely.</p>
+<hr />
+<h1 id="84-forwarding-classes"><a class="header" href="#84-forwarding-classes">84. Forwarding Classes</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum ForwardingClass {
+    DirectOnly,
+    TrustedRelays,
+    AnyRelay,
+    EmergencyBroadcast,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>This cleanly separates privacy/security expectations.</p>
+<hr />
+<h1 id="85-directonly"><a class="header" href="#85-directonly">85. DirectOnly</a></h1>
+<p>Bundle may be stored locally until destination encountered, but not handed to third-party relay.</p>
+<p>Useful for highly sensitive payloads.</p>
+<hr />
+<h1 id="86-trustedrelays"><a class="header" href="#86-trustedrelays">86. TrustedRelays</a></h1>
+<p>Forward only to:</p>
+<pre><code class="language-text">verified contacts
+own devices
+organization nodes
+</code></pre>
+<hr />
+<h1 id="87-anyrelay"><a class="header" href="#87-anyrelay">87. AnyRelay</a></h1>
+<p>Encrypted payload can use unknown relay nodes.</p>
+<p>Still subject to:</p>
+<pre><code class="language-text">quota
+rate limit
+replication budget
+</code></pre>
+<hr />
+<h1 id="88-emergencybroadcast"><a class="header" href="#88-emergencybroadcast">88. EmergencyBroadcast</a></h1>
+<p>Special controlled dissemination mode.</p>
+<p>May use broader forwarding but must remain:</p>
+<pre><code class="language-text">bounded
+signed
+expiring
+rate-limited
+</code></pre>
+<hr />
+<h1 id="89-local-broadcast"><a class="header" href="#89-local-broadcast">89. Local Broadcast</a></h1>
+<p>Public emergency alert can target:</p>
+<pre><code class="language-text">local area / encounter domain
+</code></pre>
+<p>without individual destination.</p>
+<p>This is different from private unicast.</p>
+<hr />
+<h1 id="90-broadcast-scope"><a class="header" href="#90-broadcast-scope">90. Broadcast Scope</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum BroadcastScope {
+    Nearby,
+    LocalRegion,
+    Organization,
+    EmergencyDomain,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Geographic scoping may remain approximate/offline.</p>
+<hr />
+<h1 id="91-authority-alerts"><a class="header" href="#91-authority-alerts">91. Authority Alerts</a></h1>
+<p>Authority alert requires:</p>
+<pre><code class="language-text">origin signature
+trusted issuer
+expiry
+scope
+</code></pre>
+<p>Relays can forward without trusting alert text personally; clients verify authority chain.</p>
+<hr />
+<h1 id="92-spam-resistance"><a class="header" href="#92-spam-resistance">92. Spam Resistance</a></h1>
+<p>Open DTN can be abused.</p>
+<p>Use:</p>
+<pre><code class="language-text">rate limits
+bundle size caps
+per-origin quotas
+proof-of-trust
+issuer policy
+critical-class restrictions
+</code></pre>
+<p>Do not let any unknown peer mark arbitrary traffic <code>Critical</code>.</p>
+<hr />
+<h1 id="93-priority-authorization"><a class="header" href="#93-priority-authorization">93. Priority Authorization</a></h1>
+<p>Priority should be constrained by authority.</p>
+<p>Example:</p>
+<pre><code class="language-text">unknown peer
+cannot claim AuthorityCritical
+</code></pre>
+<p>Map requested priority through local policy.</p>
+<hr />
+<h1 id="94-priority-downgrade"><a class="header" href="#94-priority-downgrade">94. Priority Downgrade</a></h1>
+<p>If sender requests disallowed priority:</p>
+<pre><code class="language-text">downgrade
+or reject
+</code></pre>
+<p>Do not trust remote enum blindly.</p>
+<hr />
+<h1 id="95-congestion"><a class="header" href="#95-congestion">95. Congestion</a></h1>
+<p>Relay store/transport congestion signals:</p>
+<pre><code class="language-text">queue depth
+storage pressure
+encounter bandwidth
+battery
+</code></pre>
+<p>Forwarding scheduler adapts.</p>
+<hr />
+<h1 id="96-backpressure"><a class="header" href="#96-backpressure">96. Backpressure</a></h1>
+<p>If DTN store is full:</p>
+<pre><code class="language-text">reject/defer low priority
+</code></pre>
+<p>Do not buffer incoming bundle indefinitely in memory.</p>
+<hr />
+<h1 id="97-battery-awareness"><a class="header" href="#97-battery-awareness">97. Battery Awareness</a></h1>
+<p>Part 13 will expand this.</p>
+<p>DTN already needs modes:</p>
+<pre><code class="language-text">Normal
+BatterySaver
+EmergencyBalanced
+EmergencyMaximumReach
+</code></pre>
+<p>These control:</p>
+<pre><code class="language-text">scan frequency
+forwarding volume
+relay acceptance
+Wi-Fi upgrade attempts
+</code></pre>
+<hr />
+<h1 id="98-low-battery-behavior"><a class="header" href="#98-low-battery-behavior">98. Low Battery Behavior</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">&lt;10%
+accept only:
+critical
+own messages
+delivery ACK
+small high-value bundles
+</code></pre>
+<p>Do not kill emergency functionality entirely unless unavoidable.</p>
+<hr />
+<h1 id="99-charging-node"><a class="header" href="#99-charging-node">99. Charging Node</a></h1>
+<p>A charging device may become a better relay candidate.</p>
+<p>Advertise coarse:</p>
+<pre><code class="language-text">HighRelayCapacity
+</code></pre>
+<p>rather than exact battery percentage.</p>
+<hr />
+<h1 id="100-thermal-awareness"><a class="header" href="#100-thermal-awareness">100. Thermal Awareness</a></h1>
+<p>If device is overheating:</p>
+<pre><code class="language-text">reduce bulk relay
+avoid Wi-Fi high-throughput upgrade
+keep critical control traffic
+</code></pre>
+<hr />
+<h1 id="101-discovery-duty-cycle"><a class="header" href="#101-discovery-duty-cycle">101. Discovery Duty Cycle</a></h1>
+<p>DTN depends on peer encounters.</p>
+<p>Scanning strategy must be battery-aware:</p>
+<pre><code class="language-text">normal low duty cycle
+nearby screen active higher
+emergency high
+battery saver low
+</code></pre>
+<p>Part 14 will define the proximity abstraction.</p>
+<hr />
+<h1 id="102-peer-advertisement"><a class="header" href="#102-peer-advertisement">102. Peer Advertisement</a></h1>
+<p>Nearby advertisement should be tiny.</p>
+<p>Possible:</p>
+<pre><code class="language-text">protocol version
+rotating node token
+DTN capability bit
+gateway hint
+</code></pre>
+<p>Do not include full bundle inventory in advertisements.</p>
+<hr />
+<h1 id="103-session-authentication"><a class="header" href="#103-session-authentication">103. Session Authentication</a></h1>
+<p>After discovery:</p>
+<pre><code class="language-text">establish secure session
+</code></pre>
+<p>then exchange:</p>
+<pre><code class="language-text">inventory
+bundle metadata
+</code></pre>
+<p>This limits metadata exposure.</p>
+<hr />
+<h1 id="104-unknown-peer-mode"><a class="header" href="#104-unknown-peer-mode">104. Unknown Peer Mode</a></h1>
+<p>If product allows anonymous relays:</p>
+<pre><code class="language-text">minimal authenticated ephemeral session
+</code></pre>
+<p>may still be used to prevent trivial spoofing/replay.</p>
+<p>Application-level identity trust remains separate.</p>
+<hr />
+<h1 id="105-relay-receipt"><a class="header" href="#105-relay-receipt">105. Relay Receipt</a></h1>
+<p>After persistence:</p>
+<pre><code class="language-text">RelayStored(bundle_id)
+</code></pre>
+<p>can be sent.</p>
+<p>Origin records:</p>
+<pre><code class="language-text">one durable copy exists
+</code></pre>
+<p>Do not call it delivery.</p>
+<hr />
+<h1 id="106-delivery-receipt-propagation"><a class="header" href="#106-delivery-receipt-propagation">106. Delivery Receipt Propagation</a></h1>
+<p>Destination creates:</p>
+<pre><code class="language-text">DestinationAck(bundle_id)
+</code></pre>
+<p>This may travel back through any path.</p>
+<p>Once origin receives it:</p>
+<pre><code class="language-text">mark complete
+stop forwarding
+</code></pre>
+<hr />
+<h1 id="107-ack-aggregation"><a class="header" href="#107-ack-aggregation">107. Ack Aggregation</a></h1>
+<p>For many bundles:</p>
+<pre><code class="language-text">AckSummary
+</code></pre>
+<p>can contain ranges/Bloom-like compact structure.</p>
+<p>Must not create false positive delivery semantics.</p>
+<p>Use exact IDs/ranges where correctness matters.</p>
+<hr />
+<h1 id="108-negative-acknowledgement"><a class="header" href="#108-negative-acknowledgement">108. Negative Acknowledgement</a></h1>
+<p>Peer can report:</p>
+<pre><code class="language-text">RejectedQuota
+Expired
+Unsupported
+Unauthorized
+</code></pre>
+<p>Useful to stop useless retries.</p>
+<hr />
+<h1 id="109-route-learning"><a class="header" href="#109-route-learning">109. Route Learning</a></h1>
+<p>Successful delivery through peer can improve:</p>
+<pre><code class="language-text">future utility score
+</code></pre>
+<p>Maintain only bounded local history.</p>
+<hr />
+<h1 id="110-no-global-routing-table"><a class="header" href="#110-no-global-routing-table">110. No Global Routing Table</a></h1>
+<p>Mobile DTN topology changes too quickly.</p>
+<p>Do not implement Internet-like full route tables.</p>
+<p>Prefer:</p>
+<pre><code class="language-text">neighbor knowledge
+recent encounter utility
+limited replication
+gateway hints
+</code></pre>
+<hr />
+<h1 id="111-social-aware-routing"><a class="header" href="#111-social-aware-routing">111. Social-Aware Routing</a></h1>
+<p>Potential future optimization:</p>
+<pre><code class="language-text">frequently encountered communities
+</code></pre>
+<p>but carries privacy risks.</p>
+<p>Not recommended for initial release.</p>
+<hr />
+<h1 id="112-prophet-like-routing"><a class="header" href="#112-prophet-like-routing">112. Prophet-Like Routing</a></h1>
+<p>Future predictive routing algorithms may use encounter probability.</p>
+<p>Keep algorithm behind trait:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait ForwardingStrategy {
+    fn select(
+        &amp;self,
+        bundle: &amp;StoredBundle,
+        peer: &amp;PeerContext,
+    ) -&gt; ForwardDecision;
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Start with simple deterministic policy.</p>
+<hr />
+<h1 id="113-forwarddecision"><a class="header" href="#113-forwarddecision">113. ForwardDecision</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum ForwardDecision {
+    Skip,
+    Forward,
+    ForwardCopy { copies: u8 },
+    DeliverDirect,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="114-strategy-plugability"><a class="header" href="#114-strategy-plugability">114. Strategy Plugability</a></h1>
+<p>Possible strategies:</p>
+<pre><code class="language-text">DirectOnly
+SprayAndWait
+GatewayPreferred
+EmergencyFloodLimited
+</code></pre>
+<p>Compile-time strategy selection initially.</p>
+<hr />
+<h1 id="115-bundle-replication-counter"><a class="header" href="#115-bundle-replication-counter">115. Bundle Replication Counter</a></h1>
+<p>Keep local mutable:</p>
+<pre><code class="language-text">copies_remaining
+</code></pre>
+<p>Do not let relay inflate it.</p>
+<p>Origin-signed max budget constrains it.</p>
+<hr />
+<h1 id="116-binary-spray-and-wait"><a class="header" href="#116-binary-spray-and-wait">116. Binary Spray-and-Wait</a></h1>
+<p>A practical scheme:</p>
+<pre><code class="language-text">if copies = N
+forward floor(N/2)
+keep ceil(N/2)
+</code></pre>
+<p>until each copy has one remaining.</p>
+<p>This spreads efficiently while bounded.</p>
+<hr />
+<h1 id="117-delivery-probability"><a class="header" href="#117-delivery-probability">117. Delivery Probability</a></h1>
+<p>Peer can advertise or locally estimate:</p>
+<pre><code class="language-text">gateway_probability
+destination_probability
+</code></pre>
+<p>Use coarse scores.</p>
+<p>Never trust peer self-reported score blindly.</p>
+<hr />
+<h1 id="118-multi-recipient-bundles"><a class="header" href="#118-multi-recipient-bundles">118. Multi-Recipient Bundles</a></h1>
+<p>Prefer separate recipient-authorized payload references rather than exposing a recipient list to relays if privacy matters.</p>
+<p>Group dissemination can use group-specific protocol.</p>
+<hr />
+<h1 id="119-bundle-aggregation"><a class="header" href="#119-bundle-aggregation">119. Bundle Aggregation</a></h1>
+<p>Small related control bundles may be packed into one transfer batch.</p>
+<p>But maintain individual BundleIds for deduplication/delivery tracking.</p>
+<hr />
+<h1 id="120-batch-transfer"><a class="header" href="#120-batch-transfer">120. Batch Transfer</a></h1>
+<p>Encounter transfer can send:</p>
+<pre><code class="language-text">BatchHeader
+bundle count
+bundle metadata
+streamed payloads
+</code></pre>
+<p>This reduces handshake overhead.</p>
+<hr />
+<h1 id="121-postcard-usage"><a class="header" href="#121-postcard-usage">121. Postcard Usage</a></h1>
+<p>Use Postcard for:</p>
+<pre><code class="language-text">bundle headers
+inventory requests
+ack summaries
+</code></pre>
+<p>Stream large payload bytes separately.</p>
+<hr />
+<h1 id="122-versioning"><a class="header" href="#122-versioning">122. Versioning</a></h1>
+<p>DTN extension:</p>
+<pre><code class="language-text">dtn/1
+</code></pre>
+<p>Capabilities:</p>
+<pre><code class="language-text">spray-and-wait
+relay-ack
+gateway-hint
+blob-chunk
+broadcast
+</code></pre>
+<p>Part 01 extension negotiation applies.</p>
+<hr />
+<h1 id="123-capability-negotiation"><a class="header" href="#123-capability-negotiation">123. Capability Negotiation</a></h1>
+<p>Peer may support:</p>
+<pre><code class="language-text">text bundles
+blob chunk relay
+public alerts
+gateway mode
+</code></pre>
+<p>Routing chooses only common capabilities.</p>
+<hr />
+<h1 id="124-device-identity-integration"><a class="header" href="#124-device-identity-integration">124. Device Identity Integration</a></h1>
+<p>Part 02 gives:</p>
+<pre><code class="language-text">AccountId
+DeviceId
+device certificate
+trust state
+</code></pre>
+<p>DTN uses these for:</p>
+<pre><code class="language-text">origin authentication
+destination resolution
+trusted-relay policy
+</code></pre>
+<hr />
+<h1 id="125-transportrouting-integration"><a class="header" href="#125-transportrouting-integration">125. Transport/Routing Integration</a></h1>
+<p>Part 03 decides:</p>
+<pre><code class="language-text">should this operation use DTN?
+</code></pre>
+<p>DTN then manages:</p>
+<pre><code class="language-text">store
+replicate
+forward
+</code></pre>
+<p>If direct route later appears, Part 03 may bypass DTN and deliver immediately.</p>
+<hr />
+<h1 id="126-event-log-integration"><a class="header" href="#126-event-log-integration">126. Event Log Integration</a></h1>
+<p>Part 04 records meaningful lifecycle:</p>
+<pre><code class="language-text">BundleCreated
+BundleForwarded
+DestinationReached
+BundleExpired
+</code></pre>
+<p>High-frequency encounter metrics stay out of semantic event log.</p>
+<hr />
+<h1 id="127-fileblob-integration"><a class="header" href="#127-fileblob-integration">127. File/Blob Integration</a></h1>
+<p>Part 05 gives:</p>
+<pre><code class="language-text">BlobId
+ChunkId
+manifest
+encrypted chunks
+</code></pre>
+<p>DTN stores/forwards references or selected ciphertext chunks.</p>
+<hr />
+<h1 id="128-crash-recovery"><a class="header" href="#128-crash-recovery">128. Crash Recovery</a></h1>
+<p>After process death:</p>
+<pre><code class="language-text">load bundle store
+ ↓
+remove expired
+ ↓
+restore forwarding state
+ ↓
+resume encounter logic
+</code></pre>
+<p>No bundle accepted durably should vanish silently.</p>
+<hr />
+<h1 id="129-atomic-bundle-acceptance"><a class="header" href="#129-atomic-bundle-acceptance">129. Atomic Bundle Acceptance</a></h1>
+<p>Transaction:</p>
+<pre><code class="language-text">validate
+reserve storage
+write payload/ref
+write bundle record
+commit
+</code></pre>
+<p>Only after commit:</p>
+<pre><code class="language-text">send RelayStored ACK
+</code></pre>
+<hr />
+<h1 id="130-staging"><a class="header" href="#130-staging">130. Staging</a></h1>
+<p>Large incoming relay payload may use staging.</p>
+<p>After verification:</p>
+<pre><code class="language-text">commit to relay blob store
+</code></pre>
+<p>Incomplete data remains resumable or disposable per policy.</p>
+<hr />
+<h1 id="131-partial-relay-transfer"><a class="header" href="#131-partial-relay-transfer">131. Partial Relay Transfer</a></h1>
+<p>An encounter may end mid-bundle.</p>
+<p>For chunked blob bundles:</p>
+<pre><code class="language-text">resume later
+</code></pre>
+<p>For small inline bundle:</p>
+<pre><code class="language-text">restart bounded transfer
+</code></pre>
+<hr />
+<h1 id="132-encounter-resumption"><a class="header" href="#132-encounter-resumption">132. Encounter Resumption</a></h1>
+<p>Stable:</p>
+<pre><code class="language-text">BundleId
+ChunkId
+</code></pre>
+<p>allows next encounter to continue without full restart.</p>
+<hr />
+<h1 id="133-process-ownership"><a class="header" href="#133-process-ownership">133. Process Ownership</a></h1>
+<p>In daemon mode, DTN engine should live in background daemon/service.</p>
+<p>On Android, foreground/background execution rules apply.</p>
+<p>UI does not own forwarding lifecycle.</p>
+<hr />
+<h1 id="134-android-background-restrictions"><a class="header" href="#134-android-background-restrictions">134. Android Background Restrictions</a></h1>
+<p>Kotlin/platform layer reports:</p>
+<pre><code class="language-text">background allowed
+foreground service active
+Bluetooth scanning constraints
+Wi-Fi constraints
+</code></pre>
+<p>Rust DTN policy adapts.</p>
+<p>Do not hide OS restrictions with busy loops.</p>
+<hr />
+<h1 id="135-ios-restrictions"><a class="header" href="#135-ios-restrictions">135. iOS Restrictions</a></h1>
+<p>iOS proximity/background behavior is more constrained.</p>
+<p>DTN architecture must degrade gracefully:</p>
+<pre><code class="language-text">foreground encounters
+system-approved background opportunities
+push-assisted Internet delivery
+</code></pre>
+<p>Do not assume Android-equivalent scanning.</p>
+<hr />
+<h1 id="136-desktop-dtn"><a class="header" href="#136-desktop-dtn">136. Desktop DTN</a></h1>
+<p>Desktop can run:</p>
+<pre><code class="language-text">continuous LAN discovery
+Bluetooth if supported
+Iroh gateway
+large relay store
+</code></pre>
+<p>Useful as:</p>
+<pre><code class="language-text">home relay
+shelter node
+community gateway
+</code></pre>
+<hr />
+<h1 id="137-headless-dtn-node"><a class="header" href="#137-headless-dtn-node">137. Headless DTN Node</a></h1>
+<p>A Linux/Raspberry Pi node can provide:</p>
+<pre><code class="language-text">BLE
+Wi-Fi
+Ethernet
+Iroh
+large store
+power supply
+</code></pre>
+<p>This becomes extremely useful in disaster deployments.</p>
+<hr />
+<h1 id="138-emergency-relay-node"><a class="header" href="#138-emergency-relay-node">138. Emergency Relay Node</a></h1>
+<p>Recommended profile:</p>
+<pre><code class="language-text">high relay quota
+gateway preferred
+critical reserve
+authority alert support
+continuous discovery
+</code></pre>
+<p>No messenger UI required.</p>
+<hr />
+<h1 id="139-relay-node-identity"><a class="header" href="#139-relay-node-identity">139. Relay Node Identity</a></h1>
+<p>A relay can have:</p>
+<pre><code class="language-text">service/device identity
+</code></pre>
+<p>without being conversation participant.</p>
+<p>This supports accountability without content access.</p>
+<hr />
+<h1 id="140-self-hosted-relaygateway"><a class="header" href="#140-self-hosted-relaygateway">140. Self-Hosted Relay/Gateway</a></h1>
+<p>Part 11 will expand Internet relay infrastructure.</p>
+<p>DTN gateway can hand off to:</p>
+<pre><code class="language-text">self-hosted Iroh relay
+organization relay
+public relay
+</code></pre>
+<p>according to policy.</p>
+<hr />
+<h1 id="141-security-threats"><a class="header" href="#141-security-threats">141. Security Threats</a></h1>
+<p>Protect against:</p>
+<pre><code class="language-text">bundle flooding
+storage exhaustion
+priority abuse
+replay
+routing loops
+fake gateway claims
+malformed bundle
+expired spam
+metadata tracking
+malicious relay dropping bundles
+</code></pre>
+<p>DTN cannot guarantee a relay will forward honestly.</p>
+<p>Use redundancy when required.</p>
+<hr />
+<h1 id="142-routing-loop-prevention"><a class="header" href="#142-routing-loop-prevention">142. Routing Loop Prevention</a></h1>
+<p>Use:</p>
+<pre><code class="language-text">BundleId dedup
+hop limit
+forward history
+replication budget
+</code></pre>
+<p>Never rely on hop limit alone.</p>
+<hr />
+<h1 id="143-forward-history"><a class="header" href="#143-forward-history">143. Forward History</a></h1>
+<p>Keep bounded:</p>
+<pre><code class="language-text">which peer received bundle
+when
+result
+</code></pre>
+<p>Avoid sending same bundle back and forth endlessly.</p>
+<hr />
+<h1 id="144-peer-bounce-prevention"><a class="header" href="#144-peer-bounce-prevention">144. Peer Bounce Prevention</a></h1>
+<p>If:</p>
+<pre><code class="language-text">A gave bundle to B
+</code></pre>
+<p>then B should not immediately return same copy to A unless protocol explicitly requires reconciliation.</p>
+<hr />
+<h1 id="145-malicious-drop"><a class="header" href="#145-malicious-drop">145. Malicious Drop</a></h1>
+<p>A relay can accept then drop.</p>
+<p>No architecture can force untrusted relay cooperation.</p>
+<p>Mitigations:</p>
+<pre><code class="language-text">multiple copies
+trusted gateways
+delivery acknowledgements
+reputation locally
+</code></pre>
+<hr />
+<h1 id="146-malicious-modification"><a class="header" href="#146-malicious-modification">146. Malicious Modification</a></h1>
+<p>End-to-end integrity detects payload/header tampering.</p>
+<p>Receiver rejects.</p>
+<hr />
+<h1 id="147-malicious-fabrication"><a class="header" href="#147-malicious-fabrication">147. Malicious Fabrication</a></h1>
+<p>Origin signatures/authenticated application payloads prevent forged private messages/authority alerts.</p>
+<p>Bundle transport itself does not create application trust.</p>
+<hr />
+<h1 id="148-rate-limiting"><a class="header" href="#148-rate-limiting">148. Rate Limiting</a></h1>
+<p>Per encounter:</p>
+<pre><code class="language-text">max offers
+max bytes
+max critical claims
+</code></pre>
+<p>Per origin:</p>
+<pre><code class="language-text">bundle count
+storage use
+</code></pre>
+<hr />
+<h1 id="149-unknown-origin-traffic"><a class="header" href="#149-unknown-origin-traffic">149. Unknown-Origin Traffic</a></h1>
+<p>Unknown peers may be limited to:</p>
+<pre><code class="language-text">small emergency reports
+small relay bundles
+</code></pre>
+<p>depending on product policy.</p>
+<hr />
+<h1 id="150-critical-traffic-abuse"><a class="header" href="#150-critical-traffic-abuse">150. Critical Traffic Abuse</a></h1>
+<p>Critical class should require:</p>
+<pre><code class="language-text">local user action
+trusted authority
+or strict anonymous emergency quota
+</code></pre>
+<p>Do not expose unlimited unauthenticated Critical traffic.</p>
+<hr />
+<h1 id="151-anti-correlation-measures"><a class="header" href="#151-anti-correlation-measures">151. Anti-Correlation Measures</a></h1>
+<p>Possible:</p>
+<pre><code class="language-text">rotating discovery IDs
+bundle batching
+coarse timestamps
+opaque destinations
+</code></pre>
+<p>But metadata privacy remains imperfect.</p>
+<p>Document this honestly.</p>
+<hr />
+<h1 id="152-storage-encryption"><a class="header" href="#152-storage-encryption">152. Storage Encryption</a></h1>
+<p>Relay store should persist ciphertext.</p>
+<p>Local DTN metadata may also be encrypted at rest.</p>
+<hr />
+<h1 id="153-gc-and-expiry"><a class="header" href="#153-gc-and-expiry">153. GC and Expiry</a></h1>
+<p>Periodic task:</p>
+<pre><code class="language-text">remove expired
+remove delivered after grace
+remove cancelled
+apply quota eviction
+</code></pre>
+<p>Must be crash-safe.</p>
+<hr />
+<h1 id="154-tombstones"><a class="header" href="#154-tombstones">154. Tombstones</a></h1>
+<p>Delivery/cancel tombstones may be retained temporarily so stale peers do not reintroduce completed bundles immediately.</p>
+<hr />
+<h1 id="155-tombstone-ttl"><a class="header" href="#155-tombstone-ttl">155. Tombstone TTL</a></h1>
+<p>Tombstone lifetime should exceed typical encounter delay horizon.</p>
+<p>Not permanent by default.</p>
+<hr />
+<h1 id="156-reintroduced-bundle"><a class="header" href="#156-reintroduced-bundle">156. Reintroduced Bundle</a></h1>
+<p>If old peer presents a delivered bundle while tombstone exists:</p>
+<pre><code class="language-text">reject
+send delivery summary if useful
+</code></pre>
+<hr />
+<h1 id="157-bundle-store-schema"><a class="header" href="#157-bundle-store-schema">157. Bundle Store Schema</a></h1>
+<p>Conceptual:</p>
+<pre><code class="language-text">bundles
+bundle_payload_refs
+bundle_forward_history
+bundle_tombstones
+peer_encounters
+peer_utility
+dtn_quotas
+</code></pre>
+<hr />
+<h1 id="158-bundle-table"><a class="header" href="#158-bundle-table">158. Bundle Table</a></h1>
+<p>Fields:</p>
+<pre><code class="language-text">bundle_id
+state
+priority
+created_at
+expires_at
+hop_limit
+copies_remaining
+payload_type
+payload_ref
+origin
+destination_token
+size
+</code></pre>
+<hr />
+<h1 id="159-forward-history-table"><a class="header" href="#159-forward-history-table">159. Forward History Table</a></h1>
+<p>Fields:</p>
+<pre><code class="language-text">bundle_id
+peer_id
+forwarded_at
+result
+</code></pre>
+<p>Bound history length.</p>
+<hr />
+<h1 id="160-encounter-table"><a class="header" href="#160-encounter-table">160. Encounter Table</a></h1>
+<p>Store coarse:</p>
+<pre><code class="language-text">peer
+last_seen
+encounter_count
+gateway_success
+</code></pre>
+<p>Avoid detailed long-term location history.</p>
+<hr />
+<h1 id="161-performance"><a class="header" href="#161-performance">161. Performance</a></h1>
+<p>DTN is not a packet-forwarding hot path.</p>
+<p>Prioritize:</p>
+<pre><code class="language-text">correctness
+bounded storage
+efficient set reconciliation
+small metadata
+battery efficiency
+</code></pre>
+<hr />
+<h1 id="162-inventory-performance"><a class="header" href="#162-inventory-performance">162. Inventory Performance</a></h1>
+<p>For 100k bundles, do not send 100k IDs.</p>
+<p>Use compact summaries.</p>
+<p>Benchmark:</p>
+<pre><code class="language-text">Bloom
+IBLT later
+Merkle later
+</code></pre>
+<hr />
+<h1 id="163-bundle-selection-complexity"><a class="header" href="#163-bundle-selection-complexity">163. Bundle Selection Complexity</a></h1>
+<p>Avoid O(all bundles × all peers) during every encounter.</p>
+<p>Maintain indexes by:</p>
+<pre><code class="language-text">priority
+expiry
+destination class
+size
+</code></pre>
+<hr />
+<h1 id="164-encounter-time-budget"><a class="header" href="#164-encounter-time-budget">164. Encounter Time Budget</a></h1>
+<p>If contact lasts seconds:</p>
+<pre><code class="language-text">selection must be fast
+</code></pre>
+<p>Precompute candidate queues where useful.</p>
+<hr />
+<h1 id="165-metrics"><a class="header" href="#165-metrics">165. Metrics</a></h1>
+<p>Track:</p>
+<pre><code class="language-text">bundles stored
+bundles forwarded
+bundles delivered
+average relay count
+expired count
+evicted count
+bytes relayed
+gateway success
+encounter success
+</code></pre>
+<p>Keep private identities out of exported telemetry.</p>
+<hr />
+<h1 id="166-diagnostics"><a class="header" href="#166-diagnostics">166. Diagnostics</a></h1>
+<p>Useful:</p>
+<pre><code class="language-text">DTN enabled
+relay storage used
+nearby peers
+gateway seen
+pending bundles
+critical pending
+last successful forward
+</code></pre>
+<p>Normal users should see simpler status.</p>
+<hr />
+<h1 id="167-ui-state-mapping"><a class="header" href="#167-ui-state-mapping">167. UI State Mapping</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">Stored locally
+Waiting for nearby device
+Carried by 2 relay devices
+Reached gateway
+Delivered
+Expired
+</code></pre>
+<p>Do not show:</p>
+<pre><code class="language-text">custody transfer complete
+spray copy count 3
+</code></pre>
+<p>outside diagnostics.</p>
+<hr />
+<h1 id="168-developer-view"><a class="header" href="#168-developer-view">168. Developer View</a></h1>
+<p>Advanced diagnostics may show:</p>
+<pre><code class="language-text">BundleId
+priority
+copies remaining
+hop limit
+next candidates
+last peer
+gateway score
+</code></pre>
+<hr />
+<h1 id="169-testing-layers"><a class="header" href="#169-testing-layers">169. Testing Layers</a></h1>
+<p>Unit:</p>
+<pre><code class="language-text">bundle validation
+expiry
+replication budget
+dedup
+eviction
+</code></pre>
+<p>Integration:</p>
+<pre><code class="language-text">A → B → C
+gateway handoff
+ACK return
+</code></pre>
+<p>Fault:</p>
+<pre><code class="language-text">peer disappears mid-transfer
+duplicate bundle
+crash
+storage full
+</code></pre>
+<p>Security:</p>
+<pre><code class="language-text">fake priority
+tampered bundle
+replay
+oversized metadata
+</code></pre>
+<hr />
+<h1 id="170-multi-hop-test"><a class="header" href="#170-multi-hop-test">170. Multi-Hop Test</a></h1>
+<p>Topology:</p>
+<pre><code class="language-text">A ↔ B ↔ C ↔ D
+</code></pre>
+<p>Only D has Internet.</p>
+<p>Expected:</p>
+<pre><code class="language-text">A creates bundle
+B stores
+C stores
+D forwards via Internet
+destination ACK
+ACK eventually returns
+</code></pre>
+<hr />
+<h1 id="171-partition-test"><a class="header" href="#171-partition-test">171. Partition Test</a></h1>
+<pre><code class="language-text">Cluster 1: A-B-C
+Cluster 2: D-E-F
+</code></pre>
+<p>Later C meets D.</p>
+<p>Relevant bundles reconcile and continue.</p>
+<hr />
+<h1 id="172-mobility-test"><a class="header" href="#172-mobility-test">172. Mobility Test</a></h1>
+<p>Random peers appear/disappear.</p>
+<p>Assert:</p>
+<pre><code class="language-text">bounded copies
+no infinite loop
+eventual delivery when encounter path exists
+</code></pre>
+<hr />
+<h1 id="173-duplicate-route-test"><a class="header" href="#173-duplicate-route-test">173. Duplicate Route Test</a></h1>
+<p>Same message arrives via:</p>
+<pre><code class="language-text">Iroh
+and DTN
+</code></pre>
+<p>Application records one logical message.</p>
+<hr />
+<h1 id="174-expiry-test"><a class="header" href="#174-expiry-test">174. Expiry Test</a></h1>
+<p>Bundle expires while offline.</p>
+<p>On next encounter:</p>
+<pre><code class="language-text">not forwarded
+</code></pre>
+<p>and eventually removed.</p>
+<hr />
+<h1 id="175-storage-pressure-test"><a class="header" href="#175-storage-pressure-test">175. Storage Pressure Test</a></h1>
+<p>Fill relay store.</p>
+<p>Ensure:</p>
+<pre><code class="language-text">bulk evicted before critical
+critical reserve preserved
+</code></pre>
+<hr />
+<h1 id="176-battery-saver-test"><a class="header" href="#176-battery-saver-test">176. Battery Saver Test</a></h1>
+<p>Enable low-power mode.</p>
+<p>Ensure:</p>
+<pre><code class="language-text">reduced scan
+critical still forwarded
+bulk delayed
+</code></pre>
+<hr />
+<h1 id="177-crash-test"><a class="header" href="#177-crash-test">177. Crash Test</a></h1>
+<p>Crash after:</p>
+<pre><code class="language-text">bundle persisted
+before relay ACK
+</code></pre>
+<p>After restart:</p>
+<pre><code class="language-text">bundle still present
+duplicate resend handled idempotently
+</code></pre>
+<hr />
+<h1 id="178-fuzz-targets"><a class="header" href="#178-fuzz-targets">178. Fuzz Targets</a></h1>
+<p>Fuzz:</p>
+<pre><code class="language-text">bundle header
+inventory summary
+ack summary
+replication metadata
+broadcast descriptor
+</code></pre>
+<p>All allocations bounded.</p>
+<hr />
+<h1 id="179-property-tests"><a class="header" href="#179-property-tests">179. Property Tests</a></h1>
+<p>Invariants:</p>
+<pre><code class="language-text">copies never exceed origin max budget
+expired bundle never forwarded
+same BundleId stored once
+hop count never increases
+delivered tombstone prevents immediate resurrection
+</code></pre>
+<hr />
+<h1 id="180-simulated-network"><a class="header" href="#180-simulated-network">180. Simulated Network</a></h1>
+<p>Build deterministic simulator:</p>
+<pre><code class="language-text">nodes
+encounters
+transport capacities
+battery states
+gateway availability
+</code></pre>
+<p>This is critical for validating DTN algorithms.</p>
+<hr />
+<h1 id="181-strategy-comparison-harness"><a class="header" href="#181-strategy-comparison-harness">181. Strategy Comparison Harness</a></h1>
+<p>Simulator can compare:</p>
+<pre><code class="language-text">DirectOnly
+SprayAndWait
+GatewayPreferred
+EmergencyLimitedFlood
+</code></pre>
+<p>Metrics:</p>
+<pre><code class="language-text">delivery rate
+delay
+bytes transmitted
+battery cost proxy
+storage use
+</code></pre>
+<hr />
+<h1 id="182-no-ml-initially"><a class="header" href="#182-no-ml-initially">182. No ML Initially</a></h1>
+<p>Do not use ML for forwarding at first.</p>
+<p>Deterministic algorithms are:</p>
+<ul>
+<li>explainable</li>
+<li>testable</li>
+<li>predictable</li>
+<li>safer</li>
+</ul>
+<hr />
+<h1 id="183-public-api"><a class="header" href="#183-public-api">183. Public API</a></h1>
+<p>High-level:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let handle = dtn.enqueue(
+    destination,
+    payload_ref,
+    DtnPolicy::default(),
+).await?;
+<span class="boring">}</span></code></pre></pre>
+<p>Applications should not manage peer encounter tables directly.</p>
+<hr />
+<h1 id="184-bundle-handle"><a class="header" href="#184-bundle-handle">184. Bundle Handle</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct BundleHandle {
+    pub id: BundleId,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Operations:</p>
+<pre><code class="language-text">status
+cancel
+priority
+expiry
+</code></pre>
+<p>subject to policy.</p>
+<hr />
+<h1 id="185-dtn-events"><a class="header" href="#185-dtn-events">185. DTN Events</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum DtnEvent {
+    Stored(BundleId),
+    Forwarded(BundleId, PeerId),
+    RelayConfirmed(BundleId),
+    GatewayReached(BundleId),
+    DestinationReached(BundleId),
+    Expired(BundleId),
+    Evicted(BundleId),
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="186-suggested-crate-structure"><a class="header" href="#186-suggested-crate-structure">186. Suggested Crate Structure</a></h1>
+<pre><code class="language-text">crates/comm-dtn/
+├── src/
+│   ├── lib.rs
+│   ├── bundle.rs
+│   ├── store.rs
+│   ├── state.rs
+│   ├── policy.rs
+│   ├── scheduler.rs
+│   ├── forwarding.rs
+│   ├── strategy.rs
+│   ├── encounter.rs
+│   ├── inventory.rs
+│   ├── ack.rs
+│   ├── gateway.rs
+│   ├── quota.rs
+│   ├── gc.rs
+│   ├── diagnostics.rs
+│   └── error.rs
+│
+├── tests/
+└── Cargo.toml
+</code></pre>
+<p>Protocol crate if separated:</p>
+<pre><code class="language-text">comm-dtn-protocol/
+</code></pre>
+<hr />
+<h1 id="187-error-model"><a class="header" href="#187-error-model">187. Error Model</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum DtnError {
+    StorageFull,
+    QuotaExceeded,
+    InvalidBundle,
+    Expired,
+    Unauthorized,
+    Unsupported,
+    Duplicate,
+    Cancelled,
+    Transport,
+    Storage,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="188-initial-production-scope"><a class="header" href="#188-initial-production-scope">188. Initial Production Scope</a></h1>
+<p>Implement first:</p>
+<pre><code class="language-text">durable bundle store
+BundleId dedup
+expiry
+hop limit
+replication budget
+Spray-and-Wait
+BLE/Wi-Fi/Iroh encounter transport abstraction
+inventory summary
+relay ACK
+destination ACK
+gateway handoff
+quotas
+eviction
+critical reserve
+crash recovery
+</code></pre>
+<p>Defer initially:</p>
+<pre><code class="language-text">IBLT
+social routing
+predictive routing
+complex custody transfer
+large-scale epidemic mode
+</code></pre>
+<hr />
+<h1 id="189-implementation-phases"><a class="header" href="#189-implementation-phases">189. Implementation Phases</a></h1>
+<h2 id="phase-1--bundle-model"><a class="header" href="#phase-1--bundle-model">Phase 1 — Bundle model</a></h2>
+<pre><code class="language-text">BundleId
+metadata
+expiry
+priority
+policy
+</code></pre>
+<h2 id="phase-2--durable-store"><a class="header" href="#phase-2--durable-store">Phase 2 — Durable store</a></h2>
+<pre><code class="language-text">bundle table
+payload refs
+dedup
+GC
+</code></pre>
+<h2 id="phase-3--encounter-protocol"><a class="header" href="#phase-3--encounter-protocol">Phase 3 — Encounter protocol</a></h2>
+<pre><code class="language-text">HELLO
+inventory
+request
+transfer
+relay ACK
+</code></pre>
+<h2 id="phase-4--forwarding-strategy"><a class="header" href="#phase-4--forwarding-strategy">Phase 4 — Forwarding strategy</a></h2>
+<pre><code class="language-text">DirectOnly
+SprayAndWait
+GatewayPreferred
+</code></pre>
+<h2 id="phase-5--routing-integration"><a class="header" href="#phase-5--routing-integration">Phase 5 — Routing integration</a></h2>
+<pre><code class="language-text">Part 03 handoff
+DTN route plan
+gateway path
+</code></pre>
+<h2 id="phase-6--fileblob-integration"><a class="header" href="#phase-6--fileblob-integration">Phase 6 — File/blob integration</a></h2>
+<pre><code class="language-text">manifest
+thumbnail
+chunk carriage
+</code></pre>
+<h2 id="phase-7--emergency-priority"><a class="header" href="#phase-7--emergency-priority">Phase 7 — Emergency priority</a></h2>
+<pre><code class="language-text">critical reserve
+priority authorization
+broadcast
+</code></pre>
+<h2 id="phase-8--hardening"><a class="header" href="#phase-8--hardening">Phase 8 — Hardening</a></h2>
+<pre><code class="language-text">simulation
+fuzzing
+crash injection
+battery/storage tests
+</code></pre>
+<hr />
+<h1 id="190-definition-of-done"><a class="header" href="#190-definition-of-done">190. Definition of Done</a></h1>
+<p>Part 06 is complete when:</p>
+<ul>
+<li>a payload can be accepted with no end-to-end route</li>
+<li>accepted bundles are durably stored</li>
+<li>relays can carry ciphertext without content keys</li>
+<li>BundleId deduplicates multiple copies</li>
+<li>forwarding loops are bounded</li>
+<li>hop limit and replication budget are enforced</li>
+<li>expired bundles are never forwarded</li>
+<li>peer encounters reconcile inventories efficiently</li>
+<li>relay ACK is distinct from destination delivery</li>
+<li>destination ACK can propagate back asynchronously</li>
+<li>gateway nodes can bridge local transport to Internet/Iroh</li>
+<li>BLE/Wi-Fi/Iroh can all serve as encounter transports</li>
+<li>large files can use manifests/thumbnails/chunks rather than blind full replication</li>
+<li>storage quotas and critical reserve work</li>
+<li>emergency traffic can outrank bulk traffic</li>
+<li>unknown peers cannot exhaust storage without limits</li>
+<li>crash recovery preserves accepted relay bundles</li>
+<li>UI can distinguish carried vs delivered</li>
+<li>the subsystem works without Dioxus</li>
+<li>file-only/emergency/custom apps can reuse it</li>
+<li>simulation, fuzz, property, partition, and mobility tests exist</li>
+</ul>
+<hr />
+<h1 id="191-relationship-to-earlier-parts"><a class="header" href="#191-relationship-to-earlier-parts">191. Relationship to Earlier Parts</a></h1>
+<p>Part 06 builds on:</p>
+<pre><code class="language-text">01 — Protocol Extension System
+02 — Multi-Device Identity
+03 — Transport &amp; Routing Policy Engine
+04 — Offline Event Log
+05 — Robust File / Blob Subsystem
+</code></pre>
+<p>It directly supports:</p>
+<pre><code class="language-text">07 — Capability Negotiation Expansion
+08 — Resource Limits &amp; Backpressure
+09 — Crash Recovery
+10 — Protocol Fuzzing &amp; Test Suite
+11 — Relay / Self-Hosted Infrastructure
+12 — Multipath Networking
+13 — Battery-Aware Scheduling
+14 — Proximity Abstraction
+15 — QR / NFC Bootstrap Pairing
+16 — Daemon &amp; Headless Runtime
+17 — Emergency Priority Architecture
+18 — Network Diagnostics &amp; Path Visualization
+20 — Embedded Linux Node
+23 — External Interoperability Suite
+24 — Plugin / Module Ecosystem
+</code></pre>
+<hr />
+<h1 id="192-final-principle"><a class="header" href="#192-final-principle">192. Final Principle</a></h1>
+<p>The DTN subsystem should make this possible:</p>
+<pre><code class="language-text">Alice sends an SOS
+while completely offline.
+
+Her phone stores it.
+
+Later she meets Bob over BLE.
+Bob carries it.
+
+Bob later meets Carol over Wi-Fi Direct.
+Carol carries it.
+
+Carol reaches Internet.
+The bundle is delivered through Iroh.
+
+A destination acknowledgement travels back later.
+
+Alice eventually sees:
+Delivered.
+</code></pre>
+<p>The original application payload remains the same logical object throughout.</p>
+<p>No continuous route was ever required.</p>
+<p>That is the defining capability of a true resilient, disaster-capable communication platform.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="15-qr-nfc-bootstrap-pairing-architecture.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="17-emergency-priority-classes-architecture.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="15-qr-nfc-bootstrap-pairing-architecture.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="17-emergency-priority-classes-architecture.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

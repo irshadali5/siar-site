@@ -1,0 +1,2028 @@
+<!DOCTYPE HTML>
+<html lang="en" class="navy" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>UI/UX 03 — Android Jetpack Compose App Shell &amp; Lifecycle - SIAR System Architecture &amp; Technical Wiki</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="Comprehensive system architecture, cryptographic protocols, DTN mesh networking, distributed storage, audio DSP pipelines, and UI/UX design specifications for SIAR.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="theme/custom.css">
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "navy";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('navy')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="Home.html">Architecture Portal & Reading Guide</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part I: Protocol Foundation & Extension Platform</li><li class="chapter-item expanded "><a href="01-protocol-extension-system-architecture.html"><strong aria-hidden="true">1.</strong> 01 — Protocol Extension System Architecture</a></li><li class="chapter-item expanded "><a href="07-capability-negotiation-architecture.html"><strong aria-hidden="true">2.</strong> 07 — Capability Negotiation & Protocol Upgrades</a></li><li class="chapter-item expanded "><a href="21-third-party-protocol-extensions-architecture.html"><strong aria-hidden="true">3.</strong> 21 — Third-Party Protocol Extensions</a></li><li class="chapter-item expanded "><a href="22-wasm-compatible-components-architecture.html"><strong aria-hidden="true">4.</strong> 22 — WebAssembly (WASM) Compatible Components</a></li><li class="chapter-item expanded "><a href="23-external-interoperability-suite-architecture.html"><strong aria-hidden="true">5.</strong> 23 — External Interoperability & Conformance Suite</a></li><li class="chapter-item expanded "><a href="24-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">6.</strong> 24 — Dynamic Plugin & Module Ecosystem</a></li><li class="chapter-item expanded affix "><li class="part-title">Part II: Identity, Trust & Cryptography</li><li class="chapter-item expanded "><a href="02-multi-device-identity-architecture.html"><strong aria-hidden="true">7.</strong> 02 — Multi-Device Identity & Trust Model</a></li><li class="chapter-item expanded "><a href="28-production-security-e2ee-key-management-privacy-architecture.html"><strong aria-hidden="true">8.</strong> 28 — Production Security, E2EE, Key Management & Privacy</a></li><li class="chapter-item expanded affix "><li class="part-title">Part III: Mesh Networking, Transports & Hardware</li><li class="chapter-item expanded "><a href="03-transport-routing-policy-engine-architecture.html"><strong aria-hidden="true">9.</strong> 03 — Transport & Routing Policy Engine</a></li><li class="chapter-item expanded "><a href="11-relay-self-hosted-infrastructure-architecture.html"><strong aria-hidden="true">10.</strong> 11 — Self-Hosted Relay & Coordination Infrastructure</a></li><li class="chapter-item expanded "><a href="12-multipath-networking-architecture.html"><strong aria-hidden="true">11.</strong> 12 — Multipath Networking & Link Aggregation</a></li><li class="chapter-item expanded "><a href="13-battery-aware-scheduling-architecture.html"><strong aria-hidden="true">12.</strong> 13 — Battery-Aware Scheduling & Power Profiles</a></li><li class="chapter-item expanded "><a href="14-proximity-abstraction-architecture.html"><strong aria-hidden="true">13.</strong> 14 — Proximity Abstraction (BLE, Wi-Fi Direct, LoRa)</a></li><li class="chapter-item expanded "><a href="15-qr-nfc-bootstrap-pairing-architecture.html"><strong aria-hidden="true">14.</strong> 15 — Out-of-Band QR & NFC Bootstrap Pairing</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IV: Delay-Tolerant Networking & Emergency Mesh</li><li class="chapter-item expanded "><a href="06-dtn-store-carry-forward-architecture.html"><strong aria-hidden="true">15.</strong> 06 — DTN Store-Carry-Forward & Bundle Forwarding</a></li><li class="chapter-item expanded "><a href="17-emergency-priority-classes-architecture.html"><strong aria-hidden="true">16.</strong> 17 — Emergency Priority Classes & Critical Alert Mesh</a></li><li class="chapter-item expanded affix "><li class="part-title">Part V: Storage, Outbox & Data Lifecycle</li><li class="chapter-item expanded "><a href="04-offline-event-log-architecture.html"><strong aria-hidden="true">17.</strong> 04 — Offline Event Log & Sync Engine</a></li><li class="chapter-item expanded "><a href="05-robust-file-blob-subsystem-architecture.html"><strong aria-hidden="true">18.</strong> 05 — Robust File & Blob Subsystem (Chunking & Resumption)</a></li><li class="chapter-item expanded "><a href="09-crash-recovery-architecture.html"><strong aria-hidden="true">19.</strong> 09 — Crash Recovery & State Integrity</a></li><li class="chapter-item expanded "><a href="32-search-indexing-local-knowledge-privacy-architecture.html"><strong aria-hidden="true">20.</strong> 32 — Search, Indexing & Local Privacy Retrieval</a></li><li class="chapter-item expanded "><a href="33-backup-restore-export-import-archival-portability-architecture.html"><strong aria-hidden="true">21.</strong> 33 — Backup, Restore, Export & Long-Term Archival</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VI: Realtime Media, Calling & Audio DSP</li><li class="chapter-item expanded "><a href="25-android-direct-hardware-surface-zero-copy-media-architecture.html"><strong aria-hidden="true">22.</strong> 25 — Android Direct Surface Zero-Copy Media</a></li><li class="chapter-item expanded "><a href="26-rust-first-audio-dsp-resampling-aec-ns-agc-architecture.html"><strong aria-hidden="true">23.</strong> 26 — Rust-First Audio DSP (AEC, NS, AGC, Resampling)</a></li><li class="chapter-item expanded "><a href="29-realtime-calls-media-session-protocol-architecture.html"><strong aria-hidden="true">24.</strong> 29 — Realtime Calls & Media Session Protocol</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VII: Ephemeral State, Presence & Notifications</li><li class="chapter-item expanded "><a href="30-presence-availability-typing-read-receipts-ephemeral-state-architecture.html"><strong aria-hidden="true">25.</strong> 30 — Presence, Availability, Typing & Read Receipts</a></li><li class="chapter-item expanded "><a href="31-notifications-push-background-delivery-lifecycle-architecture.html"><strong aria-hidden="true">26.</strong> 31 — Notifications, Push Wake & Background Delivery</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VIII: Native Runtimes, Daemons & Embedded Linux</li><li class="chapter-item expanded "><a href="16-daemon-headless-runtime-architecture.html"><strong aria-hidden="true">27.</strong> 16 — Headless Daemon & Background Runtime</a></li><li class="chapter-item expanded "><a href="19-c-abi-ffi-architecture.html"><strong aria-hidden="true">28.</strong> 19 — C-ABI FFI & Native Language Interop</a></li><li class="chapter-item expanded "><a href="20-embedded-linux-node-architecture.html"><strong aria-hidden="true">29.</strong> 20 — Embedded Linux Node & Resource-Constrained Targets</a></li><li class="chapter-item expanded "><a href="27-rust-driven-android-native-build-packaging-automation.html"><strong aria-hidden="true">30.</strong> 27 — Rust-Driven Android Native Build & Packaging Automation</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IX: Reliability, Testing, Fuzzing & Diagnostics</li><li class="chapter-item expanded "><a href="08-resource-limits-backpressure-architecture.html"><strong aria-hidden="true">31.</strong> 08 — Resource Limits, Quotas & Backpressure</a></li><li class="chapter-item expanded "><a href="10-fuzzing-protocol-test-suite-architecture.html"><strong aria-hidden="true">32.</strong> 10 — Fuzzing & Protocol Test Suite</a></li><li class="chapter-item expanded "><a href="18-network-diagnostics-path-visualization-architecture.html"><strong aria-hidden="true">33.</strong> 18 — Network Diagnostics & Path Visualization</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part X: UI/UX Client Architecture (Cross-Platform)</li><li class="chapter-item expanded "><a href="ui-ux-01-product-foundation-cross-platform-interaction-architecture.html"><strong aria-hidden="true">34.</strong> UI/UX 01 — Product UX Foundation & Cross-Platform Interaction</a></li><li class="chapter-item expanded "><a href="ui-ux-02-desktop-dioxus-app-shell-navigation-window-architecture.html"><strong aria-hidden="true">35.</strong> UI/UX 02 — Desktop Dioxus App Shell & Navigation</a></li><li class="chapter-item expanded "><a href="ui-ux-03-android-jetpack-compose-app-shell-navigation-lifecycle-architecture.html" class="active"><strong aria-hidden="true">36.</strong> UI/UX 03 — Android Jetpack Compose App Shell & Lifecycle</a></li><li class="chapter-item expanded "><a href="ui-ux-04-conversation-list-inbox-architecture.html"><strong aria-hidden="true">37.</strong> UI/UX 04 — Conversation List & Inbox UX</a></li><li class="chapter-item expanded "><a href="ui-ux-05-conversation-message-timeline-architecture.html"><strong aria-hidden="true">38.</strong> UI/UX 05 — Conversation Message Timeline UX</a></li><li class="chapter-item expanded "><a href="ui-ux-06-message-composer-attachments-voice-notes-drafts-architecture.html"><strong aria-hidden="true">39.</strong> UI/UX 06 — Message Composer, Attachments & Voice Notes</a></li><li class="chapter-item expanded "><a href="ui-ux-07-calls-realtime-media-architecture.html"><strong aria-hidden="true">40.</strong> UI/UX 07 — Calls & Realtime Media UX</a></li><li class="chapter-item expanded "><a href="ui-ux-08-contacts-requests-verification-identity-architecture.html"><strong aria-hidden="true">41.</strong> UI/UX 08 — Contacts, Requests, Verification & Identity</a></li><li class="chapter-item expanded "><a href="ui-ux-09-groups-membership-roles-architecture.html"><strong aria-hidden="true">42.</strong> UI/UX 09 — Groups, Membership & Roles UX</a></li><li class="chapter-item expanded "><a href="ui-ux-10-files-media-gallery-transfer-architecture.html"><strong aria-hidden="true">43.</strong> UI/UX 10 — Files, Media Gallery & Transfer UX</a></li><li class="chapter-item expanded "><a href="ui-ux-11-search-local-knowledge-retrieval-architecture.html"><strong aria-hidden="true">44.</strong> UI/UX 11 — Search & Local Knowledge Retrieval UX</a></li><li class="chapter-item expanded "><a href="ui-ux-12-nearby-qr-nfc-pairing-device-linking-architecture.html"><strong aria-hidden="true">45.</strong> UI/UX 12 — Nearby, QR/NFC Pairing & Device Linking UX</a></li><li class="chapter-item expanded "><a href="ui-ux-13-notifications-background-incoming-call-architecture.html"><strong aria-hidden="true">46.</strong> UI/UX 13 — Notifications, Background & Incoming Call UX</a></li><li class="chapter-item expanded "><a href="ui-ux-14-presence-typing-receipts-status-architecture.html"><strong aria-hidden="true">47.</strong> UI/UX 14 — Presence, Typing, Receipts & Status UX</a></li><li class="chapter-item expanded "><a href="ui-ux-15-security-center-devices-keys-recovery-architecture.html"><strong aria-hidden="true">48.</strong> UI/UX 15 — Security Center, Devices, Keys & Recovery UX</a></li><li class="chapter-item expanded "><a href="ui-ux-16-backup-restore-export-migration-architecture.html"><strong aria-hidden="true">49.</strong> UI/UX 16 — Backup, Restore, Export & Migration UX</a></li><li class="chapter-item expanded "><a href="ui-ux-17-emergency-sos-offline-mesh-architecture.html"><strong aria-hidden="true">50.</strong> UI/UX 17 — Emergency / SOS / Offline Mesh UX</a></li><li class="chapter-item expanded "><a href="ui-ux-18-settings-privacy-notifications-data-controls-architecture.html"><strong aria-hidden="true">51.</strong> UI/UX 18 — Settings, Privacy, Notifications & Data Controls</a></li><li class="chapter-item expanded "><a href="ui-ux-19-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">52.</strong> UI/UX 19 — Plugin & Module Ecosystem UX</a></li><li class="chapter-item expanded "><a href="ui-ux-20-diagnostics-network-paths-advanced-developer-architecture.html"><strong aria-hidden="true">53.</strong> UI/UX 20 — Diagnostics, Network Paths & Developer UX</a></li><li class="chapter-item expanded "><a href="ui-ux-21-accessibility-inclusive-interaction-architecture.html"><strong aria-hidden="true">54.</strong> UI/UX 21 — Accessibility & Inclusive Interaction</a></li><li class="chapter-item expanded "><a href="ui-ux-22-design-system-tokens-typography-icons-motion-architecture.html"><strong aria-hidden="true">55.</strong> UI/UX 22 — Design System, Tokens, Typography & Motion</a></li><li class="chapter-item expanded "><a href="ui-ux-23-responsive-adaptive-desktop-tablet-foldable-phone-layout-architecture.html"><strong aria-hidden="true">56.</strong> UI/UX 23 — Responsive & Adaptive Layouts (Desktop/Tablet/Foldable/Phone)</a></li><li class="chapter-item expanded "><a href="ui-ux-24-error-loading-empty-offline-degraded-state-architecture.html"><strong aria-hidden="true">57.</strong> UI/UX 24 — Error, Loading, Empty & Degraded-State UX</a></li><li class="chapter-item expanded "><a href="ui-ux-25-onboarding-first-run-permission-education-architecture.html"><strong aria-hidden="true">58.</strong> UI/UX 25 — Onboarding, First Run & Permission Education</a></li><li class="chapter-item expanded "><a href="ui-ux-26-performance-virtualization-large-data-ui-architecture.html"><strong aria-hidden="true">59.</strong> UI/UX 26 — Virtualization & Large-Data UI Performance</a></li><li class="chapter-item expanded "><a href="ui-ux-27-ui-testing-screenshot-interaction-release-quality-gates-architecture.html"><strong aria-hidden="true">60.</strong> UI/UX 27 — UI Testing, Screenshots & Release Quality Gates</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">SIAR System Architecture &amp; Technical Wiki</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar/edit/main/sys-arch/ui-ux-03-android-jetpack-compose-app-shell-navigation-lifecycle-architecture.md" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="uiux-part-03--android-jetpack-compose-app-shell-navigation--lifecycle-architecture"><a class="header" href="#uiux-part-03--android-jetpack-compose-app-shell-navigation--lifecycle-architecture">UI/UX Part 03 — Android Jetpack Compose App Shell, Navigation &amp; Lifecycle Architecture</a></h1>
+<h2 id="reusable-p2p-communication-platform"><a class="header" href="#reusable-p2p-communication-platform">Reusable P2P Communication Platform</a></h2>
+<p><strong>Status:</strong> UI/UX architecture specification<br />
+<strong>UI Series:</strong> Part 03<br />
+<strong>Platform:</strong> Android<br />
+<strong>UI framework:</strong> Pure Kotlin + Jetpack Compose<br />
+<strong>Core runtime:</strong> Rust<br />
+<strong>Primary goal:</strong> define the Android application shell, Compose navigation, adaptive phone/tablet/foldable layouts, lifecycle ownership, process-death recovery, Rust/JNI presentation bridge, permissions, system intents, notifications, foreground services, incoming calls, Picture-in-Picture, accessibility, and state-restoration architecture.</p>
+<hr />
+<h1 id="1-purpose"><a class="header" href="#1-purpose">1. Purpose</a></h1>
+<p>The Android application must feel like a first-class Android application rather than a desktop or cross-platform UI forced onto a phone.</p>
+<p>Android imposes platform-specific constraints and expectations around:</p>
+<pre><code class="language-text">Activity lifecycle
+process death
+background execution
+notifications
+permissions
+predictive back
+IME
+system share sheet
+file picker
+camera
+microphone
+Bluetooth
+NFC
+foreground services
+Picture-in-Picture
+window size classes
+foldables
+accessibility
+</code></pre>
+<p>Jetpack Compose should own these interaction mechanics while the Rust runtime continues to own:</p>
+<pre><code class="language-text">messaging truth
+security truth
+call state
+file-transfer state
+presence
+search
+backup
+sync
+identity
+routing
+</code></pre>
+<p>The governing principle is:</p>
+<blockquote>
+<p><strong>Compose owns Android presentation and platform interaction; Rust owns the product state and business rules.</strong></p>
+</blockquote>
+<hr />
+<h1 id="2-architectural-position"><a class="header" href="#2-architectural-position">2. Architectural Position</a></h1>
+<pre><code class="language-text">                     Rust Core
+                        │
+              Rust Presentation Service
+                        │
+                     JNI Bridge
+                        │
+                 Kotlin Repository
+                        │
+                    ViewModel
+                        │
+                    StateFlow
+                        │
+                 Jetpack Compose
+                        │
+              Android Platform APIs
+</code></pre>
+<hr />
+<h1 id="3-android-module-layout"><a class="header" href="#3-android-module-layout">3. Android Module Layout</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">apps/android/
+├── app/
+│   └── src/main/
+│       ├── kotlin/
+│       │   ├── app/
+│       │   ├── navigation/
+│       │   ├── ui/
+│       │   ├── feature/
+│       │   ├── platform/
+│       │   ├── rust/
+│       │   └── service/
+│       ├── res/
+│       └── AndroidManifest.xml
+└── build.gradle.kts
+</code></pre>
+<hr />
+<h1 id="4-kotlin-package-structure"><a class="header" href="#4-kotlin-package-structure">4. Kotlin Package Structure</a></h1>
+<p>Suggested:</p>
+<pre><code class="language-text">app/
+    App.kt
+    MainActivity.kt
+
+navigation/
+    AppDestination.kt
+    AppNavHost.kt
+    DeepLinkRouter.kt
+
+ui/
+    theme/
+    common/
+    adaptive/
+
+feature/
+    chats/
+    calls/
+    contacts/
+    files/
+    search/
+    devices/
+    security/
+    settings/
+
+platform/
+    permissions/
+    notifications/
+    share/
+    picker/
+    biometric/
+    bluetooth/
+    nfc/
+    pip/
+
+rust/
+    RustBridge.kt
+    RustRepository.kt
+    RustEventAdapter.kt
+
+service/
+    CallForegroundService.kt
+    BackgroundWakeService.kt
+</code></pre>
+<hr />
+<h1 id="5-single-source-of-truth"><a class="header" href="#5-single-source-of-truth">5. Single Source of Truth</a></h1>
+<p>Compose must never create a second independent domain model.</p>
+<p>Correct:</p>
+<pre><code class="language-text">Rust State
+  ↓
+Kotlin presentation mapping
+  ↓
+Compose
+</code></pre>
+<p>Incorrect:</p>
+<pre><code class="language-text">Rust messages
++
+separate Kotlin message DB
++
+ViewModel business rules
+</code></pre>
+<hr />
+<h1 id="6-kotlin-viewmodel-role"><a class="header" href="#6-kotlin-viewmodel-role">6. Kotlin ViewModel Role</a></h1>
+<p>ViewModel owns:</p>
+<pre><code class="language-text">screen UI state
+navigation-adjacent state
+temporary input state
+permission flow state
+loading/error presentation
+StateFlow lifecycle
+</code></pre>
+<p>ViewModel must not own:</p>
+<pre><code class="language-text">message delivery semantics
+security decisions
+call state machine
+transfer truth
+sync conflict resolution
+</code></pre>
+<hr />
+<h1 id="7-rust-bridge"><a class="header" href="#7-rust-bridge">7. Rust Bridge</a></h1>
+<p>The JNI boundary should expose semantic operations.</p>
+<p>Examples:</p>
+<pre><code class="language-text">listConversations()
+openConversation(id)
+sendMessage(command)
+observeConversation(id)
+startCall(peer)
+acceptCall(callId)
+search(query)
+startTransfer(fileHandle)
+</code></pre>
+<hr />
+<h1 id="8-avoid-fine-grained-jni"><a class="header" href="#8-avoid-fine-grained-jni">8. Avoid Fine-Grained JNI</a></h1>
+<p>Do not cross JNI for every:</p>
+<pre><code class="language-text">message field
+pixel
+audio frame
+video frame
+database row
+</code></pre>
+<p>Use:</p>
+<pre><code class="language-text">coarse DTOs
+batched updates
+handles
+event streams
+</code></pre>
+<hr />
+<h1 id="9-event-bridge"><a class="header" href="#9-event-bridge">9. Event Bridge</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">Rust bounded event channel
+        ↓
+JNI event dispatcher
+        ↓
+Kotlin coroutine adapter
+        ↓
+SharedFlow / StateFlow
+        ↓
+ViewModel
+        ↓
+Compose
+</code></pre>
+<hr />
+<h1 id="10-event-threading-rule"><a class="header" href="#10-event-threading-rule">10. Event Threading Rule</a></h1>
+<p>Never update Compose state from arbitrary Rust worker threads directly.</p>
+<p>JNI adapter hands events into a controlled coroutine context.</p>
+<hr />
+<h1 id="11-event-coalescing"><a class="header" href="#11-event-coalescing">11. Event Coalescing</a></h1>
+<p>High-frequency events such as:</p>
+<pre><code class="language-text">transfer progress
+call quality
+audio levels
+typing
+presence
+</code></pre>
+<p>must be throttled/coalesced before reaching Compose.</p>
+<hr />
+<h1 id="12-android-app-shell"><a class="header" href="#12-android-app-shell">12. Android App Shell</a></h1>
+<p>Recommended phone shell:</p>
+<pre><code class="language-text">Scaffold
+├── TopAppBar
+├── NavHost
+├── BottomNavigation
+└── SnackbarHost
+</code></pre>
+<p>Primary destinations:</p>
+<pre><code class="language-text">Chats
+Calls
+Contacts
+</code></pre>
+<p>Secondary destinations:</p>
+<pre><code class="language-text">Files
+Search
+Devices
+Settings
+</code></pre>
+<hr />
+<h1 id="13-bottom-navigation"><a class="header" href="#13-bottom-navigation">13. Bottom Navigation</a></h1>
+<p>Use only a small number of primary destinations.</p>
+<p>Do not place:</p>
+<pre><code class="language-text">8–10 tabs
+</code></pre>
+<p>in bottom navigation.</p>
+<hr />
+<h1 id="14-primary-destinations"><a class="header" href="#14-primary-destinations">14. Primary Destinations</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">Chats
+Calls
+Contacts
+</code></pre>
+<p>Optional fourth:</p>
+<pre><code class="language-text">Files
+</code></pre>
+<p>if product usage justifies it.</p>
+<hr />
+<h1 id="15-secondary-destinations"><a class="header" href="#15-secondary-destinations">15. Secondary Destinations</a></h1>
+<p>Access through:</p>
+<pre><code class="language-text">top app bar
+overflow
+drawer/rail on larger devices
+search entry
+settings hierarchy
+</code></pre>
+<hr />
+<h1 id="16-tablet--foldable-navigation"><a class="header" href="#16-tablet--foldable-navigation">16. Tablet / Foldable Navigation</a></h1>
+<p>Use adaptive structure:</p>
+<pre><code class="language-text">NavigationRail
++
+List Pane
++
+Detail Pane
+</code></pre>
+<p>where width allows.</p>
+<hr />
+<h1 id="17-window-size-classes"><a class="header" href="#17-window-size-classes">17. Window Size Classes</a></h1>
+<p>Android shell should react to:</p>
+<pre><code class="language-text">Compact
+Medium
+Expanded
+</code></pre>
+<p>using platform window-size/adaptive APIs.</p>
+<hr />
+<h1 id="18-compact-phone"><a class="header" href="#18-compact-phone">18. Compact Phone</a></h1>
+<p>Typical layout:</p>
+<pre><code class="language-text">single main pane
+bottom navigation
+full-screen destination changes
+</code></pre>
+<hr />
+<h1 id="19-medium-width"><a class="header" href="#19-medium-width">19. Medium Width</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">rail
++
+single content pane
+</code></pre>
+<p>or:</p>
+<pre><code class="language-text">list/detail
+</code></pre>
+<p>depending feature.</p>
+<hr />
+<h1 id="20-expanded-width"><a class="header" href="#20-expanded-width">20. Expanded Width</a></h1>
+<p>Use:</p>
+<pre><code class="language-text">navigation rail
+list pane
+detail pane
+</code></pre>
+<p>for conversations, contacts, files, settings.</p>
+<hr />
+<h1 id="21-foldables"><a class="header" href="#21-foldables">21. Foldables</a></h1>
+<p>Respect:</p>
+<pre><code class="language-text">hinge
+fold posture
+separating fold
+</code></pre>
+<p>Avoid placing critical controls under hinge.</p>
+<hr />
+<h1 id="22-orientation"><a class="header" href="#22-orientation">22. Orientation</a></h1>
+<p>Support portrait/landscape gracefully.</p>
+<p>Do not lock orientation globally except feature-specific reasons such as some camera modes.</p>
+<hr />
+<h1 id="23-typed-navigation"><a class="header" href="#23-typed-navigation">23. Typed Navigation</a></h1>
+<p>Define stable destinations.</p>
+<pre><code class="language-kotlin">sealed interface AppDestination
+</code></pre>
+<p>Conceptually:</p>
+<pre><code class="language-text">Chats
+Conversation(id)
+Calls
+Call(id)
+Contacts
+Contact(id)
+Files
+File(id)
+Search
+Devices
+Device(id)
+Security
+Settings(page)
+</code></pre>
+<hr />
+<h1 id="24-no-raw-route-strings-in-feature-logic"><a class="header" href="#24-no-raw-route-strings-in-feature-logic">24. No Raw Route Strings in Feature Logic</a></h1>
+<p>Route strings are navigation implementation detail.</p>
+<p>Feature code should use typed destinations.</p>
+<hr />
+<h1 id="25-navigation-ownership"><a class="header" href="#25-navigation-ownership">25. Navigation Ownership</a></h1>
+<p>Compose owns back stack.</p>
+<p>Rust may emit semantic navigation requests for:</p>
+<pre><code class="language-text">incoming call
+security event
+notification click
+deep link
+</code></pre>
+<p>but should not own Android back stack.</p>
+<hr />
+<h1 id="26-predictive-back"><a class="header" href="#26-predictive-back">26. Predictive Back</a></h1>
+<p>Integrate with Android predictive back.</p>
+<p>Do not implement a custom incompatible gesture stack.</p>
+<hr />
+<h1 id="27-back-behavior"><a class="header" href="#27-back-behavior">27. Back Behavior</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">conversation → chats
+contact detail → contacts
+search result → previous screen
+modal sheet → dismiss
+</code></pre>
+<hr />
+<h1 id="28-back-during-active-call"><a class="header" href="#28-back-during-active-call">28. Back During Active Call</a></h1>
+<p>Back should:</p>
+<pre><code class="language-text">leave full call UI
+</code></pre>
+<p>without hanging up.</p>
+<p>Call remains active in foreground service/PiP if policy allows.</p>
+<hr />
+<h1 id="29-deep-links"><a class="header" href="#29-deep-links">29. Deep Links</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">conversation
+call
+device
+file
+security event
+backup import
+plugin package
+</code></pre>
+<p>All external deep links are untrusted input and validated before navigation.</p>
+<hr />
+<h1 id="30-notification-click"><a class="header" href="#30-notification-click">30. Notification Click</a></h1>
+<p>Part 31:</p>
+<pre><code class="language-text">notification intent
+→ Kotlin parser
+→ typed destination
+→ Rust state validation
+→ navigation
+</code></pre>
+<hr />
+<h1 id="31-cold-start-deep-link"><a class="header" href="#31-cold-start-deep-link">31. Cold Start Deep Link</a></h1>
+<p>If app process not running:</p>
+<pre><code class="language-text">Activity created
+    ↓
+Rust runtime starts
+    ↓
+pending destination stored
+    ↓
+core reaches Ready
+    ↓
+navigate
+</code></pre>
+<hr />
+<h1 id="32-pending-launch-action"><a class="header" href="#32-pending-launch-action">32. Pending Launch Action</a></h1>
+<p>Use:</p>
+<pre><code class="language-kotlin">sealed interface PendingLaunchAction
+</code></pre>
+<p>Examples:</p>
+<pre><code class="language-text">OpenConversation
+OpenCall
+OpenSecurityEvent
+ImportBackup
+</code></pre>
+<hr />
+<h1 id="33-mainactivity"><a class="header" href="#33-mainactivity">33. MainActivity</a></h1>
+<p>Should remain thin.</p>
+<p>Responsibilities:</p>
+<pre><code class="language-text">Compose root
+platform launch intents
+window setup
+lifecycle handoff
+</code></pre>
+<p>Not business logic.</p>
+<hr />
+<h1 id="34-application-class"><a class="header" href="#34-application-class">34. Application Class</a></h1>
+<p>Handles:</p>
+<pre><code class="language-text">global Android initialization
+Rust library loading
+notification channels
+dependency graph
+</code></pre>
+<p>Avoid opening full runtime unnecessarily before needed.</p>
+<hr />
+<h1 id="35-rust-library-load"><a class="header" href="#35-rust-library-load">35. Rust Library Load</a></h1>
+<p>Load native library once:</p>
+<pre><code class="language-kotlin">System.loadLibrary(...)
+</code></pre>
+<p>JNI ABI handshake validates compatibility.</p>
+<hr />
+<h1 id="36-native-abi-handshake"><a class="header" href="#36-native-abi-handshake">36. Native ABI Handshake</a></h1>
+<p>At startup compare:</p>
+<pre><code class="language-text">Android wrapper expected ABI
+Rust native actual ABI
+</code></pre>
+<p>Mismatch:</p>
+<pre><code class="language-text">fatal startup error
+</code></pre>
+<p>with clear recovery/update guidance.</p>
+<hr />
+<h1 id="37-rust-core-states"><a class="header" href="#37-rust-core-states">37. Rust Core States</a></h1>
+<p>Android observes:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum CoreState {
+    Starting,
+    Ready,
+    Degraded,
+    Unavailable,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="38-starting-ui"><a class="header" href="#38-starting-ui">38. Starting UI</a></h1>
+<p>Render app shell quickly.</p>
+<p>Show:</p>
+<pre><code class="language-text">Starting…
+</code></pre>
+<p>only where content unavailable.</p>
+<hr />
+<h1 id="39-ready"><a class="header" href="#39-ready">39. Ready</a></h1>
+<p>Normal operation.</p>
+<hr />
+<h1 id="40-degraded"><a class="header" href="#40-degraded">40. Degraded</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">search rebuilding
+relay unavailable
+plugin failed
+backup stale
+</code></pre>
+<p>Do not block core messaging.</p>
+<hr />
+<h1 id="41-unavailable"><a class="header" href="#41-unavailable">41. Unavailable</a></h1>
+<p>Serious error.</p>
+<p>Show recovery screen:</p>
+<pre><code class="language-text">Retry
+Diagnostics
+Restore Backup
+</code></pre>
+<hr />
+<h1 id="42-process-death"><a class="header" href="#42-process-death">42. Process Death</a></h1>
+<p>Android can kill process at any time.</p>
+<p>The UI architecture must assume:</p>
+<pre><code class="language-text">Activity disappears
+ViewModel disappears
+JNI process state disappears
+</code></pre>
+<p>unless a separate service/process remains.</p>
+<hr />
+<h1 id="43-durable-truth"><a class="header" href="#43-durable-truth">43. Durable Truth</a></h1>
+<p>On process restart:</p>
+<pre><code class="language-text">Rust reloads durable state
+</code></pre>
+<p>Compose reconstructs from new snapshots.</p>
+<hr />
+<h1 id="44-savedstatehandle"><a class="header" href="#44-savedstatehandle">44. SavedStateHandle</a></h1>
+<p>Use only for presentation/navigation state such as:</p>
+<pre><code class="language-text">selected conversation ID
+draft ID
+scroll anchor
+active settings page
+temporary filter state
+</code></pre>
+<hr />
+<h1 id="45-do-not-save-stale-ephemeral-state"><a class="header" href="#45-do-not-save-stale-ephemeral-state">45. Do Not Save Stale Ephemeral State</a></h1>
+<p>Do not restore:</p>
+<pre><code class="language-text">typing
+presence
+live decoder handles
+call transport connection
+Surface
+temporary permissions result
+</code></pre>
+<p>as if still valid.</p>
+<hr />
+<h1 id="46-call-survival"><a class="header" href="#46-call-survival">46. Call Survival</a></h1>
+<p>If active call must survive Activity recreation/background:</p>
+<pre><code class="language-text">foreground service
++
+Rust call runtime
+</code></pre>
+<p>can outlive UI surface.</p>
+<hr />
+<h1 id="47-activity-recreation"><a class="header" href="#47-activity-recreation">47. Activity Recreation</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">rotation
+theme change
+window resize
+</code></pre>
+<p>should not restart:</p>
+<pre><code class="language-text">call
+transfer
+sync
+</code></pre>
+<hr />
+<h1 id="48-compose-recomposition"><a class="header" href="#48-compose-recomposition">48. Compose Recomposition</a></h1>
+<p>Must not trigger side effects automatically.</p>
+<p>Do not call:</p>
+<pre><code class="language-text">sendMessage()
+startCall()
+registerPush()
+</code></pre>
+<p>from ordinary recomposition.</p>
+<p>Use:</p>
+<pre><code class="language-text">event handlers
+LaunchedEffect with stable keys
+ViewModel init
+</code></pre>
+<p>carefully.</p>
+<hr />
+<h1 id="49-screen-state-model"><a class="header" href="#49-screen-state-model">49. Screen State Model</a></h1>
+<p>Each screen gets:</p>
+<pre><code class="language-kotlin">data class ScreenUiState(...)
+</code></pre>
+<p>with:</p>
+<pre><code class="language-text">content
+loading
+error
+local presentation state
+</code></pre>
+<hr />
+<h1 id="50-stateflow"><a class="header" href="#50-stateflow">50. StateFlow</a></h1>
+<p>ViewModel exposes:</p>
+<pre><code class="language-kotlin">StateFlow&lt;ScreenUiState&gt;
+</code></pre>
+<p>Compose uses:</p>
+<pre><code class="language-text">collectAsStateWithLifecycle
+</code></pre>
+<p>or equivalent lifecycle-aware collection.</p>
+<hr />
+<h1 id="51-one-off-effects"><a class="header" href="#51-one-off-effects">51. One-Off Effects</a></h1>
+<p>Use separate effect stream for:</p>
+<pre><code class="language-text">show snackbar
+open picker
+request permission
+navigate
+</code></pre>
+<p>Do not encode one-time events permanently inside <code>UiState</code>.</p>
+<hr />
+<h1 id="52-effect-stream"><a class="header" href="#52-effect-stream">52. Effect Stream</a></h1>
+<pre><code class="language-text">SharedFlow&lt;UiEffect&gt;
+</code></pre>
+<p>or channel-based equivalent.</p>
+<hr />
+<h1 id="53-effect-examples"><a class="header" href="#53-effect-examples">53. Effect Examples</a></h1>
+<pre><code class="language-text">RequestCameraPermission
+OpenFilePicker
+ShowSnackbar
+LaunchShareSheet
+OpenSystemSettings
+EnterPiP
+</code></pre>
+<hr />
+<h1 id="54-platform-request-pattern"><a class="header" href="#54-platform-request-pattern">54. Platform Request Pattern</a></h1>
+<p>Rust may return semantic need:</p>
+<pre><code class="language-text">CameraPermissionRequired
+</code></pre>
+<p>ViewModel emits:</p>
+<pre><code class="language-text">RequestCameraPermission
+</code></pre>
+<p>Compose/Activity executes platform request.</p>
+<hr />
+<h1 id="55-permission-architecture"><a class="header" href="#55-permission-architecture">55. Permission Architecture</a></h1>
+<p>Centralize permissions.</p>
+<p>Examples:</p>
+<pre><code class="language-text">Camera
+Microphone
+Notifications
+Bluetooth Scan
+Bluetooth Connect
+Nearby Wi-Fi
+NFC
+Storage/Media where required
+</code></pre>
+<hr />
+<h1 id="56-permission-state"><a class="header" href="#56-permission-state">56. Permission State</a></h1>
+<pre><code class="language-kotlin">enum class PermissionState {
+    Granted,
+    Denied,
+    NeedsRequest,
+    PermanentlyDenied
+}
+</code></pre>
+<hr />
+<h1 id="57-permission-ux"><a class="header" href="#57-permission-ux">57. Permission UX</a></h1>
+<p>Ask contextually.</p>
+<p>Examples:</p>
+<pre><code class="language-text">camera → when starting video
+microphone → when starting call/voice note
+Bluetooth → when using nearby
+notifications → when enabling background alerts
+</code></pre>
+<hr />
+<h1 id="58-avoid-permission-dump"><a class="header" href="#58-avoid-permission-dump">58. Avoid Permission Dump</a></h1>
+<p>Do not request every possible permission on first launch.</p>
+<hr />
+<h1 id="59-permanently-denied"><a class="header" href="#59-permanently-denied">59. Permanently Denied</a></h1>
+<p>Show:</p>
+<pre><code class="language-text">Open Settings
+</code></pre>
+<p>with explanation.</p>
+<hr />
+<h1 id="60-permission-denial-degradation"><a class="header" href="#60-permission-denial-degradation">60. Permission Denial Degradation</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">camera denied → audio call still possible
+microphone denied → receive-only call or cannot call
+notifications denied → app works but background alerts may fail
+</code></pre>
+<hr />
+<h1 id="61-ime--keyboard"><a class="header" href="#61-ime--keyboard">61. IME / Keyboard</a></h1>
+<p>Compose composer must handle:</p>
+<pre><code class="language-text">IME actions
+multiline text
+hardware keyboard
+emoji
+RTL
+selection
+</code></pre>
+<hr />
+<h1 id="62-composer-bottom-insets"><a class="header" href="#62-composer-bottom-insets">62. Composer Bottom Insets</a></h1>
+<p>Use proper:</p>
+<pre><code class="language-text">IME insets
+navigation bars
+gesture areas
+</code></pre>
+<p>so composer stays visible.</p>
+<hr />
+<h1 id="63-keyboard-send-policy"><a class="header" href="#63-keyboard-send-policy">63. Keyboard Send Policy</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">phone Enter → newline
+send button → send
+hardware Ctrl+Enter → send
+</code></pre>
+<p>Configurable later.</p>
+<hr />
+<h1 id="64-message-timeline"><a class="header" href="#64-message-timeline">64. Message Timeline</a></h1>
+<p>Use:</p>
+<pre><code class="language-text">LazyColumn
+stable keys
+paging
+scroll anchoring
+</code></pre>
+<hr />
+<h1 id="65-stable-key"><a class="header" href="#65-stable-key">65. Stable Key</a></h1>
+<p>Always:</p>
+<pre><code class="language-text">MessageId
+</code></pre>
+<hr />
+<h1 id="66-new-messages"><a class="header" href="#66-new-messages">66. New Messages</a></h1>
+<p>At bottom:</p>
+<pre><code class="language-text">follow
+</code></pre>
+<p>Reading history:</p>
+<pre><code class="language-text">show new message chip
+</code></pre>
+<hr />
+<h1 id="67-read-detection"><a class="header" href="#67-read-detection">67. Read Detection</a></h1>
+<p>Part 30 semantics.</p>
+<p>Use:</p>
+<pre><code class="language-text">resumed lifecycle
+visible conversation
+visible message range
+</code></pre>
+<hr />
+<h1 id="68-conversation-list"><a class="header" href="#68-conversation-list">68. Conversation List</a></h1>
+<p>Use:</p>
+<pre><code class="language-text">LazyColumn
+</code></pre>
+<p>with:</p>
+<pre><code class="language-text">avatar
+title
+preview
+timestamp
+unread
+mute
+presence optional
+</code></pre>
+<hr />
+<h1 id="69-pull-to-refresh"><a class="header" href="#69-pull-to-refresh">69. Pull to Refresh</a></h1>
+<p>Do not imply network is source of truth.</p>
+<p>If present:</p>
+<pre><code class="language-text">trigger sync/refresh
+</code></pre>
+<p>but local data remains visible.</p>
+<hr />
+<h1 id="70-swipe-actions"><a class="header" href="#70-swipe-actions">70. Swipe Actions</a></h1>
+<p>Optional Android-native interaction for:</p>
+<pre><code class="language-text">archive
+mute
+mark read
+</code></pre>
+<p>Provide alternate accessible action.</p>
+<hr />
+<h1 id="71-long-press"><a class="header" href="#71-long-press">71. Long Press</a></h1>
+<p>Use for message/conversation context actions.</p>
+<hr />
+<h1 id="72-bottom-sheets"><a class="header" href="#72-bottom-sheets">72. Bottom Sheets</a></h1>
+<p>Good for:</p>
+<pre><code class="language-text">attachment picker
+message actions
+audio route
+conversation options
+</code></pre>
+<hr />
+<h1 id="73-dialogs"><a class="header" href="#73-dialogs">73. Dialogs</a></h1>
+<p>Use for:</p>
+<pre><code class="language-text">destructive/security decisions
+</code></pre>
+<p>not every action.</p>
+<hr />
+<h1 id="74-snackbars"><a class="header" href="#74-snackbars">74. Snackbars</a></h1>
+<p>Use for:</p>
+<pre><code class="language-text">undo
+short confirmation
+retryable minor failure
+</code></pre>
+<hr />
+<h1 id="75-system-file-picker"><a class="header" href="#75-system-file-picker">75. System File Picker</a></h1>
+<p>Use Android document/media picker where possible.</p>
+<p>Do not create broad storage access if not needed.</p>
+<hr />
+<h1 id="76-file-picker-flow"><a class="header" href="#76-file-picker-flow">76. File Picker Flow</a></h1>
+<pre><code class="language-text">Compose action
+→ ActivityResult launcher
+→ URI
+→ safe FD/content handle
+→ Rust file subsystem
+</code></pre>
+<hr />
+<h1 id="77-no-giant-bytearray"><a class="header" href="#77-no-giant-bytearray">77. No Giant ByteArray</a></h1>
+<p>Never convert large selected files into:</p>
+<pre><code class="language-text">ByteArray
+</code></pre>
+<p>for JNI.</p>
+<p>Pass:</p>
+<pre><code class="language-text">file descriptor
+content URI handle
+stream bridge
+</code></pre>
+<hr />
+<h1 id="78-share-sheet--outgoing"><a class="header" href="#78-share-sheet--outgoing">78. Share Sheet — Outgoing</a></h1>
+<p>Rust/Compose can request:</p>
+<pre><code class="language-text">share message text
+share file
+share invite
+</code></pre>
+<p>Kotlin launches system share sheet.</p>
+<hr />
+<h1 id="79-share-intent--incoming"><a class="header" href="#79-share-intent--incoming">79. Share Intent — Incoming</a></h1>
+<p>Android share intent:</p>
+<pre><code class="language-text">ACTION_SEND / ACTION_SEND_MULTIPLE
+</code></pre>
+<p>maps to typed share request.</p>
+<hr />
+<h1 id="80-incoming-share-flow"><a class="header" href="#80-incoming-share-flow">80. Incoming Share Flow</a></h1>
+<pre><code class="language-text">external app
+→ Android intent
+→ Kotlin parse
+→ safe handles
+→ Compose choose conversation
+→ Rust send command
+</code></pre>
+<hr />
+<h1 id="81-external-intent-validation"><a class="header" href="#81-external-intent-validation">81. External Intent Validation</a></h1>
+<p>Treat all incoming intent data as untrusted.</p>
+<hr />
+<h1 id="82-notifications"><a class="header" href="#82-notifications">82. Notifications</a></h1>
+<p>Part 31 Kotlin layer owns platform notification APIs.</p>
+<p>Rust owns:</p>
+<pre><code class="language-text">whether notification should exist
+privacy level
+dedup
+semantic actions
+</code></pre>
+<hr />
+<h1 id="83-notification-channels"><a class="header" href="#83-notification-channels">83. Notification Channels</a></h1>
+<p>Kotlin creates stable channels:</p>
+<pre><code class="language-text">Messages
+Calls
+Security
+Emergency
+Transfers
+</code></pre>
+<hr />
+<h1 id="84-incoming-call-notification"><a class="header" href="#84-incoming-call-notification">84. Incoming Call Notification</a></h1>
+<p>Flow:</p>
+<pre><code class="language-text">push wake
+→ Rust fetch/authenticate offer
+→ Kotlin show call notification
+</code></pre>
+<p>Do not ring based solely on push metadata.</p>
+<hr />
+<h1 id="85-accept-call-from-notification"><a class="header" href="#85-accept-call-from-notification">85. Accept Call from Notification</a></h1>
+<pre><code class="language-text">PendingIntent
+→ Android service/activity
+→ Rust CallController.accept(callId)
+→ foreground service
+→ call UI
+</code></pre>
+<hr />
+<h1 id="86-decline-call"><a class="header" href="#86-decline-call">86. Decline Call</a></h1>
+<p>Can often complete headlessly.</p>
+<hr />
+<h1 id="87-foreground-service"><a class="header" href="#87-foreground-service">87. Foreground Service</a></h1>
+<p>Use for:</p>
+<pre><code class="language-text">active audio/video call
+long user-visible transfer where justified
+</code></pre>
+<p>Not to keep idle messenger permanently alive.</p>
+<hr />
+<h1 id="88-callforegroundservice"><a class="header" href="#88-callforegroundservice">88. CallForegroundService</a></h1>
+<p>Responsibilities:</p>
+<pre><code class="language-text">service lifecycle
+foreground notification
+audio focus integration
+Rust call-runtime binding
+</code></pre>
+<p>It does not own call state.</p>
+<hr />
+<h1 id="89-picture-in-picture"><a class="header" href="#89-picture-in-picture">89. Picture-in-Picture</a></h1>
+<p>Active video call can enter PiP.</p>
+<p>Rust call remains active.</p>
+<p>Compose Activity may:</p>
+<pre><code class="language-text">enterPiPMode
+</code></pre>
+<hr />
+<h1 id="90-pip-state"><a class="header" href="#90-pip-state">90. PiP State</a></h1>
+<p>UI adapts:</p>
+<pre><code class="language-text">minimal controls
+video focus
+</code></pre>
+<hr />
+<h1 id="91-return-from-pip"><a class="header" href="#91-return-from-pip">91. Return from PiP</a></h1>
+<p>Rebuild full call UI from Rust <code>CallSnapshot</code>.</p>
+<hr />
+<h1 id="92-screen-rotation-during-call"><a class="header" href="#92-screen-rotation-during-call">92. Screen Rotation During Call</a></h1>
+<p>Surface may recreate.</p>
+<p>Part 25 handles renderer rebinding.</p>
+<p>Call stays active.</p>
+<hr />
+<h1 id="93-camera-surface"><a class="header" href="#93-camera-surface">93. Camera Surface</a></h1>
+<p>Compose owns view placement.</p>
+<p>Rust owns media session.</p>
+<p>No raw frames in Compose state.</p>
+<hr />
+<h1 id="94-audio-route"><a class="header" href="#94-audio-route">94. Audio Route</a></h1>
+<p>Compose may expose chooser:</p>
+<pre><code class="language-text">speaker
+earpiece
+Bluetooth
+wired
+</code></pre>
+<p>Rust/Part 26 remains authoritative.</p>
+<hr />
+<h1 id="95-bluetooth-permissions"><a class="header" href="#95-bluetooth-permissions">95. Bluetooth Permissions</a></h1>
+<p>Handle Android-version differences in Kotlin platform layer.</p>
+<p>Rust receives normalized capability/result.</p>
+<hr />
+<h1 id="96-nfc"><a class="header" href="#96-nfc">96. NFC</a></h1>
+<p>Android NFC intent/reader mode lives in Kotlin adapter.</p>
+<p>Rust receives:</p>
+<pre><code class="language-text">bootstrap payload
+</code></pre>
+<p>for Part 15 validation.</p>
+<hr />
+<h1 id="97-nearby-discovery"><a class="header" href="#97-nearby-discovery">97. Nearby Discovery</a></h1>
+<p>Compose renders nearby devices.</p>
+<p>Rust/proximity layer owns:</p>
+<pre><code class="language-text">discovery state
+identity verification
+connection policy
+</code></pre>
+<hr />
+<h1 id="98-qr-scanner"><a class="header" href="#98-qr-scanner">98. QR Scanner</a></h1>
+<p>Two options:</p>
+<pre><code class="language-text">Compose camera integration
+platform camera/scanner component
+</code></pre>
+<p>Parsed payload goes to Rust bootstrap service.</p>
+<hr />
+<h1 id="99-camera-permission"><a class="header" href="#99-camera-permission">99. Camera Permission</a></h1>
+<p>Requested only when scanner/video feature begins.</p>
+<hr />
+<h1 id="100-biometric-authentication"><a class="header" href="#100-biometric-authentication">100. Biometric Authentication</a></h1>
+<p>Use Android <code>BiometricPrompt</code> or appropriate platform API.</p>
+<p>Rust requests semantic authentication:</p>
+<pre><code class="language-text">AuthenticateForRecoveryKey
+AuthenticateForDeviceRevocation
+</code></pre>
+<p>Kotlin runs prompt and returns result.</p>
+<hr />
+<h1 id="101-sensitive-screens"><a class="header" href="#101-sensitive-screens">101. Sensitive Screens</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">recovery key
+device revoke
+identity reset
+backup key
+</code></pre>
+<p>may require re-authentication.</p>
+<hr />
+<h1 id="102-screenshot-security"><a class="header" href="#102-screenshot-security">102. Screenshot Security</a></h1>
+<p>For highly sensitive screens, Kotlin may apply secure-window policy if product chooses.</p>
+<hr />
+<h1 id="103-clipboard"><a class="header" href="#103-clipboard">103. Clipboard</a></h1>
+<p>Use Android clipboard for explicit copy actions.</p>
+<p>Avoid auto-copying sensitive secrets.</p>
+<hr />
+<h1 id="104-app-lock"><a class="header" href="#104-app-lock">104. App Lock</a></h1>
+<p>Optional future:</p>
+<pre><code class="language-text">biometric/device credential
+</code></pre>
+<p>before opening sensitive UI.</p>
+<p>Rust core may remain running while UI locked.</p>
+<hr />
+<h1 id="105-theme"><a class="header" href="#105-theme">105. Theme</a></h1>
+<p>Support:</p>
+<pre><code class="language-text">System
+Light
+Dark
+</code></pre>
+<p>Compose implementation may build on Material 3.</p>
+<hr />
+<h1 id="106-dynamic-color"><a class="header" href="#106-dynamic-color">106. Dynamic Color</a></h1>
+<p>Optional Android feature.</p>
+<p>Product may support:</p>
+<pre><code class="language-text">system dynamic color
+</code></pre>
+<p>or fixed brand theme.</p>
+<hr />
+<h1 id="107-design-tokens"><a class="header" href="#107-design-tokens">107. Design Tokens</a></h1>
+<p>Map shared semantic design language into Compose:</p>
+<pre><code class="language-text">color scheme
+typography
+shape
+spacing
+motion
+</code></pre>
+<hr />
+<h1 id="108-font-scaling"><a class="header" href="#108-font-scaling">108. Font Scaling</a></h1>
+<p>Must support system font scale.</p>
+<p>Avoid fixed-height components that clip at large text.</p>
+<hr />
+<h1 id="109-touch-targets"><a class="header" href="#109-touch-targets">109. Touch Targets</a></h1>
+<p>Respect minimum touch target size.</p>
+<hr />
+<h1 id="110-accessibility-semantics"><a class="header" href="#110-accessibility-semantics">110. Accessibility Semantics</a></h1>
+<p>Use Compose semantics for:</p>
+<pre><code class="language-text">buttons
+message rows
+status
+selection
+call controls
+security warnings
+</code></pre>
+<hr />
+<h1 id="111-talkback-message-row"><a class="header" href="#111-talkback-message-row">111. TalkBack Message Row</a></h1>
+<p>Announce coherent unit:</p>
+<pre><code class="language-text">Alice, 10:42 AM, Hello, delivered
+</code></pre>
+<hr />
+<h1 id="112-live-regions"><a class="header" href="#112-live-regions">112. Live Regions</a></h1>
+<p>Use carefully for:</p>
+<pre><code class="language-text">new messages
+call connection changes
+security alert
+</code></pre>
+<p>Do not overwhelm screen reader.</p>
+<hr />
+<h1 id="113-reduced-motion"><a class="header" href="#113-reduced-motion">113. Reduced Motion</a></h1>
+<p>Respect Android animation scale/reduced motion where available.</p>
+<hr />
+<h1 id="114-high-contrast"><a class="header" href="#114-high-contrast">114. High Contrast</a></h1>
+<p>Do not rely solely on subtle color differences.</p>
+<hr />
+<h1 id="115-rtl"><a class="header" href="#115-rtl">115. RTL</a></h1>
+<p>Support:</p>
+<pre><code class="language-text">Arabic
+Urdu
+Hebrew
+</code></pre>
+<p>layout direction.</p>
+<p>Message bubbles and icons should adapt correctly.</p>
+<hr />
+<h1 id="116-localization"><a class="header" href="#116-localization">116. Localization</a></h1>
+<p>All strings in Android resources.</p>
+<p>Rust returns:</p>
+<pre><code class="language-text">codes
+structured context
+timestamps
+numbers
+</code></pre>
+<p>Compose localizes.</p>
+<hr />
+<h1 id="117-datetime-formatting"><a class="header" href="#117-datetime-formatting">117. Date/Time Formatting</a></h1>
+<p>Android UI uses locale/device settings.</p>
+<hr />
+<h1 id="118-error-architecture"><a class="header" href="#118-error-architecture">118. Error Architecture</a></h1>
+<p>ViewModel receives structured <code>UiError</code>.</p>
+<p>Maps to:</p>
+<pre><code class="language-text">snackbar
+inline error
+dialog
+full recovery screen
+</code></pre>
+<hr />
+<h1 id="119-transient-error"><a class="header" href="#119-transient-error">119. Transient Error</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">peer unreachable
+</code></pre>
+<p>show small non-blocking status.</p>
+<hr />
+<h1 id="120-permission-error"><a class="header" href="#120-permission-error">120. Permission Error</a></h1>
+<p>Show contextual explanation/action.</p>
+<hr />
+<h1 id="121-security-error"><a class="header" href="#121-security-error">121. Security Error</a></h1>
+<p>Use strong hierarchy and block risky continuation.</p>
+<hr />
+<h1 id="122-storage-error"><a class="header" href="#122-storage-error">122. Storage Error</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">Storage full
+</code></pre>
+<p>show:</p>
+<pre><code class="language-text">Manage Storage
+</code></pre>
+<hr />
+<h1 id="123-offline"><a class="header" href="#123-offline">123. Offline</a></h1>
+<p>Offline is normal.</p>
+<p>Conversation list/history remains available.</p>
+<p>Queued messages render normally.</p>
+<hr />
+<h1 id="124-connection-status"><a class="header" href="#124-connection-status">124. Connection Status</a></h1>
+<p>Use subtle:</p>
+<pre><code class="language-text">Offline
+Reconnecting
+</code></pre>
+<p>only when useful.</p>
+<hr />
+<h1 id="125-empty-states"><a class="header" href="#125-empty-states">125. Empty States</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">No conversations
+No calls
+No contacts
+No files
+No search results
+</code></pre>
+<p>with one relevant action.</p>
+<hr />
+<h1 id="126-loading"><a class="header" href="#126-loading">126. Loading</a></h1>
+<p>Prefer local data immediately.</p>
+<p>Use skeleton/progress only for data actually unavailable.</p>
+<hr />
+<h1 id="127-pulling-rust-snapshot"><a class="header" href="#127-pulling-rust-snapshot">127. Pulling Rust Snapshot</a></h1>
+<p>Screen open:</p>
+<pre><code class="language-text">ViewModel starts
+→ repository requests snapshot
+→ state renders
+→ event subscription begins
+</code></pre>
+<hr />
+<h1 id="128-lifecycle-aware-subscription"><a class="header" href="#128-lifecycle-aware-subscription">128. Lifecycle-Aware Subscription</a></h1>
+<p>Collect event streams only while screen lifecycle requires them.</p>
+<hr />
+<h1 id="129-global-events"><a class="header" href="#129-global-events">129. Global Events</a></h1>
+<p>Keep app-wide:</p>
+<pre><code class="language-text">active call
+security alert
+core health
+</code></pre>
+<hr />
+<h1 id="130-screen-scoped-events"><a class="header" href="#130-screen-scoped-events">130. Screen-Scoped Events</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">typing for current conversation
+file transfer detail
+contact presence
+</code></pre>
+<hr />
+<h1 id="131-avoid-subscription-leaks"><a class="header" href="#131-avoid-subscription-leaks">131. Avoid Subscription Leaks</a></h1>
+<p>ViewModel clears/subscription cancels when feature no longer active.</p>
+<hr />
+<h1 id="132-navigation--viewmodel-scope"><a class="header" href="#132-navigation--viewmodel-scope">132. Navigation + ViewModel Scope</a></h1>
+<p>Conversation ViewModel scoped to conversation destination.</p>
+<p>Chats list ViewModel scoped to chats graph.</p>
+<hr />
+<h1 id="133-shared-viewmodel"><a class="header" href="#133-shared-viewmodel">133. Shared ViewModel</a></h1>
+<p>Use only when state truly spans destinations.</p>
+<p>Avoid global mega-ViewModel.</p>
+<hr />
+<h1 id="134-recommended-viewmodel-pattern"><a class="header" href="#134-recommended-viewmodel-pattern">134. Recommended ViewModel Pattern</a></h1>
+<p>Per feature:</p>
+<pre><code class="language-text">UiState
+UiAction
+UiEffect
+</code></pre>
+<hr />
+<h1 id="135-ui-action"><a class="header" href="#135-ui-action">135. UI Action</a></h1>
+<p>Example:</p>
+<pre><code class="language-kotlin">sealed interface ConversationAction {
+    data class Send(val text: String) : ConversationAction
+    data class Retry(val messageId: String) : ConversationAction
+    data object StartAudioCall : ConversationAction
+}
+</code></pre>
+<hr />
+<h1 id="136-viewmodel-handling"><a class="header" href="#136-viewmodel-handling">136. ViewModel Handling</a></h1>
+<p>ViewModel translates action into:</p>
+<pre><code class="language-text">Rust semantic command
+</code></pre>
+<hr />
+<h1 id="137-ui-effect"><a class="header" href="#137-ui-effect">137. UI Effect</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">OpenPicker
+RequestPermission
+Navigate
+ShowSnackbar
+</code></pre>
+<hr />
+<h1 id="138-no-domain-decision-in-composable"><a class="header" href="#138-no-domain-decision-in-composable">138. No Domain Decision in Composable</a></h1>
+<p>Composable renders and emits actions.</p>
+<hr />
+<h1 id="139-previewability"><a class="header" href="#139-previewability">139. Previewability</a></h1>
+<p>Compose screens should support previews using fake UI state.</p>
+<p>No live Rust runtime required.</p>
+<hr />
+<h1 id="140-testkit"><a class="header" href="#140-testkit">140. Testkit</a></h1>
+<p>Create Kotlin fake repository matching Rust presentation contract.</p>
+<hr />
+<h1 id="141-compose-preview-models"><a class="header" href="#141-compose-preview-models">141. Compose Preview Models</a></h1>
+<p>Provide:</p>
+<pre><code class="language-text">empty
+loaded
+offline
+error
+large font
+RTL
+</code></pre>
+<p>samples.</p>
+<hr />
+<h1 id="142-android-testing"><a class="header" href="#142-android-testing">142. Android Testing</a></h1>
+<p>Required:</p>
+<pre><code class="language-text">ViewModel unit tests
+Compose UI tests
+navigation tests
+permission tests
+deep-link tests
+process-death tests
+PiP tests
+foreground service tests
+JNI adapter tests
+</code></pre>
+<hr />
+<h1 id="143-process-death-test"><a class="header" href="#143-process-death-test">143. Process-Death Test</a></h1>
+<p>Scenario:</p>
+<pre><code class="language-text">open conversation
+type draft
+background
+kill process
+restore
+</code></pre>
+<p>Expected:</p>
+<pre><code class="language-text">navigation/draft recovery according to policy
+core state reloaded
+</code></pre>
+<hr />
+<h1 id="144-call-recreation-test"><a class="header" href="#144-call-recreation-test">144. Call Recreation Test</a></h1>
+<p>During call:</p>
+<pre><code class="language-text">rotate
+background
+return
+</code></pre>
+<p>Call remains.</p>
+<hr />
+<h1 id="145-notification-cold-start-test"><a class="header" href="#145-notification-cold-start-test">145. Notification Cold Start Test</a></h1>
+<p>Tap message notification from killed app.</p>
+<p>Correct conversation opens after Rust ready.</p>
+<hr />
+<h1 id="146-deep-link-security-test"><a class="header" href="#146-deep-link-security-test">146. Deep-Link Security Test</a></h1>
+<p>Malformed external deep link does not crash or access unauthorized data.</p>
+<hr />
+<h1 id="147-permission-denial-test"><a class="header" href="#147-permission-denial-test">147. Permission Denial Test</a></h1>
+<p>Camera denied.</p>
+<p>Video call degrades gracefully to audio if allowed.</p>
+<hr />
+<h1 id="148-notification-permission-denied"><a class="header" href="#148-notification-permission-denied">148. Notification Permission Denied</a></h1>
+<p>App works.</p>
+<p>Diagnostics explain possible background-call/message limitations.</p>
+<hr />
+<h1 id="149-share-intent-test"><a class="header" href="#149-share-intent-test">149. Share Intent Test</a></h1>
+<p>Large shared file uses handle/FD, not memory copy.</p>
+<hr />
+<h1 id="150-foldable-test"><a class="header" href="#150-foldable-test">150. Foldable Test</a></h1>
+<p>Hinge does not obscure list/detail content.</p>
+<hr />
+<h1 id="151-large-font-test"><a class="header" href="#151-large-font-test">151. Large Font Test</a></h1>
+<p>At large system font:</p>
+<pre><code class="language-text">no clipped buttons
+no hidden security text
+</code></pre>
+<hr />
+<h1 id="152-talkback-test"><a class="header" href="#152-talkback-test">152. TalkBack Test</a></h1>
+<p>Core flows:</p>
+<pre><code class="language-text">open chat
+read message
+send message
+accept call
+verify device
+restore backup
+</code></pre>
+<hr />
+<h1 id="153-performance"><a class="header" href="#153-performance">153. Performance</a></h1>
+<p>Measure:</p>
+<pre><code class="language-text">cold app shell startup
+conversation open
+LazyColumn scroll
+search
+call UI updates
+</code></pre>
+<hr />
+<h1 id="154-compose-recomposition-budget"><a class="header" href="#154-compose-recomposition-budget">154. Compose Recomposition Budget</a></h1>
+<p>Avoid broad state objects that recompose whole app for:</p>
+<pre><code class="language-text">typing tick
+transfer percentage
+</code></pre>
+<p>Split state into stable feature-level flows.</p>
+<hr />
+<h1 id="155-stable-data-models"><a class="header" href="#155-stable-data-models">155. Stable Data Models</a></h1>
+<p>Use immutable Kotlin UI models.</p>
+<hr />
+<h1 id="156-mapping-layer"><a class="header" href="#156-mapping-layer">156. Mapping Layer</a></h1>
+<p>Rust DTO:</p>
+<pre><code class="language-text">ConversationSummaryDto
+</code></pre>
+<p>maps once to Kotlin <code>ConversationUiModel</code>.</p>
+<p>Avoid repeated expensive conversions in Composable.</p>
+<hr />
+<h1 id="157-pagination"><a class="header" href="#157-pagination">157. Pagination</a></h1>
+<p>Rust provides page/cursor.</p>
+<p>Compose list requests older/newer pages via ViewModel.</p>
+<hr />
+<h1 id="158-load-more"><a class="header" href="#158-load-more">158. Load More</a></h1>
+<p>Use scrolling thresholds.</p>
+<hr />
+<h1 id="159-search-debounce"><a class="header" href="#159-search-debounce">159. Search Debounce</a></h1>
+<p>ViewModel debounces user query.</p>
+<p>Rust search remains authoritative.</p>
+<hr />
+<h1 id="160-file-thumbnail-loading"><a class="header" href="#160-file-thumbnail-loading">160. File Thumbnail Loading</a></h1>
+<p>Use thumbnail handle/URI generated by trusted file subsystem.</p>
+<p>Avoid reading full original media in Composable.</p>
+<hr />
+<h1 id="161-image-cache"><a class="header" href="#161-image-cache">161. Image Cache</a></h1>
+<p>Android image loader can cache UI thumbnails.</p>
+<p>Authoritative file state remains Rust.</p>
+<hr />
+<h1 id="162-video-playback"><a class="header" href="#162-video-playback">162. Video Playback</a></h1>
+<p>For shared video attachment, Compose may host native player/view.</p>
+<p>Do not route frames through Kotlin state.</p>
+<hr />
+<h1 id="163-system-back-during-modal"><a class="header" href="#163-system-back-during-modal">163. System Back During Modal</a></h1>
+<p>Dismiss:</p>
+<pre><code class="language-text">bottom sheet
+dialog
+selection mode
+</code></pre>
+<p>before leaving destination.</p>
+<hr />
+<h1 id="164-selection-mode"><a class="header" href="#164-selection-mode">164. Selection Mode</a></h1>
+<p>Android contextual selection for:</p>
+<pre><code class="language-text">messages
+files
+contacts
+</code></pre>
+<hr />
+<h1 id="165-haptics"><a class="header" href="#165-haptics">165. Haptics</a></h1>
+<p>Use sparingly for:</p>
+<pre><code class="language-text">long press
+successful pairing
+destructive confirmation
+</code></pre>
+<hr />
+<h1 id="166-vibration-policy"><a class="header" href="#166-vibration-policy">166. Vibration Policy</a></h1>
+<p>Respect system/user settings.</p>
+<hr />
+<h1 id="167-notification-vs-in-app-banner"><a class="header" href="#167-notification-vs-in-app-banner">167. Notification vs In-App Banner</a></h1>
+<p>Foreground app:</p>
+<pre><code class="language-text">in-app banner/snackbar
+</code></pre>
+<p>Background:</p>
+<pre><code class="language-text">system notification
+</code></pre>
+<p>Rust notification policy decides semantic intent.</p>
+<hr />
+<h1 id="168-screen-share-privacy"><a class="header" href="#168-screen-share-privacy">168. Screen-Share Privacy</a></h1>
+<p>If active screen share:</p>
+<pre><code class="language-text">notification previews may switch to Generic
+</code></pre>
+<p>according to Part 31 policy.</p>
+<hr />
+<h1 id="169-app-specific-status-bar"><a class="header" href="#169-app-specific-status-bar">169. App-Specific Status Bar</a></h1>
+<p>Keep status bar/system bars integrated with theme and edge-to-edge layout.</p>
+<hr />
+<h1 id="170-edge-to-edge"><a class="header" href="#170-edge-to-edge">170. Edge-to-Edge</a></h1>
+<p>Use Android edge-to-edge correctly with insets.</p>
+<hr />
+<h1 id="171-gesture-navigation"><a class="header" href="#171-gesture-navigation">171. Gesture Navigation</a></h1>
+<p>Respect system gesture areas.</p>
+<p>Do not place tiny critical controls against gesture edges.</p>
+<hr />
+<h1 id="172-safe-insets"><a class="header" href="#172-safe-insets">172. Safe Insets</a></h1>
+<p>Apply to:</p>
+<pre><code class="language-text">composer
+call controls
+bottom bar
+sheets
+</code></pre>
+<hr />
+<h1 id="173-android-settings-shell"><a class="header" href="#173-android-settings-shell">173. Android Settings Shell</a></h1>
+<p>On phone:</p>
+<pre><code class="language-text">settings list
+→ detail screen
+</code></pre>
+<p>On tablet:</p>
+<pre><code class="language-text">settings list pane
++
+detail pane
+</code></pre>
+<hr />
+<h1 id="174-android-security-center"><a class="header" href="#174-android-security-center">174. Android Security Center</a></h1>
+<p>Can adapt similarly:</p>
+<pre><code class="language-text">devices list
+security events
+recovery
+</code></pre>
+<hr />
+<h1 id="175-backup-ui"><a class="header" href="#175-backup-ui">175. Backup UI</a></h1>
+<p>Background operations report through Rust.</p>
+<p>Compose shows:</p>
+<pre><code class="language-text">progress
+destination
+verification
+errors
+</code></pre>
+<hr />
+<h1 id="176-restore-ui"><a class="header" href="#176-restore-ui">176. Restore UI</a></h1>
+<p>High-risk operation.</p>
+<p>Require:</p>
+<pre><code class="language-text">preview
+compatibility check
+confirmation
+progress
+</code></pre>
+<hr />
+<h1 id="177-emergency-ux"><a class="header" href="#177-emergency-ux">177. Emergency UX</a></h1>
+<p>Part 17 data.</p>
+<p>Android shell should make SOS accessible without accidental triggering.</p>
+<hr />
+<h1 id="178-lock-screen-emergency"><a class="header" href="#178-lock-screen-emergency">178. Lock-Screen Emergency</a></h1>
+<p>If product later supports:</p>
+<pre><code class="language-text">notification action
+shortcut
+widget
+</code></pre>
+<p>must route into verified Rust emergency command.</p>
+<hr />
+<h1 id="179-app-widget"><a class="header" href="#179-app-widget">179. App Widget</a></h1>
+<p>Optional future.</p>
+<p>Widget may show:</p>
+<pre><code class="language-text">unread count
+quick contact
+SOS
+</code></pre>
+<p>but no sensitive content by default.</p>
+<hr />
+<h1 id="180-shortcuts"><a class="header" href="#180-shortcuts">180. Shortcuts</a></h1>
+<p>Android app shortcuts can include:</p>
+<pre><code class="language-text">New Message
+Recent Contact
+Scan QR
+</code></pre>
+<hr />
+<h1 id="181-shortcut-security"><a class="header" href="#181-shortcut-security">181. Shortcut Security</a></h1>
+<p>External shortcut intent validated.</p>
+<hr />
+<h1 id="182-compose-navigation-restoration"><a class="header" href="#182-compose-navigation-restoration">182. Compose Navigation Restoration</a></h1>
+<p>Navigation library should restore back stack where safe.</p>
+<p>Do not restore dead <code>CallId</code> as active call without Rust validation.</p>
+<hr />
+<h1 id="183-stale-destination"><a class="header" href="#183-stale-destination">183. Stale Destination</a></h1>
+<p>If restoring:</p>
+<pre><code class="language-text">ConversationId deleted
+</code></pre>
+<p>navigate to safe fallback.</p>
+<hr />
+<h1 id="184-stale-call"><a class="header" href="#184-stale-call">184. Stale Call</a></h1>
+<p>If call ended while Activity gone:</p>
+<pre><code class="language-text">show call history/ended state
+</code></pre>
+<p>not active UI.</p>
+<hr />
+<h1 id="185-stale-device"><a class="header" href="#185-stale-device">185. Stale Device</a></h1>
+<p>If device revoked/deleted:</p>
+<pre><code class="language-text">open security center
+</code></pre>
+<p>with explanatory message.</p>
+<hr />
+<h1 id="186-background-wake"><a class="header" href="#186-background-wake">186. Background Wake</a></h1>
+<p>Part 31 may start headless Rust work while no Activity exists.</p>
+<p>When UI launches later:</p>
+<pre><code class="language-text">durable snapshots already include received messages
+</code></pre>
+<p>No special Compose synchronization needed.</p>
+<hr />
+<h1 id="187-service-to-ui-handoff"><a class="header" href="#187-service-to-ui-handoff">187. Service-to-UI Handoff</a></h1>
+<p>Foreground call service can expose active call through Rust global state.</p>
+<p>Activity/ViewModel reads fresh snapshot.</p>
+<hr />
+<h1 id="188-single-activity"><a class="header" href="#188-single-activity">188. Single Activity</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">single-activity Compose app
+</code></pre>
+<p>with feature screens in navigation graph.</p>
+<p>Use extra Activity only for exceptional platform requirements.</p>
+<hr />
+<h1 id="189-separate-call-activity"><a class="header" href="#189-separate-call-activity">189. Separate Call Activity?</a></h1>
+<p>Usually unnecessary if foreground service + Compose navigation suffice.</p>
+<p>Consider only if Android call UX/system integration benefits.</p>
+<hr />
+<h1 id="190-activity-result-apis"><a class="header" href="#190-activity-result-apis">190. Activity Result APIs</a></h1>
+<p>Use for:</p>
+<pre><code class="language-text">permissions
+file picker
+document creation
+share result
+</code></pre>
+<p>rather than legacy callbacks.</p>
+<hr />
+<h1 id="191-dependency-boundaries"><a class="header" href="#191-dependency-boundaries">191. Dependency Boundaries</a></h1>
+<p>Feature UI depends on:</p>
+<pre><code class="language-text">UI models
+repository interfaces
+platform abstractions
+</code></pre>
+<p>not directly on JNI internals.</p>
+<hr />
+<h1 id="192-rust-repository-interface"><a class="header" href="#192-rust-repository-interface">192. Rust Repository Interface</a></h1>
+<pre><code class="language-kotlin">interface RustRepository {
+    fun conversations(): Flow&lt;List&lt;ConversationUiModel&gt;&gt;
+    suspend fun sendMessage(command: SendMessageUiCommand)
+    suspend fun startCall(peer: PeerUiId)
+}
+</code></pre>
+<p>Implementation wraps JNI.</p>
+<hr />
+<h1 id="193-test-repository"><a class="header" href="#193-test-repository">193. Test Repository</a></h1>
+<p>Fake implementation for:</p>
+<pre><code class="language-text">Compose previews
+unit tests
+offline fixtures
+</code></pre>
+<hr />
+<h1 id="194-no-jni-in-composables"><a class="header" href="#194-no-jni-in-composables">194. No JNI in Composables</a></h1>
+<p>Hard rule.</p>
+<p>Composable should never call native methods directly.</p>
+<hr />
+<h1 id="195-no-android-context-in-rust-core"><a class="header" href="#195-no-android-context-in-rust-core">195. No Android Context in Rust Core</a></h1>
+<p>Hard rule.</p>
+<p>Android context remains in Kotlin platform layer.</p>
+<hr />
+<h1 id="196-jni-error-translation"><a class="header" href="#196-jni-error-translation">196. JNI Error Translation</a></h1>
+<p>Rust error code:</p>
+<pre><code class="language-text">PermissionRequired
+PeerUnavailable
+SecurityMismatch
+</code></pre>
+<p>maps to Kotlin sealed error.</p>
+<hr />
+<h1 id="197-kotlin-error-model"><a class="header" href="#197-kotlin-error-model">197. Kotlin Error Model</a></h1>
+<pre><code class="language-kotlin">sealed interface UiError
+</code></pre>
+<p>with fields:</p>
+<pre><code class="language-text">severity
+retryable
+action
+</code></pre>
+<hr />
+<h1 id="198-state-restoration-priority"><a class="header" href="#198-state-restoration-priority">198. State Restoration Priority</a></h1>
+<p>Restore in order:</p>
+<pre><code class="language-text">core truth
+navigation
+drafts
+scroll
+temporary filters
+</code></pre>
+<hr />
+<h1 id="199-draft-architecture"><a class="header" href="#199-draft-architecture">199. Draft Architecture</a></h1>
+<p>Draft may live:</p>
+<pre><code class="language-text">ViewModel transient
+</code></pre>
+<p>or later:</p>
+<pre><code class="language-text">Rust durable draft service
+</code></pre>
+<p>For process-death resilience, durable draft service is preferable for important conversations.</p>
+<hr />
+<h1 id="200-scroll-restoration"><a class="header" href="#200-scroll-restoration">200. Scroll Restoration</a></h1>
+<p>Save:</p>
+<pre><code class="language-text">anchor MessageId
+offset
+</code></pre>
+<p>not absolute list index.</p>
+<hr />
+<h1 id="201-conversation-list-scroll"><a class="header" href="#201-conversation-list-scroll">201. Conversation List Scroll</a></h1>
+<p>Save lightweight list position locally.</p>
+<hr />
+<h1 id="202-search-state"><a class="header" href="#202-search-state">202. Search State</a></h1>
+<p>Can restore:</p>
+<pre><code class="language-text">query
+filters
+selected result
+</code></pre>
+<p>if desired.</p>
+<hr />
+<h1 id="203-sensitive-search"><a class="header" href="#203-sensitive-search">203. Sensitive Search</a></h1>
+<p>High-security profile may not persist search query.</p>
+<hr />
+<h1 id="204-metrics"><a class="header" href="#204-metrics">204. Metrics</a></h1>
+<p>UI performance metrics may include:</p>
+<pre><code class="language-text">screen render latency
+JNI call duration
+event queue lag
+recomposition count
+</code></pre>
+<p>No message content.</p>
+<hr />
+<h1 id="205-diagnostics"><a class="header" href="#205-diagnostics">205. Diagnostics</a></h1>
+<p>Developer screen can show:</p>
+<pre><code class="language-text">JNI connected
+core state
+event backlog
+foreground service state
+notification permission
+push registration
+</code></pre>
+<hr />
+<h1 id="206-crash-reports"><a class="header" href="#206-crash-reports">206. Crash Reports</a></h1>
+<p>Redact:</p>
+<pre><code class="language-text">message body
+contact names
+file names
+recovery material
+</code></pre>
+<p>where possible.</p>
+<hr />
+<h1 id="207-release-quality-gate"><a class="header" href="#207-release-quality-gate">207. Release Quality Gate</a></h1>
+<p>Android UI release should verify:</p>
+<pre><code class="language-text">navigation
+process death
+permissions
+notifications
+calls
+PiP
+share intents
+foldables
+TalkBack
+large font
+RTL
+dark/light
+</code></pre>
+<hr />
+<h1 id="208-suggested-android-feature-module-layout"><a class="header" href="#208-suggested-android-feature-module-layout">208. Suggested Android Feature Module Layout</a></h1>
+<pre><code class="language-text">feature/
+├── chats/
+│   ├── ChatsRoute.kt
+│   ├── ChatsScreen.kt
+│   ├── ChatsViewModel.kt
+│   └── ChatsUiState.kt
+├── conversation/
+├── calls/
+├── contacts/
+├── files/
+├── search/
+├── devices/
+├── security/
+└── settings/
+</code></pre>
+<hr />
+<h1 id="209-route-vs-screen"><a class="header" href="#209-route-vs-screen">209. Route vs Screen</a></h1>
+<p><code>Route</code> handles:</p>
+<pre><code class="language-text">ViewModel
+navigation
+effects
+</code></pre>
+<p><code>Screen</code> handles:</p>
+<pre><code class="language-text">pure UI
+</code></pre>
+<p>This keeps Composables testable.</p>
+<hr />
+<h1 id="210-example-pattern"><a class="header" href="#210-example-pattern">210. Example Pattern</a></h1>
+<pre><code class="language-text">ConversationRoute
+    ↓
+collect ViewModel state
+    ↓
+ConversationScreen(
+    state,
+    onAction
+)
+</code></pre>
+<hr />
+<h1 id="211-pure-screen"><a class="header" href="#211-pure-screen">211. Pure Screen</a></h1>
+<p><code>ConversationScreen</code> does not know:</p>
+<pre><code class="language-text">JNI
+Rust
+repository
+navigation controller
+</code></pre>
+<hr />
+<h1 id="212-previewability"><a class="header" href="#212-previewability">212. Previewability</a></h1>
+<p>This allows rich Compose previews for:</p>
+<pre><code class="language-text">normal
+offline
+error
+large font
+RTL
+group
+</code></pre>
+<hr />
+<h1 id="213-cross-platform-semantic-parity"><a class="header" href="#213-cross-platform-semantic-parity">213. Cross-Platform Semantic Parity</a></h1>
+<p>Desktop Dioxus and Android Compose should expose equivalent:</p>
+<pre><code class="language-text">message states
+call states
+security warnings
+transfer states
+receipt semantics
+</code></pre>
+<p>even if interaction differs.</p>
+<hr />
+<h1 id="214-android-specific-ux-freedom"><a class="header" href="#214-android-specific-ux-freedom">214. Android-Specific UX Freedom</a></h1>
+<p>Compose may use:</p>
+<pre><code class="language-text">swipe
+bottom sheet
+system back
+PiP
+system picker
+</code></pre>
+<p>without forcing those concepts into desktop.</p>
+<hr />
+<h1 id="215-definition-of-done"><a class="header" href="#215-definition-of-done">215. Definition of Done</a></h1>
+<p>UI/UX Part 03 is complete when:</p>
+<ul>
+<li>Android UI is pure Kotlin + Jetpack Compose</li>
+<li>Rust remains the authoritative product/runtime core</li>
+<li>JNI exposes coarse semantic APIs instead of low-level internals</li>
+<li>ViewModels convert Rust snapshots/events into lifecycle-aware <code>StateFlow</code></li>
+<li>Composables never call JNI directly</li>
+<li>a typed Compose navigation model exists</li>
+<li>predictive back integrates with Android system behavior</li>
+<li>phone, tablet, and foldable adaptive shells are defined</li>
+<li>Activity/process death is treated as normal</li>
+<li><code>SavedStateHandle</code> stores only presentation/navigation state</li>
+<li>stale ephemeral state is never restored as truth</li>
+<li>permissions are contextual and platform-native</li>
+<li>file/share flows pass handles/FDs rather than giant byte arrays</li>
+<li>incoming calls are authenticated before UI rings</li>
+<li>active calls can survive Activity recreation and use foreground-service/PiP integration</li>
+<li>raw media never enters ordinary Compose state</li>
+<li>notification, deep-link, and external intent inputs are validated</li>
+<li>accessibility, TalkBack, font scaling, RTL, reduced motion, touch targets, and edge-to-edge insets are first-class</li>
+<li>screen UI follows <code>UiState + UiAction + UiEffect</code></li>
+<li>process-death, deep-link, call recreation, permission denial, foldable, TalkBack, and large-font tests are release requirements</li>
+</ul>
+<hr />
+<h1 id="216-final-android-architecture"><a class="header" href="#216-final-android-architecture">216. Final Android Architecture</a></h1>
+<pre><code class="language-text">                     RUST CORE
+                         │
+               Presentation Service
+                         │
+                      JNI
+                         │
+                 RustRepository
+                         │
+                     ViewModel
+              ┌──────────┴──────────┐
+              │                     │
+           StateFlow              UiEffect
+              │                     │
+              ▼                     ▼
+       Jetpack Compose       Android Platform
+              │               Permissions
+              │               Picker
+              │               Notifications
+              │               PiP
+              │               Biometrics
+              ▼
+        Android UI Shell
+</code></pre>
+<p>Phone:</p>
+<pre><code class="language-text">Bottom Navigation
+        ↓
+    NavHost
+        ↓
+Single-pane screen
+</code></pre>
+<p>Tablet/foldable:</p>
+<pre><code class="language-text">Navigation Rail
+        ↓
+List Pane
+        ↓
+Detail Pane
+</code></pre>
+<hr />
+<h1 id="217-final-principle"><a class="header" href="#217-final-principle">217. Final Principle</a></h1>
+<p>The Android application should feel like a native Android product while remaining a thin presentation client over the Rust system.</p>
+<p>The correct split is:</p>
+<pre><code class="language-text">Rust:
+    state
+    business rules
+    networking
+    storage
+    security
+    calls
+    sync
+    search
+    backup
+
+Kotlin:
+    lifecycle
+    permissions
+    Android services
+    intents
+    system UI integration
+
+Jetpack Compose:
+    presentation
+    interaction
+    navigation
+    adaptive layouts
+</code></pre>
+<p>This gives Android the platform quality users expect without duplicating the communication engine outside Rust.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="ui-ux-02-desktop-dioxus-app-shell-navigation-window-architecture.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="ui-ux-04-conversation-list-inbox-architecture.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="ui-ux-02-desktop-dioxus-app-shell-navigation-window-architecture.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="ui-ux-04-conversation-list-inbox-architecture.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

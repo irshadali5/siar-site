@@ -1,0 +1,2339 @@
+<!DOCTYPE HTML>
+<html lang="en" class="navy" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>26 — Rust-First Audio DSP (AEC, NS, AGC, Resampling) - SIAR System Architecture &amp; Technical Wiki</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="Comprehensive system architecture, cryptographic protocols, DTN mesh networking, distributed storage, audio DSP pipelines, and UI/UX design specifications for SIAR.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="theme/custom.css">
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "navy";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('navy')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="Home.html">Architecture Portal & Reading Guide</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part I: Protocol Foundation & Extension Platform</li><li class="chapter-item expanded "><a href="01-protocol-extension-system-architecture.html"><strong aria-hidden="true">1.</strong> 01 — Protocol Extension System Architecture</a></li><li class="chapter-item expanded "><a href="07-capability-negotiation-architecture.html"><strong aria-hidden="true">2.</strong> 07 — Capability Negotiation & Protocol Upgrades</a></li><li class="chapter-item expanded "><a href="21-third-party-protocol-extensions-architecture.html"><strong aria-hidden="true">3.</strong> 21 — Third-Party Protocol Extensions</a></li><li class="chapter-item expanded "><a href="22-wasm-compatible-components-architecture.html"><strong aria-hidden="true">4.</strong> 22 — WebAssembly (WASM) Compatible Components</a></li><li class="chapter-item expanded "><a href="23-external-interoperability-suite-architecture.html"><strong aria-hidden="true">5.</strong> 23 — External Interoperability & Conformance Suite</a></li><li class="chapter-item expanded "><a href="24-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">6.</strong> 24 — Dynamic Plugin & Module Ecosystem</a></li><li class="chapter-item expanded affix "><li class="part-title">Part II: Identity, Trust & Cryptography</li><li class="chapter-item expanded "><a href="02-multi-device-identity-architecture.html"><strong aria-hidden="true">7.</strong> 02 — Multi-Device Identity & Trust Model</a></li><li class="chapter-item expanded "><a href="28-production-security-e2ee-key-management-privacy-architecture.html"><strong aria-hidden="true">8.</strong> 28 — Production Security, E2EE, Key Management & Privacy</a></li><li class="chapter-item expanded affix "><li class="part-title">Part III: Mesh Networking, Transports & Hardware</li><li class="chapter-item expanded "><a href="03-transport-routing-policy-engine-architecture.html"><strong aria-hidden="true">9.</strong> 03 — Transport & Routing Policy Engine</a></li><li class="chapter-item expanded "><a href="11-relay-self-hosted-infrastructure-architecture.html"><strong aria-hidden="true">10.</strong> 11 — Self-Hosted Relay & Coordination Infrastructure</a></li><li class="chapter-item expanded "><a href="12-multipath-networking-architecture.html"><strong aria-hidden="true">11.</strong> 12 — Multipath Networking & Link Aggregation</a></li><li class="chapter-item expanded "><a href="13-battery-aware-scheduling-architecture.html"><strong aria-hidden="true">12.</strong> 13 — Battery-Aware Scheduling & Power Profiles</a></li><li class="chapter-item expanded "><a href="14-proximity-abstraction-architecture.html"><strong aria-hidden="true">13.</strong> 14 — Proximity Abstraction (BLE, Wi-Fi Direct, LoRa)</a></li><li class="chapter-item expanded "><a href="15-qr-nfc-bootstrap-pairing-architecture.html"><strong aria-hidden="true">14.</strong> 15 — Out-of-Band QR & NFC Bootstrap Pairing</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IV: Delay-Tolerant Networking & Emergency Mesh</li><li class="chapter-item expanded "><a href="06-dtn-store-carry-forward-architecture.html"><strong aria-hidden="true">15.</strong> 06 — DTN Store-Carry-Forward & Bundle Forwarding</a></li><li class="chapter-item expanded "><a href="17-emergency-priority-classes-architecture.html"><strong aria-hidden="true">16.</strong> 17 — Emergency Priority Classes & Critical Alert Mesh</a></li><li class="chapter-item expanded affix "><li class="part-title">Part V: Storage, Outbox & Data Lifecycle</li><li class="chapter-item expanded "><a href="04-offline-event-log-architecture.html"><strong aria-hidden="true">17.</strong> 04 — Offline Event Log & Sync Engine</a></li><li class="chapter-item expanded "><a href="05-robust-file-blob-subsystem-architecture.html"><strong aria-hidden="true">18.</strong> 05 — Robust File & Blob Subsystem (Chunking & Resumption)</a></li><li class="chapter-item expanded "><a href="09-crash-recovery-architecture.html"><strong aria-hidden="true">19.</strong> 09 — Crash Recovery & State Integrity</a></li><li class="chapter-item expanded "><a href="32-search-indexing-local-knowledge-privacy-architecture.html"><strong aria-hidden="true">20.</strong> 32 — Search, Indexing & Local Privacy Retrieval</a></li><li class="chapter-item expanded "><a href="33-backup-restore-export-import-archival-portability-architecture.html"><strong aria-hidden="true">21.</strong> 33 — Backup, Restore, Export & Long-Term Archival</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VI: Realtime Media, Calling & Audio DSP</li><li class="chapter-item expanded "><a href="25-android-direct-hardware-surface-zero-copy-media-architecture.html"><strong aria-hidden="true">22.</strong> 25 — Android Direct Surface Zero-Copy Media</a></li><li class="chapter-item expanded "><a href="26-rust-first-audio-dsp-resampling-aec-ns-agc-architecture.html" class="active"><strong aria-hidden="true">23.</strong> 26 — Rust-First Audio DSP (AEC, NS, AGC, Resampling)</a></li><li class="chapter-item expanded "><a href="29-realtime-calls-media-session-protocol-architecture.html"><strong aria-hidden="true">24.</strong> 29 — Realtime Calls & Media Session Protocol</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VII: Ephemeral State, Presence & Notifications</li><li class="chapter-item expanded "><a href="30-presence-availability-typing-read-receipts-ephemeral-state-architecture.html"><strong aria-hidden="true">25.</strong> 30 — Presence, Availability, Typing & Read Receipts</a></li><li class="chapter-item expanded "><a href="31-notifications-push-background-delivery-lifecycle-architecture.html"><strong aria-hidden="true">26.</strong> 31 — Notifications, Push Wake & Background Delivery</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VIII: Native Runtimes, Daemons & Embedded Linux</li><li class="chapter-item expanded "><a href="16-daemon-headless-runtime-architecture.html"><strong aria-hidden="true">27.</strong> 16 — Headless Daemon & Background Runtime</a></li><li class="chapter-item expanded "><a href="19-c-abi-ffi-architecture.html"><strong aria-hidden="true">28.</strong> 19 — C-ABI FFI & Native Language Interop</a></li><li class="chapter-item expanded "><a href="20-embedded-linux-node-architecture.html"><strong aria-hidden="true">29.</strong> 20 — Embedded Linux Node & Resource-Constrained Targets</a></li><li class="chapter-item expanded "><a href="27-rust-driven-android-native-build-packaging-automation.html"><strong aria-hidden="true">30.</strong> 27 — Rust-Driven Android Native Build & Packaging Automation</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IX: Reliability, Testing, Fuzzing & Diagnostics</li><li class="chapter-item expanded "><a href="08-resource-limits-backpressure-architecture.html"><strong aria-hidden="true">31.</strong> 08 — Resource Limits, Quotas & Backpressure</a></li><li class="chapter-item expanded "><a href="10-fuzzing-protocol-test-suite-architecture.html"><strong aria-hidden="true">32.</strong> 10 — Fuzzing & Protocol Test Suite</a></li><li class="chapter-item expanded "><a href="18-network-diagnostics-path-visualization-architecture.html"><strong aria-hidden="true">33.</strong> 18 — Network Diagnostics & Path Visualization</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part X: UI/UX Client Architecture (Cross-Platform)</li><li class="chapter-item expanded "><a href="ui-ux-01-product-foundation-cross-platform-interaction-architecture.html"><strong aria-hidden="true">34.</strong> UI/UX 01 — Product UX Foundation & Cross-Platform Interaction</a></li><li class="chapter-item expanded "><a href="ui-ux-02-desktop-dioxus-app-shell-navigation-window-architecture.html"><strong aria-hidden="true">35.</strong> UI/UX 02 — Desktop Dioxus App Shell & Navigation</a></li><li class="chapter-item expanded "><a href="ui-ux-03-android-jetpack-compose-app-shell-navigation-lifecycle-architecture.html"><strong aria-hidden="true">36.</strong> UI/UX 03 — Android Jetpack Compose App Shell & Lifecycle</a></li><li class="chapter-item expanded "><a href="ui-ux-04-conversation-list-inbox-architecture.html"><strong aria-hidden="true">37.</strong> UI/UX 04 — Conversation List & Inbox UX</a></li><li class="chapter-item expanded "><a href="ui-ux-05-conversation-message-timeline-architecture.html"><strong aria-hidden="true">38.</strong> UI/UX 05 — Conversation Message Timeline UX</a></li><li class="chapter-item expanded "><a href="ui-ux-06-message-composer-attachments-voice-notes-drafts-architecture.html"><strong aria-hidden="true">39.</strong> UI/UX 06 — Message Composer, Attachments & Voice Notes</a></li><li class="chapter-item expanded "><a href="ui-ux-07-calls-realtime-media-architecture.html"><strong aria-hidden="true">40.</strong> UI/UX 07 — Calls & Realtime Media UX</a></li><li class="chapter-item expanded "><a href="ui-ux-08-contacts-requests-verification-identity-architecture.html"><strong aria-hidden="true">41.</strong> UI/UX 08 — Contacts, Requests, Verification & Identity</a></li><li class="chapter-item expanded "><a href="ui-ux-09-groups-membership-roles-architecture.html"><strong aria-hidden="true">42.</strong> UI/UX 09 — Groups, Membership & Roles UX</a></li><li class="chapter-item expanded "><a href="ui-ux-10-files-media-gallery-transfer-architecture.html"><strong aria-hidden="true">43.</strong> UI/UX 10 — Files, Media Gallery & Transfer UX</a></li><li class="chapter-item expanded "><a href="ui-ux-11-search-local-knowledge-retrieval-architecture.html"><strong aria-hidden="true">44.</strong> UI/UX 11 — Search & Local Knowledge Retrieval UX</a></li><li class="chapter-item expanded "><a href="ui-ux-12-nearby-qr-nfc-pairing-device-linking-architecture.html"><strong aria-hidden="true">45.</strong> UI/UX 12 — Nearby, QR/NFC Pairing & Device Linking UX</a></li><li class="chapter-item expanded "><a href="ui-ux-13-notifications-background-incoming-call-architecture.html"><strong aria-hidden="true">46.</strong> UI/UX 13 — Notifications, Background & Incoming Call UX</a></li><li class="chapter-item expanded "><a href="ui-ux-14-presence-typing-receipts-status-architecture.html"><strong aria-hidden="true">47.</strong> UI/UX 14 — Presence, Typing, Receipts & Status UX</a></li><li class="chapter-item expanded "><a href="ui-ux-15-security-center-devices-keys-recovery-architecture.html"><strong aria-hidden="true">48.</strong> UI/UX 15 — Security Center, Devices, Keys & Recovery UX</a></li><li class="chapter-item expanded "><a href="ui-ux-16-backup-restore-export-migration-architecture.html"><strong aria-hidden="true">49.</strong> UI/UX 16 — Backup, Restore, Export & Migration UX</a></li><li class="chapter-item expanded "><a href="ui-ux-17-emergency-sos-offline-mesh-architecture.html"><strong aria-hidden="true">50.</strong> UI/UX 17 — Emergency / SOS / Offline Mesh UX</a></li><li class="chapter-item expanded "><a href="ui-ux-18-settings-privacy-notifications-data-controls-architecture.html"><strong aria-hidden="true">51.</strong> UI/UX 18 — Settings, Privacy, Notifications & Data Controls</a></li><li class="chapter-item expanded "><a href="ui-ux-19-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">52.</strong> UI/UX 19 — Plugin & Module Ecosystem UX</a></li><li class="chapter-item expanded "><a href="ui-ux-20-diagnostics-network-paths-advanced-developer-architecture.html"><strong aria-hidden="true">53.</strong> UI/UX 20 — Diagnostics, Network Paths & Developer UX</a></li><li class="chapter-item expanded "><a href="ui-ux-21-accessibility-inclusive-interaction-architecture.html"><strong aria-hidden="true">54.</strong> UI/UX 21 — Accessibility & Inclusive Interaction</a></li><li class="chapter-item expanded "><a href="ui-ux-22-design-system-tokens-typography-icons-motion-architecture.html"><strong aria-hidden="true">55.</strong> UI/UX 22 — Design System, Tokens, Typography & Motion</a></li><li class="chapter-item expanded "><a href="ui-ux-23-responsive-adaptive-desktop-tablet-foldable-phone-layout-architecture.html"><strong aria-hidden="true">56.</strong> UI/UX 23 — Responsive & Adaptive Layouts (Desktop/Tablet/Foldable/Phone)</a></li><li class="chapter-item expanded "><a href="ui-ux-24-error-loading-empty-offline-degraded-state-architecture.html"><strong aria-hidden="true">57.</strong> UI/UX 24 — Error, Loading, Empty & Degraded-State UX</a></li><li class="chapter-item expanded "><a href="ui-ux-25-onboarding-first-run-permission-education-architecture.html"><strong aria-hidden="true">58.</strong> UI/UX 25 — Onboarding, First Run & Permission Education</a></li><li class="chapter-item expanded "><a href="ui-ux-26-performance-virtualization-large-data-ui-architecture.html"><strong aria-hidden="true">59.</strong> UI/UX 26 — Virtualization & Large-Data UI Performance</a></li><li class="chapter-item expanded "><a href="ui-ux-27-ui-testing-screenshot-interaction-release-quality-gates-architecture.html"><strong aria-hidden="true">60.</strong> UI/UX 27 — UI Testing, Screenshots & Release Quality Gates</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">SIAR System Architecture &amp; Technical Wiki</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar/edit/main/sys-arch/26-rust-first-audio-dsp-resampling-aec-ns-agc-architecture.md" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="part-26--rust-first-audio-dsp-resampling-aecnsagc--hardware-aware-audio-pipeline-architecture"><a class="header" href="#part-26--rust-first-audio-dsp-resampling-aecnsagc--hardware-aware-audio-pipeline-architecture">Part 26 — Rust-First Audio DSP, Resampling, AEC/NS/AGC &amp; Hardware-Aware Audio Pipeline Architecture</a></h1>
+<h2 id="reusable-p2p-communication-platform"><a class="header" href="#reusable-p2p-communication-platform">Reusable P2P Communication Platform</a></h2>
+<p><strong>Status:</strong> Architecture specification<br />
+<strong>Part:</strong> 26 of 27 additional production-hardening parts<br />
+<strong>Primary language:</strong> Rust<br />
+<strong>Primary design philosophy:</strong> Rust-first, but not Rust-at-any-cost<br />
+<strong>Target platforms:</strong> Android first, then Linux, Windows, macOS, iOS where supported<br />
+<strong>Primary goals:</strong> production-quality low-latency audio, Opus-compatible sample-rate handling, pure-Rust DSP wherever practical, hardware/platform acceleration where it materially improves quality or avoids unrealistic low-level implementation work, bounded latency, low battery use, robust AEC/NS/AGC, drift correction, glitch resistance, and clean integration with the existing P2P architecture</p>
+<hr />
+<h1 id="1-purpose"><a class="header" href="#1-purpose">1. Purpose</a></h1>
+<p>The communication platform already defines:</p>
+<pre><code class="language-text">Opus audio
+video calling
+routing
+multipath
+battery scheduling
+resource limits
+Android hardware media
+daemon/runtime
+diagnostics
+</code></pre>
+<p>but a production voice/audio path needs more than:</p>
+<pre><code class="language-text">microphone
+→ Opus encoder
+→ network
+→ Opus decoder
+→ speaker
+</code></pre>
+<p>Real devices introduce:</p>
+<pre><code class="language-text">sample-rate mismatch
+clock drift
+echo
+background noise
+microphone gain variation
+speaker feedback
+packet jitter
+packet loss
+audio focus changes
+Bluetooth routing
+wired headset routing
+device DSP
+thermal/power limits
+</code></pre>
+<p>The system therefore needs a dedicated audio-processing architecture.</p>
+<hr />
+<h1 id="2-rust-first-principle"><a class="header" href="#2-rust-first-principle">2. Rust-First Principle</a></h1>
+<p>Use Rust for everything that can be implemented cleanly and maintained safely without dropping into unnecessary low-level platform complexity.</p>
+<p>Prefer Rust for:</p>
+<pre><code class="language-text">resampling
+channel conversion
+mixing
+gain staging
+limiting
+high-pass filters
+DC removal
+audio framing
+jitter buffering
+packet-loss concealment coordination
+clock drift estimation
+sample-count correction
+voice activity state
+audio-level metering
+silence suppression policy
+DSP graph orchestration
+latency accounting
+buffer pools
+diagnostics
+test harnesses
+</code></pre>
+<p>Use platform/native capabilities when:</p>
+<pre><code class="language-text">hardware DSP is materially better
+OS already provides optimized acoustic processing
+implementation requires deep vendor/audio-driver integration
+a mature production AEC/NS implementation is not reasonably replaceable in pure Rust
+</code></pre>
+<p>The rule is:</p>
+<blockquote>
+<p><strong>Keep policy, orchestration, buffering, timing, and portable DSP in Rust. Hide unavoidable platform DSP behind small Rust traits.</strong></p>
+</blockquote>
+<hr />
+<h1 id="3-do-not-reimplement-difficult-dsp-for-ideology"><a class="header" href="#3-do-not-reimplement-difficult-dsp-for-ideology">3. Do Not Reimplement Difficult DSP for Ideology</a></h1>
+<p>AEC in particular is not simply:</p>
+<pre><code class="language-text">subtract speaker signal from microphone signal
+</code></pre>
+<p>Production acoustic echo cancellation needs to deal with:</p>
+<pre><code class="language-text">unknown acoustic impulse response
+speaker/microphone delay
+non-linear speaker distortion
+room changes
+double-talk
+clock drift
+device-specific gain
+Bluetooth latency
+dynamic routing
+</code></pre>
+<p>A poor custom AEC can sound worse than no AEC.</p>
+<p>Therefore the architecture permits:</p>
+<pre><code class="language-text">Android platform AEC
+vendor/hardware DSP
+mature external backend
+</code></pre>
+<p>behind a safe Rust interface when that is the superior engineering choice.</p>
+<hr />
+<h1 id="4-high-level-audio-architecture"><a class="header" href="#4-high-level-audio-architecture">4. High-Level Audio Architecture</a></h1>
+<pre><code class="language-text">                    CAPTURE PATH
+
+Microphone / Audio Device
+          ↓
+Native Audio I/O Adapter
+          ↓
+Capture Ring Buffer
+          ↓
+Sample Format Normalize
+          ↓
+Resampler / Drift Corrector
+          ↓
+High-Pass / DC Filter
+          ↓
+AEC
+          ↓
+Noise Suppression
+          ↓
+AGC / Limiter
+          ↓
+VAD / Level Analysis
+          ↓
+Opus Framing
+          ↓
+Opus Encoder
+          ↓
+Network
+</code></pre>
+<p>Receive:</p>
+<pre><code class="language-text">                    PLAYBACK PATH
+
+Network
+   ↓
+Jitter Buffer
+   ↓
+Opus Decoder
+   ↓
+PLC / Recovery
+   ↓
+Playback Resampler
+   ↓
+Mixer
+   ↓
+Limiter
+   ↓
+Playback Ring Buffer
+   ↓
+Native Audio Output
+   ↓
+Speaker / Headset
+</code></pre>
+<p>AEC receives a reference from playback:</p>
+<pre><code class="language-text">Decoded/Mixed Playback Reference
+             │
+             └──────────────→ AEC Reference Input
+</code></pre>
+<hr />
+<h1 id="5-primary-architectural-split"><a class="header" href="#5-primary-architectural-split">5. Primary Architectural Split</a></h1>
+<pre><code class="language-text">comm-audio-core
+    |
+    +-- pure Rust DSP
+    |
+    +-- audio graph
+    |
+    +-- timing/drift
+    |
+    +-- Opus integration
+    |
+    +-- backend traits
+            |
+            +-- Android AAudio/Oboe-like native backend
+            +-- Android hardware/platform AEC/NS/AGC
+            +-- Linux audio backend
+            +-- Windows audio backend
+            +-- macOS/iOS backend
+</code></pre>
+<hr />
+<h1 id="6-suggested-workspace"><a class="header" href="#6-suggested-workspace">6. Suggested Workspace</a></h1>
+<pre><code class="language-text">crates/
+├── comm-audio-core/
+├── comm-audio-dsp/
+├── comm-audio-resample/
+├── comm-audio-aec/
+├── comm-audio-ns/
+├── comm-audio-agc/
+├── comm-audio-vad/
+├── comm-audio-jitter/
+├── comm-audio-opus/
+├── comm-audio-android/
+├── comm-audio-linux/
+├── comm-audio-windows/
+├── comm-audio-apple/
+├── comm-audio-diagnostics/
+└── comm-audio-testkit/
+</code></pre>
+<hr />
+<h1 id="7-comm-audio-core"><a class="header" href="#7-comm-audio-core">7. <code>comm-audio-core</code></a></h1>
+<p>Owns:</p>
+<pre><code class="language-text">AudioFrame
+AudioFormat
+AudioClock
+AudioGraph
+CaptureSession
+PlaybackSession
+AudioRoute
+AudioQualityPolicy
+</code></pre>
+<p>It is platform-neutral.</p>
+<hr />
+<h1 id="8-core-audio-format"><a class="header" href="#8-core-audio-format">8. Core Audio Format</a></h1>
+<p>Internally prefer one canonical processing format.</p>
+<p>Recommended voice pipeline:</p>
+<pre><code class="language-text">48,000 Hz
+mono
+f32
+</code></pre>
+<p>Reasons:</p>
+<pre><code class="language-text">Opus naturally uses 48 kHz internal timing
+f32 simplifies DSP
+mono is normal for voice capture
+</code></pre>
+<p>Stereo can be supported for media/music separately.</p>
+<hr />
+<h1 id="9-do-not-assume-microphone-is-48-khz"><a class="header" href="#9-do-not-assume-microphone-is-48-khz">9. Do Not Assume Microphone Is 48 kHz</a></h1>
+<p>Actual input may be:</p>
+<pre><code class="language-text">8 kHz
+16 kHz
+44.1 kHz
+48 kHz
+96 kHz
+</code></pre>
+<p>The system must normalize.</p>
+<hr />
+<h1 id="10-audio-format-type"><a class="header" href="#10-audio-format-type">10. Audio Format Type</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct AudioFormat {
+    pub sample_rate: u32,
+    pub channels: u16,
+    pub sample_format: SampleFormat,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="11-sample-format"><a class="header" href="#11-sample-format">11. Sample Format</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum SampleFormat {
+    I16,
+    I24Packed,
+    I32,
+    F32,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Keep conversions centralized.</p>
+<hr />
+<h1 id="12-internal-frame"><a class="header" href="#12-internal-frame">12. Internal Frame</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct AudioFrame {
+    pub timestamp: AudioTimestamp,
+    pub sample_rate: u32,
+    pub channels: u16,
+    pub samples: AudioBuffer,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="13-audio-buffer"><a class="header" href="#13-audio-buffer">13. Audio Buffer</a></h1>
+<p>Use pooled buffers.</p>
+<p>Avoid:</p>
+<pre><code class="language-text">Vec allocation every 10 ms
+</code></pre>
+<hr />
+<h1 id="14-buffer-pool"><a class="header" href="#14-buffer-pool">14. Buffer Pool</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct AudioBufferPool {
+    // bounded reusable frame buffers
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="15-frame-duration"><a class="header" href="#15-frame-duration">15. Frame Duration</a></h1>
+<p>Voice processing should use fixed small frames.</p>
+<p>Typical logical units:</p>
+<pre><code class="language-text">10 ms
+20 ms
+</code></pre>
+<p>depending DSP/Opus configuration.</p>
+<hr />
+<h1 id="16-10-ms-processing-quantum"><a class="header" href="#16-10-ms-processing-quantum">16. 10 ms Processing Quantum</a></h1>
+<p>A useful internal DSP quantum is:</p>
+<pre><code class="language-text">10 ms @ 48 kHz = 480 samples/channel
+</code></pre>
+<p>This aligns well with many real-time speech algorithms.</p>
+<hr />
+<h1 id="17-opus-packet-duration"><a class="header" href="#17-opus-packet-duration">17. Opus Packet Duration</a></h1>
+<p>Can use:</p>
+<pre><code class="language-text">10 ms
+20 ms
+40 ms
+</code></pre>
+<p>but lower durations reduce latency at cost of packet overhead.</p>
+<p>For interactive calling:</p>
+<pre><code class="language-text">20 ms
+</code></pre>
+<p>is a practical default.</p>
+<hr />
+<h1 id="18-resampling-requirement"><a class="header" href="#18-resampling-requirement">18. Resampling Requirement</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">device microphone = 44.1 kHz
+internal pipeline = 48 kHz
+</code></pre>
+<p>Therefore:</p>
+<pre><code class="language-text">44.1 → 48 kHz
+</code></pre>
+<p>must be performed before Opus/DSP where necessary.</p>
+<hr />
+<h1 id="19-resampler-goals"><a class="header" href="#19-resampler-goals">19. Resampler Goals</a></h1>
+<p>Must provide:</p>
+<pre><code class="language-text">good speech quality
+low latency
+bounded CPU
+streaming operation
+phase continuity
+dynamic fractional ratio support
+</code></pre>
+<hr />
+<h1 id="20-rust-resampler"><a class="header" href="#20-rust-resampler">20. Rust Resampler</a></h1>
+<p>This should be implemented/hosted entirely in Rust.</p>
+<p>No reason to use Kotlin for resampling.</p>
+<p>Architecture:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait AudioResampler {
+    fn process(
+        &amp;mut self,
+        input: &amp;[f32],
+        output: &amp;mut [f32],
+        ratio: f64,
+    ) -&gt; Result&lt;ResampleStats, AudioError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="21-resampling-algorithms"><a class="header" href="#21-resampling-algorithms">21. Resampling Algorithms</a></h1>
+<p>Possible implementations:</p>
+<pre><code class="language-text">polyphase FIR
+windowed-sinc
+band-limited interpolation
+</code></pre>
+<p>Avoid naïve:</p>
+<pre><code class="language-text">nearest neighbor
+basic linear interpolation
+</code></pre>
+<p>for production speech quality.</p>
+<hr />
+<h1 id="22-fixed-ratio-vs-drift-ratio"><a class="header" href="#22-fixed-ratio-vs-drift-ratio">22. Fixed Ratio vs Drift Ratio</a></h1>
+<p>Two different problems:</p>
+<pre><code class="language-text">44.1 kHz → 48 kHz
+</code></pre>
+<p>and:</p>
+<pre><code class="language-text">48,000.0 Hz device clock
+vs
+47,998.8 Hz remote/effective clock
+</code></pre>
+<p>The second requires continuous drift correction.</p>
+<hr />
+<h1 id="23-clock-drift"><a class="header" href="#23-clock-drift">23. Clock Drift</a></h1>
+<p>Two devices rarely run at exactly the same sample clock.</p>
+<p>If ignored, playback buffer eventually:</p>
+<pre><code class="language-text">underflows
+or
+overflows
+</code></pre>
+<hr />
+<h1 id="24-drift-estimator"><a class="header" href="#24-drift-estimator">24. Drift Estimator</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct AudioClockDriftEstimator {
+    // rolling error estimate
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Inputs:</p>
+<pre><code class="language-text">buffer occupancy
+capture timestamps
+playback timestamps
+remote RTP/media timestamps
+</code></pre>
+<hr />
+<h1 id="25-fractional-resampling-for-drift"><a class="header" href="#25-fractional-resampling-for-drift">25. Fractional Resampling for Drift</a></h1>
+<p>Adjust ratio slightly:</p>
+<pre><code class="language-text">0.99995
+1.00003
+</code></pre>
+<p>instead of dropping large chunks of audio.</p>
+<hr />
+<h1 id="26-drift-correction-policy"><a class="header" href="#26-drift-correction-policy">26. Drift Correction Policy</a></h1>
+<p>Use:</p>
+<pre><code class="language-text">small continuous ratio corrections
+</code></pre>
+<p>first.</p>
+<p>Only use:</p>
+<pre><code class="language-text">sample insertion/drop
+</code></pre>
+<p>as emergency correction.</p>
+<hr />
+<h1 id="27-capture-clock"><a class="header" href="#27-capture-clock">27. Capture Clock</a></h1>
+<p>Use monotonic timestamps from audio backend where available.</p>
+<hr />
+<h1 id="28-playback-clock"><a class="header" href="#28-playback-clock">28. Playback Clock</a></h1>
+<p>Track actual consumed frames, not just submitted frames.</p>
+<hr />
+<h1 id="29-audio-io-backend-trait"><a class="header" href="#29-audio-io-backend-trait">29. Audio I/O Backend Trait</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait AudioDeviceBackend {
+    fn start_capture(&amp;mut self, config: CaptureConfig) -&gt; Result&lt;(), AudioError&gt;;
+    fn start_playback(&amp;mut self, config: PlaybackConfig) -&gt; Result&lt;(), AudioError&gt;;
+    fn stop_capture(&amp;mut self);
+    fn stop_playback(&amp;mut self);
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Actual implementation should support real-time callbacks/ring buffers.</p>
+<hr />
+<h1 id="30-callback-rule"><a class="header" href="#30-callback-rule">30. Callback Rule</a></h1>
+<p>Platform audio callback must do minimal work.</p>
+<p>Do not execute:</p>
+<pre><code class="language-text">network
+allocation-heavy DSP
+database
+logging formatting
+</code></pre>
+<p>inside real-time audio callback.</p>
+<hr />
+<h1 id="31-callback-architecture"><a class="header" href="#31-callback-architecture">31. Callback Architecture</a></h1>
+<pre><code class="language-text">Audio callback
+   ↓
+lock-free/SPSC ring buffer
+   ↓
+Rust audio worker
+   ↓
+DSP graph
+</code></pre>
+<p>Playback:</p>
+<pre><code class="language-text">DSP worker
+   ↓
+playback ring buffer
+   ↓
+audio callback
+</code></pre>
+<hr />
+<h1 id="32-real-time-safety"><a class="header" href="#32-real-time-safety">32. Real-Time Safety</a></h1>
+<p>The audio callback should avoid:</p>
+<pre><code class="language-text">blocking mutex
+heap allocation
+sleep
+file I/O
+network I/O
+</code></pre>
+<hr />
+<h1 id="33-ring-buffer"><a class="header" href="#33-ring-buffer">33. Ring Buffer</a></h1>
+<p>Use bounded:</p>
+<pre><code class="language-text">single producer / single consumer
+</code></pre>
+<p>ring where topology permits.</p>
+<hr />
+<h1 id="34-capture-ring"><a class="header" href="#34-capture-ring">34. Capture Ring</a></h1>
+<p>If full:</p>
+<pre><code class="language-text">drop oldest/newest according to real-time policy
+</code></pre>
+<p>Do not block microphone callback.</p>
+<p>For voice, freshness normally wins.</p>
+<hr />
+<h1 id="35-playback-ring"><a class="header" href="#35-playback-ring">35. Playback Ring</a></h1>
+<p>If empty:</p>
+<pre><code class="language-text">output silence
+</code></pre>
+<p>and increment underrun counter.</p>
+<p>Never block callback waiting for network.</p>
+<hr />
+<h1 id="36-android-audio-io"><a class="header" href="#36-android-audio-io">36. Android Audio I/O</a></h1>
+<p>Prefer low-latency Android native audio facilities.</p>
+<p>Rust should call platform native API directly where practical.</p>
+<p>Avoid:</p>
+<pre><code class="language-text">Kotlin AudioRecord ByteArray loop
+</code></pre>
+<p>for the hot path.</p>
+<hr />
+<h1 id="37-android-native-backend"><a class="header" href="#37-android-native-backend">37. Android Native Backend</a></h1>
+<p>Recommended crate:</p>
+<pre><code class="language-text">comm-audio-android
+</code></pre>
+<p>Responsibilities:</p>
+<pre><code class="language-text">stream open
+stream start/stop
+device routing
+native callback
+audio format discovery
+latency reporting
+hardware DSP session binding
+</code></pre>
+<hr />
+<h1 id="38-platform-api-boundary"><a class="header" href="#38-platform-api-boundary">38. Platform API Boundary</a></h1>
+<p>If Android NDK audio API is sufficient:</p>
+<pre><code class="language-text">call directly from Rust
+</code></pre>
+<p>through a small unsafe wrapper.</p>
+<p>If a platform feature is only conveniently accessible through Java/Kotlin:</p>
+<pre><code class="language-text">use a narrow control bridge
+</code></pre>
+<p>but never send PCM frames through it.</p>
+<hr />
+<h1 id="39-capture-data-plane"><a class="header" href="#39-capture-data-plane">39. Capture Data Plane</a></h1>
+<p>Correct:</p>
+<pre><code class="language-text">Android audio callback
+→ native Rust ring buffer
+</code></pre>
+<p>Incorrect:</p>
+<pre><code class="language-text">AudioRecord
+→ Kotlin ByteArray
+→ JNI
+→ Rust Vec
+</code></pre>
+<p>for every frame.</p>
+<hr />
+<h1 id="40-playback-data-plane"><a class="header" href="#40-playback-data-plane">40. Playback Data Plane</a></h1>
+<p>Correct:</p>
+<pre><code class="language-text">Rust ring buffer
+→ native Android output callback
+</code></pre>
+<hr />
+<h1 id="41-audio-route-types"><a class="header" href="#41-audio-route-types">41. Audio Route Types</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum AudioRoute {
+    Speaker,
+    Earpiece,
+    WiredHeadset,
+    BluetoothSco,
+    BluetoothLeAudio,
+    Usb,
+    Unknown,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="42-route-change"><a class="header" href="#42-route-change">42. Route Change</a></h1>
+<p>Route may change during a call.</p>
+<p>Examples:</p>
+<pre><code class="language-text">speaker → Bluetooth
+Bluetooth → earpiece
+USB headset → speaker
+</code></pre>
+<p>The pipeline must re-evaluate:</p>
+<pre><code class="language-text">sample rate
+latency
+AEC
+NS
+AGC
+buffer sizing
+</code></pre>
+<hr />
+<h1 id="43-route-event"><a class="header" href="#43-route-event">43. Route Event</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct AudioRouteChanged {
+    pub old: AudioRoute,
+    pub new: AudioRoute,
+    pub new_format: Option&lt;AudioFormat&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="44-bluetooth-latency"><a class="header" href="#44-bluetooth-latency">44. Bluetooth Latency</a></h1>
+<p>Bluetooth can add significant and variable latency.</p>
+<p>AEC delay estimator must account for route-dependent delay.</p>
+<hr />
+<h1 id="45-hardware-dsp-availability"><a class="header" href="#45-hardware-dsp-availability">45. Hardware DSP Availability</a></h1>
+<p>Some devices expose:</p>
+<pre><code class="language-text">AEC
+NS
+AGC
+</code></pre>
+<p>through platform audio effects or DSP.</p>
+<p>Capabilities vary.</p>
+<hr />
+<h1 id="46-dsp-backend-strategy"><a class="header" href="#46-dsp-backend-strategy">46. DSP Backend Strategy</a></h1>
+<p>Each processor can have:</p>
+<pre><code class="language-text">Rust backend
+Platform backend
+Disabled backend
+</code></pre>
+<hr />
+<h1 id="47-aec-backend-trait"><a class="header" href="#47-aec-backend-trait">47. AEC Backend Trait</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait EchoCanceller {
+    fn process_capture(
+        &amp;mut self,
+        mic: &amp;mut [f32],
+        reference: &amp;[f32],
+        timing: EchoTiming,
+    ) -&gt; Result&lt;EchoStats, AudioError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="48-hardware-aec-adapter"><a class="header" href="#48-hardware-aec-adapter">48. Hardware AEC Adapter</a></h1>
+<p>For platform AEC:</p>
+<pre><code class="language-text">Rust owns session/policy
+platform owns actual DSP
+</code></pre>
+<p>The trait may operate differently because hardware AEC can be inserted into the capture stream rather than accepting explicit frame buffers.</p>
+<p>Therefore define backend capability:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum AecMode {
+    InlineSoftware,
+    PlatformStreamEffect,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="49-aec-selection-policy"><a class="header" href="#49-aec-selection-policy">49. AEC Selection Policy</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">known-good hardware/platform AEC
+→ prefer platform
+
+else mature Rust/software AEC backend
+→ use software
+
+else
+→ echo control degraded / headset recommendation
+</code></pre>
+<hr />
+<h1 id="50-do-not-blindly-prefer-hardware"><a class="header" href="#50-do-not-blindly-prefer-hardware">50. Do Not Blindly Prefer Hardware</a></h1>
+<p>Some device AEC implementations can be poor or broken.</p>
+<p>Maintain:</p>
+<pre><code class="language-text">capability probe
+quirk policy
+diagnostics
+</code></pre>
+<hr />
+<h1 id="51-aec-reference-signal"><a class="header" href="#51-aec-reference-signal">51. AEC Reference Signal</a></h1>
+<p>Software AEC needs the signal actually sent to output, ideally:</p>
+<pre><code class="language-text">post-mix
+post-volume model where practical
+</code></pre>
+<hr />
+<h1 id="52-playback-reference-tap"><a class="header" href="#52-playback-reference-tap">52. Playback Reference Tap</a></h1>
+<pre><code class="language-text">Opus decode
+ ↓
+mix
+ ↓
+limiter
+ ├──→ speaker ring
+ └──→ AEC reference history
+</code></pre>
+<hr />
+<h1 id="53-reference-delay"><a class="header" href="#53-reference-delay">53. Reference Delay</a></h1>
+<p>AEC needs alignment between:</p>
+<pre><code class="language-text">speaker reference
+mic capture
+</code></pre>
+<hr />
+<h1 id="54-delay-estimator"><a class="header" href="#54-delay-estimator">54. Delay Estimator</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct EchoDelayEstimator {
+    // estimated acoustic/system delay
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Inputs:</p>
+<pre><code class="language-text">audio backend latency
+ring occupancy
+correlation estimates
+route type
+</code></pre>
+<hr />
+<h1 id="55-double-talk"><a class="header" href="#55-double-talk">55. Double-Talk</a></h1>
+<p>AEC must not destroy near-end speech when both users talk simultaneously.</p>
+<p>This is one reason production AEC is complex.</p>
+<hr />
+<h1 id="56-aec-metrics"><a class="header" href="#56-aec-metrics">56. AEC Metrics</a></h1>
+<p>Track:</p>
+<pre><code class="language-text">estimated delay
+echo return loss
+echo suppression
+double-talk
+backend
+</code></pre>
+<p>where backend exposes them.</p>
+<hr />
+<h1 id="57-noise-suppression"><a class="header" href="#57-noise-suppression">57. Noise Suppression</a></h1>
+<p>NS reduces:</p>
+<pre><code class="language-text">fan noise
+traffic
+air conditioner
+constant room noise
+</code></pre>
+<hr />
+<h1 id="58-rust-ns"><a class="header" href="#58-rust-ns">58. Rust NS</a></h1>
+<p>A basic/high-quality spectral noise suppressor can be implemented in Rust.</p>
+<p>Possible architecture:</p>
+<pre><code class="language-text">frame
+→ STFT
+→ noise estimator
+→ gain mask
+→ inverse STFT
+</code></pre>
+<hr />
+<h1 id="59-fft"><a class="header" href="#59-fft">59. FFT</a></h1>
+<p>FFT implementation should be Rust-native where practical.</p>
+<p>No need for Kotlin.</p>
+<hr />
+<h1 id="60-ns-complexity-ladder"><a class="header" href="#60-ns-complexity-ladder">60. NS Complexity Ladder</a></h1>
+<pre><code class="language-text">Level 0: off
+Level 1: simple spectral gate
+Level 2: classical noise suppression
+Level 3: ML-based suppressor
+</code></pre>
+<p>Start with classical Rust DSP unless product quality demands more.</p>
+<hr />
+<h1 id="61-ml-noise-suppression"><a class="header" href="#61-ml-noise-suppression">61. ML Noise Suppression</a></h1>
+<p>Potential later option:</p>
+<pre><code class="language-text">small neural suppressor
+</code></pre>
+<p>but introduces:</p>
+<pre><code class="language-text">model runtime
+CPU
+battery
+latency
+</code></pre>
+<p>Should be optional.</p>
+<hr />
+<h1 id="62-platform-ns"><a class="header" href="#62-platform-ns">62. Platform NS</a></h1>
+<p>If Android device offers good hardware NS:</p>
+<pre><code class="language-text">may prefer it
+</code></pre>
+<p>to reduce CPU.</p>
+<hr />
+<h1 id="63-avoid-double-noise-suppression"><a class="header" href="#63-avoid-double-noise-suppression">63. Avoid Double Noise Suppression</a></h1>
+<p>Do not run:</p>
+<pre><code class="language-text">hardware NS
++
+software strong NS
+</code></pre>
+<p>without deliberate tuning.</p>
+<p>It can make speech metallic.</p>
+<hr />
+<h1 id="64-agc"><a class="header" href="#64-agc">64. AGC</a></h1>
+<p>Automatic Gain Control keeps voice level usable.</p>
+<p>Goals:</p>
+<pre><code class="language-text">raise quiet speech
+avoid clipping
+avoid pumping noise
+</code></pre>
+<hr />
+<h1 id="65-rust-agc"><a class="header" href="#65-rust-agc">65. Rust AGC</a></h1>
+<p>AGC is suitable for Rust implementation.</p>
+<p>Pipeline:</p>
+<pre><code class="language-text">level detector
+→ target level
+→ attack/release smoothing
+→ gain
+→ limiter
+</code></pre>
+<hr />
+<h1 id="66-agc-types"><a class="header" href="#66-agc-types">66. AGC Types</a></h1>
+<pre><code class="language-text">analog AGC
+digital AGC
+</code></pre>
+<p>On most app-level pipelines:</p>
+<pre><code class="language-text">digital AGC
+</code></pre>
+<p>is easier/portable.</p>
+<hr />
+<h1 id="67-hardware-agc"><a class="header" href="#67-hardware-agc">67. Hardware AGC</a></h1>
+<p>If platform modifies microphone gain effectively:</p>
+<pre><code class="language-text">can be used
+</code></pre>
+<p>but exact behavior varies.</p>
+<hr />
+<h1 id="68-avoid-multiple-agcs"><a class="header" href="#68-avoid-multiple-agcs">68. Avoid Multiple AGCs</a></h1>
+<p>Do not enable:</p>
+<pre><code class="language-text">platform AGC
++
+strong software AGC
+</code></pre>
+<p>blindly.</p>
+<hr />
+<h1 id="69-limiter"><a class="header" href="#69-limiter">69. Limiter</a></h1>
+<p>Always include a final soft limiter to prevent clipping after:</p>
+<pre><code class="language-text">AGC
+mixing
+effects
+</code></pre>
+<hr />
+<h1 id="70-high-pass-filter"><a class="header" href="#70-high-pass-filter">70. High-Pass Filter</a></h1>
+<p>Voice capture benefits from mild high-pass/DC removal.</p>
+<p>Can reduce:</p>
+<pre><code class="language-text">handling noise
+DC offset
+very low-frequency rumble
+</code></pre>
+<p>Pure Rust.</p>
+<hr />
+<h1 id="71-dc-blocker"><a class="header" href="#71-dc-blocker">71. DC Blocker</a></h1>
+<p>Simple first-order filter.</p>
+<p>Pure Rust.</p>
+<hr />
+<h1 id="72-vad"><a class="header" href="#72-vad">72. VAD</a></h1>
+<p>Voice Activity Detection can drive:</p>
+<pre><code class="language-text">UI speaking indicator
+silence suppression
+noise estimator
+bandwidth policy
+</code></pre>
+<hr />
+<h1 id="73-rust-vad"><a class="header" href="#73-rust-vad">73. Rust VAD</a></h1>
+<p>Start with:</p>
+<pre><code class="language-text">energy
+spectral features
+hangover
+</code></pre>
+<p>Pure Rust.</p>
+<hr />
+<h1 id="74-vad-is-not-authentication"><a class="header" href="#74-vad-is-not-authentication">74. VAD Is Not Authentication</a></h1>
+<p>Do not infer:</p>
+<pre><code class="language-text">who is speaking
+</code></pre>
+<p>only speech activity.</p>
+<hr />
+<h1 id="75-silence-suppression"><a class="header" href="#75-silence-suppression">75. Silence Suppression</a></h1>
+<p>Optional.</p>
+<p>If VAD says silence:</p>
+<pre><code class="language-text">Opus DTX
+</code></pre>
+<p>can reduce bandwidth.</p>
+<hr />
+<h1 id="76-opus-dtx"><a class="header" href="#76-opus-dtx">76. Opus DTX</a></h1>
+<p>Preferred to fully stopping media timeline.</p>
+<p>Keeps timing semantics cleaner.</p>
+<hr />
+<h1 id="77-opus-fec"><a class="header" href="#77-opus-fec">77. Opus FEC</a></h1>
+<p>Enable in degraded networks where useful.</p>
+<p>Part of Opus/network policy.</p>
+<hr />
+<h1 id="78-packet-loss-concealment"><a class="header" href="#78-packet-loss-concealment">78. Packet-Loss Concealment</a></h1>
+<p>Opus decoder provides PLC behavior.</p>
+<p>Jitter/receiver policy decides when to:</p>
+<pre><code class="language-text">wait
+FEC recover
+PLC
+</code></pre>
+<hr />
+<h1 id="79-jitter-buffer"><a class="header" href="#79-jitter-buffer">79. Jitter Buffer</a></h1>
+<p>Dedicated Rust subsystem.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct AudioJitterBuffer {
+    // ordered timestamped packet buffer
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="80-jitter-goals"><a class="header" href="#80-jitter-goals">80. Jitter Goals</a></h1>
+<p>Balance:</p>
+<pre><code class="language-text">latency
+loss recovery
+stability
+</code></pre>
+<hr />
+<h1 id="81-adaptive-jitter"><a class="header" href="#81-adaptive-jitter">81. Adaptive Jitter</a></h1>
+<p>Target delay adapts to:</p>
+<pre><code class="language-text">network jitter
+loss
+route changes
+</code></pre>
+<hr />
+<h1 id="82-minimum-buffer"><a class="header" href="#82-minimum-buffer">82. Minimum Buffer</a></h1>
+<p>LAN/direct:</p>
+<pre><code class="language-text">small
+</code></pre>
+<p>Relay/cellular:</p>
+<pre><code class="language-text">larger
+</code></pre>
+<hr />
+<h1 id="83-jitter-buffer-bounds"><a class="header" href="#83-jitter-buffer-bounds">83. Jitter Buffer Bounds</a></h1>
+<p>Never grow without limit.</p>
+<p>Example policy:</p>
+<pre><code class="language-text">20–200 ms
+</code></pre>
+<p>depending call mode.</p>
+<p>Tune from measurements.</p>
+<hr />
+<h1 id="84-late-packet"><a class="header" href="#84-late-packet">84. Late Packet</a></h1>
+<p>If packet arrives after playout deadline:</p>
+<pre><code class="language-text">discard
+</code></pre>
+<p>unless useful for FEC/state.</p>
+<hr />
+<h1 id="85-reordering"><a class="header" href="#85-reordering">85. Reordering</a></h1>
+<p>Jitter buffer handles bounded reordering.</p>
+<hr />
+<h1 id="86-network-handoff"><a class="header" href="#86-network-handoff">86. Network Handoff</a></h1>
+<p>Wi-Fi → cellular may suddenly alter:</p>
+<pre><code class="language-text">latency
+jitter
+</code></pre>
+<p>Jitter buffer adapts gradually.</p>
+<hr />
+<h1 id="87-multipath-audio"><a class="header" href="#87-multipath-audio">87. Multipath Audio</a></h1>
+<p>Part 12 may use:</p>
+<pre><code class="language-text">redundant path
+</code></pre>
+<p>but avoid excessive duplicate audio unless necessary.</p>
+<hr />
+<h1 id="88-audio-priority"><a class="header" href="#88-audio-priority">88. Audio Priority</a></h1>
+<p>Audio frames outrank:</p>
+<pre><code class="language-text">video
+bulk files
+background sync
+</code></pre>
+<p>during calls.</p>
+<hr />
+<h1 id="89-media-scheduler"><a class="header" href="#89-media-scheduler">89. Media Scheduler</a></h1>
+<pre><code class="language-text">call control
+audio
+video keyframe
+video delta
+bulk
+</code></pre>
+<hr />
+<h1 id="90-audio-network-frame"><a class="header" href="#90-audio-network-frame">90. Audio Network Frame</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct EncodedAudioFrame {
+    pub sequence: u64,
+    pub timestamp: AudioTimestamp,
+    pub duration_samples: u16,
+    pub opus_payload: Bytes,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="91-sequence-number"><a class="header" href="#91-sequence-number">91. Sequence Number</a></h1>
+<p>Used for:</p>
+<pre><code class="language-text">loss
+reordering
+diagnostics
+</code></pre>
+<hr />
+<h1 id="92-timestamp"><a class="header" href="#92-timestamp">92. Timestamp</a></h1>
+<p>Use media sample timeline.</p>
+<p>Not wall clock.</p>
+<hr />
+<h1 id="93-opus-encoder-input"><a class="header" href="#93-opus-encoder-input">93. Opus Encoder Input</a></h1>
+<p>Always provide normalized:</p>
+<pre><code class="language-text">48 kHz mono/stereo
+</code></pre>
+<p>as configured.</p>
+<hr />
+<h1 id="94-capture-resampler-placement"><a class="header" href="#94-capture-resampler-placement">94. Capture Resampler Placement</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">native capture format
+→ normalize to f32
+→ resample to 48 kHz
+→ DSP
+→ Opus
+</code></pre>
+<p>Some AEC backends may require different placement.</p>
+<p>Backend declares requirements.</p>
+<hr />
+<h1 id="95-dsp-graph"><a class="header" href="#95-dsp-graph">95. DSP Graph</a></h1>
+<p>Use explicit graph/pipeline rather than hardcoded call chain.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct AudioProcessingGraph {
+    // ordered processing nodes
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="96-dsp-node"><a class="header" href="#96-dsp-node">96. DSP Node</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait AudioProcessor {
+    fn process(
+        &amp;mut self,
+        frame: &amp;mut AudioFrame,
+        ctx: &amp;AudioProcessContext,
+    ) -&gt; Result&lt;(), AudioError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="97-graph-example"><a class="header" href="#97-graph-example">97. Graph Example</a></h1>
+<pre><code class="language-text">FormatConvert
+→ Resample
+→ HighPass
+→ AEC
+→ NS
+→ AGC
+→ Limiter
+→ VAD
+</code></pre>
+<hr />
+<h1 id="98-graph-reconfiguration"><a class="header" href="#98-graph-reconfiguration">98. Graph Reconfiguration</a></h1>
+<p>When route changes:</p>
+<pre><code class="language-text">hardware AEC available
+</code></pre>
+<p>graph can become:</p>
+<pre><code class="language-text">Resample
+→ HighPass
+→ NS
+→ light AGC
+</code></pre>
+<p>with AEC outside graph in platform stream.</p>
+<hr />
+<h1 id="99-processor-latency"><a class="header" href="#99-processor-latency">99. Processor Latency</a></h1>
+<p>Every DSP node declares:</p>
+<pre><code class="language-text">algorithmic latency
+</code></pre>
+<hr />
+<h1 id="100-latency-budget"><a class="header" href="#100-latency-budget">100. Latency Budget</a></h1>
+<p>End-to-end audio latency includes:</p>
+<pre><code class="language-text">capture buffer
+DSP
+Opus frame
+network
+jitter
+decode
+playback buffer
+hardware
+</code></pre>
+<hr />
+<h1 id="101-audio-latency-budget-model"><a class="header" href="#101-audio-latency-budget-model">101. Audio Latency Budget Model</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct AudioLatencyBudget {
+    pub capture_ms: f32,
+    pub dsp_ms: f32,
+    pub codec_ms: f32,
+    pub network_ms: f32,
+    pub jitter_ms: f32,
+    pub playback_ms: f32,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="102-target"><a class="header" href="#102-target">102. Target</a></h1>
+<p>Interactive voice should aim for the lowest stable latency possible.</p>
+<p>Avoid adding DSP that costs:</p>
+<pre><code class="language-text">100+ ms
+</code></pre>
+<p>unless quality benefit justifies it.</p>
+<hr />
+<h1 id="103-processing-deadline"><a class="header" href="#103-processing-deadline">103. Processing Deadline</a></h1>
+<p>A 10 ms DSP frame must finish comfortably before next frame arrives.</p>
+<hr />
+<h1 id="104-cpu-budget"><a class="header" href="#104-cpu-budget">104. CPU Budget</a></h1>
+<p>Part 08 limits audio worker CPU indirectly through policy.</p>
+<p>Audio is real-time priority but must remain efficient.</p>
+<hr />
+<h1 id="105-thread-priority"><a class="header" href="#105-thread-priority">105. Thread Priority</a></h1>
+<p>Platform audio callback may use elevated real-time audio scheduling.</p>
+<p>DSP worker can use high priority carefully.</p>
+<p>Do not starve whole app.</p>
+<hr />
+<h1 id="106-no-rayon-in-real-time-callback"><a class="header" href="#106-no-rayon-in-real-time-callback">106. No Rayon in Real-Time Callback</a></h1>
+<p>General Rayon pool is inappropriate inside hard audio callback.</p>
+<p>Dedicated worker/pipeline is better.</p>
+<hr />
+<h1 id="107-simd"><a class="header" href="#107-simd">107. SIMD</a></h1>
+<p>Rust DSP may use portable SIMD where mature/stable for target.</p>
+<p>Always maintain scalar fallback.</p>
+<hr />
+<h1 id="108-fft-plan-reuse"><a class="header" href="#108-fft-plan-reuse">108. FFT Plan Reuse</a></h1>
+<p>Precompute/reuse FFT plans.</p>
+<p>Do not allocate/plan every frame.</p>
+<hr />
+<h1 id="109-dsp-state-reuse"><a class="header" href="#109-dsp-state-reuse">109. DSP State Reuse</a></h1>
+<p>Filters maintain state across frames.</p>
+<p>Never recreate each 10 ms block.</p>
+<hr />
+<h1 id="110-denormals"><a class="header" href="#110-denormals">110. Denormals</a></h1>
+<p>Floating-point DSP should avoid pathological denormal performance where relevant.</p>
+<hr />
+<h1 id="111-numeric-stability"><a class="header" href="#111-numeric-stability">111. Numeric Stability</a></h1>
+<p>Use:</p>
+<pre><code class="language-text">f32
+</code></pre>
+<p>for real-time DSP unless a specific algorithm needs f64.</p>
+<hr />
+<h1 id="112-fixed-point"><a class="header" href="#112-fixed-point">112. Fixed-Point</a></h1>
+<p>Only use fixed-point if:</p>
+<pre><code class="language-text">embedded target
+measured benefit
+</code></pre>
+<p>justifies complexity.</p>
+<hr />
+<h1 id="113-android-hardware-dsp-backend"><a class="header" href="#113-android-hardware-dsp-backend">113. Android Hardware DSP Backend</a></h1>
+<p>Possible architecture:</p>
+<pre><code class="language-text">Rust AudioSession
+   ↓
+Android audio stream/session ID
+   ↓
+platform AEC/NS/AGC effect
+</code></pre>
+<p>Control calls may require:</p>
+<pre><code class="language-text">small JNI/platform bridge
+</code></pre>
+<p>if no suitable NDK API is available.</p>
+<p>PCM still remains native.</p>
+<hr />
+<h1 id="114-narrow-jni-rule"><a class="header" href="#114-narrow-jni-rule">114. Narrow JNI Rule</a></h1>
+<p>Allowed:</p>
+<pre><code class="language-text">enable effect
+disable effect
+query availability
+bind audio session
+</code></pre>
+<p>Not allowed in hot path:</p>
+<pre><code class="language-text">send every PCM frame
+</code></pre>
+<hr />
+<h1 id="115-rust-owns-decision"><a class="header" href="#115-rust-owns-decision">115. Rust Owns Decision</a></h1>
+<p>Kotlin should not decide:</p>
+<pre><code class="language-text">AEC policy
+NS aggressiveness
+AGC mode
+</code></pre>
+<p>Rust media policy does.</p>
+<hr />
+<h1 id="116-dsp-capability-model"><a class="header" href="#116-dsp-capability-model">116. DSP Capability Model</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct AudioDspCapabilities {
+    pub platform_aec: bool,
+    pub platform_ns: bool,
+    pub platform_agc: bool,
+    pub low_latency_io: bool,
+    pub hardware_sample_rate: u32,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="117-backend-selection"><a class="header" href="#117-backend-selection">117. Backend Selection</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum ProcessorBackend {
+    Rust,
+    Platform,
+    Disabled,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="118-audio-processing-profile"><a class="header" href="#118-audio-processing-profile">118. Audio Processing Profile</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct AudioProcessingProfile {
+    pub aec: ProcessorBackend,
+    pub ns: ProcessorBackend,
+    pub agc: ProcessorBackend,
+    pub vad: bool,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="119-auto-profile"><a class="header" href="#119-auto-profile">119. Auto Profile</a></h1>
+<p>At call start:</p>
+<pre><code class="language-text">detect route
+detect hardware DSP
+check quirk DB
+check battery/CPU
+select profile
+</code></pre>
+<hr />
+<h1 id="120-speakerphone"><a class="header" href="#120-speakerphone">120. Speakerphone</a></h1>
+<p>AEC usually important.</p>
+<p>Profile:</p>
+<pre><code class="language-text">AEC on
+NS on
+AGC moderate
+</code></pre>
+<hr />
+<h1 id="121-headphones"><a class="header" href="#121-headphones">121. Headphones</a></h1>
+<p>Echo path is much smaller.</p>
+<p>Can reduce/disable AEC depending detection.</p>
+<hr />
+<h1 id="122-bluetooth-headset"><a class="header" href="#122-bluetooth-headset">122. Bluetooth Headset</a></h1>
+<p>Headset may already perform significant DSP.</p>
+<p>Avoid double-processing.</p>
+<hr />
+<h1 id="123-usb-professional-microphone"><a class="header" href="#123-usb-professional-microphone">123. USB Professional Microphone</a></h1>
+<p>May not need AGC.</p>
+<p>Allow advanced/manual profile.</p>
+<hr />
+<h1 id="124-audio-mode"><a class="header" href="#124-audio-mode">124. Audio Mode</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum AudioUseCase {
+    VoiceCall,
+    VoiceMessage,
+    MusicPlayback,
+    Recording,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>DSP differs by use case.</p>
+<hr />
+<h1 id="125-voice-call"><a class="header" href="#125-voice-call">125. Voice Call</a></h1>
+<p>Needs:</p>
+<pre><code class="language-text">AEC
+NS
+AGC
+low latency
+</code></pre>
+<hr />
+<h1 id="126-voice-message"><a class="header" href="#126-voice-message">126. Voice Message</a></h1>
+<p>No speaker reference during recording usually.</p>
+<p>AEC unnecessary.</p>
+<p>Can use:</p>
+<pre><code class="language-text">NS
+AGC
+</code></pre>
+<hr />
+<h1 id="127-music-playback"><a class="header" href="#127-music-playback">127. Music Playback</a></h1>
+<p>Do not apply speech DSP.</p>
+<hr />
+<h1 id="128-recording"><a class="header" href="#128-recording">128. Recording</a></h1>
+<p>Preserve quality.</p>
+<p>Use effects only when requested.</p>
+<hr />
+<h1 id="129-voice-message-path"><a class="header" href="#129-voice-message-path">129. Voice Message Path</a></h1>
+<pre><code class="language-text">mic
+→ resample
+→ HPF
+→ NS
+→ AGC
+→ Opus
+→ file/blob
+</code></pre>
+<hr />
+<h1 id="130-call-playback-mixing"><a class="header" href="#130-call-playback-mixing">130. Call Playback Mixing</a></h1>
+<p>Need to mix:</p>
+<pre><code class="language-text">remote voice
+local UI tones
+possibly multiple participants
+</code></pre>
+<hr />
+<h1 id="131-mixer"><a class="header" href="#131-mixer">131. Mixer</a></h1>
+<p>Pure Rust.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct AudioMixer {
+    // bounded input streams
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="132-mixing-headroom"><a class="header" href="#132-mixing-headroom">132. Mixing Headroom</a></h1>
+<p>Do not simply add signals and clip.</p>
+<p>Use:</p>
+<pre><code class="language-text">gain normalization
+limiter
+</code></pre>
+<hr />
+<h1 id="133-group-calls"><a class="header" href="#133-group-calls">133. Group Calls</a></h1>
+<p>For N remote participants:</p>
+<pre><code class="language-text">decode streams
+→ per-stream gain
+→ mix
+→ limiter
+→ playback
+</code></pre>
+<hr />
+<h1 id="134-active-speaker"><a class="header" href="#134-active-speaker">134. Active Speaker</a></h1>
+<p>VAD/audio level can inform UI.</p>
+<hr />
+<h1 id="135-per-peer-gain"><a class="header" href="#135-per-peer-gain">135. Per-Peer Gain</a></h1>
+<p>User may adjust participant volume.</p>
+<p>Pure Rust mixer.</p>
+<hr />
+<h1 id="136-mute"><a class="header" href="#136-mute">136. Mute</a></h1>
+<p>Mute can occur:</p>
+<pre><code class="language-text">before Opus encode
+</code></pre>
+<p>while keeping media timing/control alive.</p>
+<hr />
+<h1 id="137-push-to-talk"><a class="header" href="#137-push-to-talk">137. Push-to-Talk</a></h1>
+<p>Rust call state controls capture gate.</p>
+<hr />
+<h1 id="138-audio-focus"><a class="header" href="#138-audio-focus">138. Audio Focus</a></h1>
+<p>Android may interrupt for:</p>
+<pre><code class="language-text">phone call
+alarm
+another media app
+</code></pre>
+<p>Platform adapter reports focus state.</p>
+<hr />
+<h1 id="139-focus-state"><a class="header" href="#139-focus-state">139. Focus State</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum AudioFocusState {
+    Granted,
+    Duck,
+    LostTransient,
+    Lost,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="140-focus-policy"><a class="header" href="#140-focus-policy">140. Focus Policy</a></h1>
+<p>Rust decides:</p>
+<pre><code class="language-text">pause
+duck
+resume
+</code></pre>
+<p>according to call state.</p>
+<hr />
+<h1 id="141-incoming-cellular-call"><a class="header" href="#141-incoming-cellular-call">141. Incoming Cellular Call</a></h1>
+<p>P2P audio may need pause/duck.</p>
+<p>Must handle cleanly.</p>
+<hr />
+<h1 id="142-interruptions"><a class="header" href="#142-interruptions">142. Interruptions</a></h1>
+<p>iOS/macOS equivalent later.</p>
+<hr />
+<h1 id="143-device-route-diagnostics"><a class="header" href="#143-device-route-diagnostics">143. Device Route Diagnostics</a></h1>
+<p>Part 18 should display:</p>
+<pre><code class="language-text">Input: built-in microphone
+Output: speaker
+Capture: 48 kHz
+AEC: Android platform
+NS: Rust
+AGC: Rust
+</code></pre>
+<hr />
+<h1 id="144-audio-diagnostics"><a class="header" href="#144-audio-diagnostics">144. Audio Diagnostics</a></h1>
+<p>Track:</p>
+<pre><code class="language-text">capture underruns/overruns
+playback underruns
+resampler ratio
+drift ppm
+jitter target
+packet loss
+PLC frames
+FEC recoveries
+AEC backend
+NS backend
+AGC gain
+audio route
+</code></pre>
+<hr />
+<h1 id="145-audio-level"><a class="header" href="#145-audio-level">145. Audio Level</a></h1>
+<p>Expose privacy-safe:</p>
+<pre><code class="language-text">RMS/dBFS level
+</code></pre>
+<p>not raw samples.</p>
+<hr />
+<h1 id="146-debug-waveform"><a class="header" href="#146-debug-waveform">146. Debug Waveform</a></h1>
+<p>Only explicit developer mode.</p>
+<p>Do not log/store microphone PCM by default.</p>
+<hr />
+<h1 id="147-privacy"><a class="header" href="#147-privacy">147. Privacy</a></h1>
+<p>Never dump:</p>
+<pre><code class="language-text">microphone audio
+speaker audio
+AEC reference
+</code></pre>
+<p>into logs.</p>
+<hr />
+<h1 id="148-echo-diagnostics"><a class="header" href="#148-echo-diagnostics">148. Echo Diagnostics</a></h1>
+<p>Use aggregate metrics.</p>
+<hr />
+<h1 id="149-ring-buffer-diagnostics"><a class="header" href="#149-ring-buffer-diagnostics">149. Ring Buffer Diagnostics</a></h1>
+<p>Track:</p>
+<pre><code class="language-text">fill level
+high-water mark
+underrun/overrun
+</code></pre>
+<hr />
+<h1 id="150-drift-diagnostics"><a class="header" href="#150-drift-diagnostics">150. Drift Diagnostics</a></h1>
+<p>Display:</p>
+<pre><code class="language-text">+18 ppm
+</code></pre>
+<p>in developer mode.</p>
+<hr />
+<h1 id="151-jitter-diagnostics"><a class="header" href="#151-jitter-diagnostics">151. Jitter Diagnostics</a></h1>
+<p>Display:</p>
+<pre><code class="language-text">target 50 ms
+actual 42–71 ms
+</code></pre>
+<hr />
+<h1 id="152-battery-policy"><a class="header" href="#152-battery-policy">152. Battery Policy</a></h1>
+<p>Audio should remain enabled longer than video.</p>
+<p>On battery saver:</p>
+<pre><code class="language-text">keep voice quality
+reduce expensive NS if necessary
+disable unnecessary stereo
+</code></pre>
+<hr />
+<h1 id="153-critical-battery"><a class="header" href="#153-critical-battery">153. Critical Battery</a></h1>
+<p>Still preserve:</p>
+<pre><code class="language-text">voice
+</code></pre>
+<p>where possible.</p>
+<hr />
+<h1 id="154-thermal-policy"><a class="header" href="#154-thermal-policy">154. Thermal Policy</a></h1>
+<p>If software DSP becomes expensive:</p>
+<pre><code class="language-text">reduce NS complexity
+prefer platform DSP
+</code></pre>
+<hr />
+<h1 id="155-aec-cpu-pressure"><a class="header" href="#155-aec-cpu-pressure">155. AEC CPU Pressure</a></h1>
+<p>Never disable AEC silently on speakerphone without diagnostics.</p>
+<p>If necessary:</p>
+<pre><code class="language-text">switch to earpiece/headset recommendation
+</code></pre>
+<hr />
+<h1 id="156-emergency-audio"><a class="header" href="#156-emergency-audio">156. Emergency Audio</a></h1>
+<p>Part 17:</p>
+<pre><code class="language-text">audio remains high priority
+</code></pre>
+<p>Video degrades first.</p>
+<hr />
+<h1 id="157-audio-call-fallback-ladder"><a class="header" href="#157-audio-call-fallback-ladder">157. Audio Call Fallback Ladder</a></h1>
+<pre><code class="language-text">high-quality voice
+→ reduced DSP complexity
+→ lower Opus bitrate
+→ narrow-band voice if needed
+→ voice note
+→ text
+</code></pre>
+<hr />
+<h1 id="158-opus-bitrate-adaptation"><a class="header" href="#158-opus-bitrate-adaptation">158. Opus Bitrate Adaptation</a></h1>
+<p>Rust congestion controller adjusts:</p>
+<pre><code class="language-text">bitrate
+FEC
+DTX
+packet duration
+</code></pre>
+<hr />
+<h1 id="159-packet-duration-changes"><a class="header" href="#159-packet-duration-changes">159. Packet Duration Changes</a></h1>
+<p>Changing 20 ms → 40 ms reduces packet overhead but increases latency.</p>
+<p>Use only under poor network conditions.</p>
+<hr />
+<h1 id="160-mono"><a class="header" href="#160-mono">160. Mono</a></h1>
+<p>Voice calls should default mono.</p>
+<p>Stereo voice wastes bandwidth unless specific use case.</p>
+<hr />
+<h1 id="161-sample-rate-strategy"><a class="header" href="#161-sample-rate-strategy">161. Sample-Rate Strategy</a></h1>
+<p>Network codec timeline remains 48 kHz.</p>
+<p>Local device format can differ.</p>
+<hr />
+<h1 id="162-opus-decoder-output"><a class="header" href="#162-opus-decoder-output">162. Opus Decoder Output</a></h1>
+<p>Prefer 48 kHz internal output.</p>
+<p>Then resample only if playback device requires different native rate.</p>
+<hr />
+<h1 id="163-playback-resampling"><a class="header" href="#163-playback-resampling">163. Playback Resampling</a></h1>
+<pre><code class="language-text">Opus 48k
+→ DSP/mix 48k
+→ device native rate
+</code></pre>
+<hr />
+<h1 id="164-capture-resampling"><a class="header" href="#164-capture-resampling">164. Capture Resampling</a></h1>
+<pre><code class="language-text">device native rate
+→ 48k DSP
+</code></pre>
+<hr />
+<h1 id="165-avoid-multiple-resamplers"><a class="header" href="#165-avoid-multiple-resamplers">165. Avoid Multiple Resamplers</a></h1>
+<p>Keep one rate conversion at each device edge.</p>
+<hr />
+<h1 id="166-channel-conversion"><a class="header" href="#166-channel-conversion">166. Channel Conversion</a></h1>
+<p>Capture:</p>
+<pre><code class="language-text">stereo mic
+→ mono voice
+</code></pre>
+<p>using weighted/downmix.</p>
+<p>Playback:</p>
+<pre><code class="language-text">mono remote
+→ stereo device output
+</code></pre>
+<p>if required.</p>
+<hr />
+<h1 id="167-downmix-safety"><a class="header" href="#167-downmix-safety">167. Downmix Safety</a></h1>
+<p>Avoid clipping.</p>
+<hr />
+<h1 id="168-acoustic-echo-path-after-resampling"><a class="header" href="#168-acoustic-echo-path-after-resampling">168. Acoustic Echo Path After Resampling</a></h1>
+<p>AEC reference/mic should share consistent processing rate.</p>
+<p>Prefer:</p>
+<pre><code class="language-text">48 kHz
+</code></pre>
+<p>if software AEC.</p>
+<hr />
+<h1 id="169-software-aec-development-strategy"><a class="header" href="#169-software-aec-development-strategy">169. Software AEC Development Strategy</a></h1>
+<p>Do not begin by writing sophisticated adaptive echo cancellation from scratch.</p>
+<p>Recommended sequence:</p>
+<pre><code class="language-text">1. define Rust trait
+2. integrate platform AEC
+3. add mature software backend if available
+4. only develop native Rust AEC if there is a strong reason
+</code></pre>
+<hr />
+<h1 id="170-if-native-rust-aec-is-eventually-built"><a class="header" href="#170-if-native-rust-aec-is-eventually-built">170. If Native Rust AEC Is Eventually Built</a></h1>
+<p>Architecture would need:</p>
+<pre><code class="language-text">adaptive filter
+delay estimator
+double-talk detector
+residual echo suppressor
+non-linear processor
+clock drift handling
+</code></pre>
+<p>This is a dedicated project by itself.</p>
+<hr />
+<h1 id="171-ns-development-strategy"><a class="header" href="#171-ns-development-strategy">171. NS Development Strategy</a></h1>
+<p>Classical Rust NS is much more reasonable to implement than full AEC.</p>
+<p>Start:</p>
+<pre><code class="language-text">STFT
+noise PSD estimate
+Wiener-like gain
+smoothing
+</code></pre>
+<hr />
+<h1 id="172-agc-development-strategy"><a class="header" href="#172-agc-development-strategy">172. AGC Development Strategy</a></h1>
+<p>Rust AGC is straightforward enough to own.</p>
+<hr />
+<h1 id="173-resampler-development-strategy"><a class="header" href="#173-resampler-development-strategy">173. Resampler Development Strategy</a></h1>
+<p>Either:</p>
+<pre><code class="language-text">use a mature permissive Rust resampler crate
+</code></pre>
+<p>or:</p>
+<pre><code class="language-text">implement dedicated high-quality streaming resampler
+</code></pre>
+<p>inside <code>comm-audio-resample</code>.</p>
+<p>Prefer mature well-tested Rust implementation before writing from scratch.</p>
+<hr />
+<h1 id="174-crate-policy"><a class="header" href="#174-crate-policy">174. Crate Policy</a></h1>
+<p>For DSP dependencies:</p>
+<pre><code class="language-text">pure Rust preferred
+permissive license preferred
+well-maintained
+no hidden system dependencies
+</code></pre>
+<hr />
+<h1 id="175-avoid-premature-custom-dsp"><a class="header" href="#175-avoid-premature-custom-dsp">175. Avoid Premature Custom DSP</a></h1>
+<p>The platform's value is communication reliability, not proving every math primitive was handwritten.</p>
+<hr />
+<h1 id="176-testing--resampler"><a class="header" href="#176-testing--resampler">176. Testing — Resampler</a></h1>
+<p>Test:</p>
+<pre><code class="language-text">44.1 → 48
+48 → 44.1
+16 → 48
+48 → 16
+fractional drift ratios
+</code></pre>
+<hr />
+<h1 id="177-resampler-quality-tests"><a class="header" href="#177-resampler-quality-tests">177. Resampler Quality Tests</a></h1>
+<p>Measure:</p>
+<pre><code class="language-text">passband ripple
+alias rejection
+SNR
+phase continuity
+</code></pre>
+<hr />
+<h1 id="178-resampler-streaming-test"><a class="header" href="#178-resampler-streaming-test">178. Resampler Streaming Test</a></h1>
+<p>Chunk sizes vary.</p>
+<p>Output should match continuous reference within tolerance.</p>
+<hr />
+<h1 id="179-drift-test"><a class="header" href="#179-drift-test">179. Drift Test</a></h1>
+<p>Simulate:</p>
+<pre><code class="language-text">+100 ppm
+-100 ppm
+</code></pre>
+<p>for hours.</p>
+<p>Expected:</p>
+<pre><code class="language-text">ring buffer stable
+no periodic clicks
+</code></pre>
+<hr />
+<h1 id="180-aec-test"><a class="header" href="#180-aec-test">180. AEC Test</a></h1>
+<p>Use synthetic:</p>
+<pre><code class="language-text">far-end speech
+room impulse response
+mic near-end speech
+</code></pre>
+<p>Measure echo reduction.</p>
+<hr />
+<h1 id="181-double-talk-test"><a class="header" href="#181-double-talk-test">181. Double-Talk Test</a></h1>
+<p>Both sides speak.</p>
+<p>AEC must preserve local voice.</p>
+<hr />
+<h1 id="182-route-delay-test"><a class="header" href="#182-route-delay-test">182. Route Delay Test</a></h1>
+<p>Simulate:</p>
+<pre><code class="language-text">speaker
+Bluetooth
+wired headset
+</code></pre>
+<p>different delays.</p>
+<hr />
+<h1 id="183-ns-test"><a class="header" href="#183-ns-test">183. NS Test</a></h1>
+<p>Noisy speech samples:</p>
+<pre><code class="language-text">fan
+traffic
+white/pink noise
+</code></pre>
+<p>Measure quality and intelligibility.</p>
+<hr />
+<h1 id="184-agc-test"><a class="header" href="#184-agc-test">184. AGC Test</a></h1>
+<p>Input levels:</p>
+<pre><code class="language-text">-50 dBFS
+-30 dBFS
+-10 dBFS
+</code></pre>
+<p>Output should converge without clipping/pumping.</p>
+<hr />
+<h1 id="185-jitter-test"><a class="header" href="#185-jitter-test">185. Jitter Test</a></h1>
+<p>Inject:</p>
+<pre><code class="language-text">0–100 ms variable delay
+loss
+reordering
+</code></pre>
+<hr />
+<h1 id="186-packet-loss-test"><a class="header" href="#186-packet-loss-test">186. Packet Loss Test</a></h1>
+<p>Validate:</p>
+<pre><code class="language-text">FEC
+PLC
+late packet discard
+</code></pre>
+<hr />
+<h1 id="187-playback-underrun-test"><a class="header" href="#187-playback-underrun-test">187. Playback Underrun Test</a></h1>
+<p>Starve network.</p>
+<p>Expected:</p>
+<pre><code class="language-text">silence/PLC
+no crash
+</code></pre>
+<hr />
+<h1 id="188-capture-overrun-test"><a class="header" href="#188-capture-overrun-test">188. Capture Overrun Test</a></h1>
+<p>Stall DSP worker.</p>
+<p>Expected:</p>
+<pre><code class="language-text">bounded drop
+diagnostic counter
+</code></pre>
+<hr />
+<h1 id="189-audio-callback-stress"><a class="header" href="#189-audio-callback-stress">189. Audio Callback Stress</a></h1>
+<p>Inject CPU load.</p>
+<p>Audio callback must remain stable.</p>
+<hr />
+<h1 id="190-no-allocation-callback-test"><a class="header" href="#190-no-allocation-callback-test">190. No-Allocation Callback Test</a></h1>
+<p>Instrument production callback.</p>
+<p>Assert:</p>
+<pre><code class="language-text">no heap allocation in steady state
+</code></pre>
+<p>where practical.</p>
+<hr />
+<h1 id="191-android-device-tests"><a class="header" href="#191-android-device-tests">191. Android Device Tests</a></h1>
+<p>Test:</p>
+<pre><code class="language-text">speakerphone
+earpiece
+wired headset
+Bluetooth headset
+USB audio
+</code></pre>
+<hr />
+<h1 id="192-android-aec-matrix"><a class="header" href="#192-android-aec-matrix">192. Android AEC Matrix</a></h1>
+<p>Record:</p>
+<pre><code class="language-text">platform AEC available
+actual quality
+device quirks
+</code></pre>
+<hr />
+<h1 id="193-platform-dsp-quirk-database"><a class="header" href="#193-platform-dsp-quirk-database">193. Platform DSP Quirk Database</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct AudioDspQuirk {
+    pub device_match: DeviceMatcher,
+    pub disable_aec: bool,
+    pub disable_ns: bool,
+    pub disable_agc: bool,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="194-real-world-echo-test"><a class="header" href="#194-real-world-echo-test">194. Real-World Echo Test</a></h1>
+<p>Put two devices in rooms with:</p>
+<pre><code class="language-text">speakerphone
+hard surfaces
+high volume
+</code></pre>
+<p>Measure intelligibility.</p>
+<hr />
+<h1 id="195-bluetooth-test"><a class="header" href="#195-bluetooth-test">195. Bluetooth Test</a></h1>
+<p>Switch headset mid-call.</p>
+<p>Pipeline reconfigures without crash.</p>
+<hr />
+<h1 id="196-audio-focus-test"><a class="header" href="#196-audio-focus-test">196. Audio Focus Test</a></h1>
+<p>Receive cellular call/other interruption.</p>
+<hr />
+<h1 id="197-background-test"><a class="header" href="#197-background-test">197. Background Test</a></h1>
+<p>Android activity closes while service maintains audio call where OS policy permits.</p>
+<hr />
+<h1 id="198-screen-off-test"><a class="header" href="#198-screen-off-test">198. Screen-Off Test</a></h1>
+<p>Voice call continues efficiently.</p>
+<hr />
+<h1 id="199-long-soak"><a class="header" href="#199-long-soak">199. Long Soak</a></h1>
+<p>Run:</p>
+<pre><code class="language-text">2–8 hour voice call
+</code></pre>
+<p>track:</p>
+<pre><code class="language-text">memory
+drift
+latency
+underruns
+battery
+thermal
+</code></pre>
+<hr />
+<h1 id="200-cross-platform-conformance"><a class="header" href="#200-cross-platform-conformance">200. Cross-Platform Conformance</a></h1>
+<p>Use synthetic DSP fixtures so:</p>
+<pre><code class="language-text">Android
+Linux
+Windows
+macOS
+</code></pre>
+<p>produce compatible media timing/Opus behavior.</p>
+<hr />
+<h1 id="201-hardware-dsp-difference"><a class="header" href="#201-hardware-dsp-difference">201. Hardware DSP Difference</a></h1>
+<p>Exact processed PCM need not be identical across hardware backends.</p>
+<p>Conformance checks:</p>
+<pre><code class="language-text">timing
+format
+stability
+bounded levels
+</code></pre>
+<p>not bit-identical samples.</p>
+<hr />
+<h1 id="202-fuzzing"><a class="header" href="#202-fuzzing">202. Fuzzing</a></h1>
+<p>Part 10 fuzz:</p>
+<pre><code class="language-text">audio packet parser
+Opus framing glue
+resampler config
+DSP graph config
+route events
+</code></pre>
+<hr />
+<h1 id="203-property-tests"><a class="header" href="#203-property-tests">203. Property Tests</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">resampler never emits NaN
+AGC never exceeds hard limiter
+ring occupancy always bounded
+invalid route sequence never corrupts session
+</code></pre>
+<hr />
+<h1 id="204-simd-differential-tests"><a class="header" href="#204-simd-differential-tests">204. SIMD Differential Tests</a></h1>
+<p>Compare:</p>
+<pre><code class="language-text">SIMD
+scalar
+</code></pre>
+<p>within tolerance.</p>
+<hr />
+<h1 id="205-dsp-determinism"><a class="header" href="#205-dsp-determinism">205. DSP Determinism</a></h1>
+<p>Floating-point outputs may differ slightly by CPU.</p>
+<p>Use tolerance-based tests.</p>
+<hr />
+<h1 id="206-audio-error-model"><a class="header" href="#206-audio-error-model">206. Audio Error Model</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum AudioError {
+    UnsupportedFormat,
+    DeviceUnavailable,
+    PermissionDenied,
+    RouteChanged,
+    BufferOverrun,
+    BufferUnderrun,
+    ResampleFailed,
+    AecUnavailable,
+    DspFailed,
+    OpusFailed,
+    Timeout,
+    Platform,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="207-degraded-modes"><a class="header" href="#207-degraded-modes">207. Degraded Modes</a></h1>
+<p>If AEC unavailable:</p>
+<pre><code class="language-text">speakerphone quality warning
+prefer earpiece/headset
+</code></pre>
+<p>If NS unavailable:</p>
+<pre><code class="language-text">continue call
+</code></pre>
+<p>If AGC unavailable:</p>
+<pre><code class="language-text">continue with manual/static gain
+</code></pre>
+<p>If resampler unavailable:</p>
+<pre><code class="language-text">call cannot start if device rate incompatible
+</code></pre>
+<p>but resampler is expected to always be available in Rust.</p>
+<hr />
+<h1 id="208-audio-session-state"><a class="header" href="#208-audio-session-state">208. Audio Session State</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum AudioSessionState {
+    Idle,
+    Starting,
+    Active,
+    Reconfiguring,
+    Interrupted,
+    Degraded,
+    Stopping,
+    Failed,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="209-route-reconfiguration-state"><a class="header" href="#209-route-reconfiguration-state">209. Route Reconfiguration State</a></h1>
+<pre><code class="language-text">Active
+ ↓
+RouteChanged
+ ↓
+Pause I/O briefly
+ ↓
+reopen backend
+ ↓
+reselect DSP
+ ↓
+prime buffers
+ ↓
+Active
+</code></pre>
+<hr />
+<h1 id="210-avoid-large-glitch"><a class="header" href="#210-avoid-large-glitch">210. Avoid Large Glitch</a></h1>
+<p>Target route change interruption:</p>
+<pre><code class="language-text">as short as platform permits
+</code></pre>
+<hr />
+<h1 id="211-audiograph-builder"><a class="header" href="#211-audiograph-builder">211. AudioGraph Builder</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let graph = AudioGraph::builder()
+    .resample_to(48_000)
+    .high_pass(true)
+    .aec(AecPolicy::Auto)
+    .noise_suppression(NsPolicy::Auto)
+    .agc(AgcPolicy::Auto)
+    .vad(true)
+    .build()?;
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="212-backend-policy"><a class="header" href="#212-backend-policy">212. Backend Policy</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum BackendPreference {
+    Auto,
+    RustOnly,
+    PlatformPreferred,
+    PlatformOnly,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Useful for:</p>
+<pre><code class="language-text">testing
+debugging
+advanced deployment
+</code></pre>
+<p>Default:</p>
+<pre><code class="language-text">Auto
+</code></pre>
+<hr />
+<h1 id="213-auto-means"><a class="header" href="#213-auto-means">213. Auto Means</a></h1>
+<p>For each feature:</p>
+<pre><code class="language-text">use Rust if it is mature, portable, and efficient
+use platform if it is substantially better or avoids unnecessary low-level complexity
+</code></pre>
+<hr />
+<h1 id="214-recommended-backend-ownership"><a class="header" href="#214-recommended-backend-ownership">214. Recommended Backend Ownership</a></h1>
+<h2 id="resampling"><a class="header" href="#resampling">Resampling</a></h2>
+<pre><code class="language-text">Rust
+</code></pre>
+<h2 id="formatchannel-conversion"><a class="header" href="#formatchannel-conversion">Format/channel conversion</a></h2>
+<pre><code class="language-text">Rust
+</code></pre>
+<h2 id="high-passdc"><a class="header" href="#high-passdc">High-pass/DC</a></h2>
+<pre><code class="language-text">Rust
+</code></pre>
+<h2 id="mixer"><a class="header" href="#mixer">Mixer</a></h2>
+<pre><code class="language-text">Rust
+</code></pre>
+<h2 id="limiter"><a class="header" href="#limiter">Limiter</a></h2>
+<pre><code class="language-text">Rust
+</code></pre>
+<h2 id="agc"><a class="header" href="#agc">AGC</a></h2>
+<pre><code class="language-text">Rust first
+</code></pre>
+<h2 id="vad"><a class="header" href="#vad">VAD</a></h2>
+<pre><code class="language-text">Rust first
+</code></pre>
+<h2 id="noise-suppression"><a class="header" href="#noise-suppression">Noise suppression</a></h2>
+<pre><code class="language-text">Rust classical first
+platform optional
+</code></pre>
+<h2 id="aec"><a class="header" href="#aec">AEC</a></h2>
+<pre><code class="language-text">platform/mature backend first
+Rust only when quality proven
+</code></pre>
+<h2 id="audio-io"><a class="header" href="#audio-io">Audio I/O</a></h2>
+<pre><code class="language-text">native platform API through Rust
+</code></pre>
+<hr />
+<h1 id="215-production-phases"><a class="header" href="#215-production-phases">215. Production Phases</a></h1>
+<h2 id="phase-1--audio-core"><a class="header" href="#phase-1--audio-core">Phase 1 — Audio Core</a></h2>
+<pre><code class="language-text">format
+frames
+buffer pool
+ring buffers
+clock
+</code></pre>
+<h2 id="phase-2--pure-rust-resampler"><a class="header" href="#phase-2--pure-rust-resampler">Phase 2 — Pure-Rust Resampler</a></h2>
+<pre><code class="language-text">44.1↔48
+fractional drift
+</code></pre>
+<h2 id="phase-3--opus-pipeline"><a class="header" href="#phase-3--opus-pipeline">Phase 3 — Opus Pipeline</a></h2>
+<pre><code class="language-text">20 ms
+DTX
+FEC
+PLC
+</code></pre>
+<h2 id="phase-4--rust-dsp"><a class="header" href="#phase-4--rust-dsp">Phase 4 — Rust DSP</a></h2>
+<pre><code class="language-text">HPF
+DC
+AGC
+limiter
+VAD
+classical NS
+</code></pre>
+<h2 id="phase-5--android-native-io"><a class="header" href="#phase-5--android-native-io">Phase 5 — Android Native I/O</a></h2>
+<pre><code class="language-text">low latency
+no Kotlin PCM path
+route changes
+</code></pre>
+<h2 id="phase-6--aec-backend"><a class="header" href="#phase-6--aec-backend">Phase 6 — AEC Backend</a></h2>
+<pre><code class="language-text">Android platform first
+software trait fallback
+</code></pre>
+<h2 id="phase-7--adaptive-jitter--drift"><a class="header" href="#phase-7--adaptive-jitter--drift">Phase 7 — Adaptive Jitter / Drift</a></h2>
+<pre><code class="language-text">clock compensation
+network adaptation
+</code></pre>
+<h2 id="phase-8--device-quirks"><a class="header" href="#phase-8--device-quirks">Phase 8 — Device Quirks</a></h2>
+<pre><code class="language-text">speaker
+Bluetooth
+USB
+platform DSP
+</code></pre>
+<h2 id="phase-9--hardening"><a class="header" href="#phase-9--hardening">Phase 9 — Hardening</a></h2>
+<pre><code class="language-text">soak
+echo room
+battery
+thermal
+route changes
+interruptions
+</code></pre>
+<hr />
+<h1 id="216-initial-production-recommendation"><a class="header" href="#216-initial-production-recommendation">216. Initial Production Recommendation</a></h1>
+<p>Do <strong>not</strong> block the whole application waiting for a pure-Rust world-class AEC implementation.</p>
+<p>Ship the first production audio system as:</p>
+<pre><code class="language-text">Rust:
+    audio graph
+    resampler
+    jitter
+    drift
+    Opus orchestration
+    mixer
+    HPF/DC
+    AGC
+    limiter
+    VAD
+    optional classical NS
+
+Android platform/native:
+    low-latency audio I/O
+    proven AEC when available
+    optionally proven NS/AGC where device quality is better
+</code></pre>
+<p>Then replace platform pieces with Rust only when the Rust backend proves:</p>
+<pre><code class="language-text">equal/better quality
+equal/better latency
+acceptable battery cost
+wide-device stability
+</code></pre>
+<hr />
+<h1 id="217-definition-of-done"><a class="header" href="#217-definition-of-done">217. Definition of Done</a></h1>
+<p>Part 26 is complete when:</p>
+<ul>
+<li>microphone and playback sample rates may differ from 48 kHz</li>
+<li>all voice processing is normalized to a stable internal 48 kHz timeline</li>
+<li>high-quality streaming resampling is implemented in Rust</li>
+<li>fractional resampling corrects long-term clock drift</li>
+<li>capture/playback hot paths avoid Kotlin <code>ByteArray</code> PCM transfers</li>
+<li>native audio callbacks use bounded ring buffers</li>
+<li>steady-state audio callbacks avoid blocking and unnecessary allocation</li>
+<li>Rust owns DSP graph, timing, policy, jitter, and Opus behavior</li>
+<li>HPF/DC removal, mixer, limiter, AGC, and VAD have Rust backends</li>
+<li>classical noise suppression has a Rust backend or clearly defined replacement path</li>
+<li>AEC has a Rust trait and can use Android platform/hardware backend when superior</li>
+<li>route changes re-evaluate sample rate, latency, and DSP</li>
+<li>Bluetooth/headset/speakerphone behavior is explicitly handled</li>
+<li>hardware and software DSP are not accidentally double-enabled</li>
+<li>adaptive jitter buffering is bounded</li>
+<li>FEC/PLC/DTX integrate with network policy</li>
+<li>audio outranks video and bulk traffic during calls</li>
+<li>battery/thermal policies degrade expensive DSP before breaking the call</li>
+<li>diagnostics expose route, resampling ratio, drift, jitter, underruns, and DSP backends</li>
+<li>long-duration calls remain stable without accumulating buffer drift</li>
+<li>real-device echo, Bluetooth, background, interruption, and soak tests pass</li>
+</ul>
+<hr />
+<h1 id="218-relationship-to-earlier-parts"><a class="header" href="#218-relationship-to-earlier-parts">218. Relationship to Earlier Parts</a></h1>
+<p>Part 26 strengthens:</p>
+<pre><code class="language-text">07 — Capability Negotiation
+08 — Resource Limits &amp; Backpressure
+09 — Crash Recovery
+10 — Fuzzing / Protocol Tests
+12 — Multipath
+13 — Battery-Aware Scheduling
+16 — Daemon / Headless Runtime
+17 — Emergency Priority
+18 — Diagnostics
+19 — C ABI / FFI
+25 — Android Hardware Surface / Zero-Copy Video
+</code></pre>
+<p>Together Parts 25 and 26 establish:</p>
+<pre><code class="language-text">video:
+hardware Surface data plane
+
+audio:
+Rust DSP + native low-latency I/O + hardware-aware acoustic processing
+</code></pre>
+<hr />
+<h1 id="219-final-architecture"><a class="header" href="#219-final-architecture">219. Final Architecture</a></h1>
+<pre><code class="language-text">                         CAPTURE
+
+Android Native Audio Input
+          │
+          ▼
+    SPSC Ring Buffer
+          │
+          ▼
+   Rust Audio Worker
+          │
+          ├── Format Normalize
+          ├── Rust Resampler
+          ├── Drift Correction
+          ├── HPF / DC
+          ├── AEC ───────────────┐
+          ├── NS                 │
+          ├── AGC                │
+          ├── Limiter            │
+          └── VAD                │
+          │                      │
+          ▼                      │
+        Opus                     │
+          │                      │
+          ▼                      │
+       Network                   │
+                                 │
+                         AEC Reference
+                                 ▲
+                                 │
+Network                          │
+  │                              │
+  ▼                              │
+Jitter Buffer                    │
+  │                              │
+  ▼                              │
+Opus Decoder                     │
+  │                              │
+  ▼                              │
+Rust Mixer / Limiter ────────────┘
+  │
+  ▼
+Playback Resampler
+  │
+  ▼
+SPSC Ring Buffer
+  │
+  ▼
+Android Native Audio Output
+</code></pre>
+<hr />
+<h1 id="220-final-principle"><a class="header" href="#220-final-principle">220. Final Principle</a></h1>
+<p>The goal is not:</p>
+<pre><code class="language-text">"everything must be handwritten in Rust"
+</code></pre>
+<p>The goal is:</p>
+<pre><code class="language-text">Rust owns the architecture
+Rust owns portable DSP
+Rust owns timing
+Rust owns safety
+Rust owns policy
+Rust owns network/media integration
+
+platform hardware is used where it is genuinely better
+</code></pre>
+<p>For this audio system, the right engineering split is:</p>
+<pre><code class="language-text">Resampling        → Rust
+Clock drift       → Rust
+Jitter            → Rust
+Mixing            → Rust
+AGC               → Rust
+VAD               → Rust
+HPF / limiter     → Rust
+Classical NS      → Rust first
+AEC               → mature platform/hardware backend first
+Audio I/O         → native platform API controlled from Rust
+</code></pre>
+<p>That gives the application a genuinely Rust-centric audio architecture without spending enormous effort rebuilding the deepest parts of Android's acoustic stack solely for language purity.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="25-android-direct-hardware-surface-zero-copy-media-architecture.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="29-realtime-calls-media-session-protocol-architecture.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="25-android-direct-hardware-surface-zero-copy-media-architecture.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="29-realtime-calls-media-session-protocol-architecture.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

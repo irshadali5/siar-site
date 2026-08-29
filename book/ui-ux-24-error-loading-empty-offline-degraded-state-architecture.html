@@ -1,0 +1,1649 @@
+<!DOCTYPE HTML>
+<html lang="en" class="navy" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>UI/UX 24 — Error, Loading, Empty &amp; Degraded-State UX - SIAR System Architecture &amp; Technical Wiki</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="Comprehensive system architecture, cryptographic protocols, DTN mesh networking, distributed storage, audio DSP pipelines, and UI/UX design specifications for SIAR.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="theme/custom.css">
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "navy";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('navy')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="Home.html">Architecture Portal & Reading Guide</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part I: Protocol Foundation & Extension Platform</li><li class="chapter-item expanded "><a href="01-protocol-extension-system-architecture.html"><strong aria-hidden="true">1.</strong> 01 — Protocol Extension System Architecture</a></li><li class="chapter-item expanded "><a href="07-capability-negotiation-architecture.html"><strong aria-hidden="true">2.</strong> 07 — Capability Negotiation & Protocol Upgrades</a></li><li class="chapter-item expanded "><a href="21-third-party-protocol-extensions-architecture.html"><strong aria-hidden="true">3.</strong> 21 — Third-Party Protocol Extensions</a></li><li class="chapter-item expanded "><a href="22-wasm-compatible-components-architecture.html"><strong aria-hidden="true">4.</strong> 22 — WebAssembly (WASM) Compatible Components</a></li><li class="chapter-item expanded "><a href="23-external-interoperability-suite-architecture.html"><strong aria-hidden="true">5.</strong> 23 — External Interoperability & Conformance Suite</a></li><li class="chapter-item expanded "><a href="24-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">6.</strong> 24 — Dynamic Plugin & Module Ecosystem</a></li><li class="chapter-item expanded affix "><li class="part-title">Part II: Identity, Trust & Cryptography</li><li class="chapter-item expanded "><a href="02-multi-device-identity-architecture.html"><strong aria-hidden="true">7.</strong> 02 — Multi-Device Identity & Trust Model</a></li><li class="chapter-item expanded "><a href="28-production-security-e2ee-key-management-privacy-architecture.html"><strong aria-hidden="true">8.</strong> 28 — Production Security, E2EE, Key Management & Privacy</a></li><li class="chapter-item expanded affix "><li class="part-title">Part III: Mesh Networking, Transports & Hardware</li><li class="chapter-item expanded "><a href="03-transport-routing-policy-engine-architecture.html"><strong aria-hidden="true">9.</strong> 03 — Transport & Routing Policy Engine</a></li><li class="chapter-item expanded "><a href="11-relay-self-hosted-infrastructure-architecture.html"><strong aria-hidden="true">10.</strong> 11 — Self-Hosted Relay & Coordination Infrastructure</a></li><li class="chapter-item expanded "><a href="12-multipath-networking-architecture.html"><strong aria-hidden="true">11.</strong> 12 — Multipath Networking & Link Aggregation</a></li><li class="chapter-item expanded "><a href="13-battery-aware-scheduling-architecture.html"><strong aria-hidden="true">12.</strong> 13 — Battery-Aware Scheduling & Power Profiles</a></li><li class="chapter-item expanded "><a href="14-proximity-abstraction-architecture.html"><strong aria-hidden="true">13.</strong> 14 — Proximity Abstraction (BLE, Wi-Fi Direct, LoRa)</a></li><li class="chapter-item expanded "><a href="15-qr-nfc-bootstrap-pairing-architecture.html"><strong aria-hidden="true">14.</strong> 15 — Out-of-Band QR & NFC Bootstrap Pairing</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IV: Delay-Tolerant Networking & Emergency Mesh</li><li class="chapter-item expanded "><a href="06-dtn-store-carry-forward-architecture.html"><strong aria-hidden="true">15.</strong> 06 — DTN Store-Carry-Forward & Bundle Forwarding</a></li><li class="chapter-item expanded "><a href="17-emergency-priority-classes-architecture.html"><strong aria-hidden="true">16.</strong> 17 — Emergency Priority Classes & Critical Alert Mesh</a></li><li class="chapter-item expanded affix "><li class="part-title">Part V: Storage, Outbox & Data Lifecycle</li><li class="chapter-item expanded "><a href="04-offline-event-log-architecture.html"><strong aria-hidden="true">17.</strong> 04 — Offline Event Log & Sync Engine</a></li><li class="chapter-item expanded "><a href="05-robust-file-blob-subsystem-architecture.html"><strong aria-hidden="true">18.</strong> 05 — Robust File & Blob Subsystem (Chunking & Resumption)</a></li><li class="chapter-item expanded "><a href="09-crash-recovery-architecture.html"><strong aria-hidden="true">19.</strong> 09 — Crash Recovery & State Integrity</a></li><li class="chapter-item expanded "><a href="32-search-indexing-local-knowledge-privacy-architecture.html"><strong aria-hidden="true">20.</strong> 32 — Search, Indexing & Local Privacy Retrieval</a></li><li class="chapter-item expanded "><a href="33-backup-restore-export-import-archival-portability-architecture.html"><strong aria-hidden="true">21.</strong> 33 — Backup, Restore, Export & Long-Term Archival</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VI: Realtime Media, Calling & Audio DSP</li><li class="chapter-item expanded "><a href="25-android-direct-hardware-surface-zero-copy-media-architecture.html"><strong aria-hidden="true">22.</strong> 25 — Android Direct Surface Zero-Copy Media</a></li><li class="chapter-item expanded "><a href="26-rust-first-audio-dsp-resampling-aec-ns-agc-architecture.html"><strong aria-hidden="true">23.</strong> 26 — Rust-First Audio DSP (AEC, NS, AGC, Resampling)</a></li><li class="chapter-item expanded "><a href="29-realtime-calls-media-session-protocol-architecture.html"><strong aria-hidden="true">24.</strong> 29 — Realtime Calls & Media Session Protocol</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VII: Ephemeral State, Presence & Notifications</li><li class="chapter-item expanded "><a href="30-presence-availability-typing-read-receipts-ephemeral-state-architecture.html"><strong aria-hidden="true">25.</strong> 30 — Presence, Availability, Typing & Read Receipts</a></li><li class="chapter-item expanded "><a href="31-notifications-push-background-delivery-lifecycle-architecture.html"><strong aria-hidden="true">26.</strong> 31 — Notifications, Push Wake & Background Delivery</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VIII: Native Runtimes, Daemons & Embedded Linux</li><li class="chapter-item expanded "><a href="16-daemon-headless-runtime-architecture.html"><strong aria-hidden="true">27.</strong> 16 — Headless Daemon & Background Runtime</a></li><li class="chapter-item expanded "><a href="19-c-abi-ffi-architecture.html"><strong aria-hidden="true">28.</strong> 19 — C-ABI FFI & Native Language Interop</a></li><li class="chapter-item expanded "><a href="20-embedded-linux-node-architecture.html"><strong aria-hidden="true">29.</strong> 20 — Embedded Linux Node & Resource-Constrained Targets</a></li><li class="chapter-item expanded "><a href="27-rust-driven-android-native-build-packaging-automation.html"><strong aria-hidden="true">30.</strong> 27 — Rust-Driven Android Native Build & Packaging Automation</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IX: Reliability, Testing, Fuzzing & Diagnostics</li><li class="chapter-item expanded "><a href="08-resource-limits-backpressure-architecture.html"><strong aria-hidden="true">31.</strong> 08 — Resource Limits, Quotas & Backpressure</a></li><li class="chapter-item expanded "><a href="10-fuzzing-protocol-test-suite-architecture.html"><strong aria-hidden="true">32.</strong> 10 — Fuzzing & Protocol Test Suite</a></li><li class="chapter-item expanded "><a href="18-network-diagnostics-path-visualization-architecture.html"><strong aria-hidden="true">33.</strong> 18 — Network Diagnostics & Path Visualization</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part X: UI/UX Client Architecture (Cross-Platform)</li><li class="chapter-item expanded "><a href="ui-ux-01-product-foundation-cross-platform-interaction-architecture.html"><strong aria-hidden="true">34.</strong> UI/UX 01 — Product UX Foundation & Cross-Platform Interaction</a></li><li class="chapter-item expanded "><a href="ui-ux-02-desktop-dioxus-app-shell-navigation-window-architecture.html"><strong aria-hidden="true">35.</strong> UI/UX 02 — Desktop Dioxus App Shell & Navigation</a></li><li class="chapter-item expanded "><a href="ui-ux-03-android-jetpack-compose-app-shell-navigation-lifecycle-architecture.html"><strong aria-hidden="true">36.</strong> UI/UX 03 — Android Jetpack Compose App Shell & Lifecycle</a></li><li class="chapter-item expanded "><a href="ui-ux-04-conversation-list-inbox-architecture.html"><strong aria-hidden="true">37.</strong> UI/UX 04 — Conversation List & Inbox UX</a></li><li class="chapter-item expanded "><a href="ui-ux-05-conversation-message-timeline-architecture.html"><strong aria-hidden="true">38.</strong> UI/UX 05 — Conversation Message Timeline UX</a></li><li class="chapter-item expanded "><a href="ui-ux-06-message-composer-attachments-voice-notes-drafts-architecture.html"><strong aria-hidden="true">39.</strong> UI/UX 06 — Message Composer, Attachments & Voice Notes</a></li><li class="chapter-item expanded "><a href="ui-ux-07-calls-realtime-media-architecture.html"><strong aria-hidden="true">40.</strong> UI/UX 07 — Calls & Realtime Media UX</a></li><li class="chapter-item expanded "><a href="ui-ux-08-contacts-requests-verification-identity-architecture.html"><strong aria-hidden="true">41.</strong> UI/UX 08 — Contacts, Requests, Verification & Identity</a></li><li class="chapter-item expanded "><a href="ui-ux-09-groups-membership-roles-architecture.html"><strong aria-hidden="true">42.</strong> UI/UX 09 — Groups, Membership & Roles UX</a></li><li class="chapter-item expanded "><a href="ui-ux-10-files-media-gallery-transfer-architecture.html"><strong aria-hidden="true">43.</strong> UI/UX 10 — Files, Media Gallery & Transfer UX</a></li><li class="chapter-item expanded "><a href="ui-ux-11-search-local-knowledge-retrieval-architecture.html"><strong aria-hidden="true">44.</strong> UI/UX 11 — Search & Local Knowledge Retrieval UX</a></li><li class="chapter-item expanded "><a href="ui-ux-12-nearby-qr-nfc-pairing-device-linking-architecture.html"><strong aria-hidden="true">45.</strong> UI/UX 12 — Nearby, QR/NFC Pairing & Device Linking UX</a></li><li class="chapter-item expanded "><a href="ui-ux-13-notifications-background-incoming-call-architecture.html"><strong aria-hidden="true">46.</strong> UI/UX 13 — Notifications, Background & Incoming Call UX</a></li><li class="chapter-item expanded "><a href="ui-ux-14-presence-typing-receipts-status-architecture.html"><strong aria-hidden="true">47.</strong> UI/UX 14 — Presence, Typing, Receipts & Status UX</a></li><li class="chapter-item expanded "><a href="ui-ux-15-security-center-devices-keys-recovery-architecture.html"><strong aria-hidden="true">48.</strong> UI/UX 15 — Security Center, Devices, Keys & Recovery UX</a></li><li class="chapter-item expanded "><a href="ui-ux-16-backup-restore-export-migration-architecture.html"><strong aria-hidden="true">49.</strong> UI/UX 16 — Backup, Restore, Export & Migration UX</a></li><li class="chapter-item expanded "><a href="ui-ux-17-emergency-sos-offline-mesh-architecture.html"><strong aria-hidden="true">50.</strong> UI/UX 17 — Emergency / SOS / Offline Mesh UX</a></li><li class="chapter-item expanded "><a href="ui-ux-18-settings-privacy-notifications-data-controls-architecture.html"><strong aria-hidden="true">51.</strong> UI/UX 18 — Settings, Privacy, Notifications & Data Controls</a></li><li class="chapter-item expanded "><a href="ui-ux-19-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">52.</strong> UI/UX 19 — Plugin & Module Ecosystem UX</a></li><li class="chapter-item expanded "><a href="ui-ux-20-diagnostics-network-paths-advanced-developer-architecture.html"><strong aria-hidden="true">53.</strong> UI/UX 20 — Diagnostics, Network Paths & Developer UX</a></li><li class="chapter-item expanded "><a href="ui-ux-21-accessibility-inclusive-interaction-architecture.html"><strong aria-hidden="true">54.</strong> UI/UX 21 — Accessibility & Inclusive Interaction</a></li><li class="chapter-item expanded "><a href="ui-ux-22-design-system-tokens-typography-icons-motion-architecture.html"><strong aria-hidden="true">55.</strong> UI/UX 22 — Design System, Tokens, Typography & Motion</a></li><li class="chapter-item expanded "><a href="ui-ux-23-responsive-adaptive-desktop-tablet-foldable-phone-layout-architecture.html"><strong aria-hidden="true">56.</strong> UI/UX 23 — Responsive & Adaptive Layouts (Desktop/Tablet/Foldable/Phone)</a></li><li class="chapter-item expanded "><a href="ui-ux-24-error-loading-empty-offline-degraded-state-architecture.html" class="active"><strong aria-hidden="true">57.</strong> UI/UX 24 — Error, Loading, Empty & Degraded-State UX</a></li><li class="chapter-item expanded "><a href="ui-ux-25-onboarding-first-run-permission-education-architecture.html"><strong aria-hidden="true">58.</strong> UI/UX 25 — Onboarding, First Run & Permission Education</a></li><li class="chapter-item expanded "><a href="ui-ux-26-performance-virtualization-large-data-ui-architecture.html"><strong aria-hidden="true">59.</strong> UI/UX 26 — Virtualization & Large-Data UI Performance</a></li><li class="chapter-item expanded "><a href="ui-ux-27-ui-testing-screenshot-interaction-release-quality-gates-architecture.html"><strong aria-hidden="true">60.</strong> UI/UX 27 — UI Testing, Screenshots & Release Quality Gates</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">SIAR System Architecture &amp; Technical Wiki</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar/edit/main/sys-arch/ui-ux-24-error-loading-empty-offline-degraded-state-architecture.md" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="uiux-part-24--error-loading-empty-offline--degraded-state-ux-architecture"><a class="header" href="#uiux-part-24--error-loading-empty-offline--degraded-state-ux-architecture">UI/UX Part 24 — Error, Loading, Empty, Offline &amp; Degraded-State UX Architecture</a></h1>
+<h2 id="reusable-p2p-communication-platform"><a class="header" href="#reusable-p2p-communication-platform">Reusable P2P Communication Platform</a></h2>
+<p><strong>Status:</strong> UI/UX architecture specification<br />
+<strong>UI Series:</strong> Part 24<br />
+<strong>Desktop UI:</strong> Dioxus<br />
+<strong>Android UI:</strong> Kotlin + Jetpack Compose<br />
+<strong>Core runtime:</strong> Rust<br />
+<strong>Primary purpose:</strong> define the complete error/loading/empty/offline/degraded-state UX architecture across messaging, calls, files, search, contacts, groups, pairing, notifications, security, backup, emergency, settings, plugins, diagnostics, and all future product surfaces.</p>
+<hr />
+<h1 id="1-purpose"><a class="header" href="#1-purpose">1. Purpose</a></h1>
+<p>Failure states are part of the normal product, especially in a local-first P2P system.</p>
+<p>Users will regularly encounter:</p>
+<pre><code class="language-text">no Internet
+peer unavailable
+relay unavailable
+local-only connectivity
+background delivery delayed
+storage pressure
+permission denied
+partial sync
+stale data
+retrying transfer
+search index rebuilding
+plugin crashed
+backup destination missing
+camera unavailable
+message queued
+call reconnecting
+</code></pre>
+<p>These should not all become:</p>
+<pre><code class="language-text">Something went wrong
+</code></pre>
+<p>The governing principle is:</p>
+<blockquote>
+<p><strong>The UX must explain what is known, what still works, what is waiting, and what the user can do next.</strong></p>
+</blockquote>
+<hr />
+<h1 id="2-architectural-position"><a class="header" href="#2-architectural-position">2. Architectural Position</a></h1>
+<pre><code class="language-text">Rust Domain / Runtime State
+        │
+        ├── loading phase
+        ├── data readiness
+        ├── connectivity
+        ├── degradation
+        ├── failure class
+        ├── retryability
+        ├── recovery action
+        └── data-safety state
+        │
+        ▼
+Failure-State Presentation Service
+        │
+   ┌────┴─────┐
+   │          │
+Dioxus     Compose
+Desktop    Android
+</code></pre>
+<hr />
+<h1 id="3-core-state-families"><a class="header" href="#3-core-state-families">3. Core State Families</a></h1>
+<p>Recommended:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum UiDataState&lt;T&gt; {
+    Loading(LoadingStateView),
+    Ready(T),
+    Empty(EmptyStateView),
+    Degraded {
+        data: T,
+        degradation: DegradedStateView,
+    },
+    Failed(ErrorStateView),
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="4-do-not-treat-degraded-as-failed"><a class="header" href="#4-do-not-treat-degraded-as-failed">4. Do Not Treat Degraded as Failed</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">No Internet
+LAN messaging still works
+</code></pre>
+<p>is:</p>
+<pre><code class="language-text">Degraded
+</code></pre>
+<p>not:</p>
+<pre><code class="language-text">Failed
+</code></pre>
+<hr />
+<h1 id="5-loading-taxonomy"><a class="header" href="#5-loading-taxonomy">5. Loading Taxonomy</a></h1>
+<p>Loading should describe phase when useful.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum LoadingPhase {
+    Starting,
+    ReadingLocalData,
+    Connecting,
+    Syncing,
+    Verifying,
+    Preparing,
+    Rebuilding,
+    WaitingForPermission,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="6-initial-loading"><a class="header" href="#6-initial-loading">6. Initial Loading</a></h1>
+<p>Use only when no usable data exists yet.</p>
+<hr />
+<h1 id="7-local-first-loading"><a class="header" href="#7-local-first-loading">7. Local-First Loading</a></h1>
+<p>Preferred startup:</p>
+<pre><code class="language-text">show local snapshot immediately
+then sync in background
+</code></pre>
+<p>instead of blocking on network.</p>
+<hr />
+<h1 id="8-skeleton-loading"><a class="header" href="#8-skeleton-loading">8. Skeleton Loading</a></h1>
+<p>Use only when structure is known.</p>
+<p>Examples:</p>
+<pre><code class="language-text">conversation list
+contact list
+file grid
+</code></pre>
+<hr />
+<h1 id="9-spinner-loading"><a class="header" href="#9-spinner-loading">9. Spinner Loading</a></h1>
+<p>Use for small indeterminate operations.</p>
+<hr />
+<h1 id="10-progress-loading"><a class="header" href="#10-progress-loading">10. Progress Loading</a></h1>
+<p>Use when meaningful total exists.</p>
+<p>Examples:</p>
+<pre><code class="language-text">backup
+restore
+transfer
+index rebuild
+</code></pre>
+<hr />
+<h1 id="11-loading-copy"><a class="header" href="#11-loading-copy">11. Loading Copy</a></h1>
+<p>Prefer:</p>
+<pre><code class="language-text">Loading messages…
+Verifying backup…
+Rebuilding search…
+</code></pre>
+<p>over generic:</p>
+<pre><code class="language-text">Loading…
+</code></pre>
+<hr />
+<h1 id="12-avoid-fake-progress"><a class="header" href="#12-avoid-fake-progress">12. Avoid Fake Progress</a></h1>
+<p>If total unknown:</p>
+<pre><code class="language-text">indeterminate
+</code></pre>
+<hr />
+<h1 id="13-loading-timeout"><a class="header" href="#13-loading-timeout">13. Loading Timeout</a></h1>
+<p>Long loading should transition to explanatory state.</p>
+<p>Example:</p>
+<pre><code class="language-text">Still trying to connect…
+</code></pre>
+<p>with options.</p>
+<hr />
+<h1 id="14-background-loading"><a class="header" href="#14-background-loading">14. Background Loading</a></h1>
+<p>Do not block navigation for background:</p>
+<pre><code class="language-text">sync
+index
+thumbnail generation
+</code></pre>
+<p>unless required.</p>
+<hr />
+<h1 id="15-refresh-state"><a class="header" href="#15-refresh-state">15. Refresh State</a></h1>
+<p>When existing data visible:</p>
+<pre><code class="language-text">keep content
+show small refresh indicator
+</code></pre>
+<hr />
+<h1 id="16-empty-state-taxonomy"><a class="header" href="#16-empty-state-taxonomy">16. Empty State Taxonomy</a></h1>
+<p>Empty is not failure.</p>
+<p>Examples:</p>
+<pre><code class="language-text">No conversations yet
+No contacts
+No files
+No search results
+No blocked users
+No security events
+No plugins installed
+</code></pre>
+<hr />
+<h1 id="17-empty-state-structure"><a class="header" href="#17-empty-state-structure">17. Empty State Structure</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">Title
+Explanation
+Primary action if useful
+Secondary guidance if useful
+</code></pre>
+<hr />
+<h1 id="18-good-empty-state"><a class="header" href="#18-good-empty-state">18. Good Empty State</a></h1>
+<pre><code class="language-text">No contacts yet
+Add someone by QR, nearby, or invite code.
+[Add Contact]
+</code></pre>
+<hr />
+<h1 id="19-bad-empty-state"><a class="header" href="#19-bad-empty-state">19. Bad Empty State</a></h1>
+<pre><code class="language-text">Nothing here
+</code></pre>
+<hr />
+<h1 id="20-search-empty-state"><a class="header" href="#20-search-empty-state">20. Search Empty State</a></h1>
+<p>Differentiate:</p>
+<pre><code class="language-text">No results
+</code></pre>
+<p>from:</p>
+<pre><code class="language-text">Search index still building
+</code></pre>
+<hr />
+<h1 id="21-inbox-empty-state"><a class="header" href="#21-inbox-empty-state">21. Inbox Empty State</a></h1>
+<p>Could be:</p>
+<pre><code class="language-text">No conversations yet
+</code></pre>
+<p>not:</p>
+<pre><code class="language-text">No messages found
+</code></pre>
+<hr />
+<h1 id="22-filtered-empty-state"><a class="header" href="#22-filtered-empty-state">22. Filtered Empty State</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">No unread conversations
+</code></pre>
+<p>with:</p>
+<pre><code class="language-text">Clear filter
+</code></pre>
+<hr />
+<h1 id="23-offline-state"><a class="header" href="#23-offline-state">23. Offline State</a></h1>
+<p>Offline is a connectivity condition, not global product failure.</p>
+<hr />
+<h1 id="24-offline-modes"><a class="header" href="#24-offline-modes">24. Offline Modes</a></h1>
+<p>Potential:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum OfflineModeView {
+    InternetUnavailable,
+    LocalNetworkOnly,
+    NearbyOnly,
+    DtnOnly,
+    FullyDisconnected,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="25-internet-unavailable"><a class="header" href="#25-internet-unavailable">25. Internet Unavailable</a></h1>
+<p>If relay/LAN/nearby remains:</p>
+<pre><code class="language-text">No Internet
+Local communication may still work
+</code></pre>
+<hr />
+<h1 id="26-local-network-only"><a class="header" href="#26-local-network-only">26. Local Network Only</a></h1>
+<p>Show:</p>
+<pre><code class="language-text">Connected locally
+Internet services unavailable
+</code></pre>
+<hr />
+<h1 id="27-nearby-only"><a class="header" href="#27-nearby-only">27. Nearby Only</a></h1>
+<p>Show:</p>
+<pre><code class="language-text">Nearby messaging available
+</code></pre>
+<hr />
+<h1 id="28-dtn-only"><a class="header" href="#28-dtn-only">28. DTN Only</a></h1>
+<p>Show:</p>
+<pre><code class="language-text">Messages will be stored and forwarded when a route appears
+</code></pre>
+<p>only if true.</p>
+<hr />
+<h1 id="29-fully-disconnected"><a class="header" href="#29-fully-disconnected">29. Fully Disconnected</a></h1>
+<p>Show:</p>
+<pre><code class="language-text">No connection right now
+Messages will remain queued
+</code></pre>
+<hr />
+<h1 id="30-offline-banner"><a class="header" href="#30-offline-banner">30. Offline Banner</a></h1>
+<p>Should be compact and non-blocking.</p>
+<hr />
+<h1 id="31-offline-banner-content"><a class="header" href="#31-offline-banner-content">31. Offline Banner Content</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">No Internet — local messaging is still available
+</code></pre>
+<hr />
+<h1 id="32-do-not-spam-offline-errors"><a class="header" href="#32-do-not-spam-offline-errors">32. Do Not Spam Offline Errors</a></h1>
+<p>One persistent state is better than per-action error popups.</p>
+<hr />
+<h1 id="33-queued-message-ux"><a class="header" href="#33-queued-message-ux">33. Queued Message UX</a></h1>
+<p>User sends offline:</p>
+<pre><code class="language-text">message appears immediately
+Queued
+</code></pre>
+<hr />
+<h1 id="34-offline-success-semantics"><a class="header" href="#34-offline-success-semantics">34. Offline Success Semantics</a></h1>
+<p>The action can succeed locally even if network delivery waits.</p>
+<hr />
+<h1 id="35-degraded-state"><a class="header" href="#35-degraded-state">35. Degraded State</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">relay only
+background restricted
+low storage
+search stale
+plugin disabled
+camera unavailable
+call audio-only fallback
+</code></pre>
+<hr />
+<h1 id="36-degradation-model"><a class="header" href="#36-degradation-model">36. Degradation Model</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct DegradedStateView {
+    pub area: DegradedArea,
+    pub reason: DegradedReason,
+    pub impact: String,
+    pub actions: Vec&lt;RecoveryActionView&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="37-degraded-area"><a class="header" href="#37-degraded-area">37. Degraded Area</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum DegradedArea {
+    Network,
+    Messaging,
+    Calls,
+    Files,
+    Search,
+    Background,
+    Storage,
+    Security,
+    Plugins,
+    Backup,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="38-degraded-reason"><a class="header" href="#38-degraded-reason">38. Degraded Reason</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">RelayOnly
+StorageLow
+IndexStale
+PermissionDenied
+BackgroundRestricted
+PluginUnavailable
+</code></pre>
+<hr />
+<h1 id="39-impact-must-be-clear"><a class="header" href="#39-impact-must-be-clear">39. Impact Must Be Clear</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">Messages still work, but file transfers may be slower.
+</code></pre>
+<hr />
+<h1 id="40-error-taxonomy"><a class="header" href="#40-error-taxonomy">40. Error Taxonomy</a></h1>
+<p>Errors should be typed.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum UiErrorKind {
+    Validation,
+    Permission,
+    Connectivity,
+    Timeout,
+    NotFound,
+    Conflict,
+    Storage,
+    Security,
+    Compatibility,
+    RateLimited,
+    Cancelled,
+    Internal,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="41-recoverability"><a class="header" href="#41-recoverability">41. Recoverability</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum ErrorRecoverability {
+    Retryable,
+    ActionRequired,
+    Terminal,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="42-data-safety"><a class="header" href="#42-data-safety">42. Data Safety</a></h1>
+<p>Critical dimension.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum DataSafetyState {
+    Safe,
+    Pending,
+    AtRisk,
+    Unknown,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="43-error-view"><a class="header" href="#43-error-view">43. Error View</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct ErrorStateView {
+    pub kind: UiErrorKind,
+    pub title: String,
+    pub explanation: String,
+    pub recoverability: ErrorRecoverability,
+    pub data_safety: DataSafetyState,
+    pub actions: Vec&lt;RecoveryActionView&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="44-error-copy-should-answer"><a class="header" href="#44-error-copy-should-answer">44. Error Copy Should Answer</a></h1>
+<pre><code class="language-text">What failed?
+Is my data safe?
+What can I do?
+</code></pre>
+<hr />
+<h1 id="45-example--message-send-failed"><a class="header" href="#45-example--message-send-failed">45. Example — Message Send Failed</a></h1>
+<pre><code class="language-text">Message couldn't be sent
+Your draft is safe.
+[Retry]
+</code></pre>
+<hr />
+<h1 id="46-example--backup-failed"><a class="header" href="#46-example--backup-failed">46. Example — Backup Failed</a></h1>
+<pre><code class="language-text">Backup failed
+Your previous verified backup is unchanged.
+[Retry]
+</code></pre>
+<hr />
+<h1 id="47-example--restore-failed"><a class="header" href="#47-example--restore-failed">47. Example — Restore Failed</a></h1>
+<pre><code class="language-text">Restore could not be completed
+Your current data was not changed.
+</code></pre>
+<p>if transaction rollback succeeded.</p>
+<hr />
+<h1 id="48-internal-error"><a class="header" href="#48-internal-error">48. Internal Error</a></h1>
+<p>Normal users do not need stack traces.</p>
+<p>Show:</p>
+<pre><code class="language-text">Something failed unexpectedly
+Your data is safe
+Retry
+Export Diagnostics
+</code></pre>
+<p>where appropriate.</p>
+<hr />
+<h1 id="49-inline-vs-banner-vs-blocking"><a class="header" href="#49-inline-vs-banner-vs-blocking">49. Inline vs Banner vs Blocking</a></h1>
+<p>Use different surfaces.</p>
+<hr />
+<h1 id="50-inline-error"><a class="header" href="#50-inline-error">50. Inline Error</a></h1>
+<p>Use for local component/input issue.</p>
+<p>Examples:</p>
+<pre><code class="language-text">invalid invite code
+attachment too large
+wrong recovery key
+</code></pre>
+<hr />
+<h1 id="51-banner"><a class="header" href="#51-banner">51. Banner</a></h1>
+<p>Use for screen-level persistent degradation.</p>
+<p>Examples:</p>
+<pre><code class="language-text">offline
+background restricted
+search index stale
+</code></pre>
+<hr />
+<h1 id="52-snackbartoast"><a class="header" href="#52-snackbartoast">52. Snackbar/Toast</a></h1>
+<p>Use for short transient feedback.</p>
+<p>Examples:</p>
+<pre><code class="language-text">Copied
+Archived
+Retry started
+</code></pre>
+<hr />
+<h1 id="53-dialog"><a class="header" href="#53-dialog">53. Dialog</a></h1>
+<p>Use when user decision required.</p>
+<p>Examples:</p>
+<pre><code class="language-text">storage full during restore
+device revoke confirmation
+</code></pre>
+<hr />
+<h1 id="54-full-screen-blocking-error"><a class="header" href="#54-full-screen-blocking-error">54. Full-Screen Blocking Error</a></h1>
+<p>Reserved for:</p>
+<pre><code class="language-text">account revoked
+critical storage corruption
+unsupported app state
+security lockout
+</code></pre>
+<hr />
+<h1 id="55-error-surface-escalation"><a class="header" href="#55-error-surface-escalation">55. Error Surface Escalation</a></h1>
+<p>Start with least disruptive surface compatible with severity.</p>
+<hr />
+<h1 id="56-retry-architecture"><a class="header" href="#56-retry-architecture">56. Retry Architecture</a></h1>
+<p>Retry must be idempotent where possible.</p>
+<hr />
+<h1 id="57-retry-action"><a class="header" href="#57-retry-action">57. Retry Action</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum RecoveryActionView {
+    Retry,
+    Refresh,
+    Reconnect,
+    OpenSettings,
+    FreeStorage,
+    RebuildSearch,
+    ChooseAnotherDestination,
+    Reauthenticate,
+    UpdateApp,
+    ExportDiagnostics,
+    ContactSupport,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="58-retry-button"><a class="header" href="#58-retry-button">58. Retry Button</a></h1>
+<p>Do not create duplicate messages/transfers/jobs.</p>
+<hr />
+<h1 id="59-automatic-retry"><a class="header" href="#59-automatic-retry">59. Automatic Retry</a></h1>
+<p>Background retry can continue silently for:</p>
+<pre><code class="language-text">message delivery
+sync
+relay connection
+transfer resume
+</code></pre>
+<hr />
+<h1 id="60-manual-retry"><a class="header" href="#60-manual-retry">60. Manual Retry</a></h1>
+<p>Expose when user action adds value.</p>
+<hr />
+<h1 id="61-backoff"><a class="header" href="#61-backoff">61. Backoff</a></h1>
+<p>Do not show technical backoff values normally.</p>
+<hr />
+<h1 id="62-retry-countdown"><a class="header" href="#62-retry-countdown">62. Retry Countdown</a></h1>
+<p>If rate-limited:</p>
+<pre><code class="language-text">Try again in 30 seconds
+</code></pre>
+<p>if reliable.</p>
+<hr />
+<h1 id="63-rate-limit"><a class="header" href="#63-rate-limit">63. Rate Limit</a></h1>
+<p>Do not repeatedly enable a button known to fail.</p>
+<hr />
+<h1 id="64-cancelled-is-not-error"><a class="header" href="#64-cancelled-is-not-error">64. Cancelled Is Not Error</a></h1>
+<p>User cancellation:</p>
+<pre><code class="language-text">Cancelled
+</code></pre>
+<p>should not show failure styling unless partial risk exists.</p>
+<hr />
+<h1 id="65-timeout"><a class="header" href="#65-timeout">65. Timeout</a></h1>
+<p>Explain what timed out.</p>
+<p>Example:</p>
+<pre><code class="language-text">Could not reach this device
+Try again
+</code></pre>
+<hr />
+<h1 id="66-network-timeout-with-fallback"><a class="header" href="#66-network-timeout-with-fallback">66. Network Timeout With Fallback</a></h1>
+<p>If relay fallback exists:</p>
+<pre><code class="language-text">Direct connection failed
+Using relay instead
+</code></pre>
+<p>degraded, not failed.</p>
+<hr />
+<h1 id="67-partial-data"><a class="header" href="#67-partial-data">67. Partial Data</a></h1>
+<p>Local-first systems may have incomplete history.</p>
+<hr />
+<h1 id="68-partial-data-state"><a class="header" href="#68-partial-data-state">68. Partial Data State</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">Recent messages available
+Older history is still syncing
+</code></pre>
+<hr />
+<h1 id="69-partial-search"><a class="header" href="#69-partial-search">69. Partial Search</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">Search results may be incomplete while history syncs
+</code></pre>
+<hr />
+<h1 id="70-partial-file-availability"><a class="header" href="#70-partial-file-availability">70. Partial File Availability</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">File metadata available
+Content not downloaded
+</code></pre>
+<hr />
+<h1 id="71-stale-data"><a class="header" href="#71-stale-data">71. Stale Data</a></h1>
+<p>Some state can be usable but old.</p>
+<hr />
+<h1 id="72-stale-presence"><a class="header" href="#72-stale-presence">72. Stale Presence</a></h1>
+<p>Use:</p>
+<pre><code class="language-text">Last seen recently
+</code></pre>
+<p>not falsely current.</p>
+<hr />
+<h1 id="73-stale-search-index"><a class="header" href="#73-stale-search-index">73. Stale Search Index</a></h1>
+<p>Show:</p>
+<pre><code class="language-text">Some recent content may be missing from search
+</code></pre>
+<hr />
+<h1 id="74-stale-device-list"><a class="header" href="#74-stale-device-list">74. Stale Device List</a></h1>
+<p>High-risk security state should refresh before destructive action.</p>
+<hr />
+<h1 id="75-stale-settings"><a class="header" href="#75-stale-settings">75. Stale Settings</a></h1>
+<p>Rust revalidates before commit.</p>
+<hr />
+<h1 id="76-stale-restore-plan"><a class="header" href="#76-stale-restore-plan">76. Stale Restore Plan</a></h1>
+<p>Show:</p>
+<pre><code class="language-text">This restore plan is no longer current
+Review again
+</code></pre>
+<hr />
+<h1 id="77-permission-failure"><a class="header" href="#77-permission-failure">77. Permission Failure</a></h1>
+<p>Must explain:</p>
+<pre><code class="language-text">what permission enables
+what still works
+</code></pre>
+<hr />
+<h1 id="78-camera-denied"><a class="header" href="#78-camera-denied">78. Camera Denied</a></h1>
+<pre><code class="language-text">Camera access is off
+You can enter the code manually.
+</code></pre>
+<hr />
+<h1 id="79-microphone-denied"><a class="header" href="#79-microphone-denied">79. Microphone Denied</a></h1>
+<pre><code class="language-text">Microphone access is required for voice notes
+Text messaging still works.
+</code></pre>
+<hr />
+<h1 id="80-notification-denied"><a class="header" href="#80-notification-denied">80. Notification Denied</a></h1>
+<pre><code class="language-text">You may miss message and call alerts in the background.
+</code></pre>
+<hr />
+<h1 id="81-nearby-denied"><a class="header" href="#81-nearby-denied">81. Nearby Denied</a></h1>
+<pre><code class="language-text">Nearby discovery is unavailable
+QR/manual code still work.
+</code></pre>
+<hr />
+<h1 id="82-location-denied-in-sos"><a class="header" href="#82-location-denied-in-sos">82. Location Denied in SOS</a></h1>
+<pre><code class="language-text">SOS will be sent without location.
+</code></pre>
+<hr />
+<h1 id="83-permission-recovery"><a class="header" href="#83-permission-recovery">83. Permission Recovery</a></h1>
+<p>Offer:</p>
+<pre><code class="language-text">Allow
+Open Settings
+Use Alternative
+</code></pre>
+<hr />
+<h1 id="84-storage-pressure"><a class="header" href="#84-storage-pressure">84. Storage Pressure</a></h1>
+<p>Important degraded state.</p>
+<hr />
+<h1 id="85-storage-levels"><a class="header" href="#85-storage-levels">85. Storage Levels</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum StoragePressureState {
+    Normal,
+    Low,
+    Critical,
+    Full,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="86-low-storage"><a class="header" href="#86-low-storage">86. Low Storage</a></h1>
+<pre><code class="language-text">Storage is running low
+Large downloads may be paused.
+</code></pre>
+<hr />
+<h1 id="87-critical-storage"><a class="header" href="#87-critical-storage">87. Critical Storage</a></h1>
+<pre><code class="language-text">Storage is critically low
+Backups/transfers may fail.
+</code></pre>
+<hr />
+<h1 id="88-storage-full"><a class="header" href="#88-storage-full">88. Storage Full</a></h1>
+<p>Block operations that cannot safely continue.</p>
+<hr />
+<h1 id="89-storage-recovery"><a class="header" href="#89-storage-recovery">89. Storage Recovery</a></h1>
+<p>Offer:</p>
+<pre><code class="language-text">Manage Storage
+Clear Cache
+Clear Partial Transfers
+Choose Another Destination
+</code></pre>
+<hr />
+<h1 id="90-do-not-auto-delete-authoritative-data"><a class="header" href="#90-do-not-auto-delete-authoritative-data">90. Do Not Auto-Delete Authoritative Data</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="91-search-rebuild-state"><a class="header" href="#91-search-rebuild-state">91. Search Rebuild State</a></h1>
+<pre><code class="language-text">Search is rebuilding
+Messaging remains available.
+</code></pre>
+<hr />
+<h1 id="92-search-failure"><a class="header" href="#92-search-failure">92. Search Failure</a></h1>
+<p>If index corrupt:</p>
+<pre><code class="language-text">Search unavailable
+Rebuild Index
+</code></pre>
+<hr />
+<h1 id="93-plugin-failure"><a class="header" href="#93-plugin-failure">93. Plugin Failure</a></h1>
+<p>Plugin-specific.</p>
+<hr />
+<h1 id="94-plugin-crashed"><a class="header" href="#94-plugin-crashed">94. Plugin Crashed</a></h1>
+<pre><code class="language-text">Translator Plugin stopped unexpectedly
+Core messaging is unaffected.
+</code></pre>
+<hr />
+<h1 id="95-plugin-quarantined"><a class="header" href="#95-plugin-quarantined">95. Plugin Quarantined</a></h1>
+<pre><code class="language-text">Plugin disabled for security reasons
+</code></pre>
+<hr />
+<h1 id="96-plugin-extension-missing"><a class="header" href="#96-plugin-extension-missing">96. Plugin Extension Missing</a></h1>
+<p>Core UI remains usable.</p>
+<hr />
+<h1 id="97-background-delivery-degraded"><a class="header" href="#97-background-delivery-degraded">97. Background Delivery Degraded</a></h1>
+<p>Android example:</p>
+<pre><code class="language-text">Background delivery may be delayed
+Battery restrictions are enabled.
+</code></pre>
+<hr />
+<h1 id="98-foreground-still-works"><a class="header" href="#98-foreground-still-works">98. Foreground Still Works</a></h1>
+<p>Explain:</p>
+<pre><code class="language-text">Messages will sync when the app is open.
+</code></pre>
+<p>if true.</p>
+<hr />
+<h1 id="99-daemon-stopped-desktop"><a class="header" href="#99-daemon-stopped-desktop">99. Daemon Stopped Desktop</a></h1>
+<pre><code class="language-text">Background service is stopped
+Notifications and background delivery are unavailable.
+</code></pre>
+<hr />
+<h1 id="100-restart-daemon"><a class="header" href="#100-restart-daemon">100. Restart Daemon</a></h1>
+<p>Safe recovery action.</p>
+<hr />
+<h1 id="101-call-degradation"><a class="header" href="#101-call-degradation">101. Call Degradation</a></h1>
+<p>Calls often degrade gradually.</p>
+<hr />
+<h1 id="102-call-states"><a class="header" href="#102-call-states">102. Call States</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">Video quality reduced
+Audio only
+Reconnecting
+Relay connection
+Camera unavailable
+</code></pre>
+<hr />
+<h1 id="103-call-reconnecting"><a class="header" href="#103-call-reconnecting">103. Call Reconnecting</a></h1>
+<p>Show:</p>
+<pre><code class="language-text">Reconnecting…
+</code></pre>
+<p>while preserving same CallId.</p>
+<hr />
+<h1 id="104-call-failure"><a class="header" href="#104-call-failure">104. Call Failure</a></h1>
+<p>After retry window:</p>
+<pre><code class="language-text">Call ended because connection was lost
+</code></pre>
+<hr />
+<h1 id="105-camera-failure-during-call"><a class="header" href="#105-camera-failure-during-call">105. Camera Failure During Call</a></h1>
+<pre><code class="language-text">Camera unavailable
+Audio call continues.
+</code></pre>
+<hr />
+<h1 id="106-microphone-failure"><a class="header" href="#106-microphone-failure">106. Microphone Failure</a></h1>
+<p>Critical for call.</p>
+<p>Show actionable:</p>
+<pre><code class="language-text">Microphone unavailable
+Check permission/device
+</code></pre>
+<hr />
+<h1 id="107-file-transfer-degradation"><a class="header" href="#107-file-transfer-degradation">107. File Transfer Degradation</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">Waiting for sender
+Paused on mobile data
+Waiting for Wi-Fi
+Storage full
+Verification failed
+</code></pre>
+<hr />
+<h1 id="108-waiting-is-not-failure"><a class="header" href="#108-waiting-is-not-failure">108. Waiting Is Not Failure</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="109-transfer-verification-failure"><a class="header" href="#109-transfer-verification-failure">109. Transfer Verification Failure</a></h1>
+<p>Strong:</p>
+<pre><code class="language-text">File could not be verified
+It was not opened or marked complete.
+</code></pre>
+<hr />
+<h1 id="110-backup-degradation"><a class="header" href="#110-backup-degradation">110. Backup Degradation</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">destination unavailable
+previous backup still safe
+backup stale
+verification pending
+</code></pre>
+<hr />
+<h1 id="111-restore-blocking-failure"><a class="header" href="#111-restore-blocking-failure">111. Restore Blocking Failure</a></h1>
+<p>If compatibility/security fails:</p>
+<pre><code class="language-text">restore blocked
+</code></pre>
+<p>not degraded.</p>
+<hr />
+<h1 id="112-emergency-degraded-state"><a class="header" href="#112-emergency-degraded-state">112. Emergency Degraded State</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">No Internet — nearby relay available
+No route right now — SOS stored
+Location unavailable
+</code></pre>
+<hr />
+<h1 id="113-emergency-error-honesty"><a class="header" href="#113-emergency-error-honesty">113. Emergency Error Honesty</a></h1>
+<p>Never show:</p>
+<pre><code class="language-text">SOS failed
+</code></pre>
+<p>if it is safely stored and still eligible for relay.</p>
+<hr />
+<h1 id="114-security-failure"><a class="header" href="#114-security-failure">114. Security Failure</a></h1>
+<p>Security errors should fail closed.</p>
+<hr />
+<h1 id="115-verification-mismatch"><a class="header" href="#115-verification-mismatch">115. Verification Mismatch</a></h1>
+<pre><code class="language-text">Codes do not match
+Do not continue.
+</code></pre>
+<hr />
+<h1 id="116-identity-changed"><a class="header" href="#116-identity-changed">116. Identity Changed</a></h1>
+<p>Persistent warning until reviewed.</p>
+<hr />
+<h1 id="117-device-revoked"><a class="header" href="#117-device-revoked">117. Device Revoked</a></h1>
+<p>Blocking state:</p>
+<pre><code class="language-text">This device no longer has access.
+</code></pre>
+<hr />
+<h1 id="118-recovery-invalid"><a class="header" href="#118-recovery-invalid">118. Recovery Invalid</a></h1>
+<p>Critical.</p>
+<hr />
+<h1 id="119-error-severity"><a class="header" href="#119-error-severity">119. Error Severity</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum UiErrorSeverity {
+    Info,
+    Warning,
+    Error,
+    Critical,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="120-severity-does-not-determine-surface-alone"><a class="header" href="#120-severity-does-not-determine-surface-alone">120. Severity Does Not Determine Surface Alone</a></h1>
+<p>A critical background security issue may need banner/notification/full screen depending context.</p>
+<hr />
+<h1 id="121-state-persistence"><a class="header" href="#121-state-persistence">121. State Persistence</a></h1>
+<p>Errors must survive restart if underlying issue persists.</p>
+<hr />
+<h1 id="122-transient-errors"><a class="header" href="#122-transient-errors">122. Transient Errors</a></h1>
+<p>Do not persist forever.</p>
+<p>Example:</p>
+<pre><code class="language-text">temporary relay timeout
+</code></pre>
+<hr />
+<h1 id="123-durable-errors"><a class="header" href="#123-durable-errors">123. Durable Errors</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">security warning
+backup failed
+device revoked
+storage corruption
+</code></pre>
+<p>may persist.</p>
+<hr />
+<h1 id="124-error-identity"><a class="header" href="#124-error-identity">124. Error Identity</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct UiIssueId(pub Uuid);
+<span class="boring">}</span></code></pre></pre>
+<p>Useful for deduplication.</p>
+<hr />
+<h1 id="125-duplicate-errors"><a class="header" href="#125-duplicate-errors">125. Duplicate Errors</a></h1>
+<p>Do not show repeated identical banners/snackbars.</p>
+<hr />
+<h1 id="126-error-coalescing"><a class="header" href="#126-error-coalescing">126. Error Coalescing</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">10 failed message retries
+</code></pre>
+<p>can become:</p>
+<pre><code class="language-text">3 messages need attention
+</code></pre>
+<hr />
+<h1 id="127-burst-failures"><a class="header" href="#127-burst-failures">127. Burst Failures</a></h1>
+<p>Plugin/network storms should not create notification storm.</p>
+<hr />
+<h1 id="128-recovery-progress"><a class="header" href="#128-recovery-progress">128. Recovery Progress</a></h1>
+<p>After user acts:</p>
+<pre><code class="language-text">Reconnecting…
+Rebuilding…
+Retrying…
+</code></pre>
+<hr />
+<h1 id="129-recovery-success"><a class="header" href="#129-recovery-success">129. Recovery Success</a></h1>
+<p>Use concise confirmation:</p>
+<pre><code class="language-text">Connected
+Search rebuilt
+Plugin restarted
+</code></pre>
+<hr />
+<h1 id="130-recovery-failure"><a class="header" href="#130-recovery-failure">130. Recovery Failure</a></h1>
+<p>Keep prior issue visible with updated reason.</p>
+<hr />
+<h1 id="131-loading--error-transition"><a class="header" href="#131-loading--error-transition">131. Loading + Error Transition</a></h1>
+<p>A component should not oscillate:</p>
+<pre><code class="language-text">loading → error → loading → error
+</code></pre>
+<p>every retry tick.</p>
+<p>Use stable retry state.</p>
+<hr />
+<h1 id="132-error-hysteresis"><a class="header" href="#132-error-hysteresis">132. Error Hysteresis</a></h1>
+<p>For flaky connectivity, avoid banner flicker.</p>
+<hr />
+<h1 id="133-offline-hysteresis"><a class="header" href="#133-offline-hysteresis">133. Offline Hysteresis</a></h1>
+<p>Short network blip may not immediately show full offline banner.</p>
+<hr />
+<h1 id="134-foreground-vs-background"><a class="header" href="#134-foreground-vs-background">134. Foreground vs Background</a></h1>
+<p>Foreground can show more detail.</p>
+<p>Background may rely on Part 13 notifications.</p>
+<hr />
+<h1 id="135-notification-failure"><a class="header" href="#135-notification-failure">135. Notification Failure</a></h1>
+<p>If notification permission unavailable:</p>
+<pre><code class="language-text">in-app warning
+</code></pre>
+<p>not repeated system popups.</p>
+<hr />
+<h1 id="136-startup-error-architecture"><a class="header" href="#136-startup-error-architecture">136. Startup Error Architecture</a></h1>
+<p>Startup phases:</p>
+<pre><code class="language-text">Loading local state
+Starting runtime
+Opening database
+Restoring session
+</code></pre>
+<hr />
+<h1 id="137-startup-local-data-failure"><a class="header" href="#137-startup-local-data-failure">137. Startup Local Data Failure</a></h1>
+<p>If DB temporarily locked:</p>
+<pre><code class="language-text">Retrying local data…
+</code></pre>
+<hr />
+<h1 id="138-startup-corruption"><a class="header" href="#138-startup-corruption">138. Startup Corruption</a></h1>
+<p>Blocking screen with safe options:</p>
+<pre><code class="language-text">Run Repair
+Restore Backup
+Export Diagnostics
+</code></pre>
+<p>if supported.</p>
+<hr />
+<h1 id="139-startup-network-failure"><a class="header" href="#139-startup-network-failure">139. Startup Network Failure</a></h1>
+<p>Should not block local-first app startup.</p>
+<hr />
+<h1 id="140-startup-plugin-failure"><a class="header" href="#140-startup-plugin-failure">140. Startup Plugin Failure</a></h1>
+<p>Start without plugin if possible.</p>
+<hr />
+<h1 id="141-safe-mode"><a class="header" href="#141-safe-mode">141. Safe Mode</a></h1>
+<p>From Part 19.</p>
+<hr />
+<h1 id="142-crash-recovery"><a class="header" href="#142-crash-recovery">142. Crash Recovery</a></h1>
+<p>After crash:</p>
+<pre><code class="language-text">restore durable state
+preserve drafts
+resume jobs where safe
+</code></pre>
+<hr />
+<h1 id="143-crash-message"><a class="header" href="#143-crash-message">143. Crash Message</a></h1>
+<p>If needed:</p>
+<pre><code class="language-text">The app restarted unexpectedly
+Your messages are safe.
+</code></pre>
+<p>only if known.</p>
+<hr />
+<h1 id="144-unknown-data-safety"><a class="header" href="#144-unknown-data-safety">144. Unknown Data Safety</a></h1>
+<p>If uncertain:</p>
+<pre><code class="language-text">We could not confirm whether the last operation completed.
+Review status before retrying.
+</code></pre>
+<hr />
+<h1 id="145-optimistic-ui-failure"><a class="header" href="#145-optimistic-ui-failure">145. Optimistic UI Failure</a></h1>
+<p>Example message send:</p>
+<pre><code class="language-text">pending row remains
+failed state
+retry
+</code></pre>
+<hr />
+<h1 id="146-rollback"><a class="header" href="#146-rollback">146. Rollback</a></h1>
+<p>For reversible settings/action failure:</p>
+<pre><code class="language-text">restore previous state
+</code></pre>
+<hr />
+<h1 id="147-high-risk-action-failure"><a class="header" href="#147-high-risk-action-failure">147. High-Risk Action Failure</a></h1>
+<p>Do not optimistically commit.</p>
+<hr />
+<h1 id="148-error-presentation-api"><a class="header" href="#148-error-presentation-api">148. Error Presentation API</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait FailureStatePresentation {
+    async fn issue(
+        &amp;self,
+        id: UiIssueId,
+    ) -&gt; Result&lt;ErrorStateView, UiError&gt;;
+
+    async fn recover(
+        &amp;self,
+        id: UiIssueId,
+        action: RecoveryActionView,
+    ) -&gt; Result&lt;RecoveryResultView, UiError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="149-global-degradation-api"><a class="header" href="#149-global-degradation-api">149. Global Degradation API</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait DegradationPresentation {
+    async fn current(
+        &amp;self,
+    ) -&gt; Result&lt;Vec&lt;DegradedStateView&gt;, UiError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="150-loading-view"><a class="header" href="#150-loading-view">150. Loading View</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct LoadingStateView {
+    pub phase: LoadingPhase,
+    pub progress: Option&lt;f32&gt;,
+    pub cancellable: bool,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="151-empty-view"><a class="header" href="#151-empty-view">151. Empty View</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct EmptyStateView {
+    pub kind: EmptyStateKind,
+    pub primary_action: Option&lt;EmptyStateAction&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="152-empty-state-kind"><a class="header" href="#152-empty-state-kind">152. Empty State Kind</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum EmptyStateKind {
+    NoConversations,
+    NoContacts,
+    NoFiles,
+    NoSearchResults,
+    NoSecurityEvents,
+    NoPlugins,
+    NoBackups,
+    NoBlockedContacts,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="153-offline-snapshot"><a class="header" href="#153-offline-snapshot">153. Offline Snapshot</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct OfflineStateView {
+    pub mode: OfflineModeView,
+    pub queued_messages: u32,
+    pub local_features_available: Vec&lt;OfflineCapability&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="154-offline-capability"><a class="header" href="#154-offline-capability">154. Offline Capability</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">LANMessaging
+NearbyMessaging
+ReadLocalHistory
+CreateDrafts
+SearchLocal
+ViewFiles
+</code></pre>
+<hr />
+<h1 id="155-ui-event-model"><a class="header" href="#155-ui-event-model">155. UI Event Model</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum FailureUiEvent {
+    IssueAdded(ErrorStateView),
+    IssueUpdated(ErrorStateView),
+    IssueResolved(UiIssueId),
+    DegradationChanged(Vec&lt;DegradedStateView&gt;),
+    OfflineChanged(OfflineStateView),
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="156-android-viewmodel"><a class="header" href="#156-android-viewmodel">156. Android ViewModel</a></h1>
+<p>Owns:</p>
+<pre><code class="language-text">banner visibility
+snackbar queue
+permission-navigation effects
+retry button presentation
+</code></pre>
+<p>Rust owns:</p>
+<pre><code class="language-text">failure semantics
+retryability
+data safety
+recovery action validity
+</code></pre>
+<hr />
+<h1 id="157-dioxus-presenter"><a class="header" href="#157-dioxus-presenter">157. Dioxus Presenter</a></h1>
+<p>Owns:</p>
+<pre><code class="language-text">inline errors
+desktop banners
+dialogs
+focus after recovery
+</code></pre>
+<hr />
+<h1 id="158-do-not-infer-retryability-in-ui"><a class="header" href="#158-do-not-infer-retryability-in-ui">158. Do Not Infer Retryability in UI</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="159-do-not-infer-data-safety-in-ui"><a class="header" href="#159-do-not-infer-data-safety-in-ui">159. Do Not Infer Data Safety in UI</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="160-error-localization"><a class="header" href="#160-error-localization">160. Error Localization</a></h1>
+<p>Rust can expose typed reason.</p>
+<p>UI localizes natural explanation.</p>
+<hr />
+<h1 id="161-error-codes"><a class="header" href="#161-error-codes">161. Error Codes</a></h1>
+<p>Developer diagnostics may expose stable:</p>
+<pre><code class="language-text">E_NET_RELAY_UNAVAILABLE
+</code></pre>
+<p>Normal UI does not.</p>
+<hr />
+<h1 id="162-error-correlation-id"><a class="header" href="#162-error-correlation-id">162. Error Correlation ID</a></h1>
+<p>Support may use:</p>
+<pre><code class="language-text">Issue ID
+</code></pre>
+<p>without private content.</p>
+<hr />
+<h1 id="163-accessibility--loading"><a class="header" href="#163-accessibility--loading">163. Accessibility — Loading</a></h1>
+<p>Screen reader announces:</p>
+<pre><code class="language-text">Loading conversations
+</code></pre>
+<p>once.</p>
+<hr />
+<h1 id="164-loading-progress-accessibility"><a class="header" href="#164-loading-progress-accessibility">164. Loading Progress Accessibility</a></h1>
+<p>Do not announce every percent.</p>
+<hr />
+<h1 id="165-accessibility--empty"><a class="header" href="#165-accessibility--empty">165. Accessibility — Empty</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">No contacts yet. Add a contact.
+</code></pre>
+<hr />
+<h1 id="166-accessibility--error"><a class="header" href="#166-accessibility--error">166. Accessibility — Error</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">Backup failed. Previous backup is safe. Retry button.
+</code></pre>
+<hr />
+<h1 id="167-accessibility--offline"><a class="header" href="#167-accessibility--offline">167. Accessibility — Offline</a></h1>
+<pre><code class="language-text">No Internet. Nearby messaging is available.
+</code></pre>
+<hr />
+<h1 id="168-focus-on-error"><a class="header" href="#168-focus-on-error">168. Focus on Error</a></h1>
+<p>Do not steal focus for ordinary inline/banner errors.</p>
+<hr />
+<h1 id="169-blocking-error"><a class="header" href="#169-blocking-error">169. Blocking Error</a></h1>
+<p>Focus moves to heading/actions.</p>
+<hr />
+<h1 id="170-snackbar-accessibility"><a class="header" href="#170-snackbar-accessibility">170. Snackbar Accessibility</a></h1>
+<p>Must remain long enough and expose action.</p>
+<hr />
+<h1 id="171-color-independence"><a class="header" href="#171-color-independence">171. Color Independence</a></h1>
+<p>All failure states use:</p>
+<pre><code class="language-text">text
+icon
+semantic label
+</code></pre>
+<p>not red/yellow alone.</p>
+<hr />
+<h1 id="172-large-text"><a class="header" href="#172-large-text">172. Large Text</a></h1>
+<p>Error explanations wrap.</p>
+<hr />
+<h1 id="173-rtl"><a class="header" href="#173-rtl">173. RTL</a></h1>
+<p>Localized error text mirrors.</p>
+<p>Technical codes preserve direction.</p>
+<hr />
+<h1 id="174-reduced-motion"><a class="header" href="#174-reduced-motion">174. Reduced Motion</a></h1>
+<p>Loading/retry animations can become static.</p>
+<hr />
+<h1 id="175-cognitive-load"><a class="header" href="#175-cognitive-load">175. Cognitive Load</a></h1>
+<p>Show one primary recovery action.</p>
+<p>Secondary actions beneath.</p>
+<hr />
+<h1 id="176-error-message-style"><a class="header" href="#176-error-message-style">176. Error Message Style</a></h1>
+<p>Avoid:</p>
+<pre><code class="language-text">Unknown error
+Invalid state
+Operation failed
+</code></pre>
+<p>when more useful semantic reason exists.</p>
+<hr />
+<h1 id="177-avoid-blame"><a class="header" href="#177-avoid-blame">177. Avoid Blame</a></h1>
+<p>Do not say:</p>
+<pre><code class="language-text">You failed to…
+</code></pre>
+<p>Prefer:</p>
+<pre><code class="language-text">Camera access is off
+</code></pre>
+<hr />
+<h1 id="178-offline-wording"><a class="header" href="#178-offline-wording">178. Offline Wording</a></h1>
+<p>Avoid:</p>
+<pre><code class="language-text">You're offline
+</code></pre>
+<p>if local/mesh routes exist.</p>
+<hr />
+<h1 id="179-partial-success-wording"><a class="header" href="#179-partial-success-wording">179. Partial Success Wording</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">Message saved locally and will send when a route is available.
+</code></pre>
+<hr />
+<h1 id="180-safety-wording"><a class="header" href="#180-safety-wording">180. Safety Wording</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">Your draft is safe.
+</code></pre>
+<p>only when Rust confirms.</p>
+<hr />
+<h1 id="181-diagnostics-link"><a class="header" href="#181-diagnostics-link">181. Diagnostics Link</a></h1>
+<p>Persistent/repeated failures may offer:</p>
+<pre><code class="language-text">View Diagnostics
+</code></pre>
+<hr />
+<h1 id="182-support-bundle-link"><a class="header" href="#182-support-bundle-link">182. Support Bundle Link</a></h1>
+<p>For unexplained failures:</p>
+<pre><code class="language-text">Export Diagnostics
+</code></pre>
+<hr />
+<h1 id="183-no-automatic-error-upload"><a class="header" href="#183-no-automatic-error-upload">183. No Automatic Error Upload</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="184-error-telemetry"><a class="header" href="#184-error-telemetry">184. Error Telemetry</a></h1>
+<p>Do not log private payloads.</p>
+<hr />
+<h1 id="185-safe-metrics"><a class="header" href="#185-safe-metrics">185. Safe Metrics</a></h1>
+<p>Possible:</p>
+<pre><code class="language-text">error class
+retry count
+recovery success
+loading latency
+</code></pre>
+<p>without content/identity.</p>
+<hr />
+<h1 id="186-crash-reports"><a class="header" href="#186-crash-reports">186. Crash Reports</a></h1>
+<p>Redacted.</p>
+<hr />
+<h1 id="187-testing-matrix"><a class="header" href="#187-testing-matrix">187. Testing Matrix</a></h1>
+<p>Required:</p>
+<pre><code class="language-text">initial loading
+background refresh
+empty
+filtered empty
+offline Internet-only
+LAN-only
+nearby-only
+fully disconnected
+degraded relay-only
+permission denied
+storage low/full
+search stale/corrupt
+plugin crash
+background restricted
+</code></pre>
+<hr />
+<h1 id="188-messaging-tests"><a class="header" href="#188-messaging-tests">188. Messaging Tests</a></h1>
+<pre><code class="language-text">queued
+sending
+failed
+retry
+duplicate retry
+offline send
+</code></pre>
+<hr />
+<h1 id="189-call-tests"><a class="header" href="#189-call-tests">189. Call Tests</a></h1>
+<pre><code class="language-text">reconnecting
+relay-only
+camera failure
+microphone failure
+network loss
+</code></pre>
+<hr />
+<h1 id="190-file-tests"><a class="header" href="#190-file-tests">190. File Tests</a></h1>
+<pre><code class="language-text">waiting for sender
+Wi-Fi-only pause
+storage full
+verification failure
+</code></pre>
+<hr />
+<h1 id="191-backup-tests"><a class="header" href="#191-backup-tests">191. Backup Tests</a></h1>
+<pre><code class="language-text">destination unavailable
+storage full
+verify fail
+retry
+previous backup safe
+</code></pre>
+<hr />
+<h1 id="192-security-tests"><a class="header" href="#192-security-tests">192. Security Tests</a></h1>
+<pre><code class="language-text">identity mismatch
+device revoked
+recovery invalid
+</code></pre>
+<hr />
+<h1 id="193-android-tests"><a class="header" href="#193-android-tests">193. Android Tests</a></h1>
+<pre><code class="language-text">permission denial
+battery restriction
+process death
+background delivery degraded
+TalkBack
+large text
+</code></pre>
+<hr />
+<h1 id="194-desktop-tests"><a class="header" href="#194-desktop-tests">194. Desktop Tests</a></h1>
+<pre><code class="language-text">daemon stopped
+network loss
+window restore
+keyboard
+safe mode
+</code></pre>
+<hr />
+<h1 id="195-accessibility-tests"><a class="header" href="#195-accessibility-tests">195. Accessibility Tests</a></h1>
+<p>All recovery actions usable via:</p>
+<pre><code class="language-text">TalkBack
+keyboard
+large text
+RTL
+</code></pre>
+<hr />
+<h1 id="196-error-dedup-tests"><a class="header" href="#196-error-dedup-tests">196. Error Dedup Tests</a></h1>
+<p>Repeated same issue shows one persistent state.</p>
+<hr />
+<h1 id="197-hysteresis-tests"><a class="header" href="#197-hysteresis-tests">197. Hysteresis Tests</a></h1>
+<p>Short network flaps do not create banner flicker.</p>
+<hr />
+<h1 id="198-data-safety-tests"><a class="header" href="#198-data-safety-tests">198. Data Safety Tests</a></h1>
+<p>Every destructive/failed operation reports correct:</p>
+<pre><code class="language-text">Safe
+Pending
+AtRisk
+Unknown
+</code></pre>
+<hr />
+<h1 id="199-loading-performance"><a class="header" href="#199-loading-performance">199. Loading Performance</a></h1>
+<p>Local snapshot should render quickly.</p>
+<hr />
+<h1 id="200-error-performance"><a class="header" href="#200-error-performance">200. Error Performance</a></h1>
+<p>Failure rendering must not block core recovery work.</p>
+<hr />
+<h1 id="201-event-flood"><a class="header" href="#201-event-flood">201. Event Flood</a></h1>
+<p>Hundreds of retry updates should be coalesced.</p>
+<hr />
+<h1 id="202-initial-production-scope"><a class="header" href="#202-initial-production-scope">202. Initial Production Scope</a></h1>
+<p>Ship:</p>
+<pre><code class="language-text">typed loading states
+meaningful empty states
+offline/local-only banner
+degraded-state model
+typed error classes
+retryability
+data-safety semantics
+permission failures
+storage pressure
+sync/queue states
+call degradation
+transfer waiting/failure
+backup/search/plugin degradation
+startup/crash recovery states
+accessibility
+</code></pre>
+<p>Defer:</p>
+<pre><code class="language-text">complex predictive remediation
+AI-generated error explanations
+automatic destructive repair
+</code></pre>
+<hr />
+<h1 id="203-definition-of-done"><a class="header" href="#203-definition-of-done">203. Definition of Done</a></h1>
+<p>UI/UX Part 24 is complete when:</p>
+<ul>
+<li>loading, empty, offline, degraded, failed, and cancelled states are distinct</li>
+<li>local-first startup renders usable local data before network sync where possible</li>
+<li>empty states explain what is empty and provide appropriate next action</li>
+<li>no-Internet state does not imply total failure when LAN/nearby/DTN still works</li>
+<li>degraded states clearly explain impact and what continues to work</li>
+<li>errors are typed by category, recoverability, severity, and data-safety state</li>
+<li>retry actions are Rust-authoritative and idempotent</li>
+<li>user cancellation is not styled as failure</li>
+<li>permission failures always provide alternatives where available</li>
+<li>storage pressure never causes silent deletion of authoritative data</li>
+<li>queued/waiting states are not mislabeled as failure</li>
+<li>security failures fail closed</li>
+<li>startup network failure does not block local-first operation</li>
+<li>plugin failure cannot take down core UX</li>
+<li>duplicate errors and network flaps are coalesced/hysteresis-controlled</li>
+<li>accessibility, large text, RTL, reduced motion, and screen-reader semantics are defined</li>
+<li>Rust failure/degradation/offline presentation contracts are specified</li>
+<li>data-safety wording is shown only when confirmed by Rust</li>
+<li>offline/degraded/permission/storage/crash/retry/deduplication tests are included</li>
+</ul>
+<hr />
+<h1 id="204-final-architecture"><a class="header" href="#204-final-architecture">204. Final Architecture</a></h1>
+<pre><code class="language-text">                     RUST PRODUCT STATE
+                              │
+      ┌───────────────────────┼───────────────────────┐
+      │                       │                       │
+   Loading                 Degraded                Failed
+      │                       │                       │
+ Phase/Progress        Impact/What Works      Cause/Recovery
+      │                       │                       │
+      └───────────────────────┼───────────────────────┘
+                              │
+                 Failure-State Presentation
+                    ┌─────────┴─────────┐
+                    │                   │
+                 Dioxus              Compose
+                 Desktop             Android
+</code></pre>
+<p>The key UX sequence is:</p>
+<pre><code class="language-text">What happened?
+→ What still works?
+→ Is my data safe?
+→ What should I do next?
+</code></pre>
+<hr />
+<h1 id="205-final-principle"><a class="header" href="#205-final-principle">205. Final Principle</a></h1>
+<p>Failure states should reduce uncertainty rather than add to it.</p>
+<p>The correct model is:</p>
+<pre><code class="language-text">typed state
++
+clear impact
++
+honest data-safety status
++
+one useful recovery path
++
+local-first continuity
+</code></pre>
+<p>not:</p>
+<pre><code class="language-text">spinner
+→ generic error
+→ retry
+→ generic error
+</code></pre>
+<p>This gives Dioxus desktop and Android Compose resilient behavior that remains understandable even when connectivity, permissions, storage, background execution, plugins, or other subsystems are partially unavailable.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="ui-ux-23-responsive-adaptive-desktop-tablet-foldable-phone-layout-architecture.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="ui-ux-25-onboarding-first-run-permission-education-architecture.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="ui-ux-23-responsive-adaptive-desktop-tablet-foldable-phone-layout-architecture.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="ui-ux-25-onboarding-first-run-permission-education-architecture.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

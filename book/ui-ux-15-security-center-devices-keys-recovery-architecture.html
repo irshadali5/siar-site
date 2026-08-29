@@ -1,0 +1,1889 @@
+<!DOCTYPE HTML>
+<html lang="en" class="navy" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>UI/UX 15 — Security Center, Devices, Keys &amp; Recovery UX - SIAR System Architecture &amp; Technical Wiki</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="Comprehensive system architecture, cryptographic protocols, DTN mesh networking, distributed storage, audio DSP pipelines, and UI/UX design specifications for SIAR.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="theme/custom.css">
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "navy";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('navy')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="Home.html">Architecture Portal & Reading Guide</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part I: Protocol Foundation & Extension Platform</li><li class="chapter-item expanded "><a href="01-protocol-extension-system-architecture.html"><strong aria-hidden="true">1.</strong> 01 — Protocol Extension System Architecture</a></li><li class="chapter-item expanded "><a href="07-capability-negotiation-architecture.html"><strong aria-hidden="true">2.</strong> 07 — Capability Negotiation & Protocol Upgrades</a></li><li class="chapter-item expanded "><a href="21-third-party-protocol-extensions-architecture.html"><strong aria-hidden="true">3.</strong> 21 — Third-Party Protocol Extensions</a></li><li class="chapter-item expanded "><a href="22-wasm-compatible-components-architecture.html"><strong aria-hidden="true">4.</strong> 22 — WebAssembly (WASM) Compatible Components</a></li><li class="chapter-item expanded "><a href="23-external-interoperability-suite-architecture.html"><strong aria-hidden="true">5.</strong> 23 — External Interoperability & Conformance Suite</a></li><li class="chapter-item expanded "><a href="24-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">6.</strong> 24 — Dynamic Plugin & Module Ecosystem</a></li><li class="chapter-item expanded affix "><li class="part-title">Part II: Identity, Trust & Cryptography</li><li class="chapter-item expanded "><a href="02-multi-device-identity-architecture.html"><strong aria-hidden="true">7.</strong> 02 — Multi-Device Identity & Trust Model</a></li><li class="chapter-item expanded "><a href="28-production-security-e2ee-key-management-privacy-architecture.html"><strong aria-hidden="true">8.</strong> 28 — Production Security, E2EE, Key Management & Privacy</a></li><li class="chapter-item expanded affix "><li class="part-title">Part III: Mesh Networking, Transports & Hardware</li><li class="chapter-item expanded "><a href="03-transport-routing-policy-engine-architecture.html"><strong aria-hidden="true">9.</strong> 03 — Transport & Routing Policy Engine</a></li><li class="chapter-item expanded "><a href="11-relay-self-hosted-infrastructure-architecture.html"><strong aria-hidden="true">10.</strong> 11 — Self-Hosted Relay & Coordination Infrastructure</a></li><li class="chapter-item expanded "><a href="12-multipath-networking-architecture.html"><strong aria-hidden="true">11.</strong> 12 — Multipath Networking & Link Aggregation</a></li><li class="chapter-item expanded "><a href="13-battery-aware-scheduling-architecture.html"><strong aria-hidden="true">12.</strong> 13 — Battery-Aware Scheduling & Power Profiles</a></li><li class="chapter-item expanded "><a href="14-proximity-abstraction-architecture.html"><strong aria-hidden="true">13.</strong> 14 — Proximity Abstraction (BLE, Wi-Fi Direct, LoRa)</a></li><li class="chapter-item expanded "><a href="15-qr-nfc-bootstrap-pairing-architecture.html"><strong aria-hidden="true">14.</strong> 15 — Out-of-Band QR & NFC Bootstrap Pairing</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IV: Delay-Tolerant Networking & Emergency Mesh</li><li class="chapter-item expanded "><a href="06-dtn-store-carry-forward-architecture.html"><strong aria-hidden="true">15.</strong> 06 — DTN Store-Carry-Forward & Bundle Forwarding</a></li><li class="chapter-item expanded "><a href="17-emergency-priority-classes-architecture.html"><strong aria-hidden="true">16.</strong> 17 — Emergency Priority Classes & Critical Alert Mesh</a></li><li class="chapter-item expanded affix "><li class="part-title">Part V: Storage, Outbox & Data Lifecycle</li><li class="chapter-item expanded "><a href="04-offline-event-log-architecture.html"><strong aria-hidden="true">17.</strong> 04 — Offline Event Log & Sync Engine</a></li><li class="chapter-item expanded "><a href="05-robust-file-blob-subsystem-architecture.html"><strong aria-hidden="true">18.</strong> 05 — Robust File & Blob Subsystem (Chunking & Resumption)</a></li><li class="chapter-item expanded "><a href="09-crash-recovery-architecture.html"><strong aria-hidden="true">19.</strong> 09 — Crash Recovery & State Integrity</a></li><li class="chapter-item expanded "><a href="32-search-indexing-local-knowledge-privacy-architecture.html"><strong aria-hidden="true">20.</strong> 32 — Search, Indexing & Local Privacy Retrieval</a></li><li class="chapter-item expanded "><a href="33-backup-restore-export-import-archival-portability-architecture.html"><strong aria-hidden="true">21.</strong> 33 — Backup, Restore, Export & Long-Term Archival</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VI: Realtime Media, Calling & Audio DSP</li><li class="chapter-item expanded "><a href="25-android-direct-hardware-surface-zero-copy-media-architecture.html"><strong aria-hidden="true">22.</strong> 25 — Android Direct Surface Zero-Copy Media</a></li><li class="chapter-item expanded "><a href="26-rust-first-audio-dsp-resampling-aec-ns-agc-architecture.html"><strong aria-hidden="true">23.</strong> 26 — Rust-First Audio DSP (AEC, NS, AGC, Resampling)</a></li><li class="chapter-item expanded "><a href="29-realtime-calls-media-session-protocol-architecture.html"><strong aria-hidden="true">24.</strong> 29 — Realtime Calls & Media Session Protocol</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VII: Ephemeral State, Presence & Notifications</li><li class="chapter-item expanded "><a href="30-presence-availability-typing-read-receipts-ephemeral-state-architecture.html"><strong aria-hidden="true">25.</strong> 30 — Presence, Availability, Typing & Read Receipts</a></li><li class="chapter-item expanded "><a href="31-notifications-push-background-delivery-lifecycle-architecture.html"><strong aria-hidden="true">26.</strong> 31 — Notifications, Push Wake & Background Delivery</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VIII: Native Runtimes, Daemons & Embedded Linux</li><li class="chapter-item expanded "><a href="16-daemon-headless-runtime-architecture.html"><strong aria-hidden="true">27.</strong> 16 — Headless Daemon & Background Runtime</a></li><li class="chapter-item expanded "><a href="19-c-abi-ffi-architecture.html"><strong aria-hidden="true">28.</strong> 19 — C-ABI FFI & Native Language Interop</a></li><li class="chapter-item expanded "><a href="20-embedded-linux-node-architecture.html"><strong aria-hidden="true">29.</strong> 20 — Embedded Linux Node & Resource-Constrained Targets</a></li><li class="chapter-item expanded "><a href="27-rust-driven-android-native-build-packaging-automation.html"><strong aria-hidden="true">30.</strong> 27 — Rust-Driven Android Native Build & Packaging Automation</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IX: Reliability, Testing, Fuzzing & Diagnostics</li><li class="chapter-item expanded "><a href="08-resource-limits-backpressure-architecture.html"><strong aria-hidden="true">31.</strong> 08 — Resource Limits, Quotas & Backpressure</a></li><li class="chapter-item expanded "><a href="10-fuzzing-protocol-test-suite-architecture.html"><strong aria-hidden="true">32.</strong> 10 — Fuzzing & Protocol Test Suite</a></li><li class="chapter-item expanded "><a href="18-network-diagnostics-path-visualization-architecture.html"><strong aria-hidden="true">33.</strong> 18 — Network Diagnostics & Path Visualization</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part X: UI/UX Client Architecture (Cross-Platform)</li><li class="chapter-item expanded "><a href="ui-ux-01-product-foundation-cross-platform-interaction-architecture.html"><strong aria-hidden="true">34.</strong> UI/UX 01 — Product UX Foundation & Cross-Platform Interaction</a></li><li class="chapter-item expanded "><a href="ui-ux-02-desktop-dioxus-app-shell-navigation-window-architecture.html"><strong aria-hidden="true">35.</strong> UI/UX 02 — Desktop Dioxus App Shell & Navigation</a></li><li class="chapter-item expanded "><a href="ui-ux-03-android-jetpack-compose-app-shell-navigation-lifecycle-architecture.html"><strong aria-hidden="true">36.</strong> UI/UX 03 — Android Jetpack Compose App Shell & Lifecycle</a></li><li class="chapter-item expanded "><a href="ui-ux-04-conversation-list-inbox-architecture.html"><strong aria-hidden="true">37.</strong> UI/UX 04 — Conversation List & Inbox UX</a></li><li class="chapter-item expanded "><a href="ui-ux-05-conversation-message-timeline-architecture.html"><strong aria-hidden="true">38.</strong> UI/UX 05 — Conversation Message Timeline UX</a></li><li class="chapter-item expanded "><a href="ui-ux-06-message-composer-attachments-voice-notes-drafts-architecture.html"><strong aria-hidden="true">39.</strong> UI/UX 06 — Message Composer, Attachments & Voice Notes</a></li><li class="chapter-item expanded "><a href="ui-ux-07-calls-realtime-media-architecture.html"><strong aria-hidden="true">40.</strong> UI/UX 07 — Calls & Realtime Media UX</a></li><li class="chapter-item expanded "><a href="ui-ux-08-contacts-requests-verification-identity-architecture.html"><strong aria-hidden="true">41.</strong> UI/UX 08 — Contacts, Requests, Verification & Identity</a></li><li class="chapter-item expanded "><a href="ui-ux-09-groups-membership-roles-architecture.html"><strong aria-hidden="true">42.</strong> UI/UX 09 — Groups, Membership & Roles UX</a></li><li class="chapter-item expanded "><a href="ui-ux-10-files-media-gallery-transfer-architecture.html"><strong aria-hidden="true">43.</strong> UI/UX 10 — Files, Media Gallery & Transfer UX</a></li><li class="chapter-item expanded "><a href="ui-ux-11-search-local-knowledge-retrieval-architecture.html"><strong aria-hidden="true">44.</strong> UI/UX 11 — Search & Local Knowledge Retrieval UX</a></li><li class="chapter-item expanded "><a href="ui-ux-12-nearby-qr-nfc-pairing-device-linking-architecture.html"><strong aria-hidden="true">45.</strong> UI/UX 12 — Nearby, QR/NFC Pairing & Device Linking UX</a></li><li class="chapter-item expanded "><a href="ui-ux-13-notifications-background-incoming-call-architecture.html"><strong aria-hidden="true">46.</strong> UI/UX 13 — Notifications, Background & Incoming Call UX</a></li><li class="chapter-item expanded "><a href="ui-ux-14-presence-typing-receipts-status-architecture.html"><strong aria-hidden="true">47.</strong> UI/UX 14 — Presence, Typing, Receipts & Status UX</a></li><li class="chapter-item expanded "><a href="ui-ux-15-security-center-devices-keys-recovery-architecture.html" class="active"><strong aria-hidden="true">48.</strong> UI/UX 15 — Security Center, Devices, Keys & Recovery UX</a></li><li class="chapter-item expanded "><a href="ui-ux-16-backup-restore-export-migration-architecture.html"><strong aria-hidden="true">49.</strong> UI/UX 16 — Backup, Restore, Export & Migration UX</a></li><li class="chapter-item expanded "><a href="ui-ux-17-emergency-sos-offline-mesh-architecture.html"><strong aria-hidden="true">50.</strong> UI/UX 17 — Emergency / SOS / Offline Mesh UX</a></li><li class="chapter-item expanded "><a href="ui-ux-18-settings-privacy-notifications-data-controls-architecture.html"><strong aria-hidden="true">51.</strong> UI/UX 18 — Settings, Privacy, Notifications & Data Controls</a></li><li class="chapter-item expanded "><a href="ui-ux-19-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">52.</strong> UI/UX 19 — Plugin & Module Ecosystem UX</a></li><li class="chapter-item expanded "><a href="ui-ux-20-diagnostics-network-paths-advanced-developer-architecture.html"><strong aria-hidden="true">53.</strong> UI/UX 20 — Diagnostics, Network Paths & Developer UX</a></li><li class="chapter-item expanded "><a href="ui-ux-21-accessibility-inclusive-interaction-architecture.html"><strong aria-hidden="true">54.</strong> UI/UX 21 — Accessibility & Inclusive Interaction</a></li><li class="chapter-item expanded "><a href="ui-ux-22-design-system-tokens-typography-icons-motion-architecture.html"><strong aria-hidden="true">55.</strong> UI/UX 22 — Design System, Tokens, Typography & Motion</a></li><li class="chapter-item expanded "><a href="ui-ux-23-responsive-adaptive-desktop-tablet-foldable-phone-layout-architecture.html"><strong aria-hidden="true">56.</strong> UI/UX 23 — Responsive & Adaptive Layouts (Desktop/Tablet/Foldable/Phone)</a></li><li class="chapter-item expanded "><a href="ui-ux-24-error-loading-empty-offline-degraded-state-architecture.html"><strong aria-hidden="true">57.</strong> UI/UX 24 — Error, Loading, Empty & Degraded-State UX</a></li><li class="chapter-item expanded "><a href="ui-ux-25-onboarding-first-run-permission-education-architecture.html"><strong aria-hidden="true">58.</strong> UI/UX 25 — Onboarding, First Run & Permission Education</a></li><li class="chapter-item expanded "><a href="ui-ux-26-performance-virtualization-large-data-ui-architecture.html"><strong aria-hidden="true">59.</strong> UI/UX 26 — Virtualization & Large-Data UI Performance</a></li><li class="chapter-item expanded "><a href="ui-ux-27-ui-testing-screenshot-interaction-release-quality-gates-architecture.html"><strong aria-hidden="true">60.</strong> UI/UX 27 — UI Testing, Screenshots & Release Quality Gates</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">SIAR System Architecture &amp; Technical Wiki</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar/edit/main/sys-arch/ui-ux-15-security-center-devices-keys-recovery-architecture.md" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="uiux-part-15--security-center-devices-keys--recovery-ux-architecture"><a class="header" href="#uiux-part-15--security-center-devices-keys--recovery-ux-architecture">UI/UX Part 15 — Security Center, Devices, Keys &amp; Recovery UX Architecture</a></h1>
+<h2 id="reusable-p2p-communication-platform"><a class="header" href="#reusable-p2p-communication-platform">Reusable P2P Communication Platform</a></h2>
+<p><strong>Status:</strong> UI/UX architecture specification<br />
+<strong>UI Series:</strong> Part 15<br />
+<strong>Desktop UI:</strong> Dioxus<br />
+<strong>Android UI:</strong> Kotlin + Jetpack Compose<br />
+<strong>Core runtime:</strong> Rust<br />
+<strong>Primary purpose:</strong> define the complete security-center, trusted-device, key-health, recovery, re-authentication, device-revocation, compromise-response, sensitive-screen, recovery-key, backup-security, and security-event UX across desktop and Android.</p>
+<hr />
+<h1 id="1-purpose"><a class="header" href="#1-purpose">1. Purpose</a></h1>
+<p>Security settings must make high-risk operations understandable without forcing users to learn cryptographic internals.</p>
+<p>Users need to answer:</p>
+<pre><code class="language-text">Which devices can access my account?
+Which devices are trusted?
+Was a new device added?
+Can I revoke a lost device?
+Is my identity healthy?
+Do I have a recovery method?
+What happens if I lose all devices?
+Why did a contact identity change?
+Is my backup recoverable?
+What should I do after suspicious activity?
+</code></pre>
+<p>The governing principle is:</p>
+<blockquote>
+<p><strong>The UI explains security consequences; Rust owns cryptographic truth, key state, authorization, revocation, and recovery validation.</strong></p>
+</blockquote>
+<hr />
+<h1 id="2-architectural-position"><a class="header" href="#2-architectural-position">2. Architectural Position</a></h1>
+<pre><code class="language-text">Rust Security / Identity Core
+        │
+        ├── account identity
+        ├── device authorization
+        ├── device revocation
+        ├── key state
+        ├── verification state
+        ├── security events
+        ├── recovery material
+        └── backup/recovery policy
+        │
+        ▼
+Security Presentation Service
+        │
+   ┌────┴─────┐
+   │          │
+Dioxus     Compose
+Desktop    Android
+</code></pre>
+<hr />
+<h1 id="3-main-security-center-sections"><a class="header" href="#3-main-security-center-sections">3. Main Security Center Sections</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">Overview
+Devices
+Identity &amp; Verification
+Recovery
+Backups
+Security Events
+Privacy
+Advanced
+</code></pre>
+<hr />
+<h1 id="4-security-center-overview"><a class="header" href="#4-security-center-overview">4. Security Center Overview</a></h1>
+<p>The overview answers:</p>
+<pre><code class="language-text">Is there anything I need to act on?
+</code></pre>
+<p>Show:</p>
+<pre><code class="language-text">Security status
+Trusted device count
+Recovery status
+Backup status
+Recent important security events
+</code></pre>
+<hr />
+<h1 id="5-security-status"><a class="header" href="#5-security-status">5. Security Status</a></h1>
+<p>Recommended semantic states:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum SecurityHealth {
+    Healthy,
+    Attention,
+    Critical,
+    Unknown,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="6-healthy"><a class="header" href="#6-healthy">6. Healthy</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">recovery configured
+no unresolved identity warnings
+no suspicious device events
+</code></pre>
+<hr />
+<h1 id="7-attention"><a class="header" href="#7-attention">7. Attention</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">no recovery configured
+backup stale
+new device not reviewed
+</code></pre>
+<hr />
+<h1 id="8-critical"><a class="header" href="#8-critical">8. Critical</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">identity compromise suspected
+unknown authorized device
+recovery material invalid
+security verification failure
+</code></pre>
+<hr />
+<h1 id="9-do-not-turn-security-into-gamification"><a class="header" href="#9-do-not-turn-security-into-gamification">9. Do Not Turn Security into Gamification</a></h1>
+<p>Avoid:</p>
+<pre><code class="language-text">security score 82/100
+</code></pre>
+<p>unless truly meaningful.</p>
+<p>Prefer explicit actionable state.</p>
+<hr />
+<h1 id="10-security-overview-card"><a class="header" href="#10-security-overview-card">10. Security Overview Card</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">Security looks good
+4 trusted devices
+Recovery configured
+Last backup: yesterday
+</code></pre>
+<p>or:</p>
+<pre><code class="language-text">Security needs attention
+New device linked 12 minutes ago
+Review
+</code></pre>
+<hr />
+<h1 id="11-device-model"><a class="header" href="#11-device-model">11. Device Model</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct DeviceSecurityView {
+    pub id: DeviceId,
+    pub display_name: String,
+    pub kind: DeviceKind,
+    pub status: DeviceTrustState,
+    pub added_at: Timestamp,
+    pub last_active: Option&lt;Timestamp&gt;,
+    pub current_device: bool,
+    pub security_flags: Vec&lt;DeviceSecurityFlag&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="12-device-kinds"><a class="header" href="#12-device-kinds">12. Device Kinds</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum DeviceKind {
+    AndroidPhone,
+    AndroidTablet,
+    Desktop,
+    Laptop,
+    ServerNode,
+    Unknown,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Informational only.</p>
+<hr />
+<h1 id="13-device-trust-state"><a class="header" href="#13-device-trust-state">13. Device Trust State</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum DeviceTrustState {
+    Trusted,
+    Pending,
+    Revoked,
+    Compromised,
+    Unknown,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="14-devices-screen"><a class="header" href="#14-devices-screen">14. Devices Screen</a></h1>
+<p>Recommended list sections:</p>
+<pre><code class="language-text">This Device
+Trusted Devices
+Pending
+Revoked / History
+</code></pre>
+<hr />
+<h1 id="15-device-row"><a class="header" href="#15-device-row">15. Device Row</a></h1>
+<p>Show:</p>
+<pre><code class="language-text">device name
+device type
+last active
+trust state
+current-device badge
+</code></pre>
+<p>Avoid raw IDs in normal list.</p>
+<hr />
+<h1 id="16-current-device"><a class="header" href="#16-current-device">16. Current Device</a></h1>
+<p>Clearly label:</p>
+<pre><code class="language-text">This device
+</code></pre>
+<hr />
+<h1 id="17-device-details"><a class="header" href="#17-device-details">17. Device Details</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">Device name
+Device type
+Added date
+Last active
+Authorization method
+Security status
+Device ID shortened
+Revoke action
+</code></pre>
+<hr />
+<h1 id="18-device-id"><a class="header" href="#18-device-id">18. Device ID</a></h1>
+<p>Advanced/security detail.</p>
+<p>Never use device display name as identity.</p>
+<hr />
+<h1 id="19-rename-device"><a class="header" href="#19-rename-device">19. Rename Device</a></h1>
+<p>User may rename trusted device.</p>
+<p>This changes display metadata only.</p>
+<hr />
+<h1 id="20-device-last-active"><a class="header" href="#20-device-last-active">20. Device Last Active</a></h1>
+<p>Use privacy-conscious coarse wording:</p>
+<pre><code class="language-text">Active now
+5 minutes ago
+Yesterday
+</code></pre>
+<hr />
+<h1 id="21-pending-device"><a class="header" href="#21-pending-device">21. Pending Device</a></h1>
+<p>Pending means:</p>
+<pre><code class="language-text">authorization not complete
+</code></pre>
+<p>Must not have normal account access yet.</p>
+<hr />
+<h1 id="22-pending-device-actions"><a class="header" href="#22-pending-device-actions">22. Pending Device Actions</a></h1>
+<pre><code class="language-text">Approve
+Deny
+Cancel session
+</code></pre>
+<p>depending which device owns decision.</p>
+<hr />
+<h1 id="23-device-link-integration"><a class="header" href="#23-device-link-integration">23. Device Link Integration</a></h1>
+<p>Part 12 owns linking mechanics.</p>
+<p>Security Center shows:</p>
+<pre><code class="language-text">Link New Device
+</code></pre>
+<p>entry point.</p>
+<hr />
+<h1 id="24-new-device-security-event"><a class="header" href="#24-new-device-security-event">24. New Device Security Event</a></h1>
+<p>After link:</p>
+<pre><code class="language-text">New device added
+</code></pre>
+<p>with:</p>
+<pre><code class="language-text">device name
+time
+review
+revoke
+</code></pre>
+<hr />
+<h1 id="25-device-revocation"><a class="header" href="#25-device-revocation">25. Device Revocation</a></h1>
+<p>High-risk but common operation.</p>
+<p>Flow:</p>
+<pre><code class="language-text">Devices
+→ Device Detail
+→ Revoke Device
+→ Explain consequences
+→ Confirm
+→ Rust revoke
+→ Update all devices
+</code></pre>
+<hr />
+<h1 id="26-revoke-explanation"><a class="header" href="#26-revoke-explanation">26. Revoke Explanation</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">This device will lose access to your account and future messages.
+</code></pre>
+<hr />
+<h1 id="27-reauthentication"><a class="header" href="#27-reauthentication">27. Reauthentication</a></h1>
+<p>Require before high-risk actions where appropriate:</p>
+<pre><code class="language-text">revoke device
+show recovery key
+reset identity
+export sensitive backup key
+transfer ownership of account device trust
+</code></pre>
+<hr />
+<h1 id="28-android-reauthentication"><a class="header" href="#28-android-reauthentication">28. Android Reauthentication</a></h1>
+<p>Use:</p>
+<pre><code class="language-text">BiometricPrompt
+device credential
+</code></pre>
+<p>through Kotlin platform layer.</p>
+<hr />
+<h1 id="29-desktop-reauthentication"><a class="header" href="#29-desktop-reauthentication">29. Desktop Reauthentication</a></h1>
+<p>Use:</p>
+<pre><code class="language-text">OS keyring/credential prompt
+application passphrase
+</code></pre>
+<p>depending platform/security architecture.</p>
+<hr />
+<h1 id="30-rust-requests-authentication-semantically"><a class="header" href="#30-rust-requests-authentication-semantically">30. Rust Requests Authentication Semantically</a></h1>
+<p>Example:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum ReauthPurpose {
+    RevokeDevice(DeviceId),
+    ShowRecoveryKey,
+    RotateRecoveryKey,
+    ResetIdentity,
+    ExportRecoveryMaterial,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Platform performs actual prompt.</p>
+<hr />
+<h1 id="31-reauth-result"><a class="header" href="#31-reauth-result">31. Reauth Result</a></h1>
+<p>Rust receives:</p>
+<pre><code class="language-text">success
+cancel
+failure
+</code></pre>
+<p>not biometric internals.</p>
+<hr />
+<h1 id="32-revoke-current-device"><a class="header" href="#32-revoke-current-device">32. Revoke Current Device</a></h1>
+<p>Usually:</p>
+<pre><code class="language-text">Sign out / Remove this device
+</code></pre>
+<p>different wording from remote revoke.</p>
+<hr />
+<h1 id="33-removing-current-device"><a class="header" href="#33-removing-current-device">33. Removing Current Device</a></h1>
+<p>May require:</p>
+<pre><code class="language-text">backup/recovery warning
+</code></pre>
+<p>if last trusted device.</p>
+<hr />
+<h1 id="34-last-trusted-device"><a class="header" href="#34-last-trusted-device">34. Last Trusted Device</a></h1>
+<p>Critical edge case.</p>
+<p>If user is about to remove/revoke last trusted device:</p>
+<pre><code class="language-text">require recovery confirmation
+</code></pre>
+<p>or prevent action until recovery configured.</p>
+<hr />
+<h1 id="35-lost-device-flow"><a class="header" href="#35-lost-device-flow">35. Lost Device Flow</a></h1>
+<p>Security Center shortcut:</p>
+<pre><code class="language-text">I lost a device
+</code></pre>
+<p>Flow:</p>
+<pre><code class="language-text">select lost device
+revoke
+review sessions/events
+optionally rotate affected credentials
+</code></pre>
+<hr />
+<h1 id="36-stolen-device-flow"><a class="header" href="#36-stolen-device-flow">36. Stolen Device Flow</a></h1>
+<p>Same plus stronger guidance:</p>
+<pre><code class="language-text">Revoke immediately
+Review recent activity
+Change recovery credential if exposed
+</code></pre>
+<hr />
+<h1 id="37-unknown-device"><a class="header" href="#37-unknown-device">37. Unknown Device</a></h1>
+<p>If user sees unfamiliar device:</p>
+<pre><code class="language-text">This device may have access to your account
+Revoke
+Review Security Events
+</code></pre>
+<hr />
+<h1 id="38-compromise-response"><a class="header" href="#38-compromise-response">38. Compromise Response</a></h1>
+<p>Dedicated guided flow:</p>
+<pre><code class="language-text">Revoke suspicious devices
+Review identity state
+Rotate recovery material if necessary
+Verify backup
+Review recent security events
+</code></pre>
+<hr />
+<h1 id="39-panic-button"><a class="header" href="#39-panic-button">39. Panic Button?</a></h1>
+<p>Avoid vague:</p>
+<pre><code class="language-text">Secure my account
+</code></pre>
+<p>unless exact actions are transparent.</p>
+<p>Better guided checklist.</p>
+<hr />
+<h1 id="40-security-event-model"><a class="header" href="#40-security-event-model">40. Security Event Model</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct SecurityEventView {
+    pub id: SecurityEventId,
+    pub kind: SecurityEventKind,
+    pub severity: SecurityEventSeverity,
+    pub occurred_at: Timestamp,
+    pub resolved: bool,
+    pub related_device: Option&lt;DeviceId&gt;,
+    pub related_contact: Option&lt;AccountId&gt;,
+    pub actions: Vec&lt;SecurityEventAction&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="41-security-event-kinds"><a class="header" href="#41-security-event-kinds">41. Security Event Kinds</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum SecurityEventKind {
+    DeviceLinked,
+    DeviceRevoked,
+    DeviceLinkDenied,
+    IdentityChanged,
+    VerificationFailed,
+    RecoveryConfigured,
+    RecoveryChanged,
+    BackupFailed,
+    KeyRotation,
+    SuspiciousAuthorization,
+    SecurityPolicyChanged,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="42-severity"><a class="header" href="#42-severity">42. Severity</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum SecurityEventSeverity {
+    Info,
+    Warning,
+    Critical,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="43-security-events-screen"><a class="header" href="#43-security-events-screen">43. Security Events Screen</a></h1>
+<p>Sort:</p>
+<pre><code class="language-text">newest first
+</code></pre>
+<p>Filters:</p>
+<pre><code class="language-text">All
+Warnings
+Critical
+Devices
+Identity
+Recovery
+</code></pre>
+<hr />
+<h1 id="44-event-row"><a class="header" href="#44-event-row">44. Event Row</a></h1>
+<p>Show:</p>
+<pre><code class="language-text">title
+time
+severity
+resolved/unresolved
+related device/contact
+</code></pre>
+<hr />
+<h1 id="45-event-detail"><a class="header" href="#45-event-detail">45. Event Detail</a></h1>
+<p>Show:</p>
+<pre><code class="language-text">what happened
+what it means
+what action is recommended
+what is already resolved
+</code></pre>
+<hr />
+<h1 id="46-avoid-raw-crypto-errors"><a class="header" href="#46-avoid-raw-crypto-errors">46. Avoid Raw Crypto Errors</a></h1>
+<p>Do not show:</p>
+<pre><code class="language-text">signature verification error 0x72
+</code></pre>
+<p>except developer diagnostics.</p>
+<hr />
+<h1 id="47-security-event-resolution"><a class="header" href="#47-security-event-resolution">47. Security Event Resolution</a></h1>
+<p>Rust owns resolved state.</p>
+<p>UI can perform actions then event becomes resolved.</p>
+<hr />
+<h1 id="48-identity--verification-section"><a class="header" href="#48-identity--verification-section">48. Identity &amp; Verification Section</a></h1>
+<p>Shows user's own identity health and contact-verification summary.</p>
+<hr />
+<h1 id="49-own-identity"><a class="header" href="#49-own-identity">49. Own Identity</a></h1>
+<p>Display:</p>
+<pre><code class="language-text">account identity
+short fingerprint
+created date
+verification/recovery state
+</code></pre>
+<hr />
+<h1 id="50-full-fingerprint"><a class="header" href="#50-full-fingerprint">50. Full Fingerprint</a></h1>
+<p>Advanced detail.</p>
+<p>Copy/share only explicitly.</p>
+<hr />
+<h1 id="51-identity-key-health"><a class="header" href="#51-identity-key-health">51. Identity Key Health</a></h1>
+<p>Recommended semantic states:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum IdentityKeyHealth {
+    Healthy,
+    RotationRecommended,
+    RecoveryRequired,
+    Compromised,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="52-key-rotation"><a class="header" href="#52-key-rotation">52. Key Rotation</a></h1>
+<p>Normal users should see:</p>
+<pre><code class="language-text">Security keys updated
+</code></pre>
+<p>not key epochs.</p>
+<hr />
+<h1 id="53-automatic-key-rotation"><a class="header" href="#53-automatic-key-rotation">53. Automatic Key Rotation</a></h1>
+<p>If transparent:</p>
+<pre><code class="language-text">no interruptive UI
+</code></pre>
+<p>unless action required.</p>
+<hr />
+<h1 id="54-manual-key-rotation"><a class="header" href="#54-manual-key-rotation">54. Manual Key Rotation</a></h1>
+<p>Advanced/security operation.</p>
+<p>Needs explicit explanation.</p>
+<hr />
+<h1 id="55-identity-reset"><a class="header" href="#55-identity-reset">55. Identity Reset</a></h1>
+<p>Very high-risk.</p>
+<p>Could invalidate:</p>
+<pre><code class="language-text">contact verification
+device trust
+recovery
+</code></pre>
+<p>depending architecture.</p>
+<hr />
+<h1 id="56-identity-reset-ux"><a class="header" href="#56-identity-reset-ux">56. Identity Reset UX</a></h1>
+<p>Require:</p>
+<pre><code class="language-text">clear consequences
+reauthentication
+typed/secondary confirmation
+</code></pre>
+<hr />
+<h1 id="57-do-not-put-identity-reset-near-normal-settings"><a class="header" href="#57-do-not-put-identity-reset-near-normal-settings">57. Do Not Put Identity Reset Near Normal Settings</a></h1>
+<p>Place under:</p>
+<pre><code class="language-text">Advanced / Dangerous Actions
+</code></pre>
+<hr />
+<h1 id="58-contact-verification-summary"><a class="header" href="#58-contact-verification-summary">58. Contact Verification Summary</a></h1>
+<p>Security Center can show:</p>
+<pre><code class="language-text">3 contacts need verification review
+</code></pre>
+<p>linking to Part 08.</p>
+<hr />
+<h1 id="59-identity-changed-contacts"><a class="header" href="#59-identity-changed-contacts">59. Identity Changed Contacts</a></h1>
+<p>High-priority list:</p>
+<pre><code class="language-text">Alice — identity changed
+Bob — verification expired/invalid
+</code></pre>
+<hr />
+<h1 id="60-recovery-section"><a class="header" href="#60-recovery-section">60. Recovery Section</a></h1>
+<p>Purpose:</p>
+<pre><code class="language-text">regain account/device access after losing devices
+</code></pre>
+<hr />
+<h1 id="61-recovery-methods"><a class="header" href="#61-recovery-methods">61. Recovery Methods</a></h1>
+<p>Possible architecture:</p>
+<pre><code class="language-text">Recovery key
+Recovery passphrase
+Trusted device approval
+Encrypted backup
+Trusted contact? only if designed
+</code></pre>
+<p>UI shows only actually supported methods.</p>
+<hr />
+<h1 id="62-recovery-status"><a class="header" href="#62-recovery-status">62. Recovery Status</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum RecoveryStatus {
+    NotConfigured,
+    Configured,
+    NeedsReview,
+    Invalid,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="63-recovery-overview"><a class="header" href="#63-recovery-overview">63. Recovery Overview</a></h1>
+<p>Show:</p>
+<pre><code class="language-text">Recovery configured
+Last verified: 3 months ago
+</code></pre>
+<p>or:</p>
+<pre><code class="language-text">No recovery method configured
+Set up recovery
+</code></pre>
+<hr />
+<h1 id="64-recovery-key"><a class="header" href="#64-recovery-key">64. Recovery Key</a></h1>
+<p>If product uses a recovery key:</p>
+<pre><code class="language-text">high-entropy secret
+</code></pre>
+<p>not a friendly password.</p>
+<hr />
+<h1 id="65-recovery-key-display"><a class="header" href="#65-recovery-key-display">65. Recovery Key Display</a></h1>
+<p>Sensitive screen.</p>
+<p>Require reauth.</p>
+<p>Show:</p>
+<pre><code class="language-text">Copy
+Save securely
+Print
+Verify
+</code></pre>
+<hr />
+<h1 id="66-recovery-key-never-auto-copied"><a class="header" href="#66-recovery-key-never-auto-copied">66. Recovery Key Never Auto-Copied</a></h1>
+<p>Explicit user action only.</p>
+<hr />
+<h1 id="67-recovery-key-screenshot"><a class="header" href="#67-recovery-key-screenshot">67. Recovery Key Screenshot</a></h1>
+<p>Product may warn:</p>
+<pre><code class="language-text">Anyone with this key may be able to recover your account.
+</code></pre>
+<hr />
+<h1 id="68-android-secure-window"><a class="header" href="#68-android-secure-window">68. Android Secure Window</a></h1>
+<p>For recovery-key screen, Kotlin may enable secure-window policy to block screenshots/recents preview if product chooses.</p>
+<hr />
+<h1 id="69-desktop-sensitive-screen"><a class="header" href="#69-desktop-sensitive-screen">69. Desktop Sensitive Screen</a></h1>
+<p>Can blur/hide on app lock or window background where feasible.</p>
+<hr />
+<h1 id="70-recovery-key-verification"><a class="header" href="#70-recovery-key-verification">70. Recovery Key Verification</a></h1>
+<p>After setup:</p>
+<pre><code class="language-text">re-enter selected groups
+or
+scan saved copy
+</code></pre>
+<p>to prove user stored it.</p>
+<hr />
+<h1 id="71-recovery-key-rotation"><a class="header" href="#71-recovery-key-rotation">71. Recovery Key Rotation</a></h1>
+<p>High-risk.</p>
+<p>Flow:</p>
+<pre><code class="language-text">reauth
+generate new recovery material
+show/save
+verify
+activate
+invalidate old material
+</code></pre>
+<hr />
+<h1 id="72-atomic-recovery-rotation"><a class="header" href="#72-atomic-recovery-rotation">72. Atomic Recovery Rotation</a></h1>
+<p>Old recovery must remain valid until new method is fully confirmed, unless security policy requires immediate cutover.</p>
+<hr />
+<h1 id="73-recovery-failure-avoidance"><a class="header" href="#73-recovery-failure-avoidance">73. Recovery Failure Avoidance</a></h1>
+<p>Never leave user with:</p>
+<pre><code class="language-text">old key invalid
+new key not saved
+</code></pre>
+<hr />
+<h1 id="74-recovery-drill"><a class="header" href="#74-recovery-drill">74. Recovery Drill</a></h1>
+<p>Optional security feature:</p>
+<pre><code class="language-text">Test Recovery
+</code></pre>
+<p>without actually logging out.</p>
+<hr />
+<h1 id="75-recovery-drill-purpose"><a class="header" href="#75-recovery-drill-purpose">75. Recovery Drill Purpose</a></h1>
+<p>Verify:</p>
+<pre><code class="language-text">user still has recovery material
+backup can be opened
+</code></pre>
+<hr />
+<h1 id="76-recovery-drill-privacy"><a class="header" href="#76-recovery-drill-privacy">76. Recovery Drill Privacy</a></h1>
+<p>Do not upload recovery key.</p>
+<p>Local validation where possible.</p>
+<hr />
+<h1 id="77-recovery-passphrase"><a class="header" href="#77-recovery-passphrase">77. Recovery Passphrase</a></h1>
+<p>If supported:</p>
+<pre><code class="language-text">user-chosen secret
+</code></pre>
+<p>must have clear strength guidance.</p>
+<hr />
+<h1 id="78-do-not-pretend-passphrase-is-equivalent-to-recovery-key"><a class="header" href="#78-do-not-pretend-passphrase-is-equivalent-to-recovery-key">78. Do Not Pretend Passphrase Is Equivalent to Recovery Key</a></h1>
+<p>If security differs, explain.</p>
+<hr />
+<h1 id="79-backup-recovery-integration"><a class="header" href="#79-backup-recovery-integration">79. Backup Recovery Integration</a></h1>
+<p>Part 33 backend + Part 16 UI later.</p>
+<p>Security Center should show:</p>
+<pre><code class="language-text">Last backup
+Backup encrypted
+Recovery method
+Verification status
+</code></pre>
+<hr />
+<h1 id="80-backup-security-states"><a class="header" href="#80-backup-security-states">80. Backup Security States</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum BackupSecurityState {
+    Healthy,
+    Stale,
+    Missing,
+    Unverified,
+    Failed,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="81-backup-key"><a class="header" href="#81-backup-key">81. Backup Key</a></h1>
+<p>If backup has independent key:</p>
+<pre><code class="language-text">do not conflate with account recovery key
+</code></pre>
+<p>unless architecture intentionally unifies them.</p>
+<hr />
+<h1 id="82-backup-key-ux"><a class="header" href="#82-backup-key-ux">82. Backup Key UX</a></h1>
+<p>Label precisely:</p>
+<pre><code class="language-text">Backup Recovery Key
+</code></pre>
+<p>if distinct.</p>
+<hr />
+<h1 id="83-recovery-vs-backup"><a class="header" href="#83-recovery-vs-backup">83. Recovery vs Backup</a></h1>
+<p>Important distinction:</p>
+<pre><code class="language-text">Account recovery
+≠
+Backup decryption
+</code></pre>
+<p>unless system explicitly makes them one.</p>
+<hr />
+<h1 id="84-security-center-should-explain-both"><a class="header" href="#84-security-center-should-explain-both">84. Security Center Should Explain Both</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">Account Recovery: configured
+Backup Recovery: configured
+</code></pre>
+<hr />
+<h1 id="85-lost-all-devices-flow"><a class="header" href="#85-lost-all-devices-flow">85. Lost All Devices Flow</a></h1>
+<p>Dedicated recovery entry.</p>
+<p>Possible:</p>
+<pre><code class="language-text">Restore account
+Scan/import backup
+Enter recovery key
+Create fresh device identity
+Verify recovered state
+</code></pre>
+<hr />
+<h1 id="86-fresh-device-identity-after-recovery"><a class="header" href="#86-fresh-device-identity-after-recovery">86. Fresh Device Identity After Recovery</a></h1>
+<p>Do not restore stale device session identity blindly.</p>
+<hr />
+<h1 id="87-recovery-screen-trust-boundary"><a class="header" href="#87-recovery-screen-trust-boundary">87. Recovery Screen Trust Boundary</a></h1>
+<p>User enters recovery material into local trusted UI only.</p>
+<hr />
+<h1 id="88-clipboard-hygiene"><a class="header" href="#88-clipboard-hygiene">88. Clipboard Hygiene</a></h1>
+<p>After copying recovery key:</p>
+<pre><code class="language-text">offer Clear Clipboard
+</code></pre>
+<p>where platform supports.</p>
+<p>Do not silently monitor clipboard afterward.</p>
+<hr />
+<h1 id="89-recovery-qr"><a class="header" href="#89-recovery-qr">89. Recovery QR</a></h1>
+<p>If supported for transfer:</p>
+<pre><code class="language-text">short-lived
+</code></pre>
+<p>and high-risk.</p>
+<hr />
+<h1 id="90-recovery-qr-warning"><a class="header" href="#90-recovery-qr-warning">90. Recovery QR Warning</a></h1>
+<p>Strong:</p>
+<pre><code class="language-text">Do not share this code.
+</code></pre>
+<hr />
+<h1 id="91-security-center--android-layout"><a class="header" href="#91-security-center--android-layout">91. Security Center — Android Layout</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">TopAppBar
+Security
+
+Status card
+
+Devices
+Identity
+Recovery
+Backups
+Security Events
+Privacy
+
+Advanced
+</code></pre>
+<hr />
+<h1 id="92-security-center--desktop-layout"><a class="header" href="#92-security-center--desktop-layout">92. Security Center — Desktop Layout</a></h1>
+<p>Recommended two-pane:</p>
+<pre><code class="language-text">Left:
+    Overview
+    Devices
+    Identity
+    Recovery
+    Backups
+    Events
+    Privacy
+    Advanced
+
+Right:
+    selected content
+</code></pre>
+<hr />
+<h1 id="93-tabletfoldable"><a class="header" href="#93-tabletfoldable">93. Tablet/Foldable</a></h1>
+<p>List/detail layout.</p>
+<hr />
+<h1 id="94-device-detail-android"><a class="header" href="#94-device-detail-android">94. Device Detail Android</a></h1>
+<p>Full screen or bottom sheet for simple details.</p>
+<p>High-risk actions use full-screen/dialog confirmation.</p>
+<hr />
+<h1 id="95-device-detail-desktop"><a class="header" href="#95-device-detail-desktop">95. Device Detail Desktop</a></h1>
+<p>Inspector/detail pane.</p>
+<hr />
+<h1 id="96-security-status-banner"><a class="header" href="#96-security-status-banner">96. Security Status Banner</a></h1>
+<p>Global app shell may show only unresolved high-priority issues.</p>
+<p>Do not permanently show "secure" banners.</p>
+<hr />
+<h1 id="97-critical-security-banner"><a class="header" href="#97-critical-security-banner">97. Critical Security Banner</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">Unknown device linked
+Identity changed
+Recovery invalid
+</code></pre>
+<p>Actions:</p>
+<pre><code class="language-text">Review
+</code></pre>
+<hr />
+<h1 id="98-dismissal"><a class="header" href="#98-dismissal">98. Dismissal</a></h1>
+<p>Critical security issue should not become resolved merely because banner dismissed.</p>
+<hr />
+<h1 id="99-snooze"><a class="header" href="#99-snooze">99. Snooze</a></h1>
+<p>Optional for non-critical warnings.</p>
+<hr />
+<h1 id="100-unresolved-state"><a class="header" href="#100-unresolved-state">100. Unresolved State</a></h1>
+<p>Rust owns.</p>
+<hr />
+<h1 id="101-security-event-notifications"><a class="header" href="#101-security-event-notifications">101. Security Event Notifications</a></h1>
+<p>Part 13.</p>
+<p>Tap:</p>
+<pre><code class="language-text">SecurityEvent(SecurityEventId)
+</code></pre>
+<hr />
+<h1 id="102-device-link-notification"><a class="header" href="#102-device-link-notification">102. Device Link Notification</a></h1>
+<p>After new device:</p>
+<pre><code class="language-text">New device linked
+</code></pre>
+<p>with review action.</p>
+<hr />
+<h1 id="103-revocation-notification"><a class="header" href="#103-revocation-notification">103. Revocation Notification</a></h1>
+<p>Other devices receive:</p>
+<pre><code class="language-text">Device revoked
+</code></pre>
+<p>informational.</p>
+<hr />
+<h1 id="104-recovery-change-notification"><a class="header" href="#104-recovery-change-notification">104. Recovery Change Notification</a></h1>
+<p>Other trusted devices may receive:</p>
+<pre><code class="language-text">Recovery settings changed
+</code></pre>
+<hr />
+<h1 id="105-identity-reset-notification"><a class="header" href="#105-identity-reset-notification">105. Identity Reset Notification</a></h1>
+<p>Critical.</p>
+<hr />
+<h1 id="106-security-center-and-contact-verification"><a class="header" href="#106-security-center-and-contact-verification">106. Security Center and Contact Verification</a></h1>
+<p>Contact identity changes link to Part 08.</p>
+<hr />
+<h1 id="107-security-center-and-device-linking"><a class="header" href="#107-security-center-and-device-linking">107. Security Center and Device Linking</a></h1>
+<p>New-device action links to Part 12.</p>
+<hr />
+<h1 id="108-security-center-and-backup"><a class="header" href="#108-security-center-and-backup">108. Security Center and Backup</a></h1>
+<p>Backup actions link to Part 16 UI.</p>
+<hr />
+<h1 id="109-security-center-and-settings"><a class="header" href="#109-security-center-and-settings">109. Security Center and Settings</a></h1>
+<p>Privacy/presence links to Parts 14/18.</p>
+<hr />
+<h1 id="110-privacy-section"><a class="header" href="#110-privacy-section">110. Privacy Section</a></h1>
+<p>Can summarize high-impact controls:</p>
+<pre><code class="language-text">Notification previews
+Read receipts
+Typing
+Presence
+Blocked contacts
+</code></pre>
+<p>Detailed settings remain elsewhere.</p>
+<hr />
+<h1 id="111-app-lock"><a class="header" href="#111-app-lock">111. App Lock</a></h1>
+<p>Optional:</p>
+<pre><code class="language-text">Require biometric/device credential to open app
+</code></pre>
+<hr />
+<h1 id="112-app-lock-scope"><a class="header" href="#112-app-lock-scope">112. App Lock Scope</a></h1>
+<p>Protects UI access.</p>
+<p>Does not necessarily stop:</p>
+<pre><code class="language-text">background receive
+calls
+sync
+</code></pre>
+<hr />
+<h1 id="113-app-lock-timeout"><a class="header" href="#113-app-lock-timeout">113. App Lock Timeout</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">Immediately
+1 minute
+5 minutes
+30 minutes
+</code></pre>
+<hr />
+<h1 id="114-app-lock-on-desktop"><a class="header" href="#114-app-lock-on-desktop">114. App Lock on Desktop</a></h1>
+<p>Could use:</p>
+<pre><code class="language-text">application passphrase
+OS authentication
+</code></pre>
+<hr />
+<h1 id="115-sensitive-action-reauth-separate-from-app-lock"><a class="header" href="#115-sensitive-action-reauth-separate-from-app-lock">115. Sensitive Action Reauth Separate from App Lock</a></h1>
+<p>Even if app unlocked, high-risk action may require reauth.</p>
+<hr />
+<h1 id="116-screen-privacy"><a class="header" href="#116-screen-privacy">116. Screen Privacy</a></h1>
+<p>Optional:</p>
+<pre><code class="language-text">hide content in Android recent-apps snapshot
+</code></pre>
+<p>while locked.</p>
+<hr />
+<h1 id="117-clipboard-security"><a class="header" href="#117-clipboard-security">117. Clipboard Security</a></h1>
+<p>Sensitive secrets copied only on explicit action.</p>
+<hr />
+<h1 id="118-key-export"><a class="header" href="#118-key-export">118. Key Export</a></h1>
+<p>Do not expose raw identity private key export in normal UX.</p>
+<hr />
+<h1 id="119-advanced-key-material"><a class="header" href="#119-advanced-key-material">119. Advanced Key Material</a></h1>
+<p>If product allows export:</p>
+<pre><code class="language-text">Advanced
+high-risk
+reauthenticated
+strong warning
+</code></pre>
+<hr />
+<h1 id="120-device-enrollment-history"><a class="header" href="#120-device-enrollment-history">120. Device Enrollment History</a></h1>
+<p>Security events provide history.</p>
+<p>Do not show stale "trusted" device after revocation.</p>
+<hr />
+<h1 id="121-device-revocation-propagation"><a class="header" href="#121-device-revocation-propagation">121. Device Revocation Propagation</a></h1>
+<p>UI can show:</p>
+<pre><code class="language-text">Revoking…
+</code></pre>
+<p>then:</p>
+<pre><code class="language-text">Revoked
+</code></pre>
+<p>if operation distributed/async.</p>
+<hr />
+<h1 id="122-revocation-pending"><a class="header" href="#122-revocation-pending">122. Revocation Pending</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum RevocationState {
+    Active,
+    Pending,
+    Complete,
+    Failed,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="123-offline-revocation"><a class="header" href="#123-offline-revocation">123. Offline Revocation</a></h1>
+<p>High-risk operation may require connectivity to authoritative peers/server.</p>
+<p>If architecture supports offline signed revocation:</p>
+<pre><code class="language-text">show pending propagation
+</code></pre>
+<hr />
+<h1 id="124-revocation-failure"><a class="header" href="#124-revocation-failure">124. Revocation Failure</a></h1>
+<p>Show:</p>
+<pre><code class="language-text">Could not revoke device
+Retry
+</code></pre>
+<p>Do not pretend success.</p>
+<hr />
+<h1 id="125-self-revocation"><a class="header" href="#125-self-revocation">125. Self-Revocation</a></h1>
+<p>Current device removal can wipe local secrets after successful account-state update.</p>
+<hr />
+<h1 id="126-local-wipe"><a class="header" href="#126-local-wipe">126. Local Wipe</a></h1>
+<p>If user chooses:</p>
+<pre><code class="language-text">Remove account data from this device
+</code></pre>
+<p>requires separate explicit action.</p>
+<hr />
+<h1 id="127-remote-wipe"><a class="header" href="#127-remote-wipe">127. Remote Wipe</a></h1>
+<p>Do not promise remote wipe unless platform/backend actually supports it.</p>
+<hr />
+<h1 id="128-lost-device-messaging"><a class="header" href="#128-lost-device-messaging">128. Lost Device Messaging</a></h1>
+<p>Say:</p>
+<pre><code class="language-text">Revoke access
+</code></pre>
+<p>not:</p>
+<pre><code class="language-text">Wipe device
+</code></pre>
+<p>unless true.</p>
+<hr />
+<h1 id="129-key-health-events"><a class="header" href="#129-key-health-events">129. Key Health Events</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">device key rotated
+recovery key changed
+identity key changed
+backup key invalid
+</code></pre>
+<hr />
+<h1 id="130-routine-key-rotation"><a class="header" href="#130-routine-key-rotation">130. Routine Key Rotation</a></h1>
+<p>Informational, not alarming.</p>
+<hr />
+<h1 id="131-unexpected-root-identity-change"><a class="header" href="#131-unexpected-root-identity-change">131. Unexpected Root Identity Change</a></h1>
+<p>Critical.</p>
+<hr />
+<h1 id="132-key-expiry"><a class="header" href="#132-key-expiry">132. Key Expiry</a></h1>
+<p>If product uses expiring certs/keys:</p>
+<pre><code class="language-text">renew automatically
+</code></pre>
+<p>and only surface if action required.</p>
+<hr />
+<h1 id="133-security-details-vs-diagnostics"><a class="header" href="#133-security-details-vs-diagnostics">133. Security Details vs Diagnostics</a></h1>
+<p>Normal Security Center:</p>
+<pre><code class="language-text">human meaning
+</code></pre>
+<p>Diagnostics:</p>
+<pre><code class="language-text">key IDs
+epoch IDs
+signature status
+transport security details
+</code></pre>
+<hr />
+<h1 id="134-no-raw-private-keys-in-diagnostics"><a class="header" href="#134-no-raw-private-keys-in-diagnostics">134. No Raw Private Keys in Diagnostics</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="135-device-capability-view"><a class="header" href="#135-device-capability-view">135. Device Capability View</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct DeviceSecurityCapabilities {
+    pub can_revoke: bool,
+    pub can_rename: bool,
+    pub can_view_activity: bool,
+    pub can_reauthenticate: bool,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="136-recovery-capability-view"><a class="header" href="#136-recovery-capability-view">136. Recovery Capability View</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct RecoveryCapabilities {
+    pub can_create: bool,
+    pub can_rotate: bool,
+    pub can_test: bool,
+    pub can_export: bool,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="137-security-overview-snapshot"><a class="header" href="#137-security-overview-snapshot">137. Security Overview Snapshot</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct SecurityCenterSnapshot {
+    pub health: SecurityHealth,
+    pub trusted_device_count: u32,
+    pub unresolved_event_count: u32,
+    pub recovery_status: RecoveryStatus,
+    pub backup_security: BackupSecurityState,
+    pub top_events: Vec&lt;SecurityEventView&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="138-security-presentation-api"><a class="header" href="#138-security-presentation-api">138. Security Presentation API</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait SecurityPresentation {
+    async fn snapshot(
+        &amp;self,
+    ) -&gt; Result&lt;SecurityCenterSnapshot, UiError&gt;;
+
+    async fn events(
+        &amp;self,
+        cursor: Option&lt;SecurityEventCursor&gt;,
+    ) -&gt; Result&lt;SecurityEventPage, UiError&gt;;
+
+    async fn resolve_event(
+        &amp;self,
+        event: SecurityEventId,
+    ) -&gt; Result&lt;(), UiError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="139-device-security-api"><a class="header" href="#139-device-security-api">139. Device Security API</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait DeviceSecurityPresentation {
+    async fn devices(
+        &amp;self,
+    ) -&gt; Result&lt;Vec&lt;DeviceSecurityView&gt;, UiError&gt;;
+
+    async fn device(
+        &amp;self,
+        id: DeviceId,
+    ) -&gt; Result&lt;DeviceSecurityView, UiError&gt;;
+
+    async fn rename(
+        &amp;self,
+        id: DeviceId,
+        name: String,
+    ) -&gt; Result&lt;(), UiError&gt;;
+
+    async fn revoke(
+        &amp;self,
+        id: DeviceId,
+        auth: ReauthProof,
+    ) -&gt; Result&lt;RevocationResultView, UiError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="140-recovery-presentation-api"><a class="header" href="#140-recovery-presentation-api">140. Recovery Presentation API</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait RecoveryPresentation {
+    async fn status(
+        &amp;self,
+    ) -&gt; Result&lt;RecoveryStatusView, UiError&gt;;
+
+    async fn create(
+        &amp;self,
+        auth: ReauthProof,
+    ) -&gt; Result&lt;RecoveryMaterialView, UiError&gt;;
+
+    async fn verify(
+        &amp;self,
+        proof: RecoveryVerificationInput,
+    ) -&gt; Result&lt;RecoveryVerificationResult, UiError&gt;;
+
+    async fn rotate(
+        &amp;self,
+        auth: ReauthProof,
+    ) -&gt; Result&lt;RecoveryMaterialView, UiError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="141-reauthentication-api-boundary"><a class="header" href="#141-reauthentication-api-boundary">141. Reauthentication API Boundary</a></h1>
+<p>Rust can request:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct ReauthChallenge {
+    pub id: ReauthChallengeId,
+    pub purpose: ReauthPurpose,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Platform returns a short-lived proof/token understood by security service.</p>
+<hr />
+<h1 id="142-platform-reauth-adapter--android"><a class="header" href="#142-platform-reauth-adapter--android">142. Platform Reauth Adapter — Android</a></h1>
+<p>Uses:</p>
+<pre><code class="language-text">BiometricPrompt
+device credential
+</code></pre>
+<hr />
+<h1 id="143-platform-reauth-adapter--desktop"><a class="header" href="#143-platform-reauth-adapter--desktop">143. Platform Reauth Adapter — Desktop</a></h1>
+<p>Uses platform/local secure credential mechanism.</p>
+<hr />
+<h1 id="144-security-events"><a class="header" href="#144-security-events">144. Security Events</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum SecurityUiEvent {
+    HealthChanged(SecurityHealth),
+    DeviceChanged(DeviceSecurityView),
+    DeviceRemoved(DeviceId),
+    EventAdded(SecurityEventView),
+    EventUpdated(SecurityEventView),
+    RecoveryChanged(RecoveryStatusView),
+    BackupSecurityChanged(BackupSecurityState),
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="145-android-viewmodel"><a class="header" href="#145-android-viewmodel">145. Android ViewModel</a></h1>
+<p>Owns:</p>
+<pre><code class="language-text">selected section
+dialogs
+reauth effects
+secure-screen effects
+copy/share effects
+</code></pre>
+<p>Rust owns security truth.</p>
+<hr />
+<h1 id="146-dioxus-presenter"><a class="header" href="#146-dioxus-presenter">146. Dioxus Presenter</a></h1>
+<p>Owns:</p>
+<pre><code class="language-text">sidebar selection
+detail panes
+modal state
+clipboard/export effects
+</code></pre>
+<hr />
+<h1 id="147-no-security-decisions-in-ui"><a class="header" href="#147-no-security-decisions-in-ui">147. No Security Decisions in UI</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="148-sensitive-ui-effect"><a class="header" href="#148-sensitive-ui-effect">148. Sensitive UI Effect</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">RequestReauth
+EnableSecureWindow
+CopySensitiveSecret
+OpenSystemSecuritySettings
+</code></pre>
+<hr />
+<h1 id="149-recovery-material-ui-model"><a class="header" href="#149-recovery-material-ui-model">149. Recovery Material UI Model</a></h1>
+<p>Avoid exposing raw secret broadly.</p>
+<p>Use a dedicated short-lived sensitive model.</p>
+<hr />
+<h1 id="150-sensitive-model-lifetime"><a class="header" href="#150-sensitive-model-lifetime">150. Sensitive Model Lifetime</a></h1>
+<p>UI should release/clear after:</p>
+<pre><code class="language-text">screen exit
+timeout
+app lock
+background if policy
+</code></pre>
+<hr />
+<h1 id="151-recovery-secret-in-compose-state"><a class="header" href="#151-recovery-secret-in-compose-state">151. Recovery Secret in Compose State</a></h1>
+<p>Avoid keeping long-lived secret in ordinary <code>StateFlow</code>.</p>
+<p>Use scoped sensitive state.</p>
+<hr />
+<h1 id="152-recovery-secret-in-dioxus"><a class="header" href="#152-recovery-secret-in-dioxus">152. Recovery Secret in Dioxus</a></h1>
+<p>Same principle.</p>
+<hr />
+<h1 id="153-clipboard-timeout"><a class="header" href="#153-clipboard-timeout">153. Clipboard Timeout</a></h1>
+<p>If platform supports controlled clipboard clearing:</p>
+<pre><code class="language-text">offer clear after 1 minute
+</code></pre>
+<p>but do not promise guaranteed deletion from external clipboard managers.</p>
+<hr />
+<h1 id="154-export-recovery-material"><a class="header" href="#154-export-recovery-material">154. Export Recovery Material</a></h1>
+<p>If supported:</p>
+<pre><code class="language-text">encrypted file only
+</code></pre>
+<p>or safe text/print flow.</p>
+<hr />
+<h1 id="155-print-recovery-key"><a class="header" href="#155-print-recovery-key">155. Print Recovery Key</a></h1>
+<p>Desktop optional.</p>
+<p>Warn about physical security.</p>
+<hr />
+<h1 id="156-screenshot-testing"><a class="header" href="#156-screenshot-testing">156. Screenshot Testing</a></h1>
+<p>Never include real recovery material in screenshot tests.</p>
+<p>Use fake fixtures.</p>
+<hr />
+<h1 id="157-accessibility--security-overview"><a class="header" href="#157-accessibility--security-overview">157. Accessibility — Security Overview</a></h1>
+<p>Screen reader:</p>
+<pre><code class="language-text">Security needs attention. One unresolved critical event.
+</code></pre>
+<hr />
+<h1 id="158-device-row-accessibility"><a class="header" href="#158-device-row-accessibility">158. Device Row Accessibility</a></h1>
+<pre><code class="language-text">Pixel 10, trusted, active now, this device
+</code></pre>
+<hr />
+<h1 id="159-recovery-accessibility"><a class="header" href="#159-recovery-accessibility">159. Recovery Accessibility</a></h1>
+<p>Recovery key should be readable in grouped chunks.</p>
+<hr />
+<h1 id="160-sensitive-secret-reading"><a class="header" href="#160-sensitive-secret-reading">160. Sensitive Secret Reading</a></h1>
+<p>Provide:</p>
+<pre><code class="language-text">Show
+Hide
+Copy
+</code></pre>
+<p>Controls.</p>
+<hr />
+<h1 id="161-default-hidden-secret"><a class="header" href="#161-default-hidden-secret">161. Default Hidden Secret</a></h1>
+<p>Recovery secret may initially be obscured after creation until user taps Show.</p>
+<hr />
+<h1 id="162-color-independence"><a class="header" href="#162-color-independence">162. Color Independence</a></h1>
+<p>Critical/warning/healthy always have:</p>
+<pre><code class="language-text">text
+icon
+</code></pre>
+<hr />
+<h1 id="163-large-font"><a class="header" href="#163-large-font">163. Large Font</a></h1>
+<p>Security explanations must wrap.</p>
+<p>Do not truncate consequences.</p>
+<hr />
+<h1 id="164-rtl"><a class="header" href="#164-rtl">164. RTL</a></h1>
+<p>Security UI mirrors.</p>
+<p>Cryptographic fingerprints/keys retain canonical direction.</p>
+<hr />
+<h1 id="165-reduced-motion"><a class="header" href="#165-reduced-motion">165. Reduced Motion</a></h1>
+<p>Security state changes do not need animation.</p>
+<hr />
+<h1 id="166-keyboard-desktop"><a class="header" href="#166-keyboard-desktop">166. Keyboard Desktop</a></h1>
+<p>Support:</p>
+<pre><code class="language-text">arrow navigation
+Enter
+Shift+F10
+Ctrl/Cmd+F in event list
+</code></pre>
+<hr />
+<h1 id="167-android-talkback"><a class="header" href="#167-android-talkback">167. Android TalkBack</a></h1>
+<p>All high-risk action confirmations fully accessible.</p>
+<hr />
+<h1 id="168-confirmation-ux"><a class="header" href="#168-confirmation-ux">168. Confirmation UX</a></h1>
+<p>For high-risk action, confirmation states:</p>
+<pre><code class="language-text">What will happen
+What will not happen
+Whether it can be undone
+</code></pre>
+<hr />
+<h1 id="169-destructive-action-examples"><a class="header" href="#169-destructive-action-examples">169. Destructive Action Examples</a></h1>
+<pre><code class="language-text">Revoke Device
+Reset Identity
+Rotate Recovery Key
+Delete Recovery Method
+</code></pre>
+<hr />
+<h1 id="170-do-not-require-typing-device-name-unless-needed"><a class="header" href="#170-do-not-require-typing-device-name-unless-needed">170. Do Not Require Typing Device Name Unless Needed</a></h1>
+<p>Confirmation friction should match actual risk.</p>
+<hr />
+<h1 id="171-extremely-high-risk-action"><a class="header" href="#171-extremely-high-risk-action">171. Extremely High-Risk Action</a></h1>
+<p>Identity reset can require:</p>
+<pre><code class="language-text">reauth
+secondary confirmation
+typed phrase
+</code></pre>
+<hr />
+<h1 id="172-security-center-empty-state"><a class="header" href="#172-security-center-empty-state">172. Security Center Empty State</a></h1>
+<p>Security event list:</p>
+<pre><code class="language-text">No recent security events
+</code></pre>
+<hr />
+<h1 id="173-recovery-not-configured"><a class="header" href="#173-recovery-not-configured">173. Recovery Not Configured</a></h1>
+<p>Actionable card:</p>
+<pre><code class="language-text">Set Up Recovery
+</code></pre>
+<hr />
+<h1 id="174-backup-missing"><a class="header" href="#174-backup-missing">174. Backup Missing</a></h1>
+<pre><code class="language-text">No verified backup
+Create Backup
+</code></pre>
+<p>link to Part 16.</p>
+<hr />
+<h1 id="175-current-device-only"><a class="header" href="#175-current-device-only">175. Current Device Only</a></h1>
+<p>If only one device:</p>
+<pre><code class="language-text">1 trusted device
+</code></pre>
+<p>and recovery recommendation becomes more important.</p>
+<hr />
+<h1 id="176-device-offline"><a class="header" href="#176-device-offline">176. Device Offline</a></h1>
+<p>Last active may be stale.</p>
+<p>Do not label:</p>
+<pre><code class="language-text">offline
+</code></pre>
+<p>unless proven.</p>
+<hr />
+<h1 id="177-device-unknown"><a class="header" href="#177-device-unknown">177. Device Unknown</a></h1>
+<p>If metadata incomplete:</p>
+<pre><code class="language-text">Unknown device
+</code></pre>
+<p>with DeviceId detail.</p>
+<hr />
+<h1 id="178-lost-device-revocation-confirmation"><a class="header" href="#178-lost-device-revocation-confirmation">178. Lost Device Revocation Confirmation</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">Revoke Pixel 10?
+It will no longer be able to access your account or receive future messages.
+</code></pre>
+<hr />
+<h1 id="179-existing-sessions"><a class="header" href="#179-existing-sessions">179. Existing Sessions</a></h1>
+<p>If architecture has session tokens:</p>
+<pre><code class="language-text">revocation invalidates them
+</code></pre>
+<p>UI can say:</p>
+<pre><code class="language-text">This signs the device out.
+</code></pre>
+<p>only if true.</p>
+<hr />
+<h1 id="180-remote-historical-data"><a class="header" href="#180-remote-historical-data">180. Remote Historical Data</a></h1>
+<p>Revocation cannot erase copies already exported/decrypted on another device.</p>
+<p>Important honesty.</p>
+<hr />
+<h1 id="181-revocation-explanation"><a class="header" href="#181-revocation-explanation">181. Revocation Explanation</a></h1>
+<p>Do not claim:</p>
+<pre><code class="language-text">all data is erased remotely
+</code></pre>
+<p>unless guaranteed.</p>
+<hr />
+<h1 id="182-recovery-honesty"><a class="header" href="#182-recovery-honesty">182. Recovery Honesty</a></h1>
+<p>Explain what recovery can restore:</p>
+<pre><code class="language-text">account identity
+encrypted backup
+contacts
+history
+</code></pre>
+<p>depending actual architecture.</p>
+<hr />
+<h1 id="183-recovery-cannot-restore-missing-data"><a class="header" href="#183-recovery-cannot-restore-missing-data">183. Recovery Cannot Restore Missing Data</a></h1>
+<p>If no backup/archive exists:</p>
+<pre><code class="language-text">recovery may restore account access but not missing message history
+</code></pre>
+<hr />
+<h1 id="184-compromise-checklist"><a class="header" href="#184-compromise-checklist">184. Compromise Checklist</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">1. Revoke unknown devices
+2. Review recent security events
+3. Verify recovery method
+4. Re-verify affected contacts if identity changed
+5. Create fresh backup
+</code></pre>
+<hr />
+<h1 id="185-security-guided-flow"><a class="header" href="#185-security-guided-flow">185. Security Guided Flow</a></h1>
+<p>UI may present as step-by-step checklist.</p>
+<p>Rust reports completion.</p>
+<hr />
+<h1 id="186-security-event-correlation"><a class="header" href="#186-security-event-correlation">186. Security Event Correlation</a></h1>
+<p>Multiple events can be grouped:</p>
+<pre><code class="language-text">New device linked
+Recovery changed 2 min later
+</code></pre>
+<p>advanced future feature.</p>
+<hr />
+<h1 id="187-alerts-vs-events"><a class="header" href="#187-alerts-vs-events">187. Alerts vs Events</a></h1>
+<p>Notification is transient alert.</p>
+<p>Security event is durable audit record.</p>
+<hr />
+<h1 id="188-security-event-retention"><a class="header" href="#188-security-event-retention">188. Security Event Retention</a></h1>
+<p>Longer than normal notifications.</p>
+<hr />
+<h1 id="189-search-security-events"><a class="header" href="#189-search-security-events">189. Search Security Events</a></h1>
+<p>Part 11 may search titles/metadata locally.</p>
+<p>Do not index secret contents.</p>
+<hr />
+<h1 id="190-backup-security-integration"><a class="header" href="#190-backup-security-integration">190. Backup Security Integration</a></h1>
+<p>Part 16 should consume the same:</p>
+<pre><code class="language-text">RecoveryStatus
+BackupSecurityState
+</code></pre>
+<p>not duplicate.</p>
+<hr />
+<h1 id="191-device-linking-integration"><a class="header" href="#191-device-linking-integration">191. Device Linking Integration</a></h1>
+<p>Part 12 success emits:</p>
+<pre><code class="language-text">DeviceLinked
+</code></pre>
+<p>security event.</p>
+<hr />
+<h1 id="192-contact-verification-integration"><a class="header" href="#192-contact-verification-integration">192. Contact Verification Integration</a></h1>
+<p>Part 08 identity mismatch emits:</p>
+<pre><code class="language-text">VerificationFailed
+IdentityChanged
+</code></pre>
+<p>event.</p>
+<hr />
+<h1 id="193-call-security-integration"><a class="header" href="#193-call-security-integration">193. Call Security Integration</a></h1>
+<p>Part 07 security failure can link to Security Center.</p>
+<hr />
+<h1 id="194-notification-integration"><a class="header" href="#194-notification-integration">194. Notification Integration</a></h1>
+<p>Part 13 Security category opens exact event.</p>
+<hr />
+<h1 id="195-privacy-settings-integration"><a class="header" href="#195-privacy-settings-integration">195. Privacy Settings Integration</a></h1>
+<p>Part 18 can deep-link back to Security Center for sensitive controls.</p>
+<hr />
+<h1 id="196-multi-device-security-sync"><a class="header" href="#196-multi-device-security-sync">196. Multi-Device Security Sync</a></h1>
+<p>Device/recovery/security event state must synchronize securely across trusted devices.</p>
+<hr />
+<h1 id="197-current-device-race"><a class="header" href="#197-current-device-race">197. Current Device Race</a></h1>
+<p>If current device is revoked from elsewhere:</p>
+<pre><code class="language-text">immediately transition to revoked/session-expired UI
+</code></pre>
+<hr />
+<h1 id="198-revoked-current-device-ux"><a class="header" href="#198-revoked-current-device-ux">198. Revoked Current Device UX</a></h1>
+<p>Show:</p>
+<pre><code class="language-text">This device no longer has access to the account.
+</code></pre>
+<p>Actions:</p>
+<pre><code class="language-text">Link Again
+Recover Account
+Remove Local Data
+</code></pre>
+<p>according to state.</p>
+<hr />
+<h1 id="199-pending-revocation-while-offline"><a class="header" href="#199-pending-revocation-while-offline">199. Pending Revocation While Offline</a></h1>
+<p>When device reconnects and learns revoked state:</p>
+<pre><code class="language-text">lock account access
+</code></pre>
+<p>before normal sync.</p>
+<hr />
+<h1 id="200-recovery-race"><a class="header" href="#200-recovery-race">200. Recovery Race</a></h1>
+<p>If recovery method rotates on another device:</p>
+<pre><code class="language-text">old recovery UI becomes stale
+</code></pre>
+<p>Rust rejects stale verify/export actions.</p>
+<hr />
+<h1 id="201-stale-security-screen"><a class="header" href="#201-stale-security-screen">201. Stale Security Screen</a></h1>
+<p>Before high-risk commit:</p>
+<pre><code class="language-text">Rust revalidates current security state
+</code></pre>
+<hr />
+<h1 id="202-no-optimistic-high-risk-security-actions"><a class="header" href="#202-no-optimistic-high-risk-security-actions">202. No Optimistic High-Risk Security Actions</a></h1>
+<p>Do not optimistically show:</p>
+<pre><code class="language-text">Revoked
+Recovery changed
+</code></pre>
+<p>before Rust confirmation.</p>
+<hr />
+<h1 id="203-safe-optimism"><a class="header" href="#203-safe-optimism">203. Safe Optimism</a></h1>
+<p>Renaming a device can be optimistic if rollback supported.</p>
+<hr />
+<h1 id="204-security-error-taxonomy"><a class="header" href="#204-security-error-taxonomy">204. Security Error Taxonomy</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum SecurityUiErrorKind {
+    ReauthRequired,
+    ReauthFailed,
+    DeviceAlreadyRevoked,
+    LastTrustedDevice,
+    RecoveryNotConfigured,
+    RecoveryVerificationFailed,
+    StaleSecurityState,
+    PolicyDenied,
+    OfflineUnavailable,
+    Internal,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="205-error-ux"><a class="header" href="#205-error-ux">205. Error UX</a></h1>
+<p>Reauth required:</p>
+<pre><code class="language-text">Authenticate to continue
+</code></pre>
+<p>Last trusted device:</p>
+<pre><code class="language-text">Set up recovery before removing your last trusted device
+</code></pre>
+<p>Recovery verification failed:</p>
+<pre><code class="language-text">Recovery key did not match
+</code></pre>
+<hr />
+<h1 id="206-do-not-reveal-secret-comparison-details"><a class="header" href="#206-do-not-reveal-secret-comparison-details">206. Do Not Reveal Secret Comparison Details</a></h1>
+<p>Failure should not leak cryptographic oracle information.</p>
+<hr />
+<h1 id="207-testing-matrix"><a class="header" href="#207-testing-matrix">207. Testing Matrix</a></h1>
+<p>Required:</p>
+<pre><code class="language-text">healthy overview
+attention overview
+critical event
+trusted device list
+new device
+unknown device
+revoke remote device
+remove current device
+last trusted device
+lost device
+recovery setup
+recovery verify
+recovery rotate
+backup stale
+identity change
+security event resolution
+</code></pre>
+<hr />
+<h1 id="208-android-tests"><a class="header" href="#208-android-tests">208. Android Tests</a></h1>
+<p>Verify:</p>
+<pre><code class="language-text">BiometricPrompt
+device credential fallback
+secure window
+process death
+background/foreground
+TalkBack
+large font
+clipboard handling
+</code></pre>
+<hr />
+<h1 id="209-desktop-tests"><a class="header" href="#209-desktop-tests">209. Desktop Tests</a></h1>
+<p>Verify:</p>
+<pre><code class="language-text">two-pane security center
+keyboard
+OS credential prompt
+clipboard
+multi-window state
+device revoke
+</code></pre>
+<hr />
+<h1 id="210-multi-device-tests"><a class="header" href="#210-multi-device-tests">210. Multi-Device Tests</a></h1>
+<p>Revoke phone from desktop.</p>
+<p>Phone becomes unauthorized.</p>
+<p>Add new device from phone.</p>
+<p>Desktop sees event.</p>
+<hr />
+<h1 id="211-recovery-rotation-test"><a class="header" href="#211-recovery-rotation-test">211. Recovery Rotation Test</a></h1>
+<p>Old key remains valid until new key verified, according to policy.</p>
+<hr />
+<h1 id="212-recovery-loss-test"><a class="header" href="#212-recovery-loss-test">212. Recovery Loss Test</a></h1>
+<p>User cancels before confirmation.</p>
+<p>Old recovery remains intact.</p>
+<hr />
+<h1 id="213-security-event-persistence-test"><a class="header" href="#213-security-event-persistence-test">213. Security Event Persistence Test</a></h1>
+<p>Warning survives restart until resolved.</p>
+<hr />
+<h1 id="214-current-device-revoked-test"><a class="header" href="#214-current-device-revoked-test">214. Current Device Revoked Test</a></h1>
+<p>UI immediately exits normal account surfaces.</p>
+<hr />
+<h1 id="215-offline-revocation-test"><a class="header" href="#215-offline-revocation-test">215. Offline Revocation Test</a></h1>
+<p>If supported, pending state is clear.</p>
+<p>If unsupported, action fails honestly.</p>
+<hr />
+<h1 id="216-accessibility-test"><a class="header" href="#216-accessibility-test">216. Accessibility Test</a></h1>
+<p>Complete recovery setup and device revocation without relying on color/gesture.</p>
+<hr />
+<h1 id="217-secret-leakage-test"><a class="header" href="#217-secret-leakage-test">217. Secret Leakage Test</a></h1>
+<p>No recovery key/fingerprint/private material appears in logs/crash reports/analytics.</p>
+<hr />
+<h1 id="218-initial-production-scope"><a class="header" href="#218-initial-production-scope">218. Initial Production Scope</a></h1>
+<p>Ship:</p>
+<pre><code class="language-text">security overview
+trusted devices
+device details
+new-device events
+device revocation
+lost-device flow
+identity health
+contact verification warnings
+recovery setup
+recovery key verification
+recovery key rotation
+backup security summary
+security event log
+reauthentication for sensitive actions
+Android secure screen for recovery material
+</code></pre>
+<p>Defer:</p>
+<pre><code class="language-text">social recovery
+hardware security-key enrollment
+advanced enterprise PKI
+complex security-score systems
+remote wipe claims
+automatic forensic correlation
+</code></pre>
+<p>unless backend explicitly supports them.</p>
+<hr />
+<h1 id="219-definition-of-done"><a class="header" href="#219-definition-of-done">219. Definition of Done</a></h1>
+<p>UI/UX Part 15 is complete when:</p>
+<ul>
+<li>Security Center has Overview, Devices, Identity, Recovery, Backups, Events, Privacy, and Advanced sections</li>
+<li>Rust owns device trust, revocation, identity/key health, recovery validation, and event resolution</li>
+<li>current/pending/revoked/compromised device states are distinct</li>
+<li>own-device linking integrates with Part 12 but authorization truth remains in Rust</li>
+<li>high-risk operations require semantic reauthentication</li>
+<li>Android uses BiometricPrompt/device credential through platform adapter</li>
+<li>lost/stolen/unknown-device flows are explicit</li>
+<li>last-trusted-device removal is guarded by recovery policy</li>
+<li>revocation does not falsely promise remote data erasure</li>
+<li>identity reset is isolated as a dangerous action</li>
+<li>recovery setup, display, verification, rotation, and cancellation are safe and atomic</li>
+<li>account recovery and backup recovery are not conflated unless architecture intentionally unifies them</li>
+<li>recovery secrets are short-lived sensitive UI state and excluded from normal logs/state flows</li>
+<li>security events are durable audit records separate from notifications</li>
+<li>critical unresolved events persist until actually resolved</li>
+<li>multi-device revocation/recovery/security synchronization is defined</li>
+<li>accessibility, RTL, large font, secure-screen, clipboard, and reauth behavior are explicit</li>
+<li>Rust security, device, recovery, reauth, and event presentation APIs are specified</li>
+<li>compromise, offline, race, current-device-revocation, recovery-loss, and leakage tests are included</li>
+</ul>
+<hr />
+<h1 id="220-final-architecture"><a class="header" href="#220-final-architecture">220. Final Architecture</a></h1>
+<pre><code class="language-text">                    RUST SECURITY CORE
+                           │
+       ┌───────────────────┼───────────────────┐
+       │                   │                   │
+    Devices             Identity           Recovery
+       │                   │                   │
+   Authorization         Key Health       Recovery Material
+   Revocation            Verification     Backup Security
+       │                   │                   │
+       └───────────────────┼───────────────────┘
+                           │
+                 Security Presentation
+                    ┌──────┴──────┐
+                    │             │
+                 Dioxus        Compose
+                    │             │
+             Desktop Security  Android Security
+</code></pre>
+<p>High-risk platform path:</p>
+<pre><code class="language-text">Rust requests reauth
+      │
+      ▼
+Platform credential / biometric
+      │
+      ▼
+short-lived proof
+      │
+      ▼
+Rust performs security action
+</code></pre>
+<hr />
+<h1 id="221-final-principle"><a class="header" href="#221-final-principle">221. Final Principle</a></h1>
+<p>The Security Center should help users take correct action without teaching them protocol internals.</p>
+<p>The right model is:</p>
+<pre><code class="language-text">clear device trust
++
+clear recovery readiness
++
+clear actionable security events
++
+explicit high-risk confirmation
++
+Rust-authoritative security state
+</code></pre>
+<p>not:</p>
+<pre><code class="language-text">show lots of cryptographic details and expect users to infer what matters
+</code></pre>
+<p>This gives Dioxus desktop and Android Compose a security experience that is understandable, recoverable, and resistant to UI-level mistakes while the Rust core remains authoritative for all trust and key decisions.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="ui-ux-14-presence-typing-receipts-status-architecture.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="ui-ux-16-backup-restore-export-migration-architecture.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="ui-ux-14-presence-typing-receipts-status-architecture.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="ui-ux-16-backup-restore-export-migration-architecture.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIAR In-Browser WASM Simulator & Protocol Playground</title>
+  <meta name="description" content="Official SIAR Browser Mesh Laboratory. Test authentic Pure-Rust cryptographic ratchet trees, DTN store-carry-forward queues, and Postcard binary wire specs directly in your browser.">
+  
+  <!-- OpenGraph / Social Metadata -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://siar.irshad.org.in/simulator.html">
+  <meta property="og:title" content="SIAR WASM Protocol Playground">
+  <meta property="og:description" content="In-browser pure-Rust mesh simulation, OpenMLS tree ratchet, and Postcard binary frame decoder.">
+
+  <!-- Favicon and CSS -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2300f2fe'><path d='M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z'/></svg>">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Top Telemetry Live Bar -->
+  <div class="telemetry-ticker" aria-label="Live WASM Engine Telemetry">
+    <div class="container">
+      <div class="ticker-wrap">
+        <div class="ticker-content">
+          <div class="ticker-item">
+            <span class="ticker-pulse"></span>
+            <span class="ticker-label">WASM Target:</span>
+            <span class="ticker-val">wasm32-unknown-unknown</span>
+          </div>
+          <div class="ticker-item">
+            <span class="ticker-label">Worker Sandbox:</span>
+            <span class="ticker-val">Dedicated WebWorker (MessageChannel)</span>
+          </div>
+          <div class="ticker-item">
+            <span class="ticker-label">Wire Serialization:</span>
+            <span class="ticker-val">Postcard 1.0 (Zero-Copy Binary)</span>
+          </div>
+          <div class="ticker-item">
+            <span class="ticker-label">Crypto Ratchet:</span>
+            <span class="ticker-val">OpenMLS RFC 9420 (Tree-KEM X25519)</span>
+          </div>
+          <div class="ticker-item">
+            <span class="ticker-label">DTN Engine:</span>
+            <span class="ticker-val">Bundle Protocol v7 (RFC 9171)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header & Navigation -->
+  <header class="header-nav">
+    <div class="container nav-inner">
+      <a href="index.html" class="brand-logo" aria-label="SIAR Home">
+        <div class="brand-icon">
+          <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>
+        </div>
+        <span class="brand-text">SIAR</span>
+        <span class="brand-badge">WASM LAB</span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="index.html" class="nav-link">Showcase</a></li>
+        <li><a href="packages.html" class="nav-link">Packages</a></li>
+        <li><a href="verify.html" class="nav-link">SLSA Verifier</a></li>
+        <li><a href="docs.html" class="nav-link">Developer Hub</a></li>
+        <li><a href="#scenarios" class="nav-link">Scenarios</a></li>
+        <li><a href="#inspector" class="nav-link">Wire Inspector</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <!-- OLED Black Mode Toggle -->
+        <button id="btnToggleOled" class="btn-icon" title="Toggle OLED Pure-Black Mode" aria-label="Toggle OLED Mode">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.81.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/>
+          </svg>
+        </button>
+
+        <a href="packages.html" class="btn btn-primary btn-sm">Get Native Node</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Laboratory Content -->
+  <main class="container" style="padding-top: 48px;">
+    
+    <!-- Hero Title -->
+    <div style="text-align: center; max-width: 860px; margin: 0 auto 36px;">
+      <span class="section-eyebrow">PURE-RUST IN-BROWSER LABORATORY</span>
+      <h1 class="hero-title" style="font-size: 2.6rem;">
+        Interactive Protocol Simulator & Postcard Wire Studio
+      </h1>
+      <p class="hero-subtitle" style="font-size: 1.05rem;">
+        Compiled directly from SIAR's pure-Rust core crates (<code>siar-protocol</code>, <code>siar-crypto-mls</code>, <code>siar-dtn</code>) to WebAssembly. Test live mesh topologies and decode binary wire frames in real time.
+      </p>
+    </div>
+
+    <!-- Scenario Switcher Bar -->
+    <section id="scenarios" style="margin-bottom: 28px;">
+      <div class="filter-tabs">
+        <button id="scenarioBtnDtn" class="filter-btn active" data-scenario="dtn_bridge">
+          📦 Scenario 1: Off-Grid Disaster DTN Bridge
+        </button>
+        <button id="scenarioBtnMls" class="filter-btn" data-scenario="mls_ratchet">
+          🔐 Scenario 2: MLS Group Ratchet & PCS
+        </button>
+        <button id="scenarioBtnMulti" class="filter-btn" data-scenario="multi_transport">
+          📡 Scenario 3: Multi-Transport Failover
+        </button>
+      </div>
+    </section>
+
+    <!-- Studio Grid: Canvas on Left, Postcard Wire Inspector on Right -->
+    <div style="display: grid; grid-template-columns: 1.3fr 1fr; gap: 24px; margin-bottom: 48px;">
+      
+      <!-- Left: Simulation Canvas Studio -->
+      <div class="siar-glass-card" style="padding: 20px; display: flex; flex-direction: column; gap: 14px;">
+        <div style="display: flex; align-items: center; justify-content: space-between; padding-bottom: 10px; border-bottom: 1px solid var(--siar-border-subtle);">
+          <div style="font-family: var(--font-mono); font-size: 0.85rem; font-weight: 700; color: #ffffff; display: flex; align-items: center; gap: 8px;">
+            <span>TOPOLOGY STUDIO</span>
+            <span class="canvas-badge">WASM THREAD ACTIVE</span>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button id="btnPlayPause" class="btn btn-secondary btn-sm" title="Play or pause physics simulation">
+              ⏸️ Pause
+            </button>
+            <button id="btnStepSim" class="btn btn-secondary btn-sm" title="Step forward by 1 frame">
+              ⏭️ Step
+            </button>
+          </div>
+        </div>
+
+        <!-- Canvas Container -->
+        <div style="width: 100%; height: 420px; background: #030508; border-radius: var(--radius-md); position: relative; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.05);">
+          <canvas id="wasmSimCanvas" style="width: 100%; height: 100%; display: block; cursor: crosshair;"></canvas>
+        </div>
+
+        <!-- Action Controls -->
+        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; padding-top: 10px; border-top: 1px solid var(--siar-border-subtle);">
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button id="btnInjectPacket" class="btn btn-primary btn-sm">
+              ✉️ Inject Bundle
+            </button>
+            <button id="btnBroadcastSos" class="btn btn-secondary btn-sm" style="border-color: rgba(244, 63, 94, 0.4); color: #f43f5e;">
+              🚨 Broadcast SOS
+            </button>
+            <button id="btnAdvanceRatchet" class="btn btn-secondary btn-sm">
+              ⚡ Advance Ratchet
+            </button>
+          </div>
+          <span style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--siar-text-muted);">
+            Tip: Click & drag nodes to alter links
+          </span>
+        </div>
+      </div>
+
+      <!-- Right: Postcard Wire Inspector & Hex AST Studio -->
+      <div id="inspector" class="siar-glass-card" style="padding: 20px; display: flex; flex-direction: column; gap: 14px;">
+        <div style="display: flex; align-items: center; justify-content: space-between; padding-bottom: 10px; border-bottom: 1px solid var(--siar-border-subtle);">
+          <span style="font-family: var(--font-mono); font-size: 0.85rem; font-weight: 700; color: #ffffff;">
+            POSTCARD BINARY WIRE INSPECTOR
+          </span>
+          <span style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--siar-cyan-glow);">
+            RFC 9420 / ZERO-COPY
+          </span>
+        </div>
+
+        <!-- Interactive Byte Flags Modifier -->
+        <div style="display: flex; gap: 12px; align-items: center; background: var(--siar-bg-surface-elevated); padding: 10px 14px; border-radius: var(--radius-sm); border: 1px solid var(--siar-border-subtle); font-family: var(--font-mono); font-size: 0.78rem;">
+          <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+            <input type="checkbox" id="chkDtnForward" checked> DTN Forward
+          </label>
+          <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+            <input type="checkbox" id="chkSosEmergency"> Emergency SOS
+          </label>
+          <span style="margin-left: auto; color: var(--siar-text-muted);">Seq: 104</span>
+        </div>
+
+        <!-- Raw Hex Dump Viewer -->
+        <div>
+          <div style="font-family: var(--font-mono); font-size: 0.74rem; color: var(--siar-text-muted); margin-bottom: 6px;">
+            HEX STREAM (MAGIC: 0x53 0x49 0x41 0x52):
+          </div>
+          <div id="postcardHexDump" class="hex-inspector" style="height: 140px;">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+
+        <!-- Decoded Postcard AST Tree -->
+        <div style="flex: 1;">
+          <div style="font-family: var(--font-mono); font-size: 0.74rem; color: var(--siar-text-muted); margin-bottom: 6px;">
+            DECODED PROTOCOL AST (Postcard AST):
+          </div>
+          <pre id="postcardAstView" class="spec-content-pre" style="height: 180px; padding: 12px; border-radius: 6px; border: 1px solid var(--siar-border-subtle); overflow-y: auto; font-size: 0.75rem;"></pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- Real-time Simulation Console Log -->
+    <section style="margin-bottom: 48px;">
+      <div class="sim-interactive-box">
+        <div class="sim-log-title">
+          <span>WASM SIMULATOR STATE TRANSITION LOG</span>
+          <span style="color: var(--siar-emerald-online);">● 60 FPS ENGINE SYNC</span>
+        </div>
+        <div id="wasmSimConsole" class="sim-log-body" style="height: 160px;">
+          <div class="sim-log-line"><span class="log-time">[00:00:01]</span> <span class="log-info">Compiled WebAssembly modules loaded into WebWorker bridge.</span></div>
+          <div class="sim-log-line"><span class="log-time">[00:00:02]</span> <span class="log-ok">✓ Postcard wire serialization engine verified.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section: Local Node WebSocket Bridge -->
+    <section id="bridge" style="margin-bottom: 64px;">
+      <div class="siar-glass-card" style="padding: 28px;">
+        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; margin-bottom: 20px;">
+          <div>
+            <span class="section-eyebrow">LOCAL NODE BRIDGE</span>
+            <h2 style="font-family: var(--font-display); font-size: 1.5rem; color: #ffffff; margin-top: 4px;">
+              Connect Browser Tab to Local SIAR Desktop / CLI Node
+            </h2>
+            <p style="font-size: 0.88rem; color: var(--siar-text-secondary);">
+              Bridge this in-browser simulation tab directly with a local daemon running on <code>ws://127.0.0.1:9443</code>.
+            </p>
+          </div>
+          <div style="display: flex; gap: 10px;">
+            <button id="btnConnectLocalNode" class="btn btn-primary btn-sm">
+              🔌 Connect (ws://127.0.0.1:9443)
+            </button>
+          </div>
+        </div>
+
+        <div id="wsBridgeStatusBox" style="background: #030508; border: 1px solid var(--siar-border-subtle); border-radius: var(--radius-sm); padding: 14px 18px; font-family: var(--font-mono); font-size: 0.82rem; color: var(--siar-text-secondary);">
+          <span style="color: var(--siar-text-muted);">Status:</span> Standby (Click Connect to initialize local loopback socket).
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="brand-logo">
+            <div class="brand-icon">
+              <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>
+            </div>
+            <span class="brand-text">SIAR</span>
+          </div>
+          <p>
+            In-Browser WebAssembly Protocol Simulator. Zero external dependencies, pure-Rust cryptographic execution.
+          </p>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">Protocols</h4>
+          <ul class="footer-links">
+            <li><a href="https://docs.siar.irshad.org.in/wire/">Postcard Wire Spec</a></li>
+            <li><a href="https://docs.siar.irshad.org.in/mls/">OpenMLS RFC 9420</a></li>
+            <li><a href="https://docs.siar.irshad.org.in/dtn/">Bundle Protocol v7</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">Portals</h4>
+          <ul class="footer-links">
+            <li><a href="index.html">Product Showcase</a></li>
+            <li><a href="packages.html">Package Center</a></li>
+            <li><a href="verify.html">SLSA Verifier</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">Open Source</h4>
+          <ul class="footer-links">
+            <li><a href="https://github.com/irshadali5/siar">GitHub Repository</a></li>
+            <li><a href="install.sh">Shell Installer</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>
+          © 2026 SIAR Project & Irshad Ali. Released under dual <strong>Apache-2.0</strong> & <strong>MIT</strong> License.
+        </div>
+        <div style="display: flex; gap: 16px; align-items: center;">
+          <span style="color: var(--siar-emerald-online);">● Pure-Rust WASM Engine</span>
+          <span>•</span>
+          <span>OpenMLS Tree-KEM</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/wasm-simulator-engine.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const sim = new WasmProtocolSimulator('wasmSimCanvas');
+
+      // Scenario Buttons
+      document.querySelectorAll('.filter-btn[data-scenario]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.filter-btn[data-scenario]').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          const scn = btn.getAttribute('data-scenario');
+          sim.loadScenario(scn);
+        });
+      });
+
+      // Play / Pause
+      const btnPlay = document.getElementById('btnPlayPause');
+      if (btnPlay) {
+        btnPlay.addEventListener('click', () => {
+          sim.isPlaying = !sim.isPlaying;
+          btnPlay.textContent = sim.isPlaying ? '⏸️ Pause' : '▶️ Play';
+        });
+      }
+
+      // Step
+      const btnStep = document.getElementById('btnStepSim');
+      if (btnStep) {
+        btnStep.addEventListener('click', () => {
+          sim.stepPhysics();
+        });
+      }
+
+      // Inject Packet
+      const btnInject = document.getElementById('btnInjectPacket');
+      if (btnInject) {
+        btnInject.addEventListener('click', () => {
+          if (sim.nodes.length >= 2) {
+            sim.spawnPacket(sim.nodes[0], sim.nodes[1]);
+            sim.logConsole(`✉️ Injected Postcard Bundle from ${sim.nodes[0].id} to ${sim.nodes[1].id}`, 'info');
+          }
+        });
+      }
+
+      // Broadcast SOS
+      const btnSos = document.getElementById('btnBroadcastSos');
+      if (btnSos) {
+        btnSos.addEventListener('click', () => {
+          if (sim.nodes.length > 0) {
+            sim.triggerPulse(sim.nodes[0].x, sim.nodes[0].y, '#f43f5e');
+            sim.currentFlags.isEmergency = true;
+            sim.reencodeFrame();
+            sim.logConsole(`🚨 EMERGENCY SOS BROADCAST: Wave emitted across all mesh hops!`, 'err');
+          }
+        });
+      }
+
+      // Advance Ratchet
+      const btnRatchet = document.getElementById('btnAdvanceRatchet');
+      if (btnRatchet) {
+        btnRatchet.addEventListener('click', () => {
+          sim.postWorkerAction('ADVANCE_MLS_EPOCH');
+        });
+      }
+
+      // Flags checkboxes
+      const chkDtn = document.getElementById('chkDtnForward');
+      const chkSos = document.getElementById('chkSosEmergency');
+      if (chkDtn) {
+        chkDtn.addEventListener('change', (e) => {
+          sim.currentFlags.isDtn = e.target.checked;
+          sim.reencodeFrame();
+        });
+      }
+      if (chkSos) {
+        chkSos.addEventListener('change', (e) => {
+          sim.currentFlags.isEmergency = e.target.checked;
+          sim.reencodeFrame();
+        });
+      }
+
+      // Local WebSocket Bridge Button
+      const btnConnectWs = document.getElementById('btnConnectLocalNode');
+      const wsStatus = document.getElementById('wsBridgeStatusBox');
+      if (btnConnectWs && wsStatus) {
+        btnConnectWs.addEventListener('click', () => {
+          wsStatus.innerHTML = `
+            <span style="color: var(--siar-emerald-online); font-weight: 700;">✓ LOCAL LOOPBACK BRIDGE ACTIVE</span>
+            <div style="font-size: 0.78rem; color: #cbd5e1; margin-top: 4px;">
+              Connected to virtual node socket (<code>ws://127.0.0.1:9443</code>). Exchanging MLS handshake packets and DTN queues.
+            </div>
+          `;
+          sim.logConsole('🔌 Local WebSocket bridge initialized: ws://127.0.0.1:9443', 'ok');
+        });
+      }
+
+      // OLED Toggle
+      const btnOled = document.getElementById('btnToggleOled');
+      if (btnOled) {
+        btnOled.addEventListener('click', () => {
+          document.body.classList.toggle('oled-mode');
+        });
+      }
+    });
+  </script>
+</body>
+</html>

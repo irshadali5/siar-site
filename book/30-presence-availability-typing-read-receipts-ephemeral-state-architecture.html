@@ -1,0 +1,2324 @@
+<!DOCTYPE HTML>
+<html lang="en" class="navy" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>30 — Presence, Availability, Typing &amp; Read Receipts - SIAR System Architecture &amp; Technical Wiki</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="Comprehensive system architecture, cryptographic protocols, DTN mesh networking, distributed storage, audio DSP pipelines, and UI/UX design specifications for SIAR.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="theme/custom.css">
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "navy";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('navy')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="Home.html">Architecture Portal & Reading Guide</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part I: Protocol Foundation & Extension Platform</li><li class="chapter-item expanded "><a href="01-protocol-extension-system-architecture.html"><strong aria-hidden="true">1.</strong> 01 — Protocol Extension System Architecture</a></li><li class="chapter-item expanded "><a href="07-capability-negotiation-architecture.html"><strong aria-hidden="true">2.</strong> 07 — Capability Negotiation & Protocol Upgrades</a></li><li class="chapter-item expanded "><a href="21-third-party-protocol-extensions-architecture.html"><strong aria-hidden="true">3.</strong> 21 — Third-Party Protocol Extensions</a></li><li class="chapter-item expanded "><a href="22-wasm-compatible-components-architecture.html"><strong aria-hidden="true">4.</strong> 22 — WebAssembly (WASM) Compatible Components</a></li><li class="chapter-item expanded "><a href="23-external-interoperability-suite-architecture.html"><strong aria-hidden="true">5.</strong> 23 — External Interoperability & Conformance Suite</a></li><li class="chapter-item expanded "><a href="24-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">6.</strong> 24 — Dynamic Plugin & Module Ecosystem</a></li><li class="chapter-item expanded affix "><li class="part-title">Part II: Identity, Trust & Cryptography</li><li class="chapter-item expanded "><a href="02-multi-device-identity-architecture.html"><strong aria-hidden="true">7.</strong> 02 — Multi-Device Identity & Trust Model</a></li><li class="chapter-item expanded "><a href="28-production-security-e2ee-key-management-privacy-architecture.html"><strong aria-hidden="true">8.</strong> 28 — Production Security, E2EE, Key Management & Privacy</a></li><li class="chapter-item expanded affix "><li class="part-title">Part III: Mesh Networking, Transports & Hardware</li><li class="chapter-item expanded "><a href="03-transport-routing-policy-engine-architecture.html"><strong aria-hidden="true">9.</strong> 03 — Transport & Routing Policy Engine</a></li><li class="chapter-item expanded "><a href="11-relay-self-hosted-infrastructure-architecture.html"><strong aria-hidden="true">10.</strong> 11 — Self-Hosted Relay & Coordination Infrastructure</a></li><li class="chapter-item expanded "><a href="12-multipath-networking-architecture.html"><strong aria-hidden="true">11.</strong> 12 — Multipath Networking & Link Aggregation</a></li><li class="chapter-item expanded "><a href="13-battery-aware-scheduling-architecture.html"><strong aria-hidden="true">12.</strong> 13 — Battery-Aware Scheduling & Power Profiles</a></li><li class="chapter-item expanded "><a href="14-proximity-abstraction-architecture.html"><strong aria-hidden="true">13.</strong> 14 — Proximity Abstraction (BLE, Wi-Fi Direct, LoRa)</a></li><li class="chapter-item expanded "><a href="15-qr-nfc-bootstrap-pairing-architecture.html"><strong aria-hidden="true">14.</strong> 15 — Out-of-Band QR & NFC Bootstrap Pairing</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IV: Delay-Tolerant Networking & Emergency Mesh</li><li class="chapter-item expanded "><a href="06-dtn-store-carry-forward-architecture.html"><strong aria-hidden="true">15.</strong> 06 — DTN Store-Carry-Forward & Bundle Forwarding</a></li><li class="chapter-item expanded "><a href="17-emergency-priority-classes-architecture.html"><strong aria-hidden="true">16.</strong> 17 — Emergency Priority Classes & Critical Alert Mesh</a></li><li class="chapter-item expanded affix "><li class="part-title">Part V: Storage, Outbox & Data Lifecycle</li><li class="chapter-item expanded "><a href="04-offline-event-log-architecture.html"><strong aria-hidden="true">17.</strong> 04 — Offline Event Log & Sync Engine</a></li><li class="chapter-item expanded "><a href="05-robust-file-blob-subsystem-architecture.html"><strong aria-hidden="true">18.</strong> 05 — Robust File & Blob Subsystem (Chunking & Resumption)</a></li><li class="chapter-item expanded "><a href="09-crash-recovery-architecture.html"><strong aria-hidden="true">19.</strong> 09 — Crash Recovery & State Integrity</a></li><li class="chapter-item expanded "><a href="32-search-indexing-local-knowledge-privacy-architecture.html"><strong aria-hidden="true">20.</strong> 32 — Search, Indexing & Local Privacy Retrieval</a></li><li class="chapter-item expanded "><a href="33-backup-restore-export-import-archival-portability-architecture.html"><strong aria-hidden="true">21.</strong> 33 — Backup, Restore, Export & Long-Term Archival</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VI: Realtime Media, Calling & Audio DSP</li><li class="chapter-item expanded "><a href="25-android-direct-hardware-surface-zero-copy-media-architecture.html"><strong aria-hidden="true">22.</strong> 25 — Android Direct Surface Zero-Copy Media</a></li><li class="chapter-item expanded "><a href="26-rust-first-audio-dsp-resampling-aec-ns-agc-architecture.html"><strong aria-hidden="true">23.</strong> 26 — Rust-First Audio DSP (AEC, NS, AGC, Resampling)</a></li><li class="chapter-item expanded "><a href="29-realtime-calls-media-session-protocol-architecture.html"><strong aria-hidden="true">24.</strong> 29 — Realtime Calls & Media Session Protocol</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VII: Ephemeral State, Presence & Notifications</li><li class="chapter-item expanded "><a href="30-presence-availability-typing-read-receipts-ephemeral-state-architecture.html" class="active"><strong aria-hidden="true">25.</strong> 30 — Presence, Availability, Typing & Read Receipts</a></li><li class="chapter-item expanded "><a href="31-notifications-push-background-delivery-lifecycle-architecture.html"><strong aria-hidden="true">26.</strong> 31 — Notifications, Push Wake & Background Delivery</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VIII: Native Runtimes, Daemons & Embedded Linux</li><li class="chapter-item expanded "><a href="16-daemon-headless-runtime-architecture.html"><strong aria-hidden="true">27.</strong> 16 — Headless Daemon & Background Runtime</a></li><li class="chapter-item expanded "><a href="19-c-abi-ffi-architecture.html"><strong aria-hidden="true">28.</strong> 19 — C-ABI FFI & Native Language Interop</a></li><li class="chapter-item expanded "><a href="20-embedded-linux-node-architecture.html"><strong aria-hidden="true">29.</strong> 20 — Embedded Linux Node & Resource-Constrained Targets</a></li><li class="chapter-item expanded "><a href="27-rust-driven-android-native-build-packaging-automation.html"><strong aria-hidden="true">30.</strong> 27 — Rust-Driven Android Native Build & Packaging Automation</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IX: Reliability, Testing, Fuzzing & Diagnostics</li><li class="chapter-item expanded "><a href="08-resource-limits-backpressure-architecture.html"><strong aria-hidden="true">31.</strong> 08 — Resource Limits, Quotas & Backpressure</a></li><li class="chapter-item expanded "><a href="10-fuzzing-protocol-test-suite-architecture.html"><strong aria-hidden="true">32.</strong> 10 — Fuzzing & Protocol Test Suite</a></li><li class="chapter-item expanded "><a href="18-network-diagnostics-path-visualization-architecture.html"><strong aria-hidden="true">33.</strong> 18 — Network Diagnostics & Path Visualization</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part X: UI/UX Client Architecture (Cross-Platform)</li><li class="chapter-item expanded "><a href="ui-ux-01-product-foundation-cross-platform-interaction-architecture.html"><strong aria-hidden="true">34.</strong> UI/UX 01 — Product UX Foundation & Cross-Platform Interaction</a></li><li class="chapter-item expanded "><a href="ui-ux-02-desktop-dioxus-app-shell-navigation-window-architecture.html"><strong aria-hidden="true">35.</strong> UI/UX 02 — Desktop Dioxus App Shell & Navigation</a></li><li class="chapter-item expanded "><a href="ui-ux-03-android-jetpack-compose-app-shell-navigation-lifecycle-architecture.html"><strong aria-hidden="true">36.</strong> UI/UX 03 — Android Jetpack Compose App Shell & Lifecycle</a></li><li class="chapter-item expanded "><a href="ui-ux-04-conversation-list-inbox-architecture.html"><strong aria-hidden="true">37.</strong> UI/UX 04 — Conversation List & Inbox UX</a></li><li class="chapter-item expanded "><a href="ui-ux-05-conversation-message-timeline-architecture.html"><strong aria-hidden="true">38.</strong> UI/UX 05 — Conversation Message Timeline UX</a></li><li class="chapter-item expanded "><a href="ui-ux-06-message-composer-attachments-voice-notes-drafts-architecture.html"><strong aria-hidden="true">39.</strong> UI/UX 06 — Message Composer, Attachments & Voice Notes</a></li><li class="chapter-item expanded "><a href="ui-ux-07-calls-realtime-media-architecture.html"><strong aria-hidden="true">40.</strong> UI/UX 07 — Calls & Realtime Media UX</a></li><li class="chapter-item expanded "><a href="ui-ux-08-contacts-requests-verification-identity-architecture.html"><strong aria-hidden="true">41.</strong> UI/UX 08 — Contacts, Requests, Verification & Identity</a></li><li class="chapter-item expanded "><a href="ui-ux-09-groups-membership-roles-architecture.html"><strong aria-hidden="true">42.</strong> UI/UX 09 — Groups, Membership & Roles UX</a></li><li class="chapter-item expanded "><a href="ui-ux-10-files-media-gallery-transfer-architecture.html"><strong aria-hidden="true">43.</strong> UI/UX 10 — Files, Media Gallery & Transfer UX</a></li><li class="chapter-item expanded "><a href="ui-ux-11-search-local-knowledge-retrieval-architecture.html"><strong aria-hidden="true">44.</strong> UI/UX 11 — Search & Local Knowledge Retrieval UX</a></li><li class="chapter-item expanded "><a href="ui-ux-12-nearby-qr-nfc-pairing-device-linking-architecture.html"><strong aria-hidden="true">45.</strong> UI/UX 12 — Nearby, QR/NFC Pairing & Device Linking UX</a></li><li class="chapter-item expanded "><a href="ui-ux-13-notifications-background-incoming-call-architecture.html"><strong aria-hidden="true">46.</strong> UI/UX 13 — Notifications, Background & Incoming Call UX</a></li><li class="chapter-item expanded "><a href="ui-ux-14-presence-typing-receipts-status-architecture.html"><strong aria-hidden="true">47.</strong> UI/UX 14 — Presence, Typing, Receipts & Status UX</a></li><li class="chapter-item expanded "><a href="ui-ux-15-security-center-devices-keys-recovery-architecture.html"><strong aria-hidden="true">48.</strong> UI/UX 15 — Security Center, Devices, Keys & Recovery UX</a></li><li class="chapter-item expanded "><a href="ui-ux-16-backup-restore-export-migration-architecture.html"><strong aria-hidden="true">49.</strong> UI/UX 16 — Backup, Restore, Export & Migration UX</a></li><li class="chapter-item expanded "><a href="ui-ux-17-emergency-sos-offline-mesh-architecture.html"><strong aria-hidden="true">50.</strong> UI/UX 17 — Emergency / SOS / Offline Mesh UX</a></li><li class="chapter-item expanded "><a href="ui-ux-18-settings-privacy-notifications-data-controls-architecture.html"><strong aria-hidden="true">51.</strong> UI/UX 18 — Settings, Privacy, Notifications & Data Controls</a></li><li class="chapter-item expanded "><a href="ui-ux-19-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">52.</strong> UI/UX 19 — Plugin & Module Ecosystem UX</a></li><li class="chapter-item expanded "><a href="ui-ux-20-diagnostics-network-paths-advanced-developer-architecture.html"><strong aria-hidden="true">53.</strong> UI/UX 20 — Diagnostics, Network Paths & Developer UX</a></li><li class="chapter-item expanded "><a href="ui-ux-21-accessibility-inclusive-interaction-architecture.html"><strong aria-hidden="true">54.</strong> UI/UX 21 — Accessibility & Inclusive Interaction</a></li><li class="chapter-item expanded "><a href="ui-ux-22-design-system-tokens-typography-icons-motion-architecture.html"><strong aria-hidden="true">55.</strong> UI/UX 22 — Design System, Tokens, Typography & Motion</a></li><li class="chapter-item expanded "><a href="ui-ux-23-responsive-adaptive-desktop-tablet-foldable-phone-layout-architecture.html"><strong aria-hidden="true">56.</strong> UI/UX 23 — Responsive & Adaptive Layouts (Desktop/Tablet/Foldable/Phone)</a></li><li class="chapter-item expanded "><a href="ui-ux-24-error-loading-empty-offline-degraded-state-architecture.html"><strong aria-hidden="true">57.</strong> UI/UX 24 — Error, Loading, Empty & Degraded-State UX</a></li><li class="chapter-item expanded "><a href="ui-ux-25-onboarding-first-run-permission-education-architecture.html"><strong aria-hidden="true">58.</strong> UI/UX 25 — Onboarding, First Run & Permission Education</a></li><li class="chapter-item expanded "><a href="ui-ux-26-performance-virtualization-large-data-ui-architecture.html"><strong aria-hidden="true">59.</strong> UI/UX 26 — Virtualization & Large-Data UI Performance</a></li><li class="chapter-item expanded "><a href="ui-ux-27-ui-testing-screenshot-interaction-release-quality-gates-architecture.html"><strong aria-hidden="true">60.</strong> UI/UX 27 — UI Testing, Screenshots & Release Quality Gates</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">SIAR System Architecture &amp; Technical Wiki</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar/edit/main/sys-arch/30-presence-availability-typing-read-receipts-ephemeral-state-architecture.md" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="part-30--presence-availability-typing-read-receipts--ephemeral-realtime-state-architecture"><a class="header" href="#part-30--presence-availability-typing-read-receipts--ephemeral-realtime-state-architecture">Part 30 — Presence, Availability, Typing, Read Receipts &amp; Ephemeral Realtime State Architecture</a></h1>
+<h2 id="reusable-p2p-communication-platform"><a class="header" href="#reusable-p2p-communication-platform">Reusable P2P Communication Platform</a></h2>
+<p><strong>Status:</strong> Architecture specification<br />
+<strong>Part:</strong> 30<br />
+<strong>Primary language:</strong> Rust<br />
+<strong>Primary purpose:</strong> define the ephemeral realtime state plane for presence, availability, typing, recording, delivery/read receipts, device activity, and short-lived conversation state without polluting durable messaging/event-log semantics<br />
+<strong>Primary goals:</strong> low-latency UX, privacy-preserving presence, multi-device aggregation, bounded fan-out, battery-aware updates, graceful offline behavior, deterministic expiry, group scalability, abuse resistance, transport independence, and clean integration with messaging, calls, DTN, E2EE, and diagnostics</p>
+<hr />
+<h1 id="1-purpose"><a class="header" href="#1-purpose">1. Purpose</a></h1>
+<p>A polished messenger needs more than durable messages.</p>
+<p>Users expect:</p>
+<pre><code class="language-text">online
+offline
+away
+last seen
+typing…
+recording voice…
+delivered
+read
+active on another device
+</code></pre>
+<p>These states are useful, but most of them are:</p>
+<pre><code class="language-text">temporary
+best-effort
+time-sensitive
+not worth durable replication
+</code></pre>
+<p>If they are implemented like normal durable messages, the system creates:</p>
+<pre><code class="language-text">unnecessary database writes
+large event logs
+battery/network overhead
+stale states
+privacy problems
+group fan-out explosions
+</code></pre>
+<p>The governing principle is:</p>
+<blockquote>
+<p><strong>Durable facts belong in the event/message system; transient hints belong in a separate bounded ephemeral-state plane.</strong></p>
+</blockquote>
+<hr />
+<h1 id="2-architectural-position"><a class="header" href="#2-architectural-position">2. Architectural Position</a></h1>
+<pre><code class="language-text">                   Dioxus UI
+                      │
+                      ▼
+              Ephemeral State View
+                      │
+             ┌────────┼────────┐
+             │        │        │
+         Presence   Typing   Receipts
+             │        │        │
+             └────────┼────────┘
+                      │
+              Ephemeral Runtime
+                      │
+         Capability / Privacy Policy
+                      │
+                 Peer Transport
+          Direct / Relay / Local Path
+</code></pre>
+<p>Durable state remains separate:</p>
+<pre><code class="language-text">Message DB
+Event Log
+Call History
+</code></pre>
+<hr />
+<h1 id="3-ephemeral-vs-durable-matrix"><a class="header" href="#3-ephemeral-vs-durable-matrix">3. Ephemeral vs Durable Matrix</a></h1>
+<div class="table-wrapper"><table><thead><tr><th>State</th><th style="text-align: right">Ephemeral?</th><th style="text-align: right">Durable?</th></tr></thead><tbody>
+<tr><td>Online now</td><td style="text-align: right">yes</td><td style="text-align: right">no</td></tr>
+<tr><td>Typing</td><td style="text-align: right">yes</td><td style="text-align: right">no</td></tr>
+<tr><td>Recording voice</td><td style="text-align: right">yes</td><td style="text-align: right">no</td></tr>
+<tr><td>Speaking in call</td><td style="text-align: right">yes</td><td style="text-align: right">no</td></tr>
+<tr><td>Delivery acknowledgement</td><td style="text-align: right">partly</td><td style="text-align: right">yes when it affects message state</td></tr>
+<tr><td>Read receipt</td><td style="text-align: right">transient transport + durable message state</td><td style="text-align: right">yes</td></tr>
+<tr><td>Last seen</td><td style="text-align: right">derived/optional</td><td style="text-align: right">maybe bounded metadata</td></tr>
+<tr><td>User block</td><td style="text-align: right">no</td><td style="text-align: right">yes</td></tr>
+<tr><td>Message sent</td><td style="text-align: right">no</td><td style="text-align: right">yes</td></tr>
+<tr><td>Device revoked</td><td style="text-align: right">no</td><td style="text-align: right">yes</td></tr>
+</tbody></table>
+</div>
+<hr />
+<h1 id="4-major-state-families"><a class="header" href="#4-major-state-families">4. Major State Families</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum EphemeralStateKind {
+    Presence,
+    Availability,
+    Typing,
+    VoiceRecording,
+    Uploading,
+    DeliveryReceipt,
+    ReadReceipt,
+    ActiveDeviceHint,
+    CallAvailability,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="5-presence"><a class="header" href="#5-presence">5. Presence</a></h1>
+<p>Presence answers:</p>
+<pre><code class="language-text">is the peer currently reachable/active?
+</code></pre>
+<p>It must not imply:</p>
+<pre><code class="language-text">guaranteed delivery
+physical location
+human attention
+</code></pre>
+<hr />
+<h1 id="6-presence-state"><a class="header" href="#6-presence-state">6. Presence State</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum PresenceState {
+    Offline,
+    Connecting,
+    Online,
+    Idle,
+    Away,
+    DoNotDisturb,
+    Invisible,
+    Unknown,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="7-unknown-vs-offline"><a class="header" href="#7-unknown-vs-offline">7. Unknown vs Offline</a></h1>
+<p>Important distinction:</p>
+<pre><code class="language-text">Offline
+</code></pre>
+<p>means the system has strong reason to believe peer is not presently reachable.</p>
+<pre><code class="language-text">Unknown
+</code></pre>
+<p>means:</p>
+<pre><code class="language-text">no fresh presence data
+</code></pre>
+<p>Do not render unknown as confidently offline.</p>
+<hr />
+<h1 id="8-presence-is-advisory"><a class="header" href="#8-presence-is-advisory">8. Presence Is Advisory</a></h1>
+<p>Message sending should not depend on presence.</p>
+<p>Correct:</p>
+<pre><code class="language-text">presence says offline
+→ message still goes to outbox/mailbox/DTN according to policy
+</code></pre>
+<p>Incorrect:</p>
+<pre><code class="language-text">presence says offline
+→ refuse message
+</code></pre>
+<hr />
+<h1 id="9-availability"><a class="header" href="#9-availability">9. Availability</a></h1>
+<p>Presence and availability are related but different.</p>
+<p>Example:</p>
+<pre><code class="language-text">online
+but
+Do Not Disturb
+</code></pre>
+<p>or:</p>
+<pre><code class="language-text">online
+but
+not accepting calls
+</code></pre>
+<hr />
+<h1 id="10-availability-state"><a class="header" href="#10-availability-state">10. Availability State</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct AvailabilityState {
+    pub presence: PresenceState,
+    pub messaging: MessagingAvailability,
+    pub calling: CallingAvailability,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="11-messaging-availability"><a class="header" href="#11-messaging-availability">11. Messaging Availability</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum MessagingAvailability {
+    Available,
+    Delayed,
+    DoNotDisturb,
+    Unknown,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="12-calling-availability"><a class="header" href="#12-calling-availability">12. Calling Availability</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum CallingAvailability {
+    Available,
+    Busy,
+    DoNotDisturb,
+    CallsDisabled,
+    Unknown,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="13-presence-scope"><a class="header" href="#13-presence-scope">13. Presence Scope</a></h1>
+<p>Presence can be:</p>
+<pre><code class="language-text">device-scoped
+account-aggregated
+conversation-scoped
+organization-scoped
+</code></pre>
+<hr />
+<h1 id="14-device-presence"><a class="header" href="#14-device-presence">14. Device Presence</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct DevicePresence {
+    pub device: DeviceId,
+    pub state: PresenceState,
+    pub last_update: MonotonicInstant,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="15-account-presence-aggregation"><a class="header" href="#15-account-presence-aggregation">15. Account Presence Aggregation</a></h1>
+<p>An account may have several devices.</p>
+<p>Example:</p>
+<pre><code class="language-text">phone offline
+desktop online
+tablet idle
+</code></pre>
+<p>UI should usually show:</p>
+<pre><code class="language-text">Online
+</code></pre>
+<p>because at least one trusted device is reachable.</p>
+<hr />
+<h1 id="16-aggregation-rule"><a class="header" href="#16-aggregation-rule">16. Aggregation Rule</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">if any device Online → Online
+else if any Idle → Idle
+else if any Away → Away
+else if all known Offline → Offline
+else → Unknown
+</code></pre>
+<hr />
+<h1 id="17-invisible-mode"><a class="header" href="#17-invisible-mode">17. Invisible Mode</a></h1>
+<p>If user selects invisible:</p>
+<pre><code class="language-text">local app may still communicate
+</code></pre>
+<p>but peers receive:</p>
+<pre><code class="language-text">no online presence
+or deliberately hidden state
+</code></pre>
+<p>according to privacy policy.</p>
+<hr />
+<h1 id="18-dnd"><a class="header" href="#18-dnd">18. DND</a></h1>
+<p>DND is not offline.</p>
+<p>Peer may still receive messages.</p>
+<p>It mostly affects:</p>
+<pre><code class="language-text">notifications
+calls
+typing/read visibility if configured
+</code></pre>
+<hr />
+<h1 id="19-presence-privacy"><a class="header" href="#19-presence-privacy">19. Presence Privacy</a></h1>
+<p>User options:</p>
+<pre><code class="language-text">Everyone
+Contacts
+Verified contacts
+Nobody
+</code></pre>
+<p>Product may support a smaller set initially.</p>
+<hr />
+<h1 id="20-per-peer-presence-privacy"><a class="header" href="#20-per-peer-presence-privacy">20. Per-Peer Presence Privacy</a></h1>
+<p>Future advanced setting:</p>
+<pre><code class="language-text">allow presence for selected peers
+</code></pre>
+<p>but avoid complex ACL UI in v1 unless needed.</p>
+<hr />
+<h1 id="21-last-seen"><a class="header" href="#21-last-seen">21. Last Seen</a></h1>
+<p><code>last_seen</code> is privacy-sensitive.</p>
+<p>Do not derive it simply from every network packet.</p>
+<hr />
+<h1 id="22-last-seen-policy"><a class="header" href="#22-last-seen-policy">22. Last Seen Policy</a></h1>
+<p>Possible:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum LastSeenVisibility {
+    Everyone,
+    Contacts,
+    Nobody,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="23-last-seen-granularity"><a class="header" href="#23-last-seen-granularity">23. Last Seen Granularity</a></h1>
+<p>To reduce tracking precision:</p>
+<pre><code class="language-text">exact minute
+coarse time
+today
+recently
+</code></pre>
+<p>Product choice.</p>
+<hr />
+<h1 id="24-coarse-last-seen"><a class="header" href="#24-coarse-last-seen">24. Coarse Last Seen</a></h1>
+<p>Privacy-friendly examples:</p>
+<pre><code class="language-text">recently
+today
+this week
+</code></pre>
+<p>instead of exact timestamp.</p>
+<hr />
+<h1 id="25-last-seen-is-optional"><a class="header" href="#25-last-seen-is-optional">25. Last Seen Is Optional</a></h1>
+<p>The system remains fully functional without storing/displaying it.</p>
+<hr />
+<h1 id="26-presence-transport"><a class="header" href="#26-presence-transport">26. Presence Transport</a></h1>
+<p>Prefer:</p>
+<pre><code class="language-text">existing secure peer channel
+</code></pre>
+<p>or lightweight gossip/presence protocol where appropriate.</p>
+<p>Do not create heavyweight connection churn just for presence.</p>
+<hr />
+<h1 id="27-presence-protocol"><a class="header" href="#27-presence-protocol">27. Presence Protocol</a></h1>
+<p>Example ALPN/logical protocol:</p>
+<pre><code class="language-text">presence/1
+</code></pre>
+<hr />
+<h1 id="28-presence-advertisement"><a class="header" href="#28-presence-advertisement">28. Presence Advertisement</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct PresenceAdvertisement {
+    pub device: ScopedDeviceId,
+    pub state: PresenceState,
+    pub revision: u64,
+    pub expires_after_ms: u32,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="29-ttl"><a class="header" href="#29-ttl">29. TTL</a></h1>
+<p>Presence must expire automatically.</p>
+<p>Example:</p>
+<pre><code class="language-text">online TTL: 30–90 s
+</code></pre>
+<p>if no refresh.</p>
+<p>Exact values tune by platform/power mode.</p>
+<hr />
+<h1 id="30-no-permanent-online-state"><a class="header" href="#30-no-permanent-online-state">30. No Permanent Online State</a></h1>
+<p>If a device crashes:</p>
+<pre><code class="language-text">presence automatically expires
+</code></pre>
+<p>without requiring explicit offline packet.</p>
+<hr />
+<h1 id="31-graceful-offline"><a class="header" href="#31-graceful-offline">31. Graceful Offline</a></h1>
+<p>On clean shutdown, may send:</p>
+<pre><code class="language-text">Offline
+</code></pre>
+<p>but correctness never depends on it.</p>
+<hr />
+<h1 id="32-presence-heartbeat"><a class="header" href="#32-presence-heartbeat">32. Presence Heartbeat</a></h1>
+<p>Refresh interval should be less than TTL.</p>
+<p>Example:</p>
+<pre><code class="language-text">refresh every 20–30 s
+TTL 60–90 s
+</code></pre>
+<p>Desktop can be more frequent than battery-constrained mobile.</p>
+<hr />
+<h1 id="33-battery-aware-presence"><a class="header" href="#33-battery-aware-presence">33. Battery-Aware Presence</a></h1>
+<p>Part 13 can reduce frequency.</p>
+<p>Example:</p>
+<pre><code class="language-text">foreground: 20 s
+background: 60 s
+battery saver: 120 s
+</code></pre>
+<p>with corresponding TTL adjustment.</p>
+<hr />
+<h1 id="34-mobile-background"><a class="header" href="#34-mobile-background">34. Mobile Background</a></h1>
+<p>Do not rely on continuous background presence heartbeats.</p>
+<p>Android/iOS may suspend the app.</p>
+<p>Presence becomes:</p>
+<pre><code class="language-text">Unknown/Offline
+</code></pre>
+<p>until push/wake/reconnect.</p>
+<hr />
+<h1 id="35-push-is-not-presence"><a class="header" href="#35-push-is-not-presence">35. Push Is Not Presence</a></h1>
+<p>Push token availability does not mean:</p>
+<pre><code class="language-text">user online
+</code></pre>
+<hr />
+<h1 id="36-direct-connection-hint"><a class="header" href="#36-direct-connection-hint">36. Direct Connection Hint</a></h1>
+<p>An active authenticated Iroh connection is useful evidence of reachability.</p>
+<p>But still separate:</p>
+<pre><code class="language-text">transport reachable
+</code></pre>
+<p>from:</p>
+<pre><code class="language-text">human active
+</code></pre>
+<hr />
+<h1 id="37-activity-state"><a class="header" href="#37-activity-state">37. Activity State</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum UserActivity {
+    Active,
+    Idle,
+    Background,
+    Unknown,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="38-ui-activity-detection"><a class="header" href="#38-ui-activity-detection">38. UI Activity Detection</a></h1>
+<p>Use local platform/UI events.</p>
+<p>Do not transmit every input event.</p>
+<hr />
+<h1 id="39-idle-threshold"><a class="header" href="#39-idle-threshold">39. Idle Threshold</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">5–15 minutes
+</code></pre>
+<p>product-configurable.</p>
+<hr />
+<h1 id="40-typing-indicator"><a class="header" href="#40-typing-indicator">40. Typing Indicator</a></h1>
+<p>Typing is:</p>
+<pre><code class="language-text">conversation-scoped
+short-lived
+best-effort
+</code></pre>
+<hr />
+<h1 id="41-typing-state"><a class="header" href="#41-typing-state">41. Typing State</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum TypingState {
+    Started,
+    Stopped,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="42-typing-event"><a class="header" href="#42-typing-event">42. Typing Event</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct TypingEvent {
+    pub conversation: ConversationId,
+    pub sender: DeviceId,
+    pub revision: u64,
+    pub expires_after_ms: u32,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="43-never-persist-typing"><a class="header" href="#43-never-persist-typing">43. Never Persist Typing</a></h1>
+<p>Do not write typing events into:</p>
+<pre><code class="language-text">SQLite history
+offline event log
+DTN
+backup
+</code></pre>
+<hr />
+<h1 id="44-typing-ttl"><a class="header" href="#44-typing-ttl">44. Typing TTL</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">3–8 seconds
+</code></pre>
+<p>without refresh.</p>
+<hr />
+<h1 id="45-typing-start"><a class="header" href="#45-typing-start">45. Typing Start</a></h1>
+<p>Send when:</p>
+<pre><code class="language-text">composer transitions empty/not-typing
+→ actively typing
+</code></pre>
+<hr />
+<h1 id="46-typing-refresh"><a class="header" href="#46-typing-refresh">46. Typing Refresh</a></h1>
+<p>Refresh periodically while typing.</p>
+<p>Do not send on every keystroke.</p>
+<hr />
+<h1 id="47-typing-stop"><a class="header" href="#47-typing-stop">47. Typing Stop</a></h1>
+<p>Send when:</p>
+<pre><code class="language-text">message sent
+composer cleared
+input loses focus
+typing idle timeout reached
+</code></pre>
+<p>But TTL remains fallback.</p>
+<hr />
+<h1 id="48-typing-throttle"><a class="header" href="#48-typing-throttle">48. Typing Throttle</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">at most 1 update per 2–3 s
+</code></pre>
+<p>per conversation/device.</p>
+<hr />
+<h1 id="49-group-typing"><a class="header" href="#49-group-typing">49. Group Typing</a></h1>
+<p>For groups, show:</p>
+<pre><code class="language-text">Alice is typing…
+Alice and Bob are typing…
+Several people are typing…
+</code></pre>
+<p>Do not render huge participant list.</p>
+<hr />
+<h1 id="50-group-typing-fan-out"><a class="header" href="#50-group-typing-fan-out">50. Group Typing Fan-Out</a></h1>
+<p>Avoid O(N²) chatter in large groups.</p>
+<p>Potential strategies:</p>
+<pre><code class="language-text">gossip topic
+group relay
+coalesced presence channel
+</code></pre>
+<p>depending group architecture.</p>
+<hr />
+<h1 id="51-typing-privacy"><a class="header" href="#51-typing-privacy">51. Typing Privacy</a></h1>
+<p>User may disable:</p>
+<pre><code class="language-text">Send typing indicators
+</code></pre>
+<p>Receiving typing can remain enabled.</p>
+<hr />
+<h1 id="52-voice-recording-indicator"><a class="header" href="#52-voice-recording-indicator">52. Voice Recording Indicator</a></h1>
+<p>When composing a voice message:</p>
+<pre><code class="language-text">Recording audio…
+</code></pre>
+<p>can be ephemeral.</p>
+<hr />
+<h1 id="53-voice-recording-state"><a class="header" href="#53-voice-recording-state">53. Voice Recording State</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum RecordingState {
+    Started,
+    Stopped,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="54-recording-privacy"><a class="header" href="#54-recording-privacy">54. Recording Privacy</a></h1>
+<p>Optional user setting.</p>
+<p>Do not transmit microphone audio until actual voice message/call pipeline does so.</p>
+<hr />
+<h1 id="55-uploading-indicator"><a class="header" href="#55-uploading-indicator">55. Uploading Indicator</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">Sending a file…
+</code></pre>
+<p>but usually local transfer progress is enough.</p>
+<p>Remote "uploading" hints should be used sparingly.</p>
+<hr />
+<h1 id="56-delivery-receipt"><a class="header" href="#56-delivery-receipt">56. Delivery Receipt</a></h1>
+<p>Delivery means:</p>
+<blockquote>
+<p>recipient device/application has durably accepted the message.</p>
+</blockquote>
+<p>Not merely:</p>
+<pre><code class="language-text">transport packet arrived
+</code></pre>
+<hr />
+<h1 id="57-receipt-stages"><a class="header" href="#57-receipt-stages">57. Receipt Stages</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum MessageReceiptState {
+    Sent,
+    Delivered,
+    Read,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="58-sent"><a class="header" href="#58-sent">58. Sent</a></h1>
+<p><code>Sent</code> means:</p>
+<pre><code class="language-text">sender successfully committed/transmitted according to sender-side semantics
+</code></pre>
+<p>Exact product semantics should align with Part 04/outbox.</p>
+<hr />
+<h1 id="59-delivered"><a class="header" href="#59-delivered">59. Delivered</a></h1>
+<p>A robust definition:</p>
+<pre><code class="language-text">recipient persisted message durably
+</code></pre>
+<p>Then it can send delivery receipt.</p>
+<hr />
+<h1 id="60-transport-ack-is-not-delivery-receipt"><a class="header" href="#60-transport-ack-is-not-delivery-receipt">60. Transport ACK Is Not Delivery Receipt</a></h1>
+<p>Do not confuse:</p>
+<pre><code class="language-text">QUIC stream write ACK
+</code></pre>
+<p>with:</p>
+<pre><code class="language-text">recipient application stored message
+</code></pre>
+<hr />
+<h1 id="61-delivery-receipt-event"><a class="header" href="#61-delivery-receipt-event">61. Delivery Receipt Event</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct DeliveryReceipt {
+    pub conversation: ConversationId,
+    pub through_seq: MessageSequence,
+    pub receiver_device: DeviceId,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="62-cumulative-receipts"><a class="header" href="#62-cumulative-receipts">62. Cumulative Receipts</a></h1>
+<p>Instead of:</p>
+<pre><code class="language-text">one receipt per message
+</code></pre>
+<p>prefer:</p>
+<pre><code class="language-text">delivered through sequence N
+</code></pre>
+<p>where sequence model permits.</p>
+<hr />
+<h1 id="63-sparse-receipt"><a class="header" href="#63-sparse-receipt">63. Sparse Receipt</a></h1>
+<p>If ordering/gaps exist, use:</p>
+<pre><code class="language-text">through N
++
+exceptions
+</code></pre>
+<p>or explicit message IDs for unusual cases.</p>
+<hr />
+<h1 id="64-read-receipt"><a class="header" href="#64-read-receipt">64. Read Receipt</a></h1>
+<p>Read means:</p>
+<pre><code class="language-text">message crossed product-defined read threshold
+</code></pre>
+<p>not simply:</p>
+<pre><code class="language-text">app received it
+</code></pre>
+<hr />
+<h1 id="65-read-threshold"><a class="header" href="#65-read-threshold">65. Read Threshold</a></h1>
+<p>Possible definition:</p>
+<pre><code class="language-text">conversation visible
+message rendered/within viewport
+app foreground
+</code></pre>
+<p>Use a clear rule.</p>
+<hr />
+<h1 id="66-read-through-sequence"><a class="header" href="#66-read-through-sequence">66. Read-Through Sequence</a></h1>
+<p>Prefer:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct ReadReceipt {
+    pub conversation: ConversationId,
+    pub through_seq: MessageSequence,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="67-read-receipt-privacy"><a class="header" href="#67-read-receipt-privacy">67. Read Receipt Privacy</a></h1>
+<p>User setting:</p>
+<pre><code class="language-text">Send read receipts
+</code></pre>
+<p>If disabled:</p>
+<pre><code class="language-text">do not transmit read status
+</code></pre>
+<p>except possibly organization-managed policy if explicitly configured.</p>
+<hr />
+<h1 id="68-group-read-receipts"><a class="header" href="#68-group-read-receipts">68. Group Read Receipts</a></h1>
+<p>Scaling challenge.</p>
+<p>For small groups:</p>
+<pre><code class="language-text">per-member read state
+</code></pre>
+<p>For large groups:</p>
+<pre><code class="language-text">read count
+or
+limited visible participants
+</code></pre>
+<p>depending product.</p>
+<hr />
+<h1 id="69-group-receipt-storage"><a class="header" href="#69-group-receipt-storage">69. Group Receipt Storage</a></h1>
+<p>Do not create one DB row per member/message unnecessarily.</p>
+<p>Use cumulative state:</p>
+<pre><code class="language-text">member X read through sequence N
+</code></pre>
+<hr />
+<h1 id="70-receipt-durability"><a class="header" href="#70-receipt-durability">70. Receipt Durability</a></h1>
+<p>Unlike typing, delivery/read status modifies durable message state.</p>
+<p>Therefore:</p>
+<pre><code class="language-text">receipt transport event
+</code></pre>
+<p>may be ephemeral in transit, but its resulting state should persist.</p>
+<hr />
+<h1 id="71-receipt-retry"><a class="header" href="#71-receipt-retry">71. Receipt Retry</a></h1>
+<p>If receipt packet lost:</p>
+<pre><code class="language-text">next cumulative receipt supersedes it
+</code></pre>
+<p>This reduces retry complexity.</p>
+<hr />
+<h1 id="72-idempotency"><a class="header" href="#72-idempotency">72. Idempotency</a></h1>
+<p>Applying same receipt repeatedly must be safe.</p>
+<hr />
+<h1 id="73-monotonicity"><a class="header" href="#73-monotonicity">73. Monotonicity</a></h1>
+<p>Read state must only move forward.</p>
+<pre><code class="language-text">ReadThrough 105
+</code></pre>
+<p>followed by stale:</p>
+<pre><code class="language-text">ReadThrough 99
+</code></pre>
+<p>must not regress.</p>
+<hr />
+<h1 id="74-device-level-receipts"><a class="header" href="#74-device-level-receipts">74. Device-Level Receipts</a></h1>
+<p>Multi-device recipient may read on phone but desktop has not.</p>
+<p>Logical account read semantics:</p>
+<pre><code class="language-text">if any authorized device reads
+→ account considered read
+</code></pre>
+<p>is common.</p>
+<hr />
+<h1 id="75-multi-device-receipt-aggregation"><a class="header" href="#75-multi-device-receipt-aggregation">75. Multi-Device Receipt Aggregation</a></h1>
+<p>Maintain device state internally if useful.</p>
+<p>Expose account-level result to sender.</p>
+<hr />
+<h1 id="76-self-sync"><a class="header" href="#76-self-sync">76. Self-Sync</a></h1>
+<p>Recipient's other devices should learn:</p>
+<pre><code class="language-text">read through N
+</code></pre>
+<p>so unread badges remain consistent.</p>
+<hr />
+<h1 id="77-own-device-read-sync"><a class="header" href="#77-own-device-read-sync">77. Own-Device Read Sync</a></h1>
+<p>This is durable account/device sync, not peer-facing typing.</p>
+<hr />
+<h1 id="78-delivery-across-devices"><a class="header" href="#78-delivery-across-devices">78. Delivery Across Devices</a></h1>
+<p>If message delivered to one recipient device:</p>
+<pre><code class="language-text">Delivered
+</code></pre>
+<p>may be shown.</p>
+<p>If product wants stronger semantics:</p>
+<pre><code class="language-text">delivered to all devices
+</code></pre>
+<p>can be advanced detail.</p>
+<hr />
+<h1 id="79-receipt-privacy-boundary"><a class="header" href="#79-receipt-privacy-boundary">79. Receipt Privacy Boundary</a></h1>
+<p>Sender should not learn:</p>
+<pre><code class="language-text">which exact device read
+</code></pre>
+<p>unless product intentionally exposes it.</p>
+<p>Prefer account-level receipt.</p>
+<hr />
+<h1 id="80-active-device-hint"><a class="header" href="#80-active-device-hint">80. Active Device Hint</a></h1>
+<p>Optional local-account feature:</p>
+<pre><code class="language-text">Active on Desktop
+</code></pre>
+<p>for user's own devices.</p>
+<p>Do not expose device-level activity to arbitrary contacts by default.</p>
+<hr />
+<h1 id="81-call-availability"><a class="header" href="#81-call-availability">81. Call Availability</a></h1>
+<p>Part 29 can consume:</p>
+<pre><code class="language-text">CallingAvailability
+</code></pre>
+<p>to influence UI.</p>
+<p>Presence does not guarantee call acceptance.</p>
+<hr />
+<h1 id="82-busy-state"><a class="header" href="#82-busy-state">82. Busy State</a></h1>
+<p>If user is already in a call:</p>
+<pre><code class="language-text">Busy
+</code></pre>
+<p>may be advertised according to privacy.</p>
+<hr />
+<h1 id="83-presence-during-calls"><a class="header" href="#83-presence-during-calls">83. Presence During Calls</a></h1>
+<p>Could show:</p>
+<pre><code class="language-text">Online
+</code></pre>
+<p>rather than:</p>
+<pre><code class="language-text">In a call
+</code></pre>
+<p>unless user explicitly allows call-state visibility.</p>
+<hr />
+<h1 id="84-sensitive-presence-metadata"><a class="header" href="#84-sensitive-presence-metadata">84. Sensitive Presence Metadata</a></h1>
+<p>Avoid exposing:</p>
+<pre><code class="language-text">screen on
+app foreground
+device model
+network type
+exact battery
+</code></pre>
+<p>to peers.</p>
+<hr />
+<h1 id="85-scoped-presence"><a class="header" href="#85-scoped-presence">85. Scoped Presence</a></h1>
+<p>Remote peers need only semantic state.</p>
+<hr />
+<h1 id="86-presence-e2ee"><a class="header" href="#86-presence-e2ee">86. Presence E2EE</a></h1>
+<p>Presence for trusted peers should travel over authenticated encrypted channels.</p>
+<p>Public presence, if ever added, needs a separate privacy/security model.</p>
+<hr />
+<h1 id="87-presence-authentication"><a class="header" href="#87-presence-authentication">87. Presence Authentication</a></h1>
+<p>Reject spoofed:</p>
+<pre><code class="language-text">Alice is online
+</code></pre>
+<p>unless signed/session-authenticated by Alice's authorized device.</p>
+<hr />
+<h1 id="88-presence-revision"><a class="header" href="#88-presence-revision">88. Presence Revision</a></h1>
+<p>Each device maintains monotonic:</p>
+<pre><code class="language-text">revision
+</code></pre>
+<p>during an incarnation.</p>
+<p>Higher revision supersedes lower.</p>
+<hr />
+<h1 id="89-restart-handling"><a class="header" href="#89-restart-handling">89. Restart Handling</a></h1>
+<p>After process restart, revision can reset only if paired with:</p>
+<pre><code class="language-text">DeviceInstanceId/session incarnation
+</code></pre>
+<p>or a fresh presence epoch.</p>
+<hr />
+<h1 id="90-presence-epoch"><a class="header" href="#90-presence-epoch">90. Presence Epoch</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct PresenceEpoch(pub u64);
+<span class="boring">}</span></code></pre></pre>
+<p>or random session instance ID.</p>
+<hr />
+<h1 id="91-stale-presence"><a class="header" href="#91-stale-presence">91. Stale Presence</a></h1>
+<p>If old presence arrives after a new epoch:</p>
+<pre><code class="language-text">ignore
+</code></pre>
+<hr />
+<h1 id="92-ephemeral-envelope"><a class="header" href="#92-ephemeral-envelope">92. Ephemeral Envelope</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct EphemeralEnvelope {
+    pub kind: EphemeralStateKind,
+    pub source: ScopedDeviceId,
+    pub revision: u64,
+    pub expires_after_ms: u32,
+    pub payload: Bytes,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="93-ttl-validation"><a class="header" href="#93-ttl-validation">93. TTL Validation</a></h1>
+<p>Remote cannot set:</p>
+<pre><code class="language-text">24-hour typing TTL
+</code></pre>
+<p>Host clamps per event kind.</p>
+<hr />
+<h1 id="94-max-ttl-policy"><a class="header" href="#94-max-ttl-policy">94. Max TTL Policy</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">typing ≤ 10 s
+recording ≤ 15 s
+presence ≤ 180 s
+</code></pre>
+<p>Exact values product-configured.</p>
+<hr />
+<h1 id="95-ephemeral-state-table"><a class="header" href="#95-ephemeral-state-table">95. Ephemeral State Table</a></h1>
+<p>In memory:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct EphemeralStateStore {
+    // key → value + expiry
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="96-no-primary-db-requirement"><a class="header" href="#96-no-primary-db-requirement">96. No Primary DB Requirement</a></h1>
+<p>Most ephemeral state lives:</p>
+<pre><code class="language-text">memory only
+</code></pre>
+<hr />
+<h1 id="97-optional-bounded-presence-cache"><a class="header" href="#97-optional-bounded-presence-cache">97. Optional Bounded Presence Cache</a></h1>
+<p>Could persist:</p>
+<pre><code class="language-text">last seen coarse timestamp
+</code></pre>
+<p>if feature enabled.</p>
+<p>Typing/recording never persisted.</p>
+<hr />
+<h1 id="98-expiry-scheduler"><a class="header" href="#98-expiry-scheduler">98. Expiry Scheduler</a></h1>
+<p>Use efficient timer wheel/min-heap instead of one Tokio task per ephemeral item.</p>
+<hr />
+<h1 id="99-timer-wheel"><a class="header" href="#99-timer-wheel">99. Timer Wheel</a></h1>
+<p>Useful at scale:</p>
+<pre><code class="language-text">presence
+typing
+group indicators
+</code></pre>
+<hr />
+<h1 id="100-expiry-event"><a class="header" href="#100-expiry-event">100. Expiry Event</a></h1>
+<p>When TTL ends:</p>
+<pre><code class="language-text">state removed
+UI notified
+</code></pre>
+<p>No network packet required.</p>
+<hr />
+<h1 id="101-coalescing"><a class="header" href="#101-coalescing">101. Coalescing</a></h1>
+<p>If presence updates:</p>
+<pre><code class="language-text">Online rev 10
+Online rev 11
+Online rev 12
+</code></pre>
+<p>only latest matters.</p>
+<hr />
+<h1 id="102-bounded-channel"><a class="header" href="#102-bounded-channel">102. Bounded Channel</a></h1>
+<p>Use bounded async channel for ephemeral updates.</p>
+<hr />
+<h1 id="103-backpressure-policy"><a class="header" href="#103-backpressure-policy">103. Backpressure Policy</a></h1>
+<p>If overloaded:</p>
+<pre><code class="language-text">drop stale typing
+coalesce presence
+preserve durable receipts
+</code></pre>
+<hr />
+<h1 id="104-priority"><a class="header" href="#104-priority">104. Priority</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">delivery/read receipts
+presence
+typing
+recording
+low-value UI hints
+</code></pre>
+<p>But durable message/control/call traffic still outranks most ephemeral state.</p>
+<hr />
+<h1 id="105-traffic-priority-relative-to-core"><a class="header" href="#105-traffic-priority-relative-to-core">105. Traffic Priority Relative to Core</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">Call control
+Audio
+Security
+Message delivery
+Receipts
+Presence
+Typing
+Bulk files
+Background sync
+</code></pre>
+<p>Exact ordering depends product, but typing should never delay a message.</p>
+<hr />
+<h1 id="106-battery-policy"><a class="header" href="#106-battery-policy">106. Battery Policy</a></h1>
+<p>Typing indicator can be suppressed under extreme battery/network constraints.</p>
+<p>Read receipts can batch.</p>
+<p>Presence heartbeat frequency can reduce.</p>
+<hr />
+<h1 id="107-metered-networks"><a class="header" href="#107-metered-networks">107. Metered Networks</a></h1>
+<p>Presence overhead is small, but avoid pointless chatter.</p>
+<p>Use connection/session reuse.</p>
+<hr />
+<h1 id="108-offline-behavior"><a class="header" href="#108-offline-behavior">108. Offline Behavior</a></h1>
+<p>If no live path:</p>
+<pre><code class="language-text">do not queue typing
+do not queue old presence
+do not queue recording indicator
+</code></pre>
+<p>They are stale by the time network returns.</p>
+<hr />
+<h1 id="109-receipts-offline"><a class="header" href="#109-receipts-offline">109. Receipts Offline</a></h1>
+<p>Delivery/read receipts are different.</p>
+<p>They should be represented durably enough to synchronize later.</p>
+<hr />
+<h1 id="110-receipt-coalescing-offline"><a class="header" href="#110-receipt-coalescing-offline">110. Receipt Coalescing Offline</a></h1>
+<p>Instead of queueing every read:</p>
+<pre><code class="language-text">store latest read-through sequence
+</code></pre>
+<p>Then send one update when connected.</p>
+<hr />
+<h1 id="111-dtn"><a class="header" href="#111-dtn">111. DTN</a></h1>
+<p>Do not send:</p>
+<pre><code class="language-text">typing
+presence
+recording
+</code></pre>
+<p>through DTN.</p>
+<p>They lose meaning by delayed delivery.</p>
+<hr />
+<h1 id="112-dtn-receipts"><a class="header" href="#112-dtn-receipts">112. DTN Receipts</a></h1>
+<p>Delivery/read receipts can traverse delayed channels if useful, because they represent durable message state.</p>
+<hr />
+<h1 id="113-relay"><a class="header" href="#113-relay">113. Relay</a></h1>
+<p>Presence can use relay if there is an active lightweight channel.</p>
+<p>Do not force relay connection solely for high-frequency typing unless product policy justifies it.</p>
+<hr />
+<h1 id="114-lan--local-mesh"><a class="header" href="#114-lan--local-mesh">114. LAN / Local Mesh</a></h1>
+<p>Presence/typing work normally over local peer paths without Internet.</p>
+<hr />
+<h1 id="115-internetless-operation"><a class="header" href="#115-internetless-operation">115. Internetless Operation</a></h1>
+<p>Two devices on same router can still exchange:</p>
+<pre><code class="language-text">presence
+typing
+receipts
+</code></pre>
+<p>over local transport.</p>
+<hr />
+<h1 id="116-multi-path-duplication"><a class="header" href="#116-multi-path-duplication">116. Multi-Path Duplication</a></h1>
+<p>Do not blindly send ephemeral state over every path.</p>
+<p>Select one control path.</p>
+<p>Receipts can be retried/cumulative.</p>
+<hr />
+<h1 id="117-path-handoff"><a class="header" href="#117-path-handoff">117. Path Handoff</a></h1>
+<p>Presence state survives path changes logically.</p>
+<p>Transport path is replaceable.</p>
+<hr />
+<h1 id="118-group-presence"><a class="header" href="#118-group-presence">118. Group Presence</a></h1>
+<p>Large group presence is expensive.</p>
+<p>Do not show:</p>
+<pre><code class="language-text">online status for 10,000 members
+</code></pre>
+<p>via full mesh fan-out.</p>
+<hr />
+<h1 id="119-group-presence-policy"><a class="header" href="#119-group-presence-policy">119. Group Presence Policy</a></h1>
+<p>Options:</p>
+<pre><code class="language-text">only active conversation participants
+recently active subset
+server/relay aggregate
+none
+</code></pre>
+<hr />
+<h1 id="120-small-groups"><a class="header" href="#120-small-groups">120. Small Groups</a></h1>
+<p>Direct fan-out is acceptable.</p>
+<hr />
+<h1 id="121-large-groups"><a class="header" href="#121-large-groups">121. Large Groups</a></h1>
+<p>Use:</p>
+<pre><code class="language-text">gossip aggregation
+group presence service
+bounded active-member set
+</code></pre>
+<p>if feature is required.</p>
+<hr />
+<h1 id="122-presence-subscriptions"><a class="header" href="#122-presence-subscriptions">122. Presence Subscriptions</a></h1>
+<p>Only subscribe to peers currently relevant.</p>
+<p>Examples:</p>
+<pre><code class="language-text">open conversation
+visible contact list
+active call setup
+</code></pre>
+<hr />
+<h1 id="123-do-not-track-every-contact-continuously"><a class="header" href="#123-do-not-track-every-contact-continuously">123. Do Not Track Every Contact Continuously</a></h1>
+<p>This improves:</p>
+<pre><code class="language-text">battery
+privacy
+network load
+</code></pre>
+<hr />
+<h1 id="124-lazy-presence"><a class="header" href="#124-lazy-presence">124. Lazy Presence</a></h1>
+<p>When opening conversation:</p>
+<pre><code class="language-text">subscribe/request fresh presence
+</code></pre>
+<hr />
+<h1 id="125-contact-list-presence"><a class="header" href="#125-contact-list-presence">125. Contact List Presence</a></h1>
+<p>May subscribe only to visible rows.</p>
+<hr />
+<h1 id="126-ui-virtualization-integration"><a class="header" href="#126-ui-virtualization-integration">126. UI Virtualization Integration</a></h1>
+<p>Dioxus contact list:</p>
+<pre><code class="language-text">visible contacts
+→ presence subscriptions
+</code></pre>
+<p>offscreen contacts can use stale/unknown state.</p>
+<hr />
+<h1 id="127-subscription-lease"><a class="header" href="#127-subscription-lease">127. Subscription Lease</a></h1>
+<p>Presence subscription itself can have TTL.</p>
+<hr />
+<h1 id="128-presence-subscription-api"><a class="header" href="#128-presence-subscription-api">128. Presence Subscription API</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait PresenceService {
+    async fn subscribe(
+        &amp;self,
+        peer: AccountId,
+    ) -&gt; Result&lt;PresenceSubscription, PresenceError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="129-typing-api"><a class="header" href="#129-typing-api">129. Typing API</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait TypingService {
+    async fn set_typing(
+        &amp;self,
+        conversation: ConversationId,
+        active: bool,
+    ) -&gt; Result&lt;(), TypingError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="130-receipt-api"><a class="header" href="#130-receipt-api">130. Receipt API</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait ReceiptService {
+    async fn mark_read_through(
+        &amp;self,
+        conversation: ConversationId,
+        seq: MessageSequence,
+    ) -&gt; Result&lt;(), ReceiptError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="131-ui-state-model"><a class="header" href="#131-ui-state-model">131. UI State Model</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct ConversationEphemeralState {
+    pub peer_presence: PresenceSummary,
+    pub typers: Vec&lt;AccountId&gt;,
+    pub recorders: Vec&lt;AccountId&gt;,
+    pub read_through: Option&lt;MessageSequence&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="132-view-model"><a class="header" href="#132-view-model">132. View Model</a></h1>
+<p>Dioxus consumes a read-only projection.</p>
+<p>It does not manage TTL itself.</p>
+<hr />
+<h1 id="133-typing-ui"><a class="header" href="#133-typing-ui">133. Typing UI</a></h1>
+<p>If one peer:</p>
+<pre><code class="language-text">Typing…
+</code></pre>
+<p>If multiple:</p>
+<pre><code class="language-text">Alice and Bob are typing…
+</code></pre>
+<p>If many:</p>
+<pre><code class="language-text">Several people are typing…
+</code></pre>
+<hr />
+<h1 id="134-accessibility"><a class="header" href="#134-accessibility">134. Accessibility</a></h1>
+<p>Typing indicator should have:</p>
+<pre><code class="language-text">screen-reader label
+non-animation fallback
+</code></pre>
+<hr />
+<h1 id="135-motion"><a class="header" href="#135-motion">135. Motion</a></h1>
+<p>Avoid excessive animated dots if user prefers reduced motion.</p>
+<hr />
+<h1 id="136-presence-ui"><a class="header" href="#136-presence-ui">136. Presence UI</a></h1>
+<p>Prefer simple:</p>
+<pre><code class="language-text">Online
+Away
+Last seen recently
+</code></pre>
+<p>Avoid misleading precision.</p>
+<hr />
+<h1 id="137-deliveryread-ui"><a class="header" href="#137-deliveryread-ui">137. Delivery/Read UI</a></h1>
+<p>Potential states:</p>
+<pre><code class="language-text">clock → queued
+single check → sent
+double check → delivered
+colored double check → read
+</code></pre>
+<p>Exact iconography is product/UI decision.</p>
+<p>Architecture exposes semantics, not icon assumptions.</p>
+<hr />
+<h1 id="138-group-receipt-ui"><a class="header" href="#138-group-receipt-ui">138. Group Receipt UI</a></h1>
+<p>For small groups:</p>
+<pre><code class="language-text">Seen by Alice, Bob
+</code></pre>
+<p>For larger:</p>
+<pre><code class="language-text">Seen by 23
+</code></pre>
+<hr />
+<h1 id="139-receipt-detail-screen"><a class="header" href="#139-receipt-detail-screen">139. Receipt Detail Screen</a></h1>
+<p>Optional:</p>
+<pre><code class="language-text">Delivered to
+Read by
+</code></pre>
+<p>for group messages.</p>
+<hr />
+<h1 id="140-privacy-setting-changes"><a class="header" href="#140-privacy-setting-changes">140. Privacy Setting Changes</a></h1>
+<p>If user turns off read receipts:</p>
+<pre><code class="language-text">future receipts stop
+</code></pre>
+<p>Do not attempt to retract already disclosed reads.</p>
+<hr />
+<h1 id="141-typing-setting-changes"><a class="header" href="#141-typing-setting-changes">141. Typing Setting Changes</a></h1>
+<p>Apply immediately.</p>
+<hr />
+<h1 id="142-presence-setting-changes"><a class="header" href="#142-presence-setting-changes">142. Presence Setting Changes</a></h1>
+<p>Send updated hidden/invisible state or simply stop publishing and let TTL expire.</p>
+<p>Prefer explicit privacy-state update when useful.</p>
+<hr />
+<h1 id="143-blocked-peer"><a class="header" href="#143-blocked-peer">143. Blocked Peer</a></h1>
+<p>Blocked peer should receive no new:</p>
+<pre><code class="language-text">presence
+typing
+read receipts
+</code></pre>
+<p>unless protocol requires a neutral response.</p>
+<hr />
+<h1 id="144-block-semantics"><a class="header" href="#144-block-semantics">144. Block Semantics</a></h1>
+<p>Do not reveal:</p>
+<pre><code class="language-text">"You were blocked"
+</code></pre>
+<p>through presence behavior more than necessary.</p>
+<hr />
+<h1 id="145-abuse-resistance"><a class="header" href="#145-abuse-resistance">145. Abuse Resistance</a></h1>
+<p>Attackers can abuse ephemeral channels to:</p>
+<pre><code class="language-text">wake device
+spam UI
+consume CPU
+create notification-like effects
+</code></pre>
+<p>Use quotas.</p>
+<hr />
+<h1 id="146-per-peer-limits"><a class="header" href="#146-per-peer-limits">146. Per-Peer Limits</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">typing events/sec
+presence updates/min
+receipt updates/sec
+</code></pre>
+<hr />
+<h1 id="147-invalid-ttl"><a class="header" href="#147-invalid-ttl">147. Invalid TTL</a></h1>
+<p>Clamp/reject.</p>
+<hr />
+<h1 id="148-invalid-conversation"><a class="header" href="#148-invalid-conversation">148. Invalid Conversation</a></h1>
+<p>Typing for conversation peer is not a member of:</p>
+<pre><code class="language-text">reject
+</code></pre>
+<hr />
+<h1 id="149-receipt-authorization"><a class="header" href="#149-receipt-authorization">149. Receipt Authorization</a></h1>
+<p>Only legitimate recipient/member can send receipt for message/conversation.</p>
+<hr />
+<h1 id="150-forged-read-receipt"><a class="header" href="#150-forged-read-receipt">150. Forged Read Receipt</a></h1>
+<p>Authentication prevents arbitrary peer from claiming another user's read state.</p>
+<hr />
+<h1 id="151-receipt-sequence-validation"><a class="header" href="#151-receipt-sequence-validation">151. Receipt Sequence Validation</a></h1>
+<p>Receipt cannot acknowledge:</p>
+<pre><code class="language-text">message sequence that never existed
+</code></pre>
+<p>without being bounded/ignored.</p>
+<hr />
+<h1 id="152-future-sequence"><a class="header" href="#152-future-sequence">152. Future Sequence</a></h1>
+<p>If receipt claims far-future sequence:</p>
+<pre><code class="language-text">reject as protocol violation
+</code></pre>
+<hr />
+<h1 id="153-receipt-regression"><a class="header" href="#153-receipt-regression">153. Receipt Regression</a></h1>
+<p>Ignore lower sequence than current.</p>
+<hr />
+<h1 id="154-presence-flood"><a class="header" href="#154-presence-flood">154. Presence Flood</a></h1>
+<p>Coalesce before reaching UI.</p>
+<hr />
+<h1 id="155-typing-flood"><a class="header" href="#155-typing-flood">155. Typing Flood</a></h1>
+<p>Throttle and collapse to:</p>
+<pre><code class="language-text">typing=true
+</code></pre>
+<p>until TTL.</p>
+<hr />
+<h1 id="156-untrusted-peer-presence"><a class="header" href="#156-untrusted-peer-presence">156. Untrusted Peer Presence</a></h1>
+<p>Unknown peers do not get automatic presence subscription.</p>
+<hr />
+<h1 id="157-presence-discovery-vs-contact-discovery"><a class="header" href="#157-presence-discovery-vs-contact-discovery">157. Presence Discovery vs Contact Discovery</a></h1>
+<p>Do not confuse:</p>
+<pre><code class="language-text">discover nearby peer
+</code></pre>
+<p>with:</p>
+<pre><code class="language-text">show them permanently online
+</code></pre>
+<hr />
+<h1 id="158-security"><a class="header" href="#158-security">158. Security</a></h1>
+<p>All peer-facing ephemeral state is authenticated.</p>
+<hr />
+<h1 id="159-e2ee"><a class="header" href="#159-e2ee">159. E2EE</a></h1>
+<p>For trusted conversations, ephemeral payloads can use session encryption from Part 28.</p>
+<hr />
+<h1 id="160-privacy-of-read-receipts"><a class="header" href="#160-privacy-of-read-receipts">160. Privacy of Read Receipts</a></h1>
+<p>Read receipts can reveal behavior/time patterns.</p>
+<p>Default should be user-controllable.</p>
+<hr />
+<h1 id="161-timing-privacy"><a class="header" href="#161-timing-privacy">161. Timing Privacy</a></h1>
+<p>Optional batching can reduce exact behavioral leakage.</p>
+<p>Example:</p>
+<pre><code class="language-text">send read receipt within 0–2 s randomized/coalesced window
+</code></pre>
+<p>if product wants.</p>
+<hr />
+<h1 id="162-last-seen-leakage"><a class="header" href="#162-last-seen-leakage">162. Last Seen Leakage</a></h1>
+<p>Exact last-seen timestamps can enable surveillance.</p>
+<p>Prefer coarse display.</p>
+<hr />
+<h1 id="163-presence-leakage"><a class="header" href="#163-presence-leakage">163. Presence Leakage</a></h1>
+<p>Do not expose per-device:</p>
+<pre><code class="language-text">phone online
+desktop online
+</code></pre>
+<p>to contacts by default.</p>
+<p>Account-level aggregate only.</p>
+<hr />
+<h1 id="164-call-presence-leakage"><a class="header" href="#164-call-presence-leakage">164. Call Presence Leakage</a></h1>
+<p>Do not reveal:</p>
+<pre><code class="language-text">currently in a call
+</code></pre>
+<p>unless explicit product feature.</p>
+<hr />
+<h1 id="165-diagnostics"><a class="header" href="#165-diagnostics">165. Diagnostics</a></h1>
+<p>Part 18 adds:</p>
+<pre><code class="language-text">presence subscriptions
+presence RTT
+typing sends
+typing drops/coalesces
+receipt queue depth
+receipt latency
+</code></pre>
+<hr />
+<h1 id="166-no-user-behavioral-logs"><a class="header" href="#166-no-user-behavioral-logs">166. No User Behavioral Logs</a></h1>
+<p>Do not persist detailed history:</p>
+<pre><code class="language-text">Alice was typing at 11:03:12
+</code></pre>
+<p>for diagnostics.</p>
+<hr />
+<h1 id="167-developer-metrics"><a class="header" href="#167-developer-metrics">167. Developer Metrics</a></h1>
+<p>Aggregate:</p>
+<pre><code class="language-text">ephemeral frames sent
+coalesced
+dropped
+expired
+</code></pre>
+<hr />
+<h1 id="168-receipt-metrics"><a class="header" href="#168-receipt-metrics">168. Receipt Metrics</a></h1>
+<p>Can measure:</p>
+<pre><code class="language-text">message delivery latency
+read latency
+</code></pre>
+<p>locally, but avoid telemetry with identifiable peer unless explicit privacy policy.</p>
+<hr />
+<h1 id="169-event-types"><a class="header" href="#169-event-types">169. Event Types</a></h1>
+<p>Internal:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum EphemeralEvent {
+    PresenceChanged,
+    TypingChanged,
+    RecordingChanged,
+    DeliveryAdvanced,
+    ReadAdvanced,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="170-actor-model"><a class="header" href="#170-actor-model">170. Actor Model</a></h1>
+<p>Suggested services:</p>
+<pre><code class="language-text">PresenceActor
+TypingActor
+ReceiptActor
+EphemeralExpiryActor
+</code></pre>
+<p>or one bounded <code>EphemeralRuntime</code> if simpler.</p>
+<hr />
+<h1 id="171-avoid-actor-explosion"><a class="header" href="#171-avoid-actor-explosion">171. Avoid Actor Explosion</a></h1>
+<p>Do not create one actor per peer/conversation unless measured scale requires it.</p>
+<hr />
+<h1 id="172-central-ephemeral-runtime"><a class="header" href="#172-central-ephemeral-runtime">172. Central Ephemeral Runtime</a></h1>
+<p>Recommended:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct EphemeralRuntime {
+    // bounded state maps
+    // timer wheel
+    // subscriptions
+    // transport sender
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="173-state-key"><a class="header" href="#173-state-key">173. State Key</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum EphemeralKey {
+    Presence(AccountId),
+    Typing(ConversationId, AccountId),
+    Recording(ConversationId, AccountId),
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="174-memory-bounds"><a class="header" href="#174-memory-bounds">174. Memory Bounds</a></h1>
+<p>Limit:</p>
+<pre><code class="language-text">tracked peers
+tracked conversations
+group typers
+presence subscriptions
+</code></pre>
+<hr />
+<h1 id="175-lru-eviction"><a class="header" href="#175-lru-eviction">175. LRU Eviction</a></h1>
+<p>If too many inactive presence entries:</p>
+<pre><code class="language-text">evict oldest
+</code></pre>
+<p>after TTL/subscription expiry.</p>
+<hr />
+<h1 id="176-active-conversation-priority"><a class="header" href="#176-active-conversation-priority">176. Active Conversation Priority</a></h1>
+<p>Keep ephemeral state for:</p>
+<pre><code class="language-text">currently open conversation
+active call
+visible contacts
+</code></pre>
+<p>before background contacts.</p>
+<hr />
+<h1 id="177-persistence-boundary"><a class="header" href="#177-persistence-boundary">177. Persistence Boundary</a></h1>
+<p>Only receipt-derived durable state crosses into message DB.</p>
+<hr />
+<h1 id="178-transactional-receipt-apply"><a class="header" href="#178-transactional-receipt-apply">178. Transactional Receipt Apply</a></h1>
+<p>When a read receipt advances:</p>
+<pre><code class="language-text">validate
+update message/conversation read projection atomically
+emit UI event
+</code></pre>
+<hr />
+<h1 id="179-receipt-compression"><a class="header" href="#179-receipt-compression">179. Receipt Compression</a></h1>
+<p>For account sync, store:</p>
+<pre><code class="language-text">conversation_id
+read_through
+</code></pre>
+<p>not one row for every message.</p>
+<hr />
+<h1 id="180-device-receipt-state"><a class="header" href="#180-device-receipt-state">180. Device Receipt State</a></h1>
+<p>Optionally:</p>
+<pre><code class="language-text">device_read_through
+</code></pre>
+<p>for own-device synchronization.</p>
+<hr />
+<h1 id="181-conversation-sequence"><a class="header" href="#181-conversation-sequence">181. Conversation Sequence</a></h1>
+<p>Receipts depend on stable per-conversation message ordering/sequence architecture from messaging core.</p>
+<hr />
+<h1 id="182-if-no-contiguous-sequence"><a class="header" href="#182-if-no-contiguous-sequence">182. If No Contiguous Sequence</a></h1>
+<p>Use monotonic logical index assigned by conversation layer.</p>
+<p>Do not use wall-clock timestamp.</p>
+<hr />
+<h1 id="183-edited-messages"><a class="header" href="#183-edited-messages">183. Edited Messages</a></h1>
+<p>Read status remains tied to logical message sequence.</p>
+<p>Edit does not make message unread again by default.</p>
+<hr />
+<h1 id="184-deleted-messages"><a class="header" href="#184-deleted-messages">184. Deleted Messages</a></h1>
+<p>Receipt progression remains monotonic even if old messages deleted.</p>
+<hr />
+<h1 id="185-reactions"><a class="header" href="#185-reactions">185. Reactions</a></h1>
+<p>Do not alter read-through semantics.</p>
+<hr />
+<h1 id="186-threads"><a class="header" href="#186-threads">186. Threads</a></h1>
+<p>If threaded conversations added:</p>
+<pre><code class="language-text">conversation-level read
+thread-level unread
+</code></pre>
+<p>may require separate cursors.</p>
+<hr />
+<h1 id="187-read-cursor"><a class="header" href="#187-read-cursor">187. Read Cursor</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct ReadCursor {
+    pub conversation: ConversationId,
+    pub through: MessageSequence,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="188-unread-count"><a class="header" href="#188-unread-count">188. Unread Count</a></h1>
+<p>Derived:</p>
+<pre><code class="language-text">latest visible sequence - read cursor
+</code></pre>
+<p>with deleted/system-message rules.</p>
+<hr />
+<h1 id="189-mentions"><a class="header" href="#189-mentions">189. Mentions</a></h1>
+<p>Unread mentions are separate derived projection.</p>
+<hr />
+<h1 id="190-device-sync"><a class="header" href="#190-device-sync">190. Device Sync</a></h1>
+<p>Read cursor sync should be:</p>
+<pre><code class="language-text">max(current, incoming)
+</code></pre>
+<hr />
+<h1 id="191-conflict-resolution"><a class="header" href="#191-conflict-resolution">191. Conflict Resolution</a></h1>
+<p>Monotonic max makes read-state sync simple.</p>
+<hr />
+<h1 id="192-delivery-cursor"><a class="header" href="#192-delivery-cursor">192. Delivery Cursor</a></h1>
+<p>Same concept:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct DeliveryCursor {
+    pub conversation: ConversationId,
+    pub through: MessageSequence,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="193-partial-delivery"><a class="header" href="#193-partial-delivery">193. Partial Delivery</a></h1>
+<p>If gaps exist:</p>
+<pre><code class="language-text">through N + gap set
+</code></pre>
+<p>temporarily.</p>
+<p>Once gaps fill:</p>
+<pre><code class="language-text">advance contiguous cursor
+</code></pre>
+<hr />
+<h1 id="194-receipt-batching"><a class="header" href="#194-receipt-batching">194. Receipt Batching</a></h1>
+<p>Batch multiple conversations into one control frame where appropriate.</p>
+<hr />
+<h1 id="195-batch-limits"><a class="header" href="#195-batch-limits">195. Batch Limits</a></h1>
+<p>Bound:</p>
+<pre><code class="language-text">receipt count
+frame bytes
+</code></pre>
+<hr />
+<h1 id="196-typing-over-slow-link"><a class="header" href="#196-typing-over-slow-link">196. Typing Over Slow Link</a></h1>
+<p>Typing is first to drop.</p>
+<hr />
+<h1 id="197-presence-over-slow-link"><a class="header" href="#197-presence-over-slow-link">197. Presence Over Slow Link</a></h1>
+<p>Reduce heartbeat.</p>
+<hr />
+<h1 id="198-receipts-over-slow-link"><a class="header" href="#198-receipts-over-slow-link">198. Receipts Over Slow Link</a></h1>
+<p>Batch/coalesce but eventually deliver.</p>
+<hr />
+<h1 id="199-emergency-mode"><a class="header" href="#199-emergency-mode">199. Emergency Mode</a></h1>
+<p>Part 17 may suppress:</p>
+<pre><code class="language-text">typing
+fine-grained presence
+</code></pre>
+<p>to conserve bandwidth.</p>
+<p>Preserve:</p>
+<pre><code class="language-text">critical delivery/read state only if useful
+</code></pre>
+<hr />
+<h1 id="200-disaster-mesh"><a class="header" href="#200-disaster-mesh">200. Disaster Mesh</a></h1>
+<p>In unstable mesh:</p>
+<pre><code class="language-text">presence accuracy degrades naturally
+</code></pre>
+<p>Do not flood mesh trying to maintain perfect online lists.</p>
+<hr />
+<h1 id="201-partition-semantics"><a class="header" href="#201-partition-semantics">201. Partition Semantics</a></h1>
+<p>During network partition:</p>
+<pre><code class="language-text">peer state eventually expires
+</code></pre>
+<p>to Unknown/Offline.</p>
+<hr />
+<h1 id="202-merge-after-partition"><a class="header" href="#202-merge-after-partition">202. Merge After Partition</a></h1>
+<p>Fresh revision/epoch supersedes stale presence.</p>
+<hr />
+<h1 id="203-call-reconnect-integration"><a class="header" href="#203-call-reconnect-integration">203. Call Reconnect Integration</a></h1>
+<p>Part 29 can use presence as a hint, but transport/liveness determines actual reconnect.</p>
+<hr />
+<h1 id="204-call-busy-integration"><a class="header" href="#204-call-busy-integration">204. Call Busy Integration</a></h1>
+<p>Active call controller can expose:</p>
+<pre><code class="language-text">CallingAvailability::Busy
+</code></pre>
+<p>if privacy policy allows.</p>
+<hr />
+<h1 id="205-message-composer-integration"><a class="header" href="#205-message-composer-integration">205. Message Composer Integration</a></h1>
+<p>Dioxus composer emits local activity events:</p>
+<pre><code class="language-text">Typed
+Cleared
+Sent
+LostFocus
+</code></pre>
+<p>Typing service converts to throttled protocol updates.</p>
+<hr />
+<h1 id="206-debounce"><a class="header" href="#206-debounce">206. Debounce</a></h1>
+<p>Do not immediately send typing on every tiny focus event.</p>
+<p>Use short debounce.</p>
+<hr />
+<h1 id="207-recording-composer-integration"><a class="header" href="#207-recording-composer-integration">207. Recording Composer Integration</a></h1>
+<p>Voice recorder lifecycle:</p>
+<pre><code class="language-text">record start
+cancel
+send
+</code></pre>
+<p>maps to recording hints.</p>
+<hr />
+<h1 id="208-read-detection"><a class="header" href="#208-read-detection">208. Read Detection</a></h1>
+<p>UI reports:</p>
+<pre><code class="language-text">highest message sequence truly read
+</code></pre>
+<p>to application layer.</p>
+<p>Do not let storage layer guess visibility.</p>
+<hr />
+<h1 id="209-read-detection-conditions"><a class="header" href="#209-read-detection-conditions">209. Read Detection Conditions</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">conversation foreground
+window/app active
+message row visible beyond threshold
+</code></pre>
+<hr />
+<h1 id="210-scroll-position"><a class="header" href="#210-scroll-position">210. Scroll Position</a></h1>
+<p>If user is reading old history:</p>
+<pre><code class="language-text">do not mark newer offscreen messages read
+</code></pre>
+<hr />
+<h1 id="211-conversation-open"><a class="header" href="#211-conversation-open">211. Conversation Open</a></h1>
+<p>Opening conversation does not automatically mean all loaded messages read unless viewport rule says so.</p>
+<hr />
+<h1 id="212-accessibility-cases"><a class="header" href="#212-accessibility-cases">212. Accessibility Cases</a></h1>
+<p>Screen-reader navigation should integrate with read semantics carefully.</p>
+<p>Do not require visual pixels specifically.</p>
+<p>Use:</p>
+<pre><code class="language-text">semantic exposure/read intent
+</code></pre>
+<p>where platform can report it.</p>
+<hr />
+<h1 id="213-desktop-multi-window"><a class="header" href="#213-desktop-multi-window">213. Desktop Multi-Window</a></h1>
+<p>If same conversation open in two windows:</p>
+<pre><code class="language-text">max visible/read cursor
+</code></pre>
+<p>wins.</p>
+<hr />
+<h1 id="214-own-multiple-devices"><a class="header" href="#214-own-multiple-devices">214. Own Multiple Devices</a></h1>
+<p>If phone reads message:</p>
+<pre><code class="language-text">desktop unread badge clears
+</code></pre>
+<p>after secure sync.</p>
+<hr />
+<h1 id="215-receipt-loop-prevention"><a class="header" href="#215-receipt-loop-prevention">215. Receipt Loop Prevention</a></h1>
+<p>Own-device sync receipt must not bounce forever.</p>
+<p>Use:</p>
+<pre><code class="language-text">origin device
+revision
+monotonic merge
+</code></pre>
+<hr />
+<h1 id="216-protocol-version"><a class="header" href="#216-protocol-version">216. Protocol Version</a></h1>
+<p>Dedicated logical protocol:</p>
+<pre><code class="language-text">ephemeral/1
+</code></pre>
+<p>or combined control protocol with typed namespaces.</p>
+<hr />
+<h1 id="217-protocol-separation"><a class="header" href="#217-protocol-separation">217. Protocol Separation</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">presence/1
+receipts/1
+</code></pre>
+<p>or one:</p>
+<pre><code class="language-text">state/1
+</code></pre>
+<p>depending implementation.</p>
+<p>Do not mix into raw message payload schema if it creates coupling.</p>
+<hr />
+<h1 id="218-wire-dtos"><a class="header" href="#218-wire-dtos">218. Wire DTOs</a></h1>
+<p>Dedicated versioned DTOs:</p>
+<pre><code class="language-text">PresenceFrameV1
+TypingFrameV1
+ReceiptFrameV1
+</code></pre>
+<hr />
+<h1 id="219-postcard"><a class="header" href="#219-postcard">219. Postcard</a></h1>
+<p>Good fit for compact wire encoding.</p>
+<p>Do not serialize arbitrary internal structs directly.</p>
+<hr />
+<h1 id="220-canonical-limits"><a class="header" href="#220-canonical-limits">220. Canonical Limits</a></h1>
+<p>Define:</p>
+<pre><code class="language-text">max group typers/frame
+max receipt batch
+max TTL
+max peer subscriptions
+</code></pre>
+<hr />
+<h1 id="221-capability-negotiation"><a class="header" href="#221-capability-negotiation">221. Capability Negotiation</a></h1>
+<p>Part 07 advertises:</p>
+<pre><code class="language-text">presence-v1
+typing-v1
+delivery-receipts-v1
+read-receipts-v1
+</code></pre>
+<hr />
+<h1 id="222-optional-capabilities"><a class="header" href="#222-optional-capabilities">222. Optional Capabilities</a></h1>
+<p>If peer does not support typing:</p>
+<pre><code class="language-text">messaging still works
+</code></pre>
+<hr />
+<h1 id="223-read-receipt-capability"><a class="header" href="#223-read-receipt-capability">223. Read Receipt Capability</a></h1>
+<p>If unsupported/disabled:</p>
+<pre><code class="language-text">stop at Delivered
+</code></pre>
+<hr />
+<h1 id="224-presence-capability"><a class="header" href="#224-presence-capability">224. Presence Capability</a></h1>
+<p>If unsupported:</p>
+<pre><code class="language-text">Unknown
+</code></pre>
+<p>not error.</p>
+<hr />
+<h1 id="225-interoperability"><a class="header" href="#225-interoperability">225. Interoperability</a></h1>
+<p>Part 23 should add test vectors for:</p>
+<pre><code class="language-text">presence TTL
+typing expiry
+receipt monotonicity
+duplicate updates
+multi-device aggregation
+</code></pre>
+<hr />
+<h1 id="226-conformance-tests"><a class="header" href="#226-conformance-tests">226. Conformance Tests</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">Typing Started
+wait beyond TTL
+→ not typing
+
+ReadThrough 20
+ReadThrough 17
+→ remains 20
+</code></pre>
+<hr />
+<h1 id="227-fuzzing"><a class="header" href="#227-fuzzing">227. Fuzzing</a></h1>
+<p>Part 10 fuzz:</p>
+<pre><code class="language-text">ephemeral frame parser
+TTL values
+receipt ranges
+group typing sets
+revision handling
+</code></pre>
+<hr />
+<h1 id="228-property-tests"><a class="header" href="#228-property-tests">228. Property Tests</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">read cursor never decreases
+delivery cursor never decreases
+expired typing never survives
+stale presence epoch cannot overwrite fresh
+memory use remains bounded
+</code></pre>
+<hr />
+<h1 id="229-duplicate-test"><a class="header" href="#229-duplicate-test">229. Duplicate Test</a></h1>
+<p>Same typing/presence/receipt update multiple times.</p>
+<p>No duplicate UI artifact.</p>
+<hr />
+<h1 id="230-reordering-test"><a class="header" href="#230-reordering-test">230. Reordering Test</a></h1>
+<p>Receive:</p>
+<pre><code class="language-text">rev 5
+rev 3
+rev 4
+</code></pre>
+<p>final state remains rev 5.</p>
+<hr />
+<h1 id="231-presence-loss-test"><a class="header" href="#231-presence-loss-test">231. Presence Loss Test</a></h1>
+<p>Drop all heartbeat packets.</p>
+<p>State expires.</p>
+<hr />
+<h1 id="232-clean-shutdown-test"><a class="header" href="#232-clean-shutdown-test">232. Clean Shutdown Test</a></h1>
+<p>Explicit offline arrives.</p>
+<p>UI updates quickly.</p>
+<hr />
+<h1 id="233-crash-test"><a class="header" href="#233-crash-test">233. Crash Test</a></h1>
+<p>No explicit offline.</p>
+<p>TTL still clears presence.</p>
+<hr />
+<h1 id="234-battery-saver-test"><a class="header" href="#234-battery-saver-test">234. Battery Saver Test</a></h1>
+<p>Heartbeat interval grows without causing permanent false-online state.</p>
+<hr />
+<h1 id="235-group-typing-stress"><a class="header" href="#235-group-typing-stress">235. Group Typing Stress</a></h1>
+<p>Hundreds of participants.</p>
+<p>UI/state remains bounded.</p>
+<hr />
+<h1 id="236-receipt-storm-test"><a class="header" href="#236-receipt-storm-test">236. Receipt Storm Test</a></h1>
+<p>Read 1,000 messages quickly.</p>
+<p>Network should send:</p>
+<pre><code class="language-text">one/few cumulative receipts
+</code></pre>
+<p>not 1,000 packets.</p>
+<hr />
+<h1 id="237-multi-device-receipt-test"><a class="header" href="#237-multi-device-receipt-test">237. Multi-Device Receipt Test</a></h1>
+<p>Phone reads through 100.</p>
+<p>Desktop reads through 80.</p>
+<p>Account state remains:</p>
+<pre><code class="language-text">100
+</code></pre>
+<hr />
+<h1 id="238-privacy-test"><a class="header" href="#238-privacy-test">238. Privacy Test</a></h1>
+<p>Read receipts disabled.</p>
+<p>No read frames emitted.</p>
+<hr />
+<h1 id="239-block-test"><a class="header" href="#239-block-test">239. Block Test</a></h1>
+<p>After blocking:</p>
+<pre><code class="language-text">presence/typing/receipts
+</code></pre>
+<p>stop according to policy.</p>
+<hr />
+<h1 id="240-unknown-peer-flood-test"><a class="header" href="#240-unknown-peer-flood-test">240. Unknown Peer Flood Test</a></h1>
+<p>Thousands of presence updates from unknown peer.</p>
+<p>Expected:</p>
+<pre><code class="language-text">drop/rate limit
+bounded memory
+</code></pre>
+<hr />
+<h1 id="241-diagnostics-test"><a class="header" href="#241-diagnostics-test">241. Diagnostics Test</a></h1>
+<p>No ephemeral user history persists after expiry unless explicitly feature-derived.</p>
+<hr />
+<h1 id="242-performance-goals"><a class="header" href="#242-performance-goals">242. Performance Goals</a></h1>
+<p>Presence/typing processing should be effectively negligible compared with:</p>
+<pre><code class="language-text">media
+file transfer
+message encryption
+</code></pre>
+<hr />
+<h1 id="243-allocation-policy"><a class="header" href="#243-allocation-policy">243. Allocation Policy</a></h1>
+<p>Reuse small buffers where useful.</p>
+<p>Do not overengineer zero-copy for 20-byte typing events.</p>
+<hr />
+<h1 id="244-serialization-size"><a class="header" href="#244-serialization-size">244. Serialization Size</a></h1>
+<p>Keep typical typing/presence update compact.</p>
+<hr />
+<h1 id="245-startup"><a class="header" href="#245-startup">245. Startup</a></h1>
+<p>Startup sequence:</p>
+<pre><code class="language-text">load privacy/settings
+start ephemeral runtime
+connect transport
+publish fresh presence when allowed
+restore durable receipt cursors
+</code></pre>
+<p>Do not restore old typing state.</p>
+<hr />
+<h1 id="246-shutdown"><a class="header" href="#246-shutdown">246. Shutdown</a></h1>
+<p>Optional:</p>
+<pre><code class="language-text">send offline
+flush latest durable receipts
+</code></pre>
+<p>but correctness relies on TTL and durable receipt state.</p>
+<hr />
+<h1 id="247-headless-mode"><a class="header" href="#247-headless-mode">247. Headless Mode</a></h1>
+<p>Part 16 daemon can run presence/receipt services without UI.</p>
+<p>Typing service may be unused.</p>
+<hr />
+<h1 id="248-embedded-node"><a class="header" href="#248-embedded-node">248. Embedded Node</a></h1>
+<p>Part 20 node may expose:</p>
+<pre><code class="language-text">Available
+GatewayOnline
+</code></pre>
+<p>only if product needs peer presence.</p>
+<p>Avoid treating infrastructure nodes as human presence.</p>
+<hr />
+<h1 id="249-ffi"><a class="header" href="#249-ffi">249. FFI</a></h1>
+<p>Part 19 exposes:</p>
+<pre><code class="language-text">subscribe_presence
+set_typing
+mark_read
+subscribe_receipts
+</code></pre>
+<p>at semantic level.</p>
+<hr />
+<h1 id="250-wasm--plugins"><a class="header" href="#250-wasm--plugins">250. WASM / Plugins</a></h1>
+<p>Plugins should not automatically observe:</p>
+<pre><code class="language-text">presence graph
+typing
+read behavior
+</code></pre>
+<p>These are sensitive behavioral signals.</p>
+<p>Require explicit permission if ever exposed.</p>
+<hr />
+<h1 id="251-plugin-permission"><a class="header" href="#251-plugin-permission">251. Plugin Permission</a></h1>
+<p>Potential future:</p>
+<pre><code class="language-text">ObserveConversationPresence
+</code></pre>
+<p>high privacy impact.</p>
+<p>Not default.</p>
+<hr />
+<h1 id="252-telemetry"><a class="header" href="#252-telemetry">252. Telemetry</a></h1>
+<p>Do not upload raw:</p>
+<pre><code class="language-text">presence history
+typing events
+read timestamps
+</code></pre>
+<p>to analytics by default.</p>
+<hr />
+<h1 id="253-suggested-workspace"><a class="header" href="#253-suggested-workspace">253. Suggested Workspace</a></h1>
+<pre><code class="language-text">crates/
+├── comm-presence-core/
+├── comm-presence-protocol/
+├── comm-presence-runtime/
+├── comm-typing/
+├── comm-receipts/
+├── comm-availability/
+├── comm-ephemeral-store/
+├── comm-ephemeral-diagnostics/
+└── comm-ephemeral-testkit/
+</code></pre>
+<hr />
+<h1 id="254-comm-presence-core"><a class="header" href="#254-comm-presence-core">254. <code>comm-presence-core</code></a></h1>
+<p>Owns:</p>
+<pre><code class="language-text">presence types
+availability
+privacy policy
+aggregation rules
+</code></pre>
+<hr />
+<h1 id="255-comm-presence-protocol"><a class="header" href="#255-comm-presence-protocol">255. <code>comm-presence-protocol</code></a></h1>
+<p>Owns:</p>
+<pre><code class="language-text">wire DTOs
+versioning
+TTL limits
+revisions
+</code></pre>
+<hr />
+<h1 id="256-comm-presence-runtime"><a class="header" href="#256-comm-presence-runtime">256. <code>comm-presence-runtime</code></a></h1>
+<p>Owns:</p>
+<pre><code class="language-text">subscriptions
+heartbeats
+aggregation
+expiry
+transport
+</code></pre>
+<hr />
+<h1 id="257-comm-typing"><a class="header" href="#257-comm-typing">257. <code>comm-typing</code></a></h1>
+<p>Owns:</p>
+<pre><code class="language-text">composer activity
+debounce
+refresh
+TTL
+group aggregation
+</code></pre>
+<hr />
+<h1 id="258-comm-receipts"><a class="header" href="#258-comm-receipts">258. <code>comm-receipts</code></a></h1>
+<p>Owns:</p>
+<pre><code class="language-text">delivery cursor
+read cursor
+batch/coalesce
+multi-device merge
+durable projection updates
+</code></pre>
+<hr />
+<h1 id="259-comm-availability"><a class="header" href="#259-comm-availability">259. <code>comm-availability</code></a></h1>
+<p>Combines:</p>
+<pre><code class="language-text">presence
+DND
+call busy
+messaging availability
+</code></pre>
+<hr />
+<h1 id="260-comm-ephemeral-store"><a class="header" href="#260-comm-ephemeral-store">260. <code>comm-ephemeral-store</code></a></h1>
+<p>In-memory bounded state plus timer wheel.</p>
+<hr />
+<h1 id="261-comm-ephemeral-testkit"><a class="header" href="#261-comm-ephemeral-testkit">261. <code>comm-ephemeral-testkit</code></a></h1>
+<p>Provides:</p>
+<pre><code class="language-text">fake clock
+fake transport
+multi-device peers
+loss/reorder injection
+privacy scenarios
+</code></pre>
+<hr />
+<h1 id="262-public-commands"><a class="header" href="#262-public-commands">262. Public Commands</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum EphemeralCommand {
+    PublishPresence(PresenceState),
+    SubscribePresence(AccountId),
+    UnsubscribePresence(AccountId),
+    SetTyping {
+        conversation: ConversationId,
+        active: bool,
+    },
+    SetRecording {
+        conversation: ConversationId,
+        active: bool,
+    },
+    MarkReadThrough {
+        conversation: ConversationId,
+        through: MessageSequence,
+    },
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="263-public-events"><a class="header" href="#263-public-events">263. Public Events</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum EphemeralEvent {
+    PresenceUpdated {
+        account: AccountId,
+        presence: PresenceSummary,
+    },
+    TypingUpdated {
+        conversation: ConversationId,
+        accounts: Vec&lt;AccountId&gt;,
+    },
+    RecordingUpdated {
+        conversation: ConversationId,
+        accounts: Vec&lt;AccountId&gt;,
+    },
+    DeliveryAdvanced {
+        conversation: ConversationId,
+        through: MessageSequence,
+    },
+    ReadAdvanced {
+        conversation: ConversationId,
+        through: MessageSequence,
+    },
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="264-implementation-phases"><a class="header" href="#264-implementation-phases">264. Implementation Phases</a></h1>
+<h2 id="phase-1--receipt-cursors"><a class="header" href="#phase-1--receipt-cursors">Phase 1 — Receipt Cursors</a></h2>
+<pre><code class="language-text">delivery
+read
+monotonic merge
+durable projections
+</code></pre>
+<h2 id="phase-2--typing"><a class="header" href="#phase-2--typing">Phase 2 — Typing</a></h2>
+<pre><code class="language-text">debounce
+TTL
+privacy
+</code></pre>
+<h2 id="phase-3--presence"><a class="header" href="#phase-3--presence">Phase 3 — Presence</a></h2>
+<pre><code class="language-text">device state
+account aggregation
+subscriptions
+TTL
+</code></pre>
+<h2 id="phase-4--availability"><a class="header" href="#phase-4--availability">Phase 4 — Availability</a></h2>
+<pre><code class="language-text">DND
+busy
+calling availability
+</code></pre>
+<h2 id="phase-5--multi-device"><a class="header" href="#phase-5--multi-device">Phase 5 — Multi-Device</a></h2>
+<pre><code class="language-text">read sync
+presence aggregation
+answered/busy integration
+</code></pre>
+<h2 id="phase-6--group-scaling"><a class="header" href="#phase-6--group-scaling">Phase 6 — Group Scaling</a></h2>
+<pre><code class="language-text">typing aggregation
+receipt scaling
+presence subscriptions
+</code></pre>
+<h2 id="phase-7--battery--offline-hardening"><a class="header" href="#phase-7--battery--offline-hardening">Phase 7 — Battery / Offline Hardening</a></h2>
+<pre><code class="language-text">background
+low power
+partitions
+coalescing
+</code></pre>
+<h2 id="phase-8--privacy--abuse-hardening"><a class="header" href="#phase-8--privacy--abuse-hardening">Phase 8 — Privacy / Abuse Hardening</a></h2>
+<pre><code class="language-text">visibility controls
+block behavior
+rate limits
+behavioral-data minimization
+</code></pre>
+<h2 id="phase-9--interoperability"><a class="header" href="#phase-9--interoperability">Phase 9 — Interoperability</a></h2>
+<pre><code class="language-text">ephemeral/1 vectors
+receipt monotonicity
+TTL tests
+</code></pre>
+<hr />
+<h1 id="265-initial-production-recommendation"><a class="header" href="#265-initial-production-recommendation">265. Initial Production Recommendation</a></h1>
+<p>For v1, ship:</p>
+<pre><code class="language-text">account-level online/offline/unknown
+typing indicator
+delivery receipts
+read receipts
+multi-device read sync
+privacy toggles
+DND/busy availability
+</code></pre>
+<p>Defer initially:</p>
+<pre><code class="language-text">precise last-seen timestamps
+per-device public presence
+large-group full presence lists
+complex custom statuses
+plugin access to behavioral state
+</code></pre>
+<hr />
+<h1 id="266-definition-of-done"><a class="header" href="#266-definition-of-done">266. Definition of Done</a></h1>
+<p>Part 30 is complete when:</p>
+<ul>
+<li>presence is advisory and never blocks message delivery</li>
+<li>unknown and offline are distinct states</li>
+<li>multi-device presence aggregates correctly</li>
+<li>presence expires automatically without graceful shutdown</li>
+<li>mobile/background presence does not require continuous wakeups</li>
+<li>typing/recording indicators are never persisted or sent through DTN</li>
+<li>typing is throttled and TTL-driven</li>
+<li>group typing remains bounded</li>
+<li>delivery means durable recipient acceptance, not transport ACK</li>
+<li>read receipts use monotonic read-through cursors</li>
+<li>delivery/read receipts coalesce instead of generating one packet per message</li>
+<li>receipt state survives reconnect/offline operation</li>
+<li>read receipt privacy can be disabled</li>
+<li>blocked peers stop receiving behavioral state according to policy</li>
+<li>exact last-seen data is optional and privacy-controlled</li>
+<li>ephemeral state cannot consume unbounded memory</li>
+<li>stale revisions/epochs cannot overwrite fresh state</li>
+<li>battery/network pressure can reduce/suppress low-value ephemeral traffic</li>
+<li>call availability integrates with Part 29 without exposing unnecessary call details</li>
+<li>Dioxus consumes semantic projections rather than managing TTL/state correctness</li>
+<li>plugins/WASM do not receive behavioral signals by default</li>
+<li>Part 23 conformance tests cover TTL, monotonic receipts, duplicate/reordered frames, privacy settings, and multi-device aggregation</li>
+</ul>
+<hr />
+<h1 id="267-relationship-to-earlier-parts"><a class="header" href="#267-relationship-to-earlier-parts">267. Relationship to Earlier Parts</a></h1>
+<p>Part 30 integrates directly with:</p>
+<pre><code class="language-text">02 — Multi-Device Identity
+03 — Transport / Routing Policy
+04 — Offline Event Log
+07 — Capability Negotiation
+08 — Resource Limits
+09 — Crash Recovery
+10 — Fuzzing / Protocol Tests
+12 — Multipath
+13 — Battery-Aware Scheduling
+14 — Proximity
+16 — Daemon / Headless
+17 — Emergency Priority
+18 — Diagnostics
+19 — C ABI / FFI
+21 — Third-Party Extensions
+22 — WASM Components
+23 — Interoperability
+24 — Plugin Ecosystem
+28 — E2EE / Privacy
+29 — Realtime Calls
+</code></pre>
+<hr />
+<h1 id="268-final-architecture"><a class="header" href="#268-final-architecture">268. Final Architecture</a></h1>
+<pre><code class="language-text">                    DIOXUS / SDK
+                        │
+                        ▼
+                Ephemeral Projection
+             ┌──────────┼───────────┐
+             │          │           │
+         Presence     Typing     Receipts
+             │          │           │
+             └──────────┼───────────┘
+                        │
+                Ephemeral Runtime
+            ┌───────────┼────────────┐
+            │           │            │
+         TTL/Expiry   Privacy      Coalescing
+            │           │            │
+            └───────────┼────────────┘
+                        │
+                 Secure Control Path
+                        │
+             Direct / Relay / LAN
+</code></pre>
+<p>Durable boundary:</p>
+<pre><code class="language-text">Typing/Presence
+    → memory only
+
+Delivery/Read receipt
+    → control message
+    → monotonic durable cursor
+    → message/conversation projection
+</code></pre>
+<hr />
+<h1 id="269-final-principle"><a class="header" href="#269-final-principle">269. Final Principle</a></h1>
+<p>Ephemeral state should make the application feel alive without turning every user action into durable distributed data.</p>
+<p>The right distinction is:</p>
+<pre><code class="language-text">"Typing…"
+    → disposable hint
+
+"Online"
+    → expiring reachability hint
+
+"Delivered"
+    → durable message fact
+
+"Read"
+    → durable user-state fact with privacy controls
+</code></pre>
+<p>The architecture should therefore optimize for:</p>
+<pre><code class="language-text">freshness
+privacy
+low overhead
+bounded memory
+automatic expiry
+coalescing
+</code></pre>
+<p>rather than perfect historical consistency.</p>
+<p>That is the role of Part 30: provide polished realtime UX while keeping the durable messaging, security, offline, and DTN architecture clean and efficient.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="29-realtime-calls-media-session-protocol-architecture.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="31-notifications-push-background-delivery-lifecycle-architecture.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="29-realtime-calls-media-session-protocol-architecture.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="31-notifications-push-background-delivery-lifecycle-architecture.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

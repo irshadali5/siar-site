@@ -1,0 +1,1779 @@
+<!DOCTYPE HTML>
+<html lang="en" class="navy" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>UI/UX 04 — Conversation List &amp; Inbox UX - SIAR System Architecture &amp; Technical Wiki</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="Comprehensive system architecture, cryptographic protocols, DTN mesh networking, distributed storage, audio DSP pipelines, and UI/UX design specifications for SIAR.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="theme/custom.css">
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "navy";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('navy')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="Home.html">Architecture Portal & Reading Guide</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part I: Protocol Foundation & Extension Platform</li><li class="chapter-item expanded "><a href="01-protocol-extension-system-architecture.html"><strong aria-hidden="true">1.</strong> 01 — Protocol Extension System Architecture</a></li><li class="chapter-item expanded "><a href="07-capability-negotiation-architecture.html"><strong aria-hidden="true">2.</strong> 07 — Capability Negotiation & Protocol Upgrades</a></li><li class="chapter-item expanded "><a href="21-third-party-protocol-extensions-architecture.html"><strong aria-hidden="true">3.</strong> 21 — Third-Party Protocol Extensions</a></li><li class="chapter-item expanded "><a href="22-wasm-compatible-components-architecture.html"><strong aria-hidden="true">4.</strong> 22 — WebAssembly (WASM) Compatible Components</a></li><li class="chapter-item expanded "><a href="23-external-interoperability-suite-architecture.html"><strong aria-hidden="true">5.</strong> 23 — External Interoperability & Conformance Suite</a></li><li class="chapter-item expanded "><a href="24-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">6.</strong> 24 — Dynamic Plugin & Module Ecosystem</a></li><li class="chapter-item expanded affix "><li class="part-title">Part II: Identity, Trust & Cryptography</li><li class="chapter-item expanded "><a href="02-multi-device-identity-architecture.html"><strong aria-hidden="true">7.</strong> 02 — Multi-Device Identity & Trust Model</a></li><li class="chapter-item expanded "><a href="28-production-security-e2ee-key-management-privacy-architecture.html"><strong aria-hidden="true">8.</strong> 28 — Production Security, E2EE, Key Management & Privacy</a></li><li class="chapter-item expanded affix "><li class="part-title">Part III: Mesh Networking, Transports & Hardware</li><li class="chapter-item expanded "><a href="03-transport-routing-policy-engine-architecture.html"><strong aria-hidden="true">9.</strong> 03 — Transport & Routing Policy Engine</a></li><li class="chapter-item expanded "><a href="11-relay-self-hosted-infrastructure-architecture.html"><strong aria-hidden="true">10.</strong> 11 — Self-Hosted Relay & Coordination Infrastructure</a></li><li class="chapter-item expanded "><a href="12-multipath-networking-architecture.html"><strong aria-hidden="true">11.</strong> 12 — Multipath Networking & Link Aggregation</a></li><li class="chapter-item expanded "><a href="13-battery-aware-scheduling-architecture.html"><strong aria-hidden="true">12.</strong> 13 — Battery-Aware Scheduling & Power Profiles</a></li><li class="chapter-item expanded "><a href="14-proximity-abstraction-architecture.html"><strong aria-hidden="true">13.</strong> 14 — Proximity Abstraction (BLE, Wi-Fi Direct, LoRa)</a></li><li class="chapter-item expanded "><a href="15-qr-nfc-bootstrap-pairing-architecture.html"><strong aria-hidden="true">14.</strong> 15 — Out-of-Band QR & NFC Bootstrap Pairing</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IV: Delay-Tolerant Networking & Emergency Mesh</li><li class="chapter-item expanded "><a href="06-dtn-store-carry-forward-architecture.html"><strong aria-hidden="true">15.</strong> 06 — DTN Store-Carry-Forward & Bundle Forwarding</a></li><li class="chapter-item expanded "><a href="17-emergency-priority-classes-architecture.html"><strong aria-hidden="true">16.</strong> 17 — Emergency Priority Classes & Critical Alert Mesh</a></li><li class="chapter-item expanded affix "><li class="part-title">Part V: Storage, Outbox & Data Lifecycle</li><li class="chapter-item expanded "><a href="04-offline-event-log-architecture.html"><strong aria-hidden="true">17.</strong> 04 — Offline Event Log & Sync Engine</a></li><li class="chapter-item expanded "><a href="05-robust-file-blob-subsystem-architecture.html"><strong aria-hidden="true">18.</strong> 05 — Robust File & Blob Subsystem (Chunking & Resumption)</a></li><li class="chapter-item expanded "><a href="09-crash-recovery-architecture.html"><strong aria-hidden="true">19.</strong> 09 — Crash Recovery & State Integrity</a></li><li class="chapter-item expanded "><a href="32-search-indexing-local-knowledge-privacy-architecture.html"><strong aria-hidden="true">20.</strong> 32 — Search, Indexing & Local Privacy Retrieval</a></li><li class="chapter-item expanded "><a href="33-backup-restore-export-import-archival-portability-architecture.html"><strong aria-hidden="true">21.</strong> 33 — Backup, Restore, Export & Long-Term Archival</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VI: Realtime Media, Calling & Audio DSP</li><li class="chapter-item expanded "><a href="25-android-direct-hardware-surface-zero-copy-media-architecture.html"><strong aria-hidden="true">22.</strong> 25 — Android Direct Surface Zero-Copy Media</a></li><li class="chapter-item expanded "><a href="26-rust-first-audio-dsp-resampling-aec-ns-agc-architecture.html"><strong aria-hidden="true">23.</strong> 26 — Rust-First Audio DSP (AEC, NS, AGC, Resampling)</a></li><li class="chapter-item expanded "><a href="29-realtime-calls-media-session-protocol-architecture.html"><strong aria-hidden="true">24.</strong> 29 — Realtime Calls & Media Session Protocol</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VII: Ephemeral State, Presence & Notifications</li><li class="chapter-item expanded "><a href="30-presence-availability-typing-read-receipts-ephemeral-state-architecture.html"><strong aria-hidden="true">25.</strong> 30 — Presence, Availability, Typing & Read Receipts</a></li><li class="chapter-item expanded "><a href="31-notifications-push-background-delivery-lifecycle-architecture.html"><strong aria-hidden="true">26.</strong> 31 — Notifications, Push Wake & Background Delivery</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VIII: Native Runtimes, Daemons & Embedded Linux</li><li class="chapter-item expanded "><a href="16-daemon-headless-runtime-architecture.html"><strong aria-hidden="true">27.</strong> 16 — Headless Daemon & Background Runtime</a></li><li class="chapter-item expanded "><a href="19-c-abi-ffi-architecture.html"><strong aria-hidden="true">28.</strong> 19 — C-ABI FFI & Native Language Interop</a></li><li class="chapter-item expanded "><a href="20-embedded-linux-node-architecture.html"><strong aria-hidden="true">29.</strong> 20 — Embedded Linux Node & Resource-Constrained Targets</a></li><li class="chapter-item expanded "><a href="27-rust-driven-android-native-build-packaging-automation.html"><strong aria-hidden="true">30.</strong> 27 — Rust-Driven Android Native Build & Packaging Automation</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IX: Reliability, Testing, Fuzzing & Diagnostics</li><li class="chapter-item expanded "><a href="08-resource-limits-backpressure-architecture.html"><strong aria-hidden="true">31.</strong> 08 — Resource Limits, Quotas & Backpressure</a></li><li class="chapter-item expanded "><a href="10-fuzzing-protocol-test-suite-architecture.html"><strong aria-hidden="true">32.</strong> 10 — Fuzzing & Protocol Test Suite</a></li><li class="chapter-item expanded "><a href="18-network-diagnostics-path-visualization-architecture.html"><strong aria-hidden="true">33.</strong> 18 — Network Diagnostics & Path Visualization</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part X: UI/UX Client Architecture (Cross-Platform)</li><li class="chapter-item expanded "><a href="ui-ux-01-product-foundation-cross-platform-interaction-architecture.html"><strong aria-hidden="true">34.</strong> UI/UX 01 — Product UX Foundation & Cross-Platform Interaction</a></li><li class="chapter-item expanded "><a href="ui-ux-02-desktop-dioxus-app-shell-navigation-window-architecture.html"><strong aria-hidden="true">35.</strong> UI/UX 02 — Desktop Dioxus App Shell & Navigation</a></li><li class="chapter-item expanded "><a href="ui-ux-03-android-jetpack-compose-app-shell-navigation-lifecycle-architecture.html"><strong aria-hidden="true">36.</strong> UI/UX 03 — Android Jetpack Compose App Shell & Lifecycle</a></li><li class="chapter-item expanded "><a href="ui-ux-04-conversation-list-inbox-architecture.html" class="active"><strong aria-hidden="true">37.</strong> UI/UX 04 — Conversation List & Inbox UX</a></li><li class="chapter-item expanded "><a href="ui-ux-05-conversation-message-timeline-architecture.html"><strong aria-hidden="true">38.</strong> UI/UX 05 — Conversation Message Timeline UX</a></li><li class="chapter-item expanded "><a href="ui-ux-06-message-composer-attachments-voice-notes-drafts-architecture.html"><strong aria-hidden="true">39.</strong> UI/UX 06 — Message Composer, Attachments & Voice Notes</a></li><li class="chapter-item expanded "><a href="ui-ux-07-calls-realtime-media-architecture.html"><strong aria-hidden="true">40.</strong> UI/UX 07 — Calls & Realtime Media UX</a></li><li class="chapter-item expanded "><a href="ui-ux-08-contacts-requests-verification-identity-architecture.html"><strong aria-hidden="true">41.</strong> UI/UX 08 — Contacts, Requests, Verification & Identity</a></li><li class="chapter-item expanded "><a href="ui-ux-09-groups-membership-roles-architecture.html"><strong aria-hidden="true">42.</strong> UI/UX 09 — Groups, Membership & Roles UX</a></li><li class="chapter-item expanded "><a href="ui-ux-10-files-media-gallery-transfer-architecture.html"><strong aria-hidden="true">43.</strong> UI/UX 10 — Files, Media Gallery & Transfer UX</a></li><li class="chapter-item expanded "><a href="ui-ux-11-search-local-knowledge-retrieval-architecture.html"><strong aria-hidden="true">44.</strong> UI/UX 11 — Search & Local Knowledge Retrieval UX</a></li><li class="chapter-item expanded "><a href="ui-ux-12-nearby-qr-nfc-pairing-device-linking-architecture.html"><strong aria-hidden="true">45.</strong> UI/UX 12 — Nearby, QR/NFC Pairing & Device Linking UX</a></li><li class="chapter-item expanded "><a href="ui-ux-13-notifications-background-incoming-call-architecture.html"><strong aria-hidden="true">46.</strong> UI/UX 13 — Notifications, Background & Incoming Call UX</a></li><li class="chapter-item expanded "><a href="ui-ux-14-presence-typing-receipts-status-architecture.html"><strong aria-hidden="true">47.</strong> UI/UX 14 — Presence, Typing, Receipts & Status UX</a></li><li class="chapter-item expanded "><a href="ui-ux-15-security-center-devices-keys-recovery-architecture.html"><strong aria-hidden="true">48.</strong> UI/UX 15 — Security Center, Devices, Keys & Recovery UX</a></li><li class="chapter-item expanded "><a href="ui-ux-16-backup-restore-export-migration-architecture.html"><strong aria-hidden="true">49.</strong> UI/UX 16 — Backup, Restore, Export & Migration UX</a></li><li class="chapter-item expanded "><a href="ui-ux-17-emergency-sos-offline-mesh-architecture.html"><strong aria-hidden="true">50.</strong> UI/UX 17 — Emergency / SOS / Offline Mesh UX</a></li><li class="chapter-item expanded "><a href="ui-ux-18-settings-privacy-notifications-data-controls-architecture.html"><strong aria-hidden="true">51.</strong> UI/UX 18 — Settings, Privacy, Notifications & Data Controls</a></li><li class="chapter-item expanded "><a href="ui-ux-19-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">52.</strong> UI/UX 19 — Plugin & Module Ecosystem UX</a></li><li class="chapter-item expanded "><a href="ui-ux-20-diagnostics-network-paths-advanced-developer-architecture.html"><strong aria-hidden="true">53.</strong> UI/UX 20 — Diagnostics, Network Paths & Developer UX</a></li><li class="chapter-item expanded "><a href="ui-ux-21-accessibility-inclusive-interaction-architecture.html"><strong aria-hidden="true">54.</strong> UI/UX 21 — Accessibility & Inclusive Interaction</a></li><li class="chapter-item expanded "><a href="ui-ux-22-design-system-tokens-typography-icons-motion-architecture.html"><strong aria-hidden="true">55.</strong> UI/UX 22 — Design System, Tokens, Typography & Motion</a></li><li class="chapter-item expanded "><a href="ui-ux-23-responsive-adaptive-desktop-tablet-foldable-phone-layout-architecture.html"><strong aria-hidden="true">56.</strong> UI/UX 23 — Responsive & Adaptive Layouts (Desktop/Tablet/Foldable/Phone)</a></li><li class="chapter-item expanded "><a href="ui-ux-24-error-loading-empty-offline-degraded-state-architecture.html"><strong aria-hidden="true">57.</strong> UI/UX 24 — Error, Loading, Empty & Degraded-State UX</a></li><li class="chapter-item expanded "><a href="ui-ux-25-onboarding-first-run-permission-education-architecture.html"><strong aria-hidden="true">58.</strong> UI/UX 25 — Onboarding, First Run & Permission Education</a></li><li class="chapter-item expanded "><a href="ui-ux-26-performance-virtualization-large-data-ui-architecture.html"><strong aria-hidden="true">59.</strong> UI/UX 26 — Virtualization & Large-Data UI Performance</a></li><li class="chapter-item expanded "><a href="ui-ux-27-ui-testing-screenshot-interaction-release-quality-gates-architecture.html"><strong aria-hidden="true">60.</strong> UI/UX 27 — UI Testing, Screenshots & Release Quality Gates</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">SIAR System Architecture &amp; Technical Wiki</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar/edit/main/sys-arch/ui-ux-04-conversation-list-inbox-architecture.md" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="uiux-part-04--conversation-list--inbox-ux-architecture"><a class="header" href="#uiux-part-04--conversation-list--inbox-ux-architecture">UI/UX Part 04 — Conversation List / Inbox UX Architecture</a></h1>
+<h2 id="reusable-p2p-communication-platform"><a class="header" href="#reusable-p2p-communication-platform">Reusable P2P Communication Platform</a></h2>
+<p><strong>Status:</strong> UI/UX architecture specification<br />
+<strong>UI Series:</strong> Part 04<br />
+<strong>Desktop UI:</strong> Dioxus<br />
+<strong>Android UI:</strong> Kotlin + Jetpack Compose<br />
+<strong>Core runtime:</strong> Rust<br />
+<strong>Primary purpose:</strong> define the complete conversation list / inbox experience across desktop and Android, including unread state, sorting, pinning, archiving, requests, presence, drafts, typing hints, mute state, delivery state previews, multi-device consistency, offline behavior, pagination, accessibility, context actions, and navigation into conversations.</p>
+<hr />
+<h1 id="1-purpose"><a class="header" href="#1-purpose">1. Purpose</a></h1>
+<p>The conversation list is the primary operational surface of the application.</p>
+<p>It must answer, at a glance:</p>
+<pre><code class="language-text">Who contacted me?
+What is unread?
+What changed recently?
+Who is active?
+Which messages failed?
+Which conversations are pinned?
+Which are muted?
+Are there message requests?
+Is something waiting to send?
+</code></pre>
+<p>The inbox must remain useful when:</p>
+<pre><code class="language-text">offline
+partially synced
+multi-device
+background-updated
+search rebuilding
+peer unavailable
+conversation has draft
+conversation has pending transfer
+</code></pre>
+<p>The governing principle is:</p>
+<blockquote>
+<p><strong>The inbox is a projection of durable conversation truth, enriched with bounded ephemeral hints. It is never an independent message database.</strong></p>
+</blockquote>
+<hr />
+<h1 id="2-architectural-position"><a class="header" href="#2-architectural-position">2. Architectural Position</a></h1>
+<pre><code class="language-text">Rust Conversation Projection
+        │
+        ├── unread/read state
+        ├── last durable message
+        ├── draft summary
+        ├── pin/mute/archive state
+        ├── peer/group identity
+        └── delivery/outbox state
+        │
+        + Ephemeral overlay
+            ├── presence
+            ├── typing
+            └── call availability
+        │
+        ▼
+ConversationSummary DTO
+        │
+   ┌────┴─────┐
+   │          │
+Dioxus     Compose
+Desktop    Android
+</code></pre>
+<hr />
+<h1 id="3-conversation-summary"><a class="header" href="#3-conversation-summary">3. Conversation Summary</a></h1>
+<p>Recommended shared presentation DTO:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct ConversationSummary {
+    pub id: ConversationId,
+    pub kind: ConversationKind,
+    pub title: String,
+    pub avatar: AvatarRef,
+    pub preview: ConversationPreview,
+    pub timestamp: Timestamp,
+    pub unread_count: u32,
+    pub mention_count: u32,
+    pub pinned: bool,
+    pub muted: bool,
+    pub archived: bool,
+    pub draft: Option&lt;DraftPreview&gt;,
+    pub send_state: ConversationSendState,
+    pub presence: Option&lt;PresenceSummary&gt;,
+    pub typing: Option&lt;TypingSummary&gt;,
+    pub security_badge: Option&lt;SecurityBadge&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="4-conversation-kinds"><a class="header" href="#4-conversation-kinds">4. Conversation Kinds</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum ConversationKind {
+    Direct,
+    Group,
+    MessageRequest,
+    System,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Optional future:</p>
+<pre><code class="language-text">Channel
+Broadcast
+Organization
+</code></pre>
+<hr />
+<h1 id="5-inbox-sections"><a class="header" href="#5-inbox-sections">5. Inbox Sections</a></h1>
+<p>Recommended logical sections:</p>
+<pre><code class="language-text">Pinned
+Recent
+Requests
+Archived
+</code></pre>
+<p>Do not create excessive permanent sections.</p>
+<hr />
+<h1 id="6-default-main-inbox"><a class="header" href="#6-default-main-inbox">6. Default Main Inbox</a></h1>
+<p>Normal inbox contains:</p>
+<pre><code class="language-text">Pinned
+Recent
+</code></pre>
+<p>Requests and archived conversations are separate destinations/filter states.</p>
+<hr />
+<h1 id="7-pinned-conversations"><a class="header" href="#7-pinned-conversations">7. Pinned Conversations</a></h1>
+<p>Pinned conversations appear before normal recency-sorted conversations.</p>
+<p>Within pinned:</p>
+<pre><code class="language-text">user-defined order
+or
+recent order
+</code></pre>
+<p>Recommendation:</p>
+<pre><code class="language-text">user-defined order
+</code></pre>
+<p>if drag-reordering is supported.</p>
+<hr />
+<h1 id="8-pin-limit"><a class="header" href="#8-pin-limit">8. Pin Limit</a></h1>
+<p>Keep a reasonable product limit or allow unlimited but virtualized.</p>
+<p>Do not make pinning affect durable protocol behavior.</p>
+<p>It is user presentation metadata.</p>
+<hr />
+<h1 id="9-recency-ordering"><a class="header" href="#9-recency-ordering">9. Recency Ordering</a></h1>
+<p>Recent conversations sort by meaningful activity:</p>
+<pre><code class="language-text">latest message
+call event
+draft change optionally
+security event only if conversation-relevant
+</code></pre>
+<p>Do not reorder constantly because presence changes.</p>
+<hr />
+<h1 id="10-presence-must-not-reorder-inbox"><a class="header" href="#10-presence-must-not-reorder-inbox">10. Presence Must Not Reorder Inbox</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">Alice becomes online
+</code></pre>
+<p>should not jump conversation to top.</p>
+<p>Presence is an overlay, not durable activity.</p>
+<hr />
+<h1 id="11-typing-must-not-reorder-inbox"><a class="header" href="#11-typing-must-not-reorder-inbox">11. Typing Must Not Reorder Inbox</a></h1>
+<p>Likewise:</p>
+<pre><code class="language-text">Bob is typing…
+</code></pre>
+<p>should not move conversation position.</p>
+<hr />
+<h1 id="12-drafts"><a class="header" href="#12-drafts">12. Drafts</a></h1>
+<p>A conversation with local draft may show:</p>
+<pre><code class="language-text">Draft: unfinished text
+</code></pre>
+<p>in preview.</p>
+<hr />
+<h1 id="13-draft-priority"><a class="header" href="#13-draft-priority">13. Draft Priority</a></h1>
+<p>Preview priority example:</p>
+<pre><code class="language-text">typing
+draft
+failed outgoing
+last durable message
+</code></pre>
+<p>But avoid unstable flickering.</p>
+<p>Recommended display rules are defined explicitly below.</p>
+<hr />
+<h1 id="14-preview-state-types"><a class="header" href="#14-preview-state-types">14. Preview State Types</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum ConversationPreview {
+    Message(MessagePreview),
+    Draft(DraftPreview),
+    Typing(TypingPreview),
+    Transfer(TransferPreview),
+    Call(CallPreview),
+    System(SystemPreview),
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="15-stable-preview-priority"><a class="header" href="#15-stable-preview-priority">15. Stable Preview Priority</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">1. typing/recording when fresh
+2. draft if user has unsent draft
+3. failed/pending outgoing state if important
+4. latest durable message/call/file event
+</code></pre>
+<hr />
+<h1 id="16-typing-preview"><a class="header" href="#16-typing-preview">16. Typing Preview</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">Alice is typing…
+</code></pre>
+<p>Group:</p>
+<pre><code class="language-text">Alice and Bob are typing…
+</code></pre>
+<p>If many:</p>
+<pre><code class="language-text">Several people are typing…
+</code></pre>
+<hr />
+<h1 id="17-typing-ttl"><a class="header" href="#17-typing-ttl">17. Typing TTL</a></h1>
+<p>UI never owns expiry.</p>
+<p>Rust Part 30 projection sends:</p>
+<pre><code class="language-text">typing active
+typing inactive
+</code></pre>
+<p>based on TTL.</p>
+<hr />
+<h1 id="18-voice-recording-preview"><a class="header" href="#18-voice-recording-preview">18. Voice Recording Preview</a></h1>
+<p>Optional:</p>
+<pre><code class="language-text">Recording a voice message…
+</code></pre>
+<p>same ephemeral rules.</p>
+<hr />
+<h1 id="19-last-message-preview"><a class="header" href="#19-last-message-preview">19. Last Message Preview</a></h1>
+<p>Possible:</p>
+<pre><code class="language-text">text excerpt
+Photo
+Video
+Voice message
+File
+Missed call
+</code></pre>
+<p>Use human-readable semantic labels.</p>
+<hr />
+<h1 id="20-message-preview-privacy"><a class="header" href="#20-message-preview-privacy">20. Message Preview Privacy</a></h1>
+<p>Inbox is inside app, but app lock/security profile may require:</p>
+<pre><code class="language-text">hide message previews
+</code></pre>
+<p>optionally.</p>
+<hr />
+<h1 id="21-unknown-content"><a class="header" href="#21-unknown-content">21. Unknown Content</a></h1>
+<p>If message encrypted but not yet decryptable:</p>
+<pre><code class="language-text">New encrypted message
+</code></pre>
+<p>or generic:</p>
+<pre><code class="language-text">New message
+</code></pre>
+<p>not raw error.</p>
+<hr />
+<h1 id="22-failed-outgoing-preview"><a class="header" href="#22-failed-outgoing-preview">22. Failed Outgoing Preview</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">Failed to send
+</code></pre>
+<p>with warning indicator.</p>
+<hr />
+<h1 id="23-queued-outgoing-preview"><a class="header" href="#23-queued-outgoing-preview">23. Queued Outgoing Preview</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">Waiting for connection
+</code></pre>
+<p>or small clock icon.</p>
+<hr />
+<h1 id="24-delivery-state-in-inbox"><a class="header" href="#24-delivery-state-in-inbox">24. Delivery State in Inbox</a></h1>
+<p>Do not overcrowd each row.</p>
+<p>Possible only for user's latest outgoing message:</p>
+<pre><code class="language-text">Queued
+Sent
+Delivered
+Read
+Failed
+</code></pre>
+<p>represented compactly.</p>
+<hr />
+<h1 id="25-unread-count"><a class="header" href="#25-unread-count">25. Unread Count</a></h1>
+<p>Derived from durable read cursor.</p>
+<p>Never maintained separately by UI.</p>
+<hr />
+<h1 id="26-mention-count"><a class="header" href="#26-mention-count">26. Mention Count</a></h1>
+<p>Group conversations may show:</p>
+<pre><code class="language-text">@2
+</code></pre>
+<p>or special badge when unread mentions exist.</p>
+<hr />
+<h1 id="27-unread-badge"><a class="header" href="#27-unread-badge">27. Unread Badge</a></h1>
+<p>Normal:</p>
+<pre><code class="language-text">count
+</code></pre>
+<p>If count large:</p>
+<pre><code class="language-text">99+
+</code></pre>
+<p>or product-defined cap.</p>
+<hr />
+<h1 id="28-muted-unread"><a class="header" href="#28-muted-unread">28. Muted Unread</a></h1>
+<p>Muted conversation still shows unread count.</p>
+<p>Badge may be visually quieter.</p>
+<hr />
+<h1 id="29-mark-read"><a class="header" href="#29-mark-read">29. Mark Read</a></h1>
+<p>Action advances durable read cursor through current eligible message sequence.</p>
+<hr />
+<h1 id="30-mark-unread"><a class="header" href="#30-mark-unread">30. Mark Unread</a></h1>
+<p>If supported, this is a user reminder state.</p>
+<p>Important distinction:</p>
+<pre><code class="language-text">read receipt already sent
+</code></pre>
+<p>cannot be undone remotely.</p>
+<p>Local "mark unread" means:</p>
+<pre><code class="language-text">local reminder/unread marker
+</code></pre>
+<p>not reversing read history.</p>
+<hr />
+<h1 id="31-local-unread-marker"><a class="header" href="#31-local-unread-marker">31. Local Unread Marker</a></h1>
+<p>Could store:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct ManualUnreadMarker {
+    pub conversation: ConversationId,
+    pub from_seq: MessageSequence,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="32-archive"><a class="header" href="#32-archive">32. Archive</a></h1>
+<p>Archive removes conversation from normal inbox but does not delete it.</p>
+<hr />
+<h1 id="33-new-message-in-archived-conversation"><a class="header" href="#33-new-message-in-archived-conversation">33. New Message in Archived Conversation</a></h1>
+<p>Policy options:</p>
+<pre><code class="language-text">unarchive automatically
+or
+remain archived
+</code></pre>
+<p>Recommended default:</p>
+<pre><code class="language-text">unarchive on new incoming message
+</code></pre>
+<p>unless muted/archived intentionally with special setting.</p>
+<hr />
+<h1 id="34-delete-conversation"><a class="header" href="#34-delete-conversation">34. Delete Conversation</a></h1>
+<p>This must distinguish:</p>
+<pre><code class="language-text">delete local history
+leave group
+delete for everyone
+</code></pre>
+<p>Do not combine into one ambiguous action.</p>
+<hr />
+<h1 id="35-direct-conversation-delete"><a class="header" href="#35-direct-conversation-delete">35. Direct Conversation Delete</a></h1>
+<p>Possible semantics:</p>
+<pre><code class="language-text">remove local conversation history
+</code></pre>
+<p>without deleting peer's copy.</p>
+<hr />
+<h1 id="36-group-delete"><a class="header" href="#36-group-delete">36. Group Delete</a></h1>
+<p>Usually:</p>
+<pre><code class="language-text">clear local history
+</code></pre>
+<p>separate from:</p>
+<pre><code class="language-text">Leave group
+</code></pre>
+<hr />
+<h1 id="37-conversation-requests"><a class="header" href="#37-conversation-requests">37. Conversation Requests</a></h1>
+<p>Unknown peers should not enter normal inbox equivalently to trusted contacts.</p>
+<p>Use:</p>
+<pre><code class="language-text">Requests
+</code></pre>
+<hr />
+<h1 id="38-request-row"><a class="header" href="#38-request-row">38. Request Row</a></h1>
+<p>Display:</p>
+<pre><code class="language-text">claimed display name
+verification/trust state
+message preview limited
+request timestamp
+</code></pre>
+<hr />
+<h1 id="39-unknown-sender-safety"><a class="header" href="#39-unknown-sender-safety">39. Unknown Sender Safety</a></h1>
+<p>Avoid auto-loading:</p>
+<pre><code class="language-text">large attachment
+link preview
+external media
+</code></pre>
+<p>from unknown sender.</p>
+<hr />
+<h1 id="40-request-actions"><a class="header" href="#40-request-actions">40. Request Actions</a></h1>
+<pre><code class="language-text">Accept
+Block
+Delete
+Report
+</code></pre>
+<p>where supported.</p>
+<hr />
+<h1 id="41-accept-request"><a class="header" href="#41-accept-request">41. Accept Request</a></h1>
+<p>May:</p>
+<pre><code class="language-text">create trusted/accepted conversation relationship
+</code></pre>
+<p>but should not imply cryptographic verification.</p>
+<hr />
+<h1 id="42-verification-vs-acceptance"><a class="header" href="#42-verification-vs-acceptance">42. Verification vs Acceptance</a></h1>
+<p>Display separately:</p>
+<pre><code class="language-text">Accepted
+Verified
+</code></pre>
+<p>They are not identical.</p>
+<hr />
+<h1 id="43-requests-badge"><a class="header" href="#43-requests-badge">43. Requests Badge</a></h1>
+<p>Main Chats destination can show:</p>
+<pre><code class="language-text">3 requests
+</code></pre>
+<p>without mixing requests into normal unread count if product chooses.</p>
+<hr />
+<h1 id="44-search--filter-inbox"><a class="header" href="#44-search--filter-inbox">44. Search / Filter Inbox</a></h1>
+<p>Inbox filter field can search:</p>
+<pre><code class="language-text">conversation title
+contact
+group
+</code></pre>
+<p>This is lightweight list filtering.</p>
+<p>Global message search remains Part 32.</p>
+<hr />
+<h1 id="45-inbox-search-scope"><a class="header" href="#45-inbox-search-scope">45. Inbox Search Scope</a></h1>
+<p>Do not query all message history on every character in sidebar filter.</p>
+<p>Filter loaded conversation summaries.</p>
+<hr />
+<h1 id="46-advanced-filters"><a class="header" href="#46-advanced-filters">46. Advanced Filters</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">Unread
+Groups
+Direct
+Muted
+Archived
+</code></pre>
+<p>Use chips/menu, not permanent clutter.</p>
+<hr />
+<h1 id="47-sort-options"><a class="header" href="#47-sort-options">47. Sort Options</a></h1>
+<p>Default:</p>
+<pre><code class="language-text">Pinned + Recent
+</code></pre>
+<p>Optional future:</p>
+<pre><code class="language-text">Unread first
+Name
+</code></pre>
+<p>Avoid too many modes.</p>
+<hr />
+<h1 id="48-conversation-row-anatomy"><a class="header" href="#48-conversation-row-anatomy">48. Conversation Row Anatomy</a></h1>
+<p>Recommended semantic structure:</p>
+<pre><code class="language-text">Avatar
+Title
+Timestamp
+Preview
+Unread/Mention Badge
+Mute/Pin/Send Status
+Presence optional
+</code></pre>
+<hr />
+<h1 id="49-avatar"><a class="header" href="#49-avatar">49. Avatar</a></h1>
+<p>Direct:</p>
+<pre><code class="language-text">contact avatar
+</code></pre>
+<p>Group:</p>
+<pre><code class="language-text">group avatar
+</code></pre>
+<p>Fallback:</p>
+<pre><code class="language-text">initials / generated identicon
+</code></pre>
+<hr />
+<h1 id="50-avatar-security"><a class="header" href="#50-avatar-security">50. Avatar Security</a></h1>
+<p>Do not imply verified identity through avatar appearance alone.</p>
+<p>Use explicit verification marker if needed.</p>
+<hr />
+<h1 id="51-presence-indicator"><a class="header" href="#51-presence-indicator">51. Presence Indicator</a></h1>
+<p>Small optional dot/status.</p>
+<p>Do not show per-device presence.</p>
+<hr />
+<h1 id="52-presence-states"><a class="header" href="#52-presence-states">52. Presence States</a></h1>
+<p>Recommended visible distinction:</p>
+<pre><code class="language-text">Online
+Away
+none
+</code></pre>
+<p>Avoid strong "Offline" dot if status is actually Unknown.</p>
+<hr />
+<h1 id="53-timestamp"><a class="header" href="#53-timestamp">53. Timestamp</a></h1>
+<p>Use compact relative formatting:</p>
+<pre><code class="language-text">10:42
+Yesterday
+Mon
+12 Aug
+</code></pre>
+<p>according to recency.</p>
+<p>UI formats locally.</p>
+<hr />
+<h1 id="54-timestamp-source"><a class="header" href="#54-timestamp-source">54. Timestamp Source</a></h1>
+<p>Use latest meaningful durable conversation activity.</p>
+<p>Typing/presence should not alter timestamp.</p>
+<hr />
+<h1 id="55-security-badge"><a class="header" href="#55-security-badge">55. Security Badge</a></h1>
+<p>Only when meaningful:</p>
+<pre><code class="language-text">identity changed
+new unverified device
+verification warning
+</code></pre>
+<p>Do not place green lock icon on every row.</p>
+<hr />
+<h1 id="56-draft-badge"><a class="header" href="#56-draft-badge">56. Draft Badge</a></h1>
+<p>Preview prefix:</p>
+<pre><code class="language-text">Draft:
+</code></pre>
+<p>with distinct semantic styling.</p>
+<hr />
+<h1 id="57-failed-state"><a class="header" href="#57-failed-state">57. Failed State</a></h1>
+<p>Latest outgoing failure can show:</p>
+<pre><code class="language-text">warning icon
+Failed to send
+</code></pre>
+<hr />
+<h1 id="58-transfer-state"><a class="header" href="#58-transfer-state">58. Transfer State</a></h1>
+<p>If latest event is active file transfer:</p>
+<pre><code class="language-text">Sending file…
+</code></pre>
+<p>but transfer center remains authoritative.</p>
+<hr />
+<h1 id="59-active-call-state"><a class="header" href="#59-active-call-state">59. Active Call State</a></h1>
+<p>Conversation row may show:</p>
+<pre><code class="language-text">Call in progress
+</code></pre>
+<p>if user is currently in call with that conversation.</p>
+<hr />
+<h1 id="60-desktop-dioxus-inbox-layout"><a class="header" href="#60-desktop-dioxus-inbox-layout">60. Desktop Dioxus Inbox Layout</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">+--------------------------------+
+| Chats                    New + |
+| Search / Filter                 |
++--------------------------------+
+| Pinned                          |
+|  Alice                    10:42 |
+|  Team                     09:10 |
++--------------------------------+
+| Recent                          |
+|  Bob                      08:31 |
+|  School ERP               Mon   |
+|  ...                            |
++--------------------------------+
+</code></pre>
+<hr />
+<h1 id="61-desktop-sidebar-width"><a class="header" href="#61-desktop-sidebar-width">61. Desktop Sidebar Width</a></h1>
+<p>Allow resizing.</p>
+<p>Minimum prevents title/preview becoming unusable.</p>
+<hr />
+<h1 id="62-desktop-row-density"><a class="header" href="#62-desktop-row-density">62. Desktop Row Density</a></h1>
+<p>Potential modes:</p>
+<pre><code class="language-text">Comfortable
+Compact
+</code></pre>
+<hr />
+<h1 id="63-desktop-hover-actions"><a class="header" href="#63-desktop-hover-actions">63. Desktop Hover Actions</a></h1>
+<p>On hover:</p>
+<pre><code class="language-text">Mute
+Pin
+More
+</code></pre>
+<p>but actions must remain available through context menu/keyboard.</p>
+<hr />
+<h1 id="64-desktop-context-menu"><a class="header" href="#64-desktop-context-menu">64. Desktop Context Menu</a></h1>
+<pre><code class="language-text">Open
+Open in New Tab
+Open in New Window
+Pin/Unpin
+Mute/Unmute
+Mark Read/Unread
+Archive
+Delete
+</code></pre>
+<hr />
+<h1 id="65-desktop-keyboard-navigation"><a class="header" href="#65-desktop-keyboard-navigation">65. Desktop Keyboard Navigation</a></h1>
+<pre><code class="language-text">Up/Down → move selection
+Enter → open
+Shift+F10 → context menu
+Ctrl/Cmd+N → new conversation
+</code></pre>
+<hr />
+<h1 id="66-desktop-selection-model"><a class="header" href="#66-desktop-selection-model">66. Desktop Selection Model</a></h1>
+<p>Single active row.</p>
+<p>Optional multi-select only if batch conversation operations are valuable.</p>
+<p>Not necessary initially.</p>
+<hr />
+<h1 id="67-desktop-active-row"><a class="header" href="#67-desktop-active-row">67. Desktop Active Row</a></h1>
+<p>Clearly distinguish:</p>
+<pre><code class="language-text">selected
+unread
+hovered
+focused
+</code></pre>
+<p>without relying solely on color.</p>
+<hr />
+<h1 id="68-desktop-split-pane"><a class="header" href="#68-desktop-split-pane">68. Desktop Split Pane</a></h1>
+<p>Clicking conversation updates main workspace while sidebar remains visible.</p>
+<hr />
+<h1 id="69-new-conversation-button"><a class="header" href="#69-new-conversation-button">69. New Conversation Button</a></h1>
+<p>Visible in chats header.</p>
+<p>Opens:</p>
+<pre><code class="language-text">contact picker
+</code></pre>
+<p>or command palette flow.</p>
+<hr />
+<h1 id="70-android-compose-inbox-layout"><a class="header" href="#70-android-compose-inbox-layout">70. Android Compose Inbox Layout</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">TopAppBar
+    Chats
+    Search
+    New conversation / overflow
+
+Optional filter chips
+
+LazyColumn conversation list
+
+BottomNavigation
+</code></pre>
+<hr />
+<h1 id="71-android-conversation-row"><a class="header" href="#71-android-conversation-row">71. Android Conversation Row</a></h1>
+<p>Use full-width touch row.</p>
+<p>Information:</p>
+<pre><code class="language-text">avatar
+title
+preview
+timestamp
+unread badge
+small state icons
+</code></pre>
+<hr />
+<h1 id="72-android-swipe-actions"><a class="header" href="#72-android-swipe-actions">72. Android Swipe Actions</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">swipe right → mark read/unread
+swipe left → archive
+</code></pre>
+<p>only if discoverable and reversible.</p>
+<hr />
+<h1 id="73-swipe-accessibility"><a class="header" href="#73-swipe-accessibility">73. Swipe Accessibility</a></h1>
+<p>Every swipe action must also exist in:</p>
+<pre><code class="language-text">long-press action sheet
+</code></pre>
+<hr />
+<h1 id="74-android-long-press"><a class="header" href="#74-android-long-press">74. Android Long Press</a></h1>
+<p>Opens conversation action sheet:</p>
+<pre><code class="language-text">Pin
+Mute
+Mark Read
+Archive
+Delete
+</code></pre>
+<hr />
+<h1 id="75-android-fab"><a class="header" href="#75-android-fab">75. Android FAB</a></h1>
+<p>Optional:</p>
+<pre><code class="language-text">New conversation
+</code></pre>
+<p>A FAB is reasonable if central to product.</p>
+<p>Alternative:</p>
+<pre><code class="language-text">top app bar action
+</code></pre>
+<hr />
+<h1 id="76-recommendation"><a class="header" href="#76-recommendation">76. Recommendation</a></h1>
+<p>Use a small compose/new-message FAB on phone if it does not obscure content.</p>
+<p>Tablet can use toolbar action.</p>
+<hr />
+<h1 id="77-pull-to-refresh"><a class="header" href="#77-pull-to-refresh">77. Pull to Refresh</a></h1>
+<p>Optional.</p>
+<p>If implemented:</p>
+<pre><code class="language-text">request sync
+</code></pre>
+<p>not clear/reload local state.</p>
+<hr />
+<h1 id="78-offline-pull-refresh"><a class="header" href="#78-offline-pull-refresh">78. Offline Pull Refresh</a></h1>
+<p>May attempt:</p>
+<pre><code class="language-text">local discovery
+outbox retry
+sync
+</code></pre>
+<p>but retains list.</p>
+<hr />
+<h1 id="79-tablet-inbox"><a class="header" href="#79-tablet-inbox">79. Tablet Inbox</a></h1>
+<p>Expanded layout:</p>
+<pre><code class="language-text">NavigationRail
+    │
+Conversation List
+    │
+Conversation Detail
+</code></pre>
+<hr />
+<h1 id="80-tablet-selection"><a class="header" href="#80-tablet-selection">80. Tablet Selection</a></h1>
+<p>Opening a row updates detail pane without replacing list.</p>
+<hr />
+<h1 id="81-empty-detail-pane"><a class="header" href="#81-empty-detail-pane">81. Empty Detail Pane</a></h1>
+<p>If no conversation selected:</p>
+<pre><code class="language-text">Start a conversation
+</code></pre>
+<p>or welcome placeholder.</p>
+<hr />
+<h1 id="82-foldable"><a class="header" href="#82-foldable">82. Foldable</a></h1>
+<p>If hinge separates:</p>
+<pre><code class="language-text">list on one region
+detail on other
+</code></pre>
+<p>where ergonomic.</p>
+<hr />
+<h1 id="83-list-pagination"><a class="header" href="#83-list-pagination">83. List Pagination</a></h1>
+<p>Conversation lists can be large.</p>
+<p>Use cursor/page from Rust projection.</p>
+<hr />
+<h1 id="84-initial-page"><a class="header" href="#84-initial-page">84. Initial Page</a></h1>
+<p>Load most recent:</p>
+<pre><code class="language-text">50–100
+</code></pre>
+<p>depending row cost and backend.</p>
+<p>Tune by measurement.</p>
+<hr />
+<h1 id="85-load-more"><a class="header" href="#85-load-more">85. Load More</a></h1>
+<p>At scroll threshold:</p>
+<pre><code class="language-text">request next page
+</code></pre>
+<hr />
+<h1 id="86-pinned-conversations"><a class="header" href="#86-pinned-conversations">86. Pinned Conversations</a></h1>
+<p>Pinned items can be loaded separately to guarantee visibility.</p>
+<hr />
+<h1 id="87-stable-keys"><a class="header" href="#87-stable-keys">87. Stable Keys</a></h1>
+<p>Always:</p>
+<pre><code class="language-text">ConversationId
+</code></pre>
+<hr />
+<h1 id="88-list-update"><a class="header" href="#88-list-update">88. List Update</a></h1>
+<p>If message arrives:</p>
+<pre><code class="language-text">update row
+move conversation according to durable recency
+</code></pre>
+<hr />
+<h1 id="89-move-animation"><a class="header" href="#89-move-animation">89. Move Animation</a></h1>
+<p>Use subtle position animation.</p>
+<p>Respect reduced motion.</p>
+<hr />
+<h1 id="90-avoid-row-teleport-confusion"><a class="header" href="#90-avoid-row-teleport-confusion">90. Avoid Row Teleport Confusion</a></h1>
+<p>If many messages arrive:</p>
+<pre><code class="language-text">batch/coalesce list reorders
+</code></pre>
+<p>rather than animate dozens of shifts.</p>
+<hr />
+<h1 id="91-multi-device-updates"><a class="header" href="#91-multi-device-updates">91. Multi-Device Updates</a></h1>
+<p>If another device:</p>
+<pre><code class="language-text">reads
+archives
+pins
+mutes
+</code></pre>
+<p>policy determines which settings sync.</p>
+<hr />
+<h1 id="92-read-state-sync"><a class="header" href="#92-read-state-sync">92. Read State Sync</a></h1>
+<p>Durable read cursor syncs.</p>
+<p>Inbox badge updates.</p>
+<hr />
+<h1 id="93-pin-sync"><a class="header" href="#93-pin-sync">93. Pin Sync</a></h1>
+<p>Product decision:</p>
+<pre><code class="language-text">account-wide
+or
+device-local
+</code></pre>
+<p>Recommendation:</p>
+<pre><code class="language-text">account-wide
+</code></pre>
+<p>for consistency.</p>
+<hr />
+<h1 id="94-mute-sync"><a class="header" href="#94-mute-sync">94. Mute Sync</a></h1>
+<p>Recommendation:</p>
+<pre><code class="language-text">account-wide semantic mute
+</code></pre>
+<p>OS notification-channel details remain device-local.</p>
+<hr />
+<h1 id="95-archive-sync"><a class="header" href="#95-archive-sync">95. Archive Sync</a></h1>
+<p>Recommendation:</p>
+<pre><code class="language-text">account-wide
+</code></pre>
+<p>unless product defines device-local inbox organization.</p>
+<hr />
+<h1 id="96-draft-sync"><a class="header" href="#96-draft-sync">96. Draft Sync</a></h1>
+<p>Can start:</p>
+<pre><code class="language-text">device-local
+</code></pre>
+<p>and evolve to account-wide later.</p>
+<hr />
+<h1 id="97-presence-overlay"><a class="header" href="#97-presence-overlay">97. Presence Overlay</a></h1>
+<p>Presence is not stored into conversation row persistence.</p>
+<p>UI receives updated overlay.</p>
+<hr />
+<h1 id="98-typing-overlay"><a class="header" href="#98-typing-overlay">98. Typing Overlay</a></h1>
+<p>Typing similarly ephemeral.</p>
+<hr />
+<h1 id="99-row-update-frequency"><a class="header" href="#99-row-update-frequency">99. Row Update Frequency</a></h1>
+<p>Presence/typing should only recompose the affected row.</p>
+<p>Do not recompute whole list.</p>
+<hr />
+<h1 id="100-compose-state-granularity"><a class="header" href="#100-compose-state-granularity">100. Compose State Granularity</a></h1>
+<p>Prefer stable list data with per-row identifiers.</p>
+<p>Avoid giant mutable map causing full list recomposition.</p>
+<hr />
+<h1 id="101-dioxus-state-granularity"><a class="header" href="#101-dioxus-state-granularity">101. Dioxus State Granularity</a></h1>
+<p>Same principle.</p>
+<p>Use localized signals/subscriptions.</p>
+<hr />
+<h1 id="102-inbox-snapshot"><a class="header" href="#102-inbox-snapshot">102. Inbox Snapshot</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct InboxSnapshot {
+    pub pinned: Vec&lt;ConversationSummary&gt;,
+    pub recent: Vec&lt;ConversationSummary&gt;,
+    pub request_count: u32,
+    pub archived_count: u32,
+    pub next_cursor: Option&lt;ConversationCursor&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="103-inbox-events"><a class="header" href="#103-inbox-events">103. Inbox Events</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum InboxEvent {
+    ConversationInserted(ConversationSummary),
+    ConversationUpdated(ConversationSummary),
+    ConversationRemoved(ConversationId),
+    ConversationReordered {
+        id: ConversationId,
+        position: usize,
+    },
+    RequestCountChanged(u32),
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="104-event-strategy"><a class="header" href="#104-event-strategy">104. Event Strategy</a></h1>
+<p>Can simplify:</p>
+<pre><code class="language-text">row upsert
++
+sort key
+</code></pre>
+<p>and let presentation layer maintain ordering.</p>
+<hr />
+<h1 id="105-conversation-sort-key"><a class="header" href="#105-conversation-sort-key">105. Conversation Sort Key</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct ConversationSortKey {
+    pub pinned_rank: Option&lt;u32&gt;,
+    pub last_activity: Timestamp,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="106-optimistic-archive"><a class="header" href="#106-optimistic-archive">106. Optimistic Archive</a></h1>
+<p>When user archives:</p>
+<pre><code class="language-text">Rust accepts command
+→ row projection changes
+→ UI animates out
+</code></pre>
+<p>If command fails:</p>
+<pre><code class="language-text">row returns
+show snackbar
+</code></pre>
+<hr />
+<h1 id="107-undo-archive"><a class="header" href="#107-undo-archive">107. Undo Archive</a></h1>
+<p>Good use of snackbar:</p>
+<pre><code class="language-text">Conversation archived — Undo
+</code></pre>
+<hr />
+<h1 id="108-optimistic-mute"><a class="header" href="#108-optimistic-mute">108. Optimistic Mute</a></h1>
+<p>Can update after Rust confirms quickly.</p>
+<hr />
+<h1 id="109-pin-reordering"><a class="header" href="#109-pin-reordering">109. Pin Reordering</a></h1>
+<p>Desktop drag.</p>
+<p>Android long-press drag if worth complexity.</p>
+<hr />
+<h1 id="110-recommendation-for-v1"><a class="header" href="#110-recommendation-for-v1">110. Recommendation for v1</a></h1>
+<p>Pinned ordering:</p>
+<pre><code class="language-text">automatic order based on pin timestamp
+</code></pre>
+<p>or stable simple order.</p>
+<p>Manual pin reorder can be added later.</p>
+<hr />
+<h1 id="111-message-request-security"><a class="header" href="#111-message-request-security">111. Message Request Security</a></h1>
+<p>Unknown requests must not trigger:</p>
+<pre><code class="language-text">presence sharing
+read receipts
+typing indicators
+</code></pre>
+<p>until accepted, according to privacy policy.</p>
+<hr />
+<h1 id="112-read-receipt-for-request"><a class="header" href="#112-read-receipt-for-request">112. Read Receipt for Request</a></h1>
+<p>Do not send read receipt automatically to unknown sender by default.</p>
+<hr />
+<h1 id="113-request-preview-privacy"><a class="header" href="#113-request-preview-privacy">113. Request Preview Privacy</a></h1>
+<p>Could show only:</p>
+<pre><code class="language-text">New message request
+</code></pre>
+<p>until user opens.</p>
+<hr />
+<h1 id="114-spam-flood"><a class="header" href="#114-spam-flood">114. Spam Flood</a></h1>
+<p>If many unknown requests:</p>
+<pre><code class="language-text">collapse into request count
+</code></pre>
+<p>not hundreds of normal rows/notifications.</p>
+<hr />
+<h1 id="115-request-rate-limit"><a class="header" href="#115-request-rate-limit">115. Request Rate Limit</a></h1>
+<p>Part 28 handles backend quotas.</p>
+<p>UI does not render more than bounded page.</p>
+<hr />
+<h1 id="116-blocked-conversations"><a class="header" href="#116-blocked-conversations">116. Blocked Conversations</a></h1>
+<p>Blocked peers should normally disappear from main inbox or appear in:</p>
+<pre><code class="language-text">Blocked
+</code></pre>
+<p>management area.</p>
+<hr />
+<h1 id="117-system-conversations"><a class="header" href="#117-system-conversations">117. System Conversations</a></h1>
+<p>If product has:</p>
+<pre><code class="language-text">security/system notices
+</code></pre>
+<p>consider dedicated system area instead of impersonating a human conversation.</p>
+<hr />
+<h1 id="118-conversation-creation"><a class="header" href="#118-conversation-creation">118. Conversation Creation</a></h1>
+<p>A new conversation may exist locally before first successful message.</p>
+<hr />
+<h1 id="119-empty-new-conversation"><a class="header" href="#119-empty-new-conversation">119. Empty New Conversation</a></h1>
+<p>If user selects contact and opens composer without sending:</p>
+<pre><code class="language-text">do not necessarily persist inbox row
+</code></pre>
+<p>until:</p>
+<pre><code class="language-text">draft stored
+or
+first message sent
+</code></pre>
+<hr />
+<h1 id="120-draft-only-conversation"><a class="header" href="#120-draft-only-conversation">120. Draft-Only Conversation</a></h1>
+<p>If durable drafts enabled:</p>
+<pre><code class="language-text">show row
+</code></pre>
+<p>with:</p>
+<pre><code class="language-text">Draft
+</code></pre>
+<hr />
+<h1 id="121-conversation-deletion-race"><a class="header" href="#121-conversation-deletion-race">121. Conversation Deletion Race</a></h1>
+<p>If open conversation deleted on another device:</p>
+<pre><code class="language-text">remove from list
+main pane shows no longer available
+</code></pre>
+<hr />
+<h1 id="122-group-rename"><a class="header" href="#122-group-rename">122. Group Rename</a></h1>
+<p>Inbox row title/avatar updates.</p>
+<hr />
+<h1 id="123-contact-rename"><a class="header" href="#123-contact-rename">123. Contact Rename</a></h1>
+<p>Local alias update immediately changes row.</p>
+<hr />
+<h1 id="124-identity-change"><a class="header" href="#124-identity-change">124. Identity Change</a></h1>
+<p>Security badge appears.</p>
+<p>Do not silently replace verified identity without warning.</p>
+<hr />
+<h1 id="125-outbox-failure"><a class="header" href="#125-outbox-failure">125. Outbox Failure</a></h1>
+<p>If latest outgoing message permanently failed:</p>
+<pre><code class="language-text">warning icon
+</code></pre>
+<p>and conversation remains visible.</p>
+<hr />
+<h1 id="126-pending-queue"><a class="header" href="#126-pending-queue">126. Pending Queue</a></h1>
+<p>If offline:</p>
+<pre><code class="language-text">small clock
+</code></pre>
+<p>not scary red error.</p>
+<hr />
+<h1 id="127-offline-global-state"><a class="header" href="#127-offline-global-state">127. Offline Global State</a></h1>
+<p>Could show:</p>
+<pre><code class="language-text">Offline
+</code></pre>
+<p>in chats header as subtle banner/chip.</p>
+<p>Do not repeat "offline" on every row.</p>
+<hr />
+<h1 id="128-reconnecting"><a class="header" href="#128-reconnecting">128. Reconnecting</a></h1>
+<p>Likewise global.</p>
+<hr />
+<h1 id="129-row-presence-while-offline"><a class="header" href="#129-row-presence-while-offline">129. Row Presence While Offline</a></h1>
+<p>Remote presence becomes:</p>
+<pre><code class="language-text">Unknown
+</code></pre>
+<p>after TTL.</p>
+<hr />
+<h1 id="130-inbox-search-during-offline"><a class="header" href="#130-inbox-search-during-offline">130. Inbox Search During Offline</a></h1>
+<p>Local filtering works fully.</p>
+<hr />
+<h1 id="131-conversation-open-during-offline"><a class="header" href="#131-conversation-open-during-offline">131. Conversation Open During Offline</a></h1>
+<p>Full local history opens.</p>
+<hr />
+<h1 id="132-accessibility--row-semantics"><a class="header" href="#132-accessibility--row-semantics">132. Accessibility — Row Semantics</a></h1>
+<p>Screen reader row could announce:</p>
+<pre><code class="language-text">Alice, 3 unread messages, last message "See you tomorrow", 10:42 AM, muted
+</code></pre>
+<hr />
+<h1 id="133-avoid-duplicate-semantics"><a class="header" href="#133-avoid-duplicate-semantics">133. Avoid Duplicate Semantics</a></h1>
+<p>Do not expose avatar/title/preview as many noisy separate nodes unless interaction benefits.</p>
+<hr />
+<h1 id="134-android-talkback"><a class="header" href="#134-android-talkback">134. Android TalkBack</a></h1>
+<p>Whole row should be one meaningful clickable target with custom actions where useful.</p>
+<hr />
+<h1 id="135-desktop-screen-reader"><a class="header" href="#135-desktop-screen-reader">135. Desktop Screen Reader</a></h1>
+<p>Focused row reads:</p>
+<pre><code class="language-text">title
+unread
+preview
+time
+important state
+</code></pre>
+<hr />
+<h1 id="136-focus-preservation"><a class="header" href="#136-focus-preservation">136. Focus Preservation</a></h1>
+<p>When rows reorder because new message arrives:</p>
+<pre><code class="language-text">keyboard focus stays on same ConversationId
+</code></pre>
+<p>not same numeric row index.</p>
+<hr />
+<h1 id="137-scroll-preservation"><a class="header" href="#137-scroll-preservation">137. Scroll Preservation</a></h1>
+<p>If user is far down list and new conversation arrives at top:</p>
+<pre><code class="language-text">do not jump scroll position
+</code></pre>
+<hr />
+<h1 id="138-new-activity-indicator"><a class="header" href="#138-new-activity-indicator">138. New Activity Indicator</a></h1>
+<p>Optional:</p>
+<pre><code class="language-text">new conversations above
+</code></pre>
+<p>if user scrolled far.</p>
+<hr />
+<h1 id="139-empty-inbox"><a class="header" href="#139-empty-inbox">139. Empty Inbox</a></h1>
+<p>Display:</p>
+<pre><code class="language-text">No conversations yet
+</code></pre>
+<p>Actions:</p>
+<pre><code class="language-text">Start conversation
+Add contact
+Scan QR
+</code></pre>
+<hr />
+<h1 id="140-empty-requests"><a class="header" href="#140-empty-requests">140. Empty Requests</a></h1>
+<pre><code class="language-text">No message requests
+</code></pre>
+<p>No extra clutter.</p>
+<hr />
+<h1 id="141-empty-archive"><a class="header" href="#141-empty-archive">141. Empty Archive</a></h1>
+<pre><code class="language-text">No archived conversations
+</code></pre>
+<hr />
+<h1 id="142-loading"><a class="header" href="#142-loading">142. Loading</a></h1>
+<p>Local-first list should usually appear immediately.</p>
+<p>Skeleton only on:</p>
+<pre><code class="language-text">first DB load
+core startup
+large migration
+</code></pre>
+<hr />
+<h1 id="143-search-rebuilding"><a class="header" href="#143-search-rebuilding">143. Search Rebuilding</a></h1>
+<p>Inbox filtering should still work from conversation projection.</p>
+<p>No dependency on Part 32 full-text index.</p>
+<hr />
+<h1 id="144-core-unavailable"><a class="header" href="#144-core-unavailable">144. Core Unavailable</a></h1>
+<p>Show:</p>
+<pre><code class="language-text">Could not load conversations
+Retry
+</code></pre>
+<p>with diagnostics if serious.</p>
+<hr />
+<h1 id="145-storage-full"><a class="header" href="#145-storage-full">145. Storage Full</a></h1>
+<p>Inbox remains readable.</p>
+<p>Global action banner:</p>
+<pre><code class="language-text">Storage is full. New messages may not be saved.
+Manage Storage
+</code></pre>
+<hr />
+<h1 id="146-security-incident"><a class="header" href="#146-security-incident">146. Security Incident</a></h1>
+<p>If account identity/security requires attention:</p>
+<pre><code class="language-text">security banner
+</code></pre>
+<p>above list or global shell.</p>
+<p>Do not bury in one conversation if account-wide.</p>
+<hr />
+<h1 id="147-inbox-filters"><a class="header" href="#147-inbox-filters">147. Inbox Filters</a></h1>
+<p>Recommended initial filters:</p>
+<pre><code class="language-text">All
+Unread
+Groups
+</code></pre>
+<p>Requests and Archived as separate actions.</p>
+<hr />
+<h1 id="148-filter-persistence"><a class="header" href="#148-filter-persistence">148. Filter Persistence</a></h1>
+<p>Can persist per device.</p>
+<hr />
+<h1 id="149-desktop-filter-bar"><a class="header" href="#149-desktop-filter-bar">149. Desktop Filter Bar</a></h1>
+<p>Compact:</p>
+<pre><code class="language-text">search field
+filter icon
+</code></pre>
+<hr />
+<h1 id="150-android-filter-chips"><a class="header" href="#150-android-filter-chips">150. Android Filter Chips</a></h1>
+<p>Optional:</p>
+<pre><code class="language-text">All
+Unread
+Groups
+</code></pre>
+<p>only if frequent use.</p>
+<hr />
+<h1 id="151-conversation-count"><a class="header" href="#151-conversation-count">151. Conversation Count</a></h1>
+<p>Do not show total count unless useful.</p>
+<hr />
+<h1 id="152-unread-count-at-app-level"><a class="header" href="#152-unread-count-at-app-level">152. Unread Count at App Level</a></h1>
+<p>Chats tab badge derives from aggregate durable unread state.</p>
+<hr />
+<h1 id="153-requests-count-at-app-level"><a class="header" href="#153-requests-count-at-app-level">153. Requests Count at App Level</a></h1>
+<p>Could show separately in Chats badge/menu.</p>
+<hr />
+<h1 id="154-active-call-indicator"><a class="header" href="#154-active-call-indicator">154. Active Call Indicator</a></h1>
+<p>If active call belongs to conversation:</p>
+<pre><code class="language-text">persistent call bar
+</code></pre>
+<p>already handles it.</p>
+<p>Inbox row can optionally show small call indicator.</p>
+<hr />
+<h1 id="155-transfer-indicator"><a class="header" href="#155-transfer-indicator">155. Transfer Indicator</a></h1>
+<p>If active transfer:</p>
+<pre><code class="language-text">small progress glyph
+</code></pre>
+<p>optional.</p>
+<p>Avoid showing percentage in every inbox row.</p>
+<hr />
+<h1 id="156-draft-preview-length"><a class="header" href="#156-draft-preview-length">156. Draft Preview Length</a></h1>
+<p>Truncate to one line or two lines.</p>
+<hr />
+<h1 id="157-message-preview-length"><a class="header" href="#157-message-preview-length">157. Message Preview Length</a></h1>
+<p>Same.</p>
+<p>Avoid expensive rich text in sidebar row.</p>
+<hr />
+<h1 id="158-preview-sanitization"><a class="header" href="#158-preview-sanitization">158. Preview Sanitization</a></h1>
+<p>Do not render:</p>
+<pre><code class="language-text">full Markdown
+HTML
+</code></pre>
+<p>in conversation row.</p>
+<p>Use plain semantic summary.</p>
+<hr />
+<h1 id="159-emoji"><a class="header" href="#159-emoji">159. Emoji</a></h1>
+<p>Display naturally.</p>
+<hr />
+<h1 id="160-rtl"><a class="header" href="#160-rtl">160. RTL</a></h1>
+<p>Inbox layout should adapt:</p>
+<pre><code class="language-text">avatar
+text
+timestamp
+badges
+</code></pre>
+<p>to RTL.</p>
+<hr />
+<h1 id="161-localization"><a class="header" href="#161-localization">161. Localization</a></h1>
+<p>All semantic preview labels:</p>
+<pre><code class="language-text">Photo
+Missed call
+Draft
+Failed to send
+</code></pre>
+<p>localized in UI.</p>
+<p>Rust should provide type + safe fields, not English.</p>
+<hr />
+<h1 id="162-relative-time-updates"><a class="header" href="#162-relative-time-updates">162. Relative Time Updates</a></h1>
+<p>Do not tick every second.</p>
+<p>Update:</p>
+<pre><code class="language-text">minute/hour/day boundaries
+</code></pre>
+<p>as needed.</p>
+<hr />
+<h1 id="163-timer-efficiency"><a class="header" href="#163-timer-efficiency">163. Timer Efficiency</a></h1>
+<p>One shared UI timer can refresh visible timestamp labels.</p>
+<p>Do not create timer per row.</p>
+<hr />
+<h1 id="164-avatar-loading"><a class="header" href="#164-avatar-loading">164. Avatar Loading</a></h1>
+<p>Use thumbnail/cache.</p>
+<p>Show stable placeholder immediately.</p>
+<hr />
+<h1 id="165-presence-avatar-badge"><a class="header" href="#165-presence-avatar-badge">165. Presence Avatar Badge</a></h1>
+<p>Ensure accessibility label.</p>
+<hr />
+<h1 id="166-broken-avatar"><a class="header" href="#166-broken-avatar">166. Broken Avatar</a></h1>
+<p>Fallback without error icon clutter.</p>
+<hr />
+<h1 id="167-conversation-list-performance"><a class="header" href="#167-conversation-list-performance">167. Conversation List Performance</a></h1>
+<p>Target smooth scrolling with:</p>
+<pre><code class="language-text">thousands of conversations
+</code></pre>
+<p>through virtualization/paging.</p>
+<hr />
+<h1 id="168-row-render-cost"><a class="header" href="#168-row-render-cost">168. Row Render Cost</a></h1>
+<p>Keep low:</p>
+<pre><code class="language-text">one avatar
+few text nodes
+few icons
+</code></pre>
+<hr />
+<h1 id="169-avoid-per-row-heavy-subscriptions"><a class="header" href="#169-avoid-per-row-heavy-subscriptions">169. Avoid Per-Row Heavy Subscriptions</a></h1>
+<p>Do not subscribe separately to network/presence actors for every row.</p>
+<p>Rust/presentation layer should provide aggregated updates.</p>
+<hr />
+<h1 id="170-visible-presence-subscription"><a class="header" href="#170-visible-presence-subscription">170. Visible-Presence Subscription</a></h1>
+<p>Part 30 can subscribe presence only for:</p>
+<pre><code class="language-text">visible rows
+active conversation
+</code></pre>
+<p>to reduce background work.</p>
+<hr />
+<h1 id="171-visible-row-reporting"><a class="header" href="#171-visible-row-reporting">171. Visible Row Reporting</a></h1>
+<p>UI may report current visible ConversationIds to presentation layer.</p>
+<hr />
+<h1 id="172-privacy"><a class="header" href="#172-privacy">172. Privacy</a></h1>
+<p>Do not upload inbox ordering/search/filter behavior as telemetry by default.</p>
+<hr />
+<h1 id="173-analytics"><a class="header" href="#173-analytics">173. Analytics</a></h1>
+<p>If enabled, only aggregate metrics:</p>
+<pre><code class="language-text">inbox load time
+row count
+filter usage
+</code></pre>
+<p>without names/previews.</p>
+<hr />
+<h1 id="174-screenshot-testing"><a class="header" href="#174-screenshot-testing">174. Screenshot Testing</a></h1>
+<p>Capture:</p>
+<pre><code class="language-text">empty
+normal
+many unread
+typing
+draft
+failed message
+request
+offline
+large font
+RTL
+dark mode
+</code></pre>
+<hr />
+<h1 id="175-desktop-interaction-tests"><a class="header" href="#175-desktop-interaction-tests">175. Desktop Interaction Tests</a></h1>
+<p>Verify:</p>
+<pre><code class="language-text">arrow navigation
+Enter open
+context menu
+archive undo
+pin
+search filter
+</code></pre>
+<hr />
+<h1 id="176-android-interaction-tests"><a class="header" href="#176-android-interaction-tests">176. Android Interaction Tests</a></h1>
+<p>Verify:</p>
+<pre><code class="language-text">tap
+long press
+swipe
+filter
+FAB/new message
+TalkBack
+</code></pre>
+<hr />
+<h1 id="177-multi-device-tests"><a class="header" href="#177-multi-device-tests">177. Multi-Device Tests</a></h1>
+<p>Scenario:</p>
+<pre><code class="language-text">phone reads
+desktop unread clears
+</code></pre>
+<p>Scenario:</p>
+<pre><code class="language-text">desktop archives
+phone row disappears
+</code></pre>
+<p>if archive sync enabled.</p>
+<hr />
+<h1 id="178-typing-test"><a class="header" href="#178-typing-test">178. Typing Test</a></h1>
+<p>Typing appears, expires automatically, and does not reorder row.</p>
+<hr />
+<h1 id="179-presence-test"><a class="header" href="#179-presence-test">179. Presence Test</a></h1>
+<p>Presence changes without reordering.</p>
+<hr />
+<h1 id="180-draft-test"><a class="header" href="#180-draft-test">180. Draft Test</a></h1>
+<p>Draft preview supersedes old message preview according to rules.</p>
+<hr />
+<h1 id="181-failed-send-test"><a class="header" href="#181-failed-send-test">181. Failed Send Test</a></h1>
+<p>Failure indicator survives restart because outbox state is durable.</p>
+<hr />
+<h1 id="182-offline-test"><a class="header" href="#182-offline-test">182. Offline Test</a></h1>
+<p>Queued outgoing preview remains.</p>
+<hr />
+<h1 id="183-request-flood-test"><a class="header" href="#183-request-flood-test">183. Request Flood Test</a></h1>
+<p>Hundreds of unknown requests remain bounded and grouped.</p>
+<hr />
+<h1 id="184-group-rename-test"><a class="header" href="#184-group-rename-test">184. Group Rename Test</a></h1>
+<p>Row updates without losing selection/focus.</p>
+<hr />
+<h1 id="185-delete-open-conversation-test"><a class="header" href="#185-delete-open-conversation-test">185. Delete Open Conversation Test</a></h1>
+<p>Row disappears; detail navigates safely.</p>
+<hr />
+<h1 id="186-pagination-test"><a class="header" href="#186-pagination-test">186. Pagination Test</a></h1>
+<p>Loading older list pages does not duplicate rows.</p>
+<hr />
+<h1 id="187-stable-ordering-test"><a class="header" href="#187-stable-ordering-test">187. Stable Ordering Test</a></h1>
+<p>Presence/typing/read receipt changes do not reorder unless durable activity changed.</p>
+<hr />
+<h1 id="188-rust-presentation-api"><a class="header" href="#188-rust-presentation-api">188. Rust Presentation API</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait InboxPresentation {
+    async fn snapshot(
+        &amp;self,
+        filter: InboxFilter,
+    ) -&gt; Result&lt;InboxSnapshot, UiError&gt;;
+
+    async fn next_page(
+        &amp;self,
+        cursor: ConversationCursor,
+    ) -&gt; Result&lt;ConversationPage, UiError&gt;;
+
+    async fn archive(
+        &amp;self,
+        conversation: ConversationId,
+    ) -&gt; Result&lt;(), UiError&gt;;
+
+    async fn set_muted(
+        &amp;self,
+        conversation: ConversationId,
+        muted: bool,
+    ) -&gt; Result&lt;(), UiError&gt;;
+
+    async fn set_pinned(
+        &amp;self,
+        conversation: ConversationId,
+        pinned: bool,
+    ) -&gt; Result&lt;(), UiError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="189-inbox-filter"><a class="header" href="#189-inbox-filter">189. Inbox Filter</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum InboxFilter {
+    All,
+    Unread,
+    Groups,
+    Archived,
+    Requests,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="190-row-ui-model"><a class="header" href="#190-row-ui-model">190. Row UI Model</a></h1>
+<p>Platform-specific UI models may mirror the shared DTO.</p>
+<p>Android:</p>
+<pre><code class="language-kotlin">data class ConversationRowUiModel(...)
+</code></pre>
+<p>Desktop:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct ConversationRowView(...)
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="191-mapping-rule"><a class="header" href="#191-mapping-rule">191. Mapping Rule</a></h1>
+<p>Platform mapper can change:</p>
+<pre><code class="language-text">formatted time
+localized labels
+icon resource
+</code></pre>
+<p>but not semantic state.</p>
+<hr />
+<h1 id="192-android-viewmodel"><a class="header" href="#192-android-viewmodel">192. Android ViewModel</a></h1>
+<p>Owns:</p>
+<pre><code class="language-text">current filter
+search text
+scroll restoration metadata
+UiEffect
+</code></pre>
+<p>Rust owns list truth.</p>
+<hr />
+<h1 id="193-desktop-presenter"><a class="header" href="#193-desktop-presenter">193. Desktop Presenter</a></h1>
+<p>Owns:</p>
+<pre><code class="language-text">selected conversation
+filter text
+sidebar presentation
+keyboard focus identity
+</code></pre>
+<p>Rust owns inbox truth.</p>
+<hr />
+<h1 id="194-selection-vs-conversation-state"><a class="header" href="#194-selection-vs-conversation-state">194. Selection vs Conversation State</a></h1>
+<p>Selected row is UI state.</p>
+<p>Unread status is domain state.</p>
+<hr />
+<h1 id="195-navigation"><a class="header" href="#195-navigation">195. Navigation</a></h1>
+<p>Click/tap:</p>
+<pre><code class="language-text">ConversationId
+→ typed navigation
+</code></pre>
+<p>Desktop updates detail pane.</p>
+<p>Android pushes conversation destination on compact width.</p>
+<hr />
+<h1 id="196-adaptive-navigation"><a class="header" href="#196-adaptive-navigation">196. Adaptive Navigation</a></h1>
+<p>On tablet:</p>
+<pre><code class="language-text">row selection
+→ detail pane
+</code></pre>
+<p>without full back-stack replacement.</p>
+<hr />
+<h1 id="197-back-from-conversation"><a class="header" href="#197-back-from-conversation">197. Back from Conversation</a></h1>
+<p>Phone:</p>
+<pre><code class="language-text">back → inbox
+</code></pre>
+<p>Desktop:</p>
+<pre><code class="language-text">sidebar always remains
+</code></pre>
+<hr />
+<h1 id="198-notification-entry"><a class="header" href="#198-notification-entry">198. Notification Entry</a></h1>
+<p>If notification opens conversation:</p>
+<pre><code class="language-text">inbox may update selection
+</code></pre>
+<p>and read state follows actual viewport semantics.</p>
+<hr />
+<h1 id="199-mark-read-from-notification"><a class="header" href="#199-mark-read-from-notification">199. Mark Read from Notification</a></h1>
+<p>Inbox unread updates from Rust event.</p>
+<hr />
+<h1 id="200-inbox-initialization"><a class="header" href="#200-inbox-initialization">200. Inbox Initialization</a></h1>
+<p>Startup:</p>
+<pre><code class="language-text">load local snapshot
+render
+subscribe
+attach network/presence later
+</code></pre>
+<hr />
+<h1 id="201-network-independence"><a class="header" href="#201-network-independence">201. Network Independence</a></h1>
+<p>The list must not wait for:</p>
+<pre><code class="language-text">relay
+presence
+push
+Internet
+</code></pre>
+<p>to render.</p>
+<hr />
+<h1 id="202-background-update"><a class="header" href="#202-background-update">202. Background Update</a></h1>
+<p>Part 31 may receive messages while no UI exists.</p>
+<p>When app opens:</p>
+<pre><code class="language-text">snapshot already reflects them
+</code></pre>
+<hr />
+<h1 id="203-crash-recovery"><a class="header" href="#203-crash-recovery">203. Crash Recovery</a></h1>
+<p>Inbox itself requires no special event replay in UI.</p>
+<p>Request fresh snapshot.</p>
+<hr />
+<h1 id="204-search-filter-after-restart"><a class="header" href="#204-search-filter-after-restart">204. Search Filter after Restart</a></h1>
+<p>May restore per-platform preference.</p>
+<hr />
+<h1 id="205-security-boundary"><a class="header" href="#205-security-boundary">205. Security Boundary</a></h1>
+<p>Conversation summary must not expose:</p>
+<pre><code class="language-text">raw encryption keys
+transport addresses
+device secrets
+</code></pre>
+<hr />
+<h1 id="206-unknown-peer-metadata"><a class="header" href="#206-unknown-peer-metadata">206. Unknown Peer Metadata</a></h1>
+<p>Avoid rich metadata fetch before acceptance.</p>
+<hr />
+<h1 id="207-row-action-authorization"><a class="header" href="#207-row-action-authorization">207. Row Action Authorization</a></h1>
+<p>Rust validates:</p>
+<pre><code class="language-text">can delete
+can leave
+can block
+</code></pre>
+<p>UI only hides/disables obvious unavailable actions.</p>
+<hr />
+<h1 id="208-context-capability-dto"><a class="header" href="#208-context-capability-dto">208. Context Capability DTO</a></h1>
+<p>Could include:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct ConversationCapabilities {
+    pub can_edit_title: bool,
+    pub can_leave: bool,
+    pub can_delete_local: bool,
+    pub can_block: bool,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="209-conversation-row-does-not-need-every-capability"><a class="header" href="#209-conversation-row-does-not-need-every-capability">209. Conversation Row Does Not Need Every Capability</a></h1>
+<p>Fetch detailed capabilities when action menu opens if expensive.</p>
+<hr />
+<h1 id="210-undo-architecture"><a class="header" href="#210-undo-architecture">210. Undo Architecture</a></h1>
+<p>Archive/mute actions can return:</p>
+<pre><code class="language-text">UndoToken
+</code></pre>
+<p>if truly supported.</p>
+<hr />
+<h1 id="211-uiux-part-04-definition-of-done"><a class="header" href="#211-uiux-part-04-definition-of-done">211. UI/UX Part 04 Definition of Done</a></h1>
+<p>Part 04 is complete when:</p>
+<ul>
+<li>conversation list is a projection of Rust durable state</li>
+<li>pinned/recent/requests/archived semantics are defined</li>
+<li>typing/presence enrich rows without reordering them</li>
+<li>unread counts derive from durable read cursors</li>
+<li>mark unread is distinguished from remote read receipt reversal</li>
+<li>draft, failed-send, queued-send, file, call, and normal message previews are defined</li>
+<li>unknown message requests remain separated from trusted inbox</li>
+<li>request acceptance does not imply identity verification</li>
+<li>desktop Dioxus uses a persistent sidebar with keyboard/context-menu actions</li>
+<li>Android Compose uses a native touch list with long-press/swipe alternatives</li>
+<li>tablet/foldable list-detail layouts are defined</li>
+<li>row actions share Rust commands</li>
+<li>archive/mute/pin state can sync according to explicit policy</li>
+<li>message list ordering depends on durable activity, not presence/typing</li>
+<li>pagination/virtualization and stable <code>ConversationId</code> keys are mandatory</li>
+<li>list remains useful offline</li>
+<li>background-delivered messages appear from fresh snapshot without UI-specific reconciliation</li>
+<li>accessibility, RTL, large font, focus preservation, and screen-reader row semantics are defined</li>
+<li>failure, request flood, deletion, group rename, multi-device, presence, typing, and pagination tests are included</li>
+</ul>
+<hr />
+<h1 id="212-final-cross-platform-architecture"><a class="header" href="#212-final-cross-platform-architecture">212. Final Cross-Platform Architecture</a></h1>
+<pre><code class="language-text">                 RUST INBOX PROJECTION
+                        │
+      ┌─────────────────┼─────────────────┐
+      │                 │                 │
+ Durable State      Ephemeral         Preferences
+ messages/read      typing            pin/mute/archive
+ outbox/activity    presence
+      │                 │                 │
+      └─────────────────┼─────────────────┘
+                        │
+                ConversationSummary
+                 ┌──────┴──────┐
+                 │             │
+              Dioxus        Compose
+                 │             │
+          Sidebar/List     LazyColumn
+                 │             │
+                 └──────┬──────┘
+                        │
+                ConversationId
+                        │
+                 Typed Navigation
+</code></pre>
+<hr />
+<h1 id="213-final-principle"><a class="header" href="#213-final-principle">213. Final Principle</a></h1>
+<p>The inbox should feel:</p>
+<pre><code class="language-text">immediate
+stable
+predictable
+private
+offline-capable
+</code></pre>
+<p>It should not feel like a noisy live dashboard where every typing or presence update reshuffles the UI.</p>
+<p>The right model is:</p>
+<pre><code class="language-text">durable conversation order
++
+clear unread/read state
++
+temporary presence/typing overlays
++
+platform-native interactions
++
+shared Rust truth
+</code></pre>
+<p>This makes the conversation list a reliable entry point for the entire communication product across both desktop and Android.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="ui-ux-03-android-jetpack-compose-app-shell-navigation-lifecycle-architecture.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="ui-ux-05-conversation-message-timeline-architecture.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="ui-ux-03-android-jetpack-compose-app-shell-navigation-lifecycle-architecture.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="ui-ux-05-conversation-message-timeline-architecture.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

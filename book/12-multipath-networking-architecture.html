@@ -1,0 +1,1938 @@
+<!DOCTYPE HTML>
+<html lang="en" class="navy" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>12 — Multipath Networking &amp; Link Aggregation - SIAR System Architecture &amp; Technical Wiki</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="Comprehensive system architecture, cryptographic protocols, DTN mesh networking, distributed storage, audio DSP pipelines, and UI/UX design specifications for SIAR.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="theme/custom.css">
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "navy";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('navy')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="Home.html">Architecture Portal & Reading Guide</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part I: Protocol Foundation & Extension Platform</li><li class="chapter-item expanded "><a href="01-protocol-extension-system-architecture.html"><strong aria-hidden="true">1.</strong> 01 — Protocol Extension System Architecture</a></li><li class="chapter-item expanded "><a href="07-capability-negotiation-architecture.html"><strong aria-hidden="true">2.</strong> 07 — Capability Negotiation & Protocol Upgrades</a></li><li class="chapter-item expanded "><a href="21-third-party-protocol-extensions-architecture.html"><strong aria-hidden="true">3.</strong> 21 — Third-Party Protocol Extensions</a></li><li class="chapter-item expanded "><a href="22-wasm-compatible-components-architecture.html"><strong aria-hidden="true">4.</strong> 22 — WebAssembly (WASM) Compatible Components</a></li><li class="chapter-item expanded "><a href="23-external-interoperability-suite-architecture.html"><strong aria-hidden="true">5.</strong> 23 — External Interoperability & Conformance Suite</a></li><li class="chapter-item expanded "><a href="24-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">6.</strong> 24 — Dynamic Plugin & Module Ecosystem</a></li><li class="chapter-item expanded affix "><li class="part-title">Part II: Identity, Trust & Cryptography</li><li class="chapter-item expanded "><a href="02-multi-device-identity-architecture.html"><strong aria-hidden="true">7.</strong> 02 — Multi-Device Identity & Trust Model</a></li><li class="chapter-item expanded "><a href="28-production-security-e2ee-key-management-privacy-architecture.html"><strong aria-hidden="true">8.</strong> 28 — Production Security, E2EE, Key Management & Privacy</a></li><li class="chapter-item expanded affix "><li class="part-title">Part III: Mesh Networking, Transports & Hardware</li><li class="chapter-item expanded "><a href="03-transport-routing-policy-engine-architecture.html"><strong aria-hidden="true">9.</strong> 03 — Transport & Routing Policy Engine</a></li><li class="chapter-item expanded "><a href="11-relay-self-hosted-infrastructure-architecture.html"><strong aria-hidden="true">10.</strong> 11 — Self-Hosted Relay & Coordination Infrastructure</a></li><li class="chapter-item expanded "><a href="12-multipath-networking-architecture.html" class="active"><strong aria-hidden="true">11.</strong> 12 — Multipath Networking & Link Aggregation</a></li><li class="chapter-item expanded "><a href="13-battery-aware-scheduling-architecture.html"><strong aria-hidden="true">12.</strong> 13 — Battery-Aware Scheduling & Power Profiles</a></li><li class="chapter-item expanded "><a href="14-proximity-abstraction-architecture.html"><strong aria-hidden="true">13.</strong> 14 — Proximity Abstraction (BLE, Wi-Fi Direct, LoRa)</a></li><li class="chapter-item expanded "><a href="15-qr-nfc-bootstrap-pairing-architecture.html"><strong aria-hidden="true">14.</strong> 15 — Out-of-Band QR & NFC Bootstrap Pairing</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IV: Delay-Tolerant Networking & Emergency Mesh</li><li class="chapter-item expanded "><a href="06-dtn-store-carry-forward-architecture.html"><strong aria-hidden="true">15.</strong> 06 — DTN Store-Carry-Forward & Bundle Forwarding</a></li><li class="chapter-item expanded "><a href="17-emergency-priority-classes-architecture.html"><strong aria-hidden="true">16.</strong> 17 — Emergency Priority Classes & Critical Alert Mesh</a></li><li class="chapter-item expanded affix "><li class="part-title">Part V: Storage, Outbox & Data Lifecycle</li><li class="chapter-item expanded "><a href="04-offline-event-log-architecture.html"><strong aria-hidden="true">17.</strong> 04 — Offline Event Log & Sync Engine</a></li><li class="chapter-item expanded "><a href="05-robust-file-blob-subsystem-architecture.html"><strong aria-hidden="true">18.</strong> 05 — Robust File & Blob Subsystem (Chunking & Resumption)</a></li><li class="chapter-item expanded "><a href="09-crash-recovery-architecture.html"><strong aria-hidden="true">19.</strong> 09 — Crash Recovery & State Integrity</a></li><li class="chapter-item expanded "><a href="32-search-indexing-local-knowledge-privacy-architecture.html"><strong aria-hidden="true">20.</strong> 32 — Search, Indexing & Local Privacy Retrieval</a></li><li class="chapter-item expanded "><a href="33-backup-restore-export-import-archival-portability-architecture.html"><strong aria-hidden="true">21.</strong> 33 — Backup, Restore, Export & Long-Term Archival</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VI: Realtime Media, Calling & Audio DSP</li><li class="chapter-item expanded "><a href="25-android-direct-hardware-surface-zero-copy-media-architecture.html"><strong aria-hidden="true">22.</strong> 25 — Android Direct Surface Zero-Copy Media</a></li><li class="chapter-item expanded "><a href="26-rust-first-audio-dsp-resampling-aec-ns-agc-architecture.html"><strong aria-hidden="true">23.</strong> 26 — Rust-First Audio DSP (AEC, NS, AGC, Resampling)</a></li><li class="chapter-item expanded "><a href="29-realtime-calls-media-session-protocol-architecture.html"><strong aria-hidden="true">24.</strong> 29 — Realtime Calls & Media Session Protocol</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VII: Ephemeral State, Presence & Notifications</li><li class="chapter-item expanded "><a href="30-presence-availability-typing-read-receipts-ephemeral-state-architecture.html"><strong aria-hidden="true">25.</strong> 30 — Presence, Availability, Typing & Read Receipts</a></li><li class="chapter-item expanded "><a href="31-notifications-push-background-delivery-lifecycle-architecture.html"><strong aria-hidden="true">26.</strong> 31 — Notifications, Push Wake & Background Delivery</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VIII: Native Runtimes, Daemons & Embedded Linux</li><li class="chapter-item expanded "><a href="16-daemon-headless-runtime-architecture.html"><strong aria-hidden="true">27.</strong> 16 — Headless Daemon & Background Runtime</a></li><li class="chapter-item expanded "><a href="19-c-abi-ffi-architecture.html"><strong aria-hidden="true">28.</strong> 19 — C-ABI FFI & Native Language Interop</a></li><li class="chapter-item expanded "><a href="20-embedded-linux-node-architecture.html"><strong aria-hidden="true">29.</strong> 20 — Embedded Linux Node & Resource-Constrained Targets</a></li><li class="chapter-item expanded "><a href="27-rust-driven-android-native-build-packaging-automation.html"><strong aria-hidden="true">30.</strong> 27 — Rust-Driven Android Native Build & Packaging Automation</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IX: Reliability, Testing, Fuzzing & Diagnostics</li><li class="chapter-item expanded "><a href="08-resource-limits-backpressure-architecture.html"><strong aria-hidden="true">31.</strong> 08 — Resource Limits, Quotas & Backpressure</a></li><li class="chapter-item expanded "><a href="10-fuzzing-protocol-test-suite-architecture.html"><strong aria-hidden="true">32.</strong> 10 — Fuzzing & Protocol Test Suite</a></li><li class="chapter-item expanded "><a href="18-network-diagnostics-path-visualization-architecture.html"><strong aria-hidden="true">33.</strong> 18 — Network Diagnostics & Path Visualization</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part X: UI/UX Client Architecture (Cross-Platform)</li><li class="chapter-item expanded "><a href="ui-ux-01-product-foundation-cross-platform-interaction-architecture.html"><strong aria-hidden="true">34.</strong> UI/UX 01 — Product UX Foundation & Cross-Platform Interaction</a></li><li class="chapter-item expanded "><a href="ui-ux-02-desktop-dioxus-app-shell-navigation-window-architecture.html"><strong aria-hidden="true">35.</strong> UI/UX 02 — Desktop Dioxus App Shell & Navigation</a></li><li class="chapter-item expanded "><a href="ui-ux-03-android-jetpack-compose-app-shell-navigation-lifecycle-architecture.html"><strong aria-hidden="true">36.</strong> UI/UX 03 — Android Jetpack Compose App Shell & Lifecycle</a></li><li class="chapter-item expanded "><a href="ui-ux-04-conversation-list-inbox-architecture.html"><strong aria-hidden="true">37.</strong> UI/UX 04 — Conversation List & Inbox UX</a></li><li class="chapter-item expanded "><a href="ui-ux-05-conversation-message-timeline-architecture.html"><strong aria-hidden="true">38.</strong> UI/UX 05 — Conversation Message Timeline UX</a></li><li class="chapter-item expanded "><a href="ui-ux-06-message-composer-attachments-voice-notes-drafts-architecture.html"><strong aria-hidden="true">39.</strong> UI/UX 06 — Message Composer, Attachments & Voice Notes</a></li><li class="chapter-item expanded "><a href="ui-ux-07-calls-realtime-media-architecture.html"><strong aria-hidden="true">40.</strong> UI/UX 07 — Calls & Realtime Media UX</a></li><li class="chapter-item expanded "><a href="ui-ux-08-contacts-requests-verification-identity-architecture.html"><strong aria-hidden="true">41.</strong> UI/UX 08 — Contacts, Requests, Verification & Identity</a></li><li class="chapter-item expanded "><a href="ui-ux-09-groups-membership-roles-architecture.html"><strong aria-hidden="true">42.</strong> UI/UX 09 — Groups, Membership & Roles UX</a></li><li class="chapter-item expanded "><a href="ui-ux-10-files-media-gallery-transfer-architecture.html"><strong aria-hidden="true">43.</strong> UI/UX 10 — Files, Media Gallery & Transfer UX</a></li><li class="chapter-item expanded "><a href="ui-ux-11-search-local-knowledge-retrieval-architecture.html"><strong aria-hidden="true">44.</strong> UI/UX 11 — Search & Local Knowledge Retrieval UX</a></li><li class="chapter-item expanded "><a href="ui-ux-12-nearby-qr-nfc-pairing-device-linking-architecture.html"><strong aria-hidden="true">45.</strong> UI/UX 12 — Nearby, QR/NFC Pairing & Device Linking UX</a></li><li class="chapter-item expanded "><a href="ui-ux-13-notifications-background-incoming-call-architecture.html"><strong aria-hidden="true">46.</strong> UI/UX 13 — Notifications, Background & Incoming Call UX</a></li><li class="chapter-item expanded "><a href="ui-ux-14-presence-typing-receipts-status-architecture.html"><strong aria-hidden="true">47.</strong> UI/UX 14 — Presence, Typing, Receipts & Status UX</a></li><li class="chapter-item expanded "><a href="ui-ux-15-security-center-devices-keys-recovery-architecture.html"><strong aria-hidden="true">48.</strong> UI/UX 15 — Security Center, Devices, Keys & Recovery UX</a></li><li class="chapter-item expanded "><a href="ui-ux-16-backup-restore-export-migration-architecture.html"><strong aria-hidden="true">49.</strong> UI/UX 16 — Backup, Restore, Export & Migration UX</a></li><li class="chapter-item expanded "><a href="ui-ux-17-emergency-sos-offline-mesh-architecture.html"><strong aria-hidden="true">50.</strong> UI/UX 17 — Emergency / SOS / Offline Mesh UX</a></li><li class="chapter-item expanded "><a href="ui-ux-18-settings-privacy-notifications-data-controls-architecture.html"><strong aria-hidden="true">51.</strong> UI/UX 18 — Settings, Privacy, Notifications & Data Controls</a></li><li class="chapter-item expanded "><a href="ui-ux-19-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">52.</strong> UI/UX 19 — Plugin & Module Ecosystem UX</a></li><li class="chapter-item expanded "><a href="ui-ux-20-diagnostics-network-paths-advanced-developer-architecture.html"><strong aria-hidden="true">53.</strong> UI/UX 20 — Diagnostics, Network Paths & Developer UX</a></li><li class="chapter-item expanded "><a href="ui-ux-21-accessibility-inclusive-interaction-architecture.html"><strong aria-hidden="true">54.</strong> UI/UX 21 — Accessibility & Inclusive Interaction</a></li><li class="chapter-item expanded "><a href="ui-ux-22-design-system-tokens-typography-icons-motion-architecture.html"><strong aria-hidden="true">55.</strong> UI/UX 22 — Design System, Tokens, Typography & Motion</a></li><li class="chapter-item expanded "><a href="ui-ux-23-responsive-adaptive-desktop-tablet-foldable-phone-layout-architecture.html"><strong aria-hidden="true">56.</strong> UI/UX 23 — Responsive & Adaptive Layouts (Desktop/Tablet/Foldable/Phone)</a></li><li class="chapter-item expanded "><a href="ui-ux-24-error-loading-empty-offline-degraded-state-architecture.html"><strong aria-hidden="true">57.</strong> UI/UX 24 — Error, Loading, Empty & Degraded-State UX</a></li><li class="chapter-item expanded "><a href="ui-ux-25-onboarding-first-run-permission-education-architecture.html"><strong aria-hidden="true">58.</strong> UI/UX 25 — Onboarding, First Run & Permission Education</a></li><li class="chapter-item expanded "><a href="ui-ux-26-performance-virtualization-large-data-ui-architecture.html"><strong aria-hidden="true">59.</strong> UI/UX 26 — Virtualization & Large-Data UI Performance</a></li><li class="chapter-item expanded "><a href="ui-ux-27-ui-testing-screenshot-interaction-release-quality-gates-architecture.html"><strong aria-hidden="true">60.</strong> UI/UX 27 — UI Testing, Screenshots & Release Quality Gates</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">SIAR System Architecture &amp; Technical Wiki</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar/edit/main/sys-arch/12-multipath-networking-architecture.md" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="part-12--multipath-networking-architecture"><a class="header" href="#part-12--multipath-networking-architecture">Part 12 — Multipath Networking Architecture</a></h1>
+<h2 id="reusable-p2p-communication-platform"><a class="header" href="#reusable-p2p-communication-platform">Reusable P2P Communication Platform</a></h2>
+<p><strong>Status:</strong> Architecture specification<br />
+<strong>Part:</strong> 12 of 24<br />
+<strong>Primary language:</strong> Rust<br />
+<strong>Primary goals:</strong> simultaneous multi-link use, resilient transfers, path striping, path redundancy, seamless failover, path diversity, transport neutrality, bounded resource use, battery awareness, reusable across files/calls/emergency/custom applications</p>
+<hr />
+<h1 id="1-purpose"><a class="header" href="#1-purpose">1. Purpose</a></h1>
+<p>A modern device may have multiple usable communication paths at the same time:</p>
+<pre><code class="language-text">Wi-Fi
+Ethernet
+mobile data
+Iroh direct
+Iroh relay
+Bluetooth
+Wi-Fi Direct
+LAN
+DTN gateway
+</code></pre>
+<p>A simple routing engine chooses one path.</p>
+<p>A multipath engine can instead decide:</p>
+<pre><code class="language-text">use more than one path simultaneously
+</code></pre>
+<p>for selected operations.</p>
+<p>This can provide:</p>
+<ul>
+<li>higher throughput</li>
+<li>better resilience</li>
+<li>seamless path migration</li>
+<li>lower interruption during mobility</li>
+<li>redundant delivery for critical traffic</li>
+<li>better large-file performance</li>
+<li>more robust emergency communication</li>
+</ul>
+<p>But multipath is not automatically better.</p>
+<p>It can also create:</p>
+<ul>
+<li>duplicate bandwidth cost</li>
+<li>more radio use</li>
+<li>higher battery drain</li>
+<li>packet reordering</li>
+<li>more state complexity</li>
+<li>congestion interaction</li>
+<li>harder diagnostics</li>
+</ul>
+<p>Therefore the core rule is:</p>
+<blockquote>
+<p><strong>Multipath is an optimization and resilience tool, not the default mode for every operation.</strong></p>
+</blockquote>
+<hr />
+<h1 id="2-architectural-position"><a class="header" href="#2-architectural-position">2. Architectural Position</a></h1>
+<pre><code class="language-text">Application
+    ↓
+Messaging / Files / Calls / Emergency
+    ↓
+Delivery Requirements
+    ↓
+Routing Policy Engine
+    ↓
+Multipath Planner
+    ↓
+Per-Path Scheduler
+    ↓
+Transport Sessions
+    ├── Iroh Direct
+    ├── Iroh Relay
+    ├── LAN
+    ├── Wi-Fi Direct
+    ├── Bluetooth
+    └── Future Transport
+</code></pre>
+<p>Part 03 provides path candidates.</p>
+<p>Part 12 decides how multiple candidates may be composed.</p>
+<hr />
+<h1 id="3-main-multipath-modes"><a class="header" href="#3-main-multipath-modes">3. Main Multipath Modes</a></h1>
+<p>There are four primary strategies.</p>
+<h2 id="mode-a--single-path"><a class="header" href="#mode-a--single-path">Mode A — Single Path</a></h2>
+<pre><code class="language-text">one active path
+</code></pre>
+<p>This remains the default.</p>
+<h2 id="mode-b--failover-ready"><a class="header" href="#mode-b--failover-ready">Mode B — Failover-Ready</a></h2>
+<pre><code class="language-text">one active path
++
+one warm standby
+</code></pre>
+<p>Only one carries normal traffic.</p>
+<h2 id="mode-c--striping"><a class="header" href="#mode-c--striping">Mode C — Striping</a></h2>
+<pre><code class="language-text">different data pieces
+over different paths
+</code></pre>
+<p>Used mainly for:</p>
+<pre><code class="language-text">large files
+bulk data
+</code></pre>
+<h2 id="mode-d--redundancy"><a class="header" href="#mode-d--redundancy">Mode D — Redundancy</a></h2>
+<pre><code class="language-text">same logical data
+over multiple independent paths
+</code></pre>
+<p>Used selectively for:</p>
+<pre><code class="language-text">SOS
+critical control
+key signaling
+</code></pre>
+<hr />
+<h1 id="4-strategy-type"><a class="header" href="#4-strategy-type">4. Strategy Type</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum MultipathStrategy {
+    Single,
+    WarmFailover,
+    Stripe,
+    Redundant,
+    Hybrid,
+}
+<span class="boring">}</span></code></pre></pre>
+<p><code>Hybrid</code> may combine:</p>
+<pre><code class="language-text">striped bulk
++
+redundant control
+</code></pre>
+<hr />
+<h1 id="5-multipath-eligibility"><a class="header" href="#5-multipath-eligibility">5. Multipath Eligibility</a></h1>
+<p>An operation should declare:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct MultipathRequirements {
+    pub allowed: bool,
+    pub strategy: MultipathPreference,
+    pub max_paths: u8,
+    pub require_path_diversity: bool,
+    pub allow_metered_secondary: bool,
+    pub allow_bluetooth_secondary: bool,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Default should normally be:</p>
+<pre><code class="language-text">allowed = false
+or
+allowed with conservative automatic policy
+</code></pre>
+<hr />
+<h1 id="6-application-examples"><a class="header" href="#6-application-examples">6. Application Examples</a></h1>
+<h2 id="text-message"><a class="header" href="#text-message">Text message</a></h2>
+<p>Usually:</p>
+<pre><code class="language-text">single path
+</code></pre>
+<p>Critical text:</p>
+<pre><code class="language-text">optional redundant delivery
+</code></pre>
+<h2 id="file"><a class="header" href="#file">File</a></h2>
+<pre><code class="language-text">striping may help
+</code></pre>
+<h2 id="call"><a class="header" href="#call">Call</a></h2>
+<pre><code class="language-text">warm failover
+or selective media redundancy
+</code></pre>
+<h2 id="sos"><a class="header" href="#sos">SOS</a></h2>
+<pre><code class="language-text">redundancy across independent paths
+</code></pre>
+<hr />
+<h1 id="7-path-set"><a class="header" href="#7-path-set">7. Path Set</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct PathSet {
+    pub primary: PathCandidate,
+    pub secondary: Vec&lt;PathCandidate&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>The multipath planner operates on a selected path set, not all known paths.</p>
+<hr />
+<h1 id="8-path-diversity"><a class="header" href="#8-path-diversity">8. Path Diversity</a></h1>
+<p>Two paths are only truly redundant if they fail independently.</p>
+<p>Example:</p>
+<pre><code class="language-text">Iroh Direct over Wi-Fi
+Iroh Relay over same Wi-Fi
+</code></pre>
+<p>share:</p>
+<pre><code class="language-text">same Wi-Fi radio
+same local AP
+same ISP
+</code></pre>
+<p>They are not fully independent.</p>
+<hr />
+<h1 id="9-failure-domains"><a class="header" href="#9-failure-domains">9. Failure Domains</a></h1>
+<p>Represent:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct FailureDomainSet {
+    pub interface: Option&lt;InterfaceId&gt;,
+    pub radio: Option&lt;RadioId&gt;,
+    pub network: Option&lt;NetworkId&gt;,
+    pub provider: Option&lt;ProviderId&gt;,
+    pub relay: Option&lt;RelayId&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Path diversity scoring considers overlap.</p>
+<hr />
+<h1 id="10-diversity-score"><a class="header" href="#10-diversity-score">10. Diversity Score</a></h1>
+<p>Conceptually:</p>
+<pre><code class="language-text">high:
+Wi-Fi + cellular
+
+medium:
+Wi-Fi direct + Internet over same Wi-Fi
+
+low:
+two streams over same QUIC path
+</code></pre>
+<p>Do not treat every logical path as independent.</p>
+<hr />
+<h1 id="11-multipath-planner"><a class="header" href="#11-multipath-planner">11. Multipath Planner</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait MultipathPlanner {
+    fn plan(
+        &amp;self,
+        paths: &amp;[PathCandidate],
+        requirements: &amp;DeliveryRequirements,
+        context: &amp;MultipathContext,
+    ) -&gt; MultipathPlan;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="12-multipath-plan"><a class="header" href="#12-multipath-plan">12. Multipath Plan</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct MultipathPlan {
+    pub strategy: MultipathStrategy,
+    pub paths: Vec&lt;PlannedPath&gt;,
+    pub scheduler: MultipathSchedulingPolicy,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="13-planned-path"><a class="header" href="#13-planned-path">13. Planned Path</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct PlannedPath {
+    pub path_id: PathId,
+    pub role: PathRole,
+    pub weight: u16,
+    pub bandwidth_cap: Option&lt;u64&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="14-path-roles"><a class="header" href="#14-path-roles">14. Path Roles</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum PathRole {
+    Primary,
+    Secondary,
+    Standby,
+    Redundant,
+    Bulk,
+    Control,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="15-warm-failover"><a class="header" href="#15-warm-failover">15. Warm Failover</a></h1>
+<p>Warm failover means:</p>
+<pre><code class="language-text">primary path active
+secondary path authenticated/prepared
+</code></pre>
+<p>If primary fails:</p>
+<pre><code class="language-text">switch immediately
+</code></pre>
+<p>This reduces reconnection latency.</p>
+<hr />
+<h1 id="16-warm-failover-cost"><a class="header" href="#16-warm-failover-cost">16. Warm Failover Cost</a></h1>
+<p>Keeping standby path alive consumes:</p>
+<pre><code class="language-text">radio
+keepalive
+memory
+connection slot
+</code></pre>
+<p>Therefore only use for:</p>
+<pre><code class="language-text">calls
+critical transfer
+important active session
+</code></pre>
+<hr />
+<h1 id="17-make-before-break"><a class="header" href="#17-make-before-break">17. Make-Before-Break</a></h1>
+<p>Preferred for seamless mobility:</p>
+<pre><code class="language-text">current path active
+ ↓
+new path established
+ ↓
+authenticated
+ ↓
+state synchronized
+ ↓
+traffic moves
+ ↓
+old path closes
+</code></pre>
+<hr />
+<h1 id="18-break-before-make"><a class="header" href="#18-break-before-make">18. Break-Before-Make</a></h1>
+<p>Use when:</p>
+<pre><code class="language-text">resource constrained
+security demands old path close first
+OS prevents both interfaces
+</code></pre>
+<hr />
+<h1 id="19-path-migration"><a class="header" href="#19-path-migration">19. Path Migration</a></h1>
+<p>A long-lived operation should survive path change.</p>
+<p>Examples:</p>
+<pre><code class="language-text">file transfer:
+resume missing chunks
+
+message:
+retry same MessageId
+
+call:
+rebind media/session
+</code></pre>
+<p>Multipath does not own application semantics.</p>
+<hr />
+<h1 id="20-striping"><a class="header" href="#20-striping">20. Striping</a></h1>
+<p>Striping divides work.</p>
+<p>Example:</p>
+<pre><code class="language-text">File chunks:
+0,2,4,6 → Wi-Fi
+1,3,5,7 → cellular
+</code></pre>
+<p>Static round-robin is simple but inefficient.</p>
+<p>Better:</p>
+<pre><code class="language-text">weighted scheduling
+</code></pre>
+<p>based on measured throughput.</p>
+<hr />
+<h1 id="21-weighted-striping"><a class="header" href="#21-weighted-striping">21. Weighted Striping</a></h1>
+<p>If:</p>
+<pre><code class="language-text">Wi-Fi = 80 Mbps
+cellular = 20 Mbps
+</code></pre>
+<p>target roughly:</p>
+<pre><code class="language-text">80% chunks → Wi-Fi
+20% chunks → cellular
+</code></pre>
+<p>with adaptation.</p>
+<hr />
+<h1 id="22-dynamic-weight"><a class="header" href="#22-dynamic-weight">22. Dynamic Weight</a></h1>
+<p>Weights update from:</p>
+<pre><code class="language-text">observed throughput
+RTT
+loss
+queue depth
+energy policy
+cost policy
+</code></pre>
+<p>Do not oscillate too quickly.</p>
+<hr />
+<h1 id="23-striping-granularity"><a class="header" href="#23-striping-granularity">23. Striping Granularity</a></h1>
+<p>For file transfer:</p>
+<pre><code class="language-text">chunk level
+</code></pre>
+<p>is ideal.</p>
+<p>For streaming media:</p>
+<pre><code class="language-text">frame/packet class
+</code></pre>
+<p>may be possible but much harder.</p>
+<p>For messages:</p>
+<pre><code class="language-text">do not split tiny messages unnecessarily
+</code></pre>
+<hr />
+<h1 id="24-chunk-level-multipath"><a class="header" href="#24-chunk-level-multipath">24. Chunk-Level Multipath</a></h1>
+<p>Part 05 already uses chunks.</p>
+<p>That makes file multipath straightforward:</p>
+<pre><code class="language-text">missing chunk set
+ ↓
+scheduler
+ ↓
+assign chunks to paths
+</code></pre>
+<p>No file format redesign required.</p>
+<hr />
+<h1 id="25-path-work-queue"><a class="header" href="#25-path-work-queue">25. Path Work Queue</a></h1>
+<p>Each path maintains:</p>
+<pre><code class="language-text">assigned chunks
+in-flight bytes
+recent throughput
+</code></pre>
+<p>Scheduler balances load.</p>
+<hr />
+<h1 id="26-work-stealing"><a class="header" href="#26-work-stealing">26. Work Stealing</a></h1>
+<p>If one path becomes slow:</p>
+<pre><code class="language-text">unstarted chunks
+</code></pre>
+<p>can move to faster path.</p>
+<p>Do not duplicate already-progressing large chunks unless policy permits.</p>
+<hr />
+<h1 id="27-chunk-reassignment"><a class="header" href="#27-chunk-reassignment">27. Chunk Reassignment</a></h1>
+<p>When path fails:</p>
+<pre><code class="language-text">all unverified chunks assigned there
+→ return to global missing set
+</code></pre>
+<p>Then reassign.</p>
+<hr />
+<h1 id="28-partial-chunk-handling"><a class="header" href="#28-partial-chunk-handling">28. Partial Chunk Handling</a></h1>
+<p>If protocol supports resumable chunk subranges:</p>
+<pre><code class="language-text">continue remaining subrange
+</code></pre>
+<p>Otherwise retransmit whole chunk.</p>
+<p>Keep chunk size moderate to limit wasted work.</p>
+<hr />
+<h1 id="29-redundant-delivery"><a class="header" href="#29-redundant-delivery">29. Redundant Delivery</a></h1>
+<p>For critical small payload:</p>
+<pre><code class="language-text">Path A
++
+Path B
+</code></pre>
+<p>both send same logical operation.</p>
+<p>Receiver deduplicates by:</p>
+<pre><code class="language-text">MessageId
+BundleId
+OperationId
+</code></pre>
+<hr />
+<h1 id="30-redundant-delivery-budget"><a class="header" href="#30-redundant-delivery-budget">30. Redundant Delivery Budget</a></h1>
+<p>Never duplicate arbitrary bulk data by default.</p>
+<p>Policy can allow:</p>
+<pre><code class="language-text">first 4 KiB control duplicated
+full payload single-path
+</code></pre>
+<p>This is a useful hybrid.</p>
+<hr />
+<h1 id="31-hybrid-strategy"><a class="header" href="#31-hybrid-strategy">31. Hybrid Strategy</a></h1>
+<p>Example file transfer:</p>
+<pre><code class="language-text">control frames:
+redundant across two paths
+
+bulk chunks:
+striped
+
+ACKs:
+best current path
+</code></pre>
+<p>This can improve resilience without doubling file bandwidth.</p>
+<hr />
+<h1 id="32-critical-prefix"><a class="header" href="#32-critical-prefix">32. Critical Prefix</a></h1>
+<p>For emergency message with attachment:</p>
+<pre><code class="language-text">SOS text
+location
+thumbnail
+</code></pre>
+<p>can be redundantly sent.</p>
+<p>Full video remains single/striped.</p>
+<hr />
+<h1 id="33-reordering"><a class="header" href="#33-reordering">33. Reordering</a></h1>
+<p>Multiple paths cause out-of-order arrival.</p>
+<p>Protocol must tolerate:</p>
+<pre><code class="language-text">chunk 5 before chunk 1
+ACK from path B before data on path A
+</code></pre>
+<p>Do not rely on total network arrival order.</p>
+<hr />
+<h1 id="34-ordering-domains"><a class="header" href="#34-ordering-domains">34. Ordering Domains</a></h1>
+<p>Define:</p>
+<pre><code class="language-text">logical message order
+chunk order
+control order
+</code></pre>
+<p>separately.</p>
+<p>File chunks can arrive out of order.</p>
+<p>Control protocol may need stream-local sequence.</p>
+<hr />
+<h1 id="35-reassembly-buffer"><a class="header" href="#35-reassembly-buffer">35. Reassembly Buffer</a></h1>
+<p>For protocols requiring order:</p>
+<pre><code class="language-text">bounded reorder buffer
+</code></pre>
+<p>Never buffer unboundedly waiting for missing data.</p>
+<hr />
+<h1 id="36-head-of-line-avoidance"><a class="header" href="#36-head-of-line-avoidance">36. Head-of-Line Avoidance</a></h1>
+<p>One advantage of multipath is avoiding one slow path blocking all data.</p>
+<p>Use independent chunk/stream state.</p>
+<hr />
+<h1 id="37-ack-strategy"><a class="header" href="#37-ack-strategy">37. ACK Strategy</a></h1>
+<p>ACKs should reflect logical completion, not physical path.</p>
+<p>Example:</p>
+<pre><code class="language-text">Chunk 10 received via cellular
+</code></pre>
+<p>ACK may return via Wi-Fi.</p>
+<p>Path symmetry is not required.</p>
+<hr />
+<h1 id="38-path-independent-ids"><a class="header" href="#38-path-independent-ids">38. Path-Independent IDs</a></h1>
+<p>All IDs must be independent of path.</p>
+<p>Examples:</p>
+<pre><code class="language-text">TransferId
+ChunkId
+MessageId
+BundleId
+</code></pre>
+<p>This is essential for migration.</p>
+<hr />
+<h1 id="39-congestion-control-boundary"><a class="header" href="#39-congestion-control-boundary">39. Congestion Control Boundary</a></h1>
+<p>Transport implementations such as QUIC/Iroh own transport congestion control.</p>
+<p>Multipath scheduler must not reinvent per-path congestion algorithms.</p>
+<p>It uses:</p>
+<pre><code class="language-text">throughput
+RTT
+loss
+queue feedback
+</code></pre>
+<p>to adjust assignment.</p>
+<hr />
+<h1 id="40-cross-path-congestion"><a class="header" href="#40-cross-path-congestion">40. Cross-Path Congestion</a></h1>
+<p>Two paths may share underlay.</p>
+<p>If both use same Wi-Fi interface, striping may only create competition.</p>
+<p>Path diversity model should detect this.</p>
+<hr />
+<h1 id="41-shared-bottleneck-detection"><a class="header" href="#41-shared-bottleneck-detection">41. Shared Bottleneck Detection</a></h1>
+<p>Potential signals:</p>
+<pre><code class="language-text">same interface
+same gateway
+correlated throughput collapse
+</code></pre>
+<p>Future optimization.</p>
+<p>Start with known underlay metadata.</p>
+<hr />
+<h1 id="42-path-cost"><a class="header" href="#42-path-cost">42. Path Cost</a></h1>
+<p>Each path has:</p>
+<pre><code class="language-text">monetary cost
+energy cost
+latency
+bandwidth
+</code></pre>
+<p>Multipath can become expensive.</p>
+<p>A high-throughput file should not automatically consume cellular data if Wi-Fi alone is sufficient.</p>
+<hr />
+<h1 id="43-metered-secondary-policy"><a class="header" href="#43-metered-secondary-policy">43. Metered Secondary Policy</a></h1>
+<p>Default:</p>
+<pre><code class="language-text">do not add metered path
+for throughput boost
+</code></pre>
+<p>unless:</p>
+<pre><code class="language-text">user allows
+critical deadline
+emergency override
+</code></pre>
+<hr />
+<h1 id="44-cellular-assist"><a class="header" href="#44-cellular-assist">44. Cellular Assist</a></h1>
+<p>Optional feature:</p>
+<pre><code class="language-text">Use mobile data to speed large transfer
+</code></pre>
+<p>must be explicit user policy.</p>
+<hr />
+<h1 id="45-battery-cost"><a class="header" href="#45-battery-cost">45. Battery Cost</a></h1>
+<p>Two radios active simultaneously increase energy use.</p>
+<p>Part 13 will provide deeper battery policy.</p>
+<p>Part 12 should expose:</p>
+<pre><code class="language-text">estimated multipath energy penalty
+</code></pre>
+<p>and allow policy to disable.</p>
+<hr />
+<h1 id="46-battery-saver-behavior"><a class="header" href="#46-battery-saver-behavior">46. Battery-Saver Behavior</a></h1>
+<p>In battery saver:</p>
+<pre><code class="language-text">Single
+or WarmFailover only
+</code></pre>
+<p>Avoid active striping across multiple radios.</p>
+<hr />
+<h1 id="47-thermal-behavior"><a class="header" href="#47-thermal-behavior">47. Thermal Behavior</a></h1>
+<p>If device hot:</p>
+<pre><code class="language-text">collapse multipath
+reduce CPU/network parallelism
+</code></pre>
+<hr />
+<h1 id="48-resource-integration"><a class="header" href="#48-resource-integration">48. Resource Integration</a></h1>
+<p>Part 08 must grant:</p>
+<pre><code class="language-text">additional connection permits
+stream permits
+buffer permits
+bandwidth budget
+</code></pre>
+<p>before enabling multipath.</p>
+<hr />
+<h1 id="49-max-paths"><a class="header" href="#49-max-paths">49. Max Paths</a></h1>
+<p>Hard limit:</p>
+<pre><code class="language-text">2–3 active paths
+</code></pre>
+<p>is usually enough.</p>
+<p>Do not support dozens without a real use case.</p>
+<hr />
+<h1 id="50-path-admission"><a class="header" href="#50-path-admission">50. Path Admission</a></h1>
+<p>Before adding secondary path:</p>
+<pre><code class="language-text">does benefit exceed cost?
+</code></pre>
+<p>Check:</p>
+<pre><code class="language-text">resource permits
+battery
+metered policy
+path diversity
+estimated throughput gain
+</code></pre>
+<hr />
+<h1 id="51-benefit-score"><a class="header" href="#51-benefit-score">51. Benefit Score</a></h1>
+<p>Conceptually:</p>
+<pre><code class="language-text">benefit =
+    throughput gain
+  + resilience gain
+  + deadline improvement
+
+cost =
+    energy
+  + monetary
+  + complexity
+  + resource usage
+</code></pre>
+<p>Enable only when:</p>
+<pre><code class="language-text">benefit &gt; policy threshold
+</code></pre>
+<hr />
+<h1 id="52-throughput-gain-estimate"><a class="header" href="#52-throughput-gain-estimate">52. Throughput Gain Estimate</a></h1>
+<p>Estimate from:</p>
+<pre><code class="language-text">current primary saturation
+secondary independent bandwidth
+shared underlay
+</code></pre>
+<p>Do not simply add advertised bandwidth.</p>
+<hr />
+<h1 id="53-resilience-gain"><a class="header" href="#53-resilience-gain">53. Resilience Gain</a></h1>
+<p>High when:</p>
+<pre><code class="language-text">failure domains differ
+</code></pre>
+<p>Low when:</p>
+<pre><code class="language-text">same radio/network
+</code></pre>
+<hr />
+<h1 id="54-warm-standby-vs-active-striping"><a class="header" href="#54-warm-standby-vs-active-striping">54. Warm Standby vs Active Striping</a></h1>
+<p>If resilience is goal but throughput is already sufficient:</p>
+<pre><code class="language-text">warm standby
+</code></pre>
+<p>may be better than active striping.</p>
+<hr />
+<h1 id="55-path-quality-monitor"><a class="header" href="#55-path-quality-monitor">55. Path Quality Monitor</a></h1>
+<p>Each active path reports:</p>
+<pre><code class="language-text">RTT
+throughput
+loss
+jitter
+queue delay
+health
+</code></pre>
+<p>Multipath scheduler consumes these.</p>
+<hr />
+<h1 id="56-sampling"><a class="header" href="#56-sampling">56. Sampling</a></h1>
+<p>Do not sample too aggressively.</p>
+<p>Use existing transport telemetry.</p>
+<p>Avoid extra probe traffic where possible.</p>
+<hr />
+<h1 id="57-smoothing"><a class="header" href="#57-smoothing">57. Smoothing</a></h1>
+<p>Use EWMA or similar smoothing for:</p>
+<pre><code class="language-text">throughput
+RTT
+loss
+</code></pre>
+<p>to reduce oscillation.</p>
+<hr />
+<h1 id="58-path-degradation"><a class="header" href="#58-path-degradation">58. Path Degradation</a></h1>
+<p>If path health moves:</p>
+<pre><code class="language-text">Healthy → Degraded
+</code></pre>
+<p>scheduler reduces weight.</p>
+<p>At:</p>
+<pre><code class="language-text">Unreachable
+</code></pre>
+<p>remove path.</p>
+<hr />
+<h1 id="59-weight-decay"><a class="header" href="#59-weight-decay">59. Weight Decay</a></h1>
+<p>Gradually reduce traffic before full path removal where appropriate.</p>
+<p>This can prevent sudden reordering burst.</p>
+<hr />
+<h1 id="60-path-recovery"><a class="header" href="#60-path-recovery">60. Path Recovery</a></h1>
+<p>A failed path may later recover.</p>
+<p>Re-add only after:</p>
+<pre><code class="language-text">probe/health threshold
+cooldown
+</code></pre>
+<p>Avoid flapping.</p>
+<hr />
+<h1 id="61-hysteresis"><a class="header" href="#61-hysteresis">61. Hysteresis</a></h1>
+<p>Multipath membership needs hysteresis too.</p>
+<p>Do not add/remove secondary path every few seconds.</p>
+<hr />
+<h1 id="62-multipath-state-machine"><a class="header" href="#62-multipath-state-machine">62. Multipath State Machine</a></h1>
+<pre><code class="language-text">Single
+ ↓
+Evaluating
+ ↓
+SecondaryConnecting
+ ↓
+MultipathActive
+ ↓
+Degraded
+ ↓
+Single
+</code></pre>
+<p>Alternative:</p>
+<pre><code class="language-text">Failed
+DisabledByPolicy
+</code></pre>
+<hr />
+<h1 id="63-plan-epoch"><a class="header" href="#63-plan-epoch">63. Plan Epoch</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct MultipathPlanEpoch(u64);
+<span class="boring">}</span></code></pre></pre>
+<p>When plan changes:</p>
+<pre><code class="language-text">epoch increments
+</code></pre>
+<p>Workers ignore stale assignments.</p>
+<hr />
+<h1 id="64-assignment-token"><a class="header" href="#64-assignment-token">64. Assignment Token</a></h1>
+<p>Chunk assignment includes:</p>
+<pre><code class="language-text">plan epoch
+path id
+chunk id
+</code></pre>
+<p>If plan changes before send:</p>
+<pre><code class="language-text">stale assignment can be cancelled
+</code></pre>
+<hr />
+<h1 id="65-file-multipath-architecture"><a class="header" href="#65-file-multipath-architecture">65. File Multipath Architecture</a></h1>
+<pre><code class="language-text">Missing Chunks
+     ↓
+Multipath Scheduler
+ ┌──────┼──────┐
+ │      │      │
+Wi-Fi Cellular Relay
+ │      │      │
+ └──────┼──────┘
+     Receiver
+</code></pre>
+<p>Verified chunk bitmap remains authoritative.</p>
+<hr />
+<h1 id="66-file-completion"><a class="header" href="#66-file-completion">66. File Completion</a></h1>
+<p>Transfer completes when:</p>
+<pre><code class="language-text">all required chunks verified
+</code></pre>
+<p>regardless of path.</p>
+<hr />
+<h1 id="67-file-path-switch"><a class="header" href="#67-file-path-switch">67. File Path Switch</a></h1>
+<p>A transfer can start:</p>
+<pre><code class="language-text">Iroh relay
+</code></pre>
+<p>then later add:</p>
+<pre><code class="language-text">LAN
+</code></pre>
+<p>and move most remaining chunks to LAN.</p>
+<hr />
+<h1 id="68-source-multipath"><a class="header" href="#68-source-multipath">68. Source Multipath</a></h1>
+<p>Future multi-source:</p>
+<pre><code class="language-text">Bob phone
+Bob laptop
+relay cache
+</code></pre>
+<p>all serving same BlobId.</p>
+<p>This is source-level multipath plus transport multipath.</p>
+<p>Keep these separate concepts.</p>
+<hr />
+<h1 id="69-multi-source-scheduler"><a class="header" href="#69-multi-source-scheduler">69. Multi-Source Scheduler</a></h1>
+<p>Can choose:</p>
+<pre><code class="language-text">source
++
+path
++
+chunk
+</code></pre>
+<p>This is advanced and should be added after single-source multipath is stable.</p>
+<hr />
+<h1 id="70-messaging-multipath"><a class="header" href="#70-messaging-multipath">70. Messaging Multipath</a></h1>
+<p>Ordinary message:</p>
+<pre><code class="language-text">single path
+</code></pre>
+<p>Potential critical message:</p>
+<pre><code class="language-text">redundant
+</code></pre>
+<p>Do not stripe a 500-byte message.</p>
+<hr />
+<h1 id="71-receipt-multipath"><a class="header" href="#71-receipt-multipath">71. Receipt Multipath</a></h1>
+<p>Delivery ACK can use whichever path is available.</p>
+<p>No need to mirror inbound path.</p>
+<hr />
+<h1 id="72-call-multipath"><a class="header" href="#72-call-multipath">72. Call Multipath</a></h1>
+<p>Realtime media multipath is harder.</p>
+<p>Possible modes:</p>
+<pre><code class="language-text">audio primary
+audio redundant on backup
+video on high-bandwidth path
+control redundant
+</code></pre>
+<p>Avoid full packet striping initially.</p>
+<hr />
+<h1 id="73-audio-redundancy"><a class="header" href="#73-audio-redundancy">73. Audio Redundancy</a></h1>
+<p>For critical/high-loss calls:</p>
+<pre><code class="language-text">duplicate selected audio frames
+</code></pre>
+<p>over independent secondary path.</p>
+<p>Can improve continuity at bandwidth cost.</p>
+<hr />
+<h1 id="74-video-keyframe-redundancy"><a class="header" href="#74-video-keyframe-redundancy">74. Video Keyframe Redundancy</a></h1>
+<p>Optional future:</p>
+<pre><code class="language-text">keyframes redundant
+delta frames single-path
+</code></pre>
+<p>This is codec/media-specific and belongs above generic multipath scheduler.</p>
+<hr />
+<h1 id="75-media-path-split"><a class="header" href="#75-media-path-split">75. Media Path Split</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">audio → cellular low-jitter
+video → Wi-Fi high-bandwidth
+</code></pre>
+<p>Possible if media engine supports independent streams.</p>
+<hr />
+<h1 id="76-call-handover"><a class="header" href="#76-call-handover">76. Call Handover</a></h1>
+<p>Important practical goal:</p>
+<pre><code class="language-text">Wi-Fi leaves range
+ ↓
+cellular path already warm
+ ↓
+call continues
+</code></pre>
+<p>This is more valuable initially than full aggregate bandwidth.</p>
+<hr />
+<h1 id="77-emergency-multipath"><a class="header" href="#77-emergency-multipath">77. Emergency Multipath</a></h1>
+<p>Emergency policy may use:</p>
+<pre><code class="language-text">Internet path
++
+nearby DTN copy
+</code></pre>
+<p>This is not simultaneous packet striping.</p>
+<p>It is logical redundant delivery across different delivery systems.</p>
+<hr />
+<h1 id="78-multipath--dtn"><a class="header" href="#78-multipath--dtn">78. Multipath + DTN</a></h1>
+<p>A critical message can be:</p>
+<pre><code class="language-text">sent direct over Iroh
++
+stored as DTN bundle
+</code></pre>
+<p>Destination deduplicates.</p>
+<p>This is powerful for disaster resilience.</p>
+<hr />
+<h1 id="79-dtn-copy-retirement"><a class="header" href="#79-dtn-copy-retirement">79. DTN Copy Retirement</a></h1>
+<p>If direct delivery ACK arrives:</p>
+<pre><code class="language-text">cancel/retire remaining DTN replicas
+</code></pre>
+<p>best effort.</p>
+<hr />
+<h1 id="80-relay--direct"><a class="header" href="#80-relay--direct">80. Relay + Direct</a></h1>
+<p>Iroh may move between relay/direct internally.</p>
+<p>Your platform should not duplicate unnecessary multipath logic if Iroh already optimizes that transport path.</p>
+<p>Treat Iroh path state as one logical transport candidate unless there is a real separate path benefit.</p>
+<hr />
+<h1 id="81-iroh-boundary"><a class="header" href="#81-iroh-boundary">81. Iroh Boundary</a></h1>
+<p>Do not try to micromanage QUIC internals from application scheduler.</p>
+<p>Use Iroh-provided connection/path metrics where available.</p>
+<hr />
+<h1 id="82-explicit-multi-interface-iroh"><a class="header" href="#82-explicit-multi-interface-iroh">82. Explicit Multi-Interface Iroh</a></h1>
+<p>If future Iroh supports multiple simultaneous interface paths directly, adapter can expose that as native multipath capability.</p>
+<p>Until then, platform-level multipath can operate across separate transport sessions.</p>
+<hr />
+<h1 id="83-capability-negotiation"><a class="header" href="#83-capability-negotiation">83. Capability Negotiation</a></h1>
+<p>Part 07 should expose:</p>
+<pre><code class="language-text">multipath supported
+max active paths
+striping supported
+redundancy supported
+</code></pre>
+<p>for protocol operations where peer cooperation matters.</p>
+<hr />
+<h1 id="84-capability-example"><a class="header" href="#84-capability-example">84. Capability Example</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct MultipathCapability {
+    pub max_paths: u8,
+    pub striping: bool,
+    pub redundant_control: bool,
+    pub chunk_reassignment: bool,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="85-peer-cooperation"><a class="header" href="#85-peer-cooperation">85. Peer Cooperation</a></h1>
+<p>File striping only needs receiver to accept chunks out-of-order.</p>
+<p>If files/1 already supports that, multipath may not need separate wire protocol.</p>
+<p>Do not add protocol negotiation where local scheduling alone is sufficient.</p>
+<hr />
+<h1 id="86-multipath-metadata-privacy"><a class="header" href="#86-multipath-metadata-privacy">86. Multipath Metadata Privacy</a></h1>
+<p>Do not expose:</p>
+<pre><code class="language-text">user has cellular
+user has Ethernet
+exact ISP
+</code></pre>
+<p>to peer unless necessary.</p>
+<p>Keep detailed path topology local.</p>
+<hr />
+<h1 id="87-local-planner-only"><a class="header" href="#87-local-planner-only">87. Local Planner Only</a></h1>
+<p>Most multipath decisions should remain local.</p>
+<p>Peer receives normal protocol traffic.</p>
+<p>This reduces protocol complexity.</p>
+<hr />
+<h1 id="88-path-binding"><a class="header" href="#88-path-binding">88. Path Binding</a></h1>
+<p>For some operations, path switch may require:</p>
+<pre><code class="language-text">session rebinding
+</code></pre>
+<p>Protocol must authenticate that new path belongs to same peer/session identity.</p>
+<hr />
+<h1 id="89-cross-path-session-binding"><a class="header" href="#89-cross-path-session-binding">89. Cross-Path Session Binding</a></h1>
+<p>Use:</p>
+<pre><code class="language-text">DeviceId
+SessionId
+OperationId
+</code></pre>
+<p>to prove continuity.</p>
+<p>Do not trust same IP/account display name.</p>
+<hr />
+<h1 id="90-anti-hijack"><a class="header" href="#90-anti-hijack">90. Anti-Hijack</a></h1>
+<p>Attacker must not inject:</p>
+<pre><code class="language-text">"secondary path"
+</code></pre>
+<p>into active transfer.</p>
+<p>Every path must complete normal identity/session authentication.</p>
+<hr />
+<h1 id="91-reordering-attack-surface"><a class="header" href="#91-reordering-attack-surface">91. Reordering Attack Surface</a></h1>
+<p>Multiple authenticated paths still require:</p>
+<pre><code class="language-text">sequence validation
+duplicate suppression
+bounded reorder
+</code></pre>
+<hr />
+<h1 id="92-replay-protection"><a class="header" href="#92-replay-protection">92. Replay Protection</a></h1>
+<p>Stable IDs plus sequence/epoch prevent stale chunks/control frames from old path plan.</p>
+<hr />
+<h1 id="93-path-closure"><a class="header" href="#93-path-closure">93. Path Closure</a></h1>
+<p>On removing path:</p>
+<pre><code class="language-text">stop assigning new work
+drain/cancel in-flight
+release permits
+close session if unused
+</code></pre>
+<hr />
+<h1 id="94-graceful-drain"><a class="header" href="#94-graceful-drain">94. Graceful Drain</a></h1>
+<p>For reliable file chunks:</p>
+<pre><code class="language-text">allow in-flight chunk finish
+</code></pre>
+<p>if path merely being de-prioritized.</p>
+<hr />
+<h1 id="95-immediate-abort"><a class="header" href="#95-immediate-abort">95. Immediate Abort</a></h1>
+<p>If:</p>
+<pre><code class="language-text">security failure
+revocation
+</code></pre>
+<p>close immediately.</p>
+<hr />
+<h1 id="96-cancellation"><a class="header" href="#96-cancellation">96. Cancellation</a></h1>
+<p>User cancels operation:</p>
+<pre><code class="language-text">cancel across all paths
+</code></pre>
+<p>One path cannot continue independently.</p>
+<hr />
+<h1 id="97-operation-completion"><a class="header" href="#97-operation-completion">97. Operation Completion</a></h1>
+<p>When operation complete:</p>
+<pre><code class="language-text">stop duplicate paths
+cancel outstanding assignments
+release resources
+</code></pre>
+<hr />
+<h1 id="98-straggler-problem"><a class="header" href="#98-straggler-problem">98. Straggler Problem</a></h1>
+<p>One slow path may hold final chunk.</p>
+<p>Scheduler can hedge/reassign:</p>
+<pre><code class="language-text">if expected completion too slow
+→ duplicate final missing chunk on faster path
+</code></pre>
+<p>This is useful for tail latency.</p>
+<hr />
+<h1 id="99-hedged-chunk"><a class="header" href="#99-hedged-chunk">99. Hedged Chunk</a></h1>
+<p>For final few chunks:</p>
+<pre><code class="language-text">send same chunk on second path after delay
+</code></pre>
+<p>First verified copy wins.</p>
+<p>Use sparingly.</p>
+<hr />
+<h1 id="100-tail-optimization"><a class="header" href="#100-tail-optimization">100. Tail Optimization</a></h1>
+<p>Hedging is more useful near transfer completion than full-time duplication.</p>
+<hr />
+<h1 id="101-cost-control"><a class="header" href="#101-cost-control">101. Cost Control</a></h1>
+<p>Track:</p>
+<pre><code class="language-text">duplicate bytes
+metered bytes
+secondary-path bytes
+</code></pre>
+<p>Multipath should have measurable benefit.</p>
+<hr />
+<h1 id="102-multipath-efficiency-metric"><a class="header" href="#102-multipath-efficiency-metric">102. Multipath Efficiency Metric</a></h1>
+<pre><code class="language-text">useful_bytes / transmitted_bytes
+</code></pre>
+<p>High redundancy lowers efficiency.</p>
+<hr />
+<h1 id="103-throughput-gain-metric"><a class="header" href="#103-throughput-gain-metric">103. Throughput Gain Metric</a></h1>
+<pre><code class="language-text">multipath throughput
+/
+best single-path throughput
+</code></pre>
+<p>If gain near 1.0, disable striping.</p>
+<hr />
+<h1 id="104-resilience-metric"><a class="header" href="#104-resilience-metric">104. Resilience Metric</a></h1>
+<p>Track:</p>
+<pre><code class="language-text">operations saved by secondary path
+handover success
+</code></pre>
+<hr />
+<h1 id="105-path-flap-metric"><a class="header" href="#105-path-flap-metric">105. Path Flap Metric</a></h1>
+<p>Track:</p>
+<pre><code class="language-text">add/remove transitions per session
+</code></pre>
+<p>High count indicates unstable policy.</p>
+<hr />
+<h1 id="106-diagnostics"><a class="header" href="#106-diagnostics">106. Diagnostics</a></h1>
+<p>Advanced:</p>
+<pre><code class="language-text">Strategy: Stripe
+Paths:
+  Wi-Fi 70%
+  Cellular 30%
+
+Shared underlay: no
+Duplicate bytes: 0
+Path switches: 1
+</code></pre>
+<hr />
+<h1 id="107-user-ui"><a class="header" href="#107-user-ui">107. User UI</a></h1>
+<p>Normal UI should not expose path internals.</p>
+<p>Possible indicator:</p>
+<pre><code class="language-text">Using multiple networks
+</code></pre>
+<p>only if useful.</p>
+<hr />
+<h1 id="108-user-control"><a class="header" href="#108-user-control">108. User Control</a></h1>
+<p>Settings:</p>
+<pre><code class="language-text">Use mobile data to improve large transfers
+Use redundant delivery for emergency messages
+</code></pre>
+<p>Avoid complex manual path selection.</p>
+<hr />
+<h1 id="109-data-usage-warning"><a class="header" href="#109-data-usage-warning">109. Data Usage Warning</a></h1>
+<p>If multipath activates metered secondary:</p>
+<pre><code class="language-text">user policy must already permit
+</code></pre>
+<p>Do not surprise users with cellular usage.</p>
+<hr />
+<h1 id="110-resource-profiles"><a class="header" href="#110-resource-profiles">110. Resource Profiles</a></h1>
+<p>Embedded:</p>
+<pre><code class="language-text">single path only
+</code></pre>
+<p>MobileLow:</p>
+<pre><code class="language-text">warm failover limited
+</code></pre>
+<p>Desktop:</p>
+<pre><code class="language-text">file striping allowed
+</code></pre>
+<p>Server:</p>
+<pre><code class="language-text">multiple high-bandwidth paths possible
+</code></pre>
+<hr />
+<h1 id="111-network-interface-abstraction"><a class="header" href="#111-network-interface-abstraction">111. Network Interface Abstraction</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct NetworkInterfaceId;
+<span class="boring">}</span></code></pre></pre>
+<p>Path candidates may bind to interface metadata.</p>
+<hr />
+<h1 id="112-interface-state"><a class="header" href="#112-interface-state">112. Interface State</a></h1>
+<pre><code class="language-text">Up
+Down
+Metered
+Roaming
+Constrained
+</code></pre>
+<p>reported by platform adapter.</p>
+<hr />
+<h1 id="113-wi-fi--ethernet"><a class="header" href="#113-wi-fi--ethernet">113. Wi-Fi + Ethernet</a></h1>
+<p>Desktop:</p>
+<pre><code class="language-text">Ethernet primary
+Wi-Fi standby
+</code></pre>
+<p>useful for seamless cable disconnect.</p>
+<hr />
+<h1 id="114-wi-fi--cellular"><a class="header" href="#114-wi-fi--cellular">114. Wi-Fi + Cellular</a></h1>
+<p>Mobile:</p>
+<pre><code class="language-text">Wi-Fi primary
+cellular standby
+</code></pre>
+<p>for call continuity.</p>
+<hr />
+<h1 id="115-lan--iroh"><a class="header" href="#115-lan--iroh">115. LAN + Iroh</a></h1>
+<p>File transfer:</p>
+<pre><code class="language-text">LAN high bandwidth
+Iroh secondary control/fallback
+</code></pre>
+<hr />
+<h1 id="116-bluetooth--wi-fi"><a class="header" href="#116-bluetooth--wi-fi">116. Bluetooth + Wi-Fi</a></h1>
+<p>Nearby:</p>
+<pre><code class="language-text">BLE control/discovery
+Wi-Fi Direct bulk
+</code></pre>
+<p>This is transport-role multipath rather than aggregate striping.</p>
+<hr />
+<h1 id="117-controldata-split"><a class="header" href="#117-controldata-split">117. Control/Data Split</a></h1>
+<p>A robust pattern:</p>
+<pre><code class="language-text">control on reliable established path
+bulk on high-bandwidth path
+</code></pre>
+<p>If bulk path dies, control remains.</p>
+<hr />
+<h1 id="118-dedicated-control-path"><a class="header" href="#118-dedicated-control-path">118. Dedicated Control Path</a></h1>
+<p>For large file:</p>
+<pre><code class="language-text">Iroh relay control
+LAN data
+</code></pre>
+<p>can be useful when LAN path unstable.</p>
+<hr />
+<h1 id="119-control-path-failure"><a class="header" href="#119-control-path-failure">119. Control Path Failure</a></h1>
+<p>If control path fails but bulk alive:</p>
+<pre><code class="language-text">promote another path
+</code></pre>
+<p>Do not unnecessarily kill transfer.</p>
+<hr />
+<h1 id="120-independent-stream-state"><a class="header" href="#120-independent-stream-state">120. Independent Stream State</a></h1>
+<p>Each path/session maintains:</p>
+<pre><code class="language-text">send state
+health
+metrics
+</code></pre>
+<p>but logical operation state remains shared.</p>
+<hr />
+<h1 id="121-shared-transfer-state"><a class="header" href="#121-shared-transfer-state">121. Shared Transfer State</a></h1>
+<pre><code class="language-text">global missing chunks
+verified chunks
+completion
+</code></pre>
+<p>not duplicated per path.</p>
+<hr />
+<h1 id="122-scheduler-architecture"><a class="header" href="#122-scheduler-architecture">122. Scheduler Architecture</a></h1>
+<pre><code class="language-text">Global Work Set
+    ↓
+Path Scorer
+    ↓
+Weighted Allocator
+    ↓
+Per-Path Queues
+    ↓
+Transports
+</code></pre>
+<p>Feedback returns to scorer.</p>
+<hr />
+<h1 id="123-weighted-allocator"><a class="header" href="#123-weighted-allocator">123. Weighted Allocator</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait MultipathAllocator {
+    fn assign(
+        &amp;mut self,
+        work: &amp;[WorkItem],
+        paths: &amp;[PathState],
+    ) -&gt; Vec&lt;PathAssignment&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="124-initial-allocator"><a class="header" href="#124-initial-allocator">124. Initial Allocator</a></h1>
+<p>Start with:</p>
+<pre><code class="language-text">weighted least-loaded
+</code></pre>
+<p>rather than complex optimization.</p>
+<hr />
+<h1 id="125-weighted-least-loaded"><a class="header" href="#125-weighted-least-loaded">125. Weighted Least-Loaded</a></h1>
+<p>Score:</p>
+<pre><code class="language-text">in-flight bytes / estimated throughput
+</code></pre>
+<p>Assign next chunk to smallest estimated completion time.</p>
+<hr />
+<h1 id="126-completion-time-estimate"><a class="header" href="#126-completion-time-estimate">126. Completion-Time Estimate</a></h1>
+<pre><code class="language-text">queue_delay
++
+chunk_size / throughput
++
+RTT factor
+</code></pre>
+<p>approximate is enough.</p>
+<hr />
+<h1 id="127-path-weight-floor"><a class="header" href="#127-path-weight-floor">127. Path Weight Floor</a></h1>
+<p>Avoid starving secondary completely if warm measurement needed.</p>
+<p>Can send occasional small probe/work if policy permits.</p>
+<hr />
+<h1 id="128-probe-traffic"><a class="header" href="#128-probe-traffic">128. Probe Traffic</a></h1>
+<p>Prefer natural application traffic for measurement.</p>
+<p>Avoid synthetic bandwidth probes on mobile unless necessary.</p>
+<hr />
+<h1 id="129-multipath-persistence"><a class="header" href="#129-multipath-persistence">129. Multipath Persistence</a></h1>
+<p>Do not persist path assignments as durable truth.</p>
+<p>Persist:</p>
+<pre><code class="language-text">operation progress
+</code></pre>
+<p>On restart:</p>
+<pre><code class="language-text">replan from current paths
+</code></pre>
+<hr />
+<h1 id="130-crash-recovery"><a class="header" href="#130-crash-recovery">130. Crash Recovery</a></h1>
+<p>After crash:</p>
+<pre><code class="language-text">verified chunks restored
+all paths considered gone
+new plan generated
+</code></pre>
+<p>Simple and robust.</p>
+<hr />
+<h1 id="131-event-log-integration"><a class="header" href="#131-event-log-integration">131. Event Log Integration</a></h1>
+<p>Part 04 may record meaningful:</p>
+<pre><code class="language-text">TransferPathChanged
+</code></pre>
+<p>only if useful to product/history.</p>
+<p>Most path changes belong in diagnostics.</p>
+<hr />
+<h1 id="132-resource-limit-integration"><a class="header" href="#132-resource-limit-integration">132. Resource Limit Integration</a></h1>
+<p>Every additional path consumes:</p>
+<pre><code class="language-text">connection slot
+stream slot
+memory
+bandwidth
+energy
+</code></pre>
+<p>Part 08 admission is mandatory.</p>
+<hr />
+<h1 id="133-backpressure-integration"><a class="header" href="#133-backpressure-integration">133. Backpressure Integration</a></h1>
+<p>Per-path queue full:</p>
+<pre><code class="language-text">allocator stops assigning
+</code></pre>
+<p>Global producer slows.</p>
+<p>No unbounded buffer between paths.</p>
+<hr />
+<h1 id="134-battery-integration"><a class="header" href="#134-battery-integration">134. Battery Integration</a></h1>
+<p>Part 13 may collapse strategy:</p>
+<pre><code class="language-text">Stripe → Single
+</code></pre>
+<p>when low battery.</p>
+<hr />
+<h1 id="135-thermal-integration"><a class="header" href="#135-thermal-integration">135. Thermal Integration</a></h1>
+<p>Path set can shrink dynamically.</p>
+<hr />
+<h1 id="136-capability-integration"><a class="header" href="#136-capability-integration">136. Capability Integration</a></h1>
+<p>Part 07 may limit:</p>
+<pre><code class="language-text">max parallel chunk streams
+</code></pre>
+<p>Multipath effective concurrency respects that.</p>
+<hr />
+<h1 id="137-relay-infrastructure-integration"><a class="header" href="#137-relay-infrastructure-integration">137. Relay Infrastructure Integration</a></h1>
+<p>Part 11 can supply:</p>
+<pre><code class="language-text">multiple relay candidates
+</code></pre>
+<p>but using two relays simultaneously only helps if policy and failure domains justify.</p>
+<hr />
+<h1 id="138-dtn-integration"><a class="header" href="#138-dtn-integration">138. DTN Integration</a></h1>
+<p>Part 06 can act as a logically independent redundant delivery system.</p>
+<p>This is often more valuable for SOS than duplicating over two Internet relays.</p>
+<hr />
+<h1 id="139-fuzztest-integration"><a class="header" href="#139-fuzztest-integration">139. Fuzz/Test Integration</a></h1>
+<p>Part 10 needs:</p>
+<pre><code class="language-text">path addition/removal
+duplicate chunk
+late ACK
+stale plan epoch
+reordering
+shared-underlay cases
+</code></pre>
+<hr />
+<h1 id="140-simulation"><a class="header" href="#140-simulation">140. Simulation</a></h1>
+<p>Use deterministic multi-path simulator:</p>
+<pre><code class="language-text">Path A:
+100 Mbps, 20 ms
+
+Path B:
+20 Mbps, 80 ms
+
+Path C:
+metered, 50 Mbps
+</code></pre>
+<p>Test policy decisions.</p>
+<hr />
+<h1 id="141-striping-test"><a class="header" href="#141-striping-test">141. Striping Test</a></h1>
+<p>Expected:</p>
+<pre><code class="language-text">A receives majority chunks
+B receives smaller share
+C unused if metered forbidden
+</code></pre>
+<hr />
+<h1 id="142-failure-test"><a class="header" href="#142-failure-test">142. Failure Test</a></h1>
+<p>Kill A midway.</p>
+<p>Expected:</p>
+<pre><code class="language-text">B takes remaining
+verified progress retained
+</code></pre>
+<hr />
+<h1 id="143-recovery-test"><a class="header" href="#143-recovery-test">143. Recovery Test</a></h1>
+<p>Restart process.</p>
+<p>Expected:</p>
+<pre><code class="language-text">no path assignments restored
+missing chunks replanned
+</code></pre>
+<hr />
+<h1 id="144-shared-underlay-test"><a class="header" href="#144-shared-underlay-test">144. Shared Underlay Test</a></h1>
+<p>A and B same Wi-Fi.</p>
+<p>Expected:</p>
+<pre><code class="language-text">planner may choose warm failover
+instead of active striping
+</code></pre>
+<hr />
+<h1 id="145-cost-test"><a class="header" href="#145-cost-test">145. Cost Test</a></h1>
+<p>Secondary metered.</p>
+<p>Policy:</p>
+<pre><code class="language-text">allow_metered_secondary=false
+</code></pre>
+<p>Expected:</p>
+<pre><code class="language-text">never used for throughput boost
+</code></pre>
+<hr />
+<h1 id="146-emergency-test"><a class="header" href="#146-emergency-test">146. Emergency Test</a></h1>
+<p>Paths:</p>
+<pre><code class="language-text">Internet
+BLE/DTN
+</code></pre>
+<p>Expected:</p>
+<pre><code class="language-text">critical payload duplicated logically
+</code></pre>
+<hr />
+<h1 id="147-call-handover-test"><a class="header" href="#147-call-handover-test">147. Call Handover Test</a></h1>
+<pre><code class="language-text">Wi-Fi active
+cellular standby
+Wi-Fi disappears
+</code></pre>
+<p>Expected:</p>
+<pre><code class="language-text">handover bounded interruption
+</code></pre>
+<hr />
+<h1 id="148-reorder-test"><a class="header" href="#148-reorder-test">148. Reorder Test</a></h1>
+<p>Chunks arrive:</p>
+<pre><code class="language-text">5,2,4,1,3
+</code></pre>
+<p>Receiver completes correctly.</p>
+<hr />
+<h1 id="149-stale-assignment-test"><a class="header" href="#149-stale-assignment-test">149. Stale Assignment Test</a></h1>
+<p>Plan epoch changes.</p>
+<p>Old worker submits chunk assignment.</p>
+<p>Expected:</p>
+<pre><code class="language-text">ignore/cancel stale plan work
+</code></pre>
+<hr />
+<h1 id="150-duplicate-completion-test"><a class="header" href="#150-duplicate-completion-test">150. Duplicate Completion Test</a></h1>
+<p>Same chunk arrives simultaneously on two paths.</p>
+<p>Expected:</p>
+<pre><code class="language-text">one verified state transition
+</code></pre>
+<hr />
+<h1 id="151-path-security-test"><a class="header" href="#151-path-security-test">151. Path Security Test</a></h1>
+<p>Unauthenticated secondary attempts join transfer.</p>
+<p>Expected:</p>
+<pre><code class="language-text">reject
+</code></pre>
+<hr />
+<h1 id="152-resource-exhaustion-test"><a class="header" href="#152-resource-exhaustion-test">152. Resource Exhaustion Test</a></h1>
+<p>Try enabling 10 paths.</p>
+<p>Global max:</p>
+<pre><code class="language-text">2
+</code></pre>
+<p>Expected:</p>
+<pre><code class="language-text">only 2 admitted
+</code></pre>
+<hr />
+<h1 id="153-performance-benchmarks"><a class="header" href="#153-performance-benchmarks">153. Performance Benchmarks</a></h1>
+<p>Measure:</p>
+<pre><code class="language-text">single path throughput
+striped throughput
+CPU overhead
+memory overhead
+battery proxy
+duplicate bytes
+handover latency
+</code></pre>
+<hr />
+<h1 id="154-benefit-gate"><a class="header" href="#154-benefit-gate">154. Benefit Gate</a></h1>
+<p>Enable multipath by default only after benchmarks show clear improvement for target workloads.</p>
+<hr />
+<h1 id="155-no-universal-aggregation-promise"><a class="header" href="#155-no-universal-aggregation-promise">155. No Universal Aggregation Promise</a></h1>
+<p>Some OS/platform/network combinations may not allow simultaneous useful interfaces.</p>
+<p>Architecture must degrade to:</p>
+<pre><code class="language-text">single path
+</code></pre>
+<p>without feature failure.</p>
+<hr />
+<h1 id="156-android-constraints"><a class="header" href="#156-android-constraints">156. Android Constraints</a></h1>
+<p>Android may manage:</p>
+<pre><code class="language-text">cellular/Wi-Fi routing
+network binding
+background restrictions
+</code></pre>
+<p>Kotlin/platform adapter may expose available network handles.</p>
+<p>Rust owns multipath policy.</p>
+<hr />
+<h1 id="157-android-network-binding"><a class="header" href="#157-android-network-binding">157. Android Network Binding</a></h1>
+<p>Platform adapter can provide:</p>
+<pre><code class="language-text">network-specific socket/session binding capability
+</code></pre>
+<p>where available.</p>
+<p>Do not duplicate policy in Kotlin.</p>
+<hr />
+<h1 id="158-ios-constraints"><a class="header" href="#158-ios-constraints">158. iOS Constraints</a></h1>
+<p>iOS may restrict direct control over interface selection.</p>
+<p>Support multipath only where platform APIs permit.</p>
+<p>Do not promise identical behavior across platforms.</p>
+<hr />
+<h1 id="159-desktop-control"><a class="header" href="#159-desktop-control">159. Desktop Control</a></h1>
+<p>Linux/Windows/macOS generally provide more network-interface visibility, but implementation details differ.</p>
+<p>Keep adapter-specific.</p>
+<hr />
+<h1 id="160-headless-linux"><a class="header" href="#160-headless-linux">160. Headless Linux</a></h1>
+<p>Server/headless node may have:</p>
+<pre><code class="language-text">Ethernet
+Wi-Fi
+multiple NICs
+multiple uplinks
+</code></pre>
+<p>Multipath can be particularly useful there.</p>
+<hr />
+<h1 id="161-source-address-stability"><a class="header" href="#161-source-address-stability">161. Source Address Stability</a></h1>
+<p>Path migration must not assume stable IP.</p>
+<p>Identity/session continuity comes from cryptographic peer identity.</p>
+<hr />
+<h1 id="162-nat-changes"><a class="header" href="#162-nat-changes">162. NAT Changes</a></h1>
+<p>Mobile path may rebind NAT.</p>
+<p>Transport/session layer handles reconnection.</p>
+<p>Operation state remains independent.</p>
+<hr />
+<h1 id="163-qos-separation"><a class="header" href="#163-qos-separation">163. QoS Separation</a></h1>
+<p>Realtime and bulk traffic can intentionally use different paths.</p>
+<p>Example:</p>
+<pre><code class="language-text">call audio → low-latency path
+file sync → high-throughput path
+</code></pre>
+<hr />
+<h1 id="164-multi-operation-coordination"><a class="header" href="#164-multi-operation-coordination">164. Multi-Operation Coordination</a></h1>
+<p>Scheduler across operations should avoid:</p>
+<pre><code class="language-text">file multipath consuming all paths
+</code></pre>
+<p>while call active.</p>
+<p>Part 08 global resource scheduler decides.</p>
+<hr />
+<h1 id="165-path-reservation"><a class="header" href="#165-path-reservation">165. Path Reservation</a></h1>
+<p>A call can reserve primary path bandwidth.</p>
+<p>File multipath uses remaining capacity.</p>
+<hr />
+<h1 id="166-multipath-quotas"><a class="header" href="#166-multipath-quotas">166. Multipath Quotas</a></h1>
+<p>Per application:</p>
+<pre><code class="language-text">max secondary cellular bytes/day
+max redundant emergency bytes
+</code></pre>
+<p>optional product policy.</p>
+<hr />
+<h1 id="167-telemetry-privacy"><a class="header" href="#167-telemetry-privacy">167. Telemetry Privacy</a></h1>
+<p>Do not export:</p>
+<pre><code class="language-text">exact network names
+IP addresses
+carrier
+</code></pre>
+<p>unless explicitly needed.</p>
+<p>Aggregate:</p>
+<pre><code class="language-text">wifi
+cellular
+lan
+relay
+</code></pre>
+<hr />
+<h1 id="168-metrics"><a class="header" href="#168-metrics">168. Metrics</a></h1>
+<p>Useful:</p>
+<pre><code class="language-text">multipath sessions
+strategy distribution
+path switches
+handover success
+striping gain
+duplicate bytes
+metered secondary bytes
+</code></pre>
+<hr />
+<h1 id="169-diagnostics-reason-codes"><a class="header" href="#169-diagnostics-reason-codes">169. Diagnostics Reason Codes</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum MultipathReason {
+    LargeTransfer,
+    Deadline,
+    PrimaryDegraded,
+    EmergencyRedundancy,
+    CallHandover,
+    DisabledByBattery,
+    DisabledByCost,
+    SharedFailureDomain,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="170-error-model"><a class="header" href="#170-error-model">170. Error Model</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum MultipathError {
+    NoEligibleSecondary,
+    ResourceDenied,
+    PolicyDenied,
+    AuthenticationFailed,
+    PathFailed,
+    Unsupported,
+    Cancelled,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="171-public-api"><a class="header" href="#171-public-api">171. Public API</a></h1>
+<p>Most applications should not call low-level multipath APIs.</p>
+<p>They declare:</p>
+<pre><code class="language-text">allow_multipath
+priority
+deadline
+cost policy
+</code></pre>
+<p>Routing/file/media layers invoke planner.</p>
+<hr />
+<h1 id="172-advanced-api"><a class="header" href="#172-advanced-api">172. Advanced API</a></h1>
+<p>For infrastructure/custom product:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let plan = multipath.plan(request, candidates)?;
+<span class="boring">}</span></code></pre></pre>
+<p>Useful for diagnostics/testing.</p>
+<hr />
+<h1 id="173-suggested-crate-structure"><a class="header" href="#173-suggested-crate-structure">173. Suggested Crate Structure</a></h1>
+<pre><code class="language-text">crates/comm-multipath/
+├── src/
+│   ├── lib.rs
+│   ├── strategy.rs
+│   ├── plan.rs
+│   ├── planner.rs
+│   ├── path_set.rs
+│   ├── diversity.rs
+│   ├── allocator.rs
+│   ├── scheduler.rs
+│   ├── metrics.rs
+│   ├── hysteresis.rs
+│   ├── failover.rs
+│   ├── redundancy.rs
+│   ├── diagnostics.rs
+│   └── error.rs
+└── Cargo.toml
+</code></pre>
+<hr />
+<h1 id="174-initial-production-scope"><a class="header" href="#174-initial-production-scope">174. Initial Production Scope</a></h1>
+<p>Implement first:</p>
+<pre><code class="language-text">single path baseline
+warm failover
+make-before-break
+file chunk striping
+weighted allocator
+path diversity metadata
+metered policy
+resource admission
+path health/hysteresis
+stale plan epoch
+</code></pre>
+<p>Then:</p>
+<pre><code class="language-text">tail hedging
+control/data split
+selective emergency redundancy
+call handover
+</code></pre>
+<p>Defer initially:</p>
+<pre><code class="language-text">full realtime packet aggregation
+complex multi-source swarming
+ML path prediction
+</code></pre>
+<hr />
+<h1 id="175-implementation-phases"><a class="header" href="#175-implementation-phases">175. Implementation Phases</a></h1>
+<h2 id="phase-1--models"><a class="header" href="#phase-1--models">Phase 1 — Models</a></h2>
+<pre><code class="language-text">MultipathStrategy
+PathSet
+FailureDomains
+MultipathPlan
+</code></pre>
+<h2 id="phase-2--warm-failover"><a class="header" href="#phase-2--warm-failover">Phase 2 — Warm Failover</a></h2>
+<pre><code class="language-text">secondary path
+make-before-break
+handover
+</code></pre>
+<h2 id="phase-3--file-striping"><a class="header" href="#phase-3--file-striping">Phase 3 — File Striping</a></h2>
+<pre><code class="language-text">chunk scheduler
+weighted assignment
+reassignment
+</code></pre>
+<h2 id="phase-4--diversitycost"><a class="header" href="#phase-4--diversitycost">Phase 4 — Diversity/Cost</a></h2>
+<pre><code class="language-text">underlay overlap
+metered policy
+battery/resource checks
+</code></pre>
+<h2 id="phase-5--redundancy"><a class="header" href="#phase-5--redundancy">Phase 5 — Redundancy</a></h2>
+<pre><code class="language-text">critical control
+SOS duplicate
+tail hedging
+</code></pre>
+<h2 id="phase-6--media"><a class="header" href="#phase-6--media">Phase 6 — Media</a></h2>
+<pre><code class="language-text">call handover
+audio/control redundancy
+</code></pre>
+<h2 id="phase-7--hardening"><a class="header" href="#phase-7--hardening">Phase 7 — Hardening</a></h2>
+<pre><code class="language-text">simulation
+reordering
+failure
+resource
+security
+benchmarks
+</code></pre>
+<hr />
+<h1 id="176-definition-of-done"><a class="header" href="#176-definition-of-done">176. Definition of Done</a></h1>
+<p>Part 12 is complete when:</p>
+<ul>
+<li>multipath is optional rather than mandatory</li>
+<li>single-path behavior remains correct</li>
+<li>file transfer can stripe chunks across at least two authenticated paths</li>
+<li>path failure returns unfinished chunks to scheduler</li>
+<li>verified chunks are never re-downloaded unnecessarily</li>
+<li>make-before-break handover works where platform permits</li>
+<li>path diversity considers shared failure domains</li>
+<li>metered secondary paths obey user policy</li>
+<li>battery/resource pressure can collapse multipath safely</li>
+<li>duplicate critical delivery is deduplicated</li>
+<li>path assignments are not persisted as durable truth</li>
+<li>crash recovery replans from operation progress</li>
+<li>stale plan epochs are rejected</li>
+<li>one operation cannot exceed global path/stream limits</li>
+<li>call/media can use warm failover without requiring full packet striping</li>
+<li>DTN can act as independent redundant delivery for emergency traffic</li>
+<li>diagnostics explain why multipath was enabled/disabled</li>
+<li>simulation/failure/reorder/cost/resource/security tests exist</li>
+</ul>
+<hr />
+<h1 id="177-relationship-to-earlier-parts"><a class="header" href="#177-relationship-to-earlier-parts">177. Relationship to Earlier Parts</a></h1>
+<p>Part 12 builds on:</p>
+<pre><code class="language-text">01 — Protocol Extension System
+02 — Multi-Device Identity
+03 — Transport &amp; Routing Policy Engine
+04 — Offline Event Log
+05 — Robust File / Blob Subsystem
+06 — DTN / Store-Carry-Forward
+07 — Capability Negotiation
+08 — Resource Limits &amp; Backpressure
+09 — Crash Recovery
+10 — Fuzzing &amp; Protocol Test Suite
+11 — Relay / Self-Hosted Infrastructure
+</code></pre>
+<p>It directly supports:</p>
+<pre><code class="language-text">13 — Battery-Aware Scheduling
+14 — Proximity Abstraction
+16 — Daemon &amp; Headless Runtime
+17 — Emergency Priority Architecture
+18 — Network Diagnostics &amp; Path Visualization
+20 — Embedded Linux Node
+23 — External Interoperability Suite
+</code></pre>
+<hr />
+<h1 id="178-final-principle"><a class="header" href="#178-final-principle">178. Final Principle</a></h1>
+<p>Multipath should make this kind of behavior possible:</p>
+<pre><code class="language-text">A 5 GB file starts over Iroh relay.
+
+LAN becomes available.
+LAN becomes the high-bandwidth primary data path.
+
+The relay remains a control/fallback path.
+
+Wi-Fi drops briefly.
+The transfer continues over relay.
+
+Wi-Fi returns.
+The scheduler moves remaining chunks back.
+
+No chunk already verified is lost.
+No transfer restarts from zero.
+</code></pre>
+<p>And for a call:</p>
+<pre><code class="language-text">Wi-Fi active
++
+cellular standby
+
+Wi-Fi disappears
+→ cellular takes over
+</code></pre>
+<p>And for emergency delivery:</p>
+<pre><code class="language-text">Internet send
++
+DTN local copy
+</code></pre>
+<p>The value of multipath is not merely "more bandwidth."</p>
+<p>Its real purpose is:</p>
+<pre><code class="language-text">resilience
+continuity
+controlled redundancy
+and efficient use of multiple available paths
+</code></pre>
+<p>without sacrificing battery, privacy, cost control, or architectural simplicity.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="11-relay-self-hosted-infrastructure-architecture.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="13-battery-aware-scheduling-architecture.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="11-relay-self-hosted-infrastructure-architecture.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="13-battery-aware-scheduling-architecture.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

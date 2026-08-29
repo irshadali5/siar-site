@@ -1,0 +1,2251 @@
+<!DOCTYPE HTML>
+<html lang="en" class="navy" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>16 — Headless Daemon &amp; Background Runtime - SIAR System Architecture &amp; Technical Wiki</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="Comprehensive system architecture, cryptographic protocols, DTN mesh networking, distributed storage, audio DSP pipelines, and UI/UX design specifications for SIAR.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="theme/custom.css">
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "navy";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('navy')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="Home.html">Architecture Portal & Reading Guide</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part I: Protocol Foundation & Extension Platform</li><li class="chapter-item expanded "><a href="01-protocol-extension-system-architecture.html"><strong aria-hidden="true">1.</strong> 01 — Protocol Extension System Architecture</a></li><li class="chapter-item expanded "><a href="07-capability-negotiation-architecture.html"><strong aria-hidden="true">2.</strong> 07 — Capability Negotiation & Protocol Upgrades</a></li><li class="chapter-item expanded "><a href="21-third-party-protocol-extensions-architecture.html"><strong aria-hidden="true">3.</strong> 21 — Third-Party Protocol Extensions</a></li><li class="chapter-item expanded "><a href="22-wasm-compatible-components-architecture.html"><strong aria-hidden="true">4.</strong> 22 — WebAssembly (WASM) Compatible Components</a></li><li class="chapter-item expanded "><a href="23-external-interoperability-suite-architecture.html"><strong aria-hidden="true">5.</strong> 23 — External Interoperability & Conformance Suite</a></li><li class="chapter-item expanded "><a href="24-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">6.</strong> 24 — Dynamic Plugin & Module Ecosystem</a></li><li class="chapter-item expanded affix "><li class="part-title">Part II: Identity, Trust & Cryptography</li><li class="chapter-item expanded "><a href="02-multi-device-identity-architecture.html"><strong aria-hidden="true">7.</strong> 02 — Multi-Device Identity & Trust Model</a></li><li class="chapter-item expanded "><a href="28-production-security-e2ee-key-management-privacy-architecture.html"><strong aria-hidden="true">8.</strong> 28 — Production Security, E2EE, Key Management & Privacy</a></li><li class="chapter-item expanded affix "><li class="part-title">Part III: Mesh Networking, Transports & Hardware</li><li class="chapter-item expanded "><a href="03-transport-routing-policy-engine-architecture.html"><strong aria-hidden="true">9.</strong> 03 — Transport & Routing Policy Engine</a></li><li class="chapter-item expanded "><a href="11-relay-self-hosted-infrastructure-architecture.html"><strong aria-hidden="true">10.</strong> 11 — Self-Hosted Relay & Coordination Infrastructure</a></li><li class="chapter-item expanded "><a href="12-multipath-networking-architecture.html"><strong aria-hidden="true">11.</strong> 12 — Multipath Networking & Link Aggregation</a></li><li class="chapter-item expanded "><a href="13-battery-aware-scheduling-architecture.html"><strong aria-hidden="true">12.</strong> 13 — Battery-Aware Scheduling & Power Profiles</a></li><li class="chapter-item expanded "><a href="14-proximity-abstraction-architecture.html"><strong aria-hidden="true">13.</strong> 14 — Proximity Abstraction (BLE, Wi-Fi Direct, LoRa)</a></li><li class="chapter-item expanded "><a href="15-qr-nfc-bootstrap-pairing-architecture.html"><strong aria-hidden="true">14.</strong> 15 — Out-of-Band QR & NFC Bootstrap Pairing</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IV: Delay-Tolerant Networking & Emergency Mesh</li><li class="chapter-item expanded "><a href="06-dtn-store-carry-forward-architecture.html"><strong aria-hidden="true">15.</strong> 06 — DTN Store-Carry-Forward & Bundle Forwarding</a></li><li class="chapter-item expanded "><a href="17-emergency-priority-classes-architecture.html"><strong aria-hidden="true">16.</strong> 17 — Emergency Priority Classes & Critical Alert Mesh</a></li><li class="chapter-item expanded affix "><li class="part-title">Part V: Storage, Outbox & Data Lifecycle</li><li class="chapter-item expanded "><a href="04-offline-event-log-architecture.html"><strong aria-hidden="true">17.</strong> 04 — Offline Event Log & Sync Engine</a></li><li class="chapter-item expanded "><a href="05-robust-file-blob-subsystem-architecture.html"><strong aria-hidden="true">18.</strong> 05 — Robust File & Blob Subsystem (Chunking & Resumption)</a></li><li class="chapter-item expanded "><a href="09-crash-recovery-architecture.html"><strong aria-hidden="true">19.</strong> 09 — Crash Recovery & State Integrity</a></li><li class="chapter-item expanded "><a href="32-search-indexing-local-knowledge-privacy-architecture.html"><strong aria-hidden="true">20.</strong> 32 — Search, Indexing & Local Privacy Retrieval</a></li><li class="chapter-item expanded "><a href="33-backup-restore-export-import-archival-portability-architecture.html"><strong aria-hidden="true">21.</strong> 33 — Backup, Restore, Export & Long-Term Archival</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VI: Realtime Media, Calling & Audio DSP</li><li class="chapter-item expanded "><a href="25-android-direct-hardware-surface-zero-copy-media-architecture.html"><strong aria-hidden="true">22.</strong> 25 — Android Direct Surface Zero-Copy Media</a></li><li class="chapter-item expanded "><a href="26-rust-first-audio-dsp-resampling-aec-ns-agc-architecture.html"><strong aria-hidden="true">23.</strong> 26 — Rust-First Audio DSP (AEC, NS, AGC, Resampling)</a></li><li class="chapter-item expanded "><a href="29-realtime-calls-media-session-protocol-architecture.html"><strong aria-hidden="true">24.</strong> 29 — Realtime Calls & Media Session Protocol</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VII: Ephemeral State, Presence & Notifications</li><li class="chapter-item expanded "><a href="30-presence-availability-typing-read-receipts-ephemeral-state-architecture.html"><strong aria-hidden="true">25.</strong> 30 — Presence, Availability, Typing & Read Receipts</a></li><li class="chapter-item expanded "><a href="31-notifications-push-background-delivery-lifecycle-architecture.html"><strong aria-hidden="true">26.</strong> 31 — Notifications, Push Wake & Background Delivery</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VIII: Native Runtimes, Daemons & Embedded Linux</li><li class="chapter-item expanded "><a href="16-daemon-headless-runtime-architecture.html" class="active"><strong aria-hidden="true">27.</strong> 16 — Headless Daemon & Background Runtime</a></li><li class="chapter-item expanded "><a href="19-c-abi-ffi-architecture.html"><strong aria-hidden="true">28.</strong> 19 — C-ABI FFI & Native Language Interop</a></li><li class="chapter-item expanded "><a href="20-embedded-linux-node-architecture.html"><strong aria-hidden="true">29.</strong> 20 — Embedded Linux Node & Resource-Constrained Targets</a></li><li class="chapter-item expanded "><a href="27-rust-driven-android-native-build-packaging-automation.html"><strong aria-hidden="true">30.</strong> 27 — Rust-Driven Android Native Build & Packaging Automation</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IX: Reliability, Testing, Fuzzing & Diagnostics</li><li class="chapter-item expanded "><a href="08-resource-limits-backpressure-architecture.html"><strong aria-hidden="true">31.</strong> 08 — Resource Limits, Quotas & Backpressure</a></li><li class="chapter-item expanded "><a href="10-fuzzing-protocol-test-suite-architecture.html"><strong aria-hidden="true">32.</strong> 10 — Fuzzing & Protocol Test Suite</a></li><li class="chapter-item expanded "><a href="18-network-diagnostics-path-visualization-architecture.html"><strong aria-hidden="true">33.</strong> 18 — Network Diagnostics & Path Visualization</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part X: UI/UX Client Architecture (Cross-Platform)</li><li class="chapter-item expanded "><a href="ui-ux-01-product-foundation-cross-platform-interaction-architecture.html"><strong aria-hidden="true">34.</strong> UI/UX 01 — Product UX Foundation & Cross-Platform Interaction</a></li><li class="chapter-item expanded "><a href="ui-ux-02-desktop-dioxus-app-shell-navigation-window-architecture.html"><strong aria-hidden="true">35.</strong> UI/UX 02 — Desktop Dioxus App Shell & Navigation</a></li><li class="chapter-item expanded "><a href="ui-ux-03-android-jetpack-compose-app-shell-navigation-lifecycle-architecture.html"><strong aria-hidden="true">36.</strong> UI/UX 03 — Android Jetpack Compose App Shell & Lifecycle</a></li><li class="chapter-item expanded "><a href="ui-ux-04-conversation-list-inbox-architecture.html"><strong aria-hidden="true">37.</strong> UI/UX 04 — Conversation List & Inbox UX</a></li><li class="chapter-item expanded "><a href="ui-ux-05-conversation-message-timeline-architecture.html"><strong aria-hidden="true">38.</strong> UI/UX 05 — Conversation Message Timeline UX</a></li><li class="chapter-item expanded "><a href="ui-ux-06-message-composer-attachments-voice-notes-drafts-architecture.html"><strong aria-hidden="true">39.</strong> UI/UX 06 — Message Composer, Attachments & Voice Notes</a></li><li class="chapter-item expanded "><a href="ui-ux-07-calls-realtime-media-architecture.html"><strong aria-hidden="true">40.</strong> UI/UX 07 — Calls & Realtime Media UX</a></li><li class="chapter-item expanded "><a href="ui-ux-08-contacts-requests-verification-identity-architecture.html"><strong aria-hidden="true">41.</strong> UI/UX 08 — Contacts, Requests, Verification & Identity</a></li><li class="chapter-item expanded "><a href="ui-ux-09-groups-membership-roles-architecture.html"><strong aria-hidden="true">42.</strong> UI/UX 09 — Groups, Membership & Roles UX</a></li><li class="chapter-item expanded "><a href="ui-ux-10-files-media-gallery-transfer-architecture.html"><strong aria-hidden="true">43.</strong> UI/UX 10 — Files, Media Gallery & Transfer UX</a></li><li class="chapter-item expanded "><a href="ui-ux-11-search-local-knowledge-retrieval-architecture.html"><strong aria-hidden="true">44.</strong> UI/UX 11 — Search & Local Knowledge Retrieval UX</a></li><li class="chapter-item expanded "><a href="ui-ux-12-nearby-qr-nfc-pairing-device-linking-architecture.html"><strong aria-hidden="true">45.</strong> UI/UX 12 — Nearby, QR/NFC Pairing & Device Linking UX</a></li><li class="chapter-item expanded "><a href="ui-ux-13-notifications-background-incoming-call-architecture.html"><strong aria-hidden="true">46.</strong> UI/UX 13 — Notifications, Background & Incoming Call UX</a></li><li class="chapter-item expanded "><a href="ui-ux-14-presence-typing-receipts-status-architecture.html"><strong aria-hidden="true">47.</strong> UI/UX 14 — Presence, Typing, Receipts & Status UX</a></li><li class="chapter-item expanded "><a href="ui-ux-15-security-center-devices-keys-recovery-architecture.html"><strong aria-hidden="true">48.</strong> UI/UX 15 — Security Center, Devices, Keys & Recovery UX</a></li><li class="chapter-item expanded "><a href="ui-ux-16-backup-restore-export-migration-architecture.html"><strong aria-hidden="true">49.</strong> UI/UX 16 — Backup, Restore, Export & Migration UX</a></li><li class="chapter-item expanded "><a href="ui-ux-17-emergency-sos-offline-mesh-architecture.html"><strong aria-hidden="true">50.</strong> UI/UX 17 — Emergency / SOS / Offline Mesh UX</a></li><li class="chapter-item expanded "><a href="ui-ux-18-settings-privacy-notifications-data-controls-architecture.html"><strong aria-hidden="true">51.</strong> UI/UX 18 — Settings, Privacy, Notifications & Data Controls</a></li><li class="chapter-item expanded "><a href="ui-ux-19-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">52.</strong> UI/UX 19 — Plugin & Module Ecosystem UX</a></li><li class="chapter-item expanded "><a href="ui-ux-20-diagnostics-network-paths-advanced-developer-architecture.html"><strong aria-hidden="true">53.</strong> UI/UX 20 — Diagnostics, Network Paths & Developer UX</a></li><li class="chapter-item expanded "><a href="ui-ux-21-accessibility-inclusive-interaction-architecture.html"><strong aria-hidden="true">54.</strong> UI/UX 21 — Accessibility & Inclusive Interaction</a></li><li class="chapter-item expanded "><a href="ui-ux-22-design-system-tokens-typography-icons-motion-architecture.html"><strong aria-hidden="true">55.</strong> UI/UX 22 — Design System, Tokens, Typography & Motion</a></li><li class="chapter-item expanded "><a href="ui-ux-23-responsive-adaptive-desktop-tablet-foldable-phone-layout-architecture.html"><strong aria-hidden="true">56.</strong> UI/UX 23 — Responsive & Adaptive Layouts (Desktop/Tablet/Foldable/Phone)</a></li><li class="chapter-item expanded "><a href="ui-ux-24-error-loading-empty-offline-degraded-state-architecture.html"><strong aria-hidden="true">57.</strong> UI/UX 24 — Error, Loading, Empty & Degraded-State UX</a></li><li class="chapter-item expanded "><a href="ui-ux-25-onboarding-first-run-permission-education-architecture.html"><strong aria-hidden="true">58.</strong> UI/UX 25 — Onboarding, First Run & Permission Education</a></li><li class="chapter-item expanded "><a href="ui-ux-26-performance-virtualization-large-data-ui-architecture.html"><strong aria-hidden="true">59.</strong> UI/UX 26 — Virtualization & Large-Data UI Performance</a></li><li class="chapter-item expanded "><a href="ui-ux-27-ui-testing-screenshot-interaction-release-quality-gates-architecture.html"><strong aria-hidden="true">60.</strong> UI/UX 27 — UI Testing, Screenshots & Release Quality Gates</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">SIAR System Architecture &amp; Technical Wiki</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar/edit/main/sys-arch/16-daemon-headless-runtime-architecture.md" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="part-16--daemon--headless-runtime-architecture"><a class="header" href="#part-16--daemon--headless-runtime-architecture">Part 16 — Daemon &amp; Headless Runtime Architecture</a></h1>
+<h2 id="reusable-p2p-communication-platform"><a class="header" href="#reusable-p2p-communication-platform">Reusable P2P Communication Platform</a></h2>
+<p><strong>Status:</strong> Architecture specification<br />
+<strong>Part:</strong> 16 of 24<br />
+<strong>Primary language:</strong> Rust<br />
+<strong>Primary goals:</strong> long-lived communication runtime, daemon ownership of networking/storage/identity, headless deployment, GUI/CLI separation, secure IPC, background execution, crash recovery, service supervision, embedded/server reuse, multi-user isolation, remote administration, and platform-efficient operation</p>
+<hr />
+<h1 id="1-purpose"><a class="header" href="#1-purpose">1. Purpose</a></h1>
+<p>The communication platform should not require the user interface to remain alive for core networking to function.</p>
+<p>Messaging, file transfers, DTN forwarding, relay participation, discovery, background synchronization, and recovery often need a long-lived runtime that can continue even when:</p>
+<pre><code class="language-text">the Dioxus window is closed
+the CLI exits
+the desktop session restarts
+the Android UI activity is recreated
+a headless server has no GUI
+an embedded gateway has no display
+</code></pre>
+<p>Therefore the platform should support a dedicated daemon/headless mode.</p>
+<p>The core rule is:</p>
+<blockquote>
+<p><strong>The daemon owns durable communication state and long-lived networking; UI and CLI are clients of that runtime.</strong></p>
+</blockquote>
+<hr />
+<h1 id="2-architectural-position"><a class="header" href="#2-architectural-position">2. Architectural Position</a></h1>
+<pre><code class="language-text">                ┌───────────────────────┐
+                │   Dioxus Desktop UI   │
+                └──────────┬────────────┘
+                           │
+                     Secure Local IPC
+                           │
+                ┌──────────▼────────────┐
+                │  comm-daemon/runtime  │
+                ├───────────────────────┤
+                │ Identity              │
+                │ Event Log             │
+                │ Messaging             │
+                │ Files                 │
+                │ DTN                   │
+                │ Routing               │
+                │ Proximity             │
+                │ Capability            │
+                │ Multipath             │
+                │ Power policy          │
+                │ Recovery              │
+                └──────────┬────────────┘
+                           │
+                  Iroh / LAN / BLE / Wi-Fi
+</code></pre>
+<p>CLI and headless control use the same daemon.</p>
+<hr />
+<h1 id="3-runtime-modes"><a class="header" href="#3-runtime-modes">3. Runtime Modes</a></h1>
+<p>Support multiple deployment modes.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum RuntimeMode {
+    InProcess,
+    LocalDaemon,
+    HeadlessNode,
+    MobileService,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="4-in-process-mode"><a class="header" href="#4-in-process-mode">4. In-Process Mode</a></h1>
+<p>Useful for:</p>
+<pre><code class="language-text">simple mobile builds
+tests
+embedded usage
+single-binary tools
+</code></pre>
+<p>Architecture:</p>
+<pre><code class="language-text">Dioxus/Application
+       ↓
+CommunicationRuntime
+</code></pre>
+<p>No IPC boundary required.</p>
+<hr />
+<h1 id="5-local-daemon-mode"><a class="header" href="#5-local-daemon-mode">5. Local Daemon Mode</a></h1>
+<p>Desktop architecture:</p>
+<pre><code class="language-text">comm-daemon
+   ↑
+Unix socket / named pipe / local IPC
+   ↑
+Dioxus UI
+CLI
+other trusted local clients
+</code></pre>
+<p>This should be the preferred production desktop architecture if background communication is a key feature.</p>
+<hr />
+<h1 id="6-headless-node-mode"><a class="header" href="#6-headless-node-mode">6. Headless Node Mode</a></h1>
+<p>Used for:</p>
+<pre><code class="language-text">relay/gateway
+Raspberry Pi
+community emergency node
+server
+NAS
+home-lab
+enterprise appliance
+</code></pre>
+<p>No GUI dependency.</p>
+<hr />
+<h1 id="7-mobile-service-mode"><a class="header" href="#7-mobile-service-mode">7. Mobile Service Mode</a></h1>
+<p>Android/iOS have platform-specific background constraints.</p>
+<p>Logical ownership remains:</p>
+<pre><code class="language-text">Rust CommunicationRuntime
+</code></pre>
+<p>but execution may be hosted by:</p>
+<pre><code class="language-text">foreground service
+background task
+app process
+system-approved execution window
+</code></pre>
+<p>The platform adapter controls lifecycle; Rust owns durable state.</p>
+<hr />
+<h1 id="8-daemon-responsibilities"><a class="header" href="#8-daemon-responsibilities">8. Daemon Responsibilities</a></h1>
+<p>The daemon owns:</p>
+<pre><code class="language-text">identity keys/access
+device state
+event log
+outbox
+message state
+blob store
+file-transfer state
+DTN bundle store
+network listeners
+routing
+proximity discovery
+capability negotiation
+background scheduling
+crash recovery
+resource budgets
+</code></pre>
+<hr />
+<h1 id="9-ui-responsibilities"><a class="header" href="#9-ui-responsibilities">9. UI Responsibilities</a></h1>
+<p>Dioxus owns:</p>
+<pre><code class="language-text">rendering
+navigation
+view state
+user input
+dialogs
+local presentation preferences
+</code></pre>
+<p>It should not directly open protocol transports or mutate authoritative DB state.</p>
+<hr />
+<h1 id="10-cli-responsibilities"><a class="header" href="#10-cli-responsibilities">10. CLI Responsibilities</a></h1>
+<p>CLI should:</p>
+<pre><code class="language-text">query daemon
+issue explicit commands
+inspect status
+perform admin actions
+</code></pre>
+<p>Examples:</p>
+<pre><code class="language-text">comm status
+comm peers
+comm send
+comm transfer list
+comm doctor
+comm dtn status
+</code></pre>
+<hr />
+<h1 id="11-sole-writer-principle"><a class="header" href="#11-sole-writer-principle">11. Sole Writer Principle</a></h1>
+<p>In daemon mode:</p>
+<blockquote>
+<p><strong>The daemon is the sole writer of communication databases and durable state.</strong></p>
+</blockquote>
+<p>This avoids:</p>
+<pre><code class="language-text">database lock races
+projection inconsistency
+duplicate outbox workers
+identity-state divergence
+</code></pre>
+<hr />
+<h1 id="12-read-access"><a class="header" href="#12-read-access">12. Read Access</a></h1>
+<p>UI may read via:</p>
+<pre><code class="language-text">IPC query API
+</code></pre>
+<p>rather than opening the database itself.</p>
+<p>For very large local read models, shared/read-only optimization can be considered later, but IPC is safer initially.</p>
+<hr />
+<h1 id="13-ipc-architectural-goals"><a class="header" href="#13-ipc-architectural-goals">13. IPC Architectural Goals</a></h1>
+<p>IPC must be:</p>
+<pre><code class="language-text">local
+authenticated
+versioned
+bounded
+streaming-capable
+backpressure-aware
+crash-tolerant
+</code></pre>
+<hr />
+<h1 id="14-ipc-transport"><a class="header" href="#14-ipc-transport">14. IPC Transport</a></h1>
+<p>Desktop options:</p>
+<pre><code class="language-text">Unix domain socket
+Windows named pipe
+localhost QUIC/TCP only if necessary
+</code></pre>
+<p>Preferred:</p>
+<pre><code class="language-text">Unix socket on Linux/macOS
+named pipe on Windows
+</code></pre>
+<p>Do not expose a TCP port to LAN by default.</p>
+<hr />
+<h1 id="15-ipc-protocol"><a class="header" href="#15-ipc-protocol">15. IPC Protocol</a></h1>
+<p>Use stable versioned protocol.</p>
+<pre><code class="language-text">comm-ipc/1
+</code></pre>
+<p>Small control frames can use:</p>
+<pre><code class="language-text">Postcard
+</code></pre>
+<p>Large binary blobs should use:</p>
+<pre><code class="language-text">streamed data
+or file handles/references
+</code></pre>
+<p>not giant serialized messages.</p>
+<hr />
+<h1 id="16-ipc-handshake"><a class="header" href="#16-ipc-handshake">16. IPC Handshake</a></h1>
+<pre><code class="language-text">Connect
+ ↓
+ProtocolVersion
+ ↓
+ClientAuthentication
+ ↓
+CapabilityNegotiation
+ ↓
+SessionReady
+</code></pre>
+<p>Even local IPC should not assume every process is trusted.</p>
+<hr />
+<h1 id="17-local-client-authentication"><a class="header" href="#17-local-client-authentication">17. Local Client Authentication</a></h1>
+<p>Possible mechanisms:</p>
+<pre><code class="language-text">filesystem socket permissions
+OS user identity
+shared local capability token
+peer credentials
+</code></pre>
+<p>Use multiple layers where practical.</p>
+<hr />
+<h1 id="18-ipc-session-identity"><a class="header" href="#18-ipc-session-identity">18. IPC Session Identity</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct IpcClientId([u8; 16]);
+<span class="boring">}</span></code></pre></pre>
+<p>Each connected local client gets a runtime identity.</p>
+<hr />
+<h1 id="19-client-roles"><a class="header" href="#19-client-roles">19. Client Roles</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum IpcClientRole {
+    Ui,
+    Cli,
+    Admin,
+    Automation,
+    PluginHost,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Role limits available commands.</p>
+<hr />
+<h1 id="20-ipc-authorization"><a class="header" href="#20-ipc-authorization">20. IPC Authorization</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">UI:
+query + user actions
+
+CLI:
+query + explicit commands
+
+Admin:
+maintenance + diagnostics
+
+Plugin:
+restricted extension API
+</code></pre>
+<hr />
+<h1 id="21-ipc-command-model"><a class="header" href="#21-ipc-command-model">21. IPC Command Model</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum DaemonCommand {
+    SendMessage(...),
+    SendFile(...),
+    PauseTransfer(...),
+    ResumeTransfer(...),
+    PairDevice(...),
+    SetPowerPolicy(...),
+    Shutdown,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Actual wire types should be versioned structs.</p>
+<hr />
+<h1 id="22-ipc-query-model"><a class="header" href="#22-ipc-query-model">22. IPC Query Model</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum DaemonQuery {
+    RuntimeStatus,
+    ConversationList,
+    MessagePage,
+    TransferList,
+    NearbyPeers,
+    DtnStatus,
+    DeviceDirectory,
+    Diagnostics,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="23-ipc-event-model"><a class="header" href="#23-ipc-event-model">23. IPC Event Model</a></h1>
+<p>Daemon publishes:</p>
+<pre><code class="language-text">message updates
+transfer progress
+peer presence
+nearby observations
+runtime health
+power-policy changes
+DTN status
+</code></pre>
+<p>Clients subscribe.</p>
+<hr />
+<h1 id="24-bounded-event-streams"><a class="header" href="#24-bounded-event-streams">24. Bounded Event Streams</a></h1>
+<p>Part 08 applies.</p>
+<p>Each IPC client has:</p>
+<pre><code class="language-text">bounded outgoing queue
+</code></pre>
+<p>If UI is too slow:</p>
+<pre><code class="language-text">coalesce
+drop stale ephemeral events
+request snapshot/resync
+</code></pre>
+<hr />
+<h1 id="25-snapshot--delta-model"><a class="header" href="#25-snapshot--delta-model">25. Snapshot + Delta Model</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">initial snapshot
++
+incremental deltas
+</code></pre>
+<p>If client misses too much:</p>
+<pre><code class="language-text">invalidate subscription
+request fresh snapshot
+</code></pre>
+<hr />
+<h1 id="26-ui-reconnect"><a class="header" href="#26-ui-reconnect">26. UI Reconnect</a></h1>
+<p>Daemon may restart.</p>
+<p>UI should:</p>
+<pre><code class="language-text">detect disconnect
+reconnect
+request fresh state
+resubscribe
+</code></pre>
+<p>Do not assume event sequence continuity across daemon restart.</p>
+<hr />
+<h1 id="27-client-crash"><a class="header" href="#27-client-crash">27. Client Crash</a></h1>
+<p>If UI crashes:</p>
+<pre><code class="language-text">daemon continues
+</code></pre>
+<p>Messages/files/DTN remain active.</p>
+<p>When UI returns:</p>
+<pre><code class="language-text">state reconstructed from daemon
+</code></pre>
+<hr />
+<h1 id="28-daemon-crash"><a class="header" href="#28-daemon-crash">28. Daemon Crash</a></h1>
+<p>System supervisor restarts daemon.</p>
+<p>Part 09 recovery runs.</p>
+<p>UI reconnects after runtime ready.</p>
+<hr />
+<h1 id="29-supervisor-architecture"><a class="header" href="#29-supervisor-architecture">29. Supervisor Architecture</a></h1>
+<pre><code class="language-text">Process Supervisor
+       ↓
+comm-daemon
+       ↓
+Runtime Supervisor
+├── Event Projector
+├── Outbox Worker
+├── Transfer Scheduler
+├── DTN Engine
+├── Routing Worker
+├── Discovery Worker
+└── Health Monitor
+</code></pre>
+<hr />
+<h1 id="30-worker-supervision"><a class="header" href="#30-worker-supervision">30. Worker Supervision</a></h1>
+<p>Each long-lived worker has:</p>
+<pre><code class="language-text">start
+stop
+health
+restart policy
+resource budget
+</code></pre>
+<hr />
+<h1 id="31-restart-policy"><a class="header" href="#31-restart-policy">31. Restart Policy</a></h1>
+<p>Use bounded exponential backoff.</p>
+<p>Repeated crashes:</p>
+<pre><code class="language-text">subsystem degraded
+</code></pre>
+<p>rather than infinite restart loops.</p>
+<hr />
+<h1 id="32-runtime-readiness"><a class="header" href="#32-runtime-readiness">32. Runtime Readiness</a></h1>
+<p>Daemon state:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum RuntimeReadiness {
+    Starting,
+    Recovering,
+    Ready,
+    Degraded,
+    ReadOnly,
+    Fatal,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>IPC clients can query this.</p>
+<hr />
+<h1 id="33-startup-sequence"><a class="header" href="#33-startup-sequence">33. Startup Sequence</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">load config
+ ↓
+open secure storage
+ ↓
+open DB
+ ↓
+run recovery
+ ↓
+initialize identity
+ ↓
+restore queues
+ ↓
+start local IPC
+ ↓
+start networking
+ ↓
+start background workers
+ ↓
+Ready
+</code></pre>
+<p>IPC can start before networking if it reports <code>Recovering</code>.</p>
+<hr />
+<h1 id="34-network-start-barrier"><a class="header" href="#34-network-start-barrier">34. Network Start Barrier</a></h1>
+<p>Do not accept network traffic until:</p>
+<pre><code class="language-text">identity
+dedup state
+critical stores
+</code></pre>
+<p>are ready.</p>
+<hr />
+<h1 id="35-graceful-shutdown"><a class="header" href="#35-graceful-shutdown">35. Graceful Shutdown</a></h1>
+<p>Sequence:</p>
+<pre><code class="language-text">stop accepting new commands
+ ↓
+stop new network work
+ ↓
+flush critical state
+ ↓
+persist clean-shutdown marker
+ ↓
+close IPC
+</code></pre>
+<hr />
+<h1 id="36-forced-shutdown"><a class="header" href="#36-forced-shutdown">36. Forced Shutdown</a></h1>
+<p>Must still recover safely.</p>
+<p>Do not depend on graceful shutdown for correctness.</p>
+<hr />
+<h1 id="37-systemd-deployment"><a class="header" href="#37-systemd-deployment">37. Systemd Deployment</a></h1>
+<p>Linux service:</p>
+<pre><code class="language-text">comm-daemon.service
+</code></pre>
+<p>Recommended:</p>
+<pre><code class="language-text">Restart=on-failure
+private runtime directory
+restricted permissions
+resource limits
+sandboxing
+</code></pre>
+<hr />
+<h1 id="38-linux-user-service"><a class="header" href="#38-linux-user-service">38. Linux User Service</a></h1>
+<p>Desktop personal app can use:</p>
+<pre><code class="language-text">systemd --user
+</code></pre>
+<p>This is often better than root system service.</p>
+<p>Daemon runs as the logged-in user.</p>
+<hr />
+<h1 id="39-root-avoidance"><a class="header" href="#39-root-avoidance">39. Root Avoidance</a></h1>
+<p>Personal communication daemon should not require root.</p>
+<p>Platform-specific capabilities should use:</p>
+<pre><code class="language-text">user permissions
+polkit/helper only where absolutely necessary
+</code></pre>
+<hr />
+<h1 id="40-windows-service"><a class="header" href="#40-windows-service">40. Windows Service</a></h1>
+<p>Possible deployment:</p>
+<pre><code class="language-text">Windows Service
+</code></pre>
+<p>for always-on/headless.</p>
+<p>For ordinary desktop user app, a user-session background process may be simpler.</p>
+<p>Keep the runtime model same.</p>
+<hr />
+<h1 id="41-macos-service"><a class="header" href="#41-macos-service">41. macOS Service</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">LaunchAgent
+</code></pre>
+<p>for user-session daemon.</p>
+<p>System-level daemon only if truly needed.</p>
+<hr />
+<h1 id="42-android-service"><a class="header" href="#42-android-service">42. Android Service</a></h1>
+<p>Android may host the Rust runtime inside:</p>
+<pre><code class="language-text">foreground service
+application process
+</code></pre>
+<p>depending on active feature.</p>
+<hr />
+<h1 id="43-android-ownership"><a class="header" href="#43-android-ownership">43. Android Ownership</a></h1>
+<p>Kotlin service owns:</p>
+<pre><code class="language-text">Android lifecycle
+notification channel
+foreground-service APIs
+permission callbacks
+</code></pre>
+<p>Rust owns:</p>
+<pre><code class="language-text">communication runtime
+transfer state
+DTN state
+routing
+identity
+</code></pre>
+<hr />
+<h1 id="44-android-process-kill"><a class="header" href="#44-android-process-kill">44. Android Process Kill</a></h1>
+<p>If process is killed:</p>
+<pre><code class="language-text">durable state remains
+</code></pre>
+<p>When service/app restarts:</p>
+<pre><code class="language-text">Part 09 recovery
+</code></pre>
+<p>restores work.</p>
+<hr />
+<h1 id="45-android-foreground-service-conditions"><a class="header" href="#45-android-foreground-service-conditions">45. Android Foreground-Service Conditions</a></h1>
+<p>Use for:</p>
+<pre><code class="language-text">active call
+visible long transfer
+emergency relay
+</code></pre>
+<p>Do not run permanently merely to avoid Android policy.</p>
+<hr />
+<h1 id="46-ios-headless-constraints"><a class="header" href="#46-ios-headless-constraints">46. iOS Headless Constraints</a></h1>
+<p>iOS does not support arbitrary permanent daemons for normal apps.</p>
+<p>The same Rust core can run during:</p>
+<pre><code class="language-text">foreground
+approved background windows
+system-provided execution opportunities
+</code></pre>
+<p>Persisted intent survives suspension.</p>
+<hr />
+<h1 id="47-headless-linux-node"><a class="header" href="#47-headless-linux-node">47. Headless Linux Node</a></h1>
+<p>Headless node can enable:</p>
+<pre><code class="language-text">Iroh endpoint
+DTN relay
+local proximity
+LAN discovery
+self-hosted gateway
+file relay/cache
+</code></pre>
+<p>No UI crate linked.</p>
+<hr />
+<h1 id="48-feature-reduced-binary"><a class="header" href="#48-feature-reduced-binary">48. Feature-Reduced Binary</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">comm-node
+</code></pre>
+<p>features:</p>
+<pre><code class="language-text">headless
+dtn
+iroh
+lan
+ble
+</code></pre>
+<p>without:</p>
+<pre><code class="language-text">Dioxus
+media UI
+desktop rendering
+</code></pre>
+<hr />
+<h1 id="49-binary-split"><a class="header" href="#49-binary-split">49. Binary Split</a></h1>
+<p>Recommended executables:</p>
+<pre><code class="language-text">comm-daemon
+comm-cli
+comm-desktop
+comm-node
+comm-conformance
+</code></pre>
+<p>Mobile may package runtime inside app/service rather than separate executable.</p>
+<hr />
+<h1 id="50-workspace-layout"><a class="header" href="#50-workspace-layout">50. Workspace Layout</a></h1>
+<pre><code class="language-text">apps/
+├── desktop/
+├── daemon/
+├── cli/
+└── node/
+
+crates/
+├── comm-runtime/
+├── comm-ipc/
+├── comm-daemon-api/
+├── comm-admin/
+└── comm-platform-*
+</code></pre>
+<hr />
+<h1 id="51-comm-runtime"><a class="header" href="#51-comm-runtime">51. <code>comm-runtime</code></a></h1>
+<p>Owns:</p>
+<pre><code class="language-text">subsystem composition
+supervision
+lifecycle
+health
+</code></pre>
+<p>It should be UI-neutral.</p>
+<hr />
+<h1 id="52-runtime-builder"><a class="header" href="#52-runtime-builder">52. Runtime Builder</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let runtime = CommunicationRuntime::builder()
+    .identity(identity)
+    .event_store(events)
+    .blob_store(blobs)
+    .transport(iroh)
+    .build()
+    .await?;
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="53-runtime-handle"><a class="header" href="#53-runtime-handle">53. Runtime Handle</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct RuntimeHandle {
+    // command/query interface
+}
+<span class="boring">}</span></code></pre></pre>
+<p>In-process clients use it directly.</p>
+<p>Daemon wraps it with IPC.</p>
+<hr />
+<h1 id="54-same-api-different-boundary"><a class="header" href="#54-same-api-different-boundary">54. Same API, Different Boundary</a></h1>
+<p>Design goal:</p>
+<pre><code class="language-text">InProcess:
+UI → RuntimeHandle
+
+Daemon:
+UI → IPC Client → RuntimeHandle
+</code></pre>
+<p>This avoids duplicating business APIs.</p>
+<hr />
+<h1 id="55-daemon-api-layer"><a class="header" href="#55-daemon-api-layer">55. Daemon API Layer</a></h1>
+<p>Use stable request/response DTOs.</p>
+<p>Do not expose internal Arc/Mutex/domain structs over IPC.</p>
+<hr />
+<h1 id="56-command-ids"><a class="header" href="#56-command-ids">56. Command IDs</a></h1>
+<p>Every mutating IPC command should have:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct CommandId([u8; 16]);
+<span class="boring">}</span></code></pre></pre>
+<p>This enables idempotency if client retries after disconnect.</p>
+<hr />
+<h1 id="57-ipc-retry-safety"><a class="header" href="#57-ipc-retry-safety">57. IPC Retry Safety</a></h1>
+<p>Scenario:</p>
+<pre><code class="language-text">UI sends SendMessage
+daemon commits
+IPC response lost
+UI reconnects
+retries same CommandId
+</code></pre>
+<p>Daemon returns original result instead of creating duplicate action.</p>
+<hr />
+<h1 id="58-command-deduplication"><a class="header" href="#58-command-deduplication">58. Command Deduplication</a></h1>
+<p>Keep bounded cache or durable mapping for important commands.</p>
+<p>For operations already using stable IDs, CommandId can map to them.</p>
+<hr />
+<h1 id="59-query-pagination"><a class="header" href="#59-query-pagination">59. Query Pagination</a></h1>
+<p>Large queries must be paginated.</p>
+<p>Examples:</p>
+<pre><code class="language-text">message history
+transfer history
+device audit
+</code></pre>
+<p>Do not send entire DB snapshot.</p>
+<hr />
+<h1 id="60-cursor-design"><a class="header" href="#60-cursor-design">60. Cursor Design</a></h1>
+<p>Use opaque:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct QueryCursor(Bytes);
+<span class="boring">}</span></code></pre></pre>
+<p>Bound and version it.</p>
+<hr />
+<h1 id="61-streaming-queries"><a class="header" href="#61-streaming-queries">61. Streaming Queries</a></h1>
+<p>For:</p>
+<pre><code class="language-text">large file export
+diagnostic bundle
+</code></pre>
+<p>use stream handles rather than huge response frames.</p>
+<hr />
+<h1 id="62-local-file-transfer-through-ipc"><a class="header" href="#62-local-file-transfer-through-ipc">62. Local File Transfer Through IPC</a></h1>
+<p>If UI selects file:</p>
+<pre><code class="language-text">UI obtains platform file handle/path
+ ↓
+passes safe reference/FD to daemon where platform supports
+</code></pre>
+<p>or daemon imports through approved path.</p>
+<p>Avoid copying multi-GB file through IPC unnecessarily.</p>
+<hr />
+<h1 id="63-unix-fd-passing"><a class="header" href="#63-unix-fd-passing">63. Unix FD Passing</a></h1>
+<p>On Unix, future optimization can use:</p>
+<pre><code class="language-text">SCM_RIGHTS
+</code></pre>
+<p>to pass file descriptors.</p>
+<p>Keep behind platform adapter.</p>
+<hr />
+<h1 id="64-windows-handle-passing"><a class="header" href="#64-windows-handle-passing">64. Windows Handle Passing</a></h1>
+<p>Windows can use native handle duplication mechanisms.</p>
+<p>Again, adapter-only.</p>
+<hr />
+<h1 id="65-mobile-file-source"><a class="header" href="#65-mobile-file-source">65. Mobile File Source</a></h1>
+<p>On Android, content URI access may require Kotlin/platform involvement.</p>
+<p>Daemon/runtime core sees:</p>
+<pre><code class="language-text">FileSource
+</code></pre>
+<p>abstraction.</p>
+<hr />
+<h1 id="66-remote-administration"><a class="header" href="#66-remote-administration">66. Remote Administration</a></h1>
+<p>Headless nodes may need remote admin.</p>
+<p>Do not expose the local IPC protocol directly to the Internet.</p>
+<p>Use a separate secure admin transport.</p>
+<hr />
+<h1 id="67-admin-plane"><a class="header" href="#67-admin-plane">67. Admin Plane</a></h1>
+<pre><code class="language-text">comm-admin
+</code></pre>
+<p>Responsibilities:</p>
+<pre><code class="language-text">health
+config
+logs
+node status
+maintenance
+</code></pre>
+<p>Not:</p>
+<pre><code class="language-text">message plaintext browsing by default
+</code></pre>
+<hr />
+<h1 id="68-remote-admin-authentication"><a class="header" href="#68-remote-admin-authentication">68. Remote Admin Authentication</a></h1>
+<p>Use strong admin identity:</p>
+<pre><code class="language-text">mutual TLS
+SSH-like key auth
+organization certificate
+</code></pre>
+<p>Separate from user messaging identity unless deliberately unified.</p>
+<hr />
+<h1 id="69-admin-authorization"><a class="header" href="#69-admin-authorization">69. Admin Authorization</a></h1>
+<p>Roles:</p>
+<pre><code class="language-text">Viewer
+Operator
+SecurityAdmin
+Owner
+</code></pre>
+<hr />
+<h1 id="70-admin-api-security"><a class="header" href="#70-admin-api-security">70. Admin API Security</a></h1>
+<p>Every remote admin command:</p>
+<pre><code class="language-text">authenticated
+authorized
+audited
+rate-limited
+</code></pre>
+<hr />
+<h1 id="71-no-remote-shell-by-default"><a class="header" href="#71-no-remote-shell-by-default">71. No Remote Shell by Default</a></h1>
+<p>Admin API should expose explicit operations.</p>
+<p>Do not embed arbitrary shell execution.</p>
+<hr />
+<h1 id="72-headless-provisioning"><a class="header" href="#72-headless-provisioning">72. Headless Provisioning</a></h1>
+<p>Part 15 QR/NFC can enroll a headless node.</p>
+<p>Flow:</p>
+<pre><code class="language-text">node starts unprovisioned
+ ↓
+terminal QR
+ ↓
+admin scans
+ ↓
+node receives signed role/config
+ ↓
+daemon activates
+</code></pre>
+<hr />
+<h1 id="73-unprovisioned-mode"><a class="header" href="#73-unprovisioned-mode">73. Unprovisioned Mode</a></h1>
+<p>Before enrollment:</p>
+<pre><code class="language-text">no public relay forwarding
+no trusted messaging
+limited bootstrap listener only
+</code></pre>
+<hr />
+<h1 id="74-node-roles"><a class="header" href="#74-node-roles">74. Node Roles</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum NodeRole {
+    PersonalDevice,
+    RelayGateway,
+    DtnNode,
+    OrganizationNode,
+    StorageNode,
+    TestNode,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Role controls enabled features.</p>
+<hr />
+<h1 id="75-headless-capability-set"><a class="header" href="#75-headless-capability-set">75. Headless Capability Set</a></h1>
+<p>Example DTN node:</p>
+<pre><code class="language-text">Iroh
+BLE
+LAN
+DTN
+files/chunks
+no calls
+no Dioxus
+</code></pre>
+<hr />
+<h1 id="76-embedded-node-profile"><a class="header" href="#76-embedded-node-profile">76. Embedded Node Profile</a></h1>
+<p>Part 20 will specialize:</p>
+<pre><code class="language-text">low memory
+low CPU
+limited storage
+</code></pre>
+<p>but uses same daemon/runtime architecture.</p>
+<hr />
+<h1 id="77-multiple-local-users"><a class="header" href="#77-multiple-local-users">77. Multiple Local Users</a></h1>
+<p>System-wide daemon is harder because user data must be isolated.</p>
+<p>Preferred desktop personal model:</p>
+<pre><code class="language-text">one daemon per OS user
+</code></pre>
+<hr />
+<h1 id="78-per-user-runtime-directory"><a class="header" href="#78-per-user-runtime-directory">78. Per-User Runtime Directory</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">$XDG_RUNTIME_DIR/comm/
+</code></pre>
+<p>and:</p>
+<pre><code class="language-text">$XDG_DATA_HOME/comm/
+</code></pre>
+<p>with restrictive permissions.</p>
+<hr />
+<h1 id="79-windows-user-isolation"><a class="header" href="#79-windows-user-isolation">79. Windows User Isolation</a></h1>
+<p>Use per-user app data and named-pipe ACLs.</p>
+<hr />
+<h1 id="80-multi-account-support"><a class="header" href="#80-multi-account-support">80. Multi-Account Support</a></h1>
+<p>One user may have multiple communication identities.</p>
+<p>Two designs:</p>
+<pre><code class="language-text">single daemon with account namespaces
+</code></pre>
+<p>or:</p>
+<pre><code class="language-text">one daemon instance per profile
+</code></pre>
+<p>Single daemon is more efficient but requires strict isolation.</p>
+<hr />
+<h1 id="81-account-namespace"><a class="header" href="#81-account-namespace">81. Account Namespace</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct RuntimeAccountId(...);
+<span class="boring">}</span></code></pre></pre>
+<p>Every command/query includes active account context.</p>
+<hr />
+<h1 id="82-cross-account-isolation"><a class="header" href="#82-cross-account-isolation">82. Cross-Account Isolation</a></h1>
+<p>Never allow:</p>
+<pre><code class="language-text">conversation cache
+blob reference
+device directory
+</code></pre>
+<p>to leak between accounts.</p>
+<hr />
+<h1 id="83-multi-tenant-headless-mode"><a class="header" href="#83-multi-tenant-headless-mode">83. Multi-Tenant Headless Mode</a></h1>
+<p>Server node may serve many tenants.</p>
+<p>Part 08 hierarchical quotas apply.</p>
+<hr />
+<h1 id="84-tenant-namespace"><a class="header" href="#84-tenant-namespace">84. Tenant Namespace</a></h1>
+<pre><code class="language-text">TenantId
+AccountId
+DeviceId
+</code></pre>
+<p>must be explicit in all durable server-side state.</p>
+<hr />
+<h1 id="85-config-architecture"><a class="header" href="#85-config-architecture">85. Config Architecture</a></h1>
+<p>Daemon config should be versioned.</p>
+<p>Example:</p>
+<pre><code class="language-ron">(
+    version: 1,
+    mode: LocalDaemon,
+    data_dir: "...",
+    power_profile: Balanced,
+)
+</code></pre>
+<hr />
+<h1 id="86-secret-separation"><a class="header" href="#86-secret-separation">86. Secret Separation</a></h1>
+<p>RON config must not contain:</p>
+<pre><code class="language-text">private identity keys
+admin passwords
+relay credentials
+</code></pre>
+<p>Load secrets through secure storage/environment/secret manager.</p>
+<hr />
+<h1 id="87-hot-reload"><a class="header" href="#87-hot-reload">87. Hot Reload</a></h1>
+<p>Some config can reload:</p>
+<pre><code class="language-text">resource limits
+relay pools
+logging level
+</code></pre>
+<p>Others require restart:</p>
+<pre><code class="language-text">data directory
+identity backend
+</code></pre>
+<hr />
+<h1 id="88-config-validation"><a class="header" href="#88-config-validation">88. Config Validation</a></h1>
+<p>Reject invalid combinations before runtime start.</p>
+<hr />
+<h1 id="89-runtime-health"><a class="header" href="#89-runtime-health">89. Runtime Health</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct RuntimeHealth {
+    pub readiness: RuntimeReadiness,
+    pub identity: HealthState,
+    pub storage: HealthState,
+    pub messaging: HealthState,
+    pub files: HealthState,
+    pub dtn: HealthState,
+    pub networking: HealthState,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="90-health-endpoint"><a class="header" href="#90-health-endpoint">90. Health Endpoint</a></h1>
+<p>Local/admin query:</p>
+<pre><code class="language-text">health
+</code></pre>
+<p>should be cheap and not expose secrets.</p>
+<hr />
+<h1 id="91-metrics"><a class="header" href="#91-metrics">91. Metrics</a></h1>
+<p>Daemon metrics:</p>
+<pre><code class="language-text">active peers
+outbox depth
+transfer count
+DTN bundles
+IPC clients
+worker restarts
+memory
+storage
+network
+</code></pre>
+<hr />
+<h1 id="92-local-metrics-export"><a class="header" href="#92-local-metrics-export">92. Local Metrics Export</a></h1>
+<p>Desktop:</p>
+<pre><code class="language-text">off by default
+</code></pre>
+<p>or local-only.</p>
+<p>Headless:</p>
+<pre><code class="language-text">Prometheus/OpenTelemetry adapter
+</code></pre>
+<p>optional.</p>
+<hr />
+<h1 id="93-logs"><a class="header" href="#93-logs">93. Logs</a></h1>
+<p>Structured logs:</p>
+<pre><code class="language-text">timestamp
+subsystem
+event
+severity
+operation id
+</code></pre>
+<p>No plaintext messages by default.</p>
+<hr />
+<h1 id="94-trace-correlation"><a class="header" href="#94-trace-correlation">94. Trace Correlation</a></h1>
+<p>Use:</p>
+<pre><code class="language-text">CorrelationId
+TransferId
+BundleId
+CommandId
+</code></pre>
+<p>for tracing.</p>
+<hr />
+<h1 id="95-diagnostic-bundle"><a class="header" href="#95-diagnostic-bundle">95. Diagnostic Bundle</a></h1>
+<p>Admin/user can export:</p>
+<pre><code class="language-text">versions
+health
+config redacted
+metrics snapshot
+recent errors
+</code></pre>
+<p>No secrets or message bodies unless explicitly opted in.</p>
+<hr />
+<h1 id="96-crash-report"><a class="header" href="#96-crash-report">96. Crash Report</a></h1>
+<p>Crash report may include:</p>
+<pre><code class="language-text">stack
+build ID
+subsystem state summary
+</code></pre>
+<p>with privacy redaction.</p>
+<hr />
+<h1 id="97-watchdog"><a class="header" href="#97-watchdog">97. Watchdog</a></h1>
+<p>Headless deployments can use:</p>
+<pre><code class="language-text">systemd watchdog
+</code></pre>
+<p>or external supervisor.</p>
+<p>Internal watchdog should monitor:</p>
+<pre><code class="language-text">worker liveness
+event-loop stalls
+</code></pre>
+<hr />
+<h1 id="98-avoid-self-restart-loop"><a class="header" href="#98-avoid-self-restart-loop">98. Avoid Self-Restart Loop</a></h1>
+<p>Daemon should not repeatedly exec itself internally without supervisor unless carefully designed.</p>
+<p>Prefer OS supervisor.</p>
+<hr />
+<h1 id="99-service-readiness-notification"><a class="header" href="#99-service-readiness-notification">99. Service Readiness Notification</a></h1>
+<p>On Linux systemd, optional:</p>
+<pre><code class="language-text">sd_notify READY=1
+</code></pre>
+<p>when runtime actually ready.</p>
+<hr />
+<h1 id="100-graceful-upgrade"><a class="header" href="#100-graceful-upgrade">100. Graceful Upgrade</a></h1>
+<p>Desktop daemon upgrade:</p>
+<pre><code class="language-text">new binary installed
+ ↓
+daemon drains
+ ↓
+restart
+ ↓
+recovery
+ ↓
+UI reconnects
+</code></pre>
+<hr />
+<h1 id="101-rolling-upgrade"><a class="header" href="#101-rolling-upgrade">101. Rolling Upgrade</a></h1>
+<p>Headless fleet:</p>
+<pre><code class="language-text">one node at a time
+</code></pre>
+<p>where possible.</p>
+<hr />
+<h1 id="102-protocol-compatibility"><a class="header" href="#102-protocol-compatibility">102. Protocol Compatibility</a></h1>
+<p>UI and daemon may temporarily be different versions during update.</p>
+<p>IPC must negotiate compatible version.</p>
+<hr />
+<h1 id="103-ipc-versioning"><a class="header" href="#103-ipc-versioning">103. IPC Versioning</a></h1>
+<pre><code class="language-text">comm-ipc/1
+comm-ipc/2
+</code></pre>
+<p>Unknown major:</p>
+<pre><code class="language-text">explicit incompatibility
+</code></pre>
+<hr />
+<h1 id="104-backward-compatible-ipc"><a class="header" href="#104-backward-compatible-ipc">104. Backward-Compatible IPC</a></h1>
+<p>Prefer additive optional fields/features inside major.</p>
+<p>Do not require simultaneous UI/daemon replacement for every minor update.</p>
+<hr />
+<h1 id="105-ipc-capability-negotiation"><a class="header" href="#105-ipc-capability-negotiation">105. IPC Capability Negotiation</a></h1>
+<p>Part 07 can be reused conceptually for local IPC:</p>
+<pre><code class="language-text">UI supports transfer preview v2
+daemon supports v1
+→ use v1
+</code></pre>
+<hr />
+<h1 id="106-daemon-migration-ownership"><a class="header" href="#106-daemon-migration-ownership">106. Daemon Migration Ownership</a></h1>
+<p>Only daemon performs DB migrations.</p>
+<p>UI never migrates communication database.</p>
+<hr />
+<h1 id="107-upgrade-lock"><a class="header" href="#107-upgrade-lock">107. Upgrade Lock</a></h1>
+<p>Prevent two daemon instances from running migrations concurrently.</p>
+<hr />
+<h1 id="108-single-instance-lock"><a class="header" href="#108-single-instance-lock">108. Single-Instance Lock</a></h1>
+<p>Use:</p>
+<pre><code class="language-text">OS lock
+socket ownership
+database lock
+</code></pre>
+<p>to ensure one daemon per profile.</p>
+<hr />
+<h1 id="109-stale-lock-recovery"><a class="header" href="#109-stale-lock-recovery">109. Stale Lock Recovery</a></h1>
+<p>Do not trust PID file alone.</p>
+<p>Prefer OS-native locks.</p>
+<hr />
+<h1 id="110-data-directory-ownership"><a class="header" href="#110-data-directory-ownership">110. Data Directory Ownership</a></h1>
+<p>Daemon verifies:</p>
+<pre><code class="language-text">permissions
+owner
+expected filesystem
+</code></pre>
+<p>before using sensitive data.</p>
+<hr />
+<h1 id="111-read-only-mode"><a class="header" href="#111-read-only-mode">111. Read-Only Mode</a></h1>
+<p>If storage corrupt/read-only:</p>
+<pre><code class="language-text">daemon can serve queries/export
+</code></pre>
+<p>while blocking new sends.</p>
+<hr />
+<h1 id="112-maintenance-mode"><a class="header" href="#112-maintenance-mode">112. Maintenance Mode</a></h1>
+<p>Admin can place daemon into:</p>
+<pre><code class="language-text">Maintenance
+</code></pre>
+<p>to:</p>
+<pre><code class="language-text">run backup
+repair
+migration
+</code></pre>
+<p>No new network mutations.</p>
+<hr />
+<h1 id="113-backup-coordination"><a class="header" href="#113-backup-coordination">113. Backup Coordination</a></h1>
+<p>Daemon should expose:</p>
+<pre><code class="language-text">create consistent backup
+</code></pre>
+<p>rather than external scripts copying live DB blindly.</p>
+<hr />
+<h1 id="114-backup-api"><a class="header" href="#114-backup-api">114. Backup API</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait BackupService {
+    async fn create_backup(&amp;self, target: BackupTarget) -&gt; Result&lt;BackupId, BackupError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="115-restore-mode"><a class="header" href="#115-restore-mode">115. Restore Mode</a></h1>
+<p>Restore should require:</p>
+<pre><code class="language-text">daemon stopped or maintenance mode
+</code></pre>
+<p>then Part 09 restore reconciliation.</p>
+<hr />
+<h1 id="116-security-boundaries"><a class="header" href="#116-security-boundaries">116. Security Boundaries</a></h1>
+<p>Critical boundaries:</p>
+<pre><code class="language-text">UI process
+daemon process
+platform helper
+remote admin client
+plugin host
+</code></pre>
+<p>Treat each as separate trust domain where possible.</p>
+<hr />
+<h1 id="117-sandboxing"><a class="header" href="#117-sandboxing">117. Sandboxing</a></h1>
+<p>Daemon can use OS hardening:</p>
+<p>Linux:</p>
+<pre><code class="language-text">systemd sandboxing
+seccomp where practical
+filesystem restrictions
+</code></pre>
+<p>Windows/macOS equivalent where practical.</p>
+<hr />
+<h1 id="118-least-privilege"><a class="header" href="#118-least-privilege">118. Least Privilege</a></h1>
+<p>Daemon should run with only permissions needed.</p>
+<p>Avoid:</p>
+<pre><code class="language-text">root
+CAP_NET_ADMIN
+raw socket
+</code></pre>
+<p>unless feature requires and isolated helper is used.</p>
+<hr />
+<h1 id="119-privileged-helper"><a class="header" href="#119-privileged-helper">119. Privileged Helper</a></h1>
+<p>If a platform feature truly requires elevated permission:</p>
+<pre><code class="language-text">small dedicated helper
+</code></pre>
+<p>with narrow IPC.</p>
+<p>Do not run entire communication daemon privileged.</p>
+<hr />
+<h1 id="120-plugin-isolation"><a class="header" href="#120-plugin-isolation">120. Plugin Isolation</a></h1>
+<p>Part 24 plugins should not run in daemon process by default if untrusted/third-party.</p>
+<p>Prefer:</p>
+<pre><code class="language-text">plugin host process
++
+bounded IPC
+</code></pre>
+<hr />
+<h1 id="121-plugin-crash"><a class="header" href="#121-plugin-crash">121. Plugin Crash</a></h1>
+<p>Plugin host crash:</p>
+<pre><code class="language-text">core daemon continues
+</code></pre>
+<hr />
+<h1 id="122-ui-plugin-separation"><a class="header" href="#122-ui-plugin-separation">122. UI Plugin Separation</a></h1>
+<p>UI extensions can be isolated from communication core.</p>
+<hr />
+<h1 id="123-automation-clients"><a class="header" href="#123-automation-clients">123. Automation Clients</a></h1>
+<p>Future local automation can connect through explicit API.</p>
+<p>Example:</p>
+<pre><code class="language-text">send file when generated
+query transfer state
+</code></pre>
+<p>Requires client token/role.</p>
+<hr />
+<h1 id="124-no-hidden-database-api"><a class="header" href="#124-no-hidden-database-api">124. No Hidden Database API</a></h1>
+<p>External products reusing SDK should use:</p>
+<pre><code class="language-text">runtime API
+IPC API
+library API
+</code></pre>
+<p>not direct DB mutation.</p>
+<hr />
+<h1 id="125-reusable-embedding-modes"><a class="header" href="#125-reusable-embedding-modes">125. Reusable Embedding Modes</a></h1>
+<p>Other software can integrate:</p>
+<h2 id="library-mode"><a class="header" href="#library-mode">Library Mode</a></h2>
+<pre><code class="language-text">link comm-runtime
+</code></pre>
+<h2 id="local-daemon-mode"><a class="header" href="#local-daemon-mode">Local Daemon Mode</a></h2>
+<pre><code class="language-text">connect to comm-daemon
+</code></pre>
+<h2 id="remote-headless-node"><a class="header" href="#remote-headless-node">Remote Headless Node</a></h2>
+<pre><code class="language-text">use application protocol/admin API
+</code></pre>
+<p>This increases reusability.</p>
+<hr />
+<h1 id="126-sdk-boundary"><a class="header" href="#126-sdk-boundary">126. SDK Boundary</a></h1>
+<p>Expose stable:</p>
+<pre><code class="language-text">commands
+queries
+events
+</code></pre>
+<p>not UI-specific types.</p>
+<hr />
+<h1 id="127-file-only-headless-product"><a class="header" href="#127-file-only-headless-product">127. File-Only Headless Product</a></h1>
+<p>A product can compile:</p>
+<pre><code class="language-text">comm-runtime
+comm-files
+comm-routing
+comm-transport-iroh
+</code></pre>
+<p>without messaging UI.</p>
+<hr />
+<h1 id="128-messaging-only-product"><a class="header" href="#128-messaging-only-product">128. Messaging-Only Product</a></h1>
+<p>Compile:</p>
+<pre><code class="language-text">messaging
+identity
+runtime
+routing
+</code></pre>
+<p>without file subsystem if desired.</p>
+<hr />
+<h1 id="129-emergency-node"><a class="header" href="#129-emergency-node">129. Emergency Node</a></h1>
+<p>Compile:</p>
+<pre><code class="language-text">DTN
+proximity
+routing
+runtime
+admin
+</code></pre>
+<p>without Dioxus.</p>
+<hr />
+<h1 id="130-runtime-feature-flags"><a class="header" href="#130-runtime-feature-flags">130. Runtime Feature Flags</a></h1>
+<p>Example:</p>
+<pre><code class="language-toml">[features]
+messaging = []
+files = []
+dtn = []
+calls = []
+proximity = []
+daemon = []
+headless = []
+</code></pre>
+<p>Avoid feature explosion; group logically.</p>
+<hr />
+<h1 id="131-build-matrix"><a class="header" href="#131-build-matrix">131. Build Matrix</a></h1>
+<p>Part 10 CI should build:</p>
+<pre><code class="language-text">desktop-full
+daemon-headless
+file-only
+dtn-node
+minimal-runtime
+</code></pre>
+<hr />
+<h1 id="132-startup-performance"><a class="header" href="#132-startup-performance">132. Startup Performance</a></h1>
+<p>Daemon should become locally queryable quickly.</p>
+<p>Secondary work can initialize later.</p>
+<p>Example:</p>
+<pre><code class="language-text">IPC available
+recent messages available
+network starts
+search index rebuild continues
+</code></pre>
+<hr />
+<h1 id="133-lazy-initialization"><a class="header" href="#133-lazy-initialization">133. Lazy Initialization</a></h1>
+<p>Optional subsystems can start only when enabled.</p>
+<p>Example:</p>
+<pre><code class="language-text">Bluetooth proximity disabled
+→ no BLE worker
+</code></pre>
+<hr />
+<h1 id="134-memory-efficiency"><a class="header" href="#134-memory-efficiency">134. Memory Efficiency</a></h1>
+<p>Headless mode should avoid:</p>
+<pre><code class="language-text">UI assets
+render state
+image caches
+</code></pre>
+<hr />
+<h1 id="135-process-memory-budget"><a class="header" href="#135-process-memory-budget">135. Process Memory Budget</a></h1>
+<p>Part 08 sets profile-specific daemon budget.</p>
+<hr />
+<h1 id="136-idle-efficiency"><a class="header" href="#136-idle-efficiency">136. Idle Efficiency</a></h1>
+<p>Long-lived daemon should have:</p>
+<pre><code class="language-text">low wakeups
+no busy loops
+no frequent polling
+event-driven timers
+</code></pre>
+<p>especially on laptops/mobile.</p>
+<hr />
+<h1 id="137-polling-policy"><a class="header" href="#137-polling-policy">137. Polling Policy</a></h1>
+<p>Prefer:</p>
+<pre><code class="language-text">notifications
+watchers
+async waits
+</code></pre>
+<p>over fixed 1-second loops.</p>
+<hr />
+<h1 id="138-timer-coalescing"><a class="header" href="#138-timer-coalescing">138. Timer Coalescing</a></h1>
+<p>Batch timers where possible.</p>
+<p>Part 13 power policy can help.</p>
+<hr />
+<h1 id="139-network-listener-lifecycle"><a class="header" href="#139-network-listener-lifecycle">139. Network Listener Lifecycle</a></h1>
+<p>Listeners:</p>
+<pre><code class="language-text">Iroh
+LAN
+proximity
+IPC
+</code></pre>
+<p>should be individually restartable.</p>
+<hr />
+<h1 id="140-partial-degradation"><a class="header" href="#140-partial-degradation">140. Partial Degradation</a></h1>
+<p>If BLE worker fails:</p>
+<pre><code class="language-text">Internet messaging still works
+</code></pre>
+<p>If DTN fails:</p>
+<pre><code class="language-text">direct messaging still works
+</code></pre>
+<p>Subsystem isolation is critical.</p>
+<hr />
+<h1 id="141-health-state-per-subsystem"><a class="header" href="#141-health-state-per-subsystem">141. Health State Per Subsystem</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum HealthState {
+    Healthy,
+    Degraded,
+    Unavailable,
+    Recovering,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="142-circuit-breaker"><a class="header" href="#142-circuit-breaker">142. Circuit Breaker</a></h1>
+<p>Repeated failing external subsystem:</p>
+<pre><code class="language-text">temporarily stop attempts
+</code></pre>
+<p>Example:</p>
+<pre><code class="language-text">Bluetooth API repeatedly errors
+</code></pre>
+<p>Use cooldown.</p>
+<hr />
+<h1 id="143-remote-endpoint-flood"><a class="header" href="#143-remote-endpoint-flood">143. Remote Endpoint Flood</a></h1>
+<p>Daemon is network-facing.</p>
+<p>Part 08 and Part 10 protections apply independent of UI.</p>
+<hr />
+<h1 id="144-ipc-flood"><a class="header" href="#144-ipc-flood">144. IPC Flood</a></h1>
+<p>Local malicious process may flood daemon.</p>
+<p>Rate-limit and bound per client.</p>
+<hr />
+<h1 id="145-slow-ipc-client"><a class="header" href="#145-slow-ipc-client">145. Slow IPC Client</a></h1>
+<p>Do not let one slow UI block daemon event loop.</p>
+<p>Use per-client bounded queue and async writer.</p>
+<hr />
+<h1 id="146-client-backpressure"><a class="header" href="#146-client-backpressure">146. Client Backpressure</a></h1>
+<p>If client misses noncritical deltas:</p>
+<pre><code class="language-text">send ResyncRequired
+</code></pre>
+<hr />
+<h1 id="147-ipc-event-priority"><a class="header" href="#147-ipc-event-priority">147. IPC Event Priority</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">Critical:
+security state
+
+Interactive:
+message arrived
+
+Normal:
+transfer progress
+
+Ephemeral:
+network metric updates
+</code></pre>
+<hr />
+<h1 id="148-progress-coalescing"><a class="header" href="#148-progress-coalescing">148. Progress Coalescing</a></h1>
+<p>Transfer progress:</p>
+<pre><code class="language-text">update at e.g. bounded Hz
+</code></pre>
+<p>not every chunk.</p>
+<hr />
+<h1 id="149-message-pagination"><a class="header" href="#149-message-pagination">149. Message Pagination</a></h1>
+<p>UI should fetch conversation page windows.</p>
+<p>Daemon owns search/pagination logic.</p>
+<hr />
+<h1 id="150-search-ipc"><a class="header" href="#150-search-ipc">150. Search IPC</a></h1>
+<p>Query:</p>
+<pre><code class="language-text">search messages
+</code></pre>
+<p>returns:</p>
+<pre><code class="language-text">bounded result page
+</code></pre>
+<p>not search-index internals.</p>
+<hr />
+<h1 id="151-notification-service"><a class="header" href="#151-notification-service">151. Notification Service</a></h1>
+<p>Daemon/runtime decides semantic notification events.</p>
+<p>Platform UI/service adapter renders OS notification.</p>
+<hr />
+<h1 id="152-desktop-notification"><a class="header" href="#152-desktop-notification">152. Desktop Notification</a></h1>
+<p>Daemon may use platform adapter or notify UI.</p>
+<p>Avoid hard UI dependency.</p>
+<hr />
+<h1 id="153-android-notification"><a class="header" href="#153-android-notification">153. Android Notification</a></h1>
+<p>Kotlin service renders notification based on Rust semantic event.</p>
+<hr />
+<h1 id="154-incoming-call"><a class="header" href="#154-incoming-call">154. Incoming Call</a></h1>
+<p>Mobile service may need to wake/show incoming-call UI according to OS policy.</p>
+<p>Rust runtime owns call state.</p>
+<hr />
+<h1 id="155-incoming-message-while-ui-closed"><a class="header" href="#155-incoming-message-while-ui-closed">155. Incoming Message While UI Closed</a></h1>
+<p>Daemon:</p>
+<pre><code class="language-text">persists message
+updates projection
+emits notification event
+</code></pre>
+<p>UI can remain absent.</p>
+<hr />
+<h1 id="156-transfer-while-ui-closed"><a class="header" href="#156-transfer-while-ui-closed">156. Transfer While UI Closed</a></h1>
+<p>Daemon continues:</p>
+<pre><code class="language-text">chunking
+routing
+resume
+</code></pre>
+<p>according to power/background policy.</p>
+<hr />
+<h1 id="157-dtn-while-ui-closed"><a class="header" href="#157-dtn-while-ui-closed">157. DTN While UI Closed</a></h1>
+<p>On desktop/headless:</p>
+<pre><code class="language-text">DTN can continue continuously
+</code></pre>
+<p>On mobile:</p>
+<pre><code class="language-text">subject to platform scheduling
+</code></pre>
+<hr />
+<h1 id="158-proximity-while-ui-closed"><a class="header" href="#158-proximity-while-ui-closed">158. Proximity While UI Closed</a></h1>
+<p>Depends on OS and Part 13 battery policy.</p>
+<hr />
+<h1 id="159-remote-admin-over-iroh"><a class="header" href="#159-remote-admin-over-iroh">159. Remote Admin over Iroh</a></h1>
+<p>Future option:</p>
+<pre><code class="language-text">admin endpoint over authenticated Iroh
+</code></pre>
+<p>can avoid opening public TCP admin port.</p>
+<p>Still use separate admin identity/protocol.</p>
+<hr />
+<h1 id="160-admin-capability"><a class="header" href="#160-admin-capability">160. Admin Capability</a></h1>
+<p>Headless node may advertise:</p>
+<pre><code class="language-text">admin protocol available
+</code></pre>
+<p>only to authorized operators.</p>
+<hr />
+<h1 id="161-audit-log"><a class="header" href="#161-audit-log">161. Audit Log</a></h1>
+<p>Admin commands:</p>
+<pre><code class="language-text">config changed
+node restarted
+relay disabled
+</code></pre>
+<p>recorded durably.</p>
+<hr />
+<h1 id="162-no-message-content-admin-by-default"><a class="header" href="#162-no-message-content-admin-by-default">162. No Message-Content Admin by Default</a></h1>
+<p>Operators should not automatically gain access to E2EE content.</p>
+<hr />
+<h1 id="163-backup-keys"><a class="header" href="#163-backup-keys">163. Backup Keys</a></h1>
+<p>Admin backup of server/headless configuration must keep identity key semantics clear.</p>
+<hr />
+<h1 id="164-secure-key-backend"><a class="header" href="#164-secure-key-backend">164. Secure Key Backend</a></h1>
+<p>Possible:</p>
+<pre><code class="language-text">OS keychain
+Android Keystore
+TPM
+software-encrypted key store
+</code></pre>
+<p>Daemon accesses through common secure-store trait.</p>
+<hr />
+<h1 id="165-secure-store-trait"><a class="header" href="#165-secure-store-trait">165. Secure Store Trait</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait SecureStore {
+    async fn load_key(&amp;self, id: KeyId) -&gt; Result&lt;SecretKeyHandle, SecureStoreError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Prefer handles where platform supports non-exportable keys.</p>
+<hr />
+<h1 id="166-headless-tpm"><a class="header" href="#166-headless-tpm">166. Headless TPM</a></h1>
+<p>Server/embedded node may use:</p>
+<pre><code class="language-text">TPM-backed keys
+</code></pre>
+<p>optional.</p>
+<hr />
+<h1 id="167-daemon-pidinstance-metadata"><a class="header" href="#167-daemon-pidinstance-metadata">167. Daemon PID/Instance Metadata</a></h1>
+<p>Expose:</p>
+<pre><code class="language-text">instance ID
+build ID
+uptime
+recovery generation
+</code></pre>
+<p>for diagnostics.</p>
+<hr />
+<h1 id="168-instance-id"><a class="header" href="#168-instance-id">168. Instance ID</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct RuntimeInstanceId([u8; 16]);
+<span class="boring">}</span></code></pre></pre>
+<p>Changes every process start.</p>
+<p>Useful for client reconnect logic.</p>
+<hr />
+<h1 id="169-event-sequence"><a class="header" href="#169-event-sequence">169. Event Sequence</a></h1>
+<p>Within one daemon instance:</p>
+<pre><code class="language-text">monotonic IPC event sequence
+</code></pre>
+<p>helps clients detect gaps.</p>
+<hr />
+<h1 id="170-event-gap"><a class="header" href="#170-event-gap">170. Event Gap</a></h1>
+<p>If client receives:</p>
+<pre><code class="language-text">seq 100
+then 105
+</code></pre>
+<p>request resync.</p>
+<hr />
+<h1 id="171-persistent-vs-instance-sequence"><a class="header" href="#171-persistent-vs-instance-sequence">171. Persistent vs Instance Sequence</a></h1>
+<p>Do not treat IPC sequence as durable event-log offset.</p>
+<p>They serve different purposes.</p>
+<hr />
+<h1 id="172-runtime-clock"><a class="header" href="#172-runtime-clock">172. Runtime Clock</a></h1>
+<p>Daemon should own coherent monotonic timers.</p>
+<p>Clients should not schedule critical network retry logic independently.</p>
+<hr />
+<h1 id="173-shutdown-authorization"><a class="header" href="#173-shutdown-authorization">173. Shutdown Authorization</a></h1>
+<p>Ordinary UI may request daemon shutdown.</p>
+<p>Headless/service mode may restrict it to admin.</p>
+<hr />
+<h1 id="174-auto-start"><a class="header" href="#174-auto-start">174. Auto-Start</a></h1>
+<p>Desktop app installer may configure daemon autostart.</p>
+<p>This should be user-visible and disable-able.</p>
+<hr />
+<h1 id="175-autostart-policy"><a class="header" href="#175-autostart-policy">175. Autostart Policy</a></h1>
+<p>Options:</p>
+<pre><code class="language-text">start at login
+start on demand
+always-on system service
+</code></pre>
+<p>depends on product mode.</p>
+<hr />
+<h1 id="176-on-demand-daemon"><a class="header" href="#176-on-demand-daemon">176. On-Demand Daemon</a></h1>
+<p>UI can spawn daemon if absent.</p>
+<p>Need race-safe single-instance startup.</p>
+<hr />
+<h1 id="177-spawn-race"><a class="header" href="#177-spawn-race">177. Spawn Race</a></h1>
+<p>Two clients start simultaneously.</p>
+<p>Only one daemon wins instance lock.</p>
+<p>Other client connects to existing daemon.</p>
+<hr />
+<h1 id="178-daemon-discovery"><a class="header" href="#178-daemon-discovery">178. Daemon Discovery</a></h1>
+<p>Clients locate daemon via:</p>
+<pre><code class="language-text">fixed per-user socket path
+runtime directory
+platform service registry
+</code></pre>
+<hr />
+<h1 id="179-socket-permissions"><a class="header" href="#179-socket-permissions">179. Socket Permissions</a></h1>
+<p>Unix socket:</p>
+<pre><code class="language-text">0600-like
+</code></pre>
+<p>or user-only directory.</p>
+<hr />
+<h1 id="180-named-pipe-acl"><a class="header" href="#180-named-pipe-acl">180. Named Pipe ACL</a></h1>
+<p>Windows:</p>
+<pre><code class="language-text">current user only
+</code></pre>
+<p>unless multi-user service intended.</p>
+<hr />
+<h1 id="181-remote-node-discovery"><a class="header" href="#181-remote-node-discovery">181. Remote Node Discovery</a></h1>
+<p>Headless admin tools discover nodes through:</p>
+<pre><code class="language-text">configured identity
+QR enrollment
+directory
+Iroh endpoint
+</code></pre>
+<p>not local IPC.</p>
+<hr />
+<h1 id="182-versioned-admin-protocol"><a class="header" href="#182-versioned-admin-protocol">182. Versioned Admin Protocol</a></h1>
+<p>Keep separate:</p>
+<pre><code class="language-text">comm-admin/1
+</code></pre>
+<p>from:</p>
+<pre><code class="language-text">comm-ipc/1
+</code></pre>
+<hr />
+<h1 id="183-testing--ipc"><a class="header" href="#183-testing--ipc">183. Testing — IPC</a></h1>
+<p>Part 10 should test:</p>
+<pre><code class="language-text">malformed frame
+unknown command
+slow client
+disconnect mid-command
+duplicate CommandId
+version mismatch
+event gap
+</code></pre>
+<hr />
+<h1 id="184-testing--daemon-crash"><a class="header" href="#184-testing--daemon-crash">184. Testing — Daemon Crash</a></h1>
+<pre><code class="language-text">send message
+kill daemon
+restart
+UI reconnect
+message sends exactly once logically
+</code></pre>
+<hr />
+<h1 id="185-testing--ui-crash"><a class="header" href="#185-testing--ui-crash">185. Testing — UI Crash</a></h1>
+<pre><code class="language-text">start transfer
+kill UI
+transfer continues
+restart UI
+progress restored
+</code></pre>
+<hr />
+<h1 id="186-testing--slow-client"><a class="header" href="#186-testing--slow-client">186. Testing — Slow Client</a></h1>
+<p>UI stops reading events.</p>
+<p>Expected:</p>
+<pre><code class="language-text">daemon bounded memory
+client eventually resyncs
+</code></pre>
+<hr />
+<h1 id="187-testing--multi-client"><a class="header" href="#187-testing--multi-client">187. Testing — Multi-Client</a></h1>
+<p>CLI and Dioxus connected simultaneously.</p>
+<p>Both see consistent state.</p>
+<hr />
+<h1 id="188-testing--duplicate-commands"><a class="header" href="#188-testing--duplicate-commands">188. Testing — Duplicate Commands</a></h1>
+<p>UI retries after timeout.</p>
+<p>Same CommandId:</p>
+<pre><code class="language-text">one logical operation
+</code></pre>
+<hr />
+<h1 id="189-testing--upgrade"><a class="header" href="#189-testing--upgrade">189. Testing — Upgrade</a></h1>
+<p>Old UI ↔ new daemon within supported compatibility.</p>
+<p>Expected graceful negotiation.</p>
+<hr />
+<h1 id="190-testing--headless-node"><a class="header" href="#190-testing--headless-node">190. Testing — Headless Node</a></h1>
+<p>Run:</p>
+<pre><code class="language-text">no display
+no Dioxus
+</code></pre>
+<p>for days.</p>
+<p>Verify memory/task/FD stability.</p>
+<hr />
+<h1 id="191-testing--platform-service"><a class="header" href="#191-testing--platform-service">191. Testing — Platform Service</a></h1>
+<p>Android:</p>
+<pre><code class="language-text">activity destroyed
+service alive
+transfer continues
+</code></pre>
+<p>then:</p>
+<pre><code class="language-text">service killed
+restart
+recovery
+</code></pre>
+<hr />
+<h1 id="192-testing--resource-limits"><a class="header" href="#192-testing--resource-limits">192. Testing — Resource Limits</a></h1>
+<p>Many IPC clients.</p>
+<p>Expected:</p>
+<pre><code class="language-text">bounded clients
+bounded queues
+fairness
+</code></pre>
+<hr />
+<h1 id="193-fuzzing"><a class="header" href="#193-fuzzing">193. Fuzzing</a></h1>
+<p>Fuzz:</p>
+<pre><code class="language-text">IPC parser
+command payloads
+query payloads
+admin protocol
+config
+</code></pre>
+<hr />
+<h1 id="194-security-tests"><a class="header" href="#194-security-tests">194. Security Tests</a></h1>
+<p>Attempt:</p>
+<pre><code class="language-text">unauthorized local client
+socket permission bypass
+admin command as UI role
+duplicate command replay
+</code></pre>
+<hr />
+<h1 id="195-process-isolation-test"><a class="header" href="#195-process-isolation-test">195. Process Isolation Test</a></h1>
+<p>Third-party plugin host crash must not crash daemon.</p>
+<hr />
+<h1 id="196-performance-tests"><a class="header" href="#196-performance-tests">196. Performance Tests</a></h1>
+<p>Measure:</p>
+<pre><code class="language-text">IPC round-trip
+message-list query
+transfer progress event load
+100 clients/headless peers
+</code></pre>
+<hr />
+<h1 id="197-idle-power-test"><a class="header" href="#197-idle-power-test">197. Idle Power Test</a></h1>
+<p>Desktop/mobile daemon runtime idle should have low wakeup frequency.</p>
+<hr />
+<h1 id="198-soak-test"><a class="header" href="#198-soak-test">198. Soak Test</a></h1>
+<p>Run daemon for:</p>
+<pre><code class="language-text">7+ days
+</code></pre>
+<p>with reconnects/transfers/DTN.</p>
+<p>Track:</p>
+<pre><code class="language-text">memory
+FDs
+tasks
+queue growth
+</code></pre>
+<hr />
+<h1 id="199-suggested-crate-structure"><a class="header" href="#199-suggested-crate-structure">199. Suggested Crate Structure</a></h1>
+<pre><code class="language-text">crates/comm-runtime/
+├── src/
+│   ├── lib.rs
+│   ├── builder.rs
+│   ├── handle.rs
+│   ├── lifecycle.rs
+│   ├── supervisor.rs
+│   ├── worker.rs
+│   ├── health.rs
+│   └── error.rs
+
+crates/comm-ipc/
+├── src/
+│   ├── lib.rs
+│   ├── protocol.rs
+│   ├── transport.rs
+│   ├── client.rs
+│   ├── server.rs
+│   ├── auth.rs
+│   ├── command.rs
+│   ├── query.rs
+│   ├── event.rs
+│   ├── subscription.rs
+│   └── error.rs
+
+crates/comm-daemon-api/
+├── src/
+│   ├── commands/
+│   ├── queries/
+│   ├── events/
+│   └── version.rs
+
+crates/comm-admin/
+├── src/
+│   ├── protocol.rs
+│   ├── auth.rs
+│   ├── audit.rs
+│   └── maintenance.rs
+</code></pre>
+<hr />
+<h1 id="200-executables"><a class="header" href="#200-executables">200. Executables</a></h1>
+<pre><code class="language-text">apps/daemon/
+apps/cli/
+apps/desktop/
+apps/node/
+</code></pre>
+<hr />
+<h1 id="201-comm-daemon"><a class="header" href="#201-comm-daemon">201. <code>comm-daemon</code></a></h1>
+<p>Main responsibilities:</p>
+<pre><code class="language-text">load configuration
+acquire instance lock
+recover
+start IPC
+start runtime
+supervise
+shutdown
+</code></pre>
+<hr />
+<h1 id="202-comm-node"><a class="header" href="#202-comm-node">202. <code>comm-node</code></a></h1>
+<p>Headless profile:</p>
+<pre><code class="language-text">no desktop IPC required if remote admin only
+no UI
+optimized features
+</code></pre>
+<p>Can still expose local admin socket.</p>
+<hr />
+<h1 id="203-cli-example"><a class="header" href="#203-cli-example">203. CLI Example</a></h1>
+<pre><code class="language-text">comm status
+comm devices
+comm send &lt;peer&gt; "hello"
+comm files send &lt;peer&gt; &lt;path&gt;
+comm dtn pending
+comm doctor
+comm daemon restart
+</code></pre>
+<hr />
+<h1 id="204-public-runtime-api"><a class="header" href="#204-public-runtime-api">204. Public Runtime API</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait CommunicationRuntimeApi {
+    async fn command(
+        &amp;self,
+        command: RuntimeCommand,
+    ) -&gt; Result&lt;RuntimeCommandResult, RuntimeError&gt;;
+
+    async fn query(
+        &amp;self,
+        query: RuntimeQuery,
+    ) -&gt; Result&lt;RuntimeQueryResult, RuntimeError&gt;;
+
+    fn subscribe(
+        &amp;self,
+        topic: RuntimeTopic,
+    ) -&gt; RuntimeEventStream;
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Same conceptual API works:</p>
+<pre><code class="language-text">in-process
+IPC
+FFI
+</code></pre>
+<hr />
+<h1 id="205-error-model"><a class="header" href="#205-error-model">205. Error Model</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum RuntimeError {
+    NotReady,
+    ReadOnly,
+    Unauthorized,
+    Unsupported,
+    Busy,
+    Storage,
+    Identity,
+    Network,
+    Ipc,
+    InvalidCommand,
+    Cancelled,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="206-initial-production-scope"><a class="header" href="#206-initial-production-scope">206. Initial Production Scope</a></h1>
+<p>Implement first:</p>
+<pre><code class="language-text">comm-runtime
+local daemon mode
+Unix socket IPC
+Windows named-pipe IPC
+sole-writer DB model
+command/query/event API
+bounded subscriptions
+CommandId idempotency
+systemd --user integration
+desktop autostart
+headless Linux node
+runtime health
+crash recovery integration
+</code></pre>
+<p>Then:</p>
+<pre><code class="language-text">Android service hosting
+remote admin protocol
+multi-account namespaces
+plugin-host isolation
+</code></pre>
+<p>Defer initially:</p>
+<pre><code class="language-text">system-wide multi-user daemon
+complex remote orchestration
+clustered daemon state
+</code></pre>
+<hr />
+<h1 id="207-implementation-phases"><a class="header" href="#207-implementation-phases">207. Implementation Phases</a></h1>
+<h2 id="phase-1--runtime-core"><a class="header" href="#phase-1--runtime-core">Phase 1 — Runtime Core</a></h2>
+<pre><code class="language-text">CommunicationRuntime
+RuntimeHandle
+Supervisor
+Health
+</code></pre>
+<h2 id="phase-2--local-ipc"><a class="header" href="#phase-2--local-ipc">Phase 2 — Local IPC</a></h2>
+<pre><code class="language-text">protocol
+Unix socket
+named pipe
+auth
+</code></pre>
+<h2 id="phase-3--desktop-daemon"><a class="header" href="#phase-3--desktop-daemon">Phase 3 — Desktop Daemon</a></h2>
+<pre><code class="language-text">single instance
+autostart
+Dioxus client
+CLI client
+</code></pre>
+<h2 id="phase-4--recovery"><a class="header" href="#phase-4--recovery">Phase 4 — Recovery</a></h2>
+<pre><code class="language-text">daemon restart
+client reconnect
+CommandId replay
+</code></pre>
+<h2 id="phase-5--headless"><a class="header" href="#phase-5--headless">Phase 5 — Headless</a></h2>
+<pre><code class="language-text">comm-node
+systemd service
+admin socket
+</code></pre>
+<h2 id="phase-6--mobile-hosting"><a class="header" href="#phase-6--mobile-hosting">Phase 6 — Mobile Hosting</a></h2>
+<pre><code class="language-text">Android service
+iOS execution adapter
+</code></pre>
+<h2 id="phase-7--securityisolation"><a class="header" href="#phase-7--securityisolation">Phase 7 — Security/Isolation</a></h2>
+<pre><code class="language-text">roles
+plugin host
+remote admin
+</code></pre>
+<h2 id="phase-8--hardening"><a class="header" href="#phase-8--hardening">Phase 8 — Hardening</a></h2>
+<pre><code class="language-text">fuzz
+soak
+multi-client
+upgrade
+idle-power
+</code></pre>
+<hr />
+<h1 id="208-definition-of-done"><a class="header" href="#208-definition-of-done">208. Definition of Done</a></h1>
+<p>Part 16 is complete when:</p>
+<ul>
+<li>the communication runtime can operate without Dioxus</li>
+<li>desktop UI can close while daemon continues messaging/files/DTN</li>
+<li>daemon is the sole writer of durable communication state</li>
+<li>CLI and GUI use the same command/query semantics</li>
+<li>IPC is versioned, authenticated, bounded, and backpressure-aware</li>
+<li>mutating IPC commands can be retried idempotently</li>
+<li>UI can reconnect after daemon restart and request a fresh snapshot</li>
+<li>daemon recovery runs before network listeners become fully active</li>
+<li>headless Linux node can run unattended</li>
+<li>systemd user/service integration works</li>
+<li>Windows local-service/background mode has an equivalent IPC design</li>
+<li>Android service hosts the same Rust runtime logic</li>
+<li>iOS degrades to system-approved execution windows without losing durable intent</li>
+<li>remote admin uses a separate authenticated protocol</li>
+<li>third-party plugin failures can be isolated</li>
+<li>per-user/profile data separation is enforced</li>
+<li>health, diagnostics, logs, metrics, backup, and maintenance modes exist</li>
+<li>fuzz, crash, reconnect, slow-client, soak, and permission tests exist</li>
+</ul>
+<hr />
+<h1 id="209-relationship-to-earlier-parts"><a class="header" href="#209-relationship-to-earlier-parts">209. Relationship to Earlier Parts</a></h1>
+<p>Part 16 builds on:</p>
+<pre><code class="language-text">01 — Protocol Extension System
+02 — Multi-Device Identity
+03 — Transport &amp; Routing Policy Engine
+04 — Offline Event Log
+05 — Robust File / Blob Subsystem
+06 — DTN / Store-Carry-Forward
+07 — Capability Negotiation
+08 — Resource Limits &amp; Backpressure
+09 — Crash Recovery
+10 — Fuzzing &amp; Protocol Test Suite
+11 — Relay / Self-Hosted Infrastructure
+12 — Multipath Networking
+13 — Battery-Aware Scheduling
+14 — Proximity Abstraction
+15 — QR / NFC Bootstrap
+</code></pre>
+<p>It directly supports:</p>
+<pre><code class="language-text">17 — Emergency Priority Architecture
+18 — Network Diagnostics &amp; Path Visualization
+19 — C ABI / FFI
+20 — Embedded Linux Node
+21 — WASM-Compatible Components
+22 — Third-Party Protocol Extensions
+23 — External Interoperability Suite
+24 — Plugin / Module Ecosystem
+</code></pre>
+<hr />
+<h1 id="210-final-architecture"><a class="header" href="#210-final-architecture">210. Final Architecture</a></h1>
+<pre><code class="language-text">                    LOCAL USER SPACE
+ ┌──────────────────────────────────────────────────────┐
+ │                                                      │
+ │   Dioxus UI              CLI             Automation  │
+ │      │                    │                  │        │
+ │      └────────────── Secure IPC ─────────────┘        │
+ │                           │                          │
+ │                    ┌──────▼──────┐                   │
+ │                    │ comm-daemon │                   │
+ │                    ├─────────────┤                   │
+ │                    │ Identity    │                   │
+ │                    │ Event Log   │                   │
+ │                    │ Messaging   │                   │
+ │                    │ Files       │                   │
+ │                    │ DTN         │                   │
+ │                    │ Routing     │                   │
+ │                    │ Proximity   │                   │
+ │                    │ Power       │                   │
+ │                    │ Recovery    │                   │
+ │                    └──────┬──────┘                   │
+ └───────────────────────────┼───────────────────────────┘
+                             │
+              ┌──────────────┼───────────────┐
+              │              │               │
+            Iroh            LAN           BLE/Wi-Fi
+              │              │               │
+              └──────────────┼───────────────┘
+                             │
+                          Peers
+</code></pre>
+<p>Headless variant:</p>
+<pre><code class="language-text">systemd / Windows service / embedded supervisor
+                    │
+               comm-node
+                    │
+     ┌──────────────┼──────────────┐
+     │              │              │
+   Iroh            DTN         Proximity
+     │              │              │
+     └──────────────┼──────────────┘
+                    │
+                 Network
+</code></pre>
+<hr />
+<h1 id="211-final-principle"><a class="header" href="#211-final-principle">211. Final Principle</a></h1>
+<p>The daemon/headless architecture should make this behavior normal:</p>
+<pre><code class="language-text">A user starts a 10 GB transfer.
+
+They close the Dioxus window.
+
+The transfer continues.
+
+The daemon switches from relay to LAN.
+
+The laptop sleeps and later wakes.
+
+The daemon recovers.
+
+The transfer resumes.
+
+The user opens the UI again.
+
+The UI reconnects and immediately sees the correct progress.
+</code></pre>
+<p>And the same runtime should also support:</p>
+<pre><code class="language-text">a Raspberry Pi emergency relay
+a headless enterprise gateway
+a local CLI tool
+an Android foreground service
+a reusable embedded library
+</code></pre>
+<p>without duplicating the communication engine.</p>
+<p>That separation is what turns the project from a GUI application into a reusable communication platform.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="31-notifications-push-background-delivery-lifecycle-architecture.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="19-c-abi-ffi-architecture.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="31-notifications-push-background-delivery-lifecycle-architecture.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="19-c-abi-ffi-architecture.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

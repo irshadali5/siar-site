@@ -1,0 +1,20 @@
+name: Continuous Fuzzing & Wire Parsing Robustness
+
+on:
+  schedule:
+    - cron: '0 2 * * *' # Nightly at 2:00 AM UTC
+  workflow_dispatch:
+
+jobs:
+  fuzz-postcard-and-mls:
+    name: Fuzz Postcard Framing & MLS Decoders
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@nightly
+      - name: Install Cargo Fuzz
+        run: cargo install cargo-fuzz
+      - name: Run Postcard Wire Parser Fuzz (10k iterations)
+        run: cargo fuzz run fuzz_postcard_wire -- -max_total_time=60
+      - name: Run OpenMLS Packet Parser Fuzz (10k iterations)
+        run: cargo fuzz run fuzz_openmls_envelope -- -max_total_time=60

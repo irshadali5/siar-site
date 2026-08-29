@@ -1,0 +1,2214 @@
+<!DOCTYPE HTML>
+<html lang="en" class="navy" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>25 — Android Direct Surface Zero-Copy Media - SIAR System Architecture &amp; Technical Wiki</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="Comprehensive system architecture, cryptographic protocols, DTN mesh networking, distributed storage, audio DSP pipelines, and UI/UX design specifications for SIAR.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="theme/custom.css">
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "navy";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('navy')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="Home.html">Architecture Portal & Reading Guide</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part I: Protocol Foundation & Extension Platform</li><li class="chapter-item expanded "><a href="01-protocol-extension-system-architecture.html"><strong aria-hidden="true">1.</strong> 01 — Protocol Extension System Architecture</a></li><li class="chapter-item expanded "><a href="07-capability-negotiation-architecture.html"><strong aria-hidden="true">2.</strong> 07 — Capability Negotiation & Protocol Upgrades</a></li><li class="chapter-item expanded "><a href="21-third-party-protocol-extensions-architecture.html"><strong aria-hidden="true">3.</strong> 21 — Third-Party Protocol Extensions</a></li><li class="chapter-item expanded "><a href="22-wasm-compatible-components-architecture.html"><strong aria-hidden="true">4.</strong> 22 — WebAssembly (WASM) Compatible Components</a></li><li class="chapter-item expanded "><a href="23-external-interoperability-suite-architecture.html"><strong aria-hidden="true">5.</strong> 23 — External Interoperability & Conformance Suite</a></li><li class="chapter-item expanded "><a href="24-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">6.</strong> 24 — Dynamic Plugin & Module Ecosystem</a></li><li class="chapter-item expanded affix "><li class="part-title">Part II: Identity, Trust & Cryptography</li><li class="chapter-item expanded "><a href="02-multi-device-identity-architecture.html"><strong aria-hidden="true">7.</strong> 02 — Multi-Device Identity & Trust Model</a></li><li class="chapter-item expanded "><a href="28-production-security-e2ee-key-management-privacy-architecture.html"><strong aria-hidden="true">8.</strong> 28 — Production Security, E2EE, Key Management & Privacy</a></li><li class="chapter-item expanded affix "><li class="part-title">Part III: Mesh Networking, Transports & Hardware</li><li class="chapter-item expanded "><a href="03-transport-routing-policy-engine-architecture.html"><strong aria-hidden="true">9.</strong> 03 — Transport & Routing Policy Engine</a></li><li class="chapter-item expanded "><a href="11-relay-self-hosted-infrastructure-architecture.html"><strong aria-hidden="true">10.</strong> 11 — Self-Hosted Relay & Coordination Infrastructure</a></li><li class="chapter-item expanded "><a href="12-multipath-networking-architecture.html"><strong aria-hidden="true">11.</strong> 12 — Multipath Networking & Link Aggregation</a></li><li class="chapter-item expanded "><a href="13-battery-aware-scheduling-architecture.html"><strong aria-hidden="true">12.</strong> 13 — Battery-Aware Scheduling & Power Profiles</a></li><li class="chapter-item expanded "><a href="14-proximity-abstraction-architecture.html"><strong aria-hidden="true">13.</strong> 14 — Proximity Abstraction (BLE, Wi-Fi Direct, LoRa)</a></li><li class="chapter-item expanded "><a href="15-qr-nfc-bootstrap-pairing-architecture.html"><strong aria-hidden="true">14.</strong> 15 — Out-of-Band QR & NFC Bootstrap Pairing</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IV: Delay-Tolerant Networking & Emergency Mesh</li><li class="chapter-item expanded "><a href="06-dtn-store-carry-forward-architecture.html"><strong aria-hidden="true">15.</strong> 06 — DTN Store-Carry-Forward & Bundle Forwarding</a></li><li class="chapter-item expanded "><a href="17-emergency-priority-classes-architecture.html"><strong aria-hidden="true">16.</strong> 17 — Emergency Priority Classes & Critical Alert Mesh</a></li><li class="chapter-item expanded affix "><li class="part-title">Part V: Storage, Outbox & Data Lifecycle</li><li class="chapter-item expanded "><a href="04-offline-event-log-architecture.html"><strong aria-hidden="true">17.</strong> 04 — Offline Event Log & Sync Engine</a></li><li class="chapter-item expanded "><a href="05-robust-file-blob-subsystem-architecture.html"><strong aria-hidden="true">18.</strong> 05 — Robust File & Blob Subsystem (Chunking & Resumption)</a></li><li class="chapter-item expanded "><a href="09-crash-recovery-architecture.html"><strong aria-hidden="true">19.</strong> 09 — Crash Recovery & State Integrity</a></li><li class="chapter-item expanded "><a href="32-search-indexing-local-knowledge-privacy-architecture.html"><strong aria-hidden="true">20.</strong> 32 — Search, Indexing & Local Privacy Retrieval</a></li><li class="chapter-item expanded "><a href="33-backup-restore-export-import-archival-portability-architecture.html"><strong aria-hidden="true">21.</strong> 33 — Backup, Restore, Export & Long-Term Archival</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VI: Realtime Media, Calling & Audio DSP</li><li class="chapter-item expanded "><a href="25-android-direct-hardware-surface-zero-copy-media-architecture.html" class="active"><strong aria-hidden="true">22.</strong> 25 — Android Direct Surface Zero-Copy Media</a></li><li class="chapter-item expanded "><a href="26-rust-first-audio-dsp-resampling-aec-ns-agc-architecture.html"><strong aria-hidden="true">23.</strong> 26 — Rust-First Audio DSP (AEC, NS, AGC, Resampling)</a></li><li class="chapter-item expanded "><a href="29-realtime-calls-media-session-protocol-architecture.html"><strong aria-hidden="true">24.</strong> 29 — Realtime Calls & Media Session Protocol</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VII: Ephemeral State, Presence & Notifications</li><li class="chapter-item expanded "><a href="30-presence-availability-typing-read-receipts-ephemeral-state-architecture.html"><strong aria-hidden="true">25.</strong> 30 — Presence, Availability, Typing & Read Receipts</a></li><li class="chapter-item expanded "><a href="31-notifications-push-background-delivery-lifecycle-architecture.html"><strong aria-hidden="true">26.</strong> 31 — Notifications, Push Wake & Background Delivery</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VIII: Native Runtimes, Daemons & Embedded Linux</li><li class="chapter-item expanded "><a href="16-daemon-headless-runtime-architecture.html"><strong aria-hidden="true">27.</strong> 16 — Headless Daemon & Background Runtime</a></li><li class="chapter-item expanded "><a href="19-c-abi-ffi-architecture.html"><strong aria-hidden="true">28.</strong> 19 — C-ABI FFI & Native Language Interop</a></li><li class="chapter-item expanded "><a href="20-embedded-linux-node-architecture.html"><strong aria-hidden="true">29.</strong> 20 — Embedded Linux Node & Resource-Constrained Targets</a></li><li class="chapter-item expanded "><a href="27-rust-driven-android-native-build-packaging-automation.html"><strong aria-hidden="true">30.</strong> 27 — Rust-Driven Android Native Build & Packaging Automation</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IX: Reliability, Testing, Fuzzing & Diagnostics</li><li class="chapter-item expanded "><a href="08-resource-limits-backpressure-architecture.html"><strong aria-hidden="true">31.</strong> 08 — Resource Limits, Quotas & Backpressure</a></li><li class="chapter-item expanded "><a href="10-fuzzing-protocol-test-suite-architecture.html"><strong aria-hidden="true">32.</strong> 10 — Fuzzing & Protocol Test Suite</a></li><li class="chapter-item expanded "><a href="18-network-diagnostics-path-visualization-architecture.html"><strong aria-hidden="true">33.</strong> 18 — Network Diagnostics & Path Visualization</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part X: UI/UX Client Architecture (Cross-Platform)</li><li class="chapter-item expanded "><a href="ui-ux-01-product-foundation-cross-platform-interaction-architecture.html"><strong aria-hidden="true">34.</strong> UI/UX 01 — Product UX Foundation & Cross-Platform Interaction</a></li><li class="chapter-item expanded "><a href="ui-ux-02-desktop-dioxus-app-shell-navigation-window-architecture.html"><strong aria-hidden="true">35.</strong> UI/UX 02 — Desktop Dioxus App Shell & Navigation</a></li><li class="chapter-item expanded "><a href="ui-ux-03-android-jetpack-compose-app-shell-navigation-lifecycle-architecture.html"><strong aria-hidden="true">36.</strong> UI/UX 03 — Android Jetpack Compose App Shell & Lifecycle</a></li><li class="chapter-item expanded "><a href="ui-ux-04-conversation-list-inbox-architecture.html"><strong aria-hidden="true">37.</strong> UI/UX 04 — Conversation List & Inbox UX</a></li><li class="chapter-item expanded "><a href="ui-ux-05-conversation-message-timeline-architecture.html"><strong aria-hidden="true">38.</strong> UI/UX 05 — Conversation Message Timeline UX</a></li><li class="chapter-item expanded "><a href="ui-ux-06-message-composer-attachments-voice-notes-drafts-architecture.html"><strong aria-hidden="true">39.</strong> UI/UX 06 — Message Composer, Attachments & Voice Notes</a></li><li class="chapter-item expanded "><a href="ui-ux-07-calls-realtime-media-architecture.html"><strong aria-hidden="true">40.</strong> UI/UX 07 — Calls & Realtime Media UX</a></li><li class="chapter-item expanded "><a href="ui-ux-08-contacts-requests-verification-identity-architecture.html"><strong aria-hidden="true">41.</strong> UI/UX 08 — Contacts, Requests, Verification & Identity</a></li><li class="chapter-item expanded "><a href="ui-ux-09-groups-membership-roles-architecture.html"><strong aria-hidden="true">42.</strong> UI/UX 09 — Groups, Membership & Roles UX</a></li><li class="chapter-item expanded "><a href="ui-ux-10-files-media-gallery-transfer-architecture.html"><strong aria-hidden="true">43.</strong> UI/UX 10 — Files, Media Gallery & Transfer UX</a></li><li class="chapter-item expanded "><a href="ui-ux-11-search-local-knowledge-retrieval-architecture.html"><strong aria-hidden="true">44.</strong> UI/UX 11 — Search & Local Knowledge Retrieval UX</a></li><li class="chapter-item expanded "><a href="ui-ux-12-nearby-qr-nfc-pairing-device-linking-architecture.html"><strong aria-hidden="true">45.</strong> UI/UX 12 — Nearby, QR/NFC Pairing & Device Linking UX</a></li><li class="chapter-item expanded "><a href="ui-ux-13-notifications-background-incoming-call-architecture.html"><strong aria-hidden="true">46.</strong> UI/UX 13 — Notifications, Background & Incoming Call UX</a></li><li class="chapter-item expanded "><a href="ui-ux-14-presence-typing-receipts-status-architecture.html"><strong aria-hidden="true">47.</strong> UI/UX 14 — Presence, Typing, Receipts & Status UX</a></li><li class="chapter-item expanded "><a href="ui-ux-15-security-center-devices-keys-recovery-architecture.html"><strong aria-hidden="true">48.</strong> UI/UX 15 — Security Center, Devices, Keys & Recovery UX</a></li><li class="chapter-item expanded "><a href="ui-ux-16-backup-restore-export-migration-architecture.html"><strong aria-hidden="true">49.</strong> UI/UX 16 — Backup, Restore, Export & Migration UX</a></li><li class="chapter-item expanded "><a href="ui-ux-17-emergency-sos-offline-mesh-architecture.html"><strong aria-hidden="true">50.</strong> UI/UX 17 — Emergency / SOS / Offline Mesh UX</a></li><li class="chapter-item expanded "><a href="ui-ux-18-settings-privacy-notifications-data-controls-architecture.html"><strong aria-hidden="true">51.</strong> UI/UX 18 — Settings, Privacy, Notifications & Data Controls</a></li><li class="chapter-item expanded "><a href="ui-ux-19-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">52.</strong> UI/UX 19 — Plugin & Module Ecosystem UX</a></li><li class="chapter-item expanded "><a href="ui-ux-20-diagnostics-network-paths-advanced-developer-architecture.html"><strong aria-hidden="true">53.</strong> UI/UX 20 — Diagnostics, Network Paths & Developer UX</a></li><li class="chapter-item expanded "><a href="ui-ux-21-accessibility-inclusive-interaction-architecture.html"><strong aria-hidden="true">54.</strong> UI/UX 21 — Accessibility & Inclusive Interaction</a></li><li class="chapter-item expanded "><a href="ui-ux-22-design-system-tokens-typography-icons-motion-architecture.html"><strong aria-hidden="true">55.</strong> UI/UX 22 — Design System, Tokens, Typography & Motion</a></li><li class="chapter-item expanded "><a href="ui-ux-23-responsive-adaptive-desktop-tablet-foldable-phone-layout-architecture.html"><strong aria-hidden="true">56.</strong> UI/UX 23 — Responsive & Adaptive Layouts (Desktop/Tablet/Foldable/Phone)</a></li><li class="chapter-item expanded "><a href="ui-ux-24-error-loading-empty-offline-degraded-state-architecture.html"><strong aria-hidden="true">57.</strong> UI/UX 24 — Error, Loading, Empty & Degraded-State UX</a></li><li class="chapter-item expanded "><a href="ui-ux-25-onboarding-first-run-permission-education-architecture.html"><strong aria-hidden="true">58.</strong> UI/UX 25 — Onboarding, First Run & Permission Education</a></li><li class="chapter-item expanded "><a href="ui-ux-26-performance-virtualization-large-data-ui-architecture.html"><strong aria-hidden="true">59.</strong> UI/UX 26 — Virtualization & Large-Data UI Performance</a></li><li class="chapter-item expanded "><a href="ui-ux-27-ui-testing-screenshot-interaction-release-quality-gates-architecture.html"><strong aria-hidden="true">60.</strong> UI/UX 27 — UI Testing, Screenshots & Release Quality Gates</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">SIAR System Architecture &amp; Technical Wiki</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar/edit/main/sys-arch/25-android-direct-hardware-surface-zero-copy-media-architecture.md" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="part-25--android-direct-hardware-surface--zero-copy-media-pipeline-architecture"><a class="header" href="#part-25--android-direct-hardware-surface--zero-copy-media-pipeline-architecture">Part 25 — Android Direct Hardware Surface / Zero-Copy Media Pipeline Architecture</a></h1>
+<h2 id="reusable-p2p-communication-platform"><a class="header" href="#reusable-p2p-communication-platform">Reusable P2P Communication Platform</a></h2>
+<p><strong>Status:</strong> Architecture specification<br />
+<strong>Part:</strong> 25 of 27 additional production-hardening parts<br />
+<strong>Primary language:</strong> Rust<br />
+<strong>Target:</strong> Android<br />
+<strong>Primary goals:</strong> eliminate avoidable CPU-side frame copies, use Android hardware video surfaces directly, keep codec/media policy in Rust, integrate with Dioxus without routing raw video frames through the UI bridge, support H.264/H.265/AV1 hardware codecs on Android, preserve AV1 software-codec fallback, reduce memory bandwidth/CPU/battery usage, and provide a production-quality media data plane.</p>
+<hr />
+<h1 id="1-why-this-part-is-needed"><a class="header" href="#1-why-this-part-is-needed">1. Why This Part Is Needed</a></h1>
+<p>The existing architecture already defines:</p>
+<pre><code class="language-text">calls
+media codecs
+Android hardware codecs
+FFI/platform adapters
+battery scheduling
+resource limits
+network routing
+</code></pre>
+<p>but that is not enough to guarantee an efficient media pipeline.</p>
+<p>A naïve implementation can still do:</p>
+<pre><code class="language-text">Camera
+  ↓
+YUV frame
+  ↓
+Java/Kotlin ByteArray
+  ↓
+JNI copy
+  ↓
+Rust Vec&lt;u8&gt;
+  ↓
+encoder input copy
+</code></pre>
+<p>and on receive:</p>
+<pre><code class="language-text">decoder output
+  ↓
+CPU buffer
+  ↓
+JNI ByteArray
+  ↓
+Rust/Kotlin copy
+  ↓
+UI bitmap/texture
+  ↓
+screen
+</code></pre>
+<p>At:</p>
+<pre><code class="language-text">1080p
+60 fps
+4K
+high bit-depth
+</code></pre>
+<p>this wastes:</p>
+<pre><code class="language-text">memory bandwidth
+CPU cycles
+battery
+thermal headroom
+latency
+</code></pre>
+<p>The production design should instead use:</p>
+<pre><code class="language-text">camera / GPU surface
+       ↓
+hardware encoder surface
+       ↓
+compressed packets only
+       ↓
+network
+       ↓
+hardware decoder
+       ↓
+display surface
+</code></pre>
+<p>The raw frame should remain inside Android's hardware/native graphics pipeline whenever possible.</p>
+<hr />
+<h1 id="2-core-principle"><a class="header" href="#2-core-principle">2. Core Principle</a></h1>
+<blockquote>
+<p><strong>Raw video frames should not cross the Kotlin ↔ Rust boundary during the normal hardware-codec path.</strong></p>
+</blockquote>
+<p>Rust controls:</p>
+<pre><code class="language-text">codec selection
+session state
+networking
+rate adaptation
+timestamps
+packetization
+recovery
+surface lifecycle state
+</code></pre>
+<p>Android hardware owns:</p>
+<pre><code class="language-text">camera buffers
+codec input surface
+codec output surface
+GPU/display buffers
+</code></pre>
+<p>Only compressed media/control metadata crosses the Rust networking layer.</p>
+<hr />
+<h1 id="3-desired-end-to-end-send-path"><a class="header" href="#3-desired-end-to-end-send-path">3. Desired End-to-End Send Path</a></h1>
+<pre><code class="language-text">Camera HAL
+   ↓
+Android Surface / BufferQueue
+   ↓
+Hardware Encoder Input Surface
+   ↓
+MediaCodec / NDK MediaCodec
+   ↓
+Compressed H.264 / H.265 / AV1 access units
+   ↓
+Rust media packetizer
+   ↓
+Rust transport / Iroh
+</code></pre>
+<p>No CPU-copy of raw camera frames in the normal path.</p>
+<hr />
+<h1 id="4-desired-end-to-end-receive-path"><a class="header" href="#4-desired-end-to-end-receive-path">4. Desired End-to-End Receive Path</a></h1>
+<pre><code class="language-text">Iroh / media transport
+   ↓
+Rust depacketizer
+   ↓
+Compressed access units
+   ↓
+Android hardware decoder
+   ↓
+Decoder Output Surface
+   ↓
+ANativeWindow / Surface
+   ↓
+Display compositor
+</code></pre>
+<p>Again:</p>
+<pre><code class="language-text">no raw decoded frame copy into Rust
+</code></pre>
+<p>unless explicitly needed for:</p>
+<pre><code class="language-text">screenshot
+analysis
+effects
+recording transform
+fallback renderer
+</code></pre>
+<hr />
+<h1 id="5-architecture-boundary"><a class="header" href="#5-architecture-boundary">5. Architecture Boundary</a></h1>
+<pre><code class="language-text">                     RUST CORE
+
+ call state
+ codec policy
+ bitrate controller
+ congestion control
+ packetization
+ depacketization
+ timestamps
+ keyframe requests
+ codec lifecycle
+ diagnostics
+
+                         │
+                         │ Android Media Adapter
+                         ▼
+
+                ANDROID NATIVE MEDIA APIs
+
+ camera
+ MediaCodec / NDK MediaCodec
+ Surface
+ ANativeWindow
+ native hardware buffers
+ display compositor
+</code></pre>
+<hr />
+<h1 id="6-pure-rust-meaning"><a class="header" href="#6-pure-rust-meaning">6. "Pure Rust" Meaning</a></h1>
+<p>The architecture should maximize Rust ownership, but Android hardware codecs are Android platform services.</p>
+<p>Therefore "Rust implementation" means:</p>
+<pre><code class="language-text">Rust controls the system
+Rust calls Android NDK/C APIs directly
+Rust owns state machines
+Rust owns resource safety wrappers
+Rust owns media/network policy
+</code></pre>
+<p>It does <strong>not</strong> mean reimplementing:</p>
+<pre><code class="language-text">MediaCodec
+SurfaceFlinger
+Camera HAL
+GPU driver
+</code></pre>
+<p>in Rust.</p>
+<p>Those remain Android platform components.</p>
+<hr />
+<h1 id="7-avoid-kotlin-for-media-hot-path"><a class="header" href="#7-avoid-kotlin-for-media-hot-path">7. Avoid Kotlin for Media Hot Path</a></h1>
+<p>Kotlin may still be present for:</p>
+<pre><code class="language-text">Android application lifecycle
+permissions
+Dioxus bootstrap
+Play Store integration
+</code></pre>
+<p>but the high-bandwidth video frame path must avoid:</p>
+<pre><code class="language-text">ByteArray
+Bitmap
+Image plane copy
+JNI array copy
+</code></pre>
+<hr />
+<h1 id="8-rust-android-media-crate"><a class="header" href="#8-rust-android-media-crate">8. Rust Android Media Crate</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">crates/comm-media-android/
+</code></pre>
+<p>Responsibilities:</p>
+<pre><code class="language-text">codec discovery
+codec configuration
+surface creation/binding
+ANativeWindow ownership
+hardware encode/decode
+buffer queue polling
+compressed access-unit extraction
+presentation timestamp handling
+codec reset/reconfigure
+</code></pre>
+<hr />
+<h1 id="9-crate-structure"><a class="header" href="#9-crate-structure">9. Crate Structure</a></h1>
+<pre><code class="language-text">crates/comm-media-android/
+├── src/
+│   ├── lib.rs
+│   ├── codec/
+│   │   ├── mod.rs
+│   │   ├── discovery.rs
+│   │   ├── encoder.rs
+│   │   ├── decoder.rs
+│   │   ├── config.rs
+│   │   └── quirks.rs
+│   ├── surface/
+│   │   ├── mod.rs
+│   │   ├── native_window.rs
+│   │   ├── input_surface.rs
+│   │   ├── output_surface.rs
+│   │   └── lifecycle.rs
+│   ├── camera/
+│   │   ├── mod.rs
+│   │   ├── session.rs
+│   │   └── capture.rs
+│   ├── buffer/
+│   │   ├── compressed.rs
+│   │   ├── pool.rs
+│   │   └── timestamp.rs
+│   ├── capability.rs
+│   ├── diagnostics.rs
+│   ├── error.rs
+│   └── ffi.rs
+└── Cargo.toml
+</code></pre>
+<hr />
+<h1 id="10-native-api-preference"><a class="header" href="#10-native-api-preference">10. Native API Preference</a></h1>
+<p>Prefer native Android APIs where sufficient:</p>
+<pre><code class="language-text">NDK MediaCodec APIs
+ANativeWindow
+AHardwareBuffer where appropriate
+native camera APIs where stable enough
+</code></pre>
+<p>Rust accesses them through:</p>
+<pre><code class="language-text">bindgen-generated bindings
+existing safe Rust Android/NDK crates where appropriate
+small audited unsafe wrapper modules
+</code></pre>
+<hr />
+<h1 id="11-unsafe-code-policy"><a class="header" href="#11-unsafe-code-policy">11. Unsafe Code Policy</a></h1>
+<p>All raw Android C API calls should remain isolated.</p>
+<p>Example:</p>
+<pre><code class="language-text">ffi.rs
+native_window.rs
+codec/sys.rs
+</code></pre>
+<p>Safe wrappers expose Rust types.</p>
+<p>Never spread:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>unsafe
+<span class="boring">}</span></code></pre></pre>
+<p>through call/media business logic.</p>
+<hr />
+<h1 id="12-surface-ownership-type"><a class="header" href="#12-surface-ownership-type">12. Surface Ownership Type</a></h1>
+<p>Conceptually:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct NativeSurface {
+    raw: NonNull&lt;ANativeWindow&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Responsibilities:</p>
+<pre><code class="language-text">acquire
+release
+thread-safe ownership rules
+lifetime tracking
+</code></pre>
+<hr />
+<h1 id="13-raii"><a class="header" href="#13-raii">13. RAII</a></h1>
+<p>Use Rust RAII so:</p>
+<pre><code class="language-text">surface reference acquired
+→ wrapper owns it
+→ Drop releases exactly once
+</code></pre>
+<p>No manual ownership scattered through application code.</p>
+<hr />
+<h1 id="14-surface-handle-identity"><a class="header" href="#14-surface-handle-identity">14. Surface Handle Identity</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct SurfaceId(u64);
+<span class="boring">}</span></code></pre></pre>
+<p>Use stable local IDs in Rust state machines.</p>
+<p>Do not use raw pointer addresses as domain identifiers.</p>
+<hr />
+<h1 id="15-surface-lifecycle"><a class="header" href="#15-surface-lifecycle">15. Surface Lifecycle</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum SurfaceState {
+    Unavailable,
+    Creating,
+    Ready,
+    Attached,
+    Replacing,
+    Releasing,
+    Lost,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="16-ui-surface-can-disappear"><a class="header" href="#16-ui-surface-can-disappear">16. UI Surface Can Disappear</a></h1>
+<p>On Android:</p>
+<pre><code class="language-text">activity recreated
+rotation
+app backgrounded
+Dioxus view removed
+</code></pre>
+<p>may destroy/recreate the output surface.</p>
+<p>Decoder must not assume permanent surface lifetime.</p>
+<hr />
+<h1 id="17-surface-replacement"><a class="header" href="#17-surface-replacement">17. Surface Replacement</a></h1>
+<p>State flow:</p>
+<pre><code class="language-text">Old Surface
+   ↓
+new Dioxus/native view arrives
+   ↓
+create new native surface
+   ↓
+rebind decoder safely
+   ↓
+release old surface
+</code></pre>
+<p>If direct rebinding is unsupported/unsafe:</p>
+<pre><code class="language-text">drain
+recreate decoder
+request keyframe
+resume
+</code></pre>
+<hr />
+<h1 id="18-never-keep-dangling-surface-pointer"><a class="header" href="#18-never-keep-dangling-surface-pointer">18. Never Keep Dangling Surface Pointer</a></h1>
+<p>The Rust wrapper must ensure that:</p>
+<pre><code class="language-text">Android surface destroyed
+</code></pre>
+<p>causes:</p>
+<pre><code class="language-text">surface invalidation
+</code></pre>
+<p>before decoder writes to stale memory.</p>
+<hr />
+<h1 id="19-hardware-encoder-input-modes"><a class="header" href="#19-hardware-encoder-input-modes">19. Hardware Encoder Input Modes</a></h1>
+<p>Two main modes:</p>
+<pre><code class="language-text">byte-buffer input
+surface input
+</code></pre>
+<p>For camera/video call:</p>
+<pre><code class="language-text">surface input preferred
+</code></pre>
+<hr />
+<h1 id="20-surface-input-encoder"><a class="header" href="#20-surface-input-encoder">20. Surface Input Encoder</a></h1>
+<p>Flow:</p>
+<pre><code class="language-text">configure encoder
+   ↓
+request/create input Surface
+   ↓
+camera/GPU writes to Surface
+   ↓
+encoder produces compressed output
+</code></pre>
+<p>This is the main zero-copy architecture.</p>
+<hr />
+<h1 id="21-camera-to-encoder-surface"><a class="header" href="#21-camera-to-encoder-surface">21. Camera to Encoder Surface</a></h1>
+<p>Preferred architecture:</p>
+<pre><code class="language-text">Camera capture session
+target =
+hardware encoder input Surface
+</code></pre>
+<p>Optional secondary target:</p>
+<pre><code class="language-text">local preview Surface
+</code></pre>
+<p>Camera can feed both through Android's buffer/graphics stack.</p>
+<hr />
+<h1 id="22-local-preview"><a class="header" href="#22-local-preview">22. Local Preview</a></h1>
+<p>Do not obtain CPU frame just to show self-preview.</p>
+<p>Use:</p>
+<pre><code class="language-text">camera → preview Surface
+</code></pre>
+<p>directly.</p>
+<hr />
+<h1 id="23-dual-surface-camera-session"><a class="header" href="#23-dual-surface-camera-session">23. Dual-Surface Camera Session</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">Camera
+ ├── local preview surface
+ └── encoder input surface
+</code></pre>
+<p>Rust owns session configuration/lifecycle.</p>
+<hr />
+<h1 id="24-gpu-transform-path"><a class="header" href="#24-gpu-transform-path">24. GPU Transform Path</a></h1>
+<p>If future features need:</p>
+<pre><code class="language-text">rotation
+crop
+blur
+background effect
+color transform
+</code></pre>
+<p>prefer:</p>
+<pre><code class="language-text">camera Surface
+→ GPU
+→ encoder Surface
+</code></pre>
+<p>instead of CPU pixel copying.</p>
+<hr />
+<h1 id="25-raw-cpu-frame-path-is-fallback"><a class="header" href="#25-raw-cpu-frame-path-is-fallback">25. Raw CPU Frame Path Is Fallback</a></h1>
+<p>Only use CPU frames when:</p>
+<pre><code class="language-text">hardware surface path unsupported
+software AV1 encoding selected
+computer vision requires CPU data
+special processing requires it
+</code></pre>
+<p>This path must be explicit and measurable.</p>
+<hr />
+<h1 id="26-hardware-decoder-output"><a class="header" href="#26-hardware-decoder-output">26. Hardware Decoder Output</a></h1>
+<p>Configure decoder with:</p>
+<pre><code class="language-text">output Surface
+</code></pre>
+<p>Then:</p>
+<pre><code class="language-text">compressed bitstream
+→ decoder
+→ Surface
+</code></pre>
+<p>No decoded YUV buffer enters Rust.</p>
+<hr />
+<h1 id="27-network-boundary"><a class="header" href="#27-network-boundary">27. Network Boundary</a></h1>
+<p>Rust networking should handle only:</p>
+<pre><code class="language-text">compressed access units
+RTP-like packet payloads / custom media frames
+timestamps
+sequence numbers
+codec config
+keyframe metadata
+</code></pre>
+<hr />
+<h1 id="28-compressed-buffer-ownership"><a class="header" href="#28-compressed-buffer-ownership">28. Compressed Buffer Ownership</a></h1>
+<p>Unlike raw frames, compressed frames are relatively small.</p>
+<p>A bounded copy may be acceptable.</p>
+<p>Still prefer buffer reuse.</p>
+<hr />
+<h1 id="29-compressed-buffer-pool"><a class="header" href="#29-compressed-buffer-pool">29. Compressed Buffer Pool</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct EncodedBufferPool {
+    // bounded reusable buffers
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Avoid:</p>
+<pre><code class="language-text">Vec allocation per encoded frame
+</code></pre>
+<hr />
+<h1 id="30-access-unit"><a class="header" href="#30-access-unit">30. Access Unit</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct EncodedAccessUnit {
+    pub codec: VideoCodec,
+    pub pts: MediaTimestamp,
+    pub keyframe: bool,
+    pub data: EncodedBuffer,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="31-codec-types"><a class="header" href="#31-codec-types">31. Codec Types</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum VideoCodec {
+    H264,
+    H265,
+    Av1,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Android hardware path supports codecs based on runtime device capability.</p>
+<hr />
+<h1 id="32-av1-software-fallback"><a class="header" href="#32-av1-software-fallback">32. AV1 Software Fallback</a></h1>
+<p>Project requirement:</p>
+<pre><code class="language-text">AV1 is the only software video codec
+</code></pre>
+<p>Therefore:</p>
+<pre><code class="language-text">hardware H.264
+hardware H.265
+hardware AV1
+</code></pre>
+<p>on Android when available.</p>
+<p>Fallback:</p>
+<pre><code class="language-text">software AV1
+</code></pre>
+<p>when compatible/viable.</p>
+<p>Do not add software H.264/H.265 unless policy is later changed.</p>
+<hr />
+<h1 id="33-codec-selection-ladder"><a class="header" href="#33-codec-selection-ladder">33. Codec Selection Ladder</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">Peer supports AV1
++
+Android hardware AV1 available
+→ hardware AV1
+
+else peer supports H.265
++
+hardware H.265 available
+→ hardware H.265
+
+else peer supports H.264
++
+hardware H.264 available
+→ hardware H.264
+
+else AV1 software viable
+→ software AV1
+
+else
+→ video unavailable / audio-only fallback
+</code></pre>
+<p>Exact preference may vary by:</p>
+<pre><code class="language-text">battery
+device
+latency
+peer support
+</code></pre>
+<hr />
+<h1 id="34-do-not-assume-av1-hardware"><a class="header" href="#34-do-not-assume-av1-hardware">34. Do Not Assume AV1 Hardware</a></h1>
+<p>Capability must be runtime-detected.</p>
+<p>Same app binary runs on many Android devices.</p>
+<hr />
+<h1 id="35-hardware-capability-model"><a class="header" href="#35-hardware-capability-model">35. Hardware Capability Model</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct AndroidVideoCapability {
+    pub codec: VideoCodec,
+    pub encode: bool,
+    pub decode: bool,
+    pub surface_input: bool,
+    pub surface_output: bool,
+    pub profiles: Vec&lt;CodecProfile&gt;,
+    pub max_resolution: Option&lt;Resolution&gt;,
+    pub max_fps: Option&lt;u32&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="36-capability-cache"><a class="header" href="#36-capability-cache">36. Capability Cache</a></h1>
+<p>Codec capability probing can be cached per:</p>
+<pre><code class="language-text">device
+OS build
+app version
+</code></pre>
+<p>but must tolerate invalidation after OS update.</p>
+<hr />
+<h1 id="37-runtime-probe"><a class="header" href="#37-runtime-probe">37. Runtime Probe</a></h1>
+<p>On first use:</p>
+<pre><code class="language-text">probe actual codec
+</code></pre>
+<p>because advertised capability may not guarantee reliable operation.</p>
+<hr />
+<h1 id="38-device-quirks"><a class="header" href="#38-device-quirks">38. Device Quirks</a></h1>
+<p>Android codec implementations vary.</p>
+<p>Maintain a bounded quirk database:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct CodecQuirk {
+    pub device_match: DeviceMatcher,
+    pub rule: CodecQuirkRule,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="39-quirk-examples"><a class="header" href="#39-quirk-examples">39. Quirk Examples</a></h1>
+<pre><code class="language-text">disable specific codec profile
+limit resolution
+require decoder recreation after surface loss
+avoid dynamic bitrate update
+</code></pre>
+<hr />
+<h1 id="40-quirk-data-must-be-explainable"><a class="header" href="#40-quirk-data-must-be-explainable">40. Quirk Data Must Be Explainable</a></h1>
+<p>Diagnostics should report:</p>
+<pre><code class="language-text">AV1 hardware disabled by known device workaround
+</code></pre>
+<p>not silently fail.</p>
+<hr />
+<h1 id="41-dynamic-bitrate"><a class="header" href="#41-dynamic-bitrate">41. Dynamic Bitrate</a></h1>
+<p>Rust congestion controller should be able to request:</p>
+<pre><code class="language-text">new target bitrate
+</code></pre>
+<p>without tearing down encoder where Android codec supports it.</p>
+<hr />
+<h1 id="42-bitrate-controller"><a class="header" href="#42-bitrate-controller">42. Bitrate Controller</a></h1>
+<p>Inputs:</p>
+<pre><code class="language-text">network throughput
+loss
+RTT
+battery
+thermal
+receiver feedback
+</code></pre>
+<p>Output:</p>
+<pre><code class="language-text">target bitrate
+target resolution
+target fps
+</code></pre>
+<hr />
+<h1 id="43-resolution-adaptation"><a class="header" href="#43-resolution-adaptation">43. Resolution Adaptation</a></h1>
+<p>If bitrate drops significantly:</p>
+<pre><code class="language-text">reconfigure encoder
+</code></pre>
+<p>using safe state machine.</p>
+<p>Potential ladder:</p>
+<pre><code class="language-text">1080p
+720p
+540p
+360p
+</code></pre>
+<hr />
+<h1 id="44-fps-adaptation"><a class="header" href="#44-fps-adaptation">44. FPS Adaptation</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">30 fps
+24 fps
+15 fps
+</code></pre>
+<p>depending network/power.</p>
+<hr />
+<h1 id="45-avoid-frequent-reconfiguration"><a class="header" href="#45-avoid-frequent-reconfiguration">45. Avoid Frequent Reconfiguration</a></h1>
+<p>Use hysteresis.</p>
+<p>Do not:</p>
+<pre><code class="language-text">recreate codec every second
+</code></pre>
+<p>due to noisy bandwidth estimates.</p>
+<hr />
+<h1 id="46-keyframe-control"><a class="header" href="#46-keyframe-control">46. Keyframe Control</a></h1>
+<p>Rust media controller needs:</p>
+<pre><code class="language-text">request IDR/keyframe
+</code></pre>
+<p>when:</p>
+<pre><code class="language-text">decoder joins
+packet loss recovery
+transport switch
+decoder reset
+surface recreated
+</code></pre>
+<hr />
+<h1 id="47-decoder-recovery"><a class="header" href="#47-decoder-recovery">47. Decoder Recovery</a></h1>
+<p>On corruption:</p>
+<pre><code class="language-text">flush/restart decoder
+request keyframe
+</code></pre>
+<p>rather than forwarding bad state indefinitely.</p>
+<hr />
+<h1 id="48-media-timestamp"><a class="header" href="#48-media-timestamp">48. Media Timestamp</a></h1>
+<p>Use monotonic clock domain.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct MediaTimestamp(pub i64);
+<span class="boring">}</span></code></pre></pre>
+<p>Do not use wall clock for frame pacing.</p>
+<hr />
+<h1 id="49-timestamp-conversion"><a class="header" href="#49-timestamp-conversion">49. Timestamp Conversion</a></h1>
+<p>Android codec timestamps may use microseconds.</p>
+<p>Normalize in one module.</p>
+<p>Never mix:</p>
+<pre><code class="language-text">ns
+us
+ms
+</code></pre>
+<p>implicitly.</p>
+<hr />
+<h1 id="50-av-synchronization"><a class="header" href="#50-av-synchronization">50. A/V Synchronization</a></h1>
+<p>Video timestamps must align with:</p>
+<pre><code class="language-text">audio media clock
+</code></pre>
+<p>handled by media synchronization layer.</p>
+<p>Surface rendering still respects presentation timestamps.</p>
+<hr />
+<h1 id="51-decoder-render-timing"><a class="header" href="#51-decoder-render-timing">51. Decoder Render Timing</a></h1>
+<p>Do not render all decoded frames immediately.</p>
+<p>Use:</p>
+<pre><code class="language-text">presentation scheduling
+late-frame policy
+</code></pre>
+<hr />
+<h1 id="52-late-frame-dropping"><a class="header" href="#52-late-frame-dropping">52. Late Frame Dropping</a></h1>
+<p>If frame is too late:</p>
+<pre><code class="language-text">drop before display
+</code></pre>
+<p>where platform decoder/surface flow allows.</p>
+<p>Low latency matters more than showing stale video.</p>
+<hr />
+<h1 id="53-jitter-buffer"><a class="header" href="#53-jitter-buffer">53. Jitter Buffer</a></h1>
+<p>Network media subsystem maintains bounded jitter buffer before decoder.</p>
+<p>The Surface itself is not a network jitter buffer.</p>
+<hr />
+<h1 id="54-receive-flow"><a class="header" href="#54-receive-flow">54. Receive Flow</a></h1>
+<pre><code class="language-text">network packets
+ ↓
+reassembly
+ ↓
+jitter buffer
+ ↓
+encoded access unit
+ ↓
+hardware decoder
+ ↓
+surface
+</code></pre>
+<hr />
+<h1 id="55-send-flow"><a class="header" href="#55-send-flow">55. Send Flow</a></h1>
+<pre><code class="language-text">camera
+ ↓
+encoder surface
+ ↓
+hardware encoder
+ ↓
+encoded access unit
+ ↓
+packetizer
+ ↓
+network
+</code></pre>
+<hr />
+<h1 id="56-zero-copy-definition"><a class="header" href="#56-zero-copy-definition">56. Zero-Copy Definition</a></h1>
+<p>Be precise.</p>
+<p>The architecture is not necessarily literally zero memory copies everywhere.</p>
+<p>It aims for:</p>
+<pre><code class="language-text">zero CPU copies of raw video frames across app-language boundaries
+</code></pre>
+<p>Android/driver/GPU internals may still perform implementation-specific buffer operations.</p>
+<hr />
+<h1 id="57-hardware-buffer-path"><a class="header" href="#57-hardware-buffer-path">57. Hardware Buffer Path</a></h1>
+<p>Where advanced rendering requires it, use:</p>
+<pre><code class="language-text">AHardwareBuffer
+</code></pre>
+<p>for native GPU-compatible buffers.</p>
+<hr />
+<h1 id="58-ahardwarebuffer-use-cases"><a class="header" href="#58-ahardwarebuffer-use-cases">58. AHardwareBuffer Use Cases</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">GPU effects
+cross-API texture import
+native rendering integration
+</code></pre>
+<p>Do not add it merely for theoretical optimization.</p>
+<hr />
+<h1 id="59-direct-surface-is-simpler"><a class="header" href="#59-direct-surface-is-simpler">59. Direct Surface Is Simpler</a></h1>
+<p>For ordinary video call receive:</p>
+<pre><code class="language-text">decoder → Surface
+</code></pre>
+<p>is preferable to manually consuming <code>AHardwareBuffer</code>.</p>
+<hr />
+<h1 id="60-dioxus-integration"><a class="header" href="#60-dioxus-integration">60. Dioxus Integration</a></h1>
+<p>Dioxus should own:</p>
+<pre><code class="language-text">layout
+call controls
+video view placement
+visibility
+</code></pre>
+<p>but not raw video bytes.</p>
+<hr />
+<h1 id="61-video-view-bridge"><a class="header" href="#61-video-view-bridge">61. Video View Bridge</a></h1>
+<p>Dioxus component creates/owns a platform video surface container.</p>
+<p>It exposes to Rust:</p>
+<pre><code class="language-text">SurfaceCreated(SurfaceHandle)
+SurfaceChanged(...)
+SurfaceDestroyed(SurfaceId)
+</code></pre>
+<hr />
+<h1 id="62-no-frame-prop"><a class="header" href="#62-no-frame-prop">62. No Frame Prop</a></h1>
+<p>Bad:</p>
+<pre><code class="language-text">Dioxus prop = Vec&lt;u8&gt; frame
+</code></pre>
+<p>Good:</p>
+<pre><code class="language-text">Dioxus prop = VideoRendererId
+</code></pre>
+<p>Native surface renderer updates independently.</p>
+<hr />
+<h1 id="63-renderer-handle"><a class="header" href="#63-renderer-handle">63. Renderer Handle</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct VideoRendererId(u64);
+<span class="boring">}</span></code></pre></pre>
+<p>UI binds renderer to platform surface.</p>
+<p>Media runtime sends video to renderer internally.</p>
+<hr />
+<h1 id="64-dioxus-recomposition"><a class="header" href="#64-dioxus-recomposition">64. Dioxus Recomposition</a></h1>
+<p>UI recomposition must not:</p>
+<pre><code class="language-text">restart decoder
+copy frame
+block codec thread
+</code></pre>
+<hr />
+<h1 id="65-orientation"><a class="header" href="#65-orientation">65. Orientation</a></h1>
+<p>Handle:</p>
+<pre><code class="language-text">portrait
+landscape
+sensor rotation
+remote rotation metadata
+</code></pre>
+<p>prefer native transform/display matrix.</p>
+<hr />
+<h1 id="66-aspect-ratio"><a class="header" href="#66-aspect-ratio">66. Aspect Ratio</a></h1>
+<p>UI can request:</p>
+<pre><code class="language-text">fit
+fill
+crop
+</code></pre>
+<p>Surface/GPU renderer applies transform without CPU frame conversion.</p>
+<hr />
+<h1 id="67-picture-in-picture"><a class="header" href="#67-picture-in-picture">67. Picture-in-Picture</a></h1>
+<p>Android PiP should reuse same renderer/session state.</p>
+<p>No codec restart merely because UI mode changed when avoidable.</p>
+<hr />
+<h1 id="68-background-video-policy"><a class="header" href="#68-background-video-policy">68. Background Video Policy</a></h1>
+<p>When app backgrounded:</p>
+<pre><code class="language-text">disable outgoing camera video
+or
+continue only where OS/user policy permits
+</code></pre>
+<p>Audio may continue.</p>
+<hr />
+<h1 id="69-surface-loss-in-background"><a class="header" href="#69-surface-loss-in-background">69. Surface Loss in Background</a></h1>
+<p>Decoder may:</p>
+<pre><code class="language-text">pause rendering
+keep compressed receive state
+</code></pre>
+<p>or recreate when surface returns.</p>
+<p>Avoid decoding useless frames if no render target and recording not active.</p>
+<hr />
+<h1 id="70-decoder-without-surface"><a class="header" href="#70-decoder-without-surface">70. Decoder Without Surface</a></h1>
+<p>Policy:</p>
+<pre><code class="language-text">if video invisible
+→ pause decoder / drop encoded video after necessary control
+</code></pre>
+<p>to save power.</p>
+<hr />
+<h1 id="71-camera-lifecycle"><a class="header" href="#71-camera-lifecycle">71. Camera Lifecycle</a></h1>
+<p>Camera should be active only when:</p>
+<pre><code class="language-text">call video enabled
+preview needed
+</code></pre>
+<hr />
+<h1 id="72-camera-permission"><a class="header" href="#72-camera-permission">72. Camera Permission</a></h1>
+<p>Android permission integration can remain platform bootstrap.</p>
+<p>Rust receives typed state:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum CameraPermission {
+    Granted,
+    Denied,
+    NeedsUserAction,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="73-camera-hot-path"><a class="header" href="#73-camera-hot-path">73. Camera Hot Path</a></h1>
+<p>Permission/UI logic may involve Kotlin/Dioxus.</p>
+<p>Frame data does not.</p>
+<hr />
+<h1 id="74-encoder-threading"><a class="header" href="#74-encoder-threading">74. Encoder Threading</a></h1>
+<p>Do not run codec polling on UI thread.</p>
+<p>Use dedicated asynchronous/blocking worker strategy.</p>
+<hr />
+<h1 id="75-decoder-threading"><a class="header" href="#75-decoder-threading">75. Decoder Threading</a></h1>
+<p>Same.</p>
+<hr />
+<h1 id="76-codec-worker"><a class="header" href="#76-codec-worker">76. Codec Worker</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct CodecWorker {
+    // codec state + bounded channels
+}
+<span class="boring">}</span></code></pre></pre>
+<p>One codec instance should not spawn unbounded per-frame tasks.</p>
+<hr />
+<h1 id="77-backpressure"><a class="header" href="#77-backpressure">77. Backpressure</a></h1>
+<p>If network cannot consume encoded frames:</p>
+<pre><code class="language-text">drop non-key video frames
+reduce bitrate
+reduce fps
+</code></pre>
+<p>Do not build unbounded queue.</p>
+<hr />
+<h1 id="78-never-queue-seconds-of-live-video"><a class="header" href="#78-never-queue-seconds-of-live-video">78. Never Queue Seconds of Live Video</a></h1>
+<p>Interactive calls prioritize freshness.</p>
+<p>Set strict encoded-frame queue limits.</p>
+<hr />
+<h1 id="79-encoder-output-queue"><a class="header" href="#79-encoder-output-queue">79. Encoder Output Queue</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">2–6 frames
+</code></pre>
+<p>depending architecture.</p>
+<p>Tune by benchmarks.</p>
+<hr />
+<h1 id="80-decoder-input-queue"><a class="header" href="#80-decoder-input-queue">80. Decoder Input Queue</a></h1>
+<p>Bound by:</p>
+<pre><code class="language-text">jitter target
+latency budget
+</code></pre>
+<hr />
+<h1 id="81-memory-budget"><a class="header" href="#81-memory-budget">81. Memory Budget</a></h1>
+<p>Part 08 classifies:</p>
+<pre><code class="language-text">codec buffers
+jitter buffer
+compressed pool
+surface metadata
+</code></pre>
+<hr />
+<h1 id="82-memory-pressure"><a class="header" href="#82-memory-pressure">82. Memory Pressure</a></h1>
+<p>Under pressure:</p>
+<pre><code class="language-text">reduce video resolution
+reduce buffer pool
+disable background preview
+</code></pre>
+<p>before core messaging.</p>
+<hr />
+<h1 id="83-battery-policy"><a class="header" href="#83-battery-policy">83. Battery Policy</a></h1>
+<p>Part 13 affects:</p>
+<pre><code class="language-text">codec choice
+resolution
+fps
+camera
+multipath
+</code></pre>
+<hr />
+<h1 id="84-battery-saver"><a class="header" href="#84-battery-saver">84. Battery Saver</a></h1>
+<p>Possible:</p>
+<pre><code class="language-text">720p
+24 fps
+hardware codec mandatory
+</code></pre>
+<p>Avoid software AV1 when hardware codec available.</p>
+<hr />
+<h1 id="85-critical-battery"><a class="header" href="#85-critical-battery">85. Critical Battery</a></h1>
+<p>Prefer:</p>
+<pre><code class="language-text">audio only
+</code></pre>
+<p>or low-resolution video.</p>
+<hr />
+<h1 id="86-thermal-policy"><a class="header" href="#86-thermal-policy">86. Thermal Policy</a></h1>
+<p>If severe thermal state:</p>
+<pre><code class="language-text">reduce resolution/fps
+disable software AV1
+prefer hardware codec
+</code></pre>
+<hr />
+<h1 id="87-hardware-codec-preference"><a class="header" href="#87-hardware-codec-preference">87. Hardware Codec Preference</a></h1>
+<p>Even if software AV1 has better compression, battery/thermal cost may be unacceptable on mobile.</p>
+<p>Codec policy should score:</p>
+<pre><code class="language-text">hardware acceleration
+power
+peer compatibility
+bandwidth
+quality
+</code></pre>
+<hr />
+<h1 id="88-software-av1-input"><a class="header" href="#88-software-av1-input">88. Software AV1 Input</a></h1>
+<p>When falling back to software AV1, raw frame access is required.</p>
+<p>This becomes a different pipeline:</p>
+<pre><code class="language-text">camera
+ ↓
+native image/buffer
+ ↓
+Rust-accessible YUV
+ ↓
+software AV1
+</code></pre>
+<hr />
+<h1 id="89-software-fallback-copy-minimization"><a class="header" href="#89-software-fallback-copy-minimization">89. Software Fallback Copy Minimization</a></h1>
+<p>Even here:</p>
+<pre><code class="language-text">avoid Kotlin ByteArray
+</code></pre>
+<p>Prefer native buffer mapping/direct access from Rust.</p>
+<hr />
+<h1 id="90-separate-software-pipeline"><a class="header" href="#90-separate-software-pipeline">90. Separate Software Pipeline</a></h1>
+<p>Implement:</p>
+<pre><code class="language-text">HardwareSurfacePipeline
+SoftwareFramePipeline
+</code></pre>
+<p>behind common trait.</p>
+<hr />
+<h1 id="91-video-pipeline-trait"><a class="header" href="#91-video-pipeline-trait">91. Video Pipeline Trait</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait VideoEncodePipeline {
+    async fn start(&amp;mut self, config: EncodeConfig) -&gt; Result&lt;(), MediaError&gt;;
+    async fn reconfigure(&amp;mut self, change: EncodeChange) -&gt; Result&lt;(), MediaError&gt;;
+    async fn stop(&amp;mut self) -&gt; Result&lt;(), MediaError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="92-hardware-encoder-implementation"><a class="header" href="#92-hardware-encoder-implementation">92. Hardware Encoder Implementation</a></h1>
+<pre><code class="language-text">AndroidSurfaceEncoder
+</code></pre>
+<hr />
+<h1 id="93-software-encoder-implementation"><a class="header" href="#93-software-encoder-implementation">93. Software Encoder Implementation</a></h1>
+<pre><code class="language-text">RustAv1SoftwareEncoder
+</code></pre>
+<hr />
+<h1 id="94-decode-pipeline-trait"><a class="header" href="#94-decode-pipeline-trait">94. Decode Pipeline Trait</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait VideoDecodePipeline {
+    async fn attach_surface(&amp;mut self, surface: SurfaceHandle) -&gt; Result&lt;(), MediaError&gt;;
+    async fn push(&amp;mut self, frame: EncodedAccessUnit) -&gt; Result&lt;(), MediaError&gt;;
+    async fn stop(&amp;mut self) -&gt; Result&lt;(), MediaError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="95-hardware-decoder"><a class="header" href="#95-hardware-decoder">95. Hardware Decoder</a></h1>
+<pre><code class="language-text">AndroidSurfaceDecoder
+</code></pre>
+<hr />
+<h1 id="96-software-decoder"><a class="header" href="#96-software-decoder">96. Software Decoder</a></h1>
+<p>If AV1 software decode is needed:</p>
+<pre><code class="language-text">Rust AV1 decoder
++
+native rendering path
+</code></pre>
+<p>but Android hardware decode should be preferred whenever available.</p>
+<hr />
+<h1 id="97-codec-negotiation"><a class="header" href="#97-codec-negotiation">97. Codec Negotiation</a></h1>
+<p>Part 07 exchanges:</p>
+<pre><code class="language-text">codec
+profile
+level
+bit depth
+resolution
+fps
+</code></pre>
+<hr />
+<h1 id="98-hardware-is-local-policy"><a class="header" href="#98-hardware-is-local-policy">98. Hardware Is Local Policy</a></h1>
+<p>Do not advertise:</p>
+<pre><code class="language-text">"hardware encoder"
+</code></pre>
+<p>as wire requirement.</p>
+<p>Peer only needs codec compatibility.</p>
+<p>Whether codec is hardware/software is local implementation detail.</p>
+<hr />
+<h1 id="99-codec-configuration"><a class="header" href="#99-codec-configuration">99. Codec Configuration</a></h1>
+<p>H.264:</p>
+<pre><code class="language-text">profile
+level
+SPS/PPS
+</code></pre>
+<p>H.265:</p>
+<pre><code class="language-text">VPS/SPS/PPS
+</code></pre>
+<p>AV1:</p>
+<pre><code class="language-text">sequence header / codec config
+</code></pre>
+<p>Need correct transport configuration framing.</p>
+<hr />
+<h1 id="100-parameter-sets"><a class="header" href="#100-parameter-sets">100. Parameter Sets</a></h1>
+<p>Send/update:</p>
+<pre><code class="language-text">codec configuration
+</code></pre>
+<p>when:</p>
+<pre><code class="language-text">encoder starts
+resolution changes
+codec restarts
+</code></pre>
+<hr />
+<h1 id="101-codec-reconfigure-event"><a class="header" href="#101-codec-reconfigure-event">101. Codec Reconfigure Event</a></h1>
+<p>Transport layer needs explicit:</p>
+<pre><code class="language-text">VideoConfigChanged
+</code></pre>
+<p>rather than hoping decoder infers all changes.</p>
+<hr />
+<h1 id="102-decoder-reconfigure"><a class="header" href="#102-decoder-reconfigure">102. Decoder Reconfigure</a></h1>
+<p>If incompatible dynamic change:</p>
+<pre><code class="language-text">drain
+recreate decoder
+request keyframe
+</code></pre>
+<hr />
+<h1 id="103-network-packetization"><a class="header" href="#103-network-packetization">103. Network Packetization</a></h1>
+<p>Part of common media transport, not Android layer.</p>
+<p>Android layer produces:</p>
+<pre><code class="language-text">codec access units
+</code></pre>
+<p>Transport decides packet boundaries.</p>
+<hr />
+<h1 id="104-mtu"><a class="header" href="#104-mtu">104. MTU</a></h1>
+<p>Large encoded frame must be fragmented at media protocol layer.</p>
+<p>Surface pipeline does not care.</p>
+<hr />
+<h1 id="105-loss-recovery"><a class="header" href="#105-loss-recovery">105. Loss Recovery</a></h1>
+<p>Video recovery may use:</p>
+<pre><code class="language-text">keyframe request
+selective retransmission for key data
+FEC later
+</code></pre>
+<hr />
+<h1 id="106-keyframe-priority"><a class="header" href="#106-keyframe-priority">106. Keyframe Priority</a></h1>
+<p>Keyframe packets may receive higher transport priority than disposable delta frames.</p>
+<hr />
+<h1 id="107-audio-priority"><a class="header" href="#107-audio-priority">107. Audio Priority</a></h1>
+<p>Audio should still outrank video for conversational quality.</p>
+<hr />
+<h1 id="108-emergency-calls"><a class="header" href="#108-emergency-calls">108. Emergency Calls</a></h1>
+<p>Part 17 degradation ladder:</p>
+<pre><code class="language-text">video
+→ low video
+→ audio
+→ voice note
+→ text
+</code></pre>
+<hr />
+<h1 id="109-recording"><a class="header" href="#109-recording">109. Recording</a></h1>
+<p>If user records call:</p>
+<pre><code class="language-text">store compressed stream
+</code></pre>
+<p>where possible.</p>
+<p>Avoid decode/re-encode.</p>
+<hr />
+<h1 id="110-local-recording-path"><a class="header" href="#110-local-recording-path">110. Local Recording Path</a></h1>
+<pre><code class="language-text">encoded outgoing access units
++
+encoded incoming access units
+</code></pre>
+<p>can feed container/muxer.</p>
+<p>Need sync/timestamps.</p>
+<hr />
+<h1 id="111-screenshot"><a class="header" href="#111-screenshot">111. Screenshot</a></h1>
+<p>Screenshot may require one decoded frame.</p>
+<p>Use explicit slow path.</p>
+<p>Do not keep CPU-copy pipeline active continuously just for possible screenshot.</p>
+<hr />
+<h1 id="112-video-effects"><a class="header" href="#112-video-effects">112. Video Effects</a></h1>
+<p>For effects:</p>
+<pre><code class="language-text">GPU Surface pipeline
+</code></pre>
+<p>preferred.</p>
+<p>CPU effect path only if unavoidable.</p>
+<hr />
+<h1 id="113-camera-switching"><a class="header" href="#113-camera-switching">113. Camera Switching</a></h1>
+<p>Front ↔ rear:</p>
+<pre><code class="language-text">camera session reconfiguration
+</code></pre>
+<p>ideally encoder remains configured when resolution/format compatible.</p>
+<hr />
+<h1 id="114-surface-producer-switch"><a class="header" href="#114-surface-producer-switch">114. Surface Producer Switch</a></h1>
+<p>Bind new camera source to existing encoder Surface where possible.</p>
+<hr />
+<h1 id="115-call-hold"><a class="header" href="#115-call-hold">115. Call Hold</a></h1>
+<p>On hold:</p>
+<pre><code class="language-text">stop camera
+pause encoder
+preserve call session
+</code></pre>
+<hr />
+<h1 id="116-video-mute"><a class="header" href="#116-video-mute">116. Video Mute</a></h1>
+<p>Video mute:</p>
+<pre><code class="language-text">stop/pause camera frames
+send control state
+</code></pre>
+<p>not necessarily destroy entire codec immediately.</p>
+<hr />
+<h1 id="117-screen-sharing"><a class="header" href="#117-screen-sharing">117. Screen Sharing</a></h1>
+<p>Future:</p>
+<pre><code class="language-text">screen capture Surface
+→ encoder Surface
+</code></pre>
+<p>same architecture.</p>
+<hr />
+<h1 id="118-screen-share-zero-copy"><a class="header" href="#118-screen-share-zero-copy">118. Screen Share Zero-Copy</a></h1>
+<p>Use platform virtual-display/surface mechanisms rather than screenshot ByteArrays.</p>
+<hr />
+<h1 id="119-multiple-remote-videos"><a class="header" href="#119-multiple-remote-videos">119. Multiple Remote Videos</a></h1>
+<p>Group call may decode multiple streams.</p>
+<p>Resource policy limits:</p>
+<pre><code class="language-text">max hardware decoders
+visible streams
+resolution per tile
+</code></pre>
+<hr />
+<h1 id="120-visible-only-high-quality"><a class="header" href="#120-visible-only-high-quality">120. Visible-Only High Quality</a></h1>
+<p>For grid:</p>
+<pre><code class="language-text">foreground speaker → high resolution
+small tiles → low resolution
+offscreen → pause
+</code></pre>
+<hr />
+<h1 id="121-decoder-pool"><a class="header" href="#121-decoder-pool">121. Decoder Pool</a></h1>
+<p>Hardware decoder count is finite.</p>
+<p>Use admission control.</p>
+<hr />
+<h1 id="122-codec-resource-failure"><a class="header" href="#122-codec-resource-failure">122. Codec Resource Failure</a></h1>
+<p>If hardware codec allocation fails:</p>
+<pre><code class="language-text">reduce active streams
+fallback
+audio-only
+</code></pre>
+<p>not crash.</p>
+<hr />
+<h1 id="123-codec-error-model"><a class="header" href="#123-codec-error-model">123. Codec Error Model</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum AndroidCodecError {
+    Unsupported,
+    ConfigureFailed,
+    SurfaceUnavailable,
+    CodecResourceExhausted,
+    InputFailed,
+    OutputFailed,
+    ReconfigureFailed,
+    DeviceQuirk,
+    Timeout,
+    Fatal,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="124-failure-classification"><a class="header" href="#124-failure-classification">124. Failure Classification</a></h1>
+<p>Retryable:</p>
+<pre><code class="language-text">temporary resource
+surface lost
+</code></pre>
+<p>Potentially non-retryable:</p>
+<pre><code class="language-text">codec unsupported
+known broken profile
+</code></pre>
+<hr />
+<h1 id="125-codec-watchdog"><a class="header" href="#125-codec-watchdog">125. Codec Watchdog</a></h1>
+<p>If no output for expected time:</p>
+<pre><code class="language-text">detect stall
+</code></pre>
+<p>Then:</p>
+<pre><code class="language-text">flush
+restart
+fallback
+</code></pre>
+<hr />
+<h1 id="126-encoder-stall"><a class="header" href="#126-encoder-stall">126. Encoder Stall</a></h1>
+<p>Could be:</p>
+<pre><code class="language-text">camera stopped
+surface detached
+codec hung
+</code></pre>
+<p>Diagnostics distinguish.</p>
+<hr />
+<h1 id="127-decoder-stall"><a class="header" href="#127-decoder-stall">127. Decoder Stall</a></h1>
+<p>Could be:</p>
+<pre><code class="language-text">no packets
+jitter buffering
+codec hung
+surface lost
+</code></pre>
+<hr />
+<h1 id="128-diagnostics"><a class="header" href="#128-diagnostics">128. Diagnostics</a></h1>
+<p>Part 18 should expose:</p>
+<pre><code class="language-text">Video codec: AV1 hardware
+Input: Surface
+Output: Surface
+Raw CPU copies: 0
+Resolution: 1080p
+FPS: 30
+Bitrate: 2.5 Mbps
+Decoder restarts: 0
+</code></pre>
+<hr />
+<h1 id="129-copy-counter"><a class="header" href="#129-copy-counter">129. Copy Counter</a></h1>
+<p>Maintain diagnostics counters:</p>
+<pre><code class="language-text">raw_frame_cpu_copy_count
+raw_frame_cpu_copy_bytes
+</code></pre>
+<p>Production expectation for hardware path:</p>
+<pre><code class="language-text">0
+</code></pre>
+<p>or explain why not.</p>
+<hr />
+<h1 id="130-hardware-vs-software-metric"><a class="header" href="#130-hardware-vs-software-metric">130. Hardware vs Software Metric</a></h1>
+<pre><code class="language-text">encoder_backend
+decoder_backend
+</code></pre>
+<hr />
+<h1 id="131-thermal-metric"><a class="header" href="#131-thermal-metric">131. Thermal Metric</a></h1>
+<p>Can correlate:</p>
+<pre><code class="language-text">codec choice
+temperature
+</code></pre>
+<p>for tuning.</p>
+<hr />
+<h1 id="132-frame-timing-metrics"><a class="header" href="#132-frame-timing-metrics">132. Frame Timing Metrics</a></h1>
+<p>Measure:</p>
+<pre><code class="language-text">camera→encoder
+encoder latency
+network
+decoder latency
+surface render
+</code></pre>
+<p>where observable.</p>
+<hr />
+<h1 id="133-end-to-end-latency"><a class="header" href="#133-end-to-end-latency">133. End-to-End Latency</a></h1>
+<p>Use sender/receiver media timestamps carefully.</p>
+<p>Clock synchronization limitations should be explicit.</p>
+<hr />
+<h1 id="134-dropped-frames"><a class="header" href="#134-dropped-frames">134. Dropped Frames</a></h1>
+<p>Track:</p>
+<pre><code class="language-text">camera drop
+encoder drop
+network drop
+late decoder drop
+render drop
+</code></pre>
+<p>separately where possible.</p>
+<hr />
+<h1 id="135-developer-overlay"><a class="header" href="#135-developer-overlay">135. Developer Overlay</a></h1>
+<p>Optional call diagnostics overlay:</p>
+<pre><code class="language-text">AV1 HW
+1080p30
+2.4 Mbps
+RTT 42 ms
+0.8% loss
+Direct
+</code></pre>
+<hr />
+<h1 id="136-user-ui"><a class="header" href="#136-user-ui">136. User UI</a></h1>
+<p>Do not show codec internals by default.</p>
+<p>Normal:</p>
+<pre><code class="language-text">HD
+Connection good
+</code></pre>
+<hr />
+<h1 id="137-privacy"><a class="header" href="#137-privacy">137. Privacy</a></h1>
+<p>Diagnostics must not log:</p>
+<pre><code class="language-text">raw frame
+screenshots
+camera content
+</code></pre>
+<hr />
+<h1 id="138-security"><a class="header" href="#138-security">138. Security</a></h1>
+<p>Surface handles/pointers remain process-local.</p>
+<p>Never serialize them.</p>
+<hr />
+<h1 id="139-codec-input-validation"><a class="header" href="#139-codec-input-validation">139. Codec Input Validation</a></h1>
+<p>Encoded remote frames are untrusted.</p>
+<p>Before decoder:</p>
+<pre><code class="language-text">frame size limits
+codec state validation
+rate limits
+</code></pre>
+<hr />
+<h1 id="140-decoder-attack-surface"><a class="header" href="#140-decoder-attack-surface">140. Decoder Attack Surface</a></h1>
+<p>Hardware decoder parses hostile media.</p>
+<p>Use:</p>
+<pre><code class="language-text">OS security updates
+bounded frame sizes
+codec restart isolation
+</code></pre>
+<p>Do not pass malformed giant buffers blindly.</p>
+<hr />
+<h1 id="141-software-av1-fuzzing"><a class="header" href="#141-software-av1-fuzzing">141. Software AV1 Fuzzing</a></h1>
+<p>Part 10 applies strongly to software codec glue/parsers.</p>
+<hr />
+<h1 id="142-native-api-fuzz-boundary"><a class="header" href="#142-native-api-fuzz-boundary">142. Native API Fuzz Boundary</a></h1>
+<p>Do not fuzz Android codec driver directly with unbounded malformed data on production devices.</p>
+<p>Use controlled test environments.</p>
+<hr />
+<h1 id="143-resource-limits"><a class="header" href="#143-resource-limits">143. Resource Limits</a></h1>
+<p>Part 08:</p>
+<pre><code class="language-text">max encoded frame
+max jitter bytes
+max decoder instances
+max encoder instances
+max buffer pool
+</code></pre>
+<hr />
+<h1 id="144-call-priority"><a class="header" href="#144-call-priority">144. Call Priority</a></h1>
+<p>Audio codec and control frames get higher scheduler priority than video.</p>
+<hr />
+<h1 id="145-bounded-codec-channels"><a class="header" href="#145-bounded-codec-channels">145. Bounded Codec Channels</a></h1>
+<p>Example:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>tokio::sync::mpsc::channel(N)
+<span class="boring">}</span></code></pre></pre>
+<p>with deliberate <code>N</code>.</p>
+<p>No unbounded channels.</p>
+<hr />
+<h1 id="146-worker-isolation"><a class="header" href="#146-worker-isolation">146. Worker Isolation</a></h1>
+<p>Codec thread failure should fail:</p>
+<pre><code class="language-text">media video subsystem
+</code></pre>
+<p>not messaging daemon.</p>
+<hr />
+<h1 id="147-process-isolation"><a class="header" href="#147-process-isolation">147. Process Isolation</a></h1>
+<p>Android app normally hosts codec in same process.</p>
+<p>If future reliability demands:</p>
+<pre><code class="language-text">media service process
+</code></pre>
+<p>could isolate codec crashes, but it adds IPC/Surface complexity.</p>
+<p>Not required initially.</p>
+<hr />
+<h1 id="148-dioxus-renderer-architecture"><a class="header" href="#148-dioxus-renderer-architecture">148. Dioxus Renderer Architecture</a></h1>
+<p>Suggested:</p>
+<pre><code class="language-text">VideoTile
+  ↓
+PlatformVideoSurface
+  ↓
+SurfaceId
+  ↓
+Rust MediaRuntime
+  ↓
+AndroidSurfaceDecoder
+</code></pre>
+<hr />
+<h1 id="149-ui--media-commands"><a class="header" href="#149-ui--media-commands">149. UI ↔ Media Commands</a></h1>
+<p>Only low-frequency commands:</p>
+<pre><code class="language-text">attach renderer
+detach renderer
+set visibility
+set fit mode
+</code></pre>
+<p>No frames.</p>
+<hr />
+<h1 id="150-renderer-registry"><a class="header" href="#150-renderer-registry">150. Renderer Registry</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct RendererRegistry {
+    // RendererId → SurfaceHandle
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Owned by Android media integration layer.</p>
+<hr />
+<h1 id="151-surface-callback-contract"><a class="header" href="#151-surface-callback-contract">151. Surface Callback Contract</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum SurfaceEvent {
+    Created { renderer: RendererId, surface: SurfaceHandle },
+    Resized { renderer: RendererId, width: u32, height: u32 },
+    Destroyed { renderer: RendererId },
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="152-resize"><a class="header" href="#152-resize">152. Resize</a></h1>
+<p>Do not restart decoder for every layout size change.</p>
+<p>Decoder resolution and display surface size are independent.</p>
+<p>Use compositor scaling.</p>
+<hr />
+<h1 id="153-resolution-negotiation"><a class="header" href="#153-resolution-negotiation">153. Resolution Negotiation</a></h1>
+<p>Sender resolution changes for network/battery reasons, not because UI tile changes by a few pixels.</p>
+<hr />
+<h1 id="154-high-dpi"><a class="header" href="#154-high-dpi">154. High-DPI</a></h1>
+<p>Surface uses physical pixel dimensions.</p>
+<p>Dioxus layout may use logical units.</p>
+<p>Adapter converts correctly.</p>
+<hr />
+<h1 id="155-hdr--color"><a class="header" href="#155-hdr--color">155. HDR / Color</a></h1>
+<p>Future support may require:</p>
+<pre><code class="language-text">color standard
+transfer
+range
+bit depth
+</code></pre>
+<p>in codec negotiation.</p>
+<hr />
+<h1 id="156-initial-color-scope"><a class="header" href="#156-initial-color-scope">156. Initial Color Scope</a></h1>
+<p>Start with:</p>
+<pre><code class="language-text">8-bit SDR
+BT.709-like ordinary video profile
+</code></pre>
+<p>unless product specifically needs HDR.</p>
+<hr />
+<h1 id="157-color-conversion"><a class="header" href="#157-color-conversion">157. Color Conversion</a></h1>
+<p>Avoid CPU conversion.</p>
+<p>Use camera/codec/GPU path.</p>
+<hr />
+<h1 id="158-yuv-formats"><a class="header" href="#158-yuv-formats">158. YUV Formats</a></h1>
+<p>Hardware surface path avoids choosing CPU YUV layout in most cases.</p>
+<p>Software AV1 fallback will need explicit supported YUV formats.</p>
+<hr />
+<h1 id="159-software-yuv-contract"><a class="header" href="#159-software-yuv-contract">159. Software YUV Contract</a></h1>
+<p>Example:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum SoftwarePixelFormat {
+    I420,
+    Nv12,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Keep set small.</p>
+<hr />
+<h1 id="160-conversion"><a class="header" href="#160-conversion">160. Conversion</a></h1>
+<p>If camera produces incompatible software format:</p>
+<pre><code class="language-text">use hardware/GPU conversion if possible
+</code></pre>
+<p>before CPU conversion.</p>
+<hr />
+<h1 id="161-camera-capture-api"><a class="header" href="#161-camera-capture-api">161. Camera Capture API</a></h1>
+<p>The camera subsystem should provide:</p>
+<pre><code class="language-text">SurfaceTarget
+</code></pre>
+<p>for hardware mode.</p>
+<p>Not:</p>
+<pre><code class="language-text">Vec&lt;u8&gt;
+</code></pre>
+<p>by default.</p>
+<hr />
+<h1 id="162-hardware-pipeline-builder"><a class="header" href="#162-hardware-pipeline-builder">162. Hardware Pipeline Builder</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let pipeline = AndroidHardwareVideoPipeline::builder()
+    .codec(VideoCodec::Av1)
+    .resolution(Resolution::HD1080)
+    .fps(30)
+    .build()?;
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="163-encoder-surface"><a class="header" href="#163-encoder-surface">163. Encoder Surface</a></h1>
+<p>Pipeline exposes:</p>
+<pre><code class="language-text">camera target surface
+</code></pre>
+<p>through native handle abstraction.</p>
+<hr />
+<h1 id="164-receiver-pipeline"><a class="header" href="#164-receiver-pipeline">164. Receiver Pipeline</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let decoder = AndroidSurfaceDecoder::new(codec_config, renderer)?;
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="165-session-integration"><a class="header" href="#165-session-integration">165. Session Integration</a></h1>
+<p>Call session owns:</p>
+<pre><code class="language-text">VideoSendSession
+VideoReceiveSession
+</code></pre>
+<p>not raw codec objects directly.</p>
+<hr />
+<h1 id="166-session-state"><a class="header" href="#166-session-state">166. Session State</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum VideoSessionState {
+    Disabled,
+    Starting,
+    Active,
+    Reconfiguring,
+    Paused,
+    Failed,
+    Stopping,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="167-codec-swap"><a class="header" href="#167-codec-swap">167. Codec Swap</a></h1>
+<p>If negotiation changes:</p>
+<pre><code class="language-text">H.265 → H.264
+</code></pre>
+<p>perform coordinated:</p>
+<pre><code class="language-text">new codec config
+decoder setup
+keyframe
+switch
+</code></pre>
+<hr />
+<h1 id="168-seamless-swap-goal"><a class="header" href="#168-seamless-swap-goal">168. Seamless Swap Goal</a></h1>
+<p>Avoid multi-second blank screen.</p>
+<hr />
+<h1 id="169-surface-still-reused"><a class="header" href="#169-surface-still-reused">169. Surface Still Reused</a></h1>
+<p>Codec swap may reuse same output Surface.</p>
+<hr />
+<h1 id="170-network-multipath"><a class="header" href="#170-network-multipath">170. Network Multipath</a></h1>
+<p>Part 12 can change path without touching Surface pipeline.</p>
+<p>Media session remains logically identical.</p>
+<hr />
+<h1 id="171-network-handoff"><a class="header" href="#171-network-handoff">171. Network Handoff</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">Wi-Fi → cellular
+</code></pre>
+<p>Rust congestion controller adapts bitrate.</p>
+<p>Codec may not restart.</p>
+<hr />
+<h1 id="172-bluetooth"><a class="header" href="#172-bluetooth">172. Bluetooth</a></h1>
+<p>Bluetooth is not intended for full video streaming.</p>
+<p>Routing should generally avoid video over BLE.</p>
+<hr />
+<h1 id="173-lan"><a class="header" href="#173-lan">173. LAN</a></h1>
+<p>LAN direct can support high-quality video with low latency.</p>
+<hr />
+<h1 id="174-relay"><a class="header" href="#174-relay">174. Relay</a></h1>
+<p>Relay path may require lower bitrate based on congestion.</p>
+<hr />
+<h1 id="175-dtn"><a class="header" href="#175-dtn">175. DTN</a></h1>
+<p>Realtime video does not use DTN.</p>
+<p>Recorded clips/files do.</p>
+<hr />
+<h1 id="176-background-file-video"><a class="header" href="#176-background-file-video">176. Background File Video</a></h1>
+<p>A sent video attachment uses file subsystem, not live Surface path.</p>
+<hr />
+<h1 id="177-video-thumbnail"><a class="header" href="#177-video-thumbnail">177. Video Thumbnail</a></h1>
+<p>Can be generated separately.</p>
+<p>Do not decode entire video into CPU frames for every UI display.</p>
+<hr />
+<h1 id="178-preview-frame"><a class="header" href="#178-preview-frame">178. Preview Frame</a></h1>
+<p>One-time decoded frame is acceptable for thumbnail.</p>
+<p>Separate from call renderer.</p>
+<hr />
+<h1 id="179-build-feature"><a class="header" href="#179-build-feature">179. Build Feature</a></h1>
+<p>Example:</p>
+<pre><code class="language-toml">android-hw-video = []
+av1-software = []
+</code></pre>
+<hr />
+<h1 id="180-platform-gate"><a class="header" href="#180-platform-gate">180. Platform Gate</a></h1>
+<p><code>comm-media-android</code> builds only for:</p>
+<pre><code class="language-text">target_os = "android"
+</code></pre>
+<hr />
+<h1 id="181-mock-backend"><a class="header" href="#181-mock-backend">181. Mock Backend</a></h1>
+<p>Desktop/unit tests need:</p>
+<pre><code class="language-text">MockSurfaceCodec
+</code></pre>
+<p>for state-machine testing.</p>
+<hr />
+<h1 id="182-android-instrumentation-tests"><a class="header" href="#182-android-instrumentation-tests">182. Android Instrumentation Tests</a></h1>
+<p>Required for actual:</p>
+<pre><code class="language-text">MediaCodec
+Surface
+camera
+</code></pre>
+<p>behavior.</p>
+<hr />
+<h1 id="183-device-matrix"><a class="header" href="#183-device-matrix">183. Device Matrix</a></h1>
+<p>Test:</p>
+<pre><code class="language-text">low-end Android
+mid-range Android
+recent flagship
+AV1 hardware device
+H.265-only device
+H.264 fallback device
+</code></pre>
+<hr />
+<h1 id="184-android-version-matrix"><a class="header" href="#184-android-version-matrix">184. Android Version Matrix</a></h1>
+<p>Support must be based on chosen minSdk/targetSdk.</p>
+<p>Keep exact API gating in platform adapter.</p>
+<hr />
+<h1 id="185-codec-capability-test"><a class="header" href="#185-codec-capability-test">185. Codec Capability Test</a></h1>
+<p>For every test device:</p>
+<pre><code class="language-text">enumerate advertised codecs
+start encoder
+encode test frames
+decode
+render
+</code></pre>
+<hr />
+<h1 id="186-surface-lifecycle-test"><a class="header" href="#186-surface-lifecycle-test">186. Surface Lifecycle Test</a></h1>
+<p>Repeated:</p>
+<pre><code class="language-text">create
+destroy
+recreate
+rotate
+background
+foreground
+</code></pre>
+<p>during live call.</p>
+<p>Expected:</p>
+<pre><code class="language-text">no crash
+no dangling surface
+recovery
+</code></pre>
+<hr />
+<h1 id="187-camera-switch-test"><a class="header" href="#187-camera-switch-test">187. Camera Switch Test</a></h1>
+<p>Switch front/rear repeatedly.</p>
+<hr />
+<h1 id="188-network-handoff-test"><a class="header" href="#188-network-handoff-test">188. Network Handoff Test</a></h1>
+<p>While video active:</p>
+<pre><code class="language-text">Wi-Fi → cellular → Wi-Fi
+</code></pre>
+<p>Surface remains stable.</p>
+<hr />
+<h1 id="189-encoder-restart-test"><a class="header" href="#189-encoder-restart-test">189. Encoder Restart Test</a></h1>
+<p>Force hardware codec error.</p>
+<p>Expected:</p>
+<pre><code class="language-text">bounded restart
+keyframe
+resume
+</code></pre>
+<hr />
+<h1 id="190-decoder-restart-test"><a class="header" href="#190-decoder-restart-test">190. Decoder Restart Test</a></h1>
+<p>Same.</p>
+<hr />
+<h1 id="191-hardware-resource-exhaustion-test"><a class="header" href="#191-hardware-resource-exhaustion-test">191. Hardware Resource Exhaustion Test</a></h1>
+<p>Open competing codec instances.</p>
+<p>Expected:</p>
+<pre><code class="language-text">typed resource failure
+quality degradation
+</code></pre>
+<hr />
+<h1 id="192-zero-copy-acceptance-test"><a class="header" href="#192-zero-copy-acceptance-test">192. Zero-Copy Acceptance Test</a></h1>
+<p>For hardware path, instrumentation should verify app does not route raw frame-sized ByteArrays/Vecs through Kotlin/Rust bridge.</p>
+<hr />
+<h1 id="193-memory-bandwidth-benchmark"><a class="header" href="#193-memory-bandwidth-benchmark">193. Memory Bandwidth Benchmark</a></h1>
+<p>Compare:</p>
+<pre><code class="language-text">legacy CPU-copy pipeline
+vs
+Surface pipeline
+</code></pre>
+<p>Measure:</p>
+<pre><code class="language-text">CPU
+battery
+temperature
+memory copies
+frame latency
+</code></pre>
+<hr />
+<h1 id="194-battery-benchmark"><a class="header" href="#194-battery-benchmark">194. Battery Benchmark</a></h1>
+<p>Run 30–60 minute video call.</p>
+<p>Track:</p>
+<pre><code class="language-text">battery drain
+thermal
+dropped frames
+</code></pre>
+<hr />
+<h1 id="195-1080p-test"><a class="header" href="#195-1080p-test">195. 1080p Test</a></h1>
+<p>Target stable:</p>
+<pre><code class="language-text">1080p30
+</code></pre>
+<p>on suitable device.</p>
+<hr />
+<h1 id="196-4k"><a class="header" href="#196-4k">196. 4K</a></h1>
+<p>Only enable if:</p>
+<pre><code class="language-text">device capability
+network
+battery
+UI need
+</code></pre>
+<p>support it.</p>
+<p>4K should not be default video-call mode.</p>
+<hr />
+<h1 id="197-low-end-device"><a class="header" href="#197-low-end-device">197. Low-End Device</a></h1>
+<p>Gracefully use:</p>
+<pre><code class="language-text">720p
+480p
+</code></pre>
+<p>rather than saturating device.</p>
+<hr />
+<h1 id="198-software-av1-benchmark"><a class="header" href="#198-software-av1-benchmark">198. Software AV1 Benchmark</a></h1>
+<p>Measure whether fallback is actually viable on target hardware.</p>
+<p>If not:</p>
+<pre><code class="language-text">audio-only / no video
+</code></pre>
+<p>is better than unusable thermal overload.</p>
+<hr />
+<h1 id="199-crash-recovery"><a class="header" href="#199-crash-recovery">199. Crash Recovery</a></h1>
+<p>Live calls are ephemeral.</p>
+<p>After app process death:</p>
+<pre><code class="language-text">call ends/reconnects according to call protocol
+</code></pre>
+<p>No attempt to restore stale Surface object.</p>
+<hr />
+<h1 id="200-surface-persistence"><a class="header" href="#200-surface-persistence">200. Surface Persistence</a></h1>
+<p>Never persist:</p>
+<pre><code class="language-text">SurfaceId
+ANativeWindow pointer
+codec instance
+</code></pre>
+<p>across process restart.</p>
+<hr />
+<h1 id="201-diagnostics-persistence"><a class="header" href="#201-diagnostics-persistence">201. Diagnostics Persistence</a></h1>
+<p>Only aggregate failure counters may persist.</p>
+<hr />
+<h1 id="202-security-invariants"><a class="header" href="#202-security-invariants">202. Security Invariants</a></h1>
+<ol>
+<li>Raw video frames do not normally cross Kotlin ↔ Rust as byte arrays.</li>
+<li>Hardware encoder surface is the camera target in hardware mode.</li>
+<li>Hardware decoder renders directly to output Surface.</li>
+<li>Surface pointers never outlive acquired references.</li>
+<li>UI destruction invalidates/rebinds renderer safely.</li>
+<li>Codec queues are bounded.</li>
+<li>Network backpressure cannot create unbounded live-video latency.</li>
+<li>Hardware capability is detected at runtime.</li>
+<li>Software fallback is AV1 only, according to product requirement.</li>
+<li>Hardware codec failure cannot crash messaging core.</li>
+<li>Video priority never starves audio/control.</li>
+<li>Surface handles are process-local and never serialized.</li>
+<li>Raw frames are never written to logs.</li>
+<li>Emergency/battery/thermal policy can downgrade or disable video.</li>
+<li>Dioxus deals with renderer handles, not frame byte buffers.</li>
+</ol>
+<hr />
+<h1 id="203-suggested-workspace-integration"><a class="header" href="#203-suggested-workspace-integration">203. Suggested Workspace Integration</a></h1>
+<pre><code class="language-text">crates/
+├── comm-media-core/
+├── comm-media-transport/
+├── comm-media-av1/
+├── comm-media-android/
+├── comm-media-sync/
+├── comm-media-diagnostics/
+└── comm-ui-video/
+
+platform/
+└── android/
+    ├── media/
+    ├── camera/
+    └── surface/
+</code></pre>
+<hr />
+<h1 id="204-comm-media-core"><a class="header" href="#204-comm-media-core">204. <code>comm-media-core</code></a></h1>
+<p>Owns:</p>
+<pre><code class="language-text">codec-independent session
+timestamp
+bitrate policy
+quality ladder
+</code></pre>
+<hr />
+<h1 id="205-comm-media-transport"><a class="header" href="#205-comm-media-transport">205. <code>comm-media-transport</code></a></h1>
+<p>Owns:</p>
+<pre><code class="language-text">packetization
+reassembly
+jitter
+keyframe feedback
+</code></pre>
+<hr />
+<h1 id="206-comm-media-av1"><a class="header" href="#206-comm-media-av1">206. <code>comm-media-av1</code></a></h1>
+<p>Owns:</p>
+<pre><code class="language-text">software AV1 path
+</code></pre>
+<p>No Android-specific code.</p>
+<hr />
+<h1 id="207-comm-media-android"><a class="header" href="#207-comm-media-android">207. <code>comm-media-android</code></a></h1>
+<p>Owns hardware codec/surface integration.</p>
+<hr />
+<h1 id="208-comm-ui-video"><a class="header" href="#208-comm-ui-video">208. <code>comm-ui-video</code></a></h1>
+<p>Owns Dioxus view model and renderer registration.</p>
+<p>No codec dependency.</p>
+<hr />
+<h1 id="209-production-rollout-phases"><a class="header" href="#209-production-rollout-phases">209. Production Rollout Phases</a></h1>
+<h2 id="phase-1--native-surface-wrapper"><a class="header" href="#phase-1--native-surface-wrapper">Phase 1 — Native Surface Wrapper</a></h2>
+<pre><code class="language-text">ANativeWindow
+RAII
+surface lifecycle
+</code></pre>
+<h2 id="phase-2--hardware-decode-to-surface"><a class="header" href="#phase-2--hardware-decode-to-surface">Phase 2 — Hardware Decode to Surface</a></h2>
+<pre><code class="language-text">H.264
+H.265
+AV1 where available
+</code></pre>
+<h2 id="phase-3--hardware-encode-from-surface"><a class="header" href="#phase-3--hardware-encode-from-surface">Phase 3 — Hardware Encode from Surface</a></h2>
+<pre><code class="language-text">camera → encoder
+</code></pre>
+<h2 id="phase-4--dioxus-renderer-bridge"><a class="header" href="#phase-4--dioxus-renderer-bridge">Phase 4 — Dioxus Renderer Bridge</a></h2>
+<pre><code class="language-text">renderer ID
+surface create/destroy
+</code></pre>
+<h2 id="phase-5--adaptive-media"><a class="header" href="#phase-5--adaptive-media">Phase 5 — Adaptive Media</a></h2>
+<pre><code class="language-text">bitrate
+fps
+resolution
+keyframe
+</code></pre>
+<h2 id="phase-6--software-av1-fallback"><a class="header" href="#phase-6--software-av1-fallback">Phase 6 — Software AV1 Fallback</a></h2>
+<pre><code class="language-text">native raw-buffer access
+no Kotlin ByteArray hot path
+</code></pre>
+<h2 id="phase-7--device-quirks"><a class="header" href="#phase-7--device-quirks">Phase 7 — Device Quirks</a></h2>
+<pre><code class="language-text">capability probe
+fallback database
+</code></pre>
+<h2 id="phase-8--hardening"><a class="header" href="#phase-8--hardening">Phase 8 — Hardening</a></h2>
+<pre><code class="language-text">lifecycle
+network handoff
+codec stalls
+thermal
+battery
+soak
+</code></pre>
+<hr />
+<h1 id="210-definition-of-done"><a class="header" href="#210-definition-of-done">210. Definition of Done</a></h1>
+<p>Part 25 is complete when:</p>
+<ul>
+<li>Android video calls can run with hardware encoder Surface input</li>
+<li>hardware decoder can render directly to a Surface</li>
+<li>normal hardware media path does not copy raw frame ByteArrays between Kotlin and Rust</li>
+<li>Dioxus video components operate on renderer/surface handles rather than raw frames</li>
+<li>H.264, H.265, and AV1 hardware capability is detected dynamically</li>
+<li>AV1 remains the only software video codec fallback</li>
+<li>camera preview can remain surface-based</li>
+<li>codec instances are bounded and resource-aware</li>
+<li>live video queues cannot grow without limit</li>
+<li>bitrate/FPS/resolution adaptation works without unnecessary codec restarts</li>
+<li>decoder recovery/keyframe-request behavior is defined</li>
+<li>Surface destruction/recreation is safe during rotation/background/navigation</li>
+<li>hardware failure degrades to another valid codec/backend or audio-only</li>
+<li>battery/thermal policy can reduce or disable video</li>
+<li>diagnostics can distinguish hardware/software path and count raw-frame copies</li>
+<li>real Android device tests demonstrate the Surface path is materially more CPU/battery efficient than the copied-frame path</li>
+</ul>
+<hr />
+<h1 id="211-relationship-to-previous-parts"><a class="header" href="#211-relationship-to-previous-parts">211. Relationship to Previous Parts</a></h1>
+<p>This part strengthens:</p>
+<pre><code class="language-text">03 — Transport / Routing
+07 — Capability Negotiation
+08 — Resource Limits
+10 — Fuzzing / Protocol Tests
+12 — Multipath
+13 — Battery-Aware Scheduling
+16 — Daemon / Runtime
+17 — Emergency Priority
+18 — Diagnostics
+19 — C ABI / FFI
+</code></pre>
+<p>and connects directly to the previously defined:</p>
+<pre><code class="language-text">Android H.264 hardware codec
+Android H.265 hardware codec
+Android AV1 hardware codec
+AV1 software codec
+Dioxus mobile UI
+</code></pre>
+<hr />
+<h1 id="212-final-architecture"><a class="header" href="#212-final-architecture">212. Final Architecture</a></h1>
+<h2 id="send"><a class="header" href="#send">Send</a></h2>
+<pre><code class="language-text">                    ANDROID CAMERA
+                          │
+                          ▼
+                   BufferQueue/Surface
+                    ┌─────┴──────┐
+                    │            │
+               Local Preview   Encoder Surface
+                    │            │
+                    │       Hardware Codec
+                    │            │
+                    │      Encoded Access Unit
+                    │            │
+                    └────────────┼─────────────┐
+                                 ▼             │
+                           Rust Packetizer     │
+                                 │             │
+                              Iroh/QUIC        │
+</code></pre>
+<h2 id="receive"><a class="header" href="#receive">Receive</a></h2>
+<pre><code class="language-text">Iroh/QUIC
+    │
+    ▼
+Rust Depacketizer
+    │
+    ▼
+Encoded Access Unit
+    │
+    ▼
+Android Hardware Decoder
+    │
+    ▼
+Output Surface / ANativeWindow
+    │
+    ▼
+Android Compositor
+    │
+    ▼
+Dioxus Video View
+</code></pre>
+<p>Normal receive path contains:</p>
+<pre><code class="language-text">zero raw-frame Kotlin ↔ Rust copies
+</code></pre>
+<hr />
+<h1 id="213-final-principle"><a class="header" href="#213-final-principle">213. Final Principle</a></h1>
+<p>The Rust application should control the video system without becoming the transport mechanism for every pixel.</p>
+<p>The efficient Android architecture is:</p>
+<pre><code class="language-text">Rust controls
+Android hardware moves pixels
+Rust moves compressed media
+</code></pre>
+<p>not:</p>
+<pre><code class="language-text">Android creates pixels
+Kotlin copies pixels
+Rust copies pixels
+codec copies pixels
+UI copies pixels
+</code></pre>
+<p>That distinction becomes increasingly important at:</p>
+<pre><code class="language-text">1080p
+60 fps
+4K
+long calls
+battery-powered devices
+</code></pre>
+<p>Part 25 therefore makes the Android media path genuinely production-grade rather than merely functionally correct.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="33-backup-restore-export-import-archival-portability-architecture.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="26-rust-first-audio-dsp-resampling-aec-ns-agc-architecture.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="33-backup-restore-export-import-archival-portability-architecture.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="26-rust-first-audio-dsp-resampling-aec-ns-agc-architecture.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

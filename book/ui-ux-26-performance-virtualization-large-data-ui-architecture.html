@@ -1,0 +1,1870 @@
+<!DOCTYPE HTML>
+<html lang="en" class="navy" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>UI/UX 26 — Virtualization &amp; Large-Data UI Performance - SIAR System Architecture &amp; Technical Wiki</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="Comprehensive system architecture, cryptographic protocols, DTN mesh networking, distributed storage, audio DSP pipelines, and UI/UX design specifications for SIAR.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="theme/custom.css">
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "navy";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('navy')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="Home.html">Architecture Portal & Reading Guide</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part I: Protocol Foundation & Extension Platform</li><li class="chapter-item expanded "><a href="01-protocol-extension-system-architecture.html"><strong aria-hidden="true">1.</strong> 01 — Protocol Extension System Architecture</a></li><li class="chapter-item expanded "><a href="07-capability-negotiation-architecture.html"><strong aria-hidden="true">2.</strong> 07 — Capability Negotiation & Protocol Upgrades</a></li><li class="chapter-item expanded "><a href="21-third-party-protocol-extensions-architecture.html"><strong aria-hidden="true">3.</strong> 21 — Third-Party Protocol Extensions</a></li><li class="chapter-item expanded "><a href="22-wasm-compatible-components-architecture.html"><strong aria-hidden="true">4.</strong> 22 — WebAssembly (WASM) Compatible Components</a></li><li class="chapter-item expanded "><a href="23-external-interoperability-suite-architecture.html"><strong aria-hidden="true">5.</strong> 23 — External Interoperability & Conformance Suite</a></li><li class="chapter-item expanded "><a href="24-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">6.</strong> 24 — Dynamic Plugin & Module Ecosystem</a></li><li class="chapter-item expanded affix "><li class="part-title">Part II: Identity, Trust & Cryptography</li><li class="chapter-item expanded "><a href="02-multi-device-identity-architecture.html"><strong aria-hidden="true">7.</strong> 02 — Multi-Device Identity & Trust Model</a></li><li class="chapter-item expanded "><a href="28-production-security-e2ee-key-management-privacy-architecture.html"><strong aria-hidden="true">8.</strong> 28 — Production Security, E2EE, Key Management & Privacy</a></li><li class="chapter-item expanded affix "><li class="part-title">Part III: Mesh Networking, Transports & Hardware</li><li class="chapter-item expanded "><a href="03-transport-routing-policy-engine-architecture.html"><strong aria-hidden="true">9.</strong> 03 — Transport & Routing Policy Engine</a></li><li class="chapter-item expanded "><a href="11-relay-self-hosted-infrastructure-architecture.html"><strong aria-hidden="true">10.</strong> 11 — Self-Hosted Relay & Coordination Infrastructure</a></li><li class="chapter-item expanded "><a href="12-multipath-networking-architecture.html"><strong aria-hidden="true">11.</strong> 12 — Multipath Networking & Link Aggregation</a></li><li class="chapter-item expanded "><a href="13-battery-aware-scheduling-architecture.html"><strong aria-hidden="true">12.</strong> 13 — Battery-Aware Scheduling & Power Profiles</a></li><li class="chapter-item expanded "><a href="14-proximity-abstraction-architecture.html"><strong aria-hidden="true">13.</strong> 14 — Proximity Abstraction (BLE, Wi-Fi Direct, LoRa)</a></li><li class="chapter-item expanded "><a href="15-qr-nfc-bootstrap-pairing-architecture.html"><strong aria-hidden="true">14.</strong> 15 — Out-of-Band QR & NFC Bootstrap Pairing</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IV: Delay-Tolerant Networking & Emergency Mesh</li><li class="chapter-item expanded "><a href="06-dtn-store-carry-forward-architecture.html"><strong aria-hidden="true">15.</strong> 06 — DTN Store-Carry-Forward & Bundle Forwarding</a></li><li class="chapter-item expanded "><a href="17-emergency-priority-classes-architecture.html"><strong aria-hidden="true">16.</strong> 17 — Emergency Priority Classes & Critical Alert Mesh</a></li><li class="chapter-item expanded affix "><li class="part-title">Part V: Storage, Outbox & Data Lifecycle</li><li class="chapter-item expanded "><a href="04-offline-event-log-architecture.html"><strong aria-hidden="true">17.</strong> 04 — Offline Event Log & Sync Engine</a></li><li class="chapter-item expanded "><a href="05-robust-file-blob-subsystem-architecture.html"><strong aria-hidden="true">18.</strong> 05 — Robust File & Blob Subsystem (Chunking & Resumption)</a></li><li class="chapter-item expanded "><a href="09-crash-recovery-architecture.html"><strong aria-hidden="true">19.</strong> 09 — Crash Recovery & State Integrity</a></li><li class="chapter-item expanded "><a href="32-search-indexing-local-knowledge-privacy-architecture.html"><strong aria-hidden="true">20.</strong> 32 — Search, Indexing & Local Privacy Retrieval</a></li><li class="chapter-item expanded "><a href="33-backup-restore-export-import-archival-portability-architecture.html"><strong aria-hidden="true">21.</strong> 33 — Backup, Restore, Export & Long-Term Archival</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VI: Realtime Media, Calling & Audio DSP</li><li class="chapter-item expanded "><a href="25-android-direct-hardware-surface-zero-copy-media-architecture.html"><strong aria-hidden="true">22.</strong> 25 — Android Direct Surface Zero-Copy Media</a></li><li class="chapter-item expanded "><a href="26-rust-first-audio-dsp-resampling-aec-ns-agc-architecture.html"><strong aria-hidden="true">23.</strong> 26 — Rust-First Audio DSP (AEC, NS, AGC, Resampling)</a></li><li class="chapter-item expanded "><a href="29-realtime-calls-media-session-protocol-architecture.html"><strong aria-hidden="true">24.</strong> 29 — Realtime Calls & Media Session Protocol</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VII: Ephemeral State, Presence & Notifications</li><li class="chapter-item expanded "><a href="30-presence-availability-typing-read-receipts-ephemeral-state-architecture.html"><strong aria-hidden="true">25.</strong> 30 — Presence, Availability, Typing & Read Receipts</a></li><li class="chapter-item expanded "><a href="31-notifications-push-background-delivery-lifecycle-architecture.html"><strong aria-hidden="true">26.</strong> 31 — Notifications, Push Wake & Background Delivery</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VIII: Native Runtimes, Daemons & Embedded Linux</li><li class="chapter-item expanded "><a href="16-daemon-headless-runtime-architecture.html"><strong aria-hidden="true">27.</strong> 16 — Headless Daemon & Background Runtime</a></li><li class="chapter-item expanded "><a href="19-c-abi-ffi-architecture.html"><strong aria-hidden="true">28.</strong> 19 — C-ABI FFI & Native Language Interop</a></li><li class="chapter-item expanded "><a href="20-embedded-linux-node-architecture.html"><strong aria-hidden="true">29.</strong> 20 — Embedded Linux Node & Resource-Constrained Targets</a></li><li class="chapter-item expanded "><a href="27-rust-driven-android-native-build-packaging-automation.html"><strong aria-hidden="true">30.</strong> 27 — Rust-Driven Android Native Build & Packaging Automation</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IX: Reliability, Testing, Fuzzing & Diagnostics</li><li class="chapter-item expanded "><a href="08-resource-limits-backpressure-architecture.html"><strong aria-hidden="true">31.</strong> 08 — Resource Limits, Quotas & Backpressure</a></li><li class="chapter-item expanded "><a href="10-fuzzing-protocol-test-suite-architecture.html"><strong aria-hidden="true">32.</strong> 10 — Fuzzing & Protocol Test Suite</a></li><li class="chapter-item expanded "><a href="18-network-diagnostics-path-visualization-architecture.html"><strong aria-hidden="true">33.</strong> 18 — Network Diagnostics & Path Visualization</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part X: UI/UX Client Architecture (Cross-Platform)</li><li class="chapter-item expanded "><a href="ui-ux-01-product-foundation-cross-platform-interaction-architecture.html"><strong aria-hidden="true">34.</strong> UI/UX 01 — Product UX Foundation & Cross-Platform Interaction</a></li><li class="chapter-item expanded "><a href="ui-ux-02-desktop-dioxus-app-shell-navigation-window-architecture.html"><strong aria-hidden="true">35.</strong> UI/UX 02 — Desktop Dioxus App Shell & Navigation</a></li><li class="chapter-item expanded "><a href="ui-ux-03-android-jetpack-compose-app-shell-navigation-lifecycle-architecture.html"><strong aria-hidden="true">36.</strong> UI/UX 03 — Android Jetpack Compose App Shell & Lifecycle</a></li><li class="chapter-item expanded "><a href="ui-ux-04-conversation-list-inbox-architecture.html"><strong aria-hidden="true">37.</strong> UI/UX 04 — Conversation List & Inbox UX</a></li><li class="chapter-item expanded "><a href="ui-ux-05-conversation-message-timeline-architecture.html"><strong aria-hidden="true">38.</strong> UI/UX 05 — Conversation Message Timeline UX</a></li><li class="chapter-item expanded "><a href="ui-ux-06-message-composer-attachments-voice-notes-drafts-architecture.html"><strong aria-hidden="true">39.</strong> UI/UX 06 — Message Composer, Attachments & Voice Notes</a></li><li class="chapter-item expanded "><a href="ui-ux-07-calls-realtime-media-architecture.html"><strong aria-hidden="true">40.</strong> UI/UX 07 — Calls & Realtime Media UX</a></li><li class="chapter-item expanded "><a href="ui-ux-08-contacts-requests-verification-identity-architecture.html"><strong aria-hidden="true">41.</strong> UI/UX 08 — Contacts, Requests, Verification & Identity</a></li><li class="chapter-item expanded "><a href="ui-ux-09-groups-membership-roles-architecture.html"><strong aria-hidden="true">42.</strong> UI/UX 09 — Groups, Membership & Roles UX</a></li><li class="chapter-item expanded "><a href="ui-ux-10-files-media-gallery-transfer-architecture.html"><strong aria-hidden="true">43.</strong> UI/UX 10 — Files, Media Gallery & Transfer UX</a></li><li class="chapter-item expanded "><a href="ui-ux-11-search-local-knowledge-retrieval-architecture.html"><strong aria-hidden="true">44.</strong> UI/UX 11 — Search & Local Knowledge Retrieval UX</a></li><li class="chapter-item expanded "><a href="ui-ux-12-nearby-qr-nfc-pairing-device-linking-architecture.html"><strong aria-hidden="true">45.</strong> UI/UX 12 — Nearby, QR/NFC Pairing & Device Linking UX</a></li><li class="chapter-item expanded "><a href="ui-ux-13-notifications-background-incoming-call-architecture.html"><strong aria-hidden="true">46.</strong> UI/UX 13 — Notifications, Background & Incoming Call UX</a></li><li class="chapter-item expanded "><a href="ui-ux-14-presence-typing-receipts-status-architecture.html"><strong aria-hidden="true">47.</strong> UI/UX 14 — Presence, Typing, Receipts & Status UX</a></li><li class="chapter-item expanded "><a href="ui-ux-15-security-center-devices-keys-recovery-architecture.html"><strong aria-hidden="true">48.</strong> UI/UX 15 — Security Center, Devices, Keys & Recovery UX</a></li><li class="chapter-item expanded "><a href="ui-ux-16-backup-restore-export-migration-architecture.html"><strong aria-hidden="true">49.</strong> UI/UX 16 — Backup, Restore, Export & Migration UX</a></li><li class="chapter-item expanded "><a href="ui-ux-17-emergency-sos-offline-mesh-architecture.html"><strong aria-hidden="true">50.</strong> UI/UX 17 — Emergency / SOS / Offline Mesh UX</a></li><li class="chapter-item expanded "><a href="ui-ux-18-settings-privacy-notifications-data-controls-architecture.html"><strong aria-hidden="true">51.</strong> UI/UX 18 — Settings, Privacy, Notifications & Data Controls</a></li><li class="chapter-item expanded "><a href="ui-ux-19-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">52.</strong> UI/UX 19 — Plugin & Module Ecosystem UX</a></li><li class="chapter-item expanded "><a href="ui-ux-20-diagnostics-network-paths-advanced-developer-architecture.html"><strong aria-hidden="true">53.</strong> UI/UX 20 — Diagnostics, Network Paths & Developer UX</a></li><li class="chapter-item expanded "><a href="ui-ux-21-accessibility-inclusive-interaction-architecture.html"><strong aria-hidden="true">54.</strong> UI/UX 21 — Accessibility & Inclusive Interaction</a></li><li class="chapter-item expanded "><a href="ui-ux-22-design-system-tokens-typography-icons-motion-architecture.html"><strong aria-hidden="true">55.</strong> UI/UX 22 — Design System, Tokens, Typography & Motion</a></li><li class="chapter-item expanded "><a href="ui-ux-23-responsive-adaptive-desktop-tablet-foldable-phone-layout-architecture.html"><strong aria-hidden="true">56.</strong> UI/UX 23 — Responsive & Adaptive Layouts (Desktop/Tablet/Foldable/Phone)</a></li><li class="chapter-item expanded "><a href="ui-ux-24-error-loading-empty-offline-degraded-state-architecture.html"><strong aria-hidden="true">57.</strong> UI/UX 24 — Error, Loading, Empty & Degraded-State UX</a></li><li class="chapter-item expanded "><a href="ui-ux-25-onboarding-first-run-permission-education-architecture.html"><strong aria-hidden="true">58.</strong> UI/UX 25 — Onboarding, First Run & Permission Education</a></li><li class="chapter-item expanded "><a href="ui-ux-26-performance-virtualization-large-data-ui-architecture.html" class="active"><strong aria-hidden="true">59.</strong> UI/UX 26 — Virtualization & Large-Data UI Performance</a></li><li class="chapter-item expanded "><a href="ui-ux-27-ui-testing-screenshot-interaction-release-quality-gates-architecture.html"><strong aria-hidden="true">60.</strong> UI/UX 27 — UI Testing, Screenshots & Release Quality Gates</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">SIAR System Architecture &amp; Technical Wiki</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar/edit/main/sys-arch/ui-ux-26-performance-virtualization-large-data-ui-architecture.md" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="uiux-part-26--performance-virtualization--large-data-ui-architecture"><a class="header" href="#uiux-part-26--performance-virtualization--large-data-ui-architecture">UI/UX Part 26 — Performance, Virtualization &amp; Large-Data UI Architecture</a></h1>
+<h2 id="reusable-p2p-communication-platform"><a class="header" href="#reusable-p2p-communication-platform">Reusable P2P Communication Platform</a></h2>
+<p><strong>Status:</strong> UI/UX architecture specification<br />
+<strong>UI Series:</strong> Part 26<br />
+<strong>Desktop UI:</strong> Dioxus<br />
+<strong>Android UI:</strong> Kotlin + Jetpack Compose<br />
+<strong>Core runtime:</strong> Rust<br />
+<strong>Primary purpose:</strong> define the complete performance, virtualization, large-data rendering, paging, memory-bounding, incremental-update, media-loading, event-coalescing, multi-window, backpressure, instrumentation, and stress-test architecture required for production-scale messaging and local-first data.</p>
+<hr />
+<h1 id="1-purpose"><a class="header" href="#1-purpose">1. Purpose</a></h1>
+<p>The platform must remain responsive with:</p>
+<pre><code class="language-text">millions of messages
+hundreds of thousands of files
+thousands of conversations
+large contact lists
+large group memberships
+long-running transfer histories
+large search result sets
+many plugins
+multiple windows
+active calls
+background sync
+</code></pre>
+<p>A UI that works only with a small test database is not production-ready.</p>
+<p>The governing principle is:</p>
+<blockquote>
+<p><strong>The UI should render only what the user can currently perceive or imminently needs, while Rust owns bounded paging, incremental state, backpressure, and expensive data preparation.</strong></p>
+</blockquote>
+<hr />
+<h1 id="2-architectural-position"><a class="header" href="#2-architectural-position">2. Architectural Position</a></h1>
+<pre><code class="language-text">Rust Domain / Storage
+       │
+       ├── indexed queries
+       ├── cursor paging
+       ├── bounded projections
+       ├── incremental events
+       ├── thumbnail jobs
+       ├── search paging
+       ├── transfer progress
+       └── backpressure
+       │
+       ▼
+Presentation Service
+       │
+  Bounded Snapshots
+  Incremental Events
+       │
+   ┌───┴────────┐
+   │            │
+Dioxus       Compose
+Desktop      Android
+</code></pre>
+<hr />
+<h1 id="3-performance-objectives"><a class="header" href="#3-performance-objectives">3. Performance Objectives</a></h1>
+<p>Primary objectives:</p>
+<pre><code class="language-text">fast first useful paint
+stable scrolling
+bounded memory
+minimal re-render/recomposition
+responsive input
+no network/database storms
+predictable background work
+graceful degradation under load
+</code></pre>
+<hr />
+<h1 id="4-core-rule"><a class="header" href="#4-core-rule">4. Core Rule</a></h1>
+<p>Never load:</p>
+<pre><code class="language-text">entire message history
+entire file catalog
+entire search corpus
+entire contact DB
+</code></pre>
+<p>into UI memory.</p>
+<hr />
+<h1 id="5-stable-identity"><a class="header" href="#5-stable-identity">5. Stable Identity</a></h1>
+<p>All large lists require stable identifiers.</p>
+<p>Examples:</p>
+<pre><code class="language-text">ConversationId
+MessageId
+BlobId
+AccountId
+TransferId
+PluginId
+SecurityEventId
+</code></pre>
+<hr />
+<h1 id="6-never-use-list-index-as-identity"><a class="header" href="#6-never-use-list-index-as-identity">6. Never Use List Index as Identity</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="7-pagination-model"><a class="header" href="#7-pagination-model">7. Pagination Model</a></h1>
+<p>Prefer:</p>
+<pre><code class="language-text">cursor-based paging
+</code></pre>
+<p>over:</p>
+<pre><code class="language-text">offset paging
+</code></pre>
+<p>for mutable timelines.</p>
+<hr />
+<h1 id="8-cursor-types"><a class="header" href="#8-cursor-types">8. Cursor Types</a></h1>
+<p>Example:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct MessageCursor {
+    pub sequence: MessageSequence,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="9-page-size"><a class="header" href="#9-page-size">9. Page Size</a></h1>
+<p>Tune by workload.</p>
+<p>Typical initial ranges:</p>
+<pre><code class="language-text">messages: 50–100
+conversations: 50–200
+files: 50–200
+search: 25–100
+contacts: 100+
+</code></pre>
+<p>Exact values benchmarked.</p>
+<hr />
+<h1 id="10-overscan"><a class="header" href="#10-overscan">10. Overscan</a></h1>
+<p>Virtualized lists render:</p>
+<pre><code class="language-text">visible items
++
+small overscan
+</code></pre>
+<p>not entire page if framework allows.</p>
+<hr />
+<h1 id="11-windowed-data"><a class="header" href="#11-windowed-data">11. Windowed Data</a></h1>
+<p>UI holds a bounded moving window around viewport.</p>
+<hr />
+<h1 id="12-timeline-window"><a class="header" href="#12-timeline-window">12. Timeline Window</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">previous page
+current visible region
+next page
+</code></pre>
+<p>with eviction outside bound.</p>
+<hr />
+<h1 id="13-history-eviction"><a class="header" href="#13-history-eviction">13. History Eviction</a></h1>
+<p>Old pages can be evicted from UI memory while retained in Rust/storage.</p>
+<hr />
+<h1 id="14-scroll-anchor"><a class="header" href="#14-scroll-anchor">14. Scroll Anchor</a></h1>
+<p>Eviction must not change logical position.</p>
+<p>Use:</p>
+<pre><code class="language-text">stable item ID + offset
+</code></pre>
+<hr />
+<h1 id="15-message-timeline-architecture"><a class="header" href="#15-message-timeline-architecture">15. Message Timeline Architecture</a></h1>
+<pre><code class="language-text">Recent Page
+   │
+   ▼
+Virtualized Timeline
+   │
+   ├── prepend older page
+   ├── append new messages
+   └── evict distant pages
+</code></pre>
+<hr />
+<h1 id="16-initial-conversation-open"><a class="header" href="#16-initial-conversation-open">16. Initial Conversation Open</a></h1>
+<p>Load:</p>
+<pre><code class="language-text">recent 50–100 messages
+</code></pre>
+<p>from local storage.</p>
+<hr />
+<h1 id="17-older-history"><a class="header" href="#17-older-history">17. Older History</a></h1>
+<p>Fetch when approaching top.</p>
+<hr />
+<h1 id="18-newer-history"><a class="header" href="#18-newer-history">18. Newer History</a></h1>
+<p>Usually live events append.</p>
+<p>For deep search jump:</p>
+<pre><code class="language-text">load around MessageId
+</code></pre>
+<hr />
+<h1 id="19-around-target-paging"><a class="header" href="#19-around-target-paging">19. Around-Target Paging</a></h1>
+<p>Important for search.</p>
+<p>API:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>page_around(message_id)
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="20-scroll-to-message"><a class="header" href="#20-scroll-to-message">20. Scroll-to-Message</a></h1>
+<p>Use stable target.</p>
+<p>Do not binary-search UI list.</p>
+<hr />
+<h1 id="21-prepend-preservation"><a class="header" href="#21-prepend-preservation">21. Prepend Preservation</a></h1>
+<p>When older page inserted:</p>
+<pre><code class="language-text">preserve first visible MessageId + visual offset
+</code></pre>
+<hr />
+<h1 id="22-new-messages-while-scrolled-up"><a class="header" href="#22-new-messages-while-scrolled-up">22. New Messages While Scrolled Up</a></h1>
+<p>Do not force scroll to bottom.</p>
+<hr />
+<h1 id="23-bottom-affinity"><a class="header" href="#23-bottom-affinity">23. Bottom Affinity</a></h1>
+<p>If user is at bottom:</p>
+<pre><code class="language-text">auto-follow
+</code></pre>
+<p>within threshold.</p>
+<hr />
+<h1 id="24-new-message-chip"><a class="header" href="#24-new-message-chip">24. New Message Chip</a></h1>
+<p>When not at bottom:</p>
+<pre><code class="language-text">N new messages
+</code></pre>
+<hr />
+<h1 id="25-message-height-variability"><a class="header" href="#25-message-height-variability">25. Message Height Variability</a></h1>
+<p>Messages can contain:</p>
+<pre><code class="language-text">text
+images
+files
+voice
+replies
+reactions
+system events
+</code></pre>
+<p>So virtualization must support variable height.</p>
+<hr />
+<h1 id="26-height-estimation"><a class="header" href="#26-height-estimation">26. Height Estimation</a></h1>
+<p>Can cache measured heights keyed by:</p>
+<pre><code class="language-text">MessageId + layout width class + text scale
+</code></pre>
+<hr />
+<h1 id="27-height-cache-invalidation"><a class="header" href="#27-height-cache-invalidation">27. Height Cache Invalidation</a></h1>
+<p>Invalidate on:</p>
+<pre><code class="language-text">edit
+reaction layout change
+attachment metadata change
+width change
+text scale change
+</code></pre>
+<hr />
+<h1 id="28-avoid-full-timeline-relayout"><a class="header" href="#28-avoid-full-timeline-relayout">28. Avoid Full Timeline Relayout</a></h1>
+<p>Only affected rows should update.</p>
+<hr />
+<h1 id="29-message-event-granularity"><a class="header" href="#29-message-event-granularity">29. Message Event Granularity</a></h1>
+<p>Events:</p>
+<pre><code class="language-text">Inserted
+Updated
+Removed/Tombstoned
+ReactionChanged
+DeliveryChanged
+</code></pre>
+<hr />
+<h1 id="30-do-not-replace-whole-conversation-snapshot-for-every-receipt"><a class="header" href="#30-do-not-replace-whole-conversation-snapshot-for-every-receipt">30. Do Not Replace Whole Conversation Snapshot for Every Receipt</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="31-conversation-list-performance"><a class="header" href="#31-conversation-list-performance">31. Conversation List Performance</a></h1>
+<p>Potential thousands of rows.</p>
+<p>Use:</p>
+<pre><code class="language-text">cursor paging
+virtualization
+summary DTO
+coalesced updates
+</code></pre>
+<hr />
+<h1 id="32-conversation-summary-must-be-lightweight"><a class="header" href="#32-conversation-summary-must-be-lightweight">32. Conversation Summary Must Be Lightweight</a></h1>
+<p>Do not include:</p>
+<pre><code class="language-text">full latest message object
+full participant list
+full avatar bytes
+</code></pre>
+<hr />
+<h1 id="33-presence-updates"><a class="header" href="#33-presence-updates">33. Presence Updates</a></h1>
+<p>Presence changes should not reorder list.</p>
+<hr />
+<h1 id="34-typing-updates"><a class="header" href="#34-typing-updates">34. Typing Updates</a></h1>
+<p>Update only affected row.</p>
+<hr />
+<h1 id="35-unread-updates"><a class="header" href="#35-unread-updates">35. Unread Updates</a></h1>
+<p>Update row + badge.</p>
+<hr />
+<h1 id="36-conversation-reorder"><a class="header" href="#36-conversation-reorder">36. Conversation Reorder</a></h1>
+<p>Only durable recency activity should reorder.</p>
+<hr />
+<h1 id="37-reorder-animation"><a class="header" href="#37-reorder-animation">37. Reorder Animation</a></h1>
+<p>Use sparingly.</p>
+<p>Burst updates should coalesce.</p>
+<hr />
+<h1 id="38-file-gallery-performance"><a class="header" href="#38-file-gallery-performance">38. File Gallery Performance</a></h1>
+<p>Potential large catalog.</p>
+<p>Use:</p>
+<pre><code class="language-text">paged metadata
+virtualized grid
+lazy thumbnails
+</code></pre>
+<hr />
+<h1 id="39-thumbnail-policy"><a class="header" href="#39-thumbnail-policy">39. Thumbnail Policy</a></h1>
+<p>Load only:</p>
+<pre><code class="language-text">visible
+near-visible
+</code></pre>
+<p>items.</p>
+<hr />
+<h1 id="40-thumbnail-sizes"><a class="header" href="#40-thumbnail-sizes">40. Thumbnail Sizes</a></h1>
+<p>Generate bounded variants:</p>
+<pre><code class="language-text">small
+medium
+viewer preview
+</code></pre>
+<p>not full original for grid.</p>
+<hr />
+<h1 id="41-original-media"><a class="header" href="#41-original-media">41. Original Media</a></h1>
+<p>Never decode full-resolution image just to show thumbnail.</p>
+<hr />
+<h1 id="42-image-decode"><a class="header" href="#42-image-decode">42. Image Decode</a></h1>
+<p>Rust/native media pipeline performs decode.</p>
+<p>UI receives:</p>
+<pre><code class="language-text">image handle
+texture handle
+URI
+platform image reference
+</code></pre>
+<p>depending platform.</p>
+<hr />
+<h1 id="43-avoid-byte-copies"><a class="header" href="#43-avoid-byte-copies">43. Avoid Byte Copies</a></h1>
+<p>Especially:</p>
+<pre><code class="language-text">Android JNI
+</code></pre>
+<p>No giant:</p>
+<pre><code class="language-text">ByteArray
+Vec&lt;u8&gt;
+</code></pre>
+<p>crossing presentation layer.</p>
+<hr />
+<h1 id="44-file-grid-reflow"><a class="header" href="#44-file-grid-reflow">44. File Grid Reflow</a></h1>
+<p>Changing column count should not reload metadata.</p>
+<hr />
+<h1 id="45-file-scroll-anchor"><a class="header" href="#45-file-scroll-anchor">45. File Scroll Anchor</a></h1>
+<p>Preserve:</p>
+<pre><code class="language-text">BlobId
+</code></pre>
+<p>nearest viewport.</p>
+<hr />
+<h1 id="46-search-performance"><a class="header" href="#46-search-performance">46. Search Performance</a></h1>
+<p>Search results are paged.</p>
+<hr />
+<h1 id="47-search-request-cancellation"><a class="header" href="#47-search-request-cancellation">47. Search Request Cancellation</a></h1>
+<p>Every query gets:</p>
+<pre><code class="language-text">SearchRequestId
+</code></pre>
+<hr />
+<h1 id="48-stale-query-result"><a class="header" href="#48-stale-query-result">48. Stale Query Result</a></h1>
+<p>Ignored if request no longer current.</p>
+<hr />
+<h1 id="49-search-debounce"><a class="header" href="#49-search-debounce">49. Search Debounce</a></h1>
+<p>Typical:</p>
+<pre><code class="language-text">100–300 ms
+</code></pre>
+<p>depending platform.</p>
+<hr />
+<h1 id="50-search-ui-never-waits-for-entire-corpus"><a class="header" href="#50-search-ui-never-waits-for-entire-corpus">50. Search UI Never Waits for Entire Corpus</a></h1>
+<p>First page returns quickly.</p>
+<hr />
+<h1 id="51-search-provider-aggregation"><a class="header" href="#51-search-provider-aggregation">51. Search Provider Aggregation</a></h1>
+<p>If plugins contribute:</p>
+<pre><code class="language-text">core results
+plugin results
+</code></pre>
+<p>can arrive independently.</p>
+<hr />
+<h1 id="52-partial-provider-failure"><a class="header" href="#52-partial-provider-failure">52. Partial Provider Failure</a></h1>
+<p>Does not block other results.</p>
+<hr />
+<h1 id="53-contacts-performance"><a class="header" href="#53-contacts-performance">53. Contacts Performance</a></h1>
+<p>Large contacts list:</p>
+<pre><code class="language-text">indexed local query
+paged list
+lazy presence
+</code></pre>
+<hr />
+<h1 id="54-presence-subscription-scope"><a class="header" href="#54-presence-subscription-scope">54. Presence Subscription Scope</a></h1>
+<p>Subscribe only for:</p>
+<pre><code class="language-text">visible contacts
+active conversation
+small important set
+</code></pre>
+<hr />
+<h1 id="55-group-member-performance"><a class="header" href="#55-group-member-performance">55. Group Member Performance</a></h1>
+<p>Large group lists must be paged.</p>
+<hr />
+<h1 id="56-member-presence"><a class="header" href="#56-member-presence">56. Member Presence</a></h1>
+<p>Lazy.</p>
+<hr />
+<h1 id="57-group-receipt-performance"><a class="header" href="#57-group-receipt-performance">57. Group Receipt Performance</a></h1>
+<p>Do not render per-recipient receipt inline for large group.</p>
+<p>Use:</p>
+<pre><code class="language-text">aggregate
++
+details page on demand
+</code></pre>
+<hr />
+<h1 id="58-transfer-center-performance"><a class="header" href="#58-transfer-center-performance">58. Transfer Center Performance</a></h1>
+<p>Many transfers require:</p>
+<pre><code class="language-text">throttled progress
+virtualized list
+</code></pre>
+<hr />
+<h1 id="59-progress-frequency"><a class="header" href="#59-progress-frequency">59. Progress Frequency</a></h1>
+<p>Visible transfer progress:</p>
+<pre><code class="language-text">~5–10 updates/second maximum
+</code></pre>
+<p>often less.</p>
+<hr />
+<h1 id="60-background-transfer-progress"><a class="header" href="#60-background-transfer-progress">60. Background Transfer Progress</a></h1>
+<p>Can update at much lower rate.</p>
+<hr />
+<h1 id="61-progress-coalescing"><a class="header" href="#61-progress-coalescing">61. Progress Coalescing</a></h1>
+<p>If transport produces hundreds of events/sec:</p>
+<pre><code class="language-text">coalesce to latest visible value
+</code></pre>
+<hr />
+<h1 id="62-call-metrics"><a class="header" href="#62-call-metrics">62. Call Metrics</a></h1>
+<p>Developer metrics can update:</p>
+<pre><code class="language-text">1–2 Hz
+</code></pre>
+<p>normally.</p>
+<p>Do not render per packet.</p>
+<hr />
+<h1 id="63-presence-event-coalescing"><a class="header" href="#63-presence-event-coalescing">63. Presence Event Coalescing</a></h1>
+<p>Burst presence changes should collapse to latest state per account.</p>
+<hr />
+<h1 id="64-typing-keepalives"><a class="header" href="#64-typing-keepalives">64. Typing Keepalives</a></h1>
+<p>Do not render on every keepalive.</p>
+<p>Only state transitions/TTL.</p>
+<hr />
+<h1 id="65-notification-badge-updates"><a class="header" href="#65-notification-badge-updates">65. Notification Badge Updates</a></h1>
+<p>Coalesce.</p>
+<hr />
+<h1 id="66-global-event-bus"><a class="header" href="#66-global-event-bus">66. Global Event Bus</a></h1>
+<p>UI should not receive every low-level runtime event.</p>
+<hr />
+<h1 id="67-presentation-event-layer"><a class="header" href="#67-presentation-event-layer">67. Presentation Event Layer</a></h1>
+<p>Rust converts low-level events into semantic UI events.</p>
+<hr />
+<h1 id="68-bounded-channels"><a class="header" href="#68-bounded-channels">68. Bounded Channels</a></h1>
+<p>All async UI event channels bounded.</p>
+<hr />
+<h1 id="69-backpressure"><a class="header" href="#69-backpressure">69. Backpressure</a></h1>
+<p>If UI falls behind:</p>
+<pre><code class="language-text">coalesce replaceable state
+drop low-value diagnostics events
+preserve durable/high-priority events
+</code></pre>
+<hr />
+<h1 id="70-event-priority"><a class="header" href="#70-event-priority">70. Event Priority</a></h1>
+<p>Recommended:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum UiEventPriority {
+    Critical,
+    High,
+    Normal,
+    Low,
+    Replaceable,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="71-critical-events"><a class="header" href="#71-critical-events">71. Critical Events</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">security state
+SOS
+call end
+device revoked
+</code></pre>
+<p>must not be dropped.</p>
+<hr />
+<h1 id="72-replaceable-events"><a class="header" href="#72-replaceable-events">72. Replaceable Events</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">transfer progress
+typing state
+presence
+performance metrics
+</code></pre>
+<p>can coalesce.</p>
+<hr />
+<h1 id="73-snapshot--events-pattern"><a class="header" href="#73-snapshot--events-pattern">73. Snapshot + Events Pattern</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">Initial bounded snapshot
++
+incremental semantic events
+</code></pre>
+<hr />
+<h1 id="74-resynchronization"><a class="header" href="#74-resynchronization">74. Resynchronization</a></h1>
+<p>If event stream gap detected:</p>
+<pre><code class="language-text">request fresh snapshot
+</code></pre>
+<hr />
+<h1 id="75-sequence-numbers"><a class="header" href="#75-sequence-numbers">75. Sequence Numbers</a></h1>
+<p>Presentation stream can use monotonic:</p>
+<pre><code class="language-text">UiRevision
+</code></pre>
+<hr />
+<h1 id="76-event-gap"><a class="header" href="#76-event-gap">76. Event Gap</a></h1>
+<p>UI detects:</p>
+<pre><code class="language-text">expected revision 101
+received 104
+</code></pre>
+<p>then resnapshot.</p>
+<hr />
+<h1 id="77-do-not-depend-on-perfect-event-delivery"><a class="header" href="#77-do-not-depend-on-perfect-event-delivery">77. Do Not Depend on Perfect Event Delivery</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="78-ui-cache-layers"><a class="header" href="#78-ui-cache-layers">78. UI Cache Layers</a></h1>
+<p>Possible:</p>
+<pre><code class="language-text">view-model cache
+image cache
+height cache
+page cache
+</code></pre>
+<p>all bounded.</p>
+<hr />
+<h1 id="79-bounded-memory"><a class="header" href="#79-bounded-memory">79. Bounded Memory</a></h1>
+<p>Every cache needs:</p>
+<pre><code class="language-text">max entries
+max bytes
+eviction policy
+</code></pre>
+<hr />
+<h1 id="80-lru"><a class="header" href="#80-lru">80. LRU</a></h1>
+<p>Useful for:</p>
+<pre><code class="language-text">thumbnails
+message heights
+recent pages
+</code></pre>
+<hr />
+<h1 id="81-pinning"><a class="header" href="#81-pinning">81. Pinning</a></h1>
+<p>Do not evict currently visible/active page.</p>
+<hr />
+<h1 id="82-memory-pressure"><a class="header" href="#82-memory-pressure">82. Memory Pressure</a></h1>
+<p>On memory pressure:</p>
+<pre><code class="language-text">drop previews
+drop distant pages
+drop decoded thumbnails
+</code></pre>
+<p>before authoritative state.</p>
+<hr />
+<h1 id="83-android-memory-pressure"><a class="header" href="#83-android-memory-pressure">83. Android Memory Pressure</a></h1>
+<p>Respond to lifecycle/system memory callbacks.</p>
+<hr />
+<h1 id="84-desktop-memory-pressure"><a class="header" href="#84-desktop-memory-pressure">84. Desktop Memory Pressure</a></h1>
+<p>Use internal thresholds and OS signals where available.</p>
+<hr />
+<h1 id="85-low-memory-mode"><a class="header" href="#85-low-memory-mode">85. Low-Memory Mode</a></h1>
+<p>Can reduce:</p>
+<pre><code class="language-text">overscan
+thumbnail cache
+page cache
+animation
+prefetch
+</code></pre>
+<hr />
+<h1 id="86-data-remains-in-ruststorage"><a class="header" href="#86-data-remains-in-ruststorage">86. Data Remains in Rust/Storage</a></h1>
+<p>UI cache eviction is not data deletion.</p>
+<hr />
+<h1 id="87-compose-performance-architecture"><a class="header" href="#87-compose-performance-architecture">87. Compose Performance Architecture</a></h1>
+<p>Key rules:</p>
+<pre><code class="language-text">stable immutable UI models
+stable keys
+small StateFlow scopes
+derivedStateOf where useful
+avoid giant screen state objects
+</code></pre>
+<hr />
+<h1 id="88-compose-recomposition-scope"><a class="header" href="#88-compose-recomposition-scope">88. Compose Recomposition Scope</a></h1>
+<p>Do not have one global:</p>
+<pre><code class="language-text">AppState
+</code></pre>
+<p>causing whole app recomposition.</p>
+<hr />
+<h1 id="89-feature-viewmodels"><a class="header" href="#89-feature-viewmodels">89. Feature ViewModels</a></h1>
+<p>Separate:</p>
+<pre><code class="language-text">InboxViewModel
+ConversationViewModel
+CallViewModel
+FilesViewModel
+SearchViewModel
+</code></pre>
+<hr />
+<h1 id="90-stateflow-granularity"><a class="header" href="#90-stateflow-granularity">90. StateFlow Granularity</a></h1>
+<p>Expose stable screen-level state.</p>
+<p>High-frequency progress can use narrower flow.</p>
+<hr />
+<h1 id="91-lazycolumn"><a class="header" href="#91-lazycolumn">91. LazyColumn</a></h1>
+<p>Use:</p>
+<pre><code class="language-text">key = MessageId
+contentType = message kind
+</code></pre>
+<p>where supported.</p>
+<hr />
+<h1 id="92-lazygrid"><a class="header" href="#92-lazygrid">92. LazyGrid</a></h1>
+<p>Use stable:</p>
+<pre><code class="language-text">BlobId
+</code></pre>
+<p>keys.</p>
+<hr />
+<h1 id="93-compose-item-stability"><a class="header" href="#93-compose-item-stability">93. Compose Item Stability</a></h1>
+<p>Avoid recreating unrelated row models on every event.</p>
+<hr />
+<h1 id="94-compose-remember"><a class="header" href="#94-compose-remember">94. Compose Remember</a></h1>
+<p>Use only for presentation-local state.</p>
+<hr />
+<h1 id="95-no-domain-truth-in-remembersaveable"><a class="header" href="#95-no-domain-truth-in-remembersaveable">95. No Domain Truth in rememberSaveable</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="96-compose-derived-data"><a class="header" href="#96-compose-derived-data">96. Compose Derived Data</a></h1>
+<p>Heavy sorting/filtering belongs in Rust.</p>
+<hr />
+<h1 id="97-compose-main-thread"><a class="header" href="#97-compose-main-thread">97. Compose Main Thread</a></h1>
+<p>Never perform:</p>
+<pre><code class="language-text">database query
+hashing
+large image decode
+file I/O
+crypto
+</code></pre>
+<p>on main thread.</p>
+<hr />
+<h1 id="98-android-jni-boundary"><a class="header" href="#98-android-jni-boundary">98. Android JNI Boundary</a></h1>
+<p>Use coarse calls.</p>
+<hr />
+<h1 id="99-jni-callback-flood"><a class="header" href="#99-jni-callback-flood">99. JNI Callback Flood</a></h1>
+<p>Bound/coalesce before crossing.</p>
+<hr />
+<h1 id="100-jni-handles"><a class="header" href="#100-jni-handles">100. JNI Handles</a></h1>
+<p>For files/media use:</p>
+<pre><code class="language-text">FD
+URI
+opaque handle
+</code></pre>
+<p>not bytes.</p>
+<hr />
+<h1 id="101-dioxus-performance-architecture"><a class="header" href="#101-dioxus-performance-architecture">101. Dioxus Performance Architecture</a></h1>
+<p>Key rules:</p>
+<pre><code class="language-text">small signals
+stable keyed lists
+local subscriptions
+memoized derived views
+virtualized large collections
+</code></pre>
+<hr />
+<h1 id="102-dioxus-re-render-scope"><a class="header" href="#102-dioxus-re-render-scope">102. Dioxus Re-render Scope</a></h1>
+<p>Avoid root-level signal changes for:</p>
+<pre><code class="language-text">typing
+transfer progress
+presence
+</code></pre>
+<hr />
+<h1 id="103-component-locality"><a class="header" href="#103-component-locality">103. Component Locality</a></h1>
+<p>Row-specific state updates row-specific signal/store.</p>
+<hr />
+<h1 id="104-desktop-virtualization"><a class="header" href="#104-desktop-virtualization">104. Desktop Virtualization</a></h1>
+<p>Use virtual list/grid implementation capable of:</p>
+<pre><code class="language-text">variable height
+stable keys
+scroll anchor
+</code></pre>
+<hr />
+<h1 id="105-dioxus-main-thread"><a class="header" href="#105-dioxus-main-thread">105. Dioxus Main Thread</a></h1>
+<p>Do not block UI with Rust work even though language is shared.</p>
+<p>Use async/background workers.</p>
+<hr />
+<h1 id="106-shared-rust-does-not-mean-shared-thread"><a class="header" href="#106-shared-rust-does-not-mean-shared-thread">106. Shared Rust Does Not Mean Shared Thread</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="107-worker-pools"><a class="header" href="#107-worker-pools">107. Worker Pools</a></h1>
+<p>Separate:</p>
+<pre><code class="language-text">I/O async
+CPU-heavy blocking
+media processing
+search indexing
+</code></pre>
+<hr />
+<h1 id="108-tokio-runtime"><a class="header" href="#108-tokio-runtime">108. Tokio Runtime</a></h1>
+<p>UI-facing async tasks should remain bounded.</p>
+<hr />
+<h1 id="109-spawn_blocking"><a class="header" href="#109-spawn_blocking">109. spawn_blocking</a></h1>
+<p>Use for blocking CPU/FS work where appropriate.</p>
+<hr />
+<h1 id="110-rayon"><a class="header" href="#110-rayon">110. Rayon</a></h1>
+<p>Potential for CPU parallelism in:</p>
+<pre><code class="language-text">thumbnail generation
+indexing
+media metadata
+</code></pre>
+<p>but resource-bounded.</p>
+<hr />
+<h1 id="111-priority-scheduler"><a class="header" href="#111-priority-scheduler">111. Priority Scheduler</a></h1>
+<p>Background work priority:</p>
+<pre><code class="language-text">Emergency
+Calls
+Security
+Messages
+Visible UI
+Transfers
+Search indexing
+Backup
+Maintenance
+</code></pre>
+<hr />
+<h1 id="112-ui-visibility-signal"><a class="header" href="#112-ui-visibility-signal">112. UI Visibility Signal</a></h1>
+<p>Presentation layer can tell core:</p>
+<pre><code class="language-text">which screen/items are visible
+</code></pre>
+<p>to prioritize work.</p>
+<hr />
+<h1 id="113-visible-set-model"><a class="header" href="#113-visible-set-model">113. Visible Set Model</a></h1>
+<p>Example:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct VisibleRange&lt;T&gt; {
+    pub first: T,
+    pub last: T,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="114-use-cases"><a class="header" href="#114-use-cases">114. Use Cases</a></h1>
+<pre><code class="language-text">read receipts
+thumbnail priority
+presence subscription
+prefetch
+</code></pre>
+<hr />
+<h1 id="115-visibility-is-advisory"><a class="header" href="#115-visibility-is-advisory">115. Visibility Is Advisory</a></h1>
+<p>Rust validates semantics.</p>
+<hr />
+<h1 id="116-prefetch"><a class="header" href="#116-prefetch">116. Prefetch</a></h1>
+<p>Prefetch only likely next content.</p>
+<p>Examples:</p>
+<pre><code class="language-text">next message page
+nearby thumbnails
+adjacent file preview
+</code></pre>
+<hr />
+<h1 id="117-avoid-aggressive-prefetch-on-mobile"><a class="header" href="#117-avoid-aggressive-prefetch-on-mobile">117. Avoid Aggressive Prefetch on Mobile</a></h1>
+<p>Respect:</p>
+<pre><code class="language-text">battery
+metered network
+memory
+</code></pre>
+<hr />
+<h1 id="118-network-aware-prefetch"><a class="header" href="#118-network-aware-prefetch">118. Network-Aware Prefetch</a></h1>
+<p>Disable/reduce on:</p>
+<pre><code class="language-text">mobile data
+battery saver
+offline
+</code></pre>
+<hr />
+<h1 id="119-desktop-prefetch"><a class="header" href="#119-desktop-prefetch">119. Desktop Prefetch</a></h1>
+<p>Can be more aggressive within memory budgets.</p>
+<hr />
+<h1 id="120-startup-performance"><a class="header" href="#120-startup-performance">120. Startup Performance</a></h1>
+<p>Goal:</p>
+<pre><code class="language-text">render shell
+load local inbox
+be interactive
+</code></pre>
+<p>before:</p>
+<pre><code class="language-text">network sync
+index rebuild
+plugin startup
+</code></pre>
+<p>completes.</p>
+<hr />
+<h1 id="121-startup-staging"><a class="header" href="#121-startup-staging">121. Startup Staging</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">Stage 1 UI shell
+Stage 2 local DB
+Stage 3 recent projections
+Stage 4 network/runtime
+Stage 5 background services
+Stage 6 plugins/indexing
+</code></pre>
+<hr />
+<h1 id="122-plugin-startup"><a class="header" href="#122-plugin-startup">122. Plugin Startup</a></h1>
+<p>Do not block core app readiness.</p>
+<hr />
+<h1 id="123-search-index-startup"><a class="header" href="#123-search-index-startup">123. Search Index Startup</a></h1>
+<p>Background.</p>
+<hr />
+<h1 id="124-thumbnail-warmup"><a class="header" href="#124-thumbnail-warmup">124. Thumbnail Warmup</a></h1>
+<p>Background/visible-only.</p>
+<hr />
+<h1 id="125-daemon-connection-desktop"><a class="header" href="#125-daemon-connection-desktop">125. Daemon Connection Desktop</a></h1>
+<p>UI can show cached/local state while reconnecting if architecture permits.</p>
+<hr />
+<h1 id="126-cold-start-budget"><a class="header" href="#126-cold-start-budget">126. Cold Start Budget</a></h1>
+<p>Set measurable budget per platform.</p>
+<p>Example targets should be benchmark-driven.</p>
+<hr />
+<h1 id="127-first-useful-paint"><a class="header" href="#127-first-useful-paint">127. First Useful Paint</a></h1>
+<p>More important than:</p>
+<pre><code class="language-text">all services fully initialized
+</code></pre>
+<hr />
+<h1 id="128-navigation-performance"><a class="header" href="#128-navigation-performance">128. Navigation Performance</a></h1>
+<p>Switching between already-loaded main destinations should feel immediate.</p>
+<hr />
+<h1 id="129-navigation-data-loading"><a class="header" href="#129-navigation-data-loading">129. Navigation Data Loading</a></h1>
+<p>Use cached bounded snapshot then refresh.</p>
+<hr />
+<h1 id="130-conversation-open"><a class="header" href="#130-conversation-open">130. Conversation Open</a></h1>
+<p>Local recent page should be near-instant.</p>
+<hr />
+<h1 id="131-search-first-page"><a class="header" href="#131-search-first-page">131. Search First Page</a></h1>
+<p>Target low latency from local index.</p>
+<hr />
+<h1 id="132-file-grid"><a class="header" href="#132-file-grid">132. File Grid</a></h1>
+<p>Show metadata placeholders before thumbnails.</p>
+<hr />
+<h1 id="133-image-pipeline"><a class="header" href="#133-image-pipeline">133. Image Pipeline</a></h1>
+<pre><code class="language-text">metadata
+→ thumbnail request
+→ cached thumbnail
+→ decode
+→ display
+</code></pre>
+<hr />
+<h1 id="134-thumbnail-deduplication"><a class="header" href="#134-thumbnail-deduplication">134. Thumbnail Deduplication</a></h1>
+<p>Same BlobId/size request only once.</p>
+<hr />
+<h1 id="135-cancellation"><a class="header" href="#135-cancellation">135. Cancellation</a></h1>
+<p>If item scrolls far away:</p>
+<pre><code class="language-text">cancel/deprioritize decode
+</code></pre>
+<hr />
+<h1 id="136-video-thumbnail"><a class="header" href="#136-video-thumbnail">136. Video Thumbnail</a></h1>
+<p>Generate asynchronously.</p>
+<hr />
+<h1 id="137-audio-waveform"><a class="header" href="#137-audio-waveform">137. Audio Waveform</a></h1>
+<p>Derived data.</p>
+<p>Load only when needed.</p>
+<hr />
+<h1 id="138-avatar-pipeline"><a class="header" href="#138-avatar-pipeline">138. Avatar Pipeline</a></h1>
+<p>Bounded cache.</p>
+<hr />
+<h1 id="139-avatar-dedup"><a class="header" href="#139-avatar-dedup">139. Avatar Dedup</a></h1>
+<p>Stable AccountId.</p>
+<hr />
+<h1 id="140-animated-media"><a class="header" href="#140-animated-media">140. Animated Media</a></h1>
+<p>Avoid auto-playing many animations in lists.</p>
+<hr />
+<h1 id="141-gifanimated-image-policy"><a class="header" href="#141-gifanimated-image-policy">141. GIF/Animated Image Policy</a></h1>
+<p>If supported:</p>
+<pre><code class="language-text">static preview until visible/focused
+</code></pre>
+<hr />
+<h1 id="142-video-autoplay"><a class="header" href="#142-video-autoplay">142. Video Autoplay</a></h1>
+<p>Avoid by default.</p>
+<hr />
+<h1 id="143-rich-link-preview"><a class="header" href="#143-rich-link-preview">143. Rich Link Preview</a></h1>
+<p>Lazy fetch/generate.</p>
+<p>Do not block message render.</p>
+<hr />
+<h1 id="144-markdown-rendering"><a class="header" href="#144-markdown-rendering">144. Markdown Rendering</a></h1>
+<p>If messages support rich formatting:</p>
+<pre><code class="language-text">parse/cache asynchronously
+</code></pre>
+<p>bounded.</p>
+<hr />
+<h1 id="145-syntax-highlighting"><a class="header" href="#145-syntax-highlighting">145. Syntax Highlighting</a></h1>
+<p>Developer/code messages:</p>
+<pre><code class="language-text">lazy
+bounded
+</code></pre>
+<hr />
+<h1 id="146-search-snippet-generation"><a class="header" href="#146-search-snippet-generation">146. Search Snippet Generation</a></h1>
+<p>Rust/search engine generates snippet.</p>
+<p>UI does not scan full message.</p>
+<hr />
+<h1 id="147-large-message"><a class="header" href="#147-large-message">147. Large Message</a></h1>
+<p>Bound display.</p>
+<p>Potential:</p>
+<pre><code class="language-text">Show More
+</code></pre>
+<p>for extremely long text.</p>
+<hr />
+<h1 id="148-full-message-access"><a class="header" href="#148-full-message-access">148. Full Message Access</a></h1>
+<p>User can expand.</p>
+<hr />
+<h1 id="149-pathological-content"><a class="header" href="#149-pathological-content">149. Pathological Content</a></h1>
+<p>Protect against:</p>
+<pre><code class="language-text">million-character message
+huge Unicode grapheme sequences
+deep nested markup
+</code></pre>
+<p>with protocol/UI bounds.</p>
+<hr />
+<h1 id="150-emojiunicode-performance"><a class="header" href="#150-emojiunicode-performance">150. Emoji/Unicode Performance</a></h1>
+<p>Use grapheme-aware processing without O(n²) behavior.</p>
+<hr />
+<h1 id="151-text-measurement-cache"><a class="header" href="#151-text-measurement-cache">151. Text Measurement Cache</a></h1>
+<p>Useful for variable-height timelines.</p>
+<hr />
+<h1 id="152-width-keyed-text-layout"><a class="header" href="#152-width-keyed-text-layout">152. Width-Keyed Text Layout</a></h1>
+<p>Cache invalidates on width/text scale/font changes.</p>
+<hr />
+<h1 id="153-multi-window-performance"><a class="header" href="#153-multi-window-performance">153. Multi-Window Performance</a></h1>
+<p>Multiple windows should share:</p>
+<pre><code class="language-text">core data
+image cache where possible
+transport
+</code></pre>
+<hr />
+<h1 id="154-window-local-ui-cache"><a class="header" href="#154-window-local-ui-cache">154. Window-Local UI Cache</a></h1>
+<p>Each window can have separate:</p>
+<pre><code class="language-text">scroll/page window
+focus
+selection
+</code></pre>
+<hr />
+<h1 id="155-avoid-duplicate-heavy-work"><a class="header" href="#155-avoid-duplicate-heavy-work">155. Avoid Duplicate Heavy Work</a></h1>
+<p>Two windows viewing same image should reuse decoded/thumbnail result if safe.</p>
+<hr />
+<h1 id="156-call-window-priority"><a class="header" href="#156-call-window-priority">156. Call Window Priority</a></h1>
+<p>Active call UI gets high rendering priority.</p>
+<hr />
+<h1 id="157-background-window"><a class="header" href="#157-background-window">157. Background Window</a></h1>
+<p>Can reduce:</p>
+<pre><code class="language-text">animations
+metrics refresh
+thumbnail decode
+</code></pre>
+<hr />
+<h1 id="158-app-background-android"><a class="header" href="#158-app-background-android">158. App Background Android</a></h1>
+<p>Stop unnecessary UI subscriptions.</p>
+<hr />
+<h1 id="159-lifecycle-subscription"><a class="header" href="#159-lifecycle-subscription">159. Lifecycle Subscription</a></h1>
+<p>ViewModel/presentation subscribes only while needed.</p>
+<hr />
+<h1 id="160-process-background"><a class="header" href="#160-process-background">160. Process Background</a></h1>
+<p>Core runtime may continue messaging/calls according to platform policy.</p>
+<p>UI rendering stops.</p>
+<hr />
+<h1 id="161-event-subscription-ownership"><a class="header" href="#161-event-subscription-ownership">161. Event Subscription Ownership</a></h1>
+<p>Every subscription has clear lifecycle.</p>
+<hr />
+<h1 id="162-leak-prevention"><a class="header" href="#162-leak-prevention">162. Leak Prevention</a></h1>
+<p>On screen/window close:</p>
+<pre><code class="language-text">unsubscribe
+cancel UI-only jobs
+release handles
+</code></pre>
+<hr />
+<h1 id="163-resource-handle-lifetime"><a class="header" href="#163-resource-handle-lifetime">163. Resource Handle Lifetime</a></h1>
+<p>File/media handles scoped.</p>
+<hr />
+<h1 id="164-image-handle-eviction"><a class="header" href="#164-image-handle-eviction">164. Image Handle Eviction</a></h1>
+<p>Release GPU/native image resources when cache evicts.</p>
+<hr />
+<h1 id="165-gpu-memory"><a class="header" href="#165-gpu-memory">165. GPU Memory</a></h1>
+<p>Large media viewer must avoid keeping many full-res images decoded.</p>
+<hr />
+<h1 id="166-viewer-neighbor-prefetch"><a class="header" href="#166-viewer-neighbor-prefetch">166. Viewer Neighbor Prefetch</a></h1>
+<p>Maybe:</p>
+<pre><code class="language-text">current
+previous
+next
+</code></pre>
+<p>only.</p>
+<hr />
+<h1 id="167-ultra-high-resolution-images"><a class="header" href="#167-ultra-high-resolution-images">167. Ultra-High-Resolution Images</a></h1>
+<p>Use tiled decode if necessary.</p>
+<hr />
+<h1 id="168-zoomed-image"><a class="header" href="#168-zoomed-image">168. Zoomed Image</a></h1>
+<p>Decode appropriate region/level if supported.</p>
+<hr />
+<h1 id="169-video-playback"><a class="header" href="#169-video-playback">169. Video Playback</a></h1>
+<p>Media pipeline separate from UI state.</p>
+<hr />
+<h1 id="170-audio-pcm"><a class="header" href="#170-audio-pcm">170. Audio PCM</a></h1>
+<p>Never stored in normal UI model.</p>
+<hr />
+<h1 id="171-call-video-frames"><a class="header" href="#171-call-video-frames">171. Call Video Frames</a></h1>
+<p>Direct renderer/surface path.</p>
+<hr />
+<h1 id="172-surface-rebinding"><a class="header" href="#172-surface-rebinding">172. Surface Rebinding</a></h1>
+<p>Orientation/layout change rebinds surface without restarting media.</p>
+<hr />
+<h1 id="173-performance-budget-categories"><a class="header" href="#173-performance-budget-categories">173. Performance Budget Categories</a></h1>
+<p>Define budgets for:</p>
+<pre><code class="language-text">startup
+navigation
+scroll frame time
+search first page
+message send feedback
+thumbnail decode
+memory
+event backlog
+</code></pre>
+<hr />
+<h1 id="174-example-budget-model"><a class="header" href="#174-example-budget-model">174. Example Budget Model</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct UiPerformanceBudget {
+    pub startup_first_paint_ms: u32,
+    pub navigation_p95_ms: u32,
+    pub input_latency_p95_ms: u32,
+    pub max_event_backlog: u32,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Actual numbers determined by benchmark hardware.</p>
+<hr />
+<h1 id="175-reference-hardware"><a class="header" href="#175-reference-hardware">175. Reference Hardware</a></h1>
+<p>Test at least:</p>
+<pre><code class="language-text">low/mid Android
+high-end Android
+8 GB desktop
+modern desktop
+</code></pre>
+<hr />
+<h1 id="176-slow-hardware"><a class="header" href="#176-slow-hardware">176. Slow Hardware</a></h1>
+<p>UI should degrade gracefully.</p>
+<hr />
+<h1 id="177-performance-modes"><a class="header" href="#177-performance-modes">177. Performance Modes</a></h1>
+<p>Possible:</p>
+<pre><code class="language-text">Normal
+Battery Saver
+Low Memory
+Emergency
+</code></pre>
+<hr />
+<h1 id="178-performance-mode-effects"><a class="header" href="#178-performance-mode-effects">178. Performance Mode Effects</a></h1>
+<p>Can reduce:</p>
+<pre><code class="language-text">animation
+prefetch
+thumbnail quality
+background indexing
+plugin work
+</code></pre>
+<hr />
+<h1 id="179-telemetry"><a class="header" href="#179-telemetry">179. Telemetry</a></h1>
+<p>Performance telemetry should be privacy-safe.</p>
+<hr />
+<h1 id="180-safe-metrics"><a class="header" href="#180-safe-metrics">180. Safe Metrics</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">frame time
+startup latency
+query latency
+event backlog
+cache hit rate
+memory class
+</code></pre>
+<p>without message content/identity.</p>
+<hr />
+<h1 id="181-local-performance-diagnostics"><a class="header" href="#181-local-performance-diagnostics">181. Local Performance Diagnostics</a></h1>
+<p>Part 20 can expose:</p>
+<pre><code class="language-text">frame p95
+memory
+queue depth
+search latency
+</code></pre>
+<hr />
+<h1 id="182-profiling-builds"><a class="header" href="#182-profiling-builds">182. Profiling Builds</a></h1>
+<p>Developer mode/builds can expose more detail.</p>
+<hr />
+<h1 id="183-production-overhead"><a class="header" href="#183-production-overhead">183. Production Overhead</a></h1>
+<p>Instrumentation must be low-overhead.</p>
+<hr />
+<h1 id="184-trace-sampling"><a class="header" href="#184-trace-sampling">184. Trace Sampling</a></h1>
+<p>Do not trace every message event indefinitely.</p>
+<hr />
+<h1 id="185-performance-regression-gates"><a class="header" href="#185-performance-regression-gates">185. Performance Regression Gates</a></h1>
+<p>CI should fail on significant regressions in benchmark suite.</p>
+<hr />
+<h1 id="186-benchmark-scenarios"><a class="header" href="#186-benchmark-scenarios">186. Benchmark Scenarios</a></h1>
+<p>Required:</p>
+<pre><code class="language-text">10k conversations
+1M messages
+100k files
+100k search results
+10k contacts
+10k group members
+100 active transfers history
+multiple plugins
+</code></pre>
+<p>Synthetic fixtures.</p>
+<hr />
+<h1 id="187-timeline-stress"><a class="header" href="#187-timeline-stress">187. Timeline Stress</a></h1>
+<p>Test:</p>
+<pre><code class="language-text">rapid incoming messages
+edits
+reactions
+receipts
+typing
+scrolling
+</code></pre>
+<p>simultaneously.</p>
+<hr />
+<h1 id="188-inbox-stress"><a class="header" href="#188-inbox-stress">188. Inbox Stress</a></h1>
+<p>Test frequent row updates without full-list rerender.</p>
+<hr />
+<h1 id="189-search-stress"><a class="header" href="#189-search-stress">189. Search Stress</a></h1>
+<p>Rapid queries:</p>
+<pre><code class="language-text">a
+al
+ali
+alic
+alice
+</code></pre>
+<p>with cancellation.</p>
+<hr />
+<h1 id="190-file-grid-stress"><a class="header" href="#190-file-grid-stress">190. File Grid Stress</a></h1>
+<p>Fast scroll through thousands of media items.</p>
+<hr />
+<h1 id="191-thumbnail-stress"><a class="header" href="#191-thumbnail-stress">191. Thumbnail Stress</a></h1>
+<p>Cache misses + decode storm.</p>
+<p>Verify bounded concurrency.</p>
+<hr />
+<h1 id="192-transfer-stress"><a class="header" href="#192-transfer-stress">192. Transfer Stress</a></h1>
+<p>Hundreds of progress sources coalesced.</p>
+<hr />
+<h1 id="193-presence-stress"><a class="header" href="#193-presence-stress">193. Presence Stress</a></h1>
+<p>Large presence burst.</p>
+<hr />
+<h1 id="194-plugin-event-stress"><a class="header" href="#194-plugin-event-stress">194. Plugin Event Stress</a></h1>
+<p>Malicious/noisy plugin cannot flood UI.</p>
+<hr />
+<h1 id="195-multi-window-stress"><a class="header" href="#195-multi-window-stress">195. Multi-Window Stress</a></h1>
+<p>Main + call + diagnostics + media window.</p>
+<hr />
+<h1 id="196-memory-stress"><a class="header" href="#196-memory-stress">196. Memory Stress</a></h1>
+<p>Run long session.</p>
+<p>Check:</p>
+<pre><code class="language-text">page eviction
+image cache eviction
+no unbounded signal/state growth
+</code></pre>
+<hr />
+<h1 id="197-leak-tests"><a class="header" href="#197-leak-tests">197. Leak Tests</a></h1>
+<p>Repeatedly:</p>
+<pre><code class="language-text">open/close conversation
+open/close viewer
+start/end call
+open/close plugin panel
+</code></pre>
+<hr />
+<h1 id="198-process-restart-test"><a class="header" href="#198-process-restart-test">198. Process Restart Test</a></h1>
+<p>Caches are rebuilt lazily.</p>
+<hr />
+<h1 id="199-database-growth-test"><a class="header" href="#199-database-growth-test">199. Database Growth Test</a></h1>
+<p>Performance should scale with:</p>
+<pre><code class="language-text">visible query size
+</code></pre>
+<p>not entire DB size where indexes exist.</p>
+<hr />
+<h1 id="200-index-requirements"><a class="header" href="#200-index-requirements">200. Index Requirements</a></h1>
+<p>Large-data UI requires storage indexes for:</p>
+<pre><code class="language-text">conversation recency
+message sequence
+search
+file type/date
+contact name
+group member lookup
+</code></pre>
+<hr />
+<h1 id="201-ui-cannot-compensate-for-bad-query-design"><a class="header" href="#201-ui-cannot-compensate-for-bad-query-design">201. UI Cannot Compensate for Bad Query Design</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="202-n1-query-prevention"><a class="header" href="#202-n1-query-prevention">202. N+1 Query Prevention</a></h1>
+<p>Presentation queries should return required summary data in batches.</p>
+<hr />
+<h1 id="203-avatar-n1"><a class="header" href="#203-avatar-n1">203. Avatar N+1</a></h1>
+<p>Avoid separate DB query per row.</p>
+<hr />
+<h1 id="204-presence-n1"><a class="header" href="#204-presence-n1">204. Presence N+1</a></h1>
+<p>Use batch subscription/query.</p>
+<hr />
+<h1 id="205-attachment-metadata-n1"><a class="header" href="#205-attachment-metadata-n1">205. Attachment Metadata N+1</a></h1>
+<p>Batch/load with page projection.</p>
+<hr />
+<h1 id="206-search-result-source-metadata"><a class="header" href="#206-search-result-source-metadata">206. Search Result Source Metadata</a></h1>
+<p>Batch.</p>
+<hr />
+<h1 id="207-dto-size-budget"><a class="header" href="#207-dto-size-budget">207. DTO Size Budget</a></h1>
+<p>Presentation DTOs should be small.</p>
+<hr />
+<h1 id="208-message-summary-vs-full-message"><a class="header" href="#208-message-summary-vs-full-message">208. Message Summary vs Full Message</a></h1>
+<p>Use separate models if needed.</p>
+<hr />
+<h1 id="209-file-summary-vs-file-detail"><a class="header" href="#209-file-summary-vs-file-detail">209. File Summary vs File Detail</a></h1>
+<p>Separate.</p>
+<hr />
+<h1 id="210-contact-summary-vs-profile"><a class="header" href="#210-contact-summary-vs-profile">210. Contact Summary vs Profile</a></h1>
+<p>Separate.</p>
+<hr />
+<h1 id="211-progressive-detail-loading"><a class="header" href="#211-progressive-detail-loading">211. Progressive Detail Loading</a></h1>
+<p>List loads summary.</p>
+<p>Detail loads full data.</p>
+<hr />
+<h1 id="212-avoid-huge-nested-dtos"><a class="header" href="#212-avoid-huge-nested-dtos">212. Avoid Huge Nested DTOs</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="213-serialization"><a class="header" href="#213-serialization">213. Serialization</a></h1>
+<p>Desktop in-process may use direct Rust types.</p>
+<p>Daemon/JNI boundaries use compact typed serialization/FFI.</p>
+<hr />
+<h1 id="214-postcard"><a class="header" href="#214-postcard">214. Postcard</a></h1>
+<p>Suitable for internal binary transport where already chosen.</p>
+<hr />
+<h1 id="215-json"><a class="header" href="#215-json">215. JSON</a></h1>
+<p>Only external/debug interop where necessary.</p>
+<hr />
+<h1 id="216-copy-minimization"><a class="header" href="#216-copy-minimization">216. Copy Minimization</a></h1>
+<p>Use:</p>
+<pre><code class="language-text">Arc
+handles
+references
+zero-copy buffers where safe
+</code></pre>
+<p>inside Rust.</p>
+<hr />
+<h1 id="217-ui-ownership"><a class="header" href="#217-ui-ownership">217. UI Ownership</a></h1>
+<p>Do not expose lifetimes/borrowing complexity to Compose/Dioxus APIs.</p>
+<hr />
+<h1 id="218-pagination-api"><a class="header" href="#218-pagination-api">218. Pagination API</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait PagedPresentation&lt;Item, Cursor&gt; {
+    async fn page(
+        &amp;self,
+        cursor: Option&lt;Cursor&gt;,
+        direction: PageDirection,
+        limit: u32,
+    ) -&gt; Result&lt;Page&lt;Item, Cursor&gt;, UiError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="219-page-model"><a class="header" href="#219-page-model">219. Page Model</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct Page&lt;T, C&gt; {
+    pub items: Vec&lt;T&gt;,
+    pub previous: Option&lt;C&gt;,
+    pub next: Option&lt;C&gt;,
+    pub revision: UiRevision,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="220-incremental-event-model"><a class="header" href="#220-incremental-event-model">220. Incremental Event Model</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum CollectionUiEvent&lt;T, Id&gt; {
+    Inserted {
+        item: T,
+    },
+    Updated {
+        id: Id,
+        item: T,
+    },
+    Removed {
+        id: Id,
+    },
+    ResetRequired {
+        revision: UiRevision,
+    },
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="221-high-frequency-state"><a class="header" href="#221-high-frequency-state">221. High-Frequency State</a></h1>
+<p>Use separate replaceable channel.</p>
+<p>Example:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct TransferProgressEvent {
+    pub id: TransferId,
+    pub progress: f32,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="222-visibility-api"><a class="header" href="#222-visibility-api">222. Visibility API</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait VisibilityPresentation {
+    async fn report_visible_messages(
+        &amp;self,
+        conversation: ConversationId,
+        range: VisibleRange&lt;MessageId&gt;,
+    ) -&gt; Result&lt;(), UiError&gt;;
+
+    async fn report_visible_files(
+        &amp;self,
+        range: VisibleRange&lt;BlobId&gt;,
+    ) -&gt; Result&lt;(), UiError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="223-visibility-report-rate"><a class="header" href="#223-visibility-report-rate">223. Visibility Report Rate</a></h1>
+<p>Throttle.</p>
+<p>Do not send per pixel scroll.</p>
+<hr />
+<h1 id="224-read-receipt-observation"><a class="header" href="#224-read-receipt-observation">224. Read Receipt Observation</a></h1>
+<p>Use viewport observations at bounded cadence.</p>
+<hr />
+<h1 id="225-performance-event"><a class="header" href="#225-performance-event">225. Performance Event</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum PerformanceUiEvent {
+    MemoryPressure(ResourcePressure),
+    DataWindowReset(UiRevision),
+    BackgroundWorkThrottled,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="226-compose-jni-page-transfer"><a class="header" href="#226-compose-jni-page-transfer">226. Compose JNI Page Transfer</a></h1>
+<p>Send page metadata + compact DTOs.</p>
+<p>No full DB rows/raw media.</p>
+<hr />
+<h1 id="227-dioxus-in-process-page-transfer"><a class="header" href="#227-dioxus-in-process-page-transfer">227. Dioxus In-Process Page Transfer</a></h1>
+<p>Use shared Rust DTOs.</p>
+<hr />
+<h1 id="228-daemon-mode-desktop"><a class="header" href="#228-daemon-mode-desktop">228. Daemon Mode Desktop</a></h1>
+<p>Use local typed IPC with:</p>
+<pre><code class="language-text">snapshot paging
+incremental events
+revisioning
+</code></pre>
+<p>same semantics.</p>
+<hr />
+<h1 id="229-backpressure-across-ipc"><a class="header" href="#229-backpressure-across-ipc">229. Backpressure Across IPC</a></h1>
+<p>Bound queues.</p>
+<hr />
+<h1 id="230-reconnect-to-daemon"><a class="header" href="#230-reconnect-to-daemon">230. Reconnect to Daemon</a></h1>
+<p>Resnapshot visible screens.</p>
+<hr />
+<h1 id="231-accessibility-and-virtualization"><a class="header" href="#231-accessibility-and-virtualization">231. Accessibility and Virtualization</a></h1>
+<p>Part 21 applies.</p>
+<hr />
+<h1 id="232-screen-reader-tree"><a class="header" href="#232-screen-reader-tree">232. Screen Reader Tree</a></h1>
+<p>Only bounded visible/nearby nodes.</p>
+<hr />
+<h1 id="233-focus-preservation"><a class="header" href="#233-focus-preservation">233. Focus Preservation</a></h1>
+<p>Stable IDs.</p>
+<hr />
+<h1 id="234-pagination-announcement"><a class="header" href="#234-pagination-announcement">234. Pagination Announcement</a></h1>
+<p>Only announce meaningful:</p>
+<pre><code class="language-text">Older messages loaded
+</code></pre>
+<p>if needed.</p>
+<hr />
+<h1 id="235-large-text"><a class="header" href="#235-large-text">235. Large Text</a></h1>
+<p>May increase item heights and reduce viewport count.</p>
+<p>Virtualization remains correct.</p>
+<hr />
+<h1 id="236-rtl"><a class="header" href="#236-rtl">236. RTL</a></h1>
+<p>Does not change stable identity/paging.</p>
+<hr />
+<h1 id="237-reduced-motion"><a class="header" href="#237-reduced-motion">237. Reduced Motion</a></h1>
+<p>Can reduce layout animation cost.</p>
+<hr />
+<h1 id="238-errorloading-states"><a class="header" href="#238-errorloading-states">238. Error/Loading States</a></h1>
+<p>Part 24 integrates with paging.</p>
+<hr />
+<h1 id="239-page-load-failure"><a class="header" href="#239-page-load-failure">239. Page Load Failure</a></h1>
+<p>Keep current page visible.</p>
+<p>Show:</p>
+<pre><code class="language-text">Couldn't load older messages
+Retry
+</code></pre>
+<hr />
+<h1 id="240-partial-paging"><a class="header" href="#240-partial-paging">240. Partial Paging</a></h1>
+<p>Do not blank list on one page failure.</p>
+<hr />
+<h1 id="241-search-page-failure"><a class="header" href="#241-search-page-failure">241. Search Page Failure</a></h1>
+<p>Keep existing results.</p>
+<hr />
+<h1 id="242-thumbnail-failure"><a class="header" href="#242-thumbnail-failure">242. Thumbnail Failure</a></h1>
+<p>Show placeholder.</p>
+<p>Do not fail file list.</p>
+<hr />
+<h1 id="243-media-decode-failure"><a class="header" href="#243-media-decode-failure">243. Media Decode Failure</a></h1>
+<p>Affects item/viewer only.</p>
+<hr />
+<h1 id="244-low-storage"><a class="header" href="#244-low-storage">244. Low Storage</a></h1>
+<p>Pause non-essential caches/prefetch.</p>
+<hr />
+<h1 id="245-background-priority"><a class="header" href="#245-background-priority">245. Background Priority</a></h1>
+<p>Indexing and backup yield to visible UI.</p>
+<hr />
+<h1 id="246-emergency-priority"><a class="header" href="#246-emergency-priority">246. Emergency Priority</a></h1>
+<p>Emergency mode can disable almost all speculative work.</p>
+<hr />
+<h1 id="247-thermal-pressure"><a class="header" href="#247-thermal-pressure">247. Thermal Pressure</a></h1>
+<p>Reduce media/background work.</p>
+<hr />
+<h1 id="248-battery-saver"><a class="header" href="#248-battery-saver">248. Battery Saver</a></h1>
+<p>Reduce:</p>
+<pre><code class="language-text">prefetch
+presence refresh
+thumbnail concurrency
+semantic indexing
+</code></pre>
+<hr />
+<h1 id="249-performance-settings"><a class="header" href="#249-performance-settings">249. Performance Settings</a></h1>
+<p>Normal users should not need performance tuning.</p>
+<hr />
+<h1 id="250-advanced-settings"><a class="header" href="#250-advanced-settings">250. Advanced Settings</a></h1>
+<p>Maybe:</p>
+<pre><code class="language-text">Reduce Data Usage
+Reduce Motion
+Clear Cache
+</code></pre>
+<p>not cache sizes/thread counts.</p>
+<hr />
+<h1 id="251-developer-diagnostics"><a class="header" href="#251-developer-diagnostics">251. Developer Diagnostics</a></h1>
+<p>Can expose:</p>
+<pre><code class="language-text">cache hit/miss
+page count
+event rate
+queue depth
+recomposition/re-render rate
+</code></pre>
+<hr />
+<h1 id="252-no-user-facing-fps-obsession"><a class="header" href="#252-no-user-facing-fps-obsession">252. No User-Facing FPS Obsession</a></h1>
+<p>Unless developer mode.</p>
+<hr />
+<h1 id="253-failure-containment"><a class="header" href="#253-failure-containment">253. Failure Containment</a></h1>
+<p>One slow subsystem cannot freeze app.</p>
+<p>Examples:</p>
+<pre><code class="language-text">plugin
+search
+thumbnail
+backup
+</code></pre>
+<hr />
+<h1 id="254-timeout-boundaries"><a class="header" href="#254-timeout-boundaries">254. Timeout Boundaries</a></h1>
+<p>Plugin/extensions and external integrations must have timeouts.</p>
+<hr />
+<h1 id="255-cancellation-tokens"><a class="header" href="#255-cancellation-tokens">255. Cancellation Tokens</a></h1>
+<p>User navigation cancels/deprioritizes stale UI-only work.</p>
+<hr />
+<h1 id="256-search-cancellation"><a class="header" href="#256-search-cancellation">256. Search Cancellation</a></h1>
+<p>Mandatory.</p>
+<hr />
+<h1 id="257-thumbnail-cancellation"><a class="header" href="#257-thumbnail-cancellation">257. Thumbnail Cancellation</a></h1>
+<p>Recommended.</p>
+<hr />
+<h1 id="258-detail-load-cancellation"><a class="header" href="#258-detail-load-cancellation">258. Detail Load Cancellation</a></h1>
+<p>If user leaves screen.</p>
+<hr />
+<h1 id="259-durable-job-cancellation"><a class="header" href="#259-durable-job-cancellation">259. Durable Job Cancellation</a></h1>
+<p>Different: backup/transfer semantics owned by core.</p>
+<hr />
+<h1 id="260-ui-cancellation-vs-domain-cancellation"><a class="header" href="#260-ui-cancellation-vs-domain-cancellation">260. UI Cancellation vs Domain Cancellation</a></h1>
+<p>Do not confuse:</p>
+<pre><code class="language-text">stop observing progress
+</code></pre>
+<p>with:</p>
+<pre><code class="language-text">cancel transfer
+</code></pre>
+<hr />
+<h1 id="261-performance-regression-test-matrix"><a class="header" href="#261-performance-regression-test-matrix">261. Performance Regression Test Matrix</a></h1>
+<p>Required:</p>
+<pre><code class="language-text">large inbox
+million-message conversation history
+rapid live traffic
+large file grid
+rapid search typing
+multi-window
+low memory
+battery saver
+plugin flood
+slow disk
+slow CPU
+</code></pre>
+<hr />
+<h1 id="262-android-performance-tests"><a class="header" href="#262-android-performance-tests">262. Android Performance Tests</a></h1>
+<p>Verify:</p>
+<pre><code class="language-text">Compose recomposition scope
+LazyColumn stability
+LazyGrid stability
+JNI event rate
+process background/foreground
+memory trim
+</code></pre>
+<hr />
+<h1 id="263-desktop-performance-tests"><a class="header" href="#263-desktop-performance-tests">263. Desktop Performance Tests</a></h1>
+<p>Verify:</p>
+<pre><code class="language-text">Dioxus rerender scope
+virtual list
+multi-window
+daemon IPC
+window resize
+large diagnostics log
+</code></pre>
+<hr />
+<h1 id="264-scroll-performance"><a class="header" href="#264-scroll-performance">264. Scroll Performance</a></h1>
+<p>Measure:</p>
+<pre><code class="language-text">p50/p95 frame time
+dropped frames
+</code></pre>
+<p>on reference hardware.</p>
+<hr />
+<h1 id="265-input-latency"><a class="header" href="#265-input-latency">265. Input Latency</a></h1>
+<p>Measure:</p>
+<pre><code class="language-text">typing
+send button
+search input
+navigation
+</code></pre>
+<hr />
+<h1 id="266-startup-benchmark"><a class="header" href="#266-startup-benchmark">266. Startup Benchmark</a></h1>
+<p>Cold/warm.</p>
+<hr />
+<h1 id="267-memory-benchmark"><a class="header" href="#267-memory-benchmark">267. Memory Benchmark</a></h1>
+<p>Long-running.</p>
+<hr />
+<h1 id="268-search-benchmark"><a class="header" href="#268-search-benchmark">268. Search Benchmark</a></h1>
+<p>First page and next page.</p>
+<hr />
+<h1 id="269-thumbnail-benchmark"><a class="header" href="#269-thumbnail-benchmark">269. Thumbnail Benchmark</a></h1>
+<p>Decode queue saturation.</p>
+<hr />
+<h1 id="270-event-backlog-benchmark"><a class="header" href="#270-event-backlog-benchmark">270. Event Backlog Benchmark</a></h1>
+<p>Simulate high-rate events.</p>
+<hr />
+<h1 id="271-leak-benchmark"><a class="header" href="#271-leak-benchmark">271. Leak Benchmark</a></h1>
+<p>Repeated navigation loops.</p>
+<hr />
+<h1 id="272-release-gate"><a class="header" href="#272-release-gate">272. Release Gate</a></h1>
+<p>Block release on major regression in:</p>
+<pre><code class="language-text">core scroll
+startup
+input latency
+memory growth
+</code></pre>
+<hr />
+<h1 id="273-initial-production-scope"><a class="header" href="#273-initial-production-scope">273. Initial Production Scope</a></h1>
+<p>Ship:</p>
+<pre><code class="language-text">cursor paging
+virtualized conversation/message/file/contact/search lists
+stable IDs
+message scroll-anchor preservation
+bounded page/image caches
+lazy thumbnails
+incremental semantic events
+event coalescing
+bounded channels
+Compose stable-key/recomposition architecture
+Dioxus localized rerender architecture
+JNI handle-based media/file boundaries
+background task prioritization
+memory-pressure handling
+performance diagnostics
+large synthetic benchmark fixtures
+</code></pre>
+<p>Defer:</p>
+<pre><code class="language-text">aggressive predictive prefetch
+complex ML-based cache policy
+unbounded offline full-corpus preloading
+full-resolution media predecode
+</code></pre>
+<hr />
+<h1 id="274-definition-of-done"><a class="header" href="#274-definition-of-done">274. Definition of Done</a></h1>
+<p>UI/UX Part 26 is complete when:</p>
+<ul>
+<li>no major list requires loading the entire dataset into UI memory</li>
+<li>cursor paging is used for mutable large collections</li>
+<li>all virtualized collections use stable IDs rather than indexes</li>
+<li>message history supports prepend/append/eviction while preserving logical scroll anchor</li>
+<li>search supports request cancellation and stale-result rejection</li>
+<li>file/media grids use lazy bounded thumbnails and never decode originals for list display</li>
+<li>high-frequency progress/presence/typing/call metrics are coalesced and throttled</li>
+<li>UI event channels are bounded with explicit priority/drop/coalescing rules</li>
+<li>snapshot + incremental-event architecture can recover from stream gaps by resnapshotting</li>
+<li>Compose recomposition is feature/local-state scoped</li>
+<li>Dioxus rerenders are localized and large collections virtualized</li>
+<li>JNI/IPC boundaries avoid giant byte arrays and raw media frames</li>
+<li>background work yields to calls, emergency, security, messages, and visible UI</li>
+<li>UI caches are bounded and respond to memory pressure</li>
+<li>multi-window reuses shared heavy resources while keeping viewport state local</li>
+<li>accessibility semantics continue to work with virtualization</li>
+<li>performance budgets, diagnostics, stress fixtures, leak tests, and regression gates are defined</li>
+<li>the architecture is designed for millions of messages/files rather than demo-scale datasets</li>
+</ul>
+<hr />
+<h1 id="275-final-architecture"><a class="header" href="#275-final-architecture">275. Final Architecture</a></h1>
+<pre><code class="language-text">                     LARGE LOCAL DATA
+                           │
+                           ▼
+                    Rust Query Layer
+                           │
+              Cursor Pages / Projections
+                           │
+                           ▼
+                Presentation Data Window
+                           │
+          ┌────────────────┴────────────────┐
+          │                                 │
+      Dioxus                            Compose
+      Desktop                           Android
+          │                                 │
+   Virtual Lists/Grids             LazyColumn/LazyGrid
+   Stable Keys                     Stable Keys
+   Bounded Signals                 Scoped StateFlow
+          │                                 │
+          └────────────────┬────────────────┘
+                           │
+                  Visible Content Only
+</code></pre>
+<p>Event path:</p>
+<pre><code class="language-text">Low-Level Runtime Events
+          │
+          ▼
+Rust Semantic Coalescing
+          │
+          ▼
+Bounded UI Event Stream
+          │
+          ▼
+Only affected visible state updates
+</code></pre>
+<hr />
+<h1 id="276-final-principle"><a class="header" href="#276-final-principle">276. Final Principle</a></h1>
+<p>Performance should come from architecture, not late-stage micro-optimization.</p>
+<p>The correct model is:</p>
+<pre><code class="language-text">indexed queries
++
+cursor paging
++
+stable IDs
++
+virtualized rendering
++
+bounded caches
++
+incremental semantic events
++
+backpressure
+</code></pre>
+<p>not:</p>
+<pre><code class="language-text">load everything
+→ clone everything
+→ rerender everything
+→ optimize after users complain
+</code></pre>
+<p>This keeps Dioxus desktop and Android Compose responsive as local history, files, search indexes, plugins, and long-running usage grow from thousands to millions of records.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="ui-ux-25-onboarding-first-run-permission-education-architecture.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="ui-ux-27-ui-testing-screenshot-interaction-release-quality-gates-architecture.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="ui-ux-25-onboarding-first-run-permission-education-architecture.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="ui-ux-27-ui-testing-screenshot-interaction-release-quality-gates-architecture.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

@@ -1,0 +1,2662 @@
+<!DOCTYPE HTML>
+<html lang="en" class="navy" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>29 — Realtime Calls &amp; Media Session Protocol - SIAR System Architecture &amp; Technical Wiki</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="Comprehensive system architecture, cryptographic protocols, DTN mesh networking, distributed storage, audio DSP pipelines, and UI/UX design specifications for SIAR.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="theme/custom.css">
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "navy";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('navy')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="Home.html">Architecture Portal & Reading Guide</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part I: Protocol Foundation & Extension Platform</li><li class="chapter-item expanded "><a href="01-protocol-extension-system-architecture.html"><strong aria-hidden="true">1.</strong> 01 — Protocol Extension System Architecture</a></li><li class="chapter-item expanded "><a href="07-capability-negotiation-architecture.html"><strong aria-hidden="true">2.</strong> 07 — Capability Negotiation & Protocol Upgrades</a></li><li class="chapter-item expanded "><a href="21-third-party-protocol-extensions-architecture.html"><strong aria-hidden="true">3.</strong> 21 — Third-Party Protocol Extensions</a></li><li class="chapter-item expanded "><a href="22-wasm-compatible-components-architecture.html"><strong aria-hidden="true">4.</strong> 22 — WebAssembly (WASM) Compatible Components</a></li><li class="chapter-item expanded "><a href="23-external-interoperability-suite-architecture.html"><strong aria-hidden="true">5.</strong> 23 — External Interoperability & Conformance Suite</a></li><li class="chapter-item expanded "><a href="24-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">6.</strong> 24 — Dynamic Plugin & Module Ecosystem</a></li><li class="chapter-item expanded affix "><li class="part-title">Part II: Identity, Trust & Cryptography</li><li class="chapter-item expanded "><a href="02-multi-device-identity-architecture.html"><strong aria-hidden="true">7.</strong> 02 — Multi-Device Identity & Trust Model</a></li><li class="chapter-item expanded "><a href="28-production-security-e2ee-key-management-privacy-architecture.html"><strong aria-hidden="true">8.</strong> 28 — Production Security, E2EE, Key Management & Privacy</a></li><li class="chapter-item expanded affix "><li class="part-title">Part III: Mesh Networking, Transports & Hardware</li><li class="chapter-item expanded "><a href="03-transport-routing-policy-engine-architecture.html"><strong aria-hidden="true">9.</strong> 03 — Transport & Routing Policy Engine</a></li><li class="chapter-item expanded "><a href="11-relay-self-hosted-infrastructure-architecture.html"><strong aria-hidden="true">10.</strong> 11 — Self-Hosted Relay & Coordination Infrastructure</a></li><li class="chapter-item expanded "><a href="12-multipath-networking-architecture.html"><strong aria-hidden="true">11.</strong> 12 — Multipath Networking & Link Aggregation</a></li><li class="chapter-item expanded "><a href="13-battery-aware-scheduling-architecture.html"><strong aria-hidden="true">12.</strong> 13 — Battery-Aware Scheduling & Power Profiles</a></li><li class="chapter-item expanded "><a href="14-proximity-abstraction-architecture.html"><strong aria-hidden="true">13.</strong> 14 — Proximity Abstraction (BLE, Wi-Fi Direct, LoRa)</a></li><li class="chapter-item expanded "><a href="15-qr-nfc-bootstrap-pairing-architecture.html"><strong aria-hidden="true">14.</strong> 15 — Out-of-Band QR & NFC Bootstrap Pairing</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IV: Delay-Tolerant Networking & Emergency Mesh</li><li class="chapter-item expanded "><a href="06-dtn-store-carry-forward-architecture.html"><strong aria-hidden="true">15.</strong> 06 — DTN Store-Carry-Forward & Bundle Forwarding</a></li><li class="chapter-item expanded "><a href="17-emergency-priority-classes-architecture.html"><strong aria-hidden="true">16.</strong> 17 — Emergency Priority Classes & Critical Alert Mesh</a></li><li class="chapter-item expanded affix "><li class="part-title">Part V: Storage, Outbox & Data Lifecycle</li><li class="chapter-item expanded "><a href="04-offline-event-log-architecture.html"><strong aria-hidden="true">17.</strong> 04 — Offline Event Log & Sync Engine</a></li><li class="chapter-item expanded "><a href="05-robust-file-blob-subsystem-architecture.html"><strong aria-hidden="true">18.</strong> 05 — Robust File & Blob Subsystem (Chunking & Resumption)</a></li><li class="chapter-item expanded "><a href="09-crash-recovery-architecture.html"><strong aria-hidden="true">19.</strong> 09 — Crash Recovery & State Integrity</a></li><li class="chapter-item expanded "><a href="32-search-indexing-local-knowledge-privacy-architecture.html"><strong aria-hidden="true">20.</strong> 32 — Search, Indexing & Local Privacy Retrieval</a></li><li class="chapter-item expanded "><a href="33-backup-restore-export-import-archival-portability-architecture.html"><strong aria-hidden="true">21.</strong> 33 — Backup, Restore, Export & Long-Term Archival</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VI: Realtime Media, Calling & Audio DSP</li><li class="chapter-item expanded "><a href="25-android-direct-hardware-surface-zero-copy-media-architecture.html"><strong aria-hidden="true">22.</strong> 25 — Android Direct Surface Zero-Copy Media</a></li><li class="chapter-item expanded "><a href="26-rust-first-audio-dsp-resampling-aec-ns-agc-architecture.html"><strong aria-hidden="true">23.</strong> 26 — Rust-First Audio DSP (AEC, NS, AGC, Resampling)</a></li><li class="chapter-item expanded "><a href="29-realtime-calls-media-session-protocol-architecture.html" class="active"><strong aria-hidden="true">24.</strong> 29 — Realtime Calls & Media Session Protocol</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VII: Ephemeral State, Presence & Notifications</li><li class="chapter-item expanded "><a href="30-presence-availability-typing-read-receipts-ephemeral-state-architecture.html"><strong aria-hidden="true">25.</strong> 30 — Presence, Availability, Typing & Read Receipts</a></li><li class="chapter-item expanded "><a href="31-notifications-push-background-delivery-lifecycle-architecture.html"><strong aria-hidden="true">26.</strong> 31 — Notifications, Push Wake & Background Delivery</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VIII: Native Runtimes, Daemons & Embedded Linux</li><li class="chapter-item expanded "><a href="16-daemon-headless-runtime-architecture.html"><strong aria-hidden="true">27.</strong> 16 — Headless Daemon & Background Runtime</a></li><li class="chapter-item expanded "><a href="19-c-abi-ffi-architecture.html"><strong aria-hidden="true">28.</strong> 19 — C-ABI FFI & Native Language Interop</a></li><li class="chapter-item expanded "><a href="20-embedded-linux-node-architecture.html"><strong aria-hidden="true">29.</strong> 20 — Embedded Linux Node & Resource-Constrained Targets</a></li><li class="chapter-item expanded "><a href="27-rust-driven-android-native-build-packaging-automation.html"><strong aria-hidden="true">30.</strong> 27 — Rust-Driven Android Native Build & Packaging Automation</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IX: Reliability, Testing, Fuzzing & Diagnostics</li><li class="chapter-item expanded "><a href="08-resource-limits-backpressure-architecture.html"><strong aria-hidden="true">31.</strong> 08 — Resource Limits, Quotas & Backpressure</a></li><li class="chapter-item expanded "><a href="10-fuzzing-protocol-test-suite-architecture.html"><strong aria-hidden="true">32.</strong> 10 — Fuzzing & Protocol Test Suite</a></li><li class="chapter-item expanded "><a href="18-network-diagnostics-path-visualization-architecture.html"><strong aria-hidden="true">33.</strong> 18 — Network Diagnostics & Path Visualization</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part X: UI/UX Client Architecture (Cross-Platform)</li><li class="chapter-item expanded "><a href="ui-ux-01-product-foundation-cross-platform-interaction-architecture.html"><strong aria-hidden="true">34.</strong> UI/UX 01 — Product UX Foundation & Cross-Platform Interaction</a></li><li class="chapter-item expanded "><a href="ui-ux-02-desktop-dioxus-app-shell-navigation-window-architecture.html"><strong aria-hidden="true">35.</strong> UI/UX 02 — Desktop Dioxus App Shell & Navigation</a></li><li class="chapter-item expanded "><a href="ui-ux-03-android-jetpack-compose-app-shell-navigation-lifecycle-architecture.html"><strong aria-hidden="true">36.</strong> UI/UX 03 — Android Jetpack Compose App Shell & Lifecycle</a></li><li class="chapter-item expanded "><a href="ui-ux-04-conversation-list-inbox-architecture.html"><strong aria-hidden="true">37.</strong> UI/UX 04 — Conversation List & Inbox UX</a></li><li class="chapter-item expanded "><a href="ui-ux-05-conversation-message-timeline-architecture.html"><strong aria-hidden="true">38.</strong> UI/UX 05 — Conversation Message Timeline UX</a></li><li class="chapter-item expanded "><a href="ui-ux-06-message-composer-attachments-voice-notes-drafts-architecture.html"><strong aria-hidden="true">39.</strong> UI/UX 06 — Message Composer, Attachments & Voice Notes</a></li><li class="chapter-item expanded "><a href="ui-ux-07-calls-realtime-media-architecture.html"><strong aria-hidden="true">40.</strong> UI/UX 07 — Calls & Realtime Media UX</a></li><li class="chapter-item expanded "><a href="ui-ux-08-contacts-requests-verification-identity-architecture.html"><strong aria-hidden="true">41.</strong> UI/UX 08 — Contacts, Requests, Verification & Identity</a></li><li class="chapter-item expanded "><a href="ui-ux-09-groups-membership-roles-architecture.html"><strong aria-hidden="true">42.</strong> UI/UX 09 — Groups, Membership & Roles UX</a></li><li class="chapter-item expanded "><a href="ui-ux-10-files-media-gallery-transfer-architecture.html"><strong aria-hidden="true">43.</strong> UI/UX 10 — Files, Media Gallery & Transfer UX</a></li><li class="chapter-item expanded "><a href="ui-ux-11-search-local-knowledge-retrieval-architecture.html"><strong aria-hidden="true">44.</strong> UI/UX 11 — Search & Local Knowledge Retrieval UX</a></li><li class="chapter-item expanded "><a href="ui-ux-12-nearby-qr-nfc-pairing-device-linking-architecture.html"><strong aria-hidden="true">45.</strong> UI/UX 12 — Nearby, QR/NFC Pairing & Device Linking UX</a></li><li class="chapter-item expanded "><a href="ui-ux-13-notifications-background-incoming-call-architecture.html"><strong aria-hidden="true">46.</strong> UI/UX 13 — Notifications, Background & Incoming Call UX</a></li><li class="chapter-item expanded "><a href="ui-ux-14-presence-typing-receipts-status-architecture.html"><strong aria-hidden="true">47.</strong> UI/UX 14 — Presence, Typing, Receipts & Status UX</a></li><li class="chapter-item expanded "><a href="ui-ux-15-security-center-devices-keys-recovery-architecture.html"><strong aria-hidden="true">48.</strong> UI/UX 15 — Security Center, Devices, Keys & Recovery UX</a></li><li class="chapter-item expanded "><a href="ui-ux-16-backup-restore-export-migration-architecture.html"><strong aria-hidden="true">49.</strong> UI/UX 16 — Backup, Restore, Export & Migration UX</a></li><li class="chapter-item expanded "><a href="ui-ux-17-emergency-sos-offline-mesh-architecture.html"><strong aria-hidden="true">50.</strong> UI/UX 17 — Emergency / SOS / Offline Mesh UX</a></li><li class="chapter-item expanded "><a href="ui-ux-18-settings-privacy-notifications-data-controls-architecture.html"><strong aria-hidden="true">51.</strong> UI/UX 18 — Settings, Privacy, Notifications & Data Controls</a></li><li class="chapter-item expanded "><a href="ui-ux-19-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">52.</strong> UI/UX 19 — Plugin & Module Ecosystem UX</a></li><li class="chapter-item expanded "><a href="ui-ux-20-diagnostics-network-paths-advanced-developer-architecture.html"><strong aria-hidden="true">53.</strong> UI/UX 20 — Diagnostics, Network Paths & Developer UX</a></li><li class="chapter-item expanded "><a href="ui-ux-21-accessibility-inclusive-interaction-architecture.html"><strong aria-hidden="true">54.</strong> UI/UX 21 — Accessibility & Inclusive Interaction</a></li><li class="chapter-item expanded "><a href="ui-ux-22-design-system-tokens-typography-icons-motion-architecture.html"><strong aria-hidden="true">55.</strong> UI/UX 22 — Design System, Tokens, Typography & Motion</a></li><li class="chapter-item expanded "><a href="ui-ux-23-responsive-adaptive-desktop-tablet-foldable-phone-layout-architecture.html"><strong aria-hidden="true">56.</strong> UI/UX 23 — Responsive & Adaptive Layouts (Desktop/Tablet/Foldable/Phone)</a></li><li class="chapter-item expanded "><a href="ui-ux-24-error-loading-empty-offline-degraded-state-architecture.html"><strong aria-hidden="true">57.</strong> UI/UX 24 — Error, Loading, Empty & Degraded-State UX</a></li><li class="chapter-item expanded "><a href="ui-ux-25-onboarding-first-run-permission-education-architecture.html"><strong aria-hidden="true">58.</strong> UI/UX 25 — Onboarding, First Run & Permission Education</a></li><li class="chapter-item expanded "><a href="ui-ux-26-performance-virtualization-large-data-ui-architecture.html"><strong aria-hidden="true">59.</strong> UI/UX 26 — Virtualization & Large-Data UI Performance</a></li><li class="chapter-item expanded "><a href="ui-ux-27-ui-testing-screenshot-interaction-release-quality-gates-architecture.html"><strong aria-hidden="true">60.</strong> UI/UX 27 — UI Testing, Screenshots & Release Quality Gates</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">SIAR System Architecture &amp; Technical Wiki</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar/edit/main/sys-arch/29-realtime-calls-media-session-protocol-architecture.md" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="part-29--realtime-calls--media-session-protocol-architecture"><a class="header" href="#part-29--realtime-calls--media-session-protocol-architecture">Part 29 — Realtime Calls &amp; Media Session Protocol Architecture</a></h1>
+<h2 id="reusable-p2p-communication-platform"><a class="header" href="#reusable-p2p-communication-platform">Reusable P2P Communication Platform</a></h2>
+<p><strong>Status:</strong> Architecture specification<br />
+<strong>Part:</strong> 29<br />
+<strong>Primary language:</strong> Rust<br />
+<strong>Primary purpose:</strong> define the complete realtime call/session control plane for secure audio/video communication over the existing Iroh + Dioxus P2P platform<br />
+<strong>Primary goals:</strong> deterministic call state, secure signaling, transport-independent sessions, low-latency media negotiation, reconnection, hold/resume, camera/screen-share changes, multipath resilience, E2EE binding, group-call evolution, crash-safe call history, and production-grade failure handling</p>
+<hr />
+<h1 id="1-purpose"><a class="header" href="#1-purpose">1. Purpose</a></h1>
+<p>The platform already includes:</p>
+<pre><code class="language-text">Iroh transport
+multipath routing
+hardware/software video codecs
+Rust-first audio DSP
+Android zero-copy media
+E2EE/key management
+capability negotiation
+resource limits
+battery policy
+diagnostics
+daemon/headless mode
+</code></pre>
+<p>What is still missing is the <strong>call/session protocol</strong> that coordinates all of them.</p>
+<p>A realtime call is not merely:</p>
+<pre><code class="language-text">open QUIC stream
+send Opus
+send H.264
+</code></pre>
+<p>A production call requires:</p>
+<pre><code class="language-text">ringing
+accept/reject
+busy
+timeout
+media negotiation
+device selection
+session authentication
+codec selection
+bitrate constraints
+camera mute
+microphone mute
+hold/resume
+route changes
+path handoff
+relay fallback
+reconnection
+termination
+history
+</code></pre>
+<p>The governing principle is:</p>
+<blockquote>
+<p><strong>The call is a logical secure session; network paths, codecs, devices, and surfaces are replaceable implementation resources inside that session.</strong></p>
+</blockquote>
+<hr />
+<h1 id="2-architectural-position"><a class="header" href="#2-architectural-position">2. Architectural Position</a></h1>
+<pre><code class="language-text">                    User / Dioxus UI
+                           │
+                           ▼
+                    Call Controller
+                           │
+                ┌──────────┼───────────┐
+                │          │           │
+             Signaling   Security    Policy
+                │          │           │
+                └──────────┼───────────┘
+                           │
+                    Media Session
+                ┌──────────┴───────────┐
+                │                      │
+              Audio                  Video
+                │                      │
+              Opus            H264/H265/AV1
+                │                      │
+                └──────────┬───────────┘
+                           │
+                     Media Transport
+                           │
+             Iroh Direct / Relay / Multipath
+</code></pre>
+<hr />
+<h1 id="3-call-protocol-layers"><a class="header" href="#3-call-protocol-layers">3. Call Protocol Layers</a></h1>
+<p>Separate:</p>
+<pre><code class="language-text">Call Signaling
+Call State Machine
+Media Negotiation
+Security Binding
+Transport Selection
+Media Transport
+Device/Surface Control
+UI State
+</code></pre>
+<p>Do not mix all of these into one monolithic call task.</p>
+<hr />
+<h1 id="4-logical-call-identity"><a class="header" href="#4-logical-call-identity">4. Logical Call Identity</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct CallId([u8; 16]);
+<span class="boring">}</span></code></pre></pre>
+<p>Properties:</p>
+<pre><code class="language-text">globally unique
+stable across reconnects
+independent of transport connection
+</code></pre>
+<p>Do not use QUIC connection ID as call identity.</p>
+<hr />
+<h1 id="5-participant-identity"><a class="header" href="#5-participant-identity">5. Participant Identity</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct CallParticipant {
+    pub account: AccountId,
+    pub device: DeviceId,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Logical user and actual device are separate.</p>
+<hr />
+<h1 id="6-call-session-identity"><a class="header" href="#6-call-session-identity">6. Call Session Identity</a></h1>
+<p>A specific established device-to-device media session gets:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct CallSessionId([u8; 16]);
+<span class="boring">}</span></code></pre></pre>
+<p>A reconnect may preserve:</p>
+<pre><code class="language-text">CallId
+</code></pre>
+<p>while creating a new:</p>
+<pre><code class="language-text">CallSessionId
+</code></pre>
+<hr />
+<h1 id="7-call-types"><a class="header" href="#7-call-types">7. Call Types</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum CallKind {
+    Audio,
+    Video,
+    ScreenShare,
+    GroupAudio,
+    GroupVideo,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="8-call-direction"><a class="header" href="#8-call-direction">8. Call Direction</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum CallDirection {
+    Incoming,
+    Outgoing,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="9-high-level-call-state"><a class="header" href="#9-high-level-call-state">9. High-Level Call State</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum CallState {
+    Idle,
+    Creating,
+    RingingOutgoing,
+    RingingIncoming,
+    Negotiating,
+    Connecting,
+    Active,
+    Reconnecting,
+    Held,
+    Ending,
+    Ended,
+    Failed,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="10-detailed-outgoing-state-flow"><a class="header" href="#10-detailed-outgoing-state-flow">10. Detailed Outgoing State Flow</a></h1>
+<pre><code class="language-text">Idle
+ ↓
+Creating
+ ↓
+Send Offer
+ ↓
+RingingOutgoing
+ ↓
+Remote Accept
+ ↓
+Negotiating
+ ↓
+Connecting
+ ↓
+Active
+</code></pre>
+<p>Alternative endings:</p>
+<pre><code class="language-text">Rejected
+Busy
+Timeout
+Cancelled
+Failed
+</code></pre>
+<hr />
+<h1 id="11-incoming-state-flow"><a class="header" href="#11-incoming-state-flow">11. Incoming State Flow</a></h1>
+<pre><code class="language-text">Idle
+ ↓
+Offer Received
+ ↓
+Validate
+ ↓
+RingingIncoming
+ ↓
+Accept
+ ↓
+Negotiating
+ ↓
+Connecting
+ ↓
+Active
+</code></pre>
+<hr />
+<h1 id="12-call-offer"><a class="header" href="#12-call-offer">12. Call Offer</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct CallOffer {
+    pub call_id: CallId,
+    pub caller: DeviceId,
+    pub callee: DeviceId,
+    pub kind: CallKind,
+    pub media_caps: MediaCapabilitySet,
+    pub security: CallSecurityOffer,
+    pub created_at: Timestamp,
+    pub expires_at: Timestamp,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="13-call-offer-security"><a class="header" href="#13-call-offer-security">13. Call Offer Security</a></h1>
+<p>Offer must be authenticated and bound to:</p>
+<pre><code class="language-text">caller identity
+callee identity
+CallId
+supported media
+security version
+expiry
+</code></pre>
+<p>Part 28 handles the cryptographic binding.</p>
+<hr />
+<h1 id="14-offer-expiry"><a class="header" href="#14-offer-expiry">14. Offer Expiry</a></h1>
+<p>A call offer should expire quickly.</p>
+<p>Example:</p>
+<pre><code class="language-text">30–90 seconds
+</code></pre>
+<p>depending UX.</p>
+<p>Expired calls must not ring later via DTN.</p>
+<hr />
+<h1 id="15-calls-are-not-dtn"><a class="header" href="#15-calls-are-not-dtn">15. Calls Are Not DTN</a></h1>
+<p>Realtime call setup requires live reachability.</p>
+<p>Do not use Part 06 store-carry-forward for:</p>
+<pre><code class="language-text">live call offer
+media
+ringing state
+</code></pre>
+<p>If peer is offline:</p>
+<pre><code class="language-text">send missed-call event
+</code></pre>
+<p>afterward if desired.</p>
+<hr />
+<h1 id="16-missed-call-event"><a class="header" href="#16-missed-call-event">16. Missed Call Event</a></h1>
+<p>Missed-call history may use durable messaging/event log.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct MissedCallEvent {
+    pub call_id: CallId,
+    pub caller: AccountId,
+    pub kind: CallKind,
+    pub timestamp: Timestamp,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="17-ringing-semantics"><a class="header" href="#17-ringing-semantics">17. Ringing Semantics</a></h1>
+<p>Only one device may answer, or policy may allow multiple devices.</p>
+<p>For ordinary account:</p>
+<pre><code class="language-text">ring all active devices
+first accepted device wins
+others receive answered-elsewhere
+</code></pre>
+<hr />
+<h1 id="18-multi-device-ringing"><a class="header" href="#18-multi-device-ringing">18. Multi-Device Ringing</a></h1>
+<p>Flow:</p>
+<pre><code class="language-text">Caller
+  ↓
+Offer to recipient account devices
+  ↓
+Phone rings
+Desktop rings
+Tablet rings
+  ↓
+Desktop accepts
+  ↓
+Phone/Tablet → AnsweredElsewhere
+</code></pre>
+<hr />
+<h1 id="19-call-arbitration"><a class="header" href="#19-call-arbitration">19. Call Arbitration</a></h1>
+<p>Recipient device acceptance must be atomic logically.</p>
+<p>Use:</p>
+<pre><code class="language-text">CallAcceptToken
+</code></pre>
+<p>or server/P2P arbitration protocol so two devices do not establish duplicate sessions accidentally.</p>
+<hr />
+<h1 id="20-call-response"><a class="header" href="#20-call-response">20. Call Response</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum CallResponse {
+    Accept(CallAccept),
+    Reject(CallRejectReason),
+    Busy,
+    AnsweredElsewhere,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="21-reject-reasons"><a class="header" href="#21-reject-reasons">21. Reject Reasons</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum CallRejectReason {
+    UserDeclined,
+    Busy,
+    Unsupported,
+    PermissionDenied,
+    SecurityPolicy,
+    ResourceUnavailable,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="22-busy-policy"><a class="header" href="#22-busy-policy">22. Busy Policy</a></h1>
+<p>User may configure:</p>
+<pre><code class="language-text">busy if already in call
+allow call waiting
+allow second audio-only call
+</code></pre>
+<p>Default:</p>
+<pre><code class="language-text">single active call
+</code></pre>
+<hr />
+<h1 id="23-call-waiting"><a class="header" href="#23-call-waiting">23. Call Waiting</a></h1>
+<p>If supported:</p>
+<pre><code class="language-text">active call
++
+incoming call
+</code></pre>
+<p>UI options:</p>
+<pre><code class="language-text">reject
+hold current + answer
+end current + answer
+</code></pre>
+<hr />
+<h1 id="24-call-timeout"><a class="header" href="#24-call-timeout">24. Call Timeout</a></h1>
+<p>Outgoing ringing timeout:</p>
+<pre><code class="language-text">e.g. 45–60 s
+</code></pre>
+<p>Should be configurable by product, not protocol hardcoded.</p>
+<hr />
+<h1 id="25-call-cancellation"><a class="header" href="#25-call-cancellation">25. Call Cancellation</a></h1>
+<p>Caller can cancel during:</p>
+<pre><code class="language-text">RingingOutgoing
+Negotiating
+Connecting
+</code></pre>
+<p>Send explicit:</p>
+<pre><code class="language-text">CallCancel
+</code></pre>
+<hr />
+<h1 id="26-call-accept"><a class="header" href="#26-call-accept">26. Call Accept</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct CallAccept {
+    pub call_id: CallId,
+    pub accepter_device: DeviceId,
+    pub selected_media: NegotiatedMedia,
+    pub security: CallSecurityAccept,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="27-call-security-handshake"><a class="header" href="#27-call-security-handshake">27. Call Security Handshake</a></h1>
+<p>Call signaling and media session must be bound to Part 28 E2EE/device identity.</p>
+<p>The media session should never accept:</p>
+<pre><code class="language-text">unauthenticated codec packets
+</code></pre>
+<p>from a transport that merely knows the CallId.</p>
+<hr />
+<h1 id="28-security-binding"><a class="header" href="#28-security-binding">28. Security Binding</a></h1>
+<p>Bind:</p>
+<pre><code class="language-text">CallId
+CallSessionId
+caller DeviceId
+callee DeviceId
+media parameters
+transport session
+security epoch
+</code></pre>
+<p>into authenticated transcript.</p>
+<hr />
+<h1 id="29-media-key-separation"><a class="header" href="#29-media-key-separation">29. Media Key Separation</a></h1>
+<p>Derive distinct keys for:</p>
+<pre><code class="language-text">audio
+video
+screen-share
+control
+</code></pre>
+<p>even if underlying secure transport already exists.</p>
+<p>This makes application E2EE independent of route/relay.</p>
+<hr />
+<h1 id="30-transport-encryption-vs-media-e2ee"><a class="header" href="#30-transport-encryption-vs-media-e2ee">30. Transport Encryption vs Media E2EE</a></h1>
+<p>Iroh/QUIC protects transport.</p>
+<p>Application media E2EE protects:</p>
+<pre><code class="language-text">relay traversal
+future transport substitution
+media recording boundary
+logical call security
+</code></pre>
+<p>according to Part 28.</p>
+<hr />
+<h1 id="31-media-capability-negotiation"><a class="header" href="#31-media-capability-negotiation">31. Media Capability Negotiation</a></h1>
+<p>Each peer advertises:</p>
+<pre><code class="language-text">audio codecs
+video codecs
+hardware decode support
+hardware encode support
+max resolution
+max FPS
+screen-share support
+simulcast support if later added
+</code></pre>
+<hr />
+<h1 id="32-audio-capability"><a class="header" href="#32-audio-capability">32. Audio Capability</a></h1>
+<p>Initial:</p>
+<pre><code class="language-text">Opus
+48 kHz timeline
+mono voice
+optional stereo
+FEC
+DTX
+</code></pre>
+<hr />
+<h1 id="33-video-capability"><a class="header" href="#33-video-capability">33. Video Capability</a></h1>
+<pre><code class="language-text">H.264
+H.265
+AV1
+</code></pre>
+<p>Hardware/software implementation is local policy.</p>
+<hr />
+<h1 id="34-local-codec-implementation-is-not-wire-semantics"><a class="header" href="#34-local-codec-implementation-is-not-wire-semantics">34. Local Codec Implementation Is Not Wire Semantics</a></h1>
+<p>Do not negotiate:</p>
+<pre><code class="language-text">hardware AV1
+</code></pre>
+<p>as protocol requirement.</p>
+<p>Negotiate:</p>
+<pre><code class="language-text">AV1
+</code></pre>
+<p>Then each side chooses hardware/software backend locally.</p>
+<hr />
+<h1 id="35-codec-preference"><a class="header" href="#35-codec-preference">35. Codec Preference</a></h1>
+<p>Example policy:</p>
+<pre><code class="language-text">AV1
+H.265
+H.264
+</code></pre>
+<p>but actual preference depends on:</p>
+<pre><code class="language-text">device power
+hardware support
+network
+latency
+compatibility
+</code></pre>
+<hr />
+<h1 id="36-audio-always-first"><a class="header" href="#36-audio-always-first">36. Audio Always First</a></h1>
+<p>If video negotiation fails but audio succeeds:</p>
+<pre><code class="language-text">fall back to audio call
+</code></pre>
+<p>unless user explicitly required video-only semantics.</p>
+<hr />
+<h1 id="37-media-negotiation-dto"><a class="header" href="#37-media-negotiation-dto">37. Media Negotiation DTO</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct NegotiatedMedia {
+    pub audio: Option&lt;NegotiatedAudio&gt;,
+    pub video: Option&lt;NegotiatedVideo&gt;,
+    pub screen_share: Option&lt;NegotiatedVideo&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="38-negotiated-audio"><a class="header" href="#38-negotiated-audio">38. Negotiated Audio</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct NegotiatedAudio {
+    pub codec: AudioCodec,
+    pub sample_rate: u32,
+    pub channels: u8,
+    pub packet_ms: u16,
+    pub fec: bool,
+    pub dtx: bool,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="39-negotiated-video"><a class="header" href="#39-negotiated-video">39. Negotiated Video</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct NegotiatedVideo {
+    pub codec: VideoCodec,
+    pub profile: CodecProfile,
+    pub max_resolution: Resolution,
+    pub max_fps: u32,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="40-resolution-is-upper-bound"><a class="header" href="#40-resolution-is-upper-bound">40. Resolution Is Upper Bound</a></h1>
+<p>Negotiation sets maximum.</p>
+<p>Runtime may dynamically reduce:</p>
+<pre><code class="language-text">resolution
+FPS
+bitrate
+</code></pre>
+<p>without renegotiating every small adaptation.</p>
+<hr />
+<h1 id="41-major-media-change"><a class="header" href="#41-major-media-change">41. Major Media Change</a></h1>
+<p>Renegotiation required for:</p>
+<pre><code class="language-text">codec switch
+adding/removing screen share
+changing channel count materially
+adding new media stream
+</code></pre>
+<hr />
+<h1 id="42-minor-media-adaptation"><a class="header" href="#42-minor-media-adaptation">42. Minor Media Adaptation</a></h1>
+<p>No full signaling renegotiation needed for:</p>
+<pre><code class="language-text">bitrate
+FPS
+resolution within allowed envelope
+FEC level
+jitter target
+</code></pre>
+<hr />
+<h1 id="43-media-session-state"><a class="header" href="#43-media-session-state">43. Media Session State</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum MediaSessionState {
+    Created,
+    Negotiated,
+    Starting,
+    Running,
+    Reconfiguring,
+    Suspended,
+    Stopping,
+    Stopped,
+    Failed,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="44-audio-session"><a class="header" href="#44-audio-session">44. Audio Session</a></h1>
+<p>Owns:</p>
+<pre><code class="language-text">capture
+DSP
+Opus encode
+jitter
+Opus decode
+playback
+</code></pre>
+<p>from Part 26.</p>
+<hr />
+<h1 id="45-video-session"><a class="header" href="#45-video-session">45. Video Session</a></h1>
+<p>Owns:</p>
+<pre><code class="language-text">camera
+encoder
+packetizer
+decoder
+Surface renderer
+</code></pre>
+<p>from Part 25.</p>
+<hr />
+<h1 id="46-media-transport"><a class="header" href="#46-media-transport">46. Media Transport</a></h1>
+<p>Use separate logical channels:</p>
+<pre><code class="language-text">call-control
+audio
+video
+screen-share
+feedback
+</code></pre>
+<hr />
+<h1 id="47-quic-stream-vs-datagram"><a class="header" href="#47-quic-stream-vs-datagram">47. QUIC Stream vs Datagram</a></h1>
+<p>Media architecture may use:</p>
+<pre><code class="language-text">QUIC datagrams
+unidirectional streams
+hybrid
+</code></pre>
+<p>depending Iroh support/performance.</p>
+<p>The call protocol remains transport-neutral.</p>
+<hr />
+<h1 id="48-audio-delivery-semantics"><a class="header" href="#48-audio-delivery-semantics">48. Audio Delivery Semantics</a></h1>
+<p>Prefer low latency over perfect reliability.</p>
+<p>Lost old audio packet:</p>
+<pre><code class="language-text">do not wait indefinitely
+</code></pre>
+<p>Use:</p>
+<pre><code class="language-text">FEC
+PLC
+jitter buffering
+</code></pre>
+<hr />
+<h1 id="49-video-delivery-semantics"><a class="header" href="#49-video-delivery-semantics">49. Video Delivery Semantics</a></h1>
+<p>Delta video frames are disposable after deadline.</p>
+<p>Keyframes/config are more important.</p>
+<hr />
+<h1 id="50-control-reliability"><a class="header" href="#50-control-reliability">50. Control Reliability</a></h1>
+<p>Call control messages should be reliably delivered:</p>
+<pre><code class="language-text">mute state
+hold
+hangup
+codec change
+keyframe request
+</code></pre>
+<hr />
+<h1 id="51-media-feedback"><a class="header" href="#51-media-feedback">51. Media Feedback</a></h1>
+<p>Receiver sends:</p>
+<pre><code class="language-text">RTT
+loss
+jitter
+decode health
+render stalls
+available bitrate estimate
+</code></pre>
+<hr />
+<h1 id="52-congestion-controller"><a class="header" href="#52-congestion-controller">52. Congestion Controller</a></h1>
+<p>Inputs:</p>
+<pre><code class="language-text">packet loss
+RTT
+throughput
+relay/direct path
+multipath state
+battery
+thermal
+</code></pre>
+<p>Outputs:</p>
+<pre><code class="language-text">audio bitrate
+video bitrate
+video FPS
+resolution
+FEC
+</code></pre>
+<hr />
+<h1 id="53-media-priority"><a class="header" href="#53-media-priority">53. Media Priority</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">1. call control
+2. audio
+3. video keyframe/config
+4. video delta
+5. screen share delta
+6. bulk file traffic
+</code></pre>
+<hr />
+<h1 id="54-path-selection"><a class="header" href="#54-path-selection">54. Path Selection</a></h1>
+<p>Part 03/12 selects:</p>
+<pre><code class="language-text">direct Iroh
+relay
+LAN
+multipath
+</code></pre>
+<p>Call session should not restart merely because path changes.</p>
+<hr />
+<h1 id="55-path-independence"><a class="header" href="#55-path-independence">55. Path Independence</a></h1>
+<p>Correct:</p>
+<pre><code class="language-text">CallId remains
+transport path changes
+media continues
+</code></pre>
+<p>Incorrect:</p>
+<pre><code class="language-text">Wi-Fi changed
+→ new call
+</code></pre>
+<hr />
+<h1 id="56-network-handoff"><a class="header" href="#56-network-handoff">56. Network Handoff</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">Wi-Fi → cellular
+LAN → relay
+direct → relay
+relay → direct
+</code></pre>
+<p>Call transitions into:</p>
+<pre><code class="language-text">Reconnecting
+</code></pre>
+<p>only if media actually stalls.</p>
+<hr />
+<h1 id="57-warm-path"><a class="header" href="#57-warm-path">57. Warm Path</a></h1>
+<p>Part 12 may maintain a secondary path.</p>
+<p>For call control/audio:</p>
+<pre><code class="language-text">fast failover
+</code></pre>
+<p>is valuable.</p>
+<hr />
+<h1 id="58-multipath-audio"><a class="header" href="#58-multipath-audio">58. Multipath Audio</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">send selective redundant audio
+</code></pre>
+<p>during severe path instability.</p>
+<p>Do not duplicate all traffic by default.</p>
+<hr />
+<h1 id="59-multipath-video"><a class="header" href="#59-multipath-video">59. Multipath Video</a></h1>
+<p>May route:</p>
+<pre><code class="language-text">keyframes on reliable path
+bulk delta on best throughput path
+</code></pre>
+<p>later.</p>
+<p>Start simpler.</p>
+<hr />
+<h1 id="60-reconnection-state"><a class="header" href="#60-reconnection-state">60. Reconnection State</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum ReconnectState {
+    None,
+    Detecting,
+    SearchingPath,
+    Reauthenticating,
+    ResumingMedia,
+    Failed,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="61-reconnect-grace-window"><a class="header" href="#61-reconnect-grace-window">61. Reconnect Grace Window</a></h1>
+<p>When path disappears:</p>
+<pre><code class="language-text">do not end call instantly
+</code></pre>
+<p>Use short grace window.</p>
+<p>Example:</p>
+<pre><code class="language-text">5–15 seconds
+</code></pre>
+<p>depending UX.</p>
+<hr />
+<h1 id="62-during-reconnect"><a class="header" href="#62-during-reconnect">62. During Reconnect</a></h1>
+<p>UI:</p>
+<pre><code class="language-text">Reconnecting…
+</code></pre>
+<p>Media policy:</p>
+<pre><code class="language-text">pause video
+retain audio buffers minimally
+search alternate path
+</code></pre>
+<hr />
+<h1 id="63-resume-after-reconnect"><a class="header" href="#63-resume-after-reconnect">63. Resume After Reconnect</a></h1>
+<p>Need:</p>
+<pre><code class="language-text">fresh transport binding
+security revalidation
+keyframe request
+jitter reset
+</code></pre>
+<hr />
+<h1 id="64-do-not-reuse-stale-decoder-state-blindly"><a class="header" href="#64-do-not-reuse-stale-decoder-state-blindly">64. Do Not Reuse Stale Decoder State Blindly</a></h1>
+<p>After long reconnect:</p>
+<pre><code class="language-text">request fresh video keyframe
+</code></pre>
+<hr />
+<h1 id="65-audio-resume"><a class="header" href="#65-audio-resume">65. Audio Resume</a></h1>
+<p>Reset/adapt jitter buffer carefully.</p>
+<p>Do not replay seconds of stale audio.</p>
+<hr />
+<h1 id="66-call-hold"><a class="header" href="#66-call-hold">66. Call Hold</a></h1>
+<p>Hold is logical state.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum HoldState {
+    Active,
+    LocalHold,
+    RemoteHold,
+    BothHold,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="67-local-hold"><a class="header" href="#67-local-hold">67. Local Hold</a></h1>
+<p>Typical:</p>
+<pre><code class="language-text">stop/pause microphone transmission
+stop/pause camera
+continue call-control heartbeat
+</code></pre>
+<hr />
+<h1 id="68-remote-hold"><a class="header" href="#68-remote-hold">68. Remote Hold</a></h1>
+<p>UI shows:</p>
+<pre><code class="language-text">Call on hold
+</code></pre>
+<p>Audio may be silence or optional hold tone.</p>
+<hr />
+<h1 id="69-resume"><a class="header" href="#69-resume">69. Resume</a></h1>
+<p>Re-enable media gradually.</p>
+<p>Request keyframe if video paused long enough.</p>
+<hr />
+<h1 id="70-microphone-mute"><a class="header" href="#70-microphone-mute">70. Microphone Mute</a></h1>
+<p>Mute is not hold.</p>
+<pre><code class="language-text">call active
+audio receive continues
+capture encoded as silence/DTX
+</code></pre>
+<hr />
+<h1 id="71-camera-disable"><a class="header" href="#71-camera-disable">71. Camera Disable</a></h1>
+<p>Video sender stops camera/encoder.</p>
+<p>Audio remains active.</p>
+<p>Remote decoder becomes inactive/placeholder.</p>
+<hr />
+<h1 id="72-camera-enable"><a class="header" href="#72-camera-enable">72. Camera Enable</a></h1>
+<p>Requires:</p>
+<pre><code class="language-text">media-control message
+encoder start
+keyframe
+</code></pre>
+<p>No full call restart.</p>
+<hr />
+<h1 id="73-camera-switch"><a class="header" href="#73-camera-switch">73. Camera Switch</a></h1>
+<p>Front/rear camera switch should remain within same media stream if possible.</p>
+<hr />
+<h1 id="74-speaker-route-change"><a class="header" href="#74-speaker-route-change">74. Speaker Route Change</a></h1>
+<p>Audio route changes:</p>
+<pre><code class="language-text">speaker
+earpiece
+Bluetooth
+wired
+</code></pre>
+<p>handled by Part 26 without signaling unless capabilities fundamentally change.</p>
+<hr />
+<h1 id="75-screen-share"><a class="header" href="#75-screen-share">75. Screen Share</a></h1>
+<p>Screen share is a separate media source.</p>
+<p>State:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum ScreenShareState {
+    Off,
+    Starting,
+    Active,
+    Stopping,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="76-screen-share-negotiation"><a class="header" href="#76-screen-share-negotiation">76. Screen Share Negotiation</a></h1>
+<p>Peer must support:</p>
+<pre><code class="language-text">screen-share media stream
+</code></pre>
+<p>and compatible video codec.</p>
+<hr />
+<h1 id="77-screen-share-encoding"><a class="header" href="#77-screen-share-encoding">77. Screen Share Encoding</a></h1>
+<p>Android:</p>
+<pre><code class="language-text">screen capture surface
+→ hardware encoder surface
+</code></pre>
+<p>same Part 25 zero-copy principles.</p>
+<hr />
+<h1 id="78-screen-share-priority"><a class="header" href="#78-screen-share-priority">78. Screen Share Priority</a></h1>
+<p>Depending call:</p>
+<pre><code class="language-text">screen share
+</code></pre>
+<p>may outrank camera video.</p>
+<p>Audio still outranks both.</p>
+<hr />
+<h1 id="79-media-stream-ids"><a class="header" href="#79-media-stream-ids">79. Media Stream IDs</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct MediaStreamId(u32);
+<span class="boring">}</span></code></pre></pre>
+<p>Possible:</p>
+<pre><code class="language-text">1 audio
+2 camera video
+3 screen share
+</code></pre>
+<hr />
+<h1 id="80-stream-descriptor"><a class="header" href="#80-stream-descriptor">80. Stream Descriptor</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct MediaStreamDescriptor {
+    pub id: MediaStreamId,
+    pub kind: MediaStreamKind,
+    pub direction: MediaDirection,
+    pub codec: MediaCodec,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="81-direction"><a class="header" href="#81-direction">81. Direction</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum MediaDirection {
+    SendOnly,
+    ReceiveOnly,
+    SendReceive,
+    Inactive,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="82-call-control-messages"><a class="header" href="#82-call-control-messages">82. Call Control Messages</a></h1>
+<p>Core set:</p>
+<pre><code class="language-text">Offer
+Ringing
+Accept
+Reject
+Cancel
+MediaReady
+MuteChanged
+VideoChanged
+Hold
+Resume
+ScreenShareStart
+ScreenShareStop
+PathChanged
+Renegotiate
+Hangup
+Ack
+</code></pre>
+<hr />
+<h1 id="83-call-control-versioning"><a class="header" href="#83-call-control-versioning">83. Call Control Versioning</a></h1>
+<p>Use dedicated protocol:</p>
+<pre><code class="language-text">call/1
+</code></pre>
+<p>with forward-compatible required/optional features.</p>
+<hr />
+<h1 id="84-unknown-optional-control-message"><a class="header" href="#84-unknown-optional-control-message">84. Unknown Optional Control Message</a></h1>
+<p>Ignore safely.</p>
+<p>Unknown required semantic:</p>
+<pre><code class="language-text">terminate/renegotiate with typed error
+</code></pre>
+<hr />
+<h1 id="85-call-control-idempotency"><a class="header" href="#85-call-control-idempotency">85. Call Control Idempotency</a></h1>
+<p>Repeated:</p>
+<pre><code class="language-text">Accept
+Hangup
+Hold
+</code></pre>
+<p>must not corrupt state.</p>
+<hr />
+<h1 id="86-sequence-numbers"><a class="header" href="#86-sequence-numbers">86. Sequence Numbers</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct CallControlSeq(pub u64);
+<span class="boring">}</span></code></pre></pre>
+<p>Use for:</p>
+<pre><code class="language-text">ordering
+duplicate detection
+</code></pre>
+<hr />
+<h1 id="87-state-revision"><a class="header" href="#87-state-revision">87. State Revision</a></h1>
+<p>Optional:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct CallRevision(pub u64);
+<span class="boring">}</span></code></pre></pre>
+<p>Every material call-state update increases revision.</p>
+<hr />
+<h1 id="88-stale-control-frame"><a class="header" href="#88-stale-control-frame">88. Stale Control Frame</a></h1>
+<p>If:</p>
+<pre><code class="language-text">revision &lt; current
+</code></pre>
+<p>ignore safely.</p>
+<hr />
+<h1 id="89-call-termination"><a class="header" href="#89-call-termination">89. Call Termination</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum CallEndReason {
+    LocalHangup,
+    RemoteHangup,
+    Declined,
+    Busy,
+    Timeout,
+    NetworkLost,
+    SecurityError,
+    MediaFailure,
+    ResourceLimit,
+    AppShutdown,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="90-hangup"><a class="header" href="#90-hangup">90. Hangup</a></h1>
+<p>Hangup should be reliable where possible.</p>
+<p>But if network disappears:</p>
+<pre><code class="language-text">local call still ends
+</code></pre>
+<p>Do not wait indefinitely for remote ACK.</p>
+<hr />
+<h1 id="91-termination-cleanup"><a class="header" href="#91-termination-cleanup">91. Termination Cleanup</a></h1>
+<p>Order:</p>
+<pre><code class="language-text">mark ending
+stop new media
+stop camera/mic
+stop encoder/decoder
+release surfaces/audio routes
+close media streams
+persist call history
+release transport/session resources
+</code></pre>
+<hr />
+<h1 id="92-call-history"><a class="header" href="#92-call-history">92. Call History</a></h1>
+<p>Call history is durable metadata, not media.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct CallHistoryEntry {
+    pub call_id: CallId,
+    pub peer: AccountId,
+    pub direction: CallDirection,
+    pub kind: CallKind,
+    pub started_at: Timestamp,
+    pub connected_at: Option&lt;Timestamp&gt;,
+    pub ended_at: Timestamp,
+    pub end_reason: CallEndReason,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="93-privacy-of-call-history"><a class="header" href="#93-privacy-of-call-history">93. Privacy of Call History</a></h1>
+<p>Call history can reveal:</p>
+<pre><code class="language-text">who
+when
+duration
+</code></pre>
+<p>Treat as private metadata.</p>
+<p>Encrypt locally according to Part 28 local-storage policy.</p>
+<hr />
+<h1 id="94-do-not-store-media-by-default"><a class="header" href="#94-do-not-store-media-by-default">94. Do Not Store Media By Default</a></h1>
+<p>Call history must not imply:</p>
+<pre><code class="language-text">recording
+</code></pre>
+<p>Audio/video is not stored unless user explicitly records.</p>
+<hr />
+<h1 id="95-missed-calls"><a class="header" href="#95-missed-calls">95. Missed Calls</a></h1>
+<p>A call is missed if:</p>
+<pre><code class="language-text">incoming
+not answered
+before expiry/end
+</code></pre>
+<hr />
+<h1 id="96-call-duration"><a class="header" href="#96-call-duration">96. Call Duration</a></h1>
+<p>Duration begins when:</p>
+<pre><code class="language-text">media/session connected
+</code></pre>
+<p>not when ringing started.</p>
+<hr />
+<h1 id="97-crash-during-call"><a class="header" href="#97-crash-during-call">97. Crash During Call</a></h1>
+<p>If app/process crashes:</p>
+<pre><code class="language-text">call ends
+</code></pre>
+<p>Remote eventually detects heartbeat/media/control loss.</p>
+<p>Local next startup records:</p>
+<pre><code class="language-text">abnormal termination
+</code></pre>
+<p>if reconstructible.</p>
+<hr />
+<h1 id="98-durable-call-intent"><a class="header" href="#98-durable-call-intent">98. Durable Call Intent</a></h1>
+<p>Live calls themselves are ephemeral.</p>
+<p>Do not attempt to crash-recover a destroyed media session as if nothing happened.</p>
+<p>Use:</p>
+<pre><code class="language-text">new reconnect/re-call
+</code></pre>
+<p>after process restart.</p>
+<hr />
+<h1 id="99-call-heartbeat"><a class="header" href="#99-call-heartbeat">99. Call Heartbeat</a></h1>
+<p>Control plane may send periodic liveness.</p>
+<p>But media activity itself can also indicate health.</p>
+<p>Avoid excessive heartbeat traffic.</p>
+<hr />
+<h1 id="100-liveness-timeout"><a class="header" href="#100-liveness-timeout">100. Liveness Timeout</a></h1>
+<p>Differentiate:</p>
+<pre><code class="language-text">media silent
+</code></pre>
+<p>from:</p>
+<pre><code class="language-text">transport dead
+</code></pre>
+<p>VAD silence is normal.</p>
+<p>Use control/transport signals.</p>
+<hr />
+<h1 id="101-security-failure-during-call"><a class="header" href="#101-security-failure-during-call">101. Security Failure During Call</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">identity mismatch
+rekey failure
+revocation arrives
+</code></pre>
+<p>Policy may:</p>
+<pre><code class="language-text">terminate immediately
+</code></pre>
+<p>for high-risk failure.</p>
+<hr />
+<h1 id="102-device-revocation-mid-call"><a class="header" href="#102-device-revocation-mid-call">102. Device Revocation Mid-Call</a></h1>
+<p>If remote device becomes revoked:</p>
+<pre><code class="language-text">end call
+</code></pre>
+<p>and show security reason.</p>
+<hr />
+<h1 id="103-session-rekey"><a class="header" href="#103-session-rekey">103. Session Rekey</a></h1>
+<p>Long calls should support periodic media/session key rotation.</p>
+<p>No visible interruption.</p>
+<hr />
+<h1 id="104-group-calls"><a class="header" href="#104-group-calls">104. Group Calls</a></h1>
+<p>Initial group architecture should avoid premature complexity.</p>
+<p>Possible starting model:</p>
+<pre><code class="language-text">small mesh
+</code></pre>
+<p>for very small participant counts.</p>
+<hr />
+<h1 id="105-mesh-group-call"><a class="header" href="#105-mesh-group-call">105. Mesh Group Call</a></h1>
+<p>For N participants:</p>
+<pre><code class="language-text">each peer sends to others
+</code></pre>
+<p>Advantages:</p>
+<pre><code class="language-text">simple
+fully P2P
+</code></pre>
+<p>Disadvantages:</p>
+<pre><code class="language-text">uplink grows O(N)
+battery/CPU high
+</code></pre>
+<hr />
+<h1 id="106-mesh-limit"><a class="header" href="#106-mesh-limit">106. Mesh Limit</a></h1>
+<p>Practical only for small groups.</p>
+<p>Example:</p>
+<pre><code class="language-text">3–4 participants
+</code></pre>
+<p>depending device/network.</p>
+<hr />
+<h1 id="107-sfu-evolution"><a class="header" href="#107-sfu-evolution">107. SFU Evolution</a></h1>
+<p>For larger group calls, introduce:</p>
+<pre><code class="language-text">selective forwarding node
+</code></pre>
+<p>later.</p>
+<p>This can be:</p>
+<pre><code class="language-text">self-hosted
+organization-hosted
+possibly trusted only for routing, not plaintext
+</code></pre>
+<p>with media E2EE maintained where architecture supports.</p>
+<hr />
+<h1 id="108-do-not-build-sfu-into-v1-unless-needed"><a class="header" href="#108-do-not-build-sfu-into-v1-unless-needed">108. Do Not Build SFU Into v1 Unless Needed</a></h1>
+<p>Start with:</p>
+<pre><code class="language-text">1:1 excellent
+small group later
+</code></pre>
+<p>Production quality is more valuable than premature large-group complexity.</p>
+<hr />
+<h1 id="109-group-call-id"><a class="header" href="#109-group-call-id">109. Group Call ID</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct GroupCallId([u8; 16]);
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="110-group-participant-state"><a class="header" href="#110-group-participant-state">110. Group Participant State</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct GroupParticipantState {
+    pub participant: CallParticipant,
+    pub audio: MediaDirection,
+    pub video: MediaDirection,
+    pub screen_share: bool,
+    pub speaking: bool,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="111-active-speaker"><a class="header" href="#111-active-speaker">111. Active Speaker</a></h1>
+<p>Use Part 26 VAD/audio levels.</p>
+<p>UI only.</p>
+<p>Do not alter cryptographic identity.</p>
+<hr />
+<h1 id="112-group-join"><a class="header" href="#112-group-join">112. Group Join</a></h1>
+<p>Requires:</p>
+<pre><code class="language-text">membership authorization
+group security state
+media capability negotiation
+</code></pre>
+<hr />
+<h1 id="113-group-leave"><a class="header" href="#113-group-leave">113. Group Leave</a></h1>
+<p>Participant leaves cleanly:</p>
+<pre><code class="language-text">remove media streams
+update UI
+</code></pre>
+<hr />
+<h1 id="114-group-device-revocation"><a class="header" href="#114-group-device-revocation">114. Group Device Revocation</a></h1>
+<p>If participant device revoked:</p>
+<pre><code class="language-text">terminate its media
+advance group security state
+</code></pre>
+<hr />
+<h1 id="115-simulcast"><a class="header" href="#115-simulcast">115. Simulcast</a></h1>
+<p>Future optimization:</p>
+<pre><code class="language-text">sender encodes multiple resolutions
+</code></pre>
+<p>for group/SFU.</p>
+<p>Do not require initially.</p>
+<hr />
+<h1 id="116-svc"><a class="header" href="#116-svc">116. SVC</a></h1>
+<p>AV1 scalable video coding may eventually improve group efficiency.</p>
+<p>Treat as optional capability.</p>
+<hr />
+<h1 id="117-call-recording"><a class="header" href="#117-call-recording">117. Call Recording</a></h1>
+<p>Optional feature.</p>
+<p>Require explicit user action.</p>
+<hr />
+<h1 id="118-recording-consent"><a class="header" href="#118-recording-consent">118. Recording Consent</a></h1>
+<p>Product policy may require:</p>
+<pre><code class="language-text">visible recording indicator
+</code></pre>
+<p>and possibly participant notification.</p>
+<hr />
+<h1 id="119-recording-architecture"><a class="header" href="#119-recording-architecture">119. Recording Architecture</a></h1>
+<p>Prefer storing:</p>
+<pre><code class="language-text">compressed media
+</code></pre>
+<p>without unnecessary decode/re-encode.</p>
+<hr />
+<h1 id="120-recording-encryption"><a class="header" href="#120-recording-encryption">120. Recording Encryption</a></h1>
+<p>Stored recording should be locally encrypted.</p>
+<hr />
+<h1 id="121-call-notes--metadata"><a class="header" href="#121-call-notes--metadata">121. Call Notes / Metadata</a></h1>
+<p>Separate user-generated notes from actual recording.</p>
+<hr />
+<h1 id="122-call-notifications"><a class="header" href="#122-call-notifications">122. Call Notifications</a></h1>
+<p>Incoming call uses platform notification/foreground service as needed.</p>
+<p>Rust owns call state; platform adapter owns notification mechanics.</p>
+<hr />
+<h1 id="123-android-foreground-service"><a class="header" href="#123-android-foreground-service">123. Android Foreground Service</a></h1>
+<p>Long-running call may require foreground-service integration according to Android policy.</p>
+<p>Keep service control behind narrow Android adapter.</p>
+<hr />
+<h1 id="124-notification-actions"><a class="header" href="#124-notification-actions">124. Notification Actions</a></h1>
+<p>Incoming call actions:</p>
+<pre><code class="language-text">Accept
+Decline
+</code></pre>
+<p>must map into Rust <code>CallController</code>.</p>
+<hr />
+<h1 id="125-lockscreen-call-ux"><a class="header" href="#125-lockscreen-call-ux">125. Lockscreen Call UX</a></h1>
+<p>Platform-specific surface.</p>
+<p>Do not duplicate call state in Kotlin.</p>
+<p>Kotlin sends action event to Rust.</p>
+<hr />
+<h1 id="126-dioxus-call-ui"><a class="header" href="#126-dioxus-call-ui">126. Dioxus Call UI</a></h1>
+<p>Screens:</p>
+<pre><code class="language-text">incoming call
+outgoing ringing
+active audio call
+active video call
+reconnecting
+held
+ended
+</code></pre>
+<hr />
+<h1 id="127-call-view-model"><a class="header" href="#127-call-view-model">127. Call View Model</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct CallViewModel {
+    pub state: CallState,
+    pub peer_display: String,
+    pub duration: Duration,
+    pub muted: bool,
+    pub video_enabled: bool,
+    pub route: AudioRoute,
+    pub quality: CallQualityClass,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="128-ui-does-not-own-media-state"><a class="header" href="#128-ui-does-not-own-media-state">128. UI Does Not Own Media State</a></h1>
+<p>Dioxus issues:</p>
+<pre><code class="language-text">Mute
+Unmute
+EnableVideo
+DisableVideo
+Hangup
+</code></pre>
+<p>Rust controller decides resulting state.</p>
+<hr />
+<h1 id="129-video-surface-integration"><a class="header" href="#129-video-surface-integration">129. Video Surface Integration</a></h1>
+<p>Dioxus receives:</p>
+<pre><code class="language-text">RendererId
+</code></pre>
+<p>not decoded frames.</p>
+<p>Part 25 handles Surface lifecycle.</p>
+<hr />
+<h1 id="130-audio-ui-integration"><a class="header" href="#130-audio-ui-integration">130. Audio UI Integration</a></h1>
+<p>Dioxus receives:</p>
+<pre><code class="language-text">audio level
+route
+mute state
+</code></pre>
+<p>not PCM buffers.</p>
+<hr />
+<h1 id="131-call-quality-ui"><a class="header" href="#131-call-quality-ui">131. Call Quality UI</a></h1>
+<p>Simple states:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum CallQualityClass {
+    Excellent,
+    Good,
+    Fair,
+    Poor,
+    Reconnecting,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Derived from diagnostics.</p>
+<hr />
+<h1 id="132-advanced-call-diagnostics"><a class="header" href="#132-advanced-call-diagnostics">132. Advanced Call Diagnostics</a></h1>
+<p>Developer view:</p>
+<pre><code class="language-text">path
+RTT
+loss
+audio jitter
+audio bitrate
+video codec
+video bitrate
+FPS
+resolution
+hardware/software backend
+</code></pre>
+<hr />
+<h1 id="133-privacy-of-diagnostics"><a class="header" href="#133-privacy-of-diagnostics">133. Privacy of Diagnostics</a></h1>
+<p>Do not show/store:</p>
+<pre><code class="language-text">raw media
+private keys
+precise remote IP by default
+</code></pre>
+<hr />
+<h1 id="134-battery-policy"><a class="header" href="#134-battery-policy">134. Battery Policy</a></h1>
+<p>Part 13 can reduce:</p>
+<pre><code class="language-text">video resolution
+FPS
+software AV1 use
+multipath redundancy
+</code></pre>
+<p>before compromising audio.</p>
+<hr />
+<h1 id="135-thermal-policy"><a class="header" href="#135-thermal-policy">135. Thermal Policy</a></h1>
+<p>If device overheats:</p>
+<pre><code class="language-text">disable high-cost video processing
+reduce FPS/resolution
+prefer hardware codec
+</code></pre>
+<hr />
+<h1 id="136-resource-limits"><a class="header" href="#136-resource-limits">136. Resource Limits</a></h1>
+<p>Part 08 bounds:</p>
+<pre><code class="language-text">active calls
+audio streams
+video streams
+codec instances
+jitter buffers
+pending call offers
+</code></pre>
+<hr />
+<h1 id="137-incoming-call-flood"><a class="header" href="#137-incoming-call-flood">137. Incoming Call Flood</a></h1>
+<p>Unknown peers must not generate unlimited:</p>
+<pre><code class="language-text">ringing
+notifications
+wakeups
+</code></pre>
+<p>Use Part 28 abuse controls.</p>
+<hr />
+<h1 id="138-call-request-policy"><a class="header" href="#138-call-request-policy">138. Call Request Policy</a></h1>
+<p>Unknown sender:</p>
+<pre><code class="language-text">silent request
+restricted ring
+or blocked
+</code></pre>
+<p>depending privacy setting.</p>
+<hr />
+<h1 id="139-contact-only-calling"><a class="header" href="#139-contact-only-calling">139. Contact-Only Calling</a></h1>
+<p>Optional setting:</p>
+<pre><code class="language-text">only trusted contacts can ring
+</code></pre>
+<hr />
+<h1 id="140-organization-calls"><a class="header" href="#140-organization-calls">140. Organization Calls</a></h1>
+<p>Managed deployments may allow:</p>
+<pre><code class="language-text">staff-only
+role-based
+emergency authority
+</code></pre>
+<p>but still through explicit policy.</p>
+<hr />
+<h1 id="141-emergency-call-mode"><a class="header" href="#141-emergency-call-mode">141. Emergency Call Mode</a></h1>
+<p>Part 17 may permit special:</p>
+<pre><code class="language-text">high-priority emergency audio
+</code></pre>
+<p>but security/authorization remains mandatory.</p>
+<hr />
+<h1 id="142-emergency-degradation-ladder"><a class="header" href="#142-emergency-degradation-ladder">142. Emergency Degradation Ladder</a></h1>
+<pre><code class="language-text">video
+→ low video
+→ audio
+→ low bitrate audio
+→ voice note
+→ text
+</code></pre>
+<hr />
+<h1 id="143-bluetooth-calling"><a class="header" href="#143-bluetooth-calling">143. Bluetooth Calling</a></h1>
+<p>Bluetooth audio route handled by Part 26.</p>
+<p>Bluetooth transport is generally unsuitable for full realtime call media except specialized local scenarios.</p>
+<hr />
+<h1 id="144-lan-calls"><a class="header" href="#144-lan-calls">144. LAN Calls</a></h1>
+<p>LAN/direct path is ideal:</p>
+<pre><code class="language-text">low latency
+high bandwidth
+</code></pre>
+<hr />
+<h1 id="145-relay-calls"><a class="header" href="#145-relay-calls">145. Relay Calls</a></h1>
+<p>Relay is valid fallback.</p>
+<p>Media E2EE means relay does not require plaintext.</p>
+<hr />
+<h1 id="146-offline-local-calls"><a class="header" href="#146-offline-local-calls">146. Offline Local Calls</a></h1>
+<p>If two devices share LAN/local connectivity but no Internet:</p>
+<pre><code class="language-text">call can work
+</code></pre>
+<p>provided discovery/routing/session negotiation succeeds.</p>
+<hr />
+<h1 id="147-internetless-mesh-call"><a class="header" href="#147-internetless-mesh-call">147. Internetless Mesh Call</a></h1>
+<p>Possible through local Wi-Fi/router mesh.</p>
+<p>Do not require cloud signaling if peer discovery/contact route is available.</p>
+<hr />
+<h1 id="148-signaling-transport"><a class="header" href="#148-signaling-transport">148. Signaling Transport</a></h1>
+<p>Call signaling itself can use:</p>
+<pre><code class="language-text">existing secure peer protocol
+</code></pre>
+<p>over any available path.</p>
+<p>No separate centralized signaling server is architecturally required.</p>
+<hr />
+<h1 id="149-optional-rendezvous-assistance"><a class="header" href="#149-optional-rendezvous-assistance">149. Optional Rendezvous Assistance</a></h1>
+<p>If peer discovery needs assistance:</p>
+<pre><code class="language-text">relay/discovery infrastructure
+</code></pre>
+<p>may help.</p>
+<p>Call semantics remain P2P.</p>
+<hr />
+<h1 id="150-call-offer-routing"><a class="header" href="#150-call-offer-routing">150. Call Offer Routing</a></h1>
+<p>Use Part 03 route policy.</p>
+<p>Preference:</p>
+<pre><code class="language-text">direct secure peer
+→ relay
+</code></pre>
+<p>depending reachability.</p>
+<hr />
+<h1 id="151-signaling-reliability"><a class="header" href="#151-signaling-reliability">151. Signaling Reliability</a></h1>
+<p>Offer/accept/hangup must be reliable and idempotent.</p>
+<hr />
+<h1 id="152-signaling-retry"><a class="header" href="#152-signaling-retry">152. Signaling Retry</a></h1>
+<p>Retries use:</p>
+<pre><code class="language-text">same CallId
+same logical operation ID
+</code></pre>
+<p>not new calls.</p>
+<hr />
+<h1 id="153-duplicate-offer"><a class="header" href="#153-duplicate-offer">153. Duplicate Offer</a></h1>
+<p>Recipient detects same CallId:</p>
+<pre><code class="language-text">do not ring twice
+</code></pre>
+<hr />
+<h1 id="154-call-glare"><a class="header" href="#154-call-glare">154. Call Glare</a></h1>
+<p>Both users call each other simultaneously.</p>
+<p>Need deterministic resolution.</p>
+<hr />
+<h1 id="155-glare-resolution"><a class="header" href="#155-glare-resolution">155. Glare Resolution</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">compare CallId / device IDs deterministically
+</code></pre>
+<p>One call wins; the other becomes merged/cancelled.</p>
+<hr />
+<h1 id="156-call-merge"><a class="header" href="#156-call-merge">156. Call Merge</a></h1>
+<p>Optional behavior:</p>
+<pre><code class="language-text">simultaneous call offers
+→ treat as one call
+</code></pre>
+<p>Useful UX.</p>
+<hr />
+<h1 id="157-permission-handling"><a class="header" href="#157-permission-handling">157. Permission Handling</a></h1>
+<p>Before starting capture:</p>
+<pre><code class="language-text">microphone permission
+camera permission
+screen-capture permission
+</code></pre>
+<p>must be available.</p>
+<hr />
+<h1 id="158-permission-denied"><a class="header" href="#158-permission-denied">158. Permission Denied</a></h1>
+<p>Audio call cannot begin without microphone if user intends two-way audio.</p>
+<p>Video may downgrade to audio if camera denied.</p>
+<hr />
+<h1 id="159-camera-permission-mid-call"><a class="header" href="#159-camera-permission-mid-call">159. Camera Permission Mid-Call</a></h1>
+<p>If user later enables camera:</p>
+<pre><code class="language-text">request permission
+then add video
+</code></pre>
+<hr />
+<h1 id="160-screen-share-permission"><a class="header" href="#160-screen-share-permission">160. Screen Share Permission</a></h1>
+<p>Requires explicit per-session platform consent where OS demands.</p>
+<hr />
+<h1 id="161-device-availability"><a class="header" href="#161-device-availability">161. Device Availability</a></h1>
+<p>Call startup checks:</p>
+<pre><code class="language-text">microphone
+speaker/output
+camera if needed
+codec resources
+</code></pre>
+<hr />
+<h1 id="162-media-resource-admission"><a class="header" href="#162-media-resource-admission">162. Media Resource Admission</a></h1>
+<p>Before accept:</p>
+<pre><code class="language-text">can this device actually allocate media resources?
+</code></pre>
+<p>If not:</p>
+<pre><code class="language-text">accept audio-only
+or reject with ResourceUnavailable
+</code></pre>
+<hr />
+<h1 id="163-prewarming"><a class="header" href="#163-prewarming">163. Prewarming</a></h1>
+<p>For outgoing video call, prewarm:</p>
+<pre><code class="language-text">codec capability
+camera permission
+audio route
+</code></pre>
+<p>without opening camera too early.</p>
+<hr />
+<h1 id="164-ringing-battery-cost"><a class="header" href="#164-ringing-battery-cost">164. Ringing Battery Cost</a></h1>
+<p>Do not activate full media pipeline before accept.</p>
+<hr />
+<h1 id="165-mediaready"><a class="header" href="#165-mediaready">165. MediaReady</a></h1>
+<p>Both sides can exchange:</p>
+<pre><code class="language-text">MediaReady
+</code></pre>
+<p>after local codecs/audio are initialized.</p>
+<hr />
+<h1 id="166-connection-established"><a class="header" href="#166-connection-established">166. Connection Established</a></h1>
+<p>Call enters <code>Active</code> when minimum required media path is ready.</p>
+<p>For audio call:</p>
+<pre><code class="language-text">audio send/receive ready
+</code></pre>
+<p>For video call:</p>
+<pre><code class="language-text">audio ready
+video may join milliseconds later
+</code></pre>
+<hr />
+<h1 id="167-first-media-packet"><a class="header" href="#167-first-media-packet">167. First Media Packet</a></h1>
+<p>Do not wait indefinitely.</p>
+<p>Startup timeout triggers:</p>
+<pre><code class="language-text">media failure
+</code></pre>
+<p>or downgrade.</p>
+<hr />
+<h1 id="168-audio-first-startup"><a class="header" href="#168-audio-first-startup">168. Audio-First Startup</a></h1>
+<p>For video call:</p>
+<pre><code class="language-text">establish audio first
+then video
+</code></pre>
+<p>improves perceived connection time.</p>
+<hr />
+<h1 id="169-video-warm-up"><a class="header" href="#169-video-warm-up">169. Video Warm-Up</a></h1>
+<p>Camera/encoder can start after call accepted.</p>
+<hr />
+<h1 id="170-keyframe-on-start"><a class="header" href="#170-keyframe-on-start">170. Keyframe on Start</a></h1>
+<p>First decodable video frame must include correct config/keyframe.</p>
+<hr />
+<h1 id="171-codec-failure-on-start"><a class="header" href="#171-codec-failure-on-start">171. Codec Failure on Start</a></h1>
+<p>If AV1 fails locally:</p>
+<pre><code class="language-text">fallback H.265
+fallback H.264
+</code></pre>
+<p>if negotiated alternatives exist.</p>
+<hr />
+<h1 id="172-negotiated-alternative-set"><a class="header" href="#172-negotiated-alternative-set">172. Negotiated Alternative Set</a></h1>
+<p>Offer can provide ordered acceptable codecs.</p>
+<p>Accept selects primary plus optional fallback set.</p>
+<hr />
+<h1 id="173-mid-call-codec-fallback"><a class="header" href="#173-mid-call-codec-fallback">173. Mid-Call Codec Fallback</a></h1>
+<p>If hardware AV1 crashes repeatedly:</p>
+<pre><code class="language-text">renegotiate H.264/H.265
+</code></pre>
+<p>without ending call if possible.</p>
+<hr />
+<h1 id="174-audio-codec-failure"><a class="header" href="#174-audio-codec-failure">174. Audio Codec Failure</a></h1>
+<p>Opus is baseline.</p>
+<p>If Opus fails locally:</p>
+<pre><code class="language-text">call cannot continue normally
+</code></pre>
+<p>because no alternative codec is required initially.</p>
+<hr />
+<h1 id="175-jitter-recovery"><a class="header" href="#175-jitter-recovery">175. Jitter Recovery</a></h1>
+<p>Part 26 adaptive jitter handles transient network change.</p>
+<hr />
+<h1 id="176-video-decoder-recovery"><a class="header" href="#176-video-decoder-recovery">176. Video Decoder Recovery</a></h1>
+<p>Part 25:</p>
+<pre><code class="language-text">decoder reset
+request keyframe
+resume
+</code></pre>
+<hr />
+<h1 id="177-surface-loss"><a class="header" href="#177-surface-loss">177. Surface Loss</a></h1>
+<p>UI rotation/navigation may destroy Surface.</p>
+<p>Call remains active.</p>
+<p>Remote video may temporarily pause rendering.</p>
+<hr />
+<h1 id="178-app-background"><a class="header" href="#178-app-background">178. App Background</a></h1>
+<p>Policy:</p>
+<pre><code class="language-text">audio continues where OS allows
+camera may stop
+video receive may suspend rendering
+</code></pre>
+<hr />
+<h1 id="179-screen-off"><a class="header" href="#179-screen-off">179. Screen Off</a></h1>
+<p>Audio call should continue efficiently.</p>
+<hr />
+<h1 id="180-android-process-importance"><a class="header" href="#180-android-process-importance">180. Android Process Importance</a></h1>
+<p>Use platform foreground service/lifecycle where required.</p>
+<hr />
+<h1 id="181-desktop-window-close"><a class="header" href="#181-desktop-window-close">181. Desktop Window Close</a></h1>
+<p>If call UI window closes accidentally:</p>
+<pre><code class="language-text">product policy
+</code></pre>
+<p>may keep call in background or hang up.</p>
+<p>Rust controller remains canonical.</p>
+<hr />
+<h1 id="182-headless-call-mode"><a class="header" href="#182-headless-call-mode">182. Headless Call Mode</a></h1>
+<p>Part 16 daemon can theoretically support:</p>
+<pre><code class="language-text">audio endpoint
+automated call agent
+intercom
+</code></pre>
+<p>through same call protocol.</p>
+<hr />
+<h1 id="183-embedded-node-calls"><a class="header" href="#183-embedded-node-calls">183. Embedded Node Calls</a></h1>
+<p>Part 20 node may support:</p>
+<pre><code class="language-text">intercom
+emergency audio
+</code></pre>
+<p>if audio hardware exists.</p>
+<p>No Dioxus required.</p>
+<hr />
+<h1 id="184-ffi"><a class="header" href="#184-ffi">184. FFI</a></h1>
+<p>Part 19 exposes high-level call API:</p>
+<pre><code class="language-text">start_call
+accept_call
+reject_call
+mute
+enable_video
+hangup
+subscribe_call_events
+</code></pre>
+<p>Foreign apps do not control codec internals directly by default.</p>
+<hr />
+<h1 id="185-c-abi-call-handle"><a class="header" href="#185-c-abi-call-handle">185. C ABI Call Handle</a></h1>
+<pre><code class="language-c">typedef comm_handle_t comm_call_handle_t;
+</code></pre>
+<hr />
+<h1 id="186-async-call-operations"><a class="header" href="#186-async-call-operations">186. Async Call Operations</a></h1>
+<p>Start/accept return operation/call handles.</p>
+<p>Events report state.</p>
+<hr />
+<h1 id="187-plugin-boundary"><a class="header" href="#187-plugin-boundary">187. Plugin Boundary</a></h1>
+<p>Third-party plugin cannot:</p>
+<pre><code class="language-text">listen to raw call audio/video
+</code></pre>
+<p>without explicit future high-risk media permission.</p>
+<hr />
+<h1 id="188-extension-call-protocol"><a class="header" href="#188-extension-call-protocol">188. Extension Call Protocol</a></h1>
+<p>A plugin may define call-related metadata/workflow.</p>
+<p>Core media security remains platform-owned.</p>
+<hr />
+<h1 id="189-wasm-components"><a class="header" href="#189-wasm-components">189. WASM Components</a></h1>
+<p>Do not route realtime PCM/video frames through WASM.</p>
+<p>WASM may implement:</p>
+<pre><code class="language-text">policy
+workflow
+call routing rules
+</code></pre>
+<p>not media hot path.</p>
+<hr />
+<h1 id="190-call-policy-component"><a class="header" href="#190-call-policy-component">190. Call Policy Component</a></h1>
+<p>Possible input:</p>
+<pre><code class="language-text">peer trust
+battery
+network
+organization policy
+</code></pre>
+<p>Output:</p>
+<pre><code class="language-text">allow video
+allow unknown caller
+preferred route class
+</code></pre>
+<p>Core enforces hard limits.</p>
+<hr />
+<h1 id="191-call-history-sync"><a class="header" href="#191-call-history-sync">191. Call History Sync</a></h1>
+<p>Call history can sync across devices if desired.</p>
+<p>Use encrypted application sync.</p>
+<hr />
+<h1 id="192-history-conflict"><a class="header" href="#192-history-conflict">192. History Conflict</a></h1>
+<p>Same CallId merges duplicate records.</p>
+<hr />
+<h1 id="193-missed-call-sync"><a class="header" href="#193-missed-call-sync">193. Missed Call Sync</a></h1>
+<p>Missed call shown across devices should deduplicate by CallId.</p>
+<hr />
+<h1 id="194-privacy-setting"><a class="header" href="#194-privacy-setting">194. Privacy Setting</a></h1>
+<p>User may choose:</p>
+<pre><code class="language-text">do not sync call history
+</code></pre>
+<hr />
+<h1 id="195-call-event-log"><a class="header" href="#195-call-event-log">195. Call Event Log</a></h1>
+<p>Ephemeral media is not event-sourced.</p>
+<p>Control/history events may be durable:</p>
+<pre><code class="language-text">CallOffered
+CallAccepted
+CallEnded
+</code></pre>
+<p>only if needed for history/sync.</p>
+<hr />
+<h1 id="196-event-log-scope"><a class="header" href="#196-event-log-scope">196. Event Log Scope</a></h1>
+<p>Avoid storing every:</p>
+<pre><code class="language-text">mute toggle
+bitrate change
+packet event
+</code></pre>
+<p>as durable event.</p>
+<p>Those are ephemeral diagnostics.</p>
+<hr />
+<h1 id="197-call-metrics"><a class="header" href="#197-call-metrics">197. Call Metrics</a></h1>
+<p>Aggregate:</p>
+<pre><code class="language-text">connect time
+duration
+reconnect count
+average RTT
+loss class
+codec
+</code></pre>
+<p>for local diagnostics.</p>
+<hr />
+<h1 id="198-no-content-metrics"><a class="header" href="#198-no-content-metrics">198. No Content Metrics</a></h1>
+<p>Do not collect:</p>
+<pre><code class="language-text">speech content
+video frames
+conversation transcript
+</code></pre>
+<hr />
+<h1 id="199-quality-adaptation-state"><a class="header" href="#199-quality-adaptation-state">199. Quality Adaptation State</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct MediaAdaptationState {
+    pub audio_bitrate: u32,
+    pub video_bitrate: Option&lt;u32&gt;,
+    pub fps: Option&lt;u32&gt;,
+    pub resolution: Option&lt;Resolution&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="200-congestion-hysteresis"><a class="header" href="#200-congestion-hysteresis">200. Congestion Hysteresis</a></h1>
+<p>Avoid oscillation:</p>
+<pre><code class="language-text">720p ↔ 1080p every second
+</code></pre>
+<p>Use hold periods and confidence.</p>
+<hr />
+<h1 id="201-recovery-priority"><a class="header" href="#201-recovery-priority">201. Recovery Priority</a></h1>
+<p>When bandwidth drops:</p>
+<pre><code class="language-text">preserve audio first
+then key video
+then quality
+</code></pre>
+<hr />
+<h1 id="202-packet-scheduler"><a class="header" href="#202-packet-scheduler">202. Packet Scheduler</a></h1>
+<p>Bounded queues per class.</p>
+<p>Do not let video backlog increase call latency.</p>
+<hr />
+<h1 id="203-audio-queue"><a class="header" href="#203-audio-queue">203. Audio Queue</a></h1>
+<p>Very small.</p>
+<p>Old audio frames are discarded.</p>
+<hr />
+<h1 id="204-video-queue"><a class="header" href="#204-video-queue">204. Video Queue</a></h1>
+<p>Small.</p>
+<p>Drop stale delta frames before adding latency.</p>
+<hr />
+<h1 id="205-control-queue"><a class="header" href="#205-control-queue">205. Control Queue</a></h1>
+<p>Reliable and bounded.</p>
+<hr />
+<h1 id="206-keyframe-queue"><a class="header" href="#206-keyframe-queue">206. Keyframe Queue</a></h1>
+<p>Avoid sending multiple stale keyframes.</p>
+<p>Coalesce requests.</p>
+<hr />
+<h1 id="207-keyframe-request-storm"><a class="header" href="#207-keyframe-request-storm">207. Keyframe Request Storm</a></h1>
+<p>Rate-limit remote keyframe requests.</p>
+<hr />
+<h1 id="208-call-abuse"><a class="header" href="#208-call-abuse">208. Call Abuse</a></h1>
+<p>Unknown peer should not be able to force:</p>
+<pre><code class="language-text">camera activation
+microphone activation
+hardware codec allocation
+</code></pre>
+<p>before user accepts.</p>
+<hr />
+<h1 id="209-incoming-offer-validation"><a class="header" href="#209-incoming-offer-validation">209. Incoming Offer Validation</a></h1>
+<p>Before ring:</p>
+<pre><code class="language-text">authenticate sender
+check blocklist
+check rate limit
+check call policy
+</code></pre>
+<hr />
+<h1 id="210-unknown-caller-ui"><a class="header" href="#210-unknown-caller-ui">210. Unknown Caller UI</a></h1>
+<p>Show:</p>
+<pre><code class="language-text">unknown caller
+</code></pre>
+<p>without granting trust.</p>
+<hr />
+<h1 id="211-caller-id-spoofing"><a class="header" href="#211-caller-id-spoofing">211. Caller ID Spoofing</a></h1>
+<p>Display identity must come from authenticated peer/account mapping.</p>
+<p>Never trust arbitrary supplied display name alone.</p>
+<hr />
+<h1 id="212-call-link-feature"><a class="header" href="#212-call-link-feature">212. Call Link Feature</a></h1>
+<p>If future shareable call links exist:</p>
+<pre><code class="language-text">separate tokenized authorization model
+</code></pre>
+<p>not same as trusted contact call.</p>
+<hr />
+<h1 id="213-call-link-security"><a class="header" href="#213-call-link-security">213. Call Link Security</a></h1>
+<p>Use:</p>
+<pre><code class="language-text">high-entropy token
+expiry
+room security policy
+</code></pre>
+<hr />
+<h1 id="214-group-invite-security"><a class="header" href="#214-group-invite-security">214. Group Invite Security</a></h1>
+<p>Group call invite should be bound to:</p>
+<pre><code class="language-text">group membership
+call ID
+security epoch
+</code></pre>
+<hr />
+<h1 id="215-moderation-in-group-calls"><a class="header" href="#215-moderation-in-group-calls">215. Moderation in Group Calls</a></h1>
+<p>Possible roles:</p>
+<pre><code class="language-text">host
+moderator
+participant
+</code></pre>
+<p>Actions:</p>
+<pre><code class="language-text">mute request
+remove participant
+lock room
+</code></pre>
+<p>must be authenticated.</p>
+<hr />
+<h1 id="216-local-mute-vs-moderator-mute"><a class="header" href="#216-local-mute-vs-moderator-mute">216. Local Mute vs Moderator Mute</a></h1>
+<p>A moderator may request/force upstream mute according to product policy.</p>
+<p>Still clearly represented in UI.</p>
+<hr />
+<h1 id="217-end-to-end-media-authentication"><a class="header" href="#217-end-to-end-media-authentication">217. End-to-End Media Authentication</a></h1>
+<p>Receiver must authenticate:</p>
+<pre><code class="language-text">which device produced audio/video
+</code></pre>
+<p>not just decrypt generic group media.</p>
+<hr />
+<h1 id="218-media-frame-identity"><a class="header" href="#218-media-frame-identity">218. Media Frame Identity</a></h1>
+<p>Frame metadata includes:</p>
+<pre><code class="language-text">stream ID
+sender device
+sequence/timestamp
+security epoch
+</code></pre>
+<p>authenticated.</p>
+<hr />
+<h1 id="219-screen-share-security"><a class="header" href="#219-screen-share-security">219. Screen Share Security</a></h1>
+<p>Screen-share stream is independently authenticated/encrypted.</p>
+<hr />
+<h1 id="220-recording-marker"><a class="header" href="#220-recording-marker">220. Recording Marker</a></h1>
+<p>If recording is active, include local state and optional participant notification according to policy.</p>
+<hr />
+<h1 id="221-call-state-persistence"><a class="header" href="#221-call-state-persistence">221. Call State Persistence</a></h1>
+<p>Persist only enough to reconstruct:</p>
+<pre><code class="language-text">history
+missed call
+abnormal termination
+</code></pre>
+<p>Do not persist live codec/session handles.</p>
+<hr />
+<h1 id="222-restart-recovery"><a class="header" href="#222-restart-recovery">222. Restart Recovery</a></h1>
+<p>On app restart:</p>
+<pre><code class="language-text">active call from previous process
+→ mark ended_abnormally
+</code></pre>
+<p>unless external daemon/media service preserved it intentionally.</p>
+<hr />
+<h1 id="223-daemon-preserved-calls"><a class="header" href="#223-daemon-preserved-calls">223. Daemon-Preserved Calls</a></h1>
+<p>If architecture later puts media in persistent service process:</p>
+<pre><code class="language-text">UI restart
+</code></pre>
+<p>may reattach to existing call.</p>
+<p>Call protocol supports this because UI is not authoritative.</p>
+<hr />
+<h1 id="224-call-ownership"><a class="header" href="#224-call-ownership">224. Call Ownership</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum CallOwner {
+    AppProcess,
+    Daemon,
+    MediaService,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="225-reattachment"><a class="header" href="#225-reattachment">225. Reattachment</a></h1>
+<p>UI queries:</p>
+<pre><code class="language-text">active call snapshot
+</code></pre>
+<p>then binds controls/video renderer.</p>
+<hr />
+<h1 id="226-snapshot"><a class="header" href="#226-snapshot">226. Snapshot</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct CallSnapshot {
+    pub call_id: CallId,
+    pub state: CallState,
+    pub peer: AccountId,
+    pub media: NegotiatedMedia,
+    pub muted: bool,
+    pub video_enabled: bool,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="227-snapshot-is-not-authority"><a class="header" href="#227-snapshot-is-not-authority">227. Snapshot Is Not Authority</a></h1>
+<p>It is a read model.</p>
+<p>Commands still go through controller.</p>
+<hr />
+<h1 id="228-testing--state-machine"><a class="header" href="#228-testing--state-machine">228. Testing — State Machine</a></h1>
+<p>Exhaustively test valid/invalid transitions.</p>
+<p>Examples:</p>
+<pre><code class="language-text">Idle → Active
+</code></pre>
+<p>must fail.</p>
+<pre><code class="language-text">RingingIncoming → Accept → Negotiating
+</code></pre>
+<p>must succeed.</p>
+<hr />
+<h1 id="229-duplicate-signaling-tests"><a class="header" href="#229-duplicate-signaling-tests">229. Duplicate Signaling Tests</a></h1>
+<p>Inject duplicate:</p>
+<pre><code class="language-text">Offer
+Accept
+Hangup
+</code></pre>
+<p>State remains correct.</p>
+<hr />
+<h1 id="230-simultaneous-call-test"><a class="header" href="#230-simultaneous-call-test">230. Simultaneous Call Test</a></h1>
+<p>Both sides call at same time.</p>
+<p>Glare resolves deterministically.</p>
+<hr />
+<h1 id="231-multi-device-answer-test"><a class="header" href="#231-multi-device-answer-test">231. Multi-Device Answer Test</a></h1>
+<p>Two recipient devices accept nearly simultaneously.</p>
+<p>Exactly one wins.</p>
+<hr />
+<h1 id="232-reconnect-test"><a class="header" href="#232-reconnect-test">232. Reconnect Test</a></h1>
+<p>During active call:</p>
+<pre><code class="language-text">kill Wi-Fi
+enable cellular
+</code></pre>
+<p>Call should recover where alternate path exists.</p>
+<hr />
+<h1 id="233-relay-fallback-test"><a class="header" href="#233-relay-fallback-test">233. Relay Fallback Test</a></h1>
+<p>Block direct path.</p>
+<p>Call falls back to relay.</p>
+<hr />
+<h1 id="234-direct-upgrade-test"><a class="header" href="#234-direct-upgrade-test">234. Direct Upgrade Test</a></h1>
+<p>Start on relay.</p>
+<p>Direct path later becomes available.</p>
+<p>Optional:</p>
+<pre><code class="language-text">migrate to direct
+</code></pre>
+<p>without ending call.</p>
+<hr />
+<h1 id="235-codec-fallback-test"><a class="header" href="#235-codec-fallback-test">235. Codec Fallback Test</a></h1>
+<p>Force hardware AV1 failure.</p>
+<p>Expected:</p>
+<pre><code class="language-text">renegotiate H.265/H.264
+</code></pre>
+<p>if supported.</p>
+<hr />
+<h1 id="236-surface-loss-test"><a class="header" href="#236-surface-loss-test">236. Surface Loss Test</a></h1>
+<p>Destroy/recreate Android video Surface during call.</p>
+<p>Audio remains uninterrupted.</p>
+<hr />
+<h1 id="237-audio-route-test"><a class="header" href="#237-audio-route-test">237. Audio Route Test</a></h1>
+<p>Speaker → Bluetooth → speaker.</p>
+<p>Call persists.</p>
+<hr />
+<h1 id="238-hold-test"><a class="header" href="#238-hold-test">238. Hold Test</a></h1>
+<p>Hold/resume repeatedly.</p>
+<p>No stale audio/video queues.</p>
+<hr />
+<h1 id="239-camera-toggle-test"><a class="header" href="#239-camera-toggle-test">239. Camera Toggle Test</a></h1>
+<p>Enable/disable video repeatedly.</p>
+<p>No call restart.</p>
+<hr />
+<h1 id="240-screen-share-test"><a class="header" href="#240-screen-share-test">240. Screen Share Test</a></h1>
+<p>Start/stop screen share during camera call.</p>
+<hr />
+<h1 id="241-packet-loss-test"><a class="header" href="#241-packet-loss-test">241. Packet Loss Test</a></h1>
+<p>Inject:</p>
+<pre><code class="language-text">1%
+5%
+10%
+</code></pre>
+<p>loss.</p>
+<p>Audio remains prioritized.</p>
+<hr />
+<h1 id="242-high-jitter-test"><a class="header" href="#242-high-jitter-test">242. High Jitter Test</a></h1>
+<p>Adaptive audio jitter remains bounded.</p>
+<hr />
+<h1 id="243-long-call-soak"><a class="header" href="#243-long-call-soak">243. Long Call Soak</a></h1>
+<p>Run:</p>
+<pre><code class="language-text">2–8 hours
+</code></pre>
+<p>with:</p>
+<pre><code class="language-text">network handoffs
+mute
+camera toggle
+route change
+</code></pre>
+<p>Track memory/resource leaks.</p>
+<hr />
+<h1 id="244-resource-exhaustion-test"><a class="header" href="#244-resource-exhaustion-test">244. Resource Exhaustion Test</a></h1>
+<p>Force codec allocation failure.</p>
+<p>Expected:</p>
+<pre><code class="language-text">video downgrade
+audio survives
+</code></pre>
+<hr />
+<h1 id="245-security-revocation-test"><a class="header" href="#245-security-revocation-test">245. Security Revocation Test</a></h1>
+<p>Revoke active remote device.</p>
+<p>Call terminates securely.</p>
+<hr />
+<h1 id="246-call-flood-test"><a class="header" href="#246-call-flood-test">246. Call Flood Test</a></h1>
+<p>Unknown peer sends hundreds of offers.</p>
+<p>Expected:</p>
+<pre><code class="language-text">rate-limited
+no notification storm
+no codec/camera activation
+</code></pre>
+<hr />
+<h1 id="247-crash-test"><a class="header" href="#247-crash-test">247. Crash Test</a></h1>
+<p>Kill app mid-call.</p>
+<p>Remote exits/reconnects according to timeout.</p>
+<p>No corrupt call history.</p>
+<hr />
+<h1 id="248-fuzzing"><a class="header" href="#248-fuzzing">248. Fuzzing</a></h1>
+<p>Part 10 fuzz:</p>
+<pre><code class="language-text">call control parser
+state transition sequences
+media negotiation
+codec lists
+stream descriptors
+</code></pre>
+<hr />
+<h1 id="249-property-tests"><a class="header" href="#249-property-tests">249. Property Tests</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">one CallId cannot be simultaneously Ended and Active
+hangup is idempotent
+no video stream exists when video capability not negotiated
+revoked device never reaches Active
+</code></pre>
+<hr />
+<h1 id="250-interoperability"><a class="header" href="#250-interoperability">250. Interoperability</a></h1>
+<p>Part 23 should define:</p>
+<pre><code class="language-text">call/1
+</code></pre>
+<p>specification and vectors.</p>
+<hr />
+<h1 id="251-call-conformance-profile"><a class="header" href="#251-call-conformance-profile">251. Call Conformance Profile</a></h1>
+<pre><code class="language-text">offer
+ring
+accept
+reject
+cancel
+hangup
+media negotiation
+reconnect
+mute/video state
+</code></pre>
+<hr />
+<h1 id="252-cross-language-call-sdk"><a class="header" href="#252-cross-language-call-sdk">252. Cross-Language Call SDK</a></h1>
+<p>Part 19 bindings must expose same state semantics across:</p>
+<pre><code class="language-text">Kotlin
+Swift
+C++
+Python
+Dart
+</code></pre>
+<hr />
+<h1 id="253-performance-benchmarks"><a class="header" href="#253-performance-benchmarks">253. Performance Benchmarks</a></h1>
+<p>Measure:</p>
+<pre><code class="language-text">offer → ringing
+accept → audio connected
+accept → first video frame
+path handoff interruption
+reconnect time
+</code></pre>
+<hr />
+<h1 id="254-target-ux-goals"><a class="header" href="#254-target-ux-goals">254. Target UX Goals</a></h1>
+<p>Aim for:</p>
+<pre><code class="language-text">fast ring propagation
+sub-second audio startup after accepted path is ready
+minimal reconnect interruption
+</code></pre>
+<p>Exact targets must come from real-device benchmarks.</p>
+<hr />
+<h1 id="255-suggested-workspace"><a class="header" href="#255-suggested-workspace">255. Suggested Workspace</a></h1>
+<pre><code class="language-text">crates/
+├── comm-call-core/
+├── comm-call-protocol/
+├── comm-call-signaling/
+├── comm-call-security/
+├── comm-call-media/
+├── comm-call-transport/
+├── comm-call-history/
+├── comm-call-group/
+├── comm-call-diagnostics/
+└── comm-call-testkit/
+</code></pre>
+<hr />
+<h1 id="256-comm-call-core"><a class="header" href="#256-comm-call-core">256. <code>comm-call-core</code></a></h1>
+<p>Owns:</p>
+<pre><code class="language-text">CallId
+CallState
+commands
+events
+controller
+</code></pre>
+<hr />
+<h1 id="257-comm-call-protocol"><a class="header" href="#257-comm-call-protocol">257. <code>comm-call-protocol</code></a></h1>
+<p>Owns:</p>
+<pre><code class="language-text">call/1 wire DTOs
+versioning
+control sequencing
+</code></pre>
+<hr />
+<h1 id="258-comm-call-signaling"><a class="header" href="#258-comm-call-signaling">258. <code>comm-call-signaling</code></a></h1>
+<p>Owns:</p>
+<pre><code class="language-text">offer
+ring
+accept
+reject
+cancel
+multi-device arbitration
+</code></pre>
+<hr />
+<h1 id="259-comm-call-security"><a class="header" href="#259-comm-call-security">259. <code>comm-call-security</code></a></h1>
+<p>Owns:</p>
+<pre><code class="language-text">Part 28 binding
+media key derivation
+security epochs
+device verification
+</code></pre>
+<hr />
+<h1 id="260-comm-call-media"><a class="header" href="#260-comm-call-media">260. <code>comm-call-media</code></a></h1>
+<p>Coordinates:</p>
+<pre><code class="language-text">Part 25 video
+Part 26 audio
+</code></pre>
+<hr />
+<h1 id="261-comm-call-transport"><a class="header" href="#261-comm-call-transport">261. <code>comm-call-transport</code></a></h1>
+<p>Maps media/control onto:</p>
+<pre><code class="language-text">Iroh direct
+relay
+multipath
+</code></pre>
+<hr />
+<h1 id="262-comm-call-history"><a class="header" href="#262-comm-call-history">262. <code>comm-call-history</code></a></h1>
+<p>Owns private durable call metadata.</p>
+<hr />
+<h1 id="263-comm-call-group"><a class="header" href="#263-comm-call-group">263. <code>comm-call-group</code></a></h1>
+<p>Future:</p>
+<pre><code class="language-text">small mesh
+group membership
+SFU integration abstraction
+</code></pre>
+<hr />
+<h1 id="264-comm-call-testkit"><a class="header" href="#264-comm-call-testkit">264. <code>comm-call-testkit</code></a></h1>
+<p>Provides:</p>
+<pre><code class="language-text">fake peer
+fake transport
+fake clock
+packet-loss simulator
+codec mock
+surface mock
+</code></pre>
+<hr />
+<h1 id="265-controller-api"><a class="header" href="#265-controller-api">265. Controller API</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait CallController {
+    async fn start_call(
+        &amp;self,
+        peer: AccountId,
+        kind: CallKind,
+    ) -&gt; Result&lt;CallId, CallError&gt;;
+
+    async fn accept(&amp;self, call: CallId) -&gt; Result&lt;(), CallError&gt;;
+
+    async fn reject(
+        &amp;self,
+        call: CallId,
+        reason: CallRejectReason,
+    ) -&gt; Result&lt;(), CallError&gt;;
+
+    async fn hangup(&amp;self, call: CallId) -&gt; Result&lt;(), CallError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="266-call-commands"><a class="header" href="#266-call-commands">266. Call Commands</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum CallCommand {
+    Start,
+    Accept,
+    Reject,
+    Cancel,
+    Hangup,
+    SetMuted(bool),
+    SetVideo(bool),
+    SetHold(bool),
+    StartScreenShare,
+    StopScreenShare,
+    ChangeAudioRoute(AudioRoute),
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="267-call-events"><a class="header" href="#267-call-events">267. Call Events</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum CallEvent {
+    Offered,
+    Ringing,
+    Accepted,
+    Connected,
+    Reconnecting,
+    MediaChanged,
+    Held,
+    Resumed,
+    Ended(CallEndReason),
+    Failed(CallFailure),
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="268-error-model"><a class="header" href="#268-error-model">268. Error Model</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum CallError {
+    PeerOffline,
+    Busy,
+    UnsupportedMedia,
+    SecurityFailure,
+    PermissionDenied,
+    ResourceUnavailable,
+    TransportFailure,
+    MediaFailure,
+    Timeout,
+    InvalidState,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="269-failure-precedence"><a class="header" href="#269-failure-precedence">269. Failure Precedence</a></h1>
+<p>If both happen:</p>
+<pre><code class="language-text">network failure
+and
+user hangs up
+</code></pre>
+<p>local user hangup should normally become displayed reason.</p>
+<p>Define deterministic precedence.</p>
+<hr />
+<h1 id="270-production-rollout-phases"><a class="header" href="#270-production-rollout-phases">270. Production Rollout Phases</a></h1>
+<h2 id="phase-1--one-to-one-audio-calls"><a class="header" href="#phase-1--one-to-one-audio-calls">Phase 1 — One-to-One Audio Calls</a></h2>
+<pre><code class="language-text">offer
+ring
+accept
+reject
+hangup
+Opus
+direct/relay
+</code></pre>
+<h2 id="phase-2--video-calls"><a class="header" href="#phase-2--video-calls">Phase 2 — Video Calls</a></h2>
+<pre><code class="language-text">Part 25
+codec negotiation
+renderer integration
+</code></pre>
+<h2 id="phase-3--resilience"><a class="header" href="#phase-3--resilience">Phase 3 — Resilience</a></h2>
+<pre><code class="language-text">reconnect
+network handoff
+multipath
+</code></pre>
+<h2 id="phase-4--ux-controls"><a class="header" href="#phase-4--ux-controls">Phase 4 — UX Controls</a></h2>
+<pre><code class="language-text">mute
+camera
+hold
+audio route
+</code></pre>
+<h2 id="phase-5--screen-share"><a class="header" href="#phase-5--screen-share">Phase 5 — Screen Share</a></h2>
+<pre><code class="language-text">second video stream
+</code></pre>
+<h2 id="phase-6--multi-device-ringing"><a class="header" href="#phase-6--multi-device-ringing">Phase 6 — Multi-Device Ringing</a></h2>
+<pre><code class="language-text">first-answer-wins
+answered elsewhere
+</code></pre>
+<h2 id="phase-7--security-hardening"><a class="header" href="#phase-7--security-hardening">Phase 7 — Security Hardening</a></h2>
+<pre><code class="language-text">media key rotation
+device revocation
+abuse resistance
+</code></pre>
+<h2 id="phase-8--small-group-calls"><a class="header" href="#phase-8--small-group-calls">Phase 8 — Small Group Calls</a></h2>
+<pre><code class="language-text">mesh
+active speaker
+</code></pre>
+<h2 id="phase-9--larger-group-evolution"><a class="header" href="#phase-9--larger-group-evolution">Phase 9 — Larger Group Evolution</a></h2>
+<pre><code class="language-text">SFU abstraction
+simulcast/SVC later
+</code></pre>
+<hr />
+<h1 id="271-initial-production-recommendation"><a class="header" href="#271-initial-production-recommendation">271. Initial Production Recommendation</a></h1>
+<p>Ship:</p>
+<pre><code class="language-text">excellent 1:1 audio
+excellent 1:1 video
+direct + relay
+fast reconnect
+mute/camera/audio route
+multi-device ringing
+</code></pre>
+<p>before attempting:</p>
+<pre><code class="language-text">large group calls
+complex SFU
+simulcast
+SVC
+call links
+recording
+</code></pre>
+<hr />
+<h1 id="272-definition-of-done"><a class="header" href="#272-definition-of-done">272. Definition of Done</a></h1>
+<p>Part 29 is complete when:</p>
+<ul>
+<li>calls have a stable logical <code>CallId</code></li>
+<li>call state is independent of any single transport connection</li>
+<li>offer/ring/accept/reject/cancel/hangup are idempotent and versioned</li>
+<li>multi-device ringing supports first-answer-wins</li>
+<li>simultaneous call glare resolves deterministically</li>
+<li>media negotiation supports Opus and H.264/H.265/AV1</li>
+<li>audio can connect before video</li>
+<li>local hardware/software codec implementation remains local policy</li>
+<li>call security is bound to Part 28 device identity/E2EE</li>
+<li>audio/video/control use separate logical media/security contexts</li>
+<li>direct/relay/multipath path changes do not create a new call</li>
+<li>reconnect has a bounded grace window and fresh media recovery</li>
+<li>audio remains higher priority than video/bulk traffic</li>
+<li>mute, camera toggle, hold/resume, audio route changes, and screen-share transitions are explicit</li>
+<li>Android Surface loss does not terminate the call</li>
+<li>Bluetooth/audio-route changes do not restart the logical call</li>
+<li>hardware codec failure can trigger media fallback/renegotiation</li>
+<li>call history is private durable metadata</li>
+<li>live media is not persisted by default</li>
+<li>incoming call abuse cannot activate camera/mic before acceptance</li>
+<li>unknown-call floods are rate-limited</li>
+<li>crash, reconnect, handoff, codec fallback, route-change, and long-call soak tests exist</li>
+<li>the <code>call/1</code> protocol is ready for Part 23 interoperability vectors</li>
+</ul>
+<hr />
+<h1 id="273-relationship-to-earlier-parts"><a class="header" href="#273-relationship-to-earlier-parts">273. Relationship to Earlier Parts</a></h1>
+<p>Part 29 coordinates:</p>
+<pre><code class="language-text">03 — Transport / Routing Policy
+07 — Capability Negotiation
+08 — Resource Limits
+10 — Fuzzing / Protocol Tests
+11 — Relay Infrastructure
+12 — Multipath
+13 — Battery-Aware Scheduling
+16 — Daemon / Headless
+17 — Emergency Priority
+18 — Diagnostics
+19 — C ABI / FFI
+20 — Embedded Linux
+23 — Interoperability
+25 — Android Zero-Copy Video
+26 — Rust-First Audio DSP
+27 — Android Build Automation
+28 — E2EE / Key Management / Privacy
+</code></pre>
+<hr />
+<h1 id="274-final-architecture"><a class="header" href="#274-final-architecture">274. Final Architecture</a></h1>
+<pre><code class="language-text">                       CALL CONTROLLER
+                              │
+             ┌────────────────┼─────────────────┐
+             │                │                 │
+         Signaling         Security          Policy
+             │                │                 │
+             └────────────────┼─────────────────┘
+                              │
+                        Media Session
+                    ┌─────────┴─────────┐
+                    │                   │
+                  Audio               Video
+                    │                   │
+             Rust DSP + Opus      Android HW /
+                    │              AV1 Software
+                    └─────────┬─────────┘
+                              │
+                       Media Transport
+                    ┌─────────┼─────────┐
+                    │         │         │
+                 Direct     Relay    Multipath
+</code></pre>
+<p>Call state:</p>
+<pre><code class="language-text">Offer
+ ↓
+Ringing
+ ↓
+Accept
+ ↓
+Secure Negotiation
+ ↓
+Audio Connected
+ ↓
+Video Connected
+ ↓
+Active
+ ↓
+Path / Codec / Device Changes
+ ↓
+Reconnect / Resume as needed
+ ↓
+Hangup
+</code></pre>
+<hr />
+<h1 id="275-final-principle"><a class="header" href="#275-final-principle">275. Final Principle</a></h1>
+<p>A call should survive changes in:</p>
+<pre><code class="language-text">network path
+Wi-Fi/cellular state
+relay/direct route
+camera
+audio route
+video codec
+renderer Surface
+battery policy
+</code></pre>
+<p>without becoming a different logical conversation.</p>
+<p>Therefore the architecture treats:</p>
+<pre><code class="language-text">Call
+</code></pre>
+<p>as a persistent logical session, while treating:</p>
+<pre><code class="language-text">transport connection
+codec instance
+camera
+microphone route
+decoder
+Surface
+</code></pre>
+<p>as replaceable resources.</p>
+<p>That separation is the foundation of a reliable production calling system.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="26-rust-first-audio-dsp-resampling-aec-ns-agc-architecture.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="30-presence-availability-typing-read-receipts-ephemeral-state-architecture.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="26-rust-first-audio-dsp-resampling-aec-ns-agc-architecture.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="30-presence-availability-typing-read-receipts-ephemeral-state-architecture.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

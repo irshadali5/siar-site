@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIAR Global Edge CDN, Storage & Routing Topology</title>
+  <meta name="description" content="Global Anycast edge delivery, multi-region sovereign storage mirrors, zero-tracking IP anonymization, and automated circuit breaker failover.">
+  
+  <!-- OpenGraph / Social Metadata -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://siar.irshad.org.in/infra.html">
+  <meta property="og:title" content="SIAR Edge Infrastructure & Storage Topology">
+  <meta property="og:description" content="Zero single points of failure, Anycast edge routing, sovereign European mirrors, and privacy redaction.">
+
+  <!-- Favicon and CSS -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2300f2fe'><path d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z'/></svg>">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Top Telemetry Live Bar -->
+  <div class="telemetry-ticker" aria-label="Live Edge Infrastructure Telemetry">
+    <div class="container">
+      <div class="ticker-wrap">
+        <div class="ticker-content">
+          <div class="ticker-item">
+            <span class="ticker-pulse"></span>
+            <span class="ticker-label">Anycast DNS:</span>
+            <span class="ticker-val">siar.irshad.org.in (DNSSEC Enabled)</span>
+          </div>
+          <div class="ticker-item">
+            <span class="ticker-label">Primary Origin:</span>
+            <span class="ticker-val">Cloudflare R2 (Global Multi-Region)</span>
+          </div>
+          <div class="ticker-item">
+            <span class="ticker-label">Sovereign Mirror:</span>
+            <span class="ticker-val">MinIO Cluster (Hetzner Germany/Finland)</span>
+          </div>
+          <div class="ticker-item">
+            <span class="ticker-label">Cold Archive:</span>
+            <span class="ticker-val">Backblaze B2 (Object Lock WORM)</span>
+          </div>
+          <div class="ticker-item">
+            <span class="ticker-label">Privacy Policy:</span>
+            <span class="ticker-val">IP /24 Redacted • Zero Cookies</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header & Navigation -->
+  <header class="header-nav">
+    <div class="container nav-inner">
+      <a href="index.html" class="brand-logo" aria-label="SIAR Home">
+        <div class="brand-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+        </div>
+        <span class="brand-text">SIAR</span>
+        <span class="brand-badge">INFRA</span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="index.html" class="nav-link">Showcase</a></li>
+        <li><a href="packages.html" class="nav-link">Packages</a></li>
+        <li><a href="plugins.html" class="nav-link">Plugins</a></li>
+        <li><a href="verify.html" class="nav-link">SLSA Verifier</a></li>
+        <li><a href="simulator.html" class="nav-link">WASM Lab</a></li>
+        <li><a href="docs.html" class="nav-link">Developer Hub</a></li>
+        <li><a href="#routing-sim" class="nav-link">Edge Router</a></li>
+        <li><a href="#privacy" class="nav-link">Privacy</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <!-- OLED Black Mode Toggle -->
+        <button id="btnToggleOled" class="btn-icon" title="Toggle OLED Pure-Black Mode" aria-label="Toggle OLED Mode">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.81.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/>
+          </svg>
+        </button>
+
+        <a href="#routing-sim" class="btn btn-primary btn-sm">Simulate Routing</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container" style="padding-top: 56px;">
+    
+    <!-- Hero Header -->
+    <div style="text-align: center; max-width: 860px; margin: 0 auto 48px;">
+      <span class="section-eyebrow">GLOBAL HIGH-AVAILABILITY TOPOLOGY</span>
+      <h1 class="hero-title" style="font-size: 2.8rem;">
+        Global Edge CDN, Storage & Routing Topology
+      </h1>
+      <p class="hero-subtitle">
+        Engineered with zero single points of failure, multi-region sovereign mirrors outside US hyper-scaler jurisdiction, automated circuit-breaker failover, and strict privacy-preserving IP redaction.
+      </p>
+    </div>
+
+    <!-- Section 1: 3-Tier Multi-Region Storage Matrix -->
+    <section style="margin-bottom: 64px;">
+      <div class="section-head" style="text-align: left; margin-bottom: 24px;">
+        <span class="section-eyebrow">STORAGE TOPOLOGY</span>
+        <h2 class="section-title" style="font-size: 1.8rem;">Multi-Tier Origin & Sovereign Mirroring</h2>
+        <p class="section-desc">
+          Artifacts are published atomically to Tier 1 and asynchronously synchronized to sovereign bare-metal and immutable cold storage.
+        </p>
+      </div>
+
+      <div class="pillars-grid">
+        <!-- Tier 1 -->
+        <div class="siar-glass-card pillar-card">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+            <div class="pillar-icon-box icon-cyan">⚡</div>
+            <span id="tier1StatusBadge" class="canvas-badge">HEALTHY (PRIMARY ACTIVE)</span>
+          </div>
+          <h3 class="pillar-title" style="font-size: 1.2rem;">Tier 1: Cloudflare R2</h3>
+          <p class="pillar-text">
+            High-speed, zero-egress origin for global edge caching across 300+ Anycast points of presence.
+          </p>
+          <div class="pillar-spec-tag">
+            <span>Uptime:</span> <strong>99.99% • Latency: &lt;15ms</strong>
+          </div>
+          <div class="pillar-spec-tag" style="margin-top: 6px;">
+            <span>Role:</span> <strong>Primary Origin (Zero Egress)</strong>
+          </div>
+        </div>
+
+        <!-- Tier 2 -->
+        <div class="siar-glass-card pillar-card">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+            <div class="pillar-icon-box icon-emerald">🛡️</div>
+            <span class="canvas-badge">HEALTHY (EU SOVEREIGN)</span>
+          </div>
+          <h3 class="pillar-title" style="font-size: 1.2rem;">Tier 2: MinIO Sovereign</h3>
+          <p class="pillar-text">
+            Bare-metal distributed cluster hosted in Germany and Finland (Hetzner) outside US cloud legal jurisdiction.
+          </p>
+          <div class="pillar-spec-tag">
+            <span>Uptime:</span> <strong>99.98% • Latency: ~18ms</strong>
+          </div>
+          <div class="pillar-spec-tag" style="margin-top: 6px;">
+            <span>Role:</span> <strong>Autonomous Sovereign Failover</strong>
+          </div>
+        </div>
+
+        <!-- Tier 3 -->
+        <div class="siar-glass-card pillar-card">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+            <div class="pillar-icon-box icon-amber">🧊</div>
+            <span class="canvas-badge" style="background: rgba(245, 158, 11, 0.15); color: #fbbf24; border-color: #fbbf24;">OBJECT-LOCKED WORM</span>
+          </div>
+          <h3 class="pillar-title" style="font-size: 1.2rem;">Tier 3: Backblaze B2</h3>
+          <p class="pillar-text">
+            Immutable, object-locked cold storage archive preserving all historical release binaries and SLSA provenance ledgers.
+          </p>
+          <div class="pillar-spec-tag">
+            <span>Durability:</span> <strong>99.999999999% (11 9s)</strong>
+          </div>
+          <div class="pillar-spec-tag" style="margin-top: 6px;">
+            <span>Role:</span> <strong>Disaster Recovery Cold Archive</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 2: Edge Worker Geo-Routing & Circuit Breaker Simulator -->
+    <section id="routing-sim" style="margin-bottom: 64px;">
+      <div class="siar-glass-card" style="padding: 28px; border-color: rgba(0, 242, 254, 0.3);">
+        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; margin-bottom: 20px;">
+          <div>
+            <span class="section-eyebrow">EDGE COMPUTE SIMULATOR</span>
+            <h2 style="font-family: var(--font-display); font-size: 1.6rem; color: #ffffff; margin-top: 4px;">
+              Interactive Edge Worker Geo-Routing & Failover Sandbox
+            </h2>
+            <p style="font-size: 0.88rem; color: var(--siar-text-secondary);">
+              Simulate dynamic origin selection and automated circuit-breaker failover in Cloudflare/Fastly Edge Workers.
+            </p>
+          </div>
+
+          <button id="btnToggleTier1Outage" class="btn btn-secondary btn-sm" style="border-color: rgba(244, 63, 94, 0.4); color: #f43f5e;">
+            ⚡ Simulate Tier 1 Outage (Test Failover)
+          </button>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 20px;">
+          <div>
+            <label style="font-family: var(--font-mono); font-size: 0.76rem; color: var(--siar-text-muted); display: block; margin-bottom: 6px;">Simulated Client Region:</label>
+            <select id="simClientRegion" class="select-control" style="width: 100%;">
+              <option value="NA">North America (US-East)</option>
+              <option value="EU">Europe (Frankfurt, Germany)</option>
+              <option value="APAC">Asia-Pacific (Tokyo, Japan)</option>
+              <option value="LATAM">Latin America (São Paulo, Brazil)</option>
+              <option value="OCEANIA">Oceania (Sydney, Australia)</option>
+            </select>
+          </div>
+
+          <div>
+            <label style="font-family: var(--font-mono); font-size: 0.76rem; color: var(--siar-text-muted); display: block; margin-bottom: 6px;">Requested Package URI:</label>
+            <select id="simTargetPackage" class="select-control" style="width: 100%;">
+              <option value="/latest/android-apk">/latest/android-apk (Universal APK)</option>
+              <option value="/latest/linux-deb">/latest/linux-deb (Debian x86_64 Package)</option>
+              <option value="/latest/cli-musl">/latest/cli-musl (Static CLI Tarball)</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <span class="pkg-meta-label">Edge Worker Routing Resolution & Response Headers:</span>
+          <div id="routingSimOutput" style="background: #030508; border: 1px solid var(--siar-border-subtle); border-radius: var(--radius-sm); padding: 16px; margin-top: 6px;">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 3: Live Anycast PoP Health Probes -->
+    <section style="margin-bottom: 64px;">
+      <div class="section-head" style="text-align: left; margin-bottom: 20px;">
+        <span class="section-eyebrow">GLOBAL POPS</span>
+        <h2 class="section-title" style="font-size: 1.8rem;">Live Anycast Point-of-Presence Telemetry</h2>
+      </div>
+
+      <div id="liveHealthProbeGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
+        <!-- Injected via JavaScript -->
+      </div>
+    </section>
+
+    <!-- Section 4: Privacy & IP Anonymization Tool -->
+    <section id="privacy" style="margin-bottom: 64px;">
+      <div class="siar-glass-card" style="padding: 28px;">
+        <div class="section-head" style="text-align: left; margin-bottom: 20px;">
+          <span class="section-eyebrow">ZERO-TRACKING TELEMETRY</span>
+          <h2 class="section-title" style="font-size: 1.8rem;">In-Memory IP Redaction & Privacy Mandate</h2>
+          <p class="section-desc">
+            To protect activists and journalists in hostile regions, edge routers truncate all client IP addresses in volatile memory before writing to any log files.
+          </p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 20px;">
+          <div>
+            <label style="font-family: var(--font-mono); font-size: 0.78rem; color: var(--siar-text-muted); display: block; margin-bottom: 6px;">
+              Enter Test Client IP Address (IPv4 or IPv6):
+            </label>
+            <input id="inputTestIp" type="text" value="198.51.100.42" class="pkg-search-input" style="font-family: var(--font-mono);">
+          </div>
+
+          <div>
+            <span class="pkg-meta-label">In-Memory Anonymized IP (/24 or /48):</span>
+            <div id="outputAnonymizedIp" style="font-family: var(--font-mono); font-size: 1rem; color: var(--siar-emerald-online); background: #030508; padding: 10px 14px; border-radius: var(--radius-sm); border: 1px solid var(--siar-border-subtle); margin-top: 6px;">
+              198.51.100.0
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <span class="pkg-meta-label">Resulting Anonymized NGINX Access Log Line:</span>
+          <pre id="outputNginxLog" class="spec-content-pre" style="padding: 12px; font-size: 0.75rem; color: #38bdf8; margin-top: 6px;"></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 5: Edge Infrastructure Code Viewer -->
+    <section style="margin-bottom: 64px;">
+      <div class="section-head" style="text-align: left; margin-bottom: 20px;">
+        <span class="section-eyebrow">INFRASTRUCTURE AS CODE</span>
+        <h2 class="section-title" style="font-size: 1.8rem;">Hardened Edge Configurations</h2>
+      </div>
+
+      <div class="siar-glass-card" style="padding: 20px;">
+        <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 16px;">
+          <a href="edge/worker.js" download class="btn btn-secondary btn-sm">📥 edge/worker.js (Cloudflare Worker)</a>
+          <a href="edge/nginx.conf" download class="btn btn-secondary btn-sm">📥 edge/nginx.conf (NGINX Hardened)</a>
+          <a href="edge/docker-compose.yml" download class="btn btn-secondary btn-sm">📥 edge/docker-compose.yml (MinIO Stack)</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="brand-logo">
+            <div class="brand-icon">
+              <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+            </div>
+            <span class="brand-text">SIAR</span>
+          </div>
+          <p>
+            Global Edge CDN, Storage & Routing Topology. High-availability Anycast routing with zero tracking.
+          </p>
+          <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--siar-text-muted);">
+            Edge Network: <code>siar.irshad.org.in</code>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">Infrastructure</h4>
+          <ul class="footer-links">
+            <li><a href="#routing-sim">Geo-Router Sandbox</a></li>
+            <li><a href="#privacy">Privacy Redaction</a></li>
+            <li><a href="edge/worker.js">Edge Worker JS</a></li>
+            <li><a href="edge/nginx.conf">NGINX Config</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">Portals</h4>
+          <ul class="footer-links">
+            <li><a href="index.html">Product Showcase</a></li>
+            <li><a href="packages.html">Package Center</a></li>
+            <li><a href="plugins.html">Plugin Marketplace</a></li>
+            <li><a href="verify.html">SLSA Verifier</a></li>
+            <li><a href="docs.html">Developer Hub</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">Open Source</h4>
+          <ul class="footer-links">
+            <li><a href="https://github.com/irshadali5/siar">GitHub Repository</a></li>
+            <li><a href="install.sh">Shell Installer</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>
+          © 2026 SIAR Project & Irshad Ali. Released under dual <strong>Apache-2.0</strong> & <strong>MIT</strong> License.
+        </div>
+        <div style="display: flex; gap: 16px; align-items: center;">
+          <span style="color: var(--siar-emerald-online);">● Anycast Global Edge</span>
+          <span>•</span>
+          <span>Zero User Tracking</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/infra-monitor.js"></script>
+</body>
+</html>

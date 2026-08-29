@@ -1,0 +1,1942 @@
+<!DOCTYPE HTML>
+<html lang="en" class="navy" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>15 — Out-of-Band QR &amp; NFC Bootstrap Pairing - SIAR System Architecture &amp; Technical Wiki</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="Comprehensive system architecture, cryptographic protocols, DTN mesh networking, distributed storage, audio DSP pipelines, and UI/UX design specifications for SIAR.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="theme/custom.css">
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "navy";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('navy')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="Home.html">Architecture Portal & Reading Guide</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part I: Protocol Foundation & Extension Platform</li><li class="chapter-item expanded "><a href="01-protocol-extension-system-architecture.html"><strong aria-hidden="true">1.</strong> 01 — Protocol Extension System Architecture</a></li><li class="chapter-item expanded "><a href="07-capability-negotiation-architecture.html"><strong aria-hidden="true">2.</strong> 07 — Capability Negotiation & Protocol Upgrades</a></li><li class="chapter-item expanded "><a href="21-third-party-protocol-extensions-architecture.html"><strong aria-hidden="true">3.</strong> 21 — Third-Party Protocol Extensions</a></li><li class="chapter-item expanded "><a href="22-wasm-compatible-components-architecture.html"><strong aria-hidden="true">4.</strong> 22 — WebAssembly (WASM) Compatible Components</a></li><li class="chapter-item expanded "><a href="23-external-interoperability-suite-architecture.html"><strong aria-hidden="true">5.</strong> 23 — External Interoperability & Conformance Suite</a></li><li class="chapter-item expanded "><a href="24-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">6.</strong> 24 — Dynamic Plugin & Module Ecosystem</a></li><li class="chapter-item expanded affix "><li class="part-title">Part II: Identity, Trust & Cryptography</li><li class="chapter-item expanded "><a href="02-multi-device-identity-architecture.html"><strong aria-hidden="true">7.</strong> 02 — Multi-Device Identity & Trust Model</a></li><li class="chapter-item expanded "><a href="28-production-security-e2ee-key-management-privacy-architecture.html"><strong aria-hidden="true">8.</strong> 28 — Production Security, E2EE, Key Management & Privacy</a></li><li class="chapter-item expanded affix "><li class="part-title">Part III: Mesh Networking, Transports & Hardware</li><li class="chapter-item expanded "><a href="03-transport-routing-policy-engine-architecture.html"><strong aria-hidden="true">9.</strong> 03 — Transport & Routing Policy Engine</a></li><li class="chapter-item expanded "><a href="11-relay-self-hosted-infrastructure-architecture.html"><strong aria-hidden="true">10.</strong> 11 — Self-Hosted Relay & Coordination Infrastructure</a></li><li class="chapter-item expanded "><a href="12-multipath-networking-architecture.html"><strong aria-hidden="true">11.</strong> 12 — Multipath Networking & Link Aggregation</a></li><li class="chapter-item expanded "><a href="13-battery-aware-scheduling-architecture.html"><strong aria-hidden="true">12.</strong> 13 — Battery-Aware Scheduling & Power Profiles</a></li><li class="chapter-item expanded "><a href="14-proximity-abstraction-architecture.html"><strong aria-hidden="true">13.</strong> 14 — Proximity Abstraction (BLE, Wi-Fi Direct, LoRa)</a></li><li class="chapter-item expanded "><a href="15-qr-nfc-bootstrap-pairing-architecture.html" class="active"><strong aria-hidden="true">14.</strong> 15 — Out-of-Band QR & NFC Bootstrap Pairing</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IV: Delay-Tolerant Networking & Emergency Mesh</li><li class="chapter-item expanded "><a href="06-dtn-store-carry-forward-architecture.html"><strong aria-hidden="true">15.</strong> 06 — DTN Store-Carry-Forward & Bundle Forwarding</a></li><li class="chapter-item expanded "><a href="17-emergency-priority-classes-architecture.html"><strong aria-hidden="true">16.</strong> 17 — Emergency Priority Classes & Critical Alert Mesh</a></li><li class="chapter-item expanded affix "><li class="part-title">Part V: Storage, Outbox & Data Lifecycle</li><li class="chapter-item expanded "><a href="04-offline-event-log-architecture.html"><strong aria-hidden="true">17.</strong> 04 — Offline Event Log & Sync Engine</a></li><li class="chapter-item expanded "><a href="05-robust-file-blob-subsystem-architecture.html"><strong aria-hidden="true">18.</strong> 05 — Robust File & Blob Subsystem (Chunking & Resumption)</a></li><li class="chapter-item expanded "><a href="09-crash-recovery-architecture.html"><strong aria-hidden="true">19.</strong> 09 — Crash Recovery & State Integrity</a></li><li class="chapter-item expanded "><a href="32-search-indexing-local-knowledge-privacy-architecture.html"><strong aria-hidden="true">20.</strong> 32 — Search, Indexing & Local Privacy Retrieval</a></li><li class="chapter-item expanded "><a href="33-backup-restore-export-import-archival-portability-architecture.html"><strong aria-hidden="true">21.</strong> 33 — Backup, Restore, Export & Long-Term Archival</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VI: Realtime Media, Calling & Audio DSP</li><li class="chapter-item expanded "><a href="25-android-direct-hardware-surface-zero-copy-media-architecture.html"><strong aria-hidden="true">22.</strong> 25 — Android Direct Surface Zero-Copy Media</a></li><li class="chapter-item expanded "><a href="26-rust-first-audio-dsp-resampling-aec-ns-agc-architecture.html"><strong aria-hidden="true">23.</strong> 26 — Rust-First Audio DSP (AEC, NS, AGC, Resampling)</a></li><li class="chapter-item expanded "><a href="29-realtime-calls-media-session-protocol-architecture.html"><strong aria-hidden="true">24.</strong> 29 — Realtime Calls & Media Session Protocol</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VII: Ephemeral State, Presence & Notifications</li><li class="chapter-item expanded "><a href="30-presence-availability-typing-read-receipts-ephemeral-state-architecture.html"><strong aria-hidden="true">25.</strong> 30 — Presence, Availability, Typing & Read Receipts</a></li><li class="chapter-item expanded "><a href="31-notifications-push-background-delivery-lifecycle-architecture.html"><strong aria-hidden="true">26.</strong> 31 — Notifications, Push Wake & Background Delivery</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VIII: Native Runtimes, Daemons & Embedded Linux</li><li class="chapter-item expanded "><a href="16-daemon-headless-runtime-architecture.html"><strong aria-hidden="true">27.</strong> 16 — Headless Daemon & Background Runtime</a></li><li class="chapter-item expanded "><a href="19-c-abi-ffi-architecture.html"><strong aria-hidden="true">28.</strong> 19 — C-ABI FFI & Native Language Interop</a></li><li class="chapter-item expanded "><a href="20-embedded-linux-node-architecture.html"><strong aria-hidden="true">29.</strong> 20 — Embedded Linux Node & Resource-Constrained Targets</a></li><li class="chapter-item expanded "><a href="27-rust-driven-android-native-build-packaging-automation.html"><strong aria-hidden="true">30.</strong> 27 — Rust-Driven Android Native Build & Packaging Automation</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IX: Reliability, Testing, Fuzzing & Diagnostics</li><li class="chapter-item expanded "><a href="08-resource-limits-backpressure-architecture.html"><strong aria-hidden="true">31.</strong> 08 — Resource Limits, Quotas & Backpressure</a></li><li class="chapter-item expanded "><a href="10-fuzzing-protocol-test-suite-architecture.html"><strong aria-hidden="true">32.</strong> 10 — Fuzzing & Protocol Test Suite</a></li><li class="chapter-item expanded "><a href="18-network-diagnostics-path-visualization-architecture.html"><strong aria-hidden="true">33.</strong> 18 — Network Diagnostics & Path Visualization</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part X: UI/UX Client Architecture (Cross-Platform)</li><li class="chapter-item expanded "><a href="ui-ux-01-product-foundation-cross-platform-interaction-architecture.html"><strong aria-hidden="true">34.</strong> UI/UX 01 — Product UX Foundation & Cross-Platform Interaction</a></li><li class="chapter-item expanded "><a href="ui-ux-02-desktop-dioxus-app-shell-navigation-window-architecture.html"><strong aria-hidden="true">35.</strong> UI/UX 02 — Desktop Dioxus App Shell & Navigation</a></li><li class="chapter-item expanded "><a href="ui-ux-03-android-jetpack-compose-app-shell-navigation-lifecycle-architecture.html"><strong aria-hidden="true">36.</strong> UI/UX 03 — Android Jetpack Compose App Shell & Lifecycle</a></li><li class="chapter-item expanded "><a href="ui-ux-04-conversation-list-inbox-architecture.html"><strong aria-hidden="true">37.</strong> UI/UX 04 — Conversation List & Inbox UX</a></li><li class="chapter-item expanded "><a href="ui-ux-05-conversation-message-timeline-architecture.html"><strong aria-hidden="true">38.</strong> UI/UX 05 — Conversation Message Timeline UX</a></li><li class="chapter-item expanded "><a href="ui-ux-06-message-composer-attachments-voice-notes-drafts-architecture.html"><strong aria-hidden="true">39.</strong> UI/UX 06 — Message Composer, Attachments & Voice Notes</a></li><li class="chapter-item expanded "><a href="ui-ux-07-calls-realtime-media-architecture.html"><strong aria-hidden="true">40.</strong> UI/UX 07 — Calls & Realtime Media UX</a></li><li class="chapter-item expanded "><a href="ui-ux-08-contacts-requests-verification-identity-architecture.html"><strong aria-hidden="true">41.</strong> UI/UX 08 — Contacts, Requests, Verification & Identity</a></li><li class="chapter-item expanded "><a href="ui-ux-09-groups-membership-roles-architecture.html"><strong aria-hidden="true">42.</strong> UI/UX 09 — Groups, Membership & Roles UX</a></li><li class="chapter-item expanded "><a href="ui-ux-10-files-media-gallery-transfer-architecture.html"><strong aria-hidden="true">43.</strong> UI/UX 10 — Files, Media Gallery & Transfer UX</a></li><li class="chapter-item expanded "><a href="ui-ux-11-search-local-knowledge-retrieval-architecture.html"><strong aria-hidden="true">44.</strong> UI/UX 11 — Search & Local Knowledge Retrieval UX</a></li><li class="chapter-item expanded "><a href="ui-ux-12-nearby-qr-nfc-pairing-device-linking-architecture.html"><strong aria-hidden="true">45.</strong> UI/UX 12 — Nearby, QR/NFC Pairing & Device Linking UX</a></li><li class="chapter-item expanded "><a href="ui-ux-13-notifications-background-incoming-call-architecture.html"><strong aria-hidden="true">46.</strong> UI/UX 13 — Notifications, Background & Incoming Call UX</a></li><li class="chapter-item expanded "><a href="ui-ux-14-presence-typing-receipts-status-architecture.html"><strong aria-hidden="true">47.</strong> UI/UX 14 — Presence, Typing, Receipts & Status UX</a></li><li class="chapter-item expanded "><a href="ui-ux-15-security-center-devices-keys-recovery-architecture.html"><strong aria-hidden="true">48.</strong> UI/UX 15 — Security Center, Devices, Keys & Recovery UX</a></li><li class="chapter-item expanded "><a href="ui-ux-16-backup-restore-export-migration-architecture.html"><strong aria-hidden="true">49.</strong> UI/UX 16 — Backup, Restore, Export & Migration UX</a></li><li class="chapter-item expanded "><a href="ui-ux-17-emergency-sos-offline-mesh-architecture.html"><strong aria-hidden="true">50.</strong> UI/UX 17 — Emergency / SOS / Offline Mesh UX</a></li><li class="chapter-item expanded "><a href="ui-ux-18-settings-privacy-notifications-data-controls-architecture.html"><strong aria-hidden="true">51.</strong> UI/UX 18 — Settings, Privacy, Notifications & Data Controls</a></li><li class="chapter-item expanded "><a href="ui-ux-19-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">52.</strong> UI/UX 19 — Plugin & Module Ecosystem UX</a></li><li class="chapter-item expanded "><a href="ui-ux-20-diagnostics-network-paths-advanced-developer-architecture.html"><strong aria-hidden="true">53.</strong> UI/UX 20 — Diagnostics, Network Paths & Developer UX</a></li><li class="chapter-item expanded "><a href="ui-ux-21-accessibility-inclusive-interaction-architecture.html"><strong aria-hidden="true">54.</strong> UI/UX 21 — Accessibility & Inclusive Interaction</a></li><li class="chapter-item expanded "><a href="ui-ux-22-design-system-tokens-typography-icons-motion-architecture.html"><strong aria-hidden="true">55.</strong> UI/UX 22 — Design System, Tokens, Typography & Motion</a></li><li class="chapter-item expanded "><a href="ui-ux-23-responsive-adaptive-desktop-tablet-foldable-phone-layout-architecture.html"><strong aria-hidden="true">56.</strong> UI/UX 23 — Responsive & Adaptive Layouts (Desktop/Tablet/Foldable/Phone)</a></li><li class="chapter-item expanded "><a href="ui-ux-24-error-loading-empty-offline-degraded-state-architecture.html"><strong aria-hidden="true">57.</strong> UI/UX 24 — Error, Loading, Empty & Degraded-State UX</a></li><li class="chapter-item expanded "><a href="ui-ux-25-onboarding-first-run-permission-education-architecture.html"><strong aria-hidden="true">58.</strong> UI/UX 25 — Onboarding, First Run & Permission Education</a></li><li class="chapter-item expanded "><a href="ui-ux-26-performance-virtualization-large-data-ui-architecture.html"><strong aria-hidden="true">59.</strong> UI/UX 26 — Virtualization & Large-Data UI Performance</a></li><li class="chapter-item expanded "><a href="ui-ux-27-ui-testing-screenshot-interaction-release-quality-gates-architecture.html"><strong aria-hidden="true">60.</strong> UI/UX 27 — UI Testing, Screenshots & Release Quality Gates</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">SIAR System Architecture &amp; Technical Wiki</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar/edit/main/sys-arch/15-qr-nfc-bootstrap-pairing-architecture.md" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="part-15--qr--nfc-bootstrap--secure-pairing-architecture"><a class="header" href="#part-15--qr--nfc-bootstrap--secure-pairing-architecture">Part 15 — QR / NFC Bootstrap &amp; Secure Pairing Architecture</a></h1>
+<h2 id="reusable-p2p-communication-platform"><a class="header" href="#reusable-p2p-communication-platform">Reusable P2P Communication Platform</a></h2>
+<p><strong>Status:</strong> Architecture specification<br />
+<strong>Part:</strong> 15 of 24<br />
+<strong>Primary language:</strong> Rust<br />
+<strong>Primary goals:</strong> secure device/contact bootstrap, QR and NFC pairing, short-lived invitations, offline pairing, authenticated key exchange, misbinding resistance, replay protection, multi-device identity integration, transport handoff, recovery safety, reusable across messaging/files/DTN/emergency/custom products</p>
+<hr />
+<h1 id="1-purpose"><a class="header" href="#1-purpose">1. Purpose</a></h1>
+<p>Before two devices can communicate securely, they often need a trustworthy way to bootstrap identity.</p>
+<p>Internet directories and usernames are useful, but they are not always available or desirable.</p>
+<p>The platform should therefore support intentional physical bootstrap using:</p>
+<pre><code class="language-text">QR code
+NFC tap
+manual short authentication string
+numeric comparison
+nearby BLE-assisted discovery
+</code></pre>
+<p>The bootstrap layer must support:</p>
+<ul>
+<li>linking a new device to an existing account</li>
+<li>adding a contact face-to-face</li>
+<li>secure file handoff</li>
+<li>offline pairing</li>
+<li>emergency/team provisioning</li>
+<li>headless node enrollment</li>
+<li>organization device provisioning</li>
+<li>cross-device trust establishment</li>
+</ul>
+<p>The fundamental rule is:</p>
+<blockquote>
+<p><strong>QR/NFC bootstrap establishes cryptographic context; it must never silently bypass identity authorization.</strong></p>
+</blockquote>
+<hr />
+<h1 id="2-architectural-position"><a class="header" href="#2-architectural-position">2. Architectural Position</a></h1>
+<pre><code class="language-text">User Intent
+   ↓
+Bootstrap Session
+   ↓
+QR / NFC / Manual Verification
+   ↓
+Ephemeral Cryptographic Exchange
+   ↓
+Secure Nearby/Internet Session
+   ↓
+Identity Authentication
+   ↓
+Authorization
+   ↓
+Device / Contact / Capability Binding
+</code></pre>
+<p>Part 14 discovers nearby transport opportunities.</p>
+<p>Part 15 provides intentional trust bootstrap.</p>
+<p>Part 02 remains the authority for account/device identity.</p>
+<hr />
+<h1 id="3-bootstrap-is-not-bulk-transport"><a class="header" href="#3-bootstrap-is-not-bulk-transport">3. Bootstrap Is Not Bulk Transport</a></h1>
+<p>QR and NFC should carry:</p>
+<pre><code class="language-text">small bootstrap payload
+</code></pre>
+<p>not:</p>
+<pre><code class="language-text">message history
+large files
+full certificates if avoidable
+</code></pre>
+<p>After bootstrap:</p>
+<pre><code class="language-text">BLE
+LAN
+Wi-Fi Direct
+Iroh
+</code></pre>
+<p>carries the actual protocol exchange.</p>
+<hr />
+<h1 id="4-bootstrap-use-cases"><a class="header" href="#4-bootstrap-use-cases">4. Bootstrap Use Cases</a></h1>
+<p>Recommended explicit modes:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum BootstrapPurpose {
+    LinkOwnDevice,
+    AddContact,
+    PairForFileTransfer,
+    EnrollOrganizationDevice,
+    EnrollRelayNode,
+    EmergencyTeamPairing,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Each mode has different authorization semantics.</p>
+<hr />
+<h1 id="5-do-not-reuse-one-generic-pairing-flow"><a class="header" href="#5-do-not-reuse-one-generic-pairing-flow">5. Do Not Reuse One Generic Pairing Flow</a></h1>
+<p>For example:</p>
+<pre><code class="language-text">Add Contact
+</code></pre>
+<p>does not grant:</p>
+<pre><code class="language-text">account device authority
+</code></pre>
+<p>and:</p>
+<pre><code class="language-text">Link Own Device
+</code></pre>
+<p>should not behave like casual nearby sharing.</p>
+<p>Use purpose-specific state machines over common primitives.</p>
+<hr />
+<h1 id="6-bootstrap-session-id"><a class="header" href="#6-bootstrap-session-id">6. Bootstrap Session ID</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct BootstrapSessionId([u8; 16]);
+<span class="boring">}</span></code></pre></pre>
+<p>Generated randomly and locally.</p>
+<p>It scopes:</p>
+<pre><code class="language-text">invitation
+handshake
+expiry
+replay detection
+diagnostics
+</code></pre>
+<hr />
+<h1 id="7-bootstrap-invitation"><a class="header" href="#7-bootstrap-invitation">7. Bootstrap Invitation</a></h1>
+<p>Conceptual:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct BootstrapInvitation {
+    pub version: u16,
+    pub session_id: BootstrapSessionId,
+    pub purpose: BootstrapPurpose,
+    pub initiator_ephemeral_key: EphemeralPublicKey,
+    pub rendezvous: Vec&lt;RendezvousHint&gt;,
+    pub expires_at: Timestamp,
+    pub nonce: BootstrapNonce,
+    pub authenticator: Option&lt;BootstrapAuthenticator&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Keep payload bounded.</p>
+<hr />
+<h1 id="8-invitation-must-be-short-lived"><a class="header" href="#8-invitation-must-be-short-lived">8. Invitation Must Be Short-Lived</a></h1>
+<p>Recommended semantics:</p>
+<pre><code class="language-text">valid for minutes
+single-use where possible
+explicitly cancellable
+</code></pre>
+<p>Do not create permanent QR codes that authorize device linking.</p>
+<hr />
+<h1 id="9-single-use-invitation"><a class="header" href="#9-single-use-invitation">9. Single-Use Invitation</a></h1>
+<p>Once successfully consumed:</p>
+<pre><code class="language-text">mark used
+</code></pre>
+<p>Subsequent attempts:</p>
+<pre><code class="language-text">reject
+</code></pre>
+<p>Persist consumption if replay could cross process restart.</p>
+<hr />
+<h1 id="10-expiry"><a class="header" href="#10-expiry">10. Expiry</a></h1>
+<p>Invitation expires even if never used.</p>
+<p>Expired invitation:</p>
+<pre><code class="language-text">cannot establish new trust
+</code></pre>
+<hr />
+<h1 id="11-bootstrap-nonce"><a class="header" href="#11-bootstrap-nonce">11. Bootstrap Nonce</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct BootstrapNonce([u8; 16]);
+<span class="boring">}</span></code></pre></pre>
+<p>Provides uniqueness/freshness.</p>
+<p>Do not derive security solely from session ID.</p>
+<hr />
+<h1 id="12-ephemeral-key-pair"><a class="header" href="#12-ephemeral-key-pair">12. Ephemeral Key Pair</a></h1>
+<p>Each bootstrap session creates an ephemeral key pair.</p>
+<pre><code class="language-text">EphemeralPrivateKey
+EphemeralPublicKey
+</code></pre>
+<p>The private key:</p>
+<pre><code class="language-text">never enters QR/NFC payload
+</code></pre>
+<hr />
+<h1 id="13-ephemeral-key-lifetime"><a class="header" href="#13-ephemeral-key-lifetime">13. Ephemeral Key Lifetime</a></h1>
+<p>Destroy after:</p>
+<pre><code class="language-text">successful bootstrap
+expiry
+cancel
+fatal error
+</code></pre>
+<p>Do not persist indefinitely.</p>
+<hr />
+<h1 id="14-qr-payload"><a class="header" href="#14-qr-payload">14. QR Payload</a></h1>
+<p>QR should encode:</p>
+<pre><code class="language-text">version
+session ID
+purpose
+ephemeral public key
+short rendezvous hints
+expiry
+integrity/authentication metadata
+</code></pre>
+<p>Use compact binary payload then a QR-safe encoding if required.</p>
+<hr />
+<h1 id="15-qr-encoding-format"><a class="header" href="#15-qr-encoding-format">15. QR Encoding Format</a></h1>
+<p>Internal canonical representation may be Postcard.</p>
+<p>Presentation layer can encode bytes as:</p>
+<pre><code class="language-text">Base64url
+Base32
+custom URI wrapper
+</code></pre>
+<p>A human-readable URI form can help OS camera integration.</p>
+<p>Example conceptually:</p>
+<pre><code class="language-text">comm://pair/&lt;encoded-bootstrap&gt;
+</code></pre>
+<p>Exact URI becomes public protocol surface and must be versioned.</p>
+<hr />
+<h1 id="16-qr-size-discipline"><a class="header" href="#16-qr-size-discipline">16. QR Size Discipline</a></h1>
+<p>QR payload should remain small.</p>
+<p>Do not embed:</p>
+<pre><code class="language-text">full history
+large certificate chains
+large profile metadata
+</code></pre>
+<p>If more data required, QR carries a capability/token to fetch it over the authenticated session.</p>
+<hr />
+<h1 id="17-nfc-payload"><a class="header" href="#17-nfc-payload">17. NFC Payload</a></h1>
+<p>NFC can carry the same logical bootstrap invitation.</p>
+<p>Use NDEF-compatible representation where needed by platform adapter.</p>
+<p>Core Rust model remains identical.</p>
+<hr />
+<h1 id="18-qr-and-nfc-share-one-semantic-format"><a class="header" href="#18-qr-and-nfc-share-one-semantic-format">18. QR and NFC Share One Semantic Format</a></h1>
+<p>Avoid:</p>
+<pre><code class="language-text">QR protocol
+NFC protocol
+</code></pre>
+<p>with separate security designs.</p>
+<p>Instead:</p>
+<pre><code class="language-text">BootstrapInvitation
+      ↓
+QR adapter
+or
+NFC adapter
+</code></pre>
+<hr />
+<h1 id="19-manual-code-fallback"><a class="header" href="#19-manual-code-fallback">19. Manual Code Fallback</a></h1>
+<p>When QR/NFC unavailable, support:</p>
+<pre><code class="language-text">short authentication string
+numeric comparison
+</code></pre>
+<p>Manual code should verify an already-established cryptographic handshake, not replace strong key exchange.</p>
+<hr />
+<h1 id="20-sas"><a class="header" href="#20-sas">20. SAS</a></h1>
+<p>Short Authentication String:</p>
+<pre><code class="language-text">derived from handshake transcript
+</code></pre>
+<p>Example:</p>
+<pre><code class="language-text">482 917
+</code></pre>
+<p>Both users compare.</p>
+<p>If equal:</p>
+<pre><code class="language-text">approve
+</code></pre>
+<p>If different:</p>
+<pre><code class="language-text">abort
+</code></pre>
+<hr />
+<h1 id="21-sas-security-principle"><a class="header" href="#21-sas-security-principle">21. SAS Security Principle</a></h1>
+<p>SAS must be derived from:</p>
+<pre><code class="language-text">both ephemeral keys
+session transcript
+purpose
+identities where known
+</code></pre>
+<p>not generated independently on each UI.</p>
+<hr />
+<h1 id="22-emoji--word-verification"><a class="header" href="#22-emoji--word-verification">22. Emoji / Word Verification</a></h1>
+<p>Optional UX:</p>
+<pre><code class="language-text">4 words
+or
+emoji sequence
+</code></pre>
+<p>can represent the same transcript-derived SAS.</p>
+<p>Numeric comparison should remain available for accessibility/interoperability.</p>
+<hr />
+<h1 id="23-no-accept-anyway"><a class="header" href="#23-no-accept-anyway">23. No "Accept Anyway"</a></h1>
+<p>If SAS mismatch:</p>
+<pre><code class="language-text">abort
+</code></pre>
+<p>Do not provide a casual bypass button for high-trust operations like device linking.</p>
+<hr />
+<h1 id="24-qr-security-property"><a class="header" href="#24-qr-security-property">24. QR Security Property</a></h1>
+<p>Scanning QR creates an out-of-band binding:</p>
+<pre><code class="language-text">scanner received the initiator's bootstrap material
+through a user-directed physical channel
+</code></pre>
+<p>The subsequent network session must prove possession of the matching ephemeral private key.</p>
+<hr />
+<h1 id="25-nfc-security-property"><a class="header" href="#25-nfc-security-property">25. NFC Security Property</a></h1>
+<p>NFC offers intentional very-short-range interaction.</p>
+<p>Still:</p>
+<pre><code class="language-text">NFC proximity != account authorization
+</code></pre>
+<p>The cryptographic handshake and user approval remain required.</p>
+<hr />
+<h1 id="26-bootstrap-channel-threats"><a class="header" href="#26-bootstrap-channel-threats">26. Bootstrap Channel Threats</a></h1>
+<p>Threats include:</p>
+<pre><code class="language-text">QR replacement
+camera scanning wrong code
+screen capture
+NFC relay
+replay
+stale invitation
+session hijack
+mismatched purpose
+malicious nearby peer
+</code></pre>
+<p>Architecture must explicitly defend against these.</p>
+<hr />
+<h1 id="27-purpose-binding"><a class="header" href="#27-purpose-binding">27. Purpose Binding</a></h1>
+<p>The invitation cryptographically binds:</p>
+<pre><code class="language-text">BootstrapPurpose
+</code></pre>
+<p>An invitation for:</p>
+<pre><code class="language-text">PairForFileTransfer
+</code></pre>
+<p>must not be usable as:</p>
+<pre><code class="language-text">LinkOwnDevice
+</code></pre>
+<hr />
+<h1 id="28-session-binding"><a class="header" href="#28-session-binding">28. Session Binding</a></h1>
+<p>All subsequent handshake messages carry:</p>
+<pre><code class="language-text">BootstrapSessionId
+</code></pre>
+<p>and bind into transcript.</p>
+<hr />
+<h1 id="29-rendezvous-hints"><a class="header" href="#29-rendezvous-hints">29. Rendezvous Hints</a></h1>
+<p>QR/NFC may contain hints such as:</p>
+<pre><code class="language-text">ephemeral proximity token
+Iroh endpoint hint
+LAN hint
+BLE service hint
+</code></pre>
+<p>They help find the peer.</p>
+<p>They are not trusted identity.</p>
+<hr />
+<h1 id="30-minimal-rendezvous-disclosure"><a class="header" href="#30-minimal-rendezvous-disclosure">30. Minimal Rendezvous Disclosure</a></h1>
+<p>Prefer:</p>
+<pre><code class="language-text">opaque temporary token
+</code></pre>
+<p>rather than stable addresses when possible.</p>
+<hr />
+<h1 id="31-transport-selection"><a class="header" href="#31-transport-selection">31. Transport Selection</a></h1>
+<p>After QR/NFC scan:</p>
+<pre><code class="language-text">candidate paths discovered
+</code></pre>
+<p>Part 03 selects:</p>
+<pre><code class="language-text">LAN
+BLE
+Wi-Fi Direct
+Iroh direct/relay
+</code></pre>
+<p>The pairing protocol is transport-independent.</p>
+<hr />
+<h1 id="32-transport-handoff"><a class="header" href="#32-transport-handoff">32. Transport Handoff</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">QR scanned
+ ↓
+BLE session starts
+ ↓
+identity handshake
+ ↓
+Wi-Fi Direct becomes available
+ ↓
+remaining device-sync data moves to Wi-Fi
+</code></pre>
+<p>Bootstrap trust remains unchanged.</p>
+<hr />
+<h1 id="33-offline-pairing"><a class="header" href="#33-offline-pairing">33. Offline Pairing</a></h1>
+<p>QR/NFC pairing must work with:</p>
+<pre><code class="language-text">no Internet
+</code></pre>
+<p>provided devices can establish some local transport.</p>
+<p>Example:</p>
+<pre><code class="language-text">QR
++
+BLE
+</code></pre>
+<p>or:</p>
+<pre><code class="language-text">QR
++
+LAN
+</code></pre>
+<hr />
+<h1 id="34-fully-offline-device-linking"><a class="header" href="#34-fully-offline-device-linking">34. Fully Offline Device Linking</a></h1>
+<p>Own-device linking can:</p>
+<pre><code class="language-text">scan QR
+authenticate locally
+authorize device
+issue device certificate/state event
+transfer minimum account state
+</code></pre>
+<p>without central server.</p>
+<p>Later both devices synchronize when Internet returns.</p>
+<hr />
+<h1 id="35-own-device-linking"><a class="header" href="#35-own-device-linking">35. Own-Device Linking</a></h1>
+<p>This is the most security-sensitive bootstrap purpose.</p>
+<p>Flow:</p>
+<pre><code class="language-text">Existing trusted device
+    ↓
+Create Link Invitation
+    ↓
+New device scans
+    ↓
+Ephemeral secure handshake
+    ↓
+User verifies
+    ↓
+Existing device authorizes
+    ↓
+Device certificate/event committed
+    ↓
+New device becomes account member
+</code></pre>
+<hr />
+<h1 id="36-existing-device-authority"><a class="header" href="#36-existing-device-authority">36. Existing Device Authority</a></h1>
+<p>Only a device with appropriate Part 02 authority may approve new device.</p>
+<p>Do not grant authority merely because it can display QR.</p>
+<hr />
+<h1 id="37-link-authorization"><a class="header" href="#37-link-authorization">37. Link Authorization</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct DeviceLinkAuthorization {
+    pub account_id: AccountId,
+    pub new_device_key: DevicePublicKey,
+    pub permissions: DevicePermissions,
+    pub generation: u64,
+    pub authorizer: DeviceId,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>This is signed according to Part 02 identity architecture.</p>
+<hr />
+<h1 id="38-commit-point"><a class="header" href="#38-commit-point">38. Commit Point</a></h1>
+<p>A device is not linked until:</p>
+<pre><code class="language-text">signed device-add event/certificate
+is durably committed
+</code></pre>
+<p>Scanning QR is not the commit point.</p>
+<hr />
+<h1 id="39-interrupted-device-link"><a class="header" href="#39-interrupted-device-link">39. Interrupted Device Link</a></h1>
+<p>Crash before commit:</p>
+<pre><code class="language-text">new device remains unlinked
+</code></pre>
+<p>Crash after commit:</p>
+<pre><code class="language-text">recovery sees linked device
+</code></pre>
+<p>This integrates Part 09.</p>
+<hr />
+<h1 id="40-half-linked-state-must-not-exist"><a class="header" href="#40-half-linked-state-must-not-exist">40. Half-Linked State Must Not Exist</a></h1>
+<p>Never allow:</p>
+<pre><code class="language-text">new device has account secrets
+but no durable authorization
+</code></pre>
+<p>Transfer sensitive account state only after or atomically around durable authorization according to security design.</p>
+<hr />
+<h1 id="41-minimal-initial-state"><a class="header" href="#41-minimal-initial-state">41. Minimal Initial State</a></h1>
+<p>After authorization, transfer only what new device needs first:</p>
+<pre><code class="language-text">account identity
+device directory
+current security state
+configuration
+</code></pre>
+<p>Then optionally:</p>
+<pre><code class="language-text">message history
+blob metadata
+</code></pre>
+<hr />
+<h1 id="42-history-policy"><a class="header" href="#42-history-policy">42. History Policy</a></h1>
+<p>Part 02 device policy may specify:</p>
+<pre><code class="language-text">future only
+recent history
+full history
+selected conversations
+</code></pre>
+<p>Pairing UI should expose policy where appropriate.</p>
+<hr />
+<h1 id="43-new-device-key-generation"><a class="header" href="#43-new-device-key-generation">43. New Device Key Generation</a></h1>
+<p>New device generates its own long-term device key locally.</p>
+<p>Do not generate the new device's private key on the old device and transmit it.</p>
+<hr />
+<h1 id="44-secure-storage-before-link"><a class="header" href="#44-secure-storage-before-link">44. Secure Storage Before Link</a></h1>
+<p>New device should verify:</p>
+<pre><code class="language-text">hardware/OS secure storage available
+</code></pre>
+<p>where required, before final authorization.</p>
+<hr />
+<h1 id="45-device-naming"><a class="header" href="#45-device-naming">45. Device Naming</a></h1>
+<p>Display name:</p>
+<pre><code class="language-text">"Pixel 9"
+"Work Laptop"
+</code></pre>
+<p>is metadata only.</p>
+<p>Identity is cryptographic DeviceId/public key.</p>
+<hr />
+<h1 id="46-permission-assignment"><a class="header" href="#46-permission-assignment">46. Permission Assignment</a></h1>
+<p>Own-device link may grant:</p>
+<pre><code class="language-text">normal device
+admin/link-authority
+recovery authority
+headless relay
+</code></pre>
+<p>Use least privilege.</p>
+<hr />
+<h1 id="47-default-permissions"><a class="header" href="#47-default-permissions">47. Default Permissions</a></h1>
+<p>New personal device should not automatically gain every sensitive authority unless product deliberately chooses that model.</p>
+<hr />
+<h1 id="48-device-link-confirmation-ux"><a class="header" href="#48-device-link-confirmation-ux">48. Device-Link Confirmation UX</a></h1>
+<p>Existing device shows:</p>
+<pre><code class="language-text">Link new device?
+Device type
+Verification code
+Requested permissions
+</code></pre>
+<p>New device shows matching verification.</p>
+<hr />
+<h1 id="49-biometric--pin-confirmation"><a class="header" href="#49-biometric--pin-confirmation">49. Biometric / PIN Confirmation</a></h1>
+<p>For high-risk operations, existing device may require local:</p>
+<pre><code class="language-text">PIN
+biometric
+OS authentication
+</code></pre>
+<p>before signing device authorization.</p>
+<p>Platform adapter owns biometric UI; Rust owns authorization semantics.</p>
+<hr />
+<h1 id="50-contact-bootstrap"><a class="header" href="#50-contact-bootstrap">50. Contact Bootstrap</a></h1>
+<p>Face-to-face contact addition is less privileged.</p>
+<p>Flow:</p>
+<pre><code class="language-text">Alice shows QR
+Bob scans
+secure handshake
+both verify
+exchange identity/contact cards
+mark verified contact
+</code></pre>
+<p>No account-device authority is granted.</p>
+<hr />
+<h1 id="51-mutual-contact-verification"><a class="header" href="#51-mutual-contact-verification">51. Mutual Contact Verification</a></h1>
+<p>Both sides should be able to verify.</p>
+<p>Do not create asymmetric hidden trust accidentally.</p>
+<hr />
+<h1 id="52-contact-trust-level"><a class="header" href="#52-contact-trust-level">52. Contact Trust Level</a></h1>
+<p>Possible:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum ContactTrust {
+    Unverified,
+    VerifiedInPerson,
+    VerifiedByExistingTrust,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>This is application/security metadata.</p>
+<hr />
+<h1 id="53-contact-qr-privacy"><a class="header" href="#53-contact-qr-privacy">53. Contact QR Privacy</a></h1>
+<p>A public contact QR may be intentionally shareable.</p>
+<p>A private face-to-face QR should be short-lived.</p>
+<p>Support separate modes.</p>
+<hr />
+<h1 id="54-permanent-contact-code"><a class="header" href="#54-permanent-contact-code">54. Permanent Contact Code</a></h1>
+<p>If product supports public QR profile:</p>
+<pre><code class="language-text">it must not grant high-trust device authorization
+</code></pre>
+<p>It can provide:</p>
+<pre><code class="language-text">public identity key/contact handle
+</code></pre>
+<p>then communication still authenticates normally.</p>
+<hr />
+<h1 id="55-temporary-pairing-qr"><a class="header" href="#55-temporary-pairing-qr">55. Temporary Pairing QR</a></h1>
+<p>Use for:</p>
+<pre><code class="language-text">high-trust verification
+</code></pre>
+<p>with short expiry and one-time semantics.</p>
+<hr />
+<h1 id="56-file-transfer-bootstrap"><a class="header" href="#56-file-transfer-bootstrap">56. File-Transfer Bootstrap</a></h1>
+<p>For ad-hoc nearby file share:</p>
+<pre><code class="language-text">sender displays QR
+receiver scans
+session establishes
+file offer starts
+</code></pre>
+<p>No permanent contact relationship required.</p>
+<hr />
+<h1 id="57-ephemeral-file-session"><a class="header" href="#57-ephemeral-file-session">57. Ephemeral File Session</a></h1>
+<p>Can create:</p>
+<pre><code class="language-text">session-only trust
+</code></pre>
+<p>with no saved contact after transfer.</p>
+<hr />
+<h1 id="58-file-session-authorization"><a class="header" href="#58-file-session-authorization">58. File Session Authorization</a></h1>
+<p>Session permits:</p>
+<pre><code class="language-text">receive offered file
+</code></pre>
+<p>not arbitrary messaging/account access.</p>
+<hr />
+<h1 id="59-headless-node-enrollment"><a class="header" href="#59-headless-node-enrollment">59. Headless Node Enrollment</a></h1>
+<p>A headless relay/server may display:</p>
+<pre><code class="language-text">terminal QR
+</code></pre>
+<p>or accept NFC/token.</p>
+<p>Admin scans and approves:</p>
+<pre><code class="language-text">node role
+capabilities
+organization
+</code></pre>
+<hr />
+<h1 id="60-node-enrollment-certificate"><a class="header" href="#60-node-enrollment-certificate">60. Node Enrollment Certificate</a></h1>
+<p>Issue a purpose-specific certificate/authorization.</p>
+<p>Do not make headless relay a normal chat device unless intended.</p>
+<hr />
+<h1 id="61-organization-enrollment"><a class="header" href="#61-organization-enrollment">61. Organization Enrollment</a></h1>
+<p>Enterprise may use:</p>
+<pre><code class="language-text">signed enrollment QR
+</code></pre>
+<p>containing:</p>
+<pre><code class="language-text">organization bootstrap
+infrastructure profile
+one-time enrollment capability
+</code></pre>
+<hr />
+<h1 id="62-organization-trust-anchor"><a class="header" href="#62-organization-trust-anchor">62. Organization Trust Anchor</a></h1>
+<p>Enrollment QR can carry:</p>
+<pre><code class="language-text">organization root fingerprint
+</code></pre>
+<p>so device knows which organization infrastructure to trust.</p>
+<hr />
+<h1 id="63-enrollment-server-optional"><a class="header" href="#63-enrollment-server-optional">63. Enrollment Server Optional</a></h1>
+<p>Organization flow may contact server if online.</p>
+<p>Offline enrollment should remain possible where policy allows.</p>
+<hr />
+<h1 id="64-emergency-team-pairing"><a class="header" href="#64-emergency-team-pairing">64. Emergency Team Pairing</a></h1>
+<p>During emergency deployment:</p>
+<pre><code class="language-text">team leader
+field devices
+gateway nodes
+</code></pre>
+<p>can be provisioned rapidly through QR/NFC.</p>
+<p>Use pre-defined roles and limited authority.</p>
+<hr />
+<h1 id="65-bulk-provisioning"><a class="header" href="#65-bulk-provisioning">65. Bulk Provisioning</a></h1>
+<p>For many devices, one static QR should not grant unlimited permanent authorization.</p>
+<p>Use:</p>
+<pre><code class="language-text">signed enrollment batch token
+usage limit
+expiry
+role constraints
+</code></pre>
+<hr />
+<h1 id="66-enrollment-token"><a class="header" href="#66-enrollment-token">66. Enrollment Token</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct EnrollmentToken {
+    pub issuer: IdentityRef,
+    pub role: EnrollmentRole,
+    pub expires_at: Timestamp,
+    pub max_uses: u32,
+    pub nonce: [u8; 16],
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Signed by authorized issuer.</p>
+<hr />
+<h1 id="67-usage-counter"><a class="header" href="#67-usage-counter">67. Usage Counter</a></h1>
+<p>If offline multi-use enrollment exists, global usage enforcement is difficult.</p>
+<p>For high assurance:</p>
+<pre><code class="language-text">prefer single-use
+</code></pre>
+<p>or require online/authority reconciliation.</p>
+<p>Document limits.</p>
+<hr />
+<h1 id="68-qr-replay-protection"><a class="header" href="#68-qr-replay-protection">68. QR Replay Protection</a></h1>
+<p>Replay defenses:</p>
+<pre><code class="language-text">short expiry
+single-use session ID
+ephemeral key
+transcript binding
+persisted consumed-session tombstone
+</code></pre>
+<hr />
+<h1 id="69-consumed-invitation-tombstone"><a class="header" href="#69-consumed-invitation-tombstone">69. Consumed Invitation Tombstone</a></h1>
+<p>Store:</p>
+<pre><code class="language-text">BootstrapSessionId
+consumed_at
+</code></pre>
+<p>for at least the invitation replay horizon.</p>
+<hr />
+<h1 id="70-replay-after-crash"><a class="header" href="#70-replay-after-crash">70. Replay After Crash</a></h1>
+<p>Consumption marker must survive process crash before final UI completion if trust authorization was committed.</p>
+<hr />
+<h1 id="71-invitation-cancellation"><a class="header" href="#71-invitation-cancellation">71. Invitation Cancellation</a></h1>
+<p>Initiator can cancel.</p>
+<p>Persist cancellation if invitation remains externally visible.</p>
+<hr />
+<h1 id="72-cancelled-qr"><a class="header" href="#72-cancelled-qr">72. Cancelled QR</a></h1>
+<p>Scanner may still possess screenshot.</p>
+<p>Handshake checks invitation state and rejects.</p>
+<hr />
+<h1 id="73-screenshot-risk"><a class="header" href="#73-screenshot-risk">73. Screenshot Risk</a></h1>
+<p>QR can be photographed.</p>
+<p>Therefore security relies on:</p>
+<pre><code class="language-text">expiry
+one-time token
+ephemeral proof
+user verification
+</code></pre>
+<p>not physical secrecy alone.</p>
+<hr />
+<h1 id="74-qr-replacement-attack"><a class="header" href="#74-qr-replacement-attack">74. QR Replacement Attack</a></h1>
+<p>Attacker may replace displayed QR with theirs.</p>
+<p>Mitigation:</p>
+<pre><code class="language-text">SAS comparison
+trusted UI context
+purpose display
+</code></pre>
+<p>For highest assurance, require both QR possession and transcript verification.</p>
+<hr />
+<h1 id="75-nfc-relay-attack"><a class="header" href="#75-nfc-relay-attack">75. NFC Relay Attack</a></h1>
+<p>NFC can theoretically be relayed.</p>
+<p>Do not treat NFC distance as absolute proof.</p>
+<p>Use transcript verification for high-risk device linking.</p>
+<hr />
+<h1 id="76-man-in-the-middle-resistance"><a class="header" href="#76-man-in-the-middle-resistance">76. Man-in-the-Middle Resistance</a></h1>
+<p>Handshake must authenticate both ephemeral contributions and bind them to out-of-band bootstrap material.</p>
+<p>Use a vetted authenticated key exchange design.</p>
+<p>Do not invent cryptographic primitives.</p>
+<hr />
+<h1 id="77-noise-like-handshake"><a class="header" href="#77-noise-like-handshake">77. Noise-Like Handshake</a></h1>
+<p>A Noise-based or similarly vetted handshake framework is appropriate conceptually.</p>
+<p>Exact pattern depends on known/unknown static keys.</p>
+<p>Architecture requirement:</p>
+<pre><code class="language-text">ephemeral forward secrecy
+transcript authentication
+identity binding
+</code></pre>
+<hr />
+<h1 id="78-crypto-agility"><a class="header" href="#78-crypto-agility">78. Crypto Agility</a></h1>
+<p>Handshake suite is negotiated only within safe allowed profiles.</p>
+<p>Do not allow attacker-controlled downgrade.</p>
+<p>Part 07 security negotiation applies.</p>
+<hr />
+<h1 id="79-transcript"><a class="header" href="#79-transcript">79. Transcript</a></h1>
+<p>Canonical transcript includes:</p>
+<pre><code class="language-text">bootstrap version
+purpose
+session ID
+initiator ephemeral key
+responder ephemeral key
+identity keys
+capability/session selections
+</code></pre>
+<p>as appropriate.</p>
+<hr />
+<h1 id="80-transcript-hash"><a class="header" href="#80-transcript-hash">80. Transcript Hash</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct BootstrapTranscriptHash([u8; 32]);
+<span class="boring">}</span></code></pre></pre>
+<p>Used for:</p>
+<pre><code class="language-text">SAS
+confirmation
+audit/debug identifiers
+</code></pre>
+<p>Do not expose raw secret inputs.</p>
+<hr />
+<h1 id="81-confirmation-messages"><a class="header" href="#81-confirmation-messages">81. Confirmation Messages</a></h1>
+<p>Both peers exchange:</p>
+<pre><code class="language-text">transcript confirmation
+</code></pre>
+<p>before final authorization.</p>
+<p>This catches mismatched negotiation state.</p>
+<hr />
+<h1 id="82-pairing-state-machine"><a class="header" href="#82-pairing-state-machine">82. Pairing State Machine</a></h1>
+<pre><code class="language-text">Created
+ ↓
+Advertised
+ ↓
+Scanned
+ ↓
+TransportConnecting
+ ↓
+Handshake
+ ↓
+VerificationPending
+ ↓
+AuthorizationPending
+ ↓
+Committing
+ ↓
+Completed
+</code></pre>
+<p>Terminal:</p>
+<pre><code class="language-text">Cancelled
+Expired
+Rejected
+Failed
+</code></pre>
+<hr />
+<h1 id="83-strict-transition-validation"><a class="header" href="#83-strict-transition-validation">83. Strict Transition Validation</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">Completed → Handshake
+</code></pre>
+<p>invalid.</p>
+<pre><code class="language-text">Expired → Completed
+</code></pre>
+<p>invalid.</p>
+<p>Use explicit typed state transitions.</p>
+<hr />
+<h1 id="84-verification-pending"><a class="header" href="#84-verification-pending">84. Verification Pending</a></h1>
+<p>For high-trust flow, neither side is authorized yet.</p>
+<p>User confirmation required.</p>
+<hr />
+<h1 id="85-authorization-pending"><a class="header" href="#85-authorization-pending">85. Authorization Pending</a></h1>
+<p>Cryptographic peer verified, but policy authorization still pending.</p>
+<p>Example:</p>
+<pre><code class="language-text">which device permissions?
+</code></pre>
+<hr />
+<h1 id="86-idempotent-completion"><a class="header" href="#86-idempotent-completion">86. Idempotent Completion</a></h1>
+<p>Repeated final confirmation message:</p>
+<pre><code class="language-text">does not create duplicate device/contact
+</code></pre>
+<p>Stable session/device IDs ensure idempotency.</p>
+<hr />
+<h1 id="87-timeout"><a class="header" href="#87-timeout">87. Timeout</a></h1>
+<p>Each stage has timeout:</p>
+<pre><code class="language-text">scan
+connect
+handshake
+verification
+authorization
+</code></pre>
+<p>Avoid indefinitely-held pairing sessions.</p>
+<hr />
+<h1 id="88-resource-limits"><a class="header" href="#88-resource-limits">88. Resource Limits</a></h1>
+<p>Part 08 limits:</p>
+<pre><code class="language-text">active invitations
+pending scans
+pairing handshakes
+verification sessions
+</code></pre>
+<hr />
+<h1 id="89-pairing-flood"><a class="header" href="#89-pairing-flood">89. Pairing Flood</a></h1>
+<p>Unknown nearby attackers may initiate many attempts.</p>
+<p>Use:</p>
+<pre><code class="language-text">rate limit
+user-intent gate
+temporary block
+</code></pre>
+<hr />
+<h1 id="90-user-intent-gate"><a class="header" href="#90-user-intent-gate">90. User-Intent Gate</a></h1>
+<p>High-trust linking should only be accepted when user explicitly put device into:</p>
+<pre><code class="language-text">Link Device
+</code></pre>
+<p>mode.</p>
+<p>Do not process unsolicited device-link attempts in background.</p>
+<hr />
+<h1 id="91-pairing-window"><a class="header" href="#91-pairing-window">91. Pairing Window</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">pairing mode active 2 minutes
+</code></pre>
+<p>Then automatically closes.</p>
+<p>Exact default configurable.</p>
+<hr />
+<h1 id="92-qr-scanner-boundary"><a class="header" href="#92-qr-scanner-boundary">92. QR Scanner Boundary</a></h1>
+<p>Platform camera/scanner returns:</p>
+<pre><code class="language-text">raw decoded payload
+</code></pre>
+<p>Rust core validates protocol.</p>
+<p>Do not put trust decisions in UI scanner code.</p>
+<hr />
+<h1 id="93-android-responsibilities"><a class="header" href="#93-android-responsibilities">93. Android Responsibilities</a></h1>
+<p>Kotlin may own:</p>
+<pre><code class="language-text">camera integration
+QR scanning surface
+NFC reader/writer
+biometric prompt
+OS permission
+</code></pre>
+<p>Rust owns:</p>
+<pre><code class="language-text">bootstrap state machine
+crypto
+expiry
+authorization
+identity events
+</code></pre>
+<hr />
+<h1 id="94-ios-responsibilities"><a class="header" href="#94-ios-responsibilities">94. iOS Responsibilities</a></h1>
+<p>Swift/platform adapter similarly owns:</p>
+<pre><code class="language-text">camera
+NFC
+biometric
+</code></pre>
+<p>while Rust core owns semantics.</p>
+<hr />
+<h1 id="95-desktop-qr"><a class="header" href="#95-desktop-qr">95. Desktop QR</a></h1>
+<p>Desktop can:</p>
+<pre><code class="language-text">render QR
+scan via camera if supported
+import QR image explicitly
+</code></pre>
+<p>For security, importing an old screenshot still remains subject to expiry/single-use rules.</p>
+<hr />
+<h1 id="96-terminal-qr"><a class="header" href="#96-terminal-qr">96. Terminal QR</a></h1>
+<p>Headless node can render QR as terminal blocks.</p>
+<p>Useful for:</p>
+<pre><code class="language-text">Raspberry Pi
+server enrollment
+</code></pre>
+<hr />
+<h1 id="97-accessibility"><a class="header" href="#97-accessibility">97. Accessibility</a></h1>
+<p>Provide alternatives:</p>
+<pre><code class="language-text">numeric code
+copyable bootstrap code
+manual verification
+</code></pre>
+<p>Do not require camera/NFC for all users.</p>
+<hr />
+<h1 id="98-manual-bootstrap-code"><a class="header" href="#98-manual-bootstrap-code">98. Manual Bootstrap Code</a></h1>
+<p>A manual code can encode:</p>
+<pre><code class="language-text">session locator
+short token
+</code></pre>
+<p>but high-security trust still relies on cryptographic transcript confirmation.</p>
+<hr />
+<h1 id="99-human-error"><a class="header" href="#99-human-error">99. Human Error</a></h1>
+<p>Design verification strings to minimize mistakes.</p>
+<p>Avoid:</p>
+<pre><code class="language-text">long hexadecimal fingerprints
+</code></pre>
+<p>as default UX.</p>
+<p>Use them only advanced/debug.</p>
+<hr />
+<h1 id="100-advanced-fingerprint"><a class="header" href="#100-advanced-fingerprint">100. Advanced Fingerprint</a></h1>
+<p>Security screen may expose:</p>
+<pre><code class="language-text">full identity fingerprint
+</code></pre>
+<p>for manual expert verification.</p>
+<hr />
+<h1 id="101-identity-fingerprint"><a class="header" href="#101-identity-fingerprint">101. Identity Fingerprint</a></h1>
+<p>Fingerprint should derive from stable identity public key, not display metadata.</p>
+<hr />
+<h1 id="102-multi-device-integration"><a class="header" href="#102-multi-device-integration">102. Multi-Device Integration</a></h1>
+<p>New device linking updates:</p>
+<pre><code class="language-text">device directory
+account generation
+permissions
+</code></pre>
+<p>Part 02 distributes the resulting signed state.</p>
+<hr />
+<h1 id="103-device-revocation-during-pairing"><a class="header" href="#103-device-revocation-during-pairing">103. Device Revocation During Pairing</a></h1>
+<p>If authorizing device becomes revoked mid-session:</p>
+<pre><code class="language-text">abort
+</code></pre>
+<p>before commit.</p>
+<hr />
+<h1 id="104-account-generation-change"><a class="header" href="#104-account-generation-change">104. Account Generation Change</a></h1>
+<p>If account generation changes during pairing:</p>
+<pre><code class="language-text">revalidate authorization
+</code></pre>
+<p>Do not commit using stale state.</p>
+<hr />
+<h1 id="105-concurrent-device-links"><a class="header" href="#105-concurrent-device-links">105. Concurrent Device Links</a></h1>
+<p>Two authorized devices may link new devices concurrently.</p>
+<p>Part 02 conflict/generation rules apply.</p>
+<p>Bootstrap layer does not invent its own global serialization.</p>
+<hr />
+<h1 id="106-capability-negotiation"><a class="header" href="#106-capability-negotiation">106. Capability Negotiation</a></h1>
+<p>After secure transport/session:</p>
+<pre><code class="language-text">Part 07
+</code></pre>
+<p>determines available features.</p>
+<p>Bootstrap payload should not carry full runtime capability state.</p>
+<hr />
+<h1 id="107-proximity-integration"><a class="header" href="#107-proximity-integration">107. Proximity Integration</a></h1>
+<p>Part 14 provides:</p>
+<pre><code class="language-text">BLE observation
+Wi-Fi candidate
+LAN candidate
+</code></pre>
+<p>after QR/NFC bootstrap.</p>
+<hr />
+<h1 id="108-routing-integration"><a class="header" href="#108-routing-integration">108. Routing Integration</a></h1>
+<p>Part 03 chooses best path to continue pairing/state transfer.</p>
+<hr />
+<h1 id="109-file-integration"><a class="header" href="#109-file-integration">109. File Integration</a></h1>
+<p>Ad-hoc QR file share uses Part 05 after ephemeral session authorization.</p>
+<hr />
+<h1 id="110-dtn-integration"><a class="header" href="#110-dtn-integration">110. DTN Integration</a></h1>
+<p>DTN can distribute:</p>
+<pre><code class="language-text">signed organization bootstrap announcement
+</code></pre>
+<p>but high-trust enrollment should still require explicit verification/authorization.</p>
+<hr />
+<h1 id="111-offline-event-log"><a class="header" href="#111-offline-event-log">111. Offline Event Log</a></h1>
+<p>Part 04 records semantic transitions such as:</p>
+<pre><code class="language-text">DeviceAdded
+ContactVerified
+NodeEnrolled
+</code></pre>
+<p>Do not journal every QR scan frame.</p>
+<hr />
+<h1 id="112-crash-recovery"><a class="header" href="#112-crash-recovery">112. Crash Recovery</a></h1>
+<p>Part 09 handles:</p>
+<pre><code class="language-text">pending invitation
+consumed invitation
+committed device event
+orphan ephemeral state
+</code></pre>
+<p>Ephemeral handshake sessions can simply expire/restart if not committed.</p>
+<hr />
+<h1 id="113-crash-before-scan"><a class="header" href="#113-crash-before-scan">113. Crash Before Scan</a></h1>
+<p>No effect.</p>
+<hr />
+<h1 id="114-crash-after-scan-before-authorization"><a class="header" href="#114-crash-after-scan-before-authorization">114. Crash After Scan Before Authorization</a></h1>
+<p>Session expires/restarts.</p>
+<p>No trust committed.</p>
+<hr />
+<h1 id="115-crash-during-authorization-commit"><a class="header" href="#115-crash-during-authorization-commit">115. Crash During Authorization Commit</a></h1>
+<p>Database/event transaction defines outcome.</p>
+<p>Recovery checks committed device/contact event.</p>
+<hr />
+<h1 id="116-crash-after-commit-before-ui-success"><a class="header" href="#116-crash-after-commit-before-ui-success">116. Crash After Commit Before UI Success</a></h1>
+<p>Recovery shows paired state.</p>
+<p>Do not ask user to pair again unnecessarily.</p>
+<hr />
+<h1 id="117-invitation-persistence"><a class="header" href="#117-invitation-persistence">117. Invitation Persistence</a></h1>
+<p>Persist minimum data required for:</p>
+<pre><code class="language-text">expiry
+cancel
+single-use
+crash recovery
+</code></pre>
+<p>Private ephemeral key may be stored only if session recovery is explicitly desired and secure.</p>
+<p>Simpler v1:</p>
+<pre><code class="language-text">ephemeral session lost on crash
+invitation cancelled/expired
+</code></pre>
+<p>for incomplete sessions.</p>
+<hr />
+<h1 id="118-secure-secret-storage"><a class="header" href="#118-secure-secret-storage">118. Secure Secret Storage</a></h1>
+<p>Long-term keys use secure storage.</p>
+<p>Short-lived ephemeral bootstrap private keys should remain memory-only where practical.</p>
+<hr />
+<h1 id="119-pairing-audit"><a class="header" href="#119-pairing-audit">119. Pairing Audit</a></h1>
+<p>Security history may record:</p>
+<pre><code class="language-text">new device linked
+authorizing device
+time
+permissions
+</code></pre>
+<p>not QR payload.</p>
+<hr />
+<h1 id="120-contact-audit"><a class="header" href="#120-contact-audit">120. Contact Audit</a></h1>
+<p>Optional:</p>
+<pre><code class="language-text">verified in person
+</code></pre>
+<p>with timestamp.</p>
+<p>Avoid storing exact physical location.</p>
+<hr />
+<h1 id="121-organization-audit"><a class="header" href="#121-organization-audit">121. Organization Audit</a></h1>
+<p>Record:</p>
+<pre><code class="language-text">enrollment issuer
+role
+device
+policy version
+</code></pre>
+<hr />
+<h1 id="122-privacy"><a class="header" href="#122-privacy">122. Privacy</a></h1>
+<p>QR invitation may expose:</p>
+<pre><code class="language-text">protocol presence
+purpose
+temporary routing hints
+</code></pre>
+<p>Minimize stable metadata.</p>
+<hr />
+<h1 id="123-no-personal-data-in-qr-by-default"><a class="header" href="#123-no-personal-data-in-qr-by-default">123. No Personal Data in QR by Default</a></h1>
+<p>Avoid:</p>
+<pre><code class="language-text">name
+email
+phone
+organization details
+</code></pre>
+<p>unless user explicitly chose public contact-card QR.</p>
+<hr />
+<h1 id="124-bootstrap-logging"><a class="header" href="#124-bootstrap-logging">124. Bootstrap Logging</a></h1>
+<p>Logs may include:</p>
+<pre><code class="language-text">session-id hash
+purpose
+state
+error
+</code></pre>
+<p>Never:</p>
+<pre><code class="language-text">ephemeral private key
+full invitation secret
+SAS secret derivation material
+</code></pre>
+<hr />
+<h1 id="125-error-model"><a class="header" href="#125-error-model">125. Error Model</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum BootstrapError {
+    InvalidPayload,
+    UnsupportedVersion,
+    Expired,
+    AlreadyConsumed,
+    Cancelled,
+    PurposeMismatch,
+    TransportUnavailable,
+    HandshakeFailed,
+    VerificationFailed,
+    Unauthorized,
+    IdentityChanged,
+    ResourceDenied,
+    SecureStoreUnavailable,
+    Timeout,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="126-user-facing-errors"><a class="header" href="#126-user-facing-errors">126. User-Facing Errors</a></h1>
+<p>Map to:</p>
+<pre><code class="language-text">This QR code expired.
+This pairing request was already used.
+Verification codes did not match.
+This device is not authorized to add another device.
+Nearby connection failed.
+</code></pre>
+<hr />
+<h1 id="127-no-security-ambiguity"><a class="header" href="#127-no-security-ambiguity">127. No Security Ambiguity</a></h1>
+<p>Do not show generic:</p>
+<pre><code class="language-text">Something went wrong
+</code></pre>
+<p>for verification mismatch.</p>
+<p>Make security failures clear.</p>
+<hr />
+<h1 id="128-qr-parser-fuzzing"><a class="header" href="#128-qr-parser-fuzzing">128. QR Parser Fuzzing</a></h1>
+<p>Part 10 fuzz targets:</p>
+<pre><code class="language-text">bootstrap envelope
+URI parser
+base encoding
+version field
+rendezvous hints
+expiry
+</code></pre>
+<hr />
+<h1 id="129-nfc-parser-fuzzing"><a class="header" href="#129-nfc-parser-fuzzing">129. NFC Parser Fuzzing</a></h1>
+<p>Fuzz:</p>
+<pre><code class="language-text">NDEF wrapper
+bootstrap payload
+truncation
+duplicate records
+unexpected record order
+</code></pre>
+<hr />
+<h1 id="130-state-machine-fuzzing"><a class="header" href="#130-state-machine-fuzzing">130. State-Machine Fuzzing</a></h1>
+<p>Generate:</p>
+<pre><code class="language-text">scan
+connect
+verify
+cancel
+expire
+approve
+duplicate confirm
+</code></pre>
+<p>and assert valid transitions.</p>
+<hr />
+<h1 id="131-replay-tests"><a class="header" href="#131-replay-tests">131. Replay Tests</a></h1>
+<p>Reuse same QR:</p>
+<pre><code class="language-text">after successful pairing
+</code></pre>
+<p>Expected:</p>
+<pre><code class="language-text">rejected
+</code></pre>
+<hr />
+<h1 id="132-expiry-test"><a class="header" href="#132-expiry-test">132. Expiry Test</a></h1>
+<p>Scan after expiration:</p>
+<pre><code class="language-text">reject before trust
+</code></pre>
+<hr />
+<h1 id="133-purpose-confusion-test"><a class="header" href="#133-purpose-confusion-test">133. Purpose Confusion Test</a></h1>
+<p>Use file-transfer QR for device linking.</p>
+<p>Expected:</p>
+<pre><code class="language-text">PurposeMismatch
+</code></pre>
+<hr />
+<h1 id="134-mitm-test"><a class="header" href="#134-mitm-test">134. MITM Test</a></h1>
+<p>Swap responder ephemeral key.</p>
+<p>Expected:</p>
+<pre><code class="language-text">SAS/transcript mismatch
+</code></pre>
+<hr />
+<h1 id="135-wrong-device-test"><a class="header" href="#135-wrong-device-test">135. Wrong-Device Test</a></h1>
+<p>QR from Alice, network session from Mallory.</p>
+<p>Expected:</p>
+<pre><code class="language-text">proof-of-possession/transcript authentication fails
+</code></pre>
+<hr />
+<h1 id="136-screenshot-replay-test"><a class="header" href="#136-screenshot-replay-test">136. Screenshot Replay Test</a></h1>
+<p>Old screenshot after invitation consumed.</p>
+<p>Expected:</p>
+<pre><code class="language-text">AlreadyConsumed/Expired
+</code></pre>
+<hr />
+<h1 id="137-crash-test"><a class="header" href="#137-crash-test">137. Crash Test</a></h1>
+<p>Kill after authorization commit but before final response.</p>
+<p>Restart:</p>
+<pre><code class="language-text">paired exactly once
+</code></pre>
+<hr />
+<h1 id="138-concurrent-scan-test"><a class="header" href="#138-concurrent-scan-test">138. Concurrent Scan Test</a></h1>
+<p>Two scanners use same one-time invitation.</p>
+<p>Only one succeeds.</p>
+<hr />
+<h1 id="139-contact-pairing-test"><a class="header" href="#139-contact-pairing-test">139. Contact Pairing Test</a></h1>
+<p>Mutual verification creates contact trust but no device-link authority.</p>
+<hr />
+<h1 id="140-file-session-test"><a class="header" href="#140-file-session-test">140. File Session Test</a></h1>
+<p>Ephemeral file pairing completes transfer without adding persistent contact.</p>
+<hr />
+<h1 id="141-offline-test"><a class="header" href="#141-offline-test">141. Offline Test</a></h1>
+<p>No Internet.</p>
+<p>QR + BLE/LAN still links device/contact according to policy.</p>
+<hr />
+<h1 id="142-transport-switch-test"><a class="header" href="#142-transport-switch-test">142. Transport Switch Test</a></h1>
+<p>Pairing starts over BLE, continues over LAN/Wi-Fi.</p>
+<p>Transcript/session identity remains valid.</p>
+<hr />
+<h1 id="143-revocation-race-test"><a class="header" href="#143-revocation-race-test">143. Revocation Race Test</a></h1>
+<p>Authorizer revoked before commit.</p>
+<p>Expected:</p>
+<pre><code class="language-text">authorization fails
+</code></pre>
+<hr />
+<h1 id="144-account-generation-race"><a class="header" href="#144-account-generation-race">144. Account Generation Race</a></h1>
+<p>Account state advances mid-link.</p>
+<p>Expected:</p>
+<pre><code class="language-text">revalidate or restart authorization
+</code></pre>
+<hr />
+<h1 id="145-permission-test"><a class="header" href="#145-permission-test">145. Permission Test</a></h1>
+<p>Camera denied.</p>
+<p>Manual/NFC alternatives remain available where supported.</p>
+<hr />
+<h1 id="146-nfc-disabled-test"><a class="header" href="#146-nfc-disabled-test">146. NFC Disabled Test</a></h1>
+<p>QR/manual flow remains available.</p>
+<hr />
+<h1 id="147-resource-flood-test"><a class="header" href="#147-resource-flood-test">147. Resource Flood Test</a></h1>
+<p>Thousands of fake pairing attempts.</p>
+<p>Expected:</p>
+<pre><code class="language-text">bounded memory
+bounded handshakes
+no prompt spam
+</code></pre>
+<hr />
+<h1 id="148-golden-vectors"><a class="header" href="#148-golden-vectors">148. Golden Vectors</a></h1>
+<p>Maintain stable vectors for:</p>
+<pre><code class="language-text">BootstrapInvitationV1
+transcript canonicalization
+SAS derivation test inputs
+enrollment tokens
+</code></pre>
+<p>Do not expose real secrets.</p>
+<hr />
+<h1 id="149-cryptographic-test-vectors"><a class="header" href="#149-cryptographic-test-vectors">149. Cryptographic Test Vectors</a></h1>
+<p>Use upstream/reference vectors for cryptographic primitives.</p>
+<p>Protocol-specific transcript vectors should be deterministic.</p>
+<hr />
+<h1 id="150-suggested-crate-structure"><a class="header" href="#150-suggested-crate-structure">150. Suggested Crate Structure</a></h1>
+<pre><code class="language-text">crates/comm-bootstrap/
+├── src/
+│   ├── lib.rs
+│   ├── invitation.rs
+│   ├── purpose.rs
+│   ├── session.rs
+│   ├── state.rs
+│   ├── transcript.rs
+│   ├── sas.rs
+│   ├── rendezvous.rs
+│   ├── authorization.rs
+│   ├── replay.rs
+│   ├── enrollment.rs
+│   ├── policy.rs
+│   ├── diagnostics.rs
+│   └── error.rs
+└── Cargo.toml
+</code></pre>
+<p>Adapters:</p>
+<pre><code class="language-text">comm-bootstrap-qr
+comm-bootstrap-nfc
+</code></pre>
+<p>Platform UI adapters remain in:</p>
+<pre><code class="language-text">comm-platform-android
+comm-platform-ios
+comm-ui
+</code></pre>
+<hr />
+<h1 id="151-qr-adapter"><a class="header" href="#151-qr-adapter">151. QR Adapter</a></h1>
+<p>Responsibilities:</p>
+<pre><code class="language-text">canonical bytes
+QR-safe encoding
+URI wrapper
+decode/validate framing
+</code></pre>
+<p>Does not authorize identity.</p>
+<hr />
+<h1 id="152-nfc-adapter"><a class="header" href="#152-nfc-adapter">152. NFC Adapter</a></h1>
+<p>Responsibilities:</p>
+<pre><code class="language-text">NDEF mapping
+record validation
+bootstrap bytes
+</code></pre>
+<p>Does not authorize identity.</p>
+<hr />
+<h1 id="153-bootstrap-service-api"><a class="header" href="#153-bootstrap-service-api">153. Bootstrap Service API</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait BootstrapService {
+    async fn create_invitation(
+        &amp;self,
+        purpose: BootstrapPurpose,
+        policy: BootstrapPolicy,
+    ) -&gt; Result&lt;BootstrapInvitationHandle, BootstrapError&gt;;
+
+    async fn accept_invitation(
+        &amp;self,
+        invitation: BootstrapInvitation,
+    ) -&gt; Result&lt;BootstrapSessionHandle, BootstrapError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="154-invitation-handle"><a class="header" href="#154-invitation-handle">154. Invitation Handle</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct BootstrapInvitationHandle {
+    pub session_id: BootstrapSessionId,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Operations:</p>
+<pre><code class="language-text">render QR
+write NFC
+cancel
+status
+</code></pre>
+<hr />
+<h1 id="155-session-handle"><a class="header" href="#155-session-handle">155. Session Handle</a></h1>
+<p>Operations:</p>
+<pre><code class="language-text">verification code
+approve
+reject
+status
+</code></pre>
+<p>High-level UI should not manipulate raw keys.</p>
+<hr />
+<h1 id="156-bootstrap-policy"><a class="header" href="#156-bootstrap-policy">156. Bootstrap Policy</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct BootstrapPolicy {
+    pub lifetime: Duration,
+    pub single_use: bool,
+    pub require_sas: bool,
+    pub allowed_transports: TransportSet,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Purpose can impose stricter minimums.</p>
+<hr />
+<h1 id="157-link-device-policy"><a class="header" href="#157-link-device-policy">157. Link-Device Policy</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">short lifetime
+single use
+SAS or strong out-of-band confirmation
+explicit authorizer approval
+</code></pre>
+<hr />
+<h1 id="158-contact-policy"><a class="header" href="#158-contact-policy">158. Contact Policy</a></h1>
+<p>Could allow:</p>
+<pre><code class="language-text">QR proof + mutual confirmation
+</code></pre>
+<p>with session-only or persistent trust choice.</p>
+<hr />
+<h1 id="159-file-session-policy"><a class="header" href="#159-file-session-policy">159. File-Session Policy</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">short lifetime
+single use
+session-scoped authority
+no account permissions
+</code></pre>
+<hr />
+<h1 id="160-enrollment-policy"><a class="header" href="#160-enrollment-policy">160. Enrollment Policy</a></h1>
+<p>Organization controls:</p>
+<pre><code class="language-text">role
+expiry
+issuer
+allowed infrastructure
+</code></pre>
+<hr />
+<h1 id="161-ui-flow--link-device"><a class="header" href="#161-ui-flow--link-device">161. UI Flow — Link Device</a></h1>
+<pre><code class="language-text">Existing device:
+Settings
+→ Devices
+→ Link new device
+→ QR displayed
+
+New device:
+Link existing account
+→ Scan QR
+→ Secure connection
+→ Compare code
+
+Both:
+Confirm
+
+Existing device:
+Approve requested permissions
+
+System:
+Commit DeviceAdded
+→ sync minimum state
+</code></pre>
+<hr />
+<h1 id="162-ui-flow--add-contact"><a class="header" href="#162-ui-flow--add-contact">162. UI Flow — Add Contact</a></h1>
+<pre><code class="language-text">Show My Verification QR
+       ↓
+Other user scans
+       ↓
+Both see identity + verification
+       ↓
+Confirm
+       ↓
+Contact marked Verified
+</code></pre>
+<hr />
+<h1 id="163-ui-flow--nearby-file"><a class="header" href="#163-ui-flow--nearby-file">163. UI Flow — Nearby File</a></h1>
+<pre><code class="language-text">Send nearby
+→ Show/scan short-lived QR
+→ connect
+→ file offer
+→ transfer
+→ session expires
+</code></pre>
+<hr />
+<h1 id="164-dioxus-boundary"><a class="header" href="#164-dioxus-boundary">164. Dioxus Boundary</a></h1>
+<p>Dioxus owns:</p>
+<pre><code class="language-text">screens
+QR rendering component
+verification UI
+permission explanation
+</code></pre>
+<p>Rust bootstrap service owns all state/security.</p>
+<hr />
+<h1 id="165-android-kotlin-boundary"><a class="header" href="#165-android-kotlin-boundary">165. Android Kotlin Boundary</a></h1>
+<p>Kotlin owns only:</p>
+<pre><code class="language-text">camera plumbing
+NFC APIs
+biometric APIs
+lifecycle integration
+</code></pre>
+<p>No trust logic.</p>
+<hr />
+<h1 id="166-headless-api"><a class="header" href="#166-headless-api">166. Headless API</a></h1>
+<p>CLI:</p>
+<pre><code class="language-text">comm link-device --show-qr
+comm enroll-node --show-qr
+</code></pre>
+<p>Useful for server/embedded nodes.</p>
+<hr />
+<h1 id="167-recovery-cli"><a class="header" href="#167-recovery-cli">167. Recovery CLI</a></h1>
+<p>Advanced:</p>
+<pre><code class="language-text">comm bootstrap list-pending
+comm bootstrap cancel &lt;id&gt;
+</code></pre>
+<p>No secret dump.</p>
+<hr />
+<h1 id="168-diagnostics"><a class="header" href="#168-diagnostics">168. Diagnostics</a></h1>
+<p>Advanced view:</p>
+<pre><code class="language-text">Purpose: LinkOwnDevice
+State: VerificationPending
+Expires in: 01:23
+Transport: BLE
+Peer identity: authenticated
+</code></pre>
+<p>Never display raw private key material.</p>
+<hr />
+<h1 id="169-metrics"><a class="header" href="#169-metrics">169. Metrics</a></h1>
+<p>Safe metrics:</p>
+<pre><code class="language-text">bootstrap started
+completed
+expired
+verification failed
+transport failed
+purpose class
+</code></pre>
+<p>No QR token values.</p>
+<hr />
+<h1 id="170-security-invariants"><a class="header" href="#170-security-invariants">170. Security Invariants</a></h1>
+<ol>
+<li>QR/NFC alone never grants account authority.</li>
+<li>Invitation purpose cannot change.</li>
+<li>Expired invitations cannot authorize.</li>
+<li>Consumed single-use invitations cannot authorize twice.</li>
+<li>New device private key is generated on the new device.</li>
+<li>Device link requires an authorized existing identity.</li>
+<li>Device is linked only after durable signed authorization.</li>
+<li>SAS derives from the authenticated transcript.</li>
+<li>SAS mismatch is never bypassed silently.</li>
+<li>Transport switching does not change bootstrap identity.</li>
+<li>Crash after commit produces exactly one authorization.</li>
+<li>Ad-hoc file pairing cannot escalate into account access.</li>
+<li>Stable personal identity is not unnecessarily embedded in private QR/NFC payloads.</li>
+</ol>
+<hr />
+<h1 id="171-initial-production-scope"><a class="header" href="#171-initial-production-scope">171. Initial Production Scope</a></h1>
+<p>Implement first:</p>
+<pre><code class="language-text">BootstrapInvitationV1
+QR encode/decode
+short-lived single-use sessions
+ephemeral key exchange
+transcript hash
+numeric SAS
+own-device linking
+face-to-face contact verification
+ad-hoc file session
+BLE/LAN/Iroh handoff
+consumed-session tombstones
+crash-safe authorization commit
+</code></pre>
+<p>Then:</p>
+<pre><code class="language-text">NFC
+organization enrollment
+headless node enrollment
+word/emoji SAS
+</code></pre>
+<p>Defer initially:</p>
+<pre><code class="language-text">mass offline multi-use enrollment
+complex proximity proofs
+custom cryptographic handshake inventions
+</code></pre>
+<hr />
+<h1 id="172-implementation-phases"><a class="header" href="#172-implementation-phases">172. Implementation Phases</a></h1>
+<h2 id="phase-1--bootstrap-core"><a class="header" href="#phase-1--bootstrap-core">Phase 1 — Bootstrap Core</a></h2>
+<pre><code class="language-text">session ID
+purpose
+invitation
+expiry
+single-use
+</code></pre>
+<h2 id="phase-2--qr"><a class="header" href="#phase-2--qr">Phase 2 — QR</a></h2>
+<pre><code class="language-text">canonical encoding
+QR wrapper
+scanner integration
+</code></pre>
+<h2 id="phase-3--secure-handshake"><a class="header" href="#phase-3--secure-handshake">Phase 3 — Secure Handshake</a></h2>
+<pre><code class="language-text">ephemeral keys
+transcript
+SAS
+confirmation
+</code></pre>
+<h2 id="phase-4--device-linking"><a class="header" href="#phase-4--device-linking">Phase 4 — Device Linking</a></h2>
+<pre><code class="language-text">authorization
+DeviceAdded
+minimum state sync
+</code></pre>
+<h2 id="phase-5--contact--file-sessions"><a class="header" href="#phase-5--contact--file-sessions">Phase 5 — Contact / File Sessions</a></h2>
+<pre><code class="language-text">verified contact
+session-only file trust
+</code></pre>
+<h2 id="phase-6--nfc"><a class="header" href="#phase-6--nfc">Phase 6 — NFC</a></h2>
+<pre><code class="language-text">NDEF adapter
+tap flow
+</code></pre>
+<h2 id="phase-7--organization--headless"><a class="header" href="#phase-7--organization--headless">Phase 7 — Organization / Headless</a></h2>
+<pre><code class="language-text">enrollment tokens
+role policy
+terminal QR
+</code></pre>
+<h2 id="phase-8--hardening"><a class="header" href="#phase-8--hardening">Phase 8 — Hardening</a></h2>
+<pre><code class="language-text">fuzzing
+replay
+MITM
+crash
+race
+flood
+real-device tests
+</code></pre>
+<hr />
+<h1 id="173-definition-of-done"><a class="header" href="#173-definition-of-done">173. Definition of Done</a></h1>
+<p>Part 15 is complete when:</p>
+<ul>
+<li>QR and NFC share one semantic bootstrap model</li>
+<li>bootstrap invitations are short-lived and bounded</li>
+<li>high-trust invitations can be single-use</li>
+<li>replay after successful use is rejected</li>
+<li>QR/NFC payload contains no private key</li>
+<li>a secure ephemeral handshake follows bootstrap</li>
+<li>transcript-derived SAS verification exists</li>
+<li>purpose confusion is cryptographically prevented</li>
+<li>device linking requires an already authorized device</li>
+<li>new device generates its own long-term private key</li>
+<li>DeviceAdded authorization is durable before device becomes trusted</li>
+<li>interrupted pairing cannot create a half-linked device</li>
+<li>contact verification cannot grant device authority</li>
+<li>ad-hoc file pairing can remain session-only</li>
+<li>pairing works without Internet when local transport exists</li>
+<li>pairing can move between BLE/LAN/Wi-Fi/Iroh paths</li>
+<li>Android/iOS camera/NFC code contains no trust policy</li>
+<li>consumed invitations survive crash/restart where required</li>
+<li>fuzz, replay, MITM, race, crash, flood, and offline tests exist</li>
+</ul>
+<hr />
+<h1 id="174-relationship-to-earlier-parts"><a class="header" href="#174-relationship-to-earlier-parts">174. Relationship to Earlier Parts</a></h1>
+<p>Part 15 builds on:</p>
+<pre><code class="language-text">01 — Protocol Extension System
+02 — Multi-Device Identity
+03 — Transport &amp; Routing Policy Engine
+04 — Offline Event Log
+05 — Robust File / Blob Subsystem
+06 — DTN / Store-Carry-Forward
+07 — Capability Negotiation
+08 — Resource Limits &amp; Backpressure
+09 — Crash Recovery
+10 — Fuzzing &amp; Protocol Test Suite
+11 — Relay / Self-Hosted Infrastructure
+12 — Multipath Networking
+13 — Battery-Aware Scheduling
+14 — Proximity Abstraction
+</code></pre>
+<p>It directly supports:</p>
+<pre><code class="language-text">16 — Daemon &amp; Headless Runtime
+17 — Emergency Priority Architecture
+18 — Network Diagnostics &amp; Path Visualization
+19 — C ABI / FFI
+20 — Embedded Linux Node
+22 — Third-Party Protocol Extensions
+23 — External Interoperability Suite
+24 — Plugin / Module Ecosystem
+</code></pre>
+<hr />
+<h1 id="175-final-architecture"><a class="header" href="#175-final-architecture">175. Final Architecture</a></h1>
+<pre><code class="language-text">                 USER INTENT
+                     │
+          ┌──────────┼───────────┐
+          │                      │
+       Show QR                 NFC Tap
+          │                      │
+          └──────────┬───────────┘
+                     │
+            BootstrapInvitation
+                     │
+              Ephemeral Key
+                     │
+               Rendezvous
+                     │
+       ┌─────────────┼─────────────┐
+       │             │             │
+      BLE           LAN          Iroh
+       │             │             │
+       └─────────────┼─────────────┘
+                     │
+           Secure Handshake
+                     │
+            Transcript Hash
+                     │
+             SAS Verification
+                     │
+            Identity Binding
+                     │
+              Authorization
+                     │
+        Durable Domain Commit
+          ┌──────────┼──────────┐
+          │          │          │
+     DeviceAdded  Contact    File Session
+                  Verified
+</code></pre>
+<hr />
+<h1 id="176-final-principle"><a class="header" href="#176-final-principle">176. Final Principle</a></h1>
+<p>The bootstrap system should make this flow safe:</p>
+<pre><code class="language-text">A new phone has no Internet.
+
+The existing phone displays a QR code.
+
+The new phone scans it.
+
+The phones find each other over BLE.
+
+They establish an ephemeral encrypted session.
+
+Both screens show the same verification code.
+
+The user confirms.
+
+The existing authorized device signs and durably commits
+the new device authorization.
+
+Only then does the new phone receive account state.
+
+Later Wi-Fi becomes available,
+and history synchronization moves to the faster path.
+</code></pre>
+<p>The QR code is not the account credential.</p>
+<p>NFC is not the account credential.</p>
+<p>Physical proximity is not the account credential.</p>
+<p>The actual trust chain is:</p>
+<pre><code class="language-text">intentional bootstrap
++
+authenticated cryptographic transcript
++
+human/policy verification
++
+authorized identity signature
++
+durable commit
+</code></pre>
+<p>That separation is what makes QR/NFC pairing safe enough for a reusable, offline-capable, multi-device P2P communication platform.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="14-proximity-abstraction-architecture.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="06-dtn-store-carry-forward-architecture.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="14-proximity-abstraction-architecture.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="06-dtn-store-carry-forward-architecture.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

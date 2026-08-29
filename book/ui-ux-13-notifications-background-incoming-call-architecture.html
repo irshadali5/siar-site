@@ -1,0 +1,1731 @@
+<!DOCTYPE HTML>
+<html lang="en" class="navy" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>UI/UX 13 — Notifications, Background &amp; Incoming Call UX - SIAR System Architecture &amp; Technical Wiki</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="Comprehensive system architecture, cryptographic protocols, DTN mesh networking, distributed storage, audio DSP pipelines, and UI/UX design specifications for SIAR.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="theme/custom.css">
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "navy";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('navy')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="Home.html">Architecture Portal & Reading Guide</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part I: Protocol Foundation & Extension Platform</li><li class="chapter-item expanded "><a href="01-protocol-extension-system-architecture.html"><strong aria-hidden="true">1.</strong> 01 — Protocol Extension System Architecture</a></li><li class="chapter-item expanded "><a href="07-capability-negotiation-architecture.html"><strong aria-hidden="true">2.</strong> 07 — Capability Negotiation & Protocol Upgrades</a></li><li class="chapter-item expanded "><a href="21-third-party-protocol-extensions-architecture.html"><strong aria-hidden="true">3.</strong> 21 — Third-Party Protocol Extensions</a></li><li class="chapter-item expanded "><a href="22-wasm-compatible-components-architecture.html"><strong aria-hidden="true">4.</strong> 22 — WebAssembly (WASM) Compatible Components</a></li><li class="chapter-item expanded "><a href="23-external-interoperability-suite-architecture.html"><strong aria-hidden="true">5.</strong> 23 — External Interoperability & Conformance Suite</a></li><li class="chapter-item expanded "><a href="24-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">6.</strong> 24 — Dynamic Plugin & Module Ecosystem</a></li><li class="chapter-item expanded affix "><li class="part-title">Part II: Identity, Trust & Cryptography</li><li class="chapter-item expanded "><a href="02-multi-device-identity-architecture.html"><strong aria-hidden="true">7.</strong> 02 — Multi-Device Identity & Trust Model</a></li><li class="chapter-item expanded "><a href="28-production-security-e2ee-key-management-privacy-architecture.html"><strong aria-hidden="true">8.</strong> 28 — Production Security, E2EE, Key Management & Privacy</a></li><li class="chapter-item expanded affix "><li class="part-title">Part III: Mesh Networking, Transports & Hardware</li><li class="chapter-item expanded "><a href="03-transport-routing-policy-engine-architecture.html"><strong aria-hidden="true">9.</strong> 03 — Transport & Routing Policy Engine</a></li><li class="chapter-item expanded "><a href="11-relay-self-hosted-infrastructure-architecture.html"><strong aria-hidden="true">10.</strong> 11 — Self-Hosted Relay & Coordination Infrastructure</a></li><li class="chapter-item expanded "><a href="12-multipath-networking-architecture.html"><strong aria-hidden="true">11.</strong> 12 — Multipath Networking & Link Aggregation</a></li><li class="chapter-item expanded "><a href="13-battery-aware-scheduling-architecture.html"><strong aria-hidden="true">12.</strong> 13 — Battery-Aware Scheduling & Power Profiles</a></li><li class="chapter-item expanded "><a href="14-proximity-abstraction-architecture.html"><strong aria-hidden="true">13.</strong> 14 — Proximity Abstraction (BLE, Wi-Fi Direct, LoRa)</a></li><li class="chapter-item expanded "><a href="15-qr-nfc-bootstrap-pairing-architecture.html"><strong aria-hidden="true">14.</strong> 15 — Out-of-Band QR & NFC Bootstrap Pairing</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IV: Delay-Tolerant Networking & Emergency Mesh</li><li class="chapter-item expanded "><a href="06-dtn-store-carry-forward-architecture.html"><strong aria-hidden="true">15.</strong> 06 — DTN Store-Carry-Forward & Bundle Forwarding</a></li><li class="chapter-item expanded "><a href="17-emergency-priority-classes-architecture.html"><strong aria-hidden="true">16.</strong> 17 — Emergency Priority Classes & Critical Alert Mesh</a></li><li class="chapter-item expanded affix "><li class="part-title">Part V: Storage, Outbox & Data Lifecycle</li><li class="chapter-item expanded "><a href="04-offline-event-log-architecture.html"><strong aria-hidden="true">17.</strong> 04 — Offline Event Log & Sync Engine</a></li><li class="chapter-item expanded "><a href="05-robust-file-blob-subsystem-architecture.html"><strong aria-hidden="true">18.</strong> 05 — Robust File & Blob Subsystem (Chunking & Resumption)</a></li><li class="chapter-item expanded "><a href="09-crash-recovery-architecture.html"><strong aria-hidden="true">19.</strong> 09 — Crash Recovery & State Integrity</a></li><li class="chapter-item expanded "><a href="32-search-indexing-local-knowledge-privacy-architecture.html"><strong aria-hidden="true">20.</strong> 32 — Search, Indexing & Local Privacy Retrieval</a></li><li class="chapter-item expanded "><a href="33-backup-restore-export-import-archival-portability-architecture.html"><strong aria-hidden="true">21.</strong> 33 — Backup, Restore, Export & Long-Term Archival</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VI: Realtime Media, Calling & Audio DSP</li><li class="chapter-item expanded "><a href="25-android-direct-hardware-surface-zero-copy-media-architecture.html"><strong aria-hidden="true">22.</strong> 25 — Android Direct Surface Zero-Copy Media</a></li><li class="chapter-item expanded "><a href="26-rust-first-audio-dsp-resampling-aec-ns-agc-architecture.html"><strong aria-hidden="true">23.</strong> 26 — Rust-First Audio DSP (AEC, NS, AGC, Resampling)</a></li><li class="chapter-item expanded "><a href="29-realtime-calls-media-session-protocol-architecture.html"><strong aria-hidden="true">24.</strong> 29 — Realtime Calls & Media Session Protocol</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VII: Ephemeral State, Presence & Notifications</li><li class="chapter-item expanded "><a href="30-presence-availability-typing-read-receipts-ephemeral-state-architecture.html"><strong aria-hidden="true">25.</strong> 30 — Presence, Availability, Typing & Read Receipts</a></li><li class="chapter-item expanded "><a href="31-notifications-push-background-delivery-lifecycle-architecture.html"><strong aria-hidden="true">26.</strong> 31 — Notifications, Push Wake & Background Delivery</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VIII: Native Runtimes, Daemons & Embedded Linux</li><li class="chapter-item expanded "><a href="16-daemon-headless-runtime-architecture.html"><strong aria-hidden="true">27.</strong> 16 — Headless Daemon & Background Runtime</a></li><li class="chapter-item expanded "><a href="19-c-abi-ffi-architecture.html"><strong aria-hidden="true">28.</strong> 19 — C-ABI FFI & Native Language Interop</a></li><li class="chapter-item expanded "><a href="20-embedded-linux-node-architecture.html"><strong aria-hidden="true">29.</strong> 20 — Embedded Linux Node & Resource-Constrained Targets</a></li><li class="chapter-item expanded "><a href="27-rust-driven-android-native-build-packaging-automation.html"><strong aria-hidden="true">30.</strong> 27 — Rust-Driven Android Native Build & Packaging Automation</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IX: Reliability, Testing, Fuzzing & Diagnostics</li><li class="chapter-item expanded "><a href="08-resource-limits-backpressure-architecture.html"><strong aria-hidden="true">31.</strong> 08 — Resource Limits, Quotas & Backpressure</a></li><li class="chapter-item expanded "><a href="10-fuzzing-protocol-test-suite-architecture.html"><strong aria-hidden="true">32.</strong> 10 — Fuzzing & Protocol Test Suite</a></li><li class="chapter-item expanded "><a href="18-network-diagnostics-path-visualization-architecture.html"><strong aria-hidden="true">33.</strong> 18 — Network Diagnostics & Path Visualization</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part X: UI/UX Client Architecture (Cross-Platform)</li><li class="chapter-item expanded "><a href="ui-ux-01-product-foundation-cross-platform-interaction-architecture.html"><strong aria-hidden="true">34.</strong> UI/UX 01 — Product UX Foundation & Cross-Platform Interaction</a></li><li class="chapter-item expanded "><a href="ui-ux-02-desktop-dioxus-app-shell-navigation-window-architecture.html"><strong aria-hidden="true">35.</strong> UI/UX 02 — Desktop Dioxus App Shell & Navigation</a></li><li class="chapter-item expanded "><a href="ui-ux-03-android-jetpack-compose-app-shell-navigation-lifecycle-architecture.html"><strong aria-hidden="true">36.</strong> UI/UX 03 — Android Jetpack Compose App Shell & Lifecycle</a></li><li class="chapter-item expanded "><a href="ui-ux-04-conversation-list-inbox-architecture.html"><strong aria-hidden="true">37.</strong> UI/UX 04 — Conversation List & Inbox UX</a></li><li class="chapter-item expanded "><a href="ui-ux-05-conversation-message-timeline-architecture.html"><strong aria-hidden="true">38.</strong> UI/UX 05 — Conversation Message Timeline UX</a></li><li class="chapter-item expanded "><a href="ui-ux-06-message-composer-attachments-voice-notes-drafts-architecture.html"><strong aria-hidden="true">39.</strong> UI/UX 06 — Message Composer, Attachments & Voice Notes</a></li><li class="chapter-item expanded "><a href="ui-ux-07-calls-realtime-media-architecture.html"><strong aria-hidden="true">40.</strong> UI/UX 07 — Calls & Realtime Media UX</a></li><li class="chapter-item expanded "><a href="ui-ux-08-contacts-requests-verification-identity-architecture.html"><strong aria-hidden="true">41.</strong> UI/UX 08 — Contacts, Requests, Verification & Identity</a></li><li class="chapter-item expanded "><a href="ui-ux-09-groups-membership-roles-architecture.html"><strong aria-hidden="true">42.</strong> UI/UX 09 — Groups, Membership & Roles UX</a></li><li class="chapter-item expanded "><a href="ui-ux-10-files-media-gallery-transfer-architecture.html"><strong aria-hidden="true">43.</strong> UI/UX 10 — Files, Media Gallery & Transfer UX</a></li><li class="chapter-item expanded "><a href="ui-ux-11-search-local-knowledge-retrieval-architecture.html"><strong aria-hidden="true">44.</strong> UI/UX 11 — Search & Local Knowledge Retrieval UX</a></li><li class="chapter-item expanded "><a href="ui-ux-12-nearby-qr-nfc-pairing-device-linking-architecture.html"><strong aria-hidden="true">45.</strong> UI/UX 12 — Nearby, QR/NFC Pairing & Device Linking UX</a></li><li class="chapter-item expanded "><a href="ui-ux-13-notifications-background-incoming-call-architecture.html" class="active"><strong aria-hidden="true">46.</strong> UI/UX 13 — Notifications, Background & Incoming Call UX</a></li><li class="chapter-item expanded "><a href="ui-ux-14-presence-typing-receipts-status-architecture.html"><strong aria-hidden="true">47.</strong> UI/UX 14 — Presence, Typing, Receipts & Status UX</a></li><li class="chapter-item expanded "><a href="ui-ux-15-security-center-devices-keys-recovery-architecture.html"><strong aria-hidden="true">48.</strong> UI/UX 15 — Security Center, Devices, Keys & Recovery UX</a></li><li class="chapter-item expanded "><a href="ui-ux-16-backup-restore-export-migration-architecture.html"><strong aria-hidden="true">49.</strong> UI/UX 16 — Backup, Restore, Export & Migration UX</a></li><li class="chapter-item expanded "><a href="ui-ux-17-emergency-sos-offline-mesh-architecture.html"><strong aria-hidden="true">50.</strong> UI/UX 17 — Emergency / SOS / Offline Mesh UX</a></li><li class="chapter-item expanded "><a href="ui-ux-18-settings-privacy-notifications-data-controls-architecture.html"><strong aria-hidden="true">51.</strong> UI/UX 18 — Settings, Privacy, Notifications & Data Controls</a></li><li class="chapter-item expanded "><a href="ui-ux-19-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">52.</strong> UI/UX 19 — Plugin & Module Ecosystem UX</a></li><li class="chapter-item expanded "><a href="ui-ux-20-diagnostics-network-paths-advanced-developer-architecture.html"><strong aria-hidden="true">53.</strong> UI/UX 20 — Diagnostics, Network Paths & Developer UX</a></li><li class="chapter-item expanded "><a href="ui-ux-21-accessibility-inclusive-interaction-architecture.html"><strong aria-hidden="true">54.</strong> UI/UX 21 — Accessibility & Inclusive Interaction</a></li><li class="chapter-item expanded "><a href="ui-ux-22-design-system-tokens-typography-icons-motion-architecture.html"><strong aria-hidden="true">55.</strong> UI/UX 22 — Design System, Tokens, Typography & Motion</a></li><li class="chapter-item expanded "><a href="ui-ux-23-responsive-adaptive-desktop-tablet-foldable-phone-layout-architecture.html"><strong aria-hidden="true">56.</strong> UI/UX 23 — Responsive & Adaptive Layouts (Desktop/Tablet/Foldable/Phone)</a></li><li class="chapter-item expanded "><a href="ui-ux-24-error-loading-empty-offline-degraded-state-architecture.html"><strong aria-hidden="true">57.</strong> UI/UX 24 — Error, Loading, Empty & Degraded-State UX</a></li><li class="chapter-item expanded "><a href="ui-ux-25-onboarding-first-run-permission-education-architecture.html"><strong aria-hidden="true">58.</strong> UI/UX 25 — Onboarding, First Run & Permission Education</a></li><li class="chapter-item expanded "><a href="ui-ux-26-performance-virtualization-large-data-ui-architecture.html"><strong aria-hidden="true">59.</strong> UI/UX 26 — Virtualization & Large-Data UI Performance</a></li><li class="chapter-item expanded "><a href="ui-ux-27-ui-testing-screenshot-interaction-release-quality-gates-architecture.html"><strong aria-hidden="true">60.</strong> UI/UX 27 — UI Testing, Screenshots & Release Quality Gates</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">SIAR System Architecture &amp; Technical Wiki</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar/edit/main/sys-arch/ui-ux-13-notifications-background-incoming-call-architecture.md" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="uiux-part-13--notifications-background--incoming-call-ux-architecture"><a class="header" href="#uiux-part-13--notifications-background--incoming-call-ux-architecture">UI/UX Part 13 — Notifications, Background &amp; Incoming Call UX Architecture</a></h1>
+<h2 id="reusable-p2p-communication-platform"><a class="header" href="#reusable-p2p-communication-platform">Reusable P2P Communication Platform</a></h2>
+<p><strong>Status:</strong> UI/UX architecture specification<br />
+<strong>UI Series:</strong> Part 13<br />
+<strong>Desktop UI:</strong> Dioxus<br />
+<strong>Android UI:</strong> Kotlin + Jetpack Compose<br />
+<strong>Core runtime:</strong> Rust<br />
+<strong>Primary purpose:</strong> define message, call, security, transfer, emergency, background wake, notification privacy, grouping, deduplication, deep-linking, foreground-vs-background behavior, and platform notification UX across desktop and Android.</p>
+<hr />
+<h1 id="1-purpose"><a class="header" href="#1-purpose">1. Purpose</a></h1>
+<p>Notifications sit at the boundary between the communication product and the operating system.</p>
+<p>They must work correctly when:</p>
+<pre><code class="language-text">the app is foregrounded
+the app is backgrounded
+the Activity is destroyed
+the desktop window is hidden
+the desktop UI is closed but daemon remains
+the device is locked
+notification permission is denied
+multiple devices receive the same event
+a call arrives
+a message arrives while viewing another conversation
+a message arrives while already viewing that conversation
+a security event occurs
+a transfer finishes
+emergency traffic arrives
+</code></pre>
+<p>The governing principle is:</p>
+<blockquote>
+<p><strong>Rust decides notification meaning and privacy; platform code decides how that meaning is presented through the operating system.</strong></p>
+</blockquote>
+<hr />
+<h1 id="2-architectural-position"><a class="header" href="#2-architectural-position">2. Architectural Position</a></h1>
+<pre><code class="language-text">Rust Event / Notification Policy
+            │
+            ├── semantic event
+            ├── urgency
+            ├── privacy class
+            ├── dedup key
+            ├── actions
+            └── destination
+            │
+            ▼
+Notification Presentation Service
+            │
+      ┌─────┴─────┐
+      │           │
+ Desktop       Android
+ Adapter        Adapter
+      │           │
+ Native OS     NotificationManager
+ Notification  Foreground Service
+ Tray          Full-screen call surface
+</code></pre>
+<hr />
+<h1 id="3-notification-is-not-domain-truth"><a class="header" href="#3-notification-is-not-domain-truth">3. Notification Is Not Domain Truth</a></h1>
+<p>A notification is a projection.</p>
+<p>Deleting/dismissing it must not delete:</p>
+<pre><code class="language-text">message
+call history
+security event
+transfer record
+</code></pre>
+<p>unless the notification action explicitly invokes such a command.</p>
+<hr />
+<h1 id="4-notification-categories"><a class="header" href="#4-notification-categories">4. Notification Categories</a></h1>
+<p>Recommended:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum NotificationCategory {
+    Message,
+    Mention,
+    MessageRequest,
+    IncomingCall,
+    MissedCall,
+    Security,
+    Transfer,
+    Backup,
+    Emergency,
+    System,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="5-notification-priority"><a class="header" href="#5-notification-priority">5. Notification Priority</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum NotificationUrgency {
+    Passive,
+    Normal,
+    High,
+    Critical,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Examples:</p>
+<pre><code class="language-text">Passive  → transfer complete
+Normal   → ordinary message
+High     → mention / incoming call
+Critical → emergency / severe security event
+</code></pre>
+<hr />
+<h1 id="6-privacy-classes"><a class="header" href="#6-privacy-classes">6. Privacy Classes</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum NotificationPrivacy {
+    Full,
+    SenderOnly,
+    Generic,
+    Hidden,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="7-full-preview"><a class="header" href="#7-full-preview">7. Full Preview</a></h1>
+<p>May show:</p>
+<pre><code class="language-text">Alice
+See you at 5 PM
+</code></pre>
+<hr />
+<h1 id="8-sender-only-preview"><a class="header" href="#8-sender-only-preview">8. Sender-Only Preview</a></h1>
+<p>Shows:</p>
+<pre><code class="language-text">Alice
+New message
+</code></pre>
+<hr />
+<h1 id="9-generic-preview"><a class="header" href="#9-generic-preview">9. Generic Preview</a></h1>
+<p>Shows:</p>
+<pre><code class="language-text">New message
+</code></pre>
+<p>without identity.</p>
+<hr />
+<h1 id="10-hidden"><a class="header" href="#10-hidden">10. Hidden</a></h1>
+<p>No content-bearing notification.</p>
+<p>May still update badge/count depending settings.</p>
+<hr />
+<h1 id="11-lockscreen-privacy"><a class="header" href="#11-lockscreen-privacy">11. Lockscreen Privacy</a></h1>
+<p>Platform adapter combines:</p>
+<pre><code class="language-text">Rust privacy policy
++
+OS lockscreen policy
++
+user setting
+</code></pre>
+<p>using the strictest effective result.</p>
+<hr />
+<h1 id="12-app-foreground-state"><a class="header" href="#12-app-foreground-state">12. App Foreground State</a></h1>
+<p>Rust/platform tracks semantic presentation state:</p>
+<pre><code class="language-text">Foreground
+Background
+Hidden
+NoUI
+Locked
+</code></pre>
+<hr />
+<h1 id="13-focused-conversation-suppression"><a class="header" href="#13-focused-conversation-suppression">13. Focused Conversation Suppression</a></h1>
+<p>If user is actively viewing the same conversation and relevant message is visible:</p>
+<pre><code class="language-text">do not show redundant OS notification
+</code></pre>
+<p>Use:</p>
+<pre><code class="language-text">in-app update
+optional subtle banner
+</code></pre>
+<hr />
+<h1 id="14-different-conversation-while-foreground"><a class="header" href="#14-different-conversation-while-foreground">14. Different Conversation While Foreground</a></h1>
+<p>If user is in app but another conversation receives a message:</p>
+<pre><code class="language-text">in-app banner
+</code></pre>
+<p>can be preferred over OS notification.</p>
+<hr />
+<h1 id="15-background"><a class="header" href="#15-background">15. Background</a></h1>
+<p>Use OS notification according to policy.</p>
+<hr />
+<h1 id="16-desktop-hidden-to-tray"><a class="header" href="#16-desktop-hidden-to-tray">16. Desktop Hidden to Tray</a></h1>
+<p>Treat as background for notification purposes.</p>
+<hr />
+<h1 id="17-desktop-main-window-visible-but-unfocused"><a class="header" href="#17-desktop-main-window-visible-but-unfocused">17. Desktop Main Window Visible but Unfocused</a></h1>
+<p>Usually OS/native notification may still be useful.</p>
+<p>Policy can distinguish:</p>
+<pre><code class="language-text">visible + focused
+visible + unfocused
+hidden
+</code></pre>
+<hr />
+<h1 id="18-notification-policy-input"><a class="header" href="#18-notification-policy-input">18. Notification Policy Input</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct NotificationContext {
+    pub app_visibility: AppVisibility,
+    pub active_destination: Option&lt;UiDestination&gt;,
+    pub device_locked: bool,
+    pub notification_permission: NotificationPermissionState,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="19-notification-intent"><a class="header" href="#19-notification-intent">19. Notification Intent</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct NotificationIntent {
+    pub id: NotificationId,
+    pub category: NotificationCategory,
+    pub urgency: NotificationUrgency,
+    pub privacy: NotificationPrivacy,
+    pub title: NotificationText,
+    pub body: Option&lt;NotificationText&gt;,
+    pub badge_delta: Option&lt;i32&gt;,
+    pub destination: Option&lt;UiDestination&gt;,
+    pub actions: Vec&lt;NotificationActionView&gt;,
+    pub dedup_key: NotificationDedupKey,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="20-notification-text"><a class="header" href="#20-notification-text">20. Notification Text</a></h1>
+<p>Rust should provide semantic/localizable payloads where possible.</p>
+<p>Do not force English strings from core.</p>
+<p>Example:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum NotificationText {
+    MessageFrom { sender: DisplayName },
+    NewMessage,
+    MissedCallFrom { sender: DisplayName },
+    SecurityAlert,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Platform/UI localizes.</p>
+<hr />
+<h1 id="21-android-notification-channels"><a class="header" href="#21-android-notification-channels">21. Android Notification Channels</a></h1>
+<p>Recommended stable channels:</p>
+<pre><code class="language-text">Messages
+Mentions
+Calls
+Security
+Transfers
+Emergency
+Background/System
+</code></pre>
+<hr />
+<h1 id="22-channel-stability"><a class="header" href="#22-channel-stability">22. Channel Stability</a></h1>
+<p>Once created, Android channel identity should remain stable across updates.</p>
+<hr />
+<h1 id="23-user-controlled-channel-settings"><a class="header" href="#23-user-controlled-channel-settings">23. User-Controlled Channel Settings</a></h1>
+<p>Android users may change:</p>
+<pre><code class="language-text">sound
+vibration
+importance
+lock-screen visibility
+</code></pre>
+<p>The app should respect system ownership.</p>
+<hr />
+<h1 id="24-android-notification-permission"><a class="header" href="#24-android-notification-permission">24. Android Notification Permission</a></h1>
+<p>Request contextually.</p>
+<p>Do not request on first launch solely because permission exists.</p>
+<hr />
+<h1 id="25-recommended-permission-timing"><a class="header" href="#25-recommended-permission-timing">25. Recommended Permission Timing</a></h1>
+<p>Ask when user enables or first meaningfully needs:</p>
+<pre><code class="language-text">message alerts
+background calling
+</code></pre>
+<p>with explanation.</p>
+<hr />
+<h1 id="26-permission-denied"><a class="header" href="#26-permission-denied">26. Permission Denied</a></h1>
+<p>App remains usable.</p>
+<p>Explain:</p>
+<pre><code class="language-text">You may miss message and call alerts while the app is not open.
+</code></pre>
+<hr />
+<h1 id="27-permanently-denied"><a class="header" href="#27-permanently-denied">27. Permanently Denied</a></h1>
+<p>Offer:</p>
+<pre><code class="language-text">Open Settings
+</code></pre>
+<hr />
+<h1 id="28-notification-permission-diagnostics"><a class="header" href="#28-notification-permission-diagnostics">28. Notification Permission Diagnostics</a></h1>
+<p>Settings/diagnostics can show:</p>
+<pre><code class="language-text">Allowed
+Denied
+Blocked by system
+</code></pre>
+<hr />
+<h1 id="29-desktop-notification-permissions"><a class="header" href="#29-desktop-notification-permissions">29. Desktop Notification Permissions</a></h1>
+<p>Where desktop environment supports permission controls, adapter reports capability/state.</p>
+<hr />
+<h1 id="30-message-notification"><a class="header" href="#30-message-notification">30. Message Notification</a></h1>
+<p>Normal message notification may show:</p>
+<pre><code class="language-text">sender
+conversation
+preview
+</code></pre>
+<p>according to privacy mode.</p>
+<hr />
+<h1 id="31-group-message-notification"><a class="header" href="#31-group-message-notification">31. Group Message Notification</a></h1>
+<p>Possible title:</p>
+<pre><code class="language-text">Alice · Project Group
+</code></pre>
+<p>body:</p>
+<pre><code class="language-text">New deadline is Friday
+</code></pre>
+<hr />
+<h1 id="32-mention-notification"><a class="header" href="#32-mention-notification">32. Mention Notification</a></h1>
+<p>May have higher urgency than normal group message.</p>
+<hr />
+<h1 id="33-muted-conversation"><a class="header" href="#33-muted-conversation">33. Muted Conversation</a></h1>
+<p>No ordinary message notification.</p>
+<p>Mentions may bypass only if user setting permits.</p>
+<hr />
+<h1 id="34-message-request-notification"><a class="header" href="#34-message-request-notification">34. Message Request Notification</a></h1>
+<p>Privacy-conscious:</p>
+<pre><code class="language-text">New message request
+</code></pre>
+<p>rather than automatically revealing unknown sender/content.</p>
+<hr />
+<h1 id="35-unknown-attachment-notification"><a class="header" href="#35-unknown-attachment-notification">35. Unknown Attachment Notification</a></h1>
+<p>Do not show risky filename/content preview if privacy/security policy disallows.</p>
+<hr />
+<h1 id="36-notification-grouping--android"><a class="header" href="#36-notification-grouping--android">36. Notification Grouping — Android</a></h1>
+<p>Group by conversation where possible.</p>
+<p>Example:</p>
+<pre><code class="language-text">Project Group
+  Alice: ...
+  Bob: ...
+</code></pre>
+<hr />
+<h1 id="37-notification-summary"><a class="header" href="#37-notification-summary">37. Notification Summary</a></h1>
+<p>For many conversations:</p>
+<pre><code class="language-text">5 new messages from 3 conversations
+</code></pre>
+<hr />
+<h1 id="38-desktop-grouping"><a class="header" href="#38-desktop-grouping">38. Desktop Grouping</a></h1>
+<p>Native environment dependent.</p>
+<p>If unsupported, keep dedup/burst control in application layer.</p>
+<hr />
+<h1 id="39-notification-burst-coalescing"><a class="header" href="#39-notification-burst-coalescing">39. Notification Burst Coalescing</a></h1>
+<p>Rapid messages from same conversation should not produce disruptive sound for every event.</p>
+<hr />
+<h1 id="40-burst-policy"><a class="header" href="#40-burst-policy">40. Burst Policy</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">first message → sound
+subsequent messages within short window → update existing notification
+</code></pre>
+<hr />
+<h1 id="41-deduplication"><a class="header" href="#41-deduplication">41. Deduplication</a></h1>
+<p>Every logical notification event has stable dedup key.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum NotificationDedupKey {
+    Message(MessageId),
+    Call(CallId),
+    Security(SecurityEventId),
+    Transfer(TransferId),
+    Backup(BackupJobId),
+    Emergency(EmergencyEventId),
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="42-duplicate-delivery-paths"><a class="header" href="#42-duplicate-delivery-paths">42. Duplicate Delivery Paths</a></h1>
+<p>If same message arrives via:</p>
+<pre><code class="language-text">direct
+relay
+DTN
+</code></pre>
+<p>only one notification.</p>
+<hr />
+<h1 id="43-multi-device-notification-semantics"><a class="header" href="#43-multi-device-notification-semantics">43. Multi-Device Notification Semantics</a></h1>
+<p>Each user device may notify independently.</p>
+<p>Cross-device suppression is optional advanced policy.</p>
+<hr />
+<h1 id="44-read-on-another-device"><a class="header" href="#44-read-on-another-device">44. Read on Another Device</a></h1>
+<p>If message becomes read elsewhere:</p>
+<pre><code class="language-text">local notification may be dismissed/updated
+</code></pre>
+<p>if synchronization arrives.</p>
+<hr />
+<h1 id="45-answered-elsewhere"><a class="header" href="#45-answered-elsewhere">45. Answered Elsewhere</a></h1>
+<p>Incoming call notification must disappear when another device answers.</p>
+<hr />
+<h1 id="46-declined-elsewhere"><a class="header" href="#46-declined-elsewhere">46. Declined Elsewhere</a></h1>
+<p>Policy may dismiss other ringing devices.</p>
+<hr />
+<h1 id="47-deep-link-routing"><a class="header" href="#47-deep-link-routing">47. Deep-Link Routing</a></h1>
+<p>Notification action never routes using raw unvalidated string.</p>
+<p>Flow:</p>
+<pre><code class="language-text">notification
+→ typed destination
+→ Rust validates target still exists/authorized
+→ navigate
+</code></pre>
+<hr />
+<h1 id="48-message-destination"><a class="header" href="#48-message-destination">48. Message Destination</a></h1>
+<pre><code class="language-text">Conversation(ConversationId)
+</code></pre>
+<p>optionally with:</p>
+<pre><code class="language-text">MessageId
+</code></pre>
+<hr />
+<h1 id="49-call-destination"><a class="header" href="#49-call-destination">49. Call Destination</a></h1>
+<pre><code class="language-text">Call(CallId)
+</code></pre>
+<hr />
+<h1 id="50-security-destination"><a class="header" href="#50-security-destination">50. Security Destination</a></h1>
+<pre><code class="language-text">SecurityEvent(SecurityEventId)
+</code></pre>
+<hr />
+<h1 id="51-transfer-destination"><a class="header" href="#51-transfer-destination">51. Transfer Destination</a></h1>
+<pre><code class="language-text">Transfer(TransferId)
+</code></pre>
+<hr />
+<h1 id="52-cold-start--android"><a class="header" href="#52-cold-start--android">52. Cold Start — Android</a></h1>
+<p>Tap notification with app dead:</p>
+<pre><code class="language-text">Activity starts
+→ Rust runtime initializes
+→ launch action retained
+→ core Ready
+→ validate destination
+→ navigate
+</code></pre>
+<hr />
+<h1 id="53-pending-launch-action"><a class="header" href="#53-pending-launch-action">53. Pending Launch Action</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum PendingLaunchAction {
+    OpenConversation {
+        conversation: ConversationId,
+        message: Option&lt;MessageId&gt;,
+    },
+    OpenCall(CallId),
+    OpenSecurityEvent(SecurityEventId),
+    OpenTransfer(TransferId),
+    OpenEmergency(EmergencyEventId),
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="54-stale-destination"><a class="header" href="#54-stale-destination">54. Stale Destination</a></h1>
+<p>If target no longer exists:</p>
+<pre><code class="language-text">show safe fallback
+</code></pre>
+<p>Example:</p>
+<pre><code class="language-text">Message is no longer available
+</code></pre>
+<hr />
+<h1 id="55-android-background-wake"><a class="header" href="#55-android-background-wake">55. Android Background Wake</a></h1>
+<p>A push/wake signal is not trusted message content.</p>
+<p>Correct flow:</p>
+<pre><code class="language-text">Push wake
+→ wake/schedule Rust
+→ authenticate/fetch/process event
+→ decide notification
+</code></pre>
+<hr />
+<h1 id="56-do-not-render-push-payload-directly"><a class="header" href="#56-do-not-render-push-payload-directly">56. Do Not Render Push Payload Directly</a></h1>
+<p>Hard rule for sensitive events.</p>
+<hr />
+<h1 id="57-push-as-hint"><a class="header" href="#57-push-as-hint">57. Push as Hint</a></h1>
+<p>Push may contain:</p>
+<pre><code class="language-text">opaque wake token
+account/device routing hint
+</code></pre>
+<p>but not authoritative message body.</p>
+<hr />
+<h1 id="58-background-catch-up"><a class="header" href="#58-background-catch-up">58. Background Catch-Up</a></h1>
+<p>When device wakes:</p>
+<pre><code class="language-text">sync/fetch pending events
+persist durably
+evaluate notification policy
+</code></pre>
+<hr />
+<h1 id="59-ui-not-required"><a class="header" href="#59-ui-not-required">59. UI Not Required</a></h1>
+<p>Background receive must work without Compose Activity.</p>
+<hr />
+<h1 id="60-background-event-persistence"><a class="header" href="#60-background-event-persistence">60. Background Event Persistence</a></h1>
+<p>Message is persisted before notification if possible.</p>
+<p>Then notification tap always has durable target.</p>
+<hr />
+<h1 id="61-background-retry"><a class="header" href="#61-background-retry">61. Background Retry</a></h1>
+<p>If wake cannot complete:</p>
+<pre><code class="language-text">retry according to platform policy
+</code></pre>
+<p>without duplicate notification.</p>
+<hr />
+<h1 id="62-android-process-death"><a class="header" href="#62-android-process-death">62. Android Process Death</a></h1>
+<p>Notification tap launches fresh process and reconstructs state from Rust durability.</p>
+<hr />
+<h1 id="63-desktop-daemon-mode"><a class="header" href="#63-desktop-daemon-mode">63. Desktop Daemon Mode</a></h1>
+<p>Daemon can receive events and ask notification adapter to alert even if Dioxus UI is closed.</p>
+<hr />
+<h1 id="64-desktop-embedded-mode"><a class="header" href="#64-desktop-embedded-mode">64. Desktop Embedded Mode</a></h1>
+<p>If core dies with UI, no background notifications until app running.</p>
+<p>Product should communicate this in settings if relevant.</p>
+<hr />
+<h1 id="65-system-tray"><a class="header" href="#65-system-tray">65. System Tray</a></h1>
+<p>Recommended desktop actions:</p>
+<pre><code class="language-text">Open App
+New Message
+Active Call
+Mute Notifications temporarily
+Quit
+</code></pre>
+<hr />
+<h1 id="66-tray-badge"><a class="header" href="#66-tray-badge">66. Tray Badge</a></h1>
+<p>Optional unread count.</p>
+<hr />
+<h1 id="67-docktaskbar-badge"><a class="header" href="#67-docktaskbar-badge">67. Dock/Taskbar Badge</a></h1>
+<p>Can show unread aggregate where platform supports.</p>
+<hr />
+<h1 id="68-badge-count"><a class="header" href="#68-badge-count">68. Badge Count</a></h1>
+<p>Derived from durable unread state.</p>
+<p>Not independently incremented by notification events.</p>
+<hr />
+<h1 id="69-mark-read-from-notification"><a class="header" href="#69-mark-read-from-notification">69. Mark Read from Notification</a></h1>
+<p>Optional action:</p>
+<pre><code class="language-text">Mark Read
+</code></pre>
+<p>Rust advances local/account read state according to semantics.</p>
+<hr />
+<h1 id="70-reply-from-notification"><a class="header" href="#70-reply-from-notification">70. Reply from Notification</a></h1>
+<p>Future optional.</p>
+<p>If implemented:</p>
+<pre><code class="language-text">text input
+→ authenticated app/service
+→ Rust SendMessageCommand
+</code></pre>
+<p>No direct OS-to-network path bypassing Rust.</p>
+<hr />
+<h1 id="71-notification-reply-security"><a class="header" href="#71-notification-reply-security">71. Notification Reply Security</a></h1>
+<p>Respect:</p>
+<pre><code class="language-text">device lock
+app lock
+privacy setting
+</code></pre>
+<p>May disable quick reply on lock screen.</p>
+<hr />
+<h1 id="72-incoming-call--android"><a class="header" href="#72-incoming-call--android">72. Incoming Call — Android</a></h1>
+<p>Critical flow:</p>
+<pre><code class="language-text">wake signal
+→ Rust authenticates call offer
+→ CallState = Incoming
+→ Android call notification / full-screen surface
+</code></pre>
+<hr />
+<h1 id="73-do-not-ring-on-unauthenticated-push"><a class="header" href="#73-do-not-ring-on-unauthenticated-push">73. Do Not Ring on Unauthenticated Push</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="74-incoming-call-notification"><a class="header" href="#74-incoming-call-notification">74. Incoming Call Notification</a></h1>
+<p>Shows:</p>
+<pre><code class="language-text">caller identity
+Audio call / Video call
+Accept
+Decline
+</code></pre>
+<p>according to privacy policy.</p>
+<hr />
+<h1 id="75-full-screen-incoming-call"><a class="header" href="#75-full-screen-incoming-call">75. Full-Screen Incoming Call</a></h1>
+<p>Use only where Android platform policy permits and product qualifies.</p>
+<p>Otherwise:</p>
+<pre><code class="language-text">high-priority heads-up notification
+</code></pre>
+<hr />
+<h1 id="76-lock-screen-call"><a class="header" href="#76-lock-screen-call">76. Lock-Screen Call</a></h1>
+<p>Must respect privacy setting.</p>
+<p>Strict mode:</p>
+<pre><code class="language-text">Incoming call
+</code></pre>
+<p>without caller identity.</p>
+<hr />
+<h1 id="77-accept-from-notification"><a class="header" href="#77-accept-from-notification">77. Accept from Notification</a></h1>
+<p>Flow:</p>
+<pre><code class="language-text">PendingIntent
+→ service/activity receiver
+→ Rust CallController.accept(CallId)
+→ foreground call service
+→ optional full call UI
+</code></pre>
+<hr />
+<h1 id="78-decline-from-notification"><a class="header" href="#78-decline-from-notification">78. Decline from Notification</a></h1>
+<p>Can execute without launching full Activity where platform allows.</p>
+<hr />
+<h1 id="79-dismiss-incoming-call-notification"><a class="header" href="#79-dismiss-incoming-call-notification">79. Dismiss Incoming Call Notification</a></h1>
+<p>Do not necessarily equal decline.</p>
+<p>Recommendation:</p>
+<pre><code class="language-text">swipe/dismiss → silence local alert
+</code></pre>
+<p>while backend call remains until timeout unless product explicitly maps dismissal to decline.</p>
+<hr />
+<h1 id="80-silence-call"><a class="header" href="#80-silence-call">80. Silence Call</a></h1>
+<p>Optional action:</p>
+<pre><code class="language-text">Silence
+</code></pre>
+<p>without rejecting peer.</p>
+<hr />
+<h1 id="81-missed-call"><a class="header" href="#81-missed-call">81. Missed Call</a></h1>
+<p>After timeout/no answer:</p>
+<pre><code class="language-text">Missed call from Alice
+</code></pre>
+<p>with:</p>
+<pre><code class="language-text">Call back
+Message
+</code></pre>
+<p>where allowed.</p>
+<hr />
+<h1 id="82-call-answered-elsewhere"><a class="header" href="#82-call-answered-elsewhere">82. Call Answered Elsewhere</a></h1>
+<p>Remove missed-call possibility on current device if another device answered.</p>
+<hr />
+<h1 id="83-desktop-incoming-call"><a class="header" href="#83-desktop-incoming-call">83. Desktop Incoming Call</a></h1>
+<p>If app visible:</p>
+<pre><code class="language-text">in-app call surface
+</code></pre>
+<p>plus optional native notification if unfocused.</p>
+<p>If hidden:</p>
+<pre><code class="language-text">native notification
++
+ring sound
++
+optional floating incoming-call window
+</code></pre>
+<hr />
+<h1 id="84-desktop-accept"><a class="header" href="#84-desktop-accept">84. Desktop Accept</a></h1>
+<p>Raises/creates call window.</p>
+<hr />
+<h1 id="85-desktop-decline"><a class="header" href="#85-desktop-decline">85. Desktop Decline</a></h1>
+<p>No need to open main app.</p>
+<hr />
+<h1 id="86-ongoing-call-notification--android"><a class="header" href="#86-ongoing-call-notification--android">86. Ongoing Call Notification — Android</a></h1>
+<p>Foreground service notification persists while call active.</p>
+<hr />
+<h1 id="87-ongoing-call-actions"><a class="header" href="#87-ongoing-call-actions">87. Ongoing Call Actions</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">Mute
+Hang Up
+Return to Call
+</code></pre>
+<hr />
+<h1 id="88-ongoing-call-privacy"><a class="header" href="#88-ongoing-call-privacy">88. Ongoing Call Privacy</a></h1>
+<p>Lock-screen content can be generic.</p>
+<hr />
+<h1 id="89-active-call--incoming-message"><a class="header" href="#89-active-call--incoming-message">89. Active Call + Incoming Message</a></h1>
+<p>Do not disrupt with loud notification by default.</p>
+<p>Possible:</p>
+<pre><code class="language-text">quiet heads-up/banner
+</code></pre>
+<hr />
+<h1 id="90-call-priority"><a class="header" href="#90-call-priority">90. Call Priority</a></h1>
+<p>Realtime call audio has priority over ordinary notification sounds.</p>
+<hr />
+<h1 id="91-notification-sound-during-call"><a class="header" href="#91-notification-sound-during-call">91. Notification Sound During Call</a></h1>
+<p>Prefer:</p>
+<pre><code class="language-text">soft/none
+</code></pre>
+<p>for ordinary messages.</p>
+<p>Emergency/security policy may override.</p>
+<hr />
+<h1 id="92-transfer-notifications"><a class="header" href="#92-transfer-notifications">92. Transfer Notifications</a></h1>
+<p>Notify only when useful.</p>
+<p>Examples:</p>
+<pre><code class="language-text">large transfer completed
+transfer failed
+waiting for action
+</code></pre>
+<p>Do not notify every small auto-downloaded image.</p>
+<hr />
+<h1 id="93-active-transfer-notification-android"><a class="header" href="#93-active-transfer-notification-android">93. Active Transfer Notification Android</a></h1>
+<p>Long user-visible transfer may show ongoing progress.</p>
+<hr />
+<h1 id="94-transfer-complete"><a class="header" href="#94-transfer-complete">94. Transfer Complete</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">File downloaded
+Open
+</code></pre>
+<hr />
+<h1 id="95-transfer-failure"><a class="header" href="#95-transfer-failure">95. Transfer Failure</a></h1>
+<pre><code class="language-text">Download failed
+Retry
+</code></pre>
+<p>if retryable.</p>
+<hr />
+<h1 id="96-backup-notification"><a class="header" href="#96-backup-notification">96. Backup Notification</a></h1>
+<p>Useful for:</p>
+<pre><code class="language-text">backup failed
+backup completed if user initiated
+recovery attention required
+</code></pre>
+<p>Avoid noise for routine successful background backups unless user opted in.</p>
+<hr />
+<h1 id="97-security-notification"><a class="header" href="#97-security-notification">97. Security Notification</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">New device linked
+Identity changed
+Device revoked
+Verification problem
+Suspicious link attempt
+</code></pre>
+<hr />
+<h1 id="98-security-urgency"><a class="header" href="#98-security-urgency">98. Security Urgency</a></h1>
+<p>Meaningful security events should not be hidden inside ordinary message channel.</p>
+<p>Use dedicated Security channel/category.</p>
+<hr />
+<h1 id="99-security-preview"><a class="header" href="#99-security-preview">99. Security Preview</a></h1>
+<p>May intentionally show generic:</p>
+<pre><code class="language-text">Security alert
+Open the app to review
+</code></pre>
+<p>on lock screen.</p>
+<hr />
+<h1 id="100-emergency-notifications"><a class="header" href="#100-emergency-notifications">100. Emergency Notifications</a></h1>
+<p>Part 17.</p>
+<p>Critical emergency events may:</p>
+<pre><code class="language-text">override ordinary mute policy
+</code></pre>
+<p>only if user/product policy explicitly allows.</p>
+<hr />
+<h1 id="101-emergency-channel"><a class="header" href="#101-emergency-channel">101. Emergency Channel</a></h1>
+<p>Dedicated.</p>
+<p>User should understand behavior in settings.</p>
+<hr />
+<h1 id="102-emergency-false-positive-prevention"><a class="header" href="#102-emergency-false-positive-prevention">102. Emergency False Positive Prevention</a></h1>
+<p>Only authenticated, policy-approved emergency events reach critical notification UX.</p>
+<hr />
+<h1 id="103-notification-settings"><a class="header" href="#103-notification-settings">103. Notification Settings</a></h1>
+<p>Recommended hierarchy:</p>
+<pre><code class="language-text">Messages
+Mentions
+Calls
+Requests
+Security
+Transfers
+Emergency
+Preview Privacy
+Sound/Vibration
+Quiet Hours
+Per-Conversation Overrides
+</code></pre>
+<hr />
+<h1 id="104-android-settings-relationship"><a class="header" href="#104-android-settings-relationship">104. Android Settings Relationship</a></h1>
+<p>Some sound/importance controls live in Android system channels.</p>
+<p>App should link:</p>
+<pre><code class="language-text">Open Android Notification Settings
+</code></pre>
+<p>rather than pretending to override system state.</p>
+<hr />
+<h1 id="105-desktop-settings"><a class="header" href="#105-desktop-settings">105. Desktop Settings</a></h1>
+<p>App can own more behavior directly.</p>
+<hr />
+<h1 id="106-per-conversation-notification-policy"><a class="header" href="#106-per-conversation-notification-policy">106. Per-Conversation Notification Policy</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum ConversationNotificationPolicy {
+    All,
+    Mentions,
+    Muted,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="107-mute-duration"><a class="header" href="#107-mute-duration">107. Mute Duration</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">1 hour
+8 hours
+1 day
+1 week
+Forever
+</code></pre>
+<hr />
+<h1 id="108-quiet-hours"><a class="header" href="#108-quiet-hours">108. Quiet Hours</a></h1>
+<p>Optional local preference:</p>
+<pre><code class="language-text">start
+end
+days
+exceptions
+</code></pre>
+<hr />
+<h1 id="109-quiet-hours-exceptions"><a class="header" href="#109-quiet-hours-exceptions">109. Quiet Hours Exceptions</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">Calls
+Security
+Emergency
+Favorite contacts
+Mentions
+</code></pre>
+<hr />
+<h1 id="110-timezone"><a class="header" href="#110-timezone">110. Timezone</a></h1>
+<p>Quiet hours use device/local configured time.</p>
+<hr />
+<h1 id="111-device-local-policy"><a class="header" href="#111-device-local-policy">111. Device-Local Policy</a></h1>
+<p>Some notification preferences are device-specific.</p>
+<p>Examples:</p>
+<pre><code class="language-text">sound
+vibration
+lock-screen preview
+quiet hours
+</code></pre>
+<hr />
+<h1 id="112-account-wide-policy"><a class="header" href="#112-account-wide-policy">112. Account-Wide Policy</a></h1>
+<p>Potentially sync:</p>
+<pre><code class="language-text">conversation mute
+mention policy
+</code></pre>
+<hr />
+<h1 id="113-do-not-sync-os-channel-configuration"><a class="header" href="#113-do-not-sync-os-channel-configuration">113. Do Not Sync OS Channel Configuration</a></h1>
+<p>Android channel sound/importance is platform/device-local.</p>
+<hr />
+<h1 id="114-notification-preview-setting"><a class="header" href="#114-notification-preview-setting">114. Notification Preview Setting</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">Show sender and message
+Show sender only
+Show generic notification
+</code></pre>
+<hr />
+<h1 id="115-lock-screen-override"><a class="header" href="#115-lock-screen-override">115. Lock-Screen Override</a></h1>
+<p>Separate:</p>
+<pre><code class="language-text">Hide previews on lock screen
+</code></pre>
+<hr />
+<h1 id="116-app-lock-integration"><a class="header" href="#116-app-lock-integration">116. App Lock Integration</a></h1>
+<p>If app locked:</p>
+<pre><code class="language-text">strictest preview policy
+</code></pre>
+<p>can apply.</p>
+<hr />
+<h1 id="117-screen-sharing-integration"><a class="header" href="#117-screen-sharing-integration">117. Screen Sharing Integration</a></h1>
+<p>While screen sharing:</p>
+<pre><code class="language-text">temporarily hide notification previews
+</code></pre>
+<p>optional privacy setting.</p>
+<hr />
+<h1 id="118-desktop-screen-share"><a class="header" href="#118-desktop-screen-share">118. Desktop Screen Share</a></h1>
+<p>Could suppress native popup previews while sharing.</p>
+<hr />
+<h1 id="119-do-not-lose-events"><a class="header" href="#119-do-not-lose-events">119. Do Not Lose Events</a></h1>
+<p>Suppressing notification visual does not suppress durable event.</p>
+<hr />
+<h1 id="120-foreground-in-app-banner"><a class="header" href="#120-foreground-in-app-banner">120. Foreground In-App Banner</a></h1>
+<p>For message in another conversation:</p>
+<pre><code class="language-text">avatar
+sender/group
+preview
+Tap to open
+</code></pre>
+<hr />
+<h1 id="121-banner-duration"><a class="header" href="#121-banner-duration">121. Banner Duration</a></h1>
+<p>Short and non-blocking.</p>
+<hr />
+<h1 id="122-banner-stacking"><a class="header" href="#122-banner-stacking">122. Banner Stacking</a></h1>
+<p>Do not stack dozens.</p>
+<p>Queue/coalesce.</p>
+<hr />
+<h1 id="123-in-app-security-banner"><a class="header" href="#123-in-app-security-banner">123. In-App Security Banner</a></h1>
+<p>May persist until reviewed.</p>
+<hr />
+<h1 id="124-in-app-emergency-banner"><a class="header" href="#124-in-app-emergency-banner">124. In-App Emergency Banner</a></h1>
+<p>May be persistent/high priority.</p>
+<hr />
+<h1 id="125-notification-center-inside-app"><a class="header" href="#125-notification-center-inside-app">125. Notification Center Inside App</a></h1>
+<p>Optional future:</p>
+<pre><code class="language-text">Activity / Alerts
+</code></pre>
+<p>for security/system events.</p>
+<p>Not required for ordinary message notification history.</p>
+<hr />
+<h1 id="126-desktop-notification-click"><a class="header" href="#126-desktop-notification-click">126. Desktop Notification Click</a></h1>
+<p>Routes to typed destination.</p>
+<p>Raises existing single-instance window.</p>
+<hr />
+<h1 id="127-single-instance-integration"><a class="header" href="#127-single-instance-integration">127. Single-Instance Integration</a></h1>
+<p>If desktop app already running:</p>
+<pre><code class="language-text">notification click
+→ existing instance
+→ typed navigation
+</code></pre>
+<hr />
+<h1 id="128-desktop-ui-closed-but-daemon-running"><a class="header" href="#128-desktop-ui-closed-but-daemon-running">128. Desktop UI Closed but Daemon Running</a></h1>
+<p>Click notification:</p>
+<pre><code class="language-text">launch/attach UI
+→ validate destination
+→ open target
+</code></pre>
+<hr />
+<h1 id="129-notification-action-capability"><a class="header" href="#129-notification-action-capability">129. Notification Action Capability</a></h1>
+<p>Rust provides allowed actions.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum NotificationActionView {
+    Open,
+    MarkRead,
+    Reply,
+    AcceptCall,
+    DeclineCall,
+    RetryTransfer,
+    ReviewSecurity,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="130-ui-must-not-invent-actions"><a class="header" href="#130-ui-must-not-invent-actions">130. UI Must Not Invent Actions</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">AcceptCall
+</code></pre>
+<p>only if Rust says call is still incoming.</p>
+<hr />
+<h1 id="131-stale-action"><a class="header" href="#131-stale-action">131. Stale Action</a></h1>
+<p>If user taps Accept after call ended:</p>
+<pre><code class="language-text">safe no-op
++
+show call ended
+</code></pre>
+<hr />
+<h1 id="132-idempotency"><a class="header" href="#132-idempotency">132. Idempotency</a></h1>
+<p>Notification actions use stable command IDs/CallId/MessageId.</p>
+<p>Repeated OS delivery does not duplicate action.</p>
+<hr />
+<h1 id="133-notification-cancellation"><a class="header" href="#133-notification-cancellation">133. Notification Cancellation</a></h1>
+<p>Rust can emit:</p>
+<pre><code class="language-text">Cancel NotificationId
+</code></pre>
+<p>when event no longer relevant.</p>
+<hr />
+<h1 id="134-examples"><a class="header" href="#134-examples">134. Examples</a></h1>
+<pre><code class="language-text">message read elsewhere
+call answered elsewhere
+transfer completed and opened
+security issue resolved
+</code></pre>
+<hr />
+<h1 id="135-notification-update"><a class="header" href="#135-notification-update">135. Notification Update</a></h1>
+<p>Existing notification can be updated rather than replaced.</p>
+<hr />
+<h1 id="136-android-group-summary-update"><a class="header" href="#136-android-group-summary-update">136. Android Group Summary Update</a></h1>
+<p>Conversation notification updates with latest messages.</p>
+<hr />
+<h1 id="137-desktop-burst-update"><a class="header" href="#137-desktop-burst-update">137. Desktop Burst Update</a></h1>
+<p>If native API supports replace-ID, reuse notification identity.</p>
+<hr />
+<h1 id="138-background-work-states"><a class="header" href="#138-background-work-states">138. Background Work States</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum BackgroundUiState {
+    Idle,
+    Syncing,
+    Receiving,
+    Reconnecting,
+    Paused,
+    Degraded,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="139-normal-background-sync"><a class="header" href="#139-normal-background-sync">139. Normal Background Sync</a></h1>
+<p>Usually invisible.</p>
+<hr />
+<h1 id="140-persistent-background-indicator"><a class="header" href="#140-persistent-background-indicator">140. Persistent Background Indicator</a></h1>
+<p>Do not keep permanent "syncing" notification for ordinary app operation unless Android foreground-service rules require a visible user-facing operation.</p>
+<hr />
+<h1 id="141-long-running-user-operation"><a class="header" href="#141-long-running-user-operation">141. Long-Running User Operation</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">active call
+large transfer
+explicit backup
+</code></pre>
+<p>may justify persistent notification.</p>
+<hr />
+<h1 id="142-work-manager--scheduler-boundary"><a class="header" href="#142-work-manager--scheduler-boundary">142. Work Manager / Scheduler Boundary</a></h1>
+<p>Android scheduling mechanism is platform implementation.</p>
+<p>Rust owns semantic job state.</p>
+<hr />
+<h1 id="143-battery-saver"><a class="header" href="#143-battery-saver">143. Battery Saver</a></h1>
+<p>May delay non-critical background fetch.</p>
+<p>UI generally does not warn unless messages are being delayed significantly.</p>
+<hr />
+<h1 id="144-background-restricted"><a class="header" href="#144-background-restricted">144. Background Restricted</a></h1>
+<p>If Android has heavily restricted app:</p>
+<pre><code class="language-text">Background delivery may be delayed
+</code></pre>
+<p>diagnostics/settings can explain.</p>
+<hr />
+<h1 id="145-battery-optimization-education"><a class="header" href="#145-battery-optimization-education">145. Battery Optimization Education</a></h1>
+<p>Do not aggressively ask user to disable battery optimization on first launch.</p>
+<p>Only surface if real delivery problems occur and platform permits guidance.</p>
+<hr />
+<h1 id="146-push-token-state"><a class="header" href="#146-push-token-state">146. Push Token State</a></h1>
+<p>Not user-facing normally.</p>
+<p>Diagnostics can show:</p>
+<pre><code class="language-text">Registered
+Unavailable
+Error
+</code></pre>
+<hr />
+<h1 id="147-no-push-provider-detail-in-normal-ux"><a class="header" href="#147-no-push-provider-detail-in-normal-ux">147. No Push Provider Detail in Normal UX</a></h1>
+<p>Users do not need:</p>
+<pre><code class="language-text">FCM token
+APNs equivalent
+</code></pre>
+<p>in everyday UI.</p>
+<hr />
+<h1 id="148-background-catch-up-indicator"><a class="header" href="#148-background-catch-up-indicator">148. Background Catch-Up Indicator</a></h1>
+<p>On returning after long offline period:</p>
+<pre><code class="language-text">Syncing recent messages…
+</code></pre>
+<p>small status if catch-up takes noticeable time.</p>
+<hr />
+<h1 id="149-local-history-first"><a class="header" href="#149-local-history-first">149. Local History First</a></h1>
+<p>Existing messages render immediately while background catch-up continues.</p>
+<hr />
+<h1 id="150-notification-to-read-semantics"><a class="header" href="#150-notification-to-read-semantics">150. Notification-to-Read Semantics</a></h1>
+<p>Showing a notification does not mean message read.</p>
+<hr />
+<h1 id="151-notification-tap"><a class="header" href="#151-notification-tap">151. Notification Tap</a></h1>
+<p>Opening conversation may later advance read cursor based on actual visibility.</p>
+<hr />
+<h1 id="152-notification-dismissal"><a class="header" href="#152-notification-dismissal">152. Notification Dismissal</a></h1>
+<p>Does not mark read by default.</p>
+<hr />
+<h1 id="153-mark-read-action"><a class="header" href="#153-mark-read-action">153. Mark Read Action</a></h1>
+<p>Explicit action only.</p>
+<hr />
+<h1 id="154-notification-reply"><a class="header" href="#154-notification-reply">154. Notification Reply</a></h1>
+<p>If implemented, successful send does not necessarily mark all incoming messages read unless policy explicitly says.</p>
+<hr />
+<h1 id="155-message-request-notification-tap"><a class="header" href="#155-message-request-notification-tap">155. Message Request Notification Tap</a></h1>
+<p>Opens request view, not trusted conversation directly.</p>
+<hr />
+<h1 id="156-security-notification-tap"><a class="header" href="#156-security-notification-tap">156. Security Notification Tap</a></h1>
+<p>Opens security event details.</p>
+<hr />
+<h1 id="157-emergency-notification-tap"><a class="header" href="#157-emergency-notification-tap">157. Emergency Notification Tap</a></h1>
+<p>Opens dedicated emergency surface.</p>
+<hr />
+<h1 id="158-notification-accessibility"><a class="header" href="#158-notification-accessibility">158. Notification Accessibility</a></h1>
+<p>Title/body/actions must be meaningful without relying on icons.</p>
+<hr />
+<h1 id="159-android-talkback"><a class="header" href="#159-android-talkback">159. Android TalkBack</a></h1>
+<p>Actions:</p>
+<pre><code class="language-text">Accept call
+Decline call
+Mark read
+</code></pre>
+<p>must be clearly labeled.</p>
+<hr />
+<h1 id="160-desktop-screen-reader"><a class="header" href="#160-desktop-screen-reader">160. Desktop Screen Reader</a></h1>
+<p>Native notification accessibility is OS-dependent; app in-focus banners must be fully accessible.</p>
+<hr />
+<h1 id="161-in-app-banner-focus"><a class="header" href="#161-in-app-banner-focus">161. In-App Banner Focus</a></h1>
+<p>Do not steal keyboard focus for ordinary message banner.</p>
+<hr />
+<h1 id="162-critical-alert-focus"><a class="header" href="#162-critical-alert-focus">162. Critical Alert Focus</a></h1>
+<p>Security/emergency may request attention but should still avoid disruptive forced focus unless policy demands.</p>
+<hr />
+<h1 id="163-large-font"><a class="header" href="#163-large-font">163. Large Font</a></h1>
+<p>In-app banners/settings wrap cleanly.</p>
+<hr />
+<h1 id="164-rtl"><a class="header" href="#164-rtl">164. RTL</a></h1>
+<p>Notification localized text and in-app banners support RTL.</p>
+<hr />
+<h1 id="165-reduced-motion"><a class="header" href="#165-reduced-motion">165. Reduced Motion</a></h1>
+<p>Banner entrance/exit animations optional.</p>
+<hr />
+<h1 id="166-color-independence"><a class="header" href="#166-color-independence">166. Color Independence</a></h1>
+<p>Urgency/security states use text/icon, not color only.</p>
+<hr />
+<h1 id="167-notification-sound-accessibility"><a class="header" href="#167-notification-sound-accessibility">167. Notification Sound Accessibility</a></h1>
+<p>Visual/vibration alternatives should exist.</p>
+<hr />
+<h1 id="168-vibration"><a class="header" href="#168-vibration">168. Vibration</a></h1>
+<p>Respect OS/user settings.</p>
+<hr />
+<h1 id="169-desktop-quiet-mode"><a class="header" href="#169-desktop-quiet-mode">169. Desktop Quiet Mode</a></h1>
+<p>System Do Not Disturb should generally be respected.</p>
+<hr />
+<h1 id="170-android-do-not-disturb"><a class="header" href="#170-android-do-not-disturb">170. Android Do Not Disturb</a></h1>
+<p>App must not bypass DND unless explicitly permitted and justified.</p>
+<hr />
+<h1 id="171-criticalemergency-override"><a class="header" href="#171-criticalemergency-override">171. Critical/Emergency Override</a></h1>
+<p>Any bypass capability must be explicit, narrow, user-controlled, and platform-compliant.</p>
+<hr />
+<h1 id="172-notification-telemetry"><a class="header" href="#172-notification-telemetry">172. Notification Telemetry</a></h1>
+<p>Do not log:</p>
+<pre><code class="language-text">message body
+sender name
+notification preview text
+</code></pre>
+<p>by default.</p>
+<hr />
+<h1 id="173-safe-metrics"><a class="header" href="#173-safe-metrics">173. Safe Metrics</a></h1>
+<p>Possible:</p>
+<pre><code class="language-text">notification generated
+notification suppressed due to foreground
+notification permission state
+tap/open latency
+call answer latency
+</code></pre>
+<p>without identities/content.</p>
+<hr />
+<h1 id="174-crash-reports"><a class="header" href="#174-crash-reports">174. Crash Reports</a></h1>
+<p>Redact notification contents.</p>
+<hr />
+<h1 id="175-notification-presentation-api"><a class="header" href="#175-notification-presentation-api">175. Notification Presentation API</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait NotificationPresentation {
+    async fn evaluate(
+        &amp;self,
+        event: NotificationEvent,
+        context: NotificationContext,
+    ) -&gt; Result&lt;NotificationDecision, UiError&gt;;
+
+    async fn action(
+        &amp;self,
+        notification: NotificationId,
+        action: NotificationActionView,
+    ) -&gt; Result&lt;NotificationActionResult, UiError&gt;;
+
+    async fn dismissed(
+        &amp;self,
+        notification: NotificationId,
+    ) -&gt; Result&lt;(), UiError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="176-notification-decision"><a class="header" href="#176-notification-decision">176. Notification Decision</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum NotificationDecision {
+    Suppress,
+    InApp(InAppNotificationView),
+    System(NotificationIntent),
+    Both {
+        in_app: InAppNotificationView,
+        system: NotificationIntent,
+    },
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Use <code>Both</code> sparingly.</p>
+<hr />
+<h1 id="177-notification-event"><a class="header" href="#177-notification-event">177. Notification Event</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum NotificationEvent {
+    Message(MessageNotificationEvent),
+    IncomingCall(IncomingCallNotificationEvent),
+    MissedCall(MissedCallNotificationEvent),
+    Security(SecurityNotificationEvent),
+    Transfer(TransferNotificationEvent),
+    Backup(BackupNotificationEvent),
+    Emergency(EmergencyNotificationEvent),
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="178-background-wake-api"><a class="header" href="#178-background-wake-api">178. Background Wake API</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait BackgroundWakePresentation {
+    async fn process_wake(
+        &amp;self,
+        wake: BackgroundWakeToken,
+    ) -&gt; Result&lt;BackgroundWakeResult, UiError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Platform adapters never interpret private event content before Rust.</p>
+<hr />
+<h1 id="179-notification-events-to-platform"><a class="header" href="#179-notification-events-to-platform">179. Notification Events to Platform</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum NotificationUiEvent {
+    Show(NotificationIntent),
+    Update(NotificationIntent),
+    Cancel(NotificationId),
+    BadgeChanged(u32),
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="180-android-platform-adapter"><a class="header" href="#180-android-platform-adapter">180. Android Platform Adapter</a></h1>
+<p>Responsibilities:</p>
+<pre><code class="language-text">channels
+permission
+NotificationManager
+PendingIntent
+foreground service notification
+full-screen call eligibility
+lock-screen visibility
+system badge support
+</code></pre>
+<hr />
+<h1 id="181-compose-viewmodel"><a class="header" href="#181-compose-viewmodel">181. Compose ViewModel</a></h1>
+<p>Owns:</p>
+<pre><code class="language-text">in-app banners
+notification permission education UI
+settings navigation effects
+</code></pre>
+<p>It does not own OS notification truth.</p>
+<hr />
+<h1 id="182-desktop-adapter"><a class="header" href="#182-desktop-adapter">182. Desktop Adapter</a></h1>
+<p>Responsibilities:</p>
+<pre><code class="language-text">native notifications
+tray
+taskbar/dock badge
+single-instance activation
+window raise
+</code></pre>
+<hr />
+<h1 id="183-dioxus-presenter"><a class="header" href="#183-dioxus-presenter">183. Dioxus Presenter</a></h1>
+<p>Owns:</p>
+<pre><code class="language-text">in-app banner stack
+notification settings presentation
+tray-related UI state
+</code></pre>
+<hr />
+<h1 id="184-no-direct-os-notification-from-domain-actors"><a class="header" href="#184-no-direct-os-notification-from-domain-actors">184. No Direct OS Notification from Domain Actors</a></h1>
+<p>Hard boundary:</p>
+<pre><code class="language-text">domain event
+→ notification policy
+→ platform adapter
+</code></pre>
+<hr />
+<h1 id="185-notification-settings-snapshot"><a class="header" href="#185-notification-settings-snapshot">185. Notification Settings Snapshot</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct NotificationSettingsView {
+    pub message_policy: MessageNotificationPolicy,
+    pub call_enabled: bool,
+    pub request_enabled: bool,
+    pub transfer_policy: TransferNotificationPolicy,
+    pub security_enabled: bool,
+    pub emergency_policy: EmergencyNotificationPolicy,
+    pub preview_policy: NotificationPreviewPolicy,
+    pub quiet_hours: Option&lt;QuietHoursView&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="186-per-conversation-policy"><a class="header" href="#186-per-conversation-policy">186. Per-Conversation Policy</a></h1>
+<p>Conversation settings override global message policy within allowed rules.</p>
+<hr />
+<h1 id="187-system-level-conflict"><a class="header" href="#187-system-level-conflict">187. System-Level Conflict</a></h1>
+<p>If app says notifications enabled but Android channel disabled:</p>
+<pre><code class="language-text">show system-disabled state
+Open Android Settings
+</code></pre>
+<hr />
+<h1 id="188-permission-education-screen"><a class="header" href="#188-permission-education-screen">188. Permission Education Screen</a></h1>
+<p>Keep concise:</p>
+<pre><code class="language-text">Allow notifications to receive message and call alerts while the app is closed.
+</code></pre>
+<hr />
+<h1 id="189-incoming-call-reliability-warning"><a class="header" href="#189-incoming-call-reliability-warning">189. Incoming Call Reliability Warning</a></h1>
+<p>If notification permission/call channel unavailable:</p>
+<pre><code class="language-text">Incoming calls may not alert you when the app is in the background.
+</code></pre>
+<hr />
+<h1 id="190-diagnostics"><a class="header" href="#190-diagnostics">190. Diagnostics</a></h1>
+<p>Useful status:</p>
+<pre><code class="language-text">Notification permission
+Calls channel
+Message channel
+Push wake state
+Background restriction
+Foreground call service
+Last successful background sync
+</code></pre>
+<hr />
+<h1 id="191-do-not-show-internal-tokens"><a class="header" href="#191-do-not-show-internal-tokens">191. Do Not Show Internal Tokens</a></h1>
+<p>No raw push token.</p>
+<hr />
+<h1 id="192-notification-history-debug"><a class="header" href="#192-notification-history-debug">192. Notification History Debug</a></h1>
+<p>Developer mode can show:</p>
+<pre><code class="language-text">NotificationId
+category
+decision
+suppression reason
+</code></pre>
+<p>with content redacted.</p>
+<hr />
+<h1 id="193-suppression-reasons"><a class="header" href="#193-suppression-reasons">193. Suppression Reasons</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum NotificationSuppressionReason {
+    ActiveConversationVisible,
+    ConversationMuted,
+    QuietHours,
+    AppLockedPolicy,
+    PermissionDenied,
+    Duplicate,
+    AlreadyRead,
+    AnsweredElsewhere,
+    PolicyDisabled,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="194-user-friendly-diagnostics"><a class="header" href="#194-user-friendly-diagnostics">194. User-Friendly Diagnostics</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">Muted
+Notifications disabled by Android
+Suppressed because conversation is open
+</code></pre>
+<hr />
+<h1 id="195-testing-matrix"><a class="header" href="#195-testing-matrix">195. Testing Matrix</a></h1>
+<p>Required:</p>
+<pre><code class="language-text">foreground same conversation
+foreground different conversation
+background message
+locked device
+muted conversation
+mention
+message request
+incoming call
+accept from notification
+decline from notification
+missed call
+answered elsewhere
+transfer completion
+security alert
+emergency alert
+permission denied
+quiet hours
+</code></pre>
+<hr />
+<h1 id="196-android-tests"><a class="header" href="#196-android-tests">196. Android Tests</a></h1>
+<p>Verify:</p>
+<pre><code class="language-text">runtime notification permission
+channel disabled
+cold-start notification tap
+process death
+foreground service call
+heads-up call
+full-screen call where allowed
+lock-screen privacy
+background wake
+notification action idempotency
+</code></pre>
+<hr />
+<h1 id="197-desktop-tests"><a class="header" href="#197-desktop-tests">197. Desktop Tests</a></h1>
+<p>Verify:</p>
+<pre><code class="language-text">focused window suppression
+unfocused notification
+hidden-to-tray notification
+daemon-only delivery
+notification click
+single-instance activation
+tray badge
+taskbar/dock badge
+</code></pre>
+<hr />
+<h1 id="198-duplicate-event-test"><a class="header" href="#198-duplicate-event-test">198. Duplicate Event Test</a></h1>
+<p>Same MessageId via multiple transports:</p>
+<pre><code class="language-text">one notification
+</code></pre>
+<hr />
+<h1 id="199-multi-device-read-test"><a class="header" href="#199-multi-device-read-test">199. Multi-Device Read Test</a></h1>
+<p>Read on phone:</p>
+<pre><code class="language-text">desktop notification disappears/updates
+</code></pre>
+<p>if synchronized before user acts.</p>
+<hr />
+<h1 id="200-answered-elsewhere-test"><a class="header" href="#200-answered-elsewhere-test">200. Answered Elsewhere Test</a></h1>
+<p>Incoming call on two devices.</p>
+<p>One answers.</p>
+<p>Other notification cancels immediately.</p>
+<hr />
+<h1 id="201-stale-action-test"><a class="header" href="#201-stale-action-test">201. Stale Action Test</a></h1>
+<p>Tap Accept after call ended.</p>
+<p>No crash/no new call.</p>
+<hr />
+<h1 id="202-permission-denial-test"><a class="header" href="#202-permission-denial-test">202. Permission Denial Test</a></h1>
+<p>App stays usable.</p>
+<p>Settings shows degraded background alerts.</p>
+<hr />
+<h1 id="203-quiet-hours-test"><a class="header" href="#203-quiet-hours-test">203. Quiet Hours Test</a></h1>
+<p>Ordinary message suppressed.</p>
+<p>Allowed exception still alerts.</p>
+<hr />
+<h1 id="204-privacy-test"><a class="header" href="#204-privacy-test">204. Privacy Test</a></h1>
+<p>Strict lock-screen setting never exposes sender/message.</p>
+<hr />
+<h1 id="205-screen-share-privacy-test"><a class="header" href="#205-screen-share-privacy-test">205. Screen Share Privacy Test</a></h1>
+<p>Preview suppression activates/restores correctly.</p>
+<hr />
+<h1 id="206-background-wake-security-test"><a class="header" href="#206-background-wake-security-test">206. Background Wake Security Test</a></h1>
+<p>Forged push hint cannot produce trusted message/call notification without Rust authentication.</p>
+<hr />
+<h1 id="207-accessibility-test"><a class="header" href="#207-accessibility-test">207. Accessibility Test</a></h1>
+<p>Incoming call and message actions are usable with screen reader.</p>
+<hr />
+<h1 id="208-performance"><a class="header" href="#208-performance">208. Performance</a></h1>
+<p>Notification decision path should be lightweight.</p>
+<p>Do not perform expensive search/index operations before ordinary notification.</p>
+<hr />
+<h1 id="209-burst-performance"><a class="header" href="#209-burst-performance">209. Burst Performance</a></h1>
+<p>100-message burst should:</p>
+<pre><code class="language-text">coalesce
+avoid 100 sounds
+avoid 100 platform objects
+</code></pre>
+<hr />
+<h1 id="210-background-energy"><a class="header" href="#210-background-energy">210. Background Energy</a></h1>
+<p>Wake only as often as required.</p>
+<p>Batch non-urgent catch-up where possible.</p>
+<hr />
+<h1 id="211-foreground-call-priority"><a class="header" href="#211-foreground-call-priority">211. Foreground Call Priority</a></h1>
+<p>Call media work outranks notification rendering.</p>
+<hr />
+<h1 id="212-initial-production-scope"><a class="header" href="#212-initial-production-scope">212. Initial Production Scope</a></h1>
+<p>Ship:</p>
+<pre><code class="language-text">message notifications
+group/mention notifications
+message requests
+incoming call notification
+accept/decline
+missed call
+security alerts
+transfer failure/completion where useful
+Android channels + runtime permission
+foreground call service notification
+desktop native notifications + tray
+privacy previews
+foreground suppression
+deep links
+deduplication
+quiet/mute policies
+</code></pre>
+<p>Defer:</p>
+<pre><code class="language-text">rich inline reply
+complex notification history center
+cross-device smart suppression heuristics
+critical-alert DND bypass
+advanced wearable integrations
+</code></pre>
+<p>unless explicitly required.</p>
+<hr />
+<h1 id="213-definition-of-done"><a class="header" href="#213-definition-of-done">213. Definition of Done</a></h1>
+<p>UI/UX Part 13 is complete when:</p>
+<ul>
+<li>Rust decides notification semantics, privacy, urgency, deduplication, and actions</li>
+<li>platform adapters own OS-specific notification APIs</li>
+<li>same-conversation foreground messages do not produce redundant OS notifications</li>
+<li>message/group/mention/request notification behavior is explicit</li>
+<li>Android channels and runtime notification permission are defined</li>
+<li>lock-screen preview privacy has Full/SenderOnly/Generic/Hidden semantics</li>
+<li>background push/wake data is treated as a hint and authenticated by Rust before notification</li>
+<li>incoming calls never ring solely from unauthenticated push metadata</li>
+<li>accept/decline notification actions route through Rust CallController</li>
+<li>foreground-call service and ongoing-call notification behavior are defined</li>
+<li>desktop focused/unfocused/hidden/daemon notification behavior is defined</li>
+<li>notification clicks use typed validated destinations</li>
+<li>badge counts derive from durable unread state rather than notification counters</li>
+<li>dismissal does not imply read</li>
+<li>muting, mentions, quiet hours, security, transfer, backup, and emergency categories are distinct</li>
+<li>duplicate delivery and multi-device answered/read events can cancel/update notifications</li>
+<li>accessibility, lock-screen privacy, DND respect, RTL, and large font are explicit</li>
+<li>notification content is excluded from telemetry/crash logs by default</li>
+<li>notification/background-wake presentation APIs are defined</li>
+<li>cold-start, process-death, duplicate, stale-action, permission-denied, and privacy tests are specified</li>
+</ul>
+<hr />
+<h1 id="214-final-architecture"><a class="header" href="#214-final-architecture">214. Final Architecture</a></h1>
+<pre><code class="language-text">                   RUST DOMAIN EVENTS
+                           │
+                           ▼
+               Notification Policy Engine
+                           │
+        ┌──────────────────┼──────────────────┐
+        │                  │                  │
+     Meaning            Privacy           Actions
+        │                  │                  │
+        └──────────────────┼──────────────────┘
+                           │
+                  NotificationIntent
+                 ┌─────────┴─────────┐
+                 │                   │
+              Desktop             Android
+                 │                   │
+       Native Notification   NotificationManager
+       Tray / Badge          Channels
+       Single Instance       Foreground Service
+                             Incoming Call Surface
+</code></pre>
+<p>Background receive:</p>
+<pre><code class="language-text">Opaque Wake Hint
+      │
+      ▼
+Rust Authenticate / Sync
+      │
+      ▼
+Persist Durable Event
+      │
+      ▼
+Notification Policy
+</code></pre>
+<p>Never:</p>
+<pre><code class="language-text">Push payload
+→ directly display private message/call
+</code></pre>
+<hr />
+<h1 id="215-final-principle"><a class="header" href="#215-final-principle">215. Final Principle</a></h1>
+<p>Notifications should be useful without becoming a second, less-secure communication system.</p>
+<p>The correct model is:</p>
+<pre><code class="language-text">authenticated durable event
++
+Rust privacy/policy decision
++
+platform-native presentation
++
+typed action/deep-link routing
+</code></pre>
+<p>not:</p>
+<pre><code class="language-text">whatever the push payload says is shown to the user
+</code></pre>
+<p>This gives Dioxus desktop and Android Compose reliable foreground/background behavior while preserving the Rust core as the source of truth for messages, calls, security, and notification meaning.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="ui-ux-12-nearby-qr-nfc-pairing-device-linking-architecture.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="ui-ux-14-presence-typing-receipts-status-architecture.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="ui-ux-12-nearby-qr-nfc-pairing-device-linking-architecture.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="ui-ux-14-presence-typing-receipts-status-architecture.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

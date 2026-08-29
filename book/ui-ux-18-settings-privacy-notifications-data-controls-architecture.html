@@ -1,0 +1,1825 @@
+<!DOCTYPE HTML>
+<html lang="en" class="navy" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>UI/UX 18 — Settings, Privacy, Notifications &amp; Data Controls - SIAR System Architecture &amp; Technical Wiki</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="Comprehensive system architecture, cryptographic protocols, DTN mesh networking, distributed storage, audio DSP pipelines, and UI/UX design specifications for SIAR.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="theme/custom.css">
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "navy";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('navy')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="Home.html">Architecture Portal & Reading Guide</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part I: Protocol Foundation & Extension Platform</li><li class="chapter-item expanded "><a href="01-protocol-extension-system-architecture.html"><strong aria-hidden="true">1.</strong> 01 — Protocol Extension System Architecture</a></li><li class="chapter-item expanded "><a href="07-capability-negotiation-architecture.html"><strong aria-hidden="true">2.</strong> 07 — Capability Negotiation & Protocol Upgrades</a></li><li class="chapter-item expanded "><a href="21-third-party-protocol-extensions-architecture.html"><strong aria-hidden="true">3.</strong> 21 — Third-Party Protocol Extensions</a></li><li class="chapter-item expanded "><a href="22-wasm-compatible-components-architecture.html"><strong aria-hidden="true">4.</strong> 22 — WebAssembly (WASM) Compatible Components</a></li><li class="chapter-item expanded "><a href="23-external-interoperability-suite-architecture.html"><strong aria-hidden="true">5.</strong> 23 — External Interoperability & Conformance Suite</a></li><li class="chapter-item expanded "><a href="24-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">6.</strong> 24 — Dynamic Plugin & Module Ecosystem</a></li><li class="chapter-item expanded affix "><li class="part-title">Part II: Identity, Trust & Cryptography</li><li class="chapter-item expanded "><a href="02-multi-device-identity-architecture.html"><strong aria-hidden="true">7.</strong> 02 — Multi-Device Identity & Trust Model</a></li><li class="chapter-item expanded "><a href="28-production-security-e2ee-key-management-privacy-architecture.html"><strong aria-hidden="true">8.</strong> 28 — Production Security, E2EE, Key Management & Privacy</a></li><li class="chapter-item expanded affix "><li class="part-title">Part III: Mesh Networking, Transports & Hardware</li><li class="chapter-item expanded "><a href="03-transport-routing-policy-engine-architecture.html"><strong aria-hidden="true">9.</strong> 03 — Transport & Routing Policy Engine</a></li><li class="chapter-item expanded "><a href="11-relay-self-hosted-infrastructure-architecture.html"><strong aria-hidden="true">10.</strong> 11 — Self-Hosted Relay & Coordination Infrastructure</a></li><li class="chapter-item expanded "><a href="12-multipath-networking-architecture.html"><strong aria-hidden="true">11.</strong> 12 — Multipath Networking & Link Aggregation</a></li><li class="chapter-item expanded "><a href="13-battery-aware-scheduling-architecture.html"><strong aria-hidden="true">12.</strong> 13 — Battery-Aware Scheduling & Power Profiles</a></li><li class="chapter-item expanded "><a href="14-proximity-abstraction-architecture.html"><strong aria-hidden="true">13.</strong> 14 — Proximity Abstraction (BLE, Wi-Fi Direct, LoRa)</a></li><li class="chapter-item expanded "><a href="15-qr-nfc-bootstrap-pairing-architecture.html"><strong aria-hidden="true">14.</strong> 15 — Out-of-Band QR & NFC Bootstrap Pairing</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IV: Delay-Tolerant Networking & Emergency Mesh</li><li class="chapter-item expanded "><a href="06-dtn-store-carry-forward-architecture.html"><strong aria-hidden="true">15.</strong> 06 — DTN Store-Carry-Forward & Bundle Forwarding</a></li><li class="chapter-item expanded "><a href="17-emergency-priority-classes-architecture.html"><strong aria-hidden="true">16.</strong> 17 — Emergency Priority Classes & Critical Alert Mesh</a></li><li class="chapter-item expanded affix "><li class="part-title">Part V: Storage, Outbox & Data Lifecycle</li><li class="chapter-item expanded "><a href="04-offline-event-log-architecture.html"><strong aria-hidden="true">17.</strong> 04 — Offline Event Log & Sync Engine</a></li><li class="chapter-item expanded "><a href="05-robust-file-blob-subsystem-architecture.html"><strong aria-hidden="true">18.</strong> 05 — Robust File & Blob Subsystem (Chunking & Resumption)</a></li><li class="chapter-item expanded "><a href="09-crash-recovery-architecture.html"><strong aria-hidden="true">19.</strong> 09 — Crash Recovery & State Integrity</a></li><li class="chapter-item expanded "><a href="32-search-indexing-local-knowledge-privacy-architecture.html"><strong aria-hidden="true">20.</strong> 32 — Search, Indexing & Local Privacy Retrieval</a></li><li class="chapter-item expanded "><a href="33-backup-restore-export-import-archival-portability-architecture.html"><strong aria-hidden="true">21.</strong> 33 — Backup, Restore, Export & Long-Term Archival</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VI: Realtime Media, Calling & Audio DSP</li><li class="chapter-item expanded "><a href="25-android-direct-hardware-surface-zero-copy-media-architecture.html"><strong aria-hidden="true">22.</strong> 25 — Android Direct Surface Zero-Copy Media</a></li><li class="chapter-item expanded "><a href="26-rust-first-audio-dsp-resampling-aec-ns-agc-architecture.html"><strong aria-hidden="true">23.</strong> 26 — Rust-First Audio DSP (AEC, NS, AGC, Resampling)</a></li><li class="chapter-item expanded "><a href="29-realtime-calls-media-session-protocol-architecture.html"><strong aria-hidden="true">24.</strong> 29 — Realtime Calls & Media Session Protocol</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VII: Ephemeral State, Presence & Notifications</li><li class="chapter-item expanded "><a href="30-presence-availability-typing-read-receipts-ephemeral-state-architecture.html"><strong aria-hidden="true">25.</strong> 30 — Presence, Availability, Typing & Read Receipts</a></li><li class="chapter-item expanded "><a href="31-notifications-push-background-delivery-lifecycle-architecture.html"><strong aria-hidden="true">26.</strong> 31 — Notifications, Push Wake & Background Delivery</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VIII: Native Runtimes, Daemons & Embedded Linux</li><li class="chapter-item expanded "><a href="16-daemon-headless-runtime-architecture.html"><strong aria-hidden="true">27.</strong> 16 — Headless Daemon & Background Runtime</a></li><li class="chapter-item expanded "><a href="19-c-abi-ffi-architecture.html"><strong aria-hidden="true">28.</strong> 19 — C-ABI FFI & Native Language Interop</a></li><li class="chapter-item expanded "><a href="20-embedded-linux-node-architecture.html"><strong aria-hidden="true">29.</strong> 20 — Embedded Linux Node & Resource-Constrained Targets</a></li><li class="chapter-item expanded "><a href="27-rust-driven-android-native-build-packaging-automation.html"><strong aria-hidden="true">30.</strong> 27 — Rust-Driven Android Native Build & Packaging Automation</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IX: Reliability, Testing, Fuzzing & Diagnostics</li><li class="chapter-item expanded "><a href="08-resource-limits-backpressure-architecture.html"><strong aria-hidden="true">31.</strong> 08 — Resource Limits, Quotas & Backpressure</a></li><li class="chapter-item expanded "><a href="10-fuzzing-protocol-test-suite-architecture.html"><strong aria-hidden="true">32.</strong> 10 — Fuzzing & Protocol Test Suite</a></li><li class="chapter-item expanded "><a href="18-network-diagnostics-path-visualization-architecture.html"><strong aria-hidden="true">33.</strong> 18 — Network Diagnostics & Path Visualization</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part X: UI/UX Client Architecture (Cross-Platform)</li><li class="chapter-item expanded "><a href="ui-ux-01-product-foundation-cross-platform-interaction-architecture.html"><strong aria-hidden="true">34.</strong> UI/UX 01 — Product UX Foundation & Cross-Platform Interaction</a></li><li class="chapter-item expanded "><a href="ui-ux-02-desktop-dioxus-app-shell-navigation-window-architecture.html"><strong aria-hidden="true">35.</strong> UI/UX 02 — Desktop Dioxus App Shell & Navigation</a></li><li class="chapter-item expanded "><a href="ui-ux-03-android-jetpack-compose-app-shell-navigation-lifecycle-architecture.html"><strong aria-hidden="true">36.</strong> UI/UX 03 — Android Jetpack Compose App Shell & Lifecycle</a></li><li class="chapter-item expanded "><a href="ui-ux-04-conversation-list-inbox-architecture.html"><strong aria-hidden="true">37.</strong> UI/UX 04 — Conversation List & Inbox UX</a></li><li class="chapter-item expanded "><a href="ui-ux-05-conversation-message-timeline-architecture.html"><strong aria-hidden="true">38.</strong> UI/UX 05 — Conversation Message Timeline UX</a></li><li class="chapter-item expanded "><a href="ui-ux-06-message-composer-attachments-voice-notes-drafts-architecture.html"><strong aria-hidden="true">39.</strong> UI/UX 06 — Message Composer, Attachments & Voice Notes</a></li><li class="chapter-item expanded "><a href="ui-ux-07-calls-realtime-media-architecture.html"><strong aria-hidden="true">40.</strong> UI/UX 07 — Calls & Realtime Media UX</a></li><li class="chapter-item expanded "><a href="ui-ux-08-contacts-requests-verification-identity-architecture.html"><strong aria-hidden="true">41.</strong> UI/UX 08 — Contacts, Requests, Verification & Identity</a></li><li class="chapter-item expanded "><a href="ui-ux-09-groups-membership-roles-architecture.html"><strong aria-hidden="true">42.</strong> UI/UX 09 — Groups, Membership & Roles UX</a></li><li class="chapter-item expanded "><a href="ui-ux-10-files-media-gallery-transfer-architecture.html"><strong aria-hidden="true">43.</strong> UI/UX 10 — Files, Media Gallery & Transfer UX</a></li><li class="chapter-item expanded "><a href="ui-ux-11-search-local-knowledge-retrieval-architecture.html"><strong aria-hidden="true">44.</strong> UI/UX 11 — Search & Local Knowledge Retrieval UX</a></li><li class="chapter-item expanded "><a href="ui-ux-12-nearby-qr-nfc-pairing-device-linking-architecture.html"><strong aria-hidden="true">45.</strong> UI/UX 12 — Nearby, QR/NFC Pairing & Device Linking UX</a></li><li class="chapter-item expanded "><a href="ui-ux-13-notifications-background-incoming-call-architecture.html"><strong aria-hidden="true">46.</strong> UI/UX 13 — Notifications, Background & Incoming Call UX</a></li><li class="chapter-item expanded "><a href="ui-ux-14-presence-typing-receipts-status-architecture.html"><strong aria-hidden="true">47.</strong> UI/UX 14 — Presence, Typing, Receipts & Status UX</a></li><li class="chapter-item expanded "><a href="ui-ux-15-security-center-devices-keys-recovery-architecture.html"><strong aria-hidden="true">48.</strong> UI/UX 15 — Security Center, Devices, Keys & Recovery UX</a></li><li class="chapter-item expanded "><a href="ui-ux-16-backup-restore-export-migration-architecture.html"><strong aria-hidden="true">49.</strong> UI/UX 16 — Backup, Restore, Export & Migration UX</a></li><li class="chapter-item expanded "><a href="ui-ux-17-emergency-sos-offline-mesh-architecture.html"><strong aria-hidden="true">50.</strong> UI/UX 17 — Emergency / SOS / Offline Mesh UX</a></li><li class="chapter-item expanded "><a href="ui-ux-18-settings-privacy-notifications-data-controls-architecture.html" class="active"><strong aria-hidden="true">51.</strong> UI/UX 18 — Settings, Privacy, Notifications & Data Controls</a></li><li class="chapter-item expanded "><a href="ui-ux-19-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">52.</strong> UI/UX 19 — Plugin & Module Ecosystem UX</a></li><li class="chapter-item expanded "><a href="ui-ux-20-diagnostics-network-paths-advanced-developer-architecture.html"><strong aria-hidden="true">53.</strong> UI/UX 20 — Diagnostics, Network Paths & Developer UX</a></li><li class="chapter-item expanded "><a href="ui-ux-21-accessibility-inclusive-interaction-architecture.html"><strong aria-hidden="true">54.</strong> UI/UX 21 — Accessibility & Inclusive Interaction</a></li><li class="chapter-item expanded "><a href="ui-ux-22-design-system-tokens-typography-icons-motion-architecture.html"><strong aria-hidden="true">55.</strong> UI/UX 22 — Design System, Tokens, Typography & Motion</a></li><li class="chapter-item expanded "><a href="ui-ux-23-responsive-adaptive-desktop-tablet-foldable-phone-layout-architecture.html"><strong aria-hidden="true">56.</strong> UI/UX 23 — Responsive & Adaptive Layouts (Desktop/Tablet/Foldable/Phone)</a></li><li class="chapter-item expanded "><a href="ui-ux-24-error-loading-empty-offline-degraded-state-architecture.html"><strong aria-hidden="true">57.</strong> UI/UX 24 — Error, Loading, Empty & Degraded-State UX</a></li><li class="chapter-item expanded "><a href="ui-ux-25-onboarding-first-run-permission-education-architecture.html"><strong aria-hidden="true">58.</strong> UI/UX 25 — Onboarding, First Run & Permission Education</a></li><li class="chapter-item expanded "><a href="ui-ux-26-performance-virtualization-large-data-ui-architecture.html"><strong aria-hidden="true">59.</strong> UI/UX 26 — Virtualization & Large-Data UI Performance</a></li><li class="chapter-item expanded "><a href="ui-ux-27-ui-testing-screenshot-interaction-release-quality-gates-architecture.html"><strong aria-hidden="true">60.</strong> UI/UX 27 — UI Testing, Screenshots & Release Quality Gates</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">SIAR System Architecture &amp; Technical Wiki</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar/edit/main/sys-arch/ui-ux-18-settings-privacy-notifications-data-controls-architecture.md" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="uiux-part-18--settings-privacy-notifications--data-controls-ux-architecture"><a class="header" href="#uiux-part-18--settings-privacy-notifications--data-controls-ux-architecture">UI/UX Part 18 — Settings, Privacy, Notifications &amp; Data Controls UX Architecture</a></h1>
+<h2 id="reusable-p2p-communication-platform"><a class="header" href="#reusable-p2p-communication-platform">Reusable P2P Communication Platform</a></h2>
+<p><strong>Status:</strong> UI/UX architecture specification<br />
+<strong>UI Series:</strong> Part 18<br />
+<strong>Desktop UI:</strong> Dioxus<br />
+<strong>Android UI:</strong> Kotlin + Jetpack Compose<br />
+<strong>Core runtime:</strong> Rust<br />
+<strong>Primary purpose:</strong> define the complete settings, privacy, notifications, data controls, storage, retention, auto-download, presence/receipts, calls, emergency behavior, backup/recovery links, plugin permissions, diagnostics, developer options, reset/delete flows, policy-locked controls, and Rust presentation contracts across desktop and Android.</p>
+<hr />
+<h1 id="1-purpose"><a class="header" href="#1-purpose">1. Purpose</a></h1>
+<p>Settings should not become a dumping ground for every internal toggle.</p>
+<p>Users need to understand:</p>
+<pre><code class="language-text">what affects this device only
+what affects all their devices
+what affects other people
+what changes privacy
+what changes storage
+what changes notifications
+what is controlled by the operating system
+what is locked by organization policy
+what can be undone
+what deletes data
+</code></pre>
+<p>The governing principle is:</p>
+<blockquote>
+<p><strong>Settings must expose user intent, not implementation knobs.</strong></p>
+</blockquote>
+<hr />
+<h1 id="2-architectural-position"><a class="header" href="#2-architectural-position">2. Architectural Position</a></h1>
+<pre><code class="language-text">Rust Settings / Policy Core
+        │
+        ├── account settings
+        ├── device settings
+        ├── privacy policy
+        ├── notification policy
+        ├── storage policy
+        ├── retention policy
+        ├── plugin policy
+        ├── security policy
+        └── managed overrides
+        │
+        ▼
+Settings Presentation Service
+        │
+   ┌────┴─────┐
+   │          │
+Dioxus     Compose
+Desktop    Android
+</code></pre>
+<hr />
+<h1 id="3-settings-scope"><a class="header" href="#3-settings-scope">3. Settings Scope</a></h1>
+<p>Every setting should declare one of:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum SettingScope {
+    AccountWide,
+    DeviceLocal,
+    ConversationScoped,
+    GroupScoped,
+    ManagedPolicy,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="4-why-scope-must-be-visible"><a class="header" href="#4-why-scope-must-be-visible">4. Why Scope Must Be Visible</a></h1>
+<p>A user should know whether changing:</p>
+<pre><code class="language-text">Read receipts
+</code></pre>
+<p>affects:</p>
+<pre><code class="language-text">this phone only
+</code></pre>
+<p>or:</p>
+<pre><code class="language-text">all devices
+</code></pre>
+<hr />
+<h1 id="5-main-settings-categories"><a class="header" href="#5-main-settings-categories">5. Main Settings Categories</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">Account
+Profile
+Privacy
+Notifications
+Calls &amp; Media
+Files &amp; Storage
+Data &amp; Retention
+Search
+Backup &amp; Recovery
+Devices &amp; Security
+Emergency
+Plugins &amp; Extensions
+Appearance &amp; Accessibility
+Network &amp; Offline
+Advanced
+About
+</code></pre>
+<hr />
+<h1 id="6-desktop-settings-layout"><a class="header" href="#6-desktop-settings-layout">6. Desktop Settings Layout</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">Left navigation
+    category list
+
+Right pane
+    settings content
+</code></pre>
+<p>Wide desktop:</p>
+<pre><code class="language-text">category
+section
+description
+control
+</code></pre>
+<hr />
+<h1 id="7-android-settings-layout"><a class="header" href="#7-android-settings-layout">7. Android Settings Layout</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">TopAppBar
+Settings
+
+LazyColumn
+category rows
+</code></pre>
+<p>Each category opens its own Compose destination.</p>
+<hr />
+<h1 id="8-tabletfoldable"><a class="header" href="#8-tabletfoldable">8. Tablet/Foldable</a></h1>
+<p>Use:</p>
+<pre><code class="language-text">category list
++
+detail pane
+</code></pre>
+<hr />
+<h1 id="9-search-settings"><a class="header" href="#9-search-settings">9. Search Settings</a></h1>
+<p>Settings search is useful once categories grow.</p>
+<p>Search terms:</p>
+<pre><code class="language-text">notifications
+storage
+read receipts
+backup
+devices
+privacy
+</code></pre>
+<hr />
+<h1 id="10-settings-search-is-metadata-search"><a class="header" href="#10-settings-search-is-metadata-search">10. Settings Search Is Metadata Search</a></h1>
+<p>Do not reuse content search index for raw setting values.</p>
+<hr />
+<h1 id="11-settings-row-anatomy"><a class="header" href="#11-settings-row-anatomy">11. Settings Row Anatomy</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">Title
+Short description
+Current value/control
+Optional scope badge
+Optional policy badge
+</code></pre>
+<hr />
+<h1 id="12-avoid-overloaded-rows"><a class="header" href="#12-avoid-overloaded-rows">12. Avoid Overloaded Rows</a></h1>
+<p>Do not put:</p>
+<pre><code class="language-text">toggle
+dropdown
+button
+status
+</code></pre>
+<p>all on one line if it harms clarity.</p>
+<hr />
+<h1 id="13-account-settings"><a class="header" href="#13-account-settings">13. Account Settings</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">Account identity
+Display name
+Avatar
+Linked devices
+Recovery
+Sign out/remove device
+</code></pre>
+<hr />
+<h1 id="14-profile-settings"><a class="header" href="#14-profile-settings">14. Profile Settings</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">Display name
+Avatar
+Status
+About text
+Visibility
+</code></pre>
+<hr />
+<h1 id="15-privacy-settings"><a class="header" href="#15-privacy-settings">15. Privacy Settings</a></h1>
+<p>Recommended sections:</p>
+<pre><code class="language-text">Presence
+Typing
+Read Receipts
+Profile Visibility
+Notification Previews
+Blocked Contacts
+Link/Media Privacy
+Search Privacy
+App Lock
+</code></pre>
+<hr />
+<h1 id="16-presence-controls"><a class="header" href="#16-presence-controls">16. Presence Controls</a></h1>
+<p>From Part 14:</p>
+<pre><code class="language-text">Show online status
+Show last seen
+Share typing
+Share read receipts
+</code></pre>
+<hr />
+<h1 id="17-account-wide-privacy"><a class="header" href="#17-account-wide-privacy">17. Account-Wide Privacy</a></h1>
+<p>Recommended default:</p>
+<pre><code class="language-text">presence/read/typing policy account-wide
+</code></pre>
+<p>unless product explicitly chooses device-local.</p>
+<hr />
+<h1 id="18-per-contact-overrides"><a class="header" href="#18-per-contact-overrides">18. Per-Contact Overrides</a></h1>
+<p>Future.</p>
+<p>Do not complicate v1 unless strong need.</p>
+<hr />
+<h1 id="19-profile-visibility"><a class="header" href="#19-profile-visibility">19. Profile Visibility</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">Contacts
+People I message
+Nobody
+</code></pre>
+<p>depending product model.</p>
+<hr />
+<h1 id="20-notification-preview-privacy"><a class="header" href="#20-notification-preview-privacy">20. Notification Preview Privacy</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">Full preview
+Sender only
+Generic
+</code></pre>
+<p>plus:</p>
+<pre><code class="language-text">Hide previews when device locked
+</code></pre>
+<hr />
+<h1 id="21-app-lock"><a class="header" href="#21-app-lock">21. App Lock</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">Off
+Immediately
+After 1 minute
+After 5 minutes
+After 30 minutes
+</code></pre>
+<hr />
+<h1 id="22-android-app-lock"><a class="header" href="#22-android-app-lock">22. Android App Lock</a></h1>
+<p>Can use:</p>
+<pre><code class="language-text">BiometricPrompt
+device credential
+</code></pre>
+<p>for unlock.</p>
+<hr />
+<h1 id="23-desktop-app-lock"><a class="header" href="#23-desktop-app-lock">23. Desktop App Lock</a></h1>
+<p>Can use:</p>
+<pre><code class="language-text">local passphrase
+OS authentication
+</code></pre>
+<p>depending architecture.</p>
+<hr />
+<h1 id="24-blocked-contacts"><a class="header" href="#24-blocked-contacts">24. Blocked Contacts</a></h1>
+<p>Dedicated list:</p>
+<pre><code class="language-text">Blocked
+Unblock
+</code></pre>
+<hr />
+<h1 id="25-notification-settings"><a class="header" href="#25-notification-settings">25. Notification Settings</a></h1>
+<p>From Part 13.</p>
+<p>Recommended:</p>
+<pre><code class="language-text">Messages
+Mentions
+Message Requests
+Calls
+Security
+Transfers
+Backup
+Emergency
+Quiet Hours
+Preview Privacy
+</code></pre>
+<hr />
+<h1 id="26-android-notification-system-ownership"><a class="header" href="#26-android-notification-system-ownership">26. Android Notification System Ownership</a></h1>
+<p>For channel-level controls:</p>
+<pre><code class="language-text">sound
+vibration
+importance
+</code></pre>
+<p>link to Android system settings.</p>
+<hr />
+<h1 id="27-app-level-notification-policy"><a class="header" href="#27-app-level-notification-policy">27. App-Level Notification Policy</a></h1>
+<p>App can still own:</p>
+<pre><code class="language-text">mute semantics
+mentions
+quiet hours
+conversation overrides
+</code></pre>
+<hr />
+<h1 id="28-notification-permission-status"><a class="header" href="#28-notification-permission-status">28. Notification Permission Status</a></h1>
+<p>Show:</p>
+<pre><code class="language-text">Allowed
+Denied
+Blocked by system
+</code></pre>
+<hr />
+<h1 id="29-call-notification-warning"><a class="header" href="#29-call-notification-warning">29. Call Notification Warning</a></h1>
+<p>If disabled:</p>
+<pre><code class="language-text">Incoming calls may not alert you in the background.
+</code></pre>
+<hr />
+<h1 id="30-quiet-hours"><a class="header" href="#30-quiet-hours">30. Quiet Hours</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">Start
+End
+Days
+Exceptions
+</code></pre>
+<hr />
+<h1 id="31-quiet-hour-exceptions"><a class="header" href="#31-quiet-hour-exceptions">31. Quiet Hour Exceptions</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">Calls
+Security
+Emergency
+Mentions
+Favorite contacts
+</code></pre>
+<hr />
+<h1 id="32-conversation-notification-overrides"><a class="header" href="#32-conversation-notification-overrides">32. Conversation Notification Overrides</a></h1>
+<p>Do not list thousands inline.</p>
+<p>Use:</p>
+<pre><code class="language-text">Muted Conversations
+</code></pre>
+<p>summary and management screen.</p>
+<hr />
+<h1 id="33-calls--media-settings"><a class="header" href="#33-calls--media-settings">33. Calls &amp; Media Settings</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">Microphone
+Speaker
+Camera
+Call ringtone
+Video quality
+Data-saving mode
+Hardware acceleration
+Screen sharing privacy
+Call background behavior
+</code></pre>
+<hr />
+<h1 id="34-desktop-audio-device-settings"><a class="header" href="#34-desktop-audio-device-settings">34. Desktop Audio Device Settings</a></h1>
+<p>Separate:</p>
+<pre><code class="language-text">Microphone
+Speaker
+Ringer
+</code></pre>
+<hr />
+<h1 id="35-android-audio-route"><a class="header" href="#35-android-audio-route">35. Android Audio Route</a></h1>
+<p>Mostly runtime/system controlled.</p>
+<p>Settings may include preference:</p>
+<pre><code class="language-text">Default to speaker for video calls
+</code></pre>
+<p>only if product needs it.</p>
+<hr />
+<h1 id="36-camera-preference"><a class="header" href="#36-camera-preference">36. Camera Preference</a></h1>
+<p>Desktop:</p>
+<pre><code class="language-text">default camera
+</code></pre>
+<p>Android:</p>
+<pre><code class="language-text">front camera preferred
+</code></pre>
+<hr />
+<h1 id="37-video-quality"><a class="header" href="#37-video-quality">37. Video Quality</a></h1>
+<p>Recommended user-level choices:</p>
+<pre><code class="language-text">Auto
+Data Saver
+High Quality
+</code></pre>
+<p>Not:</p>
+<pre><code class="language-text">bitrate 1840 kbps
+</code></pre>
+<p>in normal settings.</p>
+<hr />
+<h1 id="38-hardware-acceleration"><a class="header" href="#38-hardware-acceleration">38. Hardware Acceleration</a></h1>
+<p>Advanced or diagnostic setting.</p>
+<hr />
+<h1 id="39-calls-on-metered-network"><a class="header" href="#39-calls-on-metered-network">39. Calls on Metered Network</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">Allow video on mobile data
+</code></pre>
+<p>Android.</p>
+<hr />
+<h1 id="40-files--storage"><a class="header" href="#40-files--storage">40. Files &amp; Storage</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">Storage Usage
+Auto-Download
+Save Location / Export Defaults
+Media Quality
+Clear Cache
+Partial Transfers
+</code></pre>
+<hr />
+<h1 id="41-storage-usage"><a class="header" href="#41-storage-usage">41. Storage Usage</a></h1>
+<p>Show:</p>
+<pre><code class="language-text">Messages metadata
+Media
+Documents
+Audio
+Thumbnails
+Search index
+Partial transfers
+</code></pre>
+<hr />
+<h1 id="42-storage-by-conversation"><a class="header" href="#42-storage-by-conversation">42. Storage by Conversation</a></h1>
+<p>Link to Part 10.</p>
+<hr />
+<h1 id="43-auto-download"><a class="header" href="#43-auto-download">43. Auto-Download</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">Never
+Wi-Fi only
+Small files
+Always
+</code></pre>
+<hr />
+<h1 id="44-per-type-auto-download"><a class="header" href="#44-per-type-auto-download">44. Per-Type Auto-Download</a></h1>
+<p>Optional:</p>
+<pre><code class="language-text">Images
+Video
+Audio
+Documents
+</code></pre>
+<hr />
+<h1 id="45-android-metered-awareness"><a class="header" href="#45-android-metered-awareness">45. Android Metered Awareness</a></h1>
+<p>Use platform network status.</p>
+<hr />
+<h1 id="46-desktop-auto-download"><a class="header" href="#46-desktop-auto-download">46. Desktop Auto-Download</a></h1>
+<p>Can default more permissively.</p>
+<hr />
+<h1 id="47-clear-cache"><a class="header" href="#47-clear-cache">47. Clear Cache</a></h1>
+<p>Safe derived content:</p>
+<pre><code class="language-text">thumbnails
+temporary previews
+search semantic cache
+</code></pre>
+<hr />
+<h1 id="48-clear-local-media"><a class="header" href="#48-clear-local-media">48. Clear Local Media</a></h1>
+<p>Different from cache.</p>
+<p>Must explain:</p>
+<pre><code class="language-text">Files can be downloaded again if still available.
+</code></pre>
+<hr />
+<h1 id="49-partial-transfers"><a class="header" href="#49-partial-transfers">49. Partial Transfers</a></h1>
+<p>Allow:</p>
+<pre><code class="language-text">Clear partial downloads
+</code></pre>
+<hr />
+<h1 id="50-data--retention"><a class="header" href="#50-data--retention">50. Data &amp; Retention</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">Keep Messages
+Keep Downloaded Media
+Delete Local Copies After
+Draft Retention
+Emergency History Retention
+Call History Retention
+</code></pre>
+<hr />
+<h1 id="51-message-retention"><a class="header" href="#51-message-retention">51. Message Retention</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">Forever
+1 year
+6 months
+90 days
+</code></pre>
+<p>only if backend supports local deletion semantics safely.</p>
+<hr />
+<h1 id="52-local-vs-global-deletion"><a class="header" href="#52-local-vs-global-deletion">52. Local vs Global Deletion</a></h1>
+<p>Hard distinction.</p>
+<p>A retention policy may mean:</p>
+<pre><code class="language-text">remove local copies
+</code></pre>
+<p>not:</p>
+<pre><code class="language-text">delete from everyone
+</code></pre>
+<hr />
+<h1 id="53-retention-description"><a class="header" href="#53-retention-description">53. Retention Description</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">Messages older than 1 year will be removed from this device when safe.
+</code></pre>
+<hr />
+<h1 id="54-groupconversation-retention"><a class="header" href="#54-groupconversation-retention">54. Group/Conversation Retention</a></h1>
+<p>Future per-conversation override.</p>
+<hr />
+<h1 id="55-emergency-history-retention"><a class="header" href="#55-emergency-history-retention">55. Emergency History Retention</a></h1>
+<p>Potentially more privacy-sensitive.</p>
+<hr />
+<h1 id="56-call-history-retention"><a class="header" href="#56-call-history-retention">56. Call History Retention</a></h1>
+<p>Separate from call content/media.</p>
+<hr />
+<h1 id="57-draft-retention"><a class="header" href="#57-draft-retention">57. Draft Retention</a></h1>
+<p>Durable drafts may be kept until sent/deleted.</p>
+<hr />
+<h1 id="58-search-settings"><a class="header" href="#58-search-settings">58. Search Settings</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">Index Messages
+Index Filenames
+Index File Contents
+Semantic Search
+Search History
+Rebuild Index
+Clear Index
+</code></pre>
+<hr />
+<h1 id="59-default-search-policy"><a class="header" href="#59-default-search-policy">59. Default Search Policy</a></h1>
+<p>Enable local lexical indexing.</p>
+<hr />
+<h1 id="60-semantic-search"><a class="header" href="#60-semantic-search">60. Semantic Search</a></h1>
+<p>Optional.</p>
+<p>Explain:</p>
+<pre><code class="language-text">Uses additional local storage and processing.
+</code></pre>
+<hr />
+<h1 id="61-external-ai-search"><a class="header" href="#61-external-ai-search">61. External AI Search</a></h1>
+<p>If configured:</p>
+<pre><code class="language-text">explicit provider
+explicit data scope
+</code></pre>
+<hr />
+<h1 id="62-search-history"><a class="header" href="#62-search-history">62. Search History</a></h1>
+<p>Device-local recommended.</p>
+<hr />
+<h1 id="63-rebuild-index"><a class="header" href="#63-rebuild-index">63. Rebuild Index</a></h1>
+<p>Advanced action.</p>
+<hr />
+<h1 id="64-backup--recovery"><a class="header" href="#64-backup--recovery">64. Backup &amp; Recovery</a></h1>
+<p>Links to Parts 15/16:</p>
+<pre><code class="language-text">Backup Status
+Back Up Now
+Automatic Backup
+Recovery Method
+Verify Backup
+Restore
+Export
+</code></pre>
+<hr />
+<h1 id="65-avoid-duplicating-security-logic"><a class="header" href="#65-avoid-duplicating-security-logic">65. Avoid Duplicating Security Logic</a></h1>
+<p>Settings routes to Security/Backup screens.</p>
+<p>Do not reimplement recovery key operations.</p>
+<hr />
+<h1 id="66-devices--security"><a class="header" href="#66-devices--security">66. Devices &amp; Security</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">Trusted Devices
+Security Center
+App Lock
+Verification
+Recovery
+Security Events
+</code></pre>
+<hr />
+<h1 id="67-emergency-settings"><a class="header" href="#67-emergency-settings">67. Emergency Settings</a></h1>
+<p>From Part 17:</p>
+<pre><code class="language-text">Emergency Contacts
+SOS Preset
+Location Sharing
+Cancel Countdown
+Emergency Alerts
+Offline Relay Participation
+Battery/Data Policy
+Test SOS
+</code></pre>
+<hr />
+<h1 id="68-emergency-contact-warning"><a class="header" href="#68-emergency-contact-warning">68. Emergency Contact Warning</a></h1>
+<p>Settings should clearly mark:</p>
+<pre><code class="language-text">unverified emergency contact
+</code></pre>
+<hr />
+<h1 id="69-relay-participation"><a class="header" href="#69-relay-participation">69. Relay Participation</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">Allow emergency relay for others
+</code></pre>
+<p>with:</p>
+<pre><code class="language-text">battery minimum
+charging-only
+data usage
+</code></pre>
+<hr />
+<h1 id="70-plugins--extensions"><a class="header" href="#70-plugins--extensions">70. Plugins &amp; Extensions</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">Installed Plugins
+Permissions
+Enabled/Disabled
+Update Status
+Storage/Network Access
+Remove Plugin
+</code></pre>
+<hr />
+<h1 id="71-plugin-permission-categories"><a class="header" href="#71-plugin-permission-categories">71. Plugin Permission Categories</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">Messages
+Contacts
+Files
+Search
+Network
+Notifications
+Commands
+UI Extensions
+</code></pre>
+<hr />
+<h1 id="72-plugin-permission-principle"><a class="header" href="#72-plugin-permission-principle">72. Plugin Permission Principle</a></h1>
+<p>Use capability-level permissions.</p>
+<p>Avoid broad:</p>
+<pre><code class="language-text">Full Access
+</code></pre>
+<p>unless truly necessary.</p>
+<hr />
+<h1 id="73-plugin-permission-change"><a class="header" href="#73-plugin-permission-change">73. Plugin Permission Change</a></h1>
+<p>High-impact permission additions require confirmation.</p>
+<hr />
+<h1 id="74-plugin-disabled"><a class="header" href="#74-plugin-disabled">74. Plugin Disabled</a></h1>
+<p>Plugin data may remain.</p>
+<p>Explain retention/removal separately.</p>
+<hr />
+<h1 id="75-remove-plugin"><a class="header" href="#75-remove-plugin">75. Remove Plugin</a></h1>
+<p>Separate:</p>
+<pre><code class="language-text">Remove plugin
+Delete plugin data
+</code></pre>
+<p>where applicable.</p>
+<hr />
+<h1 id="76-appearance"><a class="header" href="#76-appearance">76. Appearance</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">System
+Light
+Dark
+</code></pre>
+<hr />
+<h1 id="77-accent-color"><a class="header" href="#77-accent-color">77. Accent Color</a></h1>
+<p>Optional.</p>
+<hr />
+<h1 id="78-desktop-density"><a class="header" href="#78-desktop-density">78. Desktop Density</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">Comfortable
+Compact
+</code></pre>
+<hr />
+<h1 id="79-android-dynamic-color"><a class="header" href="#79-android-dynamic-color">79. Android Dynamic Color</a></h1>
+<p>Optional Material 3 setting.</p>
+<hr />
+<h1 id="80-typography"><a class="header" href="#80-typography">80. Typography</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">System
+Small
+Default
+Large
+</code></pre>
+<p>but should still respect OS accessibility font scaling.</p>
+<hr />
+<h1 id="81-reduced-motion"><a class="header" href="#81-reduced-motion">81. Reduced Motion</a></h1>
+<p>Respect OS setting by default.</p>
+<p>Optional explicit app override:</p>
+<pre><code class="language-text">Follow system
+Reduce motion
+</code></pre>
+<hr />
+<h1 id="82-accessibility-settings"><a class="header" href="#82-accessibility-settings">82. Accessibility Settings</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">High contrast
+Reduce motion
+Larger controls
+Always show labels
+Message delivery text
+Typing animation off
+</code></pre>
+<p>Only add when system defaults insufficient.</p>
+<hr />
+<h1 id="83-network--offline"><a class="header" href="#83-network--offline">83. Network &amp; Offline</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">Relay policy
+LAN discovery
+Nearby discovery
+Offline mesh
+Data Saver
+Proxy/Tor if supported
+Preferred network behavior
+</code></pre>
+<hr />
+<h1 id="84-normal-user-language"><a class="header" href="#84-normal-user-language">84. Normal User Language</a></h1>
+<p>Prefer:</p>
+<pre><code class="language-text">Use nearby devices when Internet is unavailable
+</code></pre>
+<p>instead of:</p>
+<pre><code class="language-text">Enable DTN
+</code></pre>
+<hr />
+<h1 id="85-advanced-network"><a class="header" href="#85-advanced-network">85. Advanced Network</a></h1>
+<p>Developer/advanced users can see:</p>
+<pre><code class="language-text">Direct connections
+Relay
+LAN
+Mesh
+</code></pre>
+<hr />
+<h1 id="86-data-saver"><a class="header" href="#86-data-saver">86. Data Saver</a></h1>
+<p>Can reduce:</p>
+<pre><code class="language-text">video quality
+auto-download
+presence update rate
+background transfer
+</code></pre>
+<p>through policy engine.</p>
+<hr />
+<h1 id="87-offline-mode"><a class="header" href="#87-offline-mode">87. Offline Mode</a></h1>
+<p>Potential manual mode:</p>
+<pre><code class="language-text">Local only
+</code></pre>
+<p>if architecture supports.</p>
+<hr />
+<h1 id="88-local-only-mode"><a class="header" href="#88-local-only-mode">88. Local-Only Mode</a></h1>
+<p>Explain:</p>
+<pre><code class="language-text">Use only nearby/LAN connections and do not use Internet relays.
+</code></pre>
+<hr />
+<h1 id="89-proxy"><a class="header" href="#89-proxy">89. Proxy</a></h1>
+<p>Only if implemented.</p>
+<hr />
+<h1 id="90-advanced-settings"><a class="header" href="#90-advanced-settings">90. Advanced Settings</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">Diagnostics
+Logs
+Protocol details
+Experimental features
+Developer mode
+Reset derived data
+</code></pre>
+<hr />
+<h1 id="91-experimental-features"><a class="header" href="#91-experimental-features">91. Experimental Features</a></h1>
+<p>Must be clearly separated from stable settings.</p>
+<hr />
+<h1 id="92-feature-flags"><a class="header" href="#92-feature-flags">92. Feature Flags</a></h1>
+<p>Rust owns actual availability.</p>
+<hr />
+<h1 id="93-developer-mode"><a class="header" href="#93-developer-mode">93. Developer Mode</a></h1>
+<p>Can unlock:</p>
+<pre><code class="language-text">network path diagnostics
+raw IDs
+performance counters
+plugin debug
+</code></pre>
+<hr />
+<h1 id="94-developer-mode-warning"><a class="header" href="#94-developer-mode-warning">94. Developer Mode Warning</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">Advanced diagnostics may expose technical metadata.
+</code></pre>
+<hr />
+<h1 id="95-logs"><a class="header" href="#95-logs">95. Logs</a></h1>
+<p>Normal users:</p>
+<pre><code class="language-text">Export diagnostics
+</code></pre>
+<p>not browse raw logs unless useful.</p>
+<hr />
+<h1 id="96-diagnostic-export"><a class="header" href="#96-diagnostic-export">96. Diagnostic Export</a></h1>
+<p>Must redact:</p>
+<pre><code class="language-text">message content
+keys
+recovery material
+full contact IDs where possible
+</code></pre>
+<hr />
+<h1 id="97-reset-derived-data"><a class="header" href="#97-reset-derived-data">97. Reset Derived Data</a></h1>
+<p>Safe actions:</p>
+<pre><code class="language-text">Rebuild search index
+Clear thumbnails
+Clear cache
+Reset layout
+</code></pre>
+<hr />
+<h1 id="98-reset-settings"><a class="header" href="#98-reset-settings">98. Reset Settings</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">Reset Device Settings
+Reset All Account Preferences
+</code></pre>
+<p>Keep scopes distinct.</p>
+<hr />
+<h1 id="99-reset-device-settings"><a class="header" href="#99-reset-device-settings">99. Reset Device Settings</a></h1>
+<p>Could reset:</p>
+<pre><code class="language-text">layout
+notifications local preferences
+download policy
+appearance
+</code></pre>
+<hr />
+<h1 id="100-reset-account-preferences"><a class="header" href="#100-reset-account-preferences">100. Reset Account Preferences</a></h1>
+<p>Account-wide privacy/settings.</p>
+<p>High-impact confirmation.</p>
+<hr />
+<h1 id="101-sign-out--remove-this-device"><a class="header" href="#101-sign-out--remove-this-device">101. Sign Out / Remove This Device</a></h1>
+<p>Routes to Part 15.</p>
+<hr />
+<h1 id="102-delete-account"><a class="header" href="#102-delete-account">102. Delete Account</a></h1>
+<p>Only if product has account deletion semantics.</p>
+<p>Must be isolated under:</p>
+<pre><code class="language-text">Danger Zone
+</code></pre>
+<hr />
+<h1 id="103-account-deletion-is-not-local-data-deletion"><a class="header" href="#103-account-deletion-is-not-local-data-deletion">103. Account Deletion Is Not Local Data Deletion</a></h1>
+<p>Hard distinction.</p>
+<hr />
+<h1 id="104-delete-local-data"><a class="header" href="#104-delete-local-data">104. Delete Local Data</a></h1>
+<p>Separate:</p>
+<pre><code class="language-text">Remove local data from this device
+</code></pre>
+<hr />
+<h1 id="105-clear-conversation-data"><a class="header" href="#105-clear-conversation-data">105. Clear Conversation Data</a></h1>
+<p>Separate per conversation.</p>
+<hr />
+<h1 id="106-export-before-delete"><a class="header" href="#106-export-before-delete">106. Export Before Delete</a></h1>
+<p>Offer:</p>
+<pre><code class="language-text">Back Up / Export
+</code></pre>
+<p>before destructive account/local deletion.</p>
+<hr />
+<h1 id="107-delete-account-confirmation"><a class="header" href="#107-delete-account-confirmation">107. Delete Account Confirmation</a></h1>
+<p>Must explain:</p>
+<pre><code class="language-text">what is deleted
+what may remain on other users' devices
+what is irreversible
+</code></pre>
+<hr />
+<h1 id="108-remote-copies-honesty"><a class="header" href="#108-remote-copies-honesty">108. Remote Copies Honesty</a></h1>
+<p>Do not promise deletion of content already:</p>
+<pre><code class="language-text">exported
+backed up by peer
+retained by another user
+</code></pre>
+<p>unless protocol guarantees.</p>
+<hr />
+<h1 id="109-managed-policy"><a class="header" href="#109-managed-policy">109. Managed Policy</a></h1>
+<p>Enterprise/school/admin-managed deployments may lock settings.</p>
+<hr />
+<h1 id="110-managed-setting-state"><a class="header" href="#110-managed-setting-state">110. Managed Setting State</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum SettingControlState&lt;T&gt; {
+    Editable(T),
+    Managed(T),
+    Unavailable,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="111-managed-ui"><a class="header" href="#111-managed-ui">111. Managed UI</a></h1>
+<p>Show:</p>
+<pre><code class="language-text">Managed by organization
+</code></pre>
+<p>with explanation.</p>
+<hr />
+<h1 id="112-do-not-hide-managed-setting"><a class="header" href="#112-do-not-hide-managed-setting">112. Do Not Hide Managed Setting</a></h1>
+<p>Better to show current value and why it cannot change.</p>
+<hr />
+<h1 id="113-policy-conflict"><a class="header" href="#113-policy-conflict">113. Policy Conflict</a></h1>
+<p>If account preference differs from enforced policy:</p>
+<pre><code class="language-text">effective value = policy
+</code></pre>
+<p>Rust reports effective state.</p>
+<hr />
+<h1 id="114-effective-setting"><a class="header" href="#114-effective-setting">114. Effective Setting</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct EffectiveSetting&lt;T&gt; {
+    pub requested: Option&lt;T&gt;,
+    pub effective: T,
+    pub source: SettingValueSource,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="115-value-source"><a class="header" href="#115-value-source">115. Value Source</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum SettingValueSource {
+    User,
+    DeviceDefault,
+    AccountDefault,
+    ManagedPolicy,
+    System,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="116-settings-persistence"><a class="header" href="#116-settings-persistence">116. Settings Persistence</a></h1>
+<p>Rust owns durable configuration.</p>
+<hr />
+<h1 id="117-ui-does-not-persist-settings-independently"><a class="header" href="#117-ui-does-not-persist-settings-independently">117. UI Does Not Persist Settings Independently</a></h1>
+<p>No Kotlin <code>SharedPreferences</code> for domain policy unless explicitly device-platform-only.</p>
+<hr />
+<h1 id="118-android-platform-preferences"><a class="header" href="#118-android-platform-preferences">118. Android Platform Preferences</a></h1>
+<p>Some settings may be platform-only:</p>
+<pre><code class="language-text">dynamic color
+notification channel sound
+PiP preference
+</code></pre>
+<p>These can live in Android adapter layer.</p>
+<hr />
+<h1 id="119-desktop-platform-preferences"><a class="header" href="#119-desktop-platform-preferences">119. Desktop Platform Preferences</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">start minimized
+tray behavior
+window layout
+</code></pre>
+<hr />
+<h1 id="120-shared-vs-platform-settings"><a class="header" href="#120-shared-vs-platform-settings">120. Shared vs Platform Settings</a></h1>
+<p>Use clear namespaces.</p>
+<hr />
+<h1 id="121-settings-snapshot"><a class="header" href="#121-settings-snapshot">121. Settings Snapshot</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct SettingsSnapshot {
+    pub account: AccountSettingsView,
+    pub privacy: PrivacySettingsView,
+    pub notifications: NotificationSettingsView,
+    pub media: MediaSettingsView,
+    pub storage: StorageSettingsView,
+    pub retention: RetentionSettingsView,
+    pub search: SearchSettingsView,
+    pub emergency: EmergencySettingsView,
+    pub network: NetworkSettingsView,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="122-setting-descriptor"><a class="header" href="#122-setting-descriptor">122. Setting Descriptor</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct SettingDescriptor&lt;T&gt; {
+    pub key: SettingKey,
+    pub value: T,
+    pub scope: SettingScope,
+    pub control: SettingControlState&lt;T&gt;,
+    pub restart_required: bool,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="123-typed-setting-keys"><a class="header" href="#123-typed-setting-keys">123. Typed Setting Keys</a></h1>
+<p>Avoid stringly typed:</p>
+<pre><code class="language-text">"privacy.read_receipts"
+</code></pre>
+<p>inside UI logic.</p>
+<p>Use Rust enums/types.</p>
+<hr />
+<h1 id="124-settings-presentation-api"><a class="header" href="#124-settings-presentation-api">124. Settings Presentation API</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait SettingsPresentation {
+    async fn snapshot(
+        &amp;self,
+    ) -&gt; Result&lt;SettingsSnapshot, UiError&gt;;
+
+    async fn update(
+        &amp;self,
+        command: SettingsUpdateCommand,
+    ) -&gt; Result&lt;SettingsUpdateResult, UiError&gt;;
+
+    async fn reset(
+        &amp;self,
+        scope: SettingsResetScope,
+    ) -&gt; Result&lt;SettingsSnapshot, UiError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="125-settings-update-command"><a class="header" href="#125-settings-update-command">125. Settings Update Command</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum SettingsUpdateCommand {
+    Privacy(PrivacySettingsUpdate),
+    Notifications(NotificationSettingsUpdate),
+    Media(MediaSettingsUpdate),
+    Storage(StorageSettingsUpdate),
+    Retention(RetentionSettingsUpdate),
+    Search(SearchSettingsUpdate),
+    Emergency(EmergencySettingsUpdate),
+    Network(NetworkSettingsUpdate),
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="126-update-result"><a class="header" href="#126-update-result">126. Update Result</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct SettingsUpdateResult {
+    pub applied: bool,
+    pub effective_value_changed: bool,
+    pub restart_required: bool,
+    pub warning: Option&lt;SettingsWarningView&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="127-optimistic-settings"><a class="header" href="#127-optimistic-settings">127. Optimistic Settings</a></h1>
+<p>Low-risk settings can update optimistically:</p>
+<pre><code class="language-text">theme
+view density
+</code></pre>
+<hr />
+<h1 id="128-high-risk-settings"><a class="header" href="#128-high-risk-settings">128. High-Risk Settings</a></h1>
+<p>Wait for Rust confirmation:</p>
+<pre><code class="language-text">privacy
+retention
+emergency relay
+security-sensitive plugin permissions
+</code></pre>
+<hr />
+<h1 id="129-setting-side-effects"><a class="header" href="#129-setting-side-effects">129. Setting Side Effects</a></h1>
+<p>Some setting changes trigger:</p>
+<pre><code class="language-text">stop presence publishing
+clear search history
+restart discovery
+cancel auto-download
+</code></pre>
+<p>Rust coordinates side effects.</p>
+<hr />
+<h1 id="130-ui-must-not-implement-side-effects-itself"><a class="header" href="#130-ui-must-not-implement-side-effects-itself">130. UI Must Not Implement Side Effects Itself</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">turn off read receipts
+</code></pre>
+<p>should not require Compose/Dioxus to manually cancel network tasks.</p>
+<hr />
+<h1 id="131-restart-required"><a class="header" href="#131-restart-required">131. Restart Required</a></h1>
+<p>Rare.</p>
+<p>If needed:</p>
+<pre><code class="language-text">Restart required
+Restart now
+Later
+</code></pre>
+<hr />
+<h1 id="132-prefer-live-reconfiguration"><a class="header" href="#132-prefer-live-reconfiguration">132. Prefer Live Reconfiguration</a></h1>
+<p>Most settings should apply without restart.</p>
+<hr />
+<h1 id="133-privacy-change-propagation"><a class="header" href="#133-privacy-change-propagation">133. Privacy Change Propagation</a></h1>
+<p>Account-wide changes sync to trusted devices.</p>
+<hr />
+<h1 id="134-device-local-change"><a class="header" href="#134-device-local-change">134. Device-Local Change</a></h1>
+<p>Do not sync:</p>
+<pre><code class="language-text">window layout
+Android dynamic color
+local notification sound
+download-on-mobile-data preference if intended local
+</code></pre>
+<hr />
+<h1 id="135-settings-conflict-across-devices"><a class="header" href="#135-settings-conflict-across-devices">135. Settings Conflict Across Devices</a></h1>
+<p>Account-wide settings use versioned authoritative update.</p>
+<hr />
+<h1 id="136-stale-settings-edit"><a class="header" href="#136-stale-settings-edit">136. Stale Settings Edit</a></h1>
+<p>If another device updates same setting while screen open:</p>
+<pre><code class="language-text">Rust resolves
+UI receives new effective value
+</code></pre>
+<hr />
+<h1 id="137-settings-event-model"><a class="header" href="#137-settings-event-model">137. Settings Event Model</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum SettingsUiEvent {
+    SettingChanged(SettingKey),
+    PolicyChanged(SettingKey),
+    PlatformCapabilityChanged(PlatformCapability),
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="138-platform-capability"><a class="header" href="#138-platform-capability">138. Platform Capability</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">Notification permission revoked
+Camera unavailable
+NFC disabled
+Storage provider disconnected
+</code></pre>
+<hr />
+<h1 id="139-android-viewmodel"><a class="header" href="#139-android-viewmodel">139. Android ViewModel</a></h1>
+<p>Owns:</p>
+<pre><code class="language-text">navigation
+dialogs
+system-settings effects
+temporary text fields
+</code></pre>
+<p>Rust owns effective configuration.</p>
+<hr />
+<h1 id="140-dioxus-presenter"><a class="header" href="#140-dioxus-presenter">140. Dioxus Presenter</a></h1>
+<p>Owns:</p>
+<pre><code class="language-text">category selection
+search
+dialogs
+window-level platform preferences
+</code></pre>
+<hr />
+<h1 id="141-platform-settings-effects--android"><a class="header" href="#141-platform-settings-effects--android">141. Platform Settings Effects — Android</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">OpenNotificationSettings
+OpenBatterySettings
+OpenAppPermissions
+RequestBiometric
+OpenStoragePicker
+</code></pre>
+<hr />
+<h1 id="142-platform-settings-effects--desktop"><a class="header" href="#142-platform-settings-effects--desktop">142. Platform Settings Effects — Desktop</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">OpenSystemNotificationSettings
+OpenLogFolder
+ChooseDownloadFolder
+RestartApp
+</code></pre>
+<hr />
+<h1 id="143-no-fake-os-controls"><a class="header" href="#143-no-fake-os-controls">143. No Fake OS Controls</a></h1>
+<p>If Android owns notification sound:</p>
+<pre><code class="language-text">Open Android Settings
+</code></pre>
+<p>rather than showing a fake in-app sound toggle that cannot enforce it.</p>
+<hr />
+<h1 id="144-data-control-ux"><a class="header" href="#144-data-control-ux">144. Data Control UX</a></h1>
+<p>Users should be able to answer:</p>
+<pre><code class="language-text">What data is on this device?
+What can I delete safely?
+What is synced?
+What is backed up?
+What is exported?
+</code></pre>
+<hr />
+<h1 id="145-data-control-overview"><a class="header" href="#145-data-control-overview">145. Data Control Overview</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">Local Storage
+Synced Data
+Backups
+Exports
+Search Index
+Cache
+</code></pre>
+<hr />
+<h1 id="146-local-storage"><a class="header" href="#146-local-storage">146. Local Storage</a></h1>
+<p>Shows device-specific usage.</p>
+<hr />
+<h1 id="147-synced-data"><a class="header" href="#147-synced-data">147. Synced Data</a></h1>
+<p>Conceptual account data.</p>
+<p>Do not confuse with physical byte duplication.</p>
+<hr />
+<h1 id="148-backups"><a class="header" href="#148-backups">148. Backups</a></h1>
+<p>Link to Part 16.</p>
+<hr />
+<h1 id="149-exports"><a class="header" href="#149-exports">149. Exports</a></h1>
+<p>External copies are outside app control.</p>
+<hr />
+<h1 id="150-search-index"><a class="header" href="#150-search-index">150. Search Index</a></h1>
+<p>Derived/rebuildable.</p>
+<hr />
+<h1 id="151-cache"><a class="header" href="#151-cache">151. Cache</a></h1>
+<p>Derived/disposable.</p>
+<hr />
+<h1 id="152-delete-local-copy"><a class="header" href="#152-delete-local-copy">152. Delete Local Copy</a></h1>
+<p>Safe if remotely available.</p>
+<hr />
+<h1 id="153-delete-everywhere"><a class="header" href="#153-delete-everywhere">153. Delete Everywhere</a></h1>
+<p>Only where backend supports and user has authority.</p>
+<hr />
+<h1 id="154-data-controls-must-state-scope"><a class="header" href="#154-data-controls-must-state-scope">154. Data Controls Must State Scope</a></h1>
+<p>Every destructive action labels:</p>
+<pre><code class="language-text">This device
+All your devices
+Conversation
+Everyone
+</code></pre>
+<hr />
+<h1 id="155-storage-cleanup-wizard"><a class="header" href="#155-storage-cleanup-wizard">155. Storage Cleanup Wizard</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">Large Files
+Old Media
+Partial Transfers
+Cache
+Search Index
+</code></pre>
+<p>with estimated space.</p>
+<hr />
+<h1 id="156-cleanup-confirmation"><a class="header" href="#156-cleanup-confirmation">156. Cleanup Confirmation</a></h1>
+<p>Show:</p>
+<pre><code class="language-text">4.2 GB will be freed
+Messages remain
+</code></pre>
+<hr />
+<h1 id="157-retention-preview"><a class="header" href="#157-retention-preview">157. Retention Preview</a></h1>
+<p>Before changing:</p>
+<pre><code class="language-text">Approximately 12 GB may be removed over time
+</code></pre>
+<p>if computable.</p>
+<hr />
+<h1 id="158-data-export"><a class="header" href="#158-data-export">158. Data Export</a></h1>
+<p>Links to Part 16.</p>
+<hr />
+<h1 id="159-data-import"><a class="header" href="#159-data-import">159. Data Import</a></h1>
+<p>Links to Part 16.</p>
+<hr />
+<h1 id="160-download-your-data"><a class="header" href="#160-download-your-data">160. Download Your Data</a></h1>
+<p>If account/server product supports server-side export, separate from local export.</p>
+<p>Not implied by current architecture.</p>
+<hr />
+<h1 id="161-privacy-summary"><a class="header" href="#161-privacy-summary">161. Privacy Summary</a></h1>
+<p>Potential card:</p>
+<pre><code class="language-text">Presence: Contacts
+Read receipts: Off
+Notification previews: Generic
+Search: Local only
+</code></pre>
+<hr />
+<h1 id="162-privacy-quick-audit"><a class="header" href="#162-privacy-quick-audit">162. Privacy Quick Audit</a></h1>
+<p>Future:</p>
+<pre><code class="language-text">Review privacy
+</code></pre>
+<p>step-through.</p>
+<hr />
+<h1 id="163-do-not-use-shame-language"><a class="header" href="#163-do-not-use-shame-language">163. Do Not Use Shame Language</a></h1>
+<p>Avoid:</p>
+<pre><code class="language-text">Your privacy is weak
+</code></pre>
+<p>Prefer factual state.</p>
+<hr />
+<h1 id="164-settings-help-text"><a class="header" href="#164-settings-help-text">164. Settings Help Text</a></h1>
+<p>Keep concise.</p>
+<p>Provide deeper explanation via:</p>
+<pre><code class="language-text">Learn more
+</code></pre>
+<p>or details.</p>
+<hr />
+<h1 id="165-accessibility--settings"><a class="header" href="#165-accessibility--settings">165. Accessibility — Settings</a></h1>
+<p>Every toggle has:</p>
+<pre><code class="language-text">name
+description
+state
+scope if important
+</code></pre>
+<hr />
+<h1 id="166-screen-reader"><a class="header" href="#166-screen-reader">166. Screen Reader</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">Read receipts, off, applies to all devices
+</code></pre>
+<hr />
+<h1 id="167-managed-setting-accessibility"><a class="header" href="#167-managed-setting-accessibility">167. Managed Setting Accessibility</a></h1>
+<pre><code class="language-text">Read receipts, off, managed by organization
+</code></pre>
+<hr />
+<h1 id="168-large-font"><a class="header" href="#168-large-font">168. Large Font</a></h1>
+<p>Rows expand vertically.</p>
+<p>Do not truncate explanatory text.</p>
+<hr />
+<h1 id="169-rtl"><a class="header" href="#169-rtl">169. RTL</a></h1>
+<p>Settings layouts mirror.</p>
+<p>Technical identifiers remain canonical.</p>
+<hr />
+<h1 id="170-reduced-motion"><a class="header" href="#170-reduced-motion">170. Reduced Motion</a></h1>
+<p>No dependency on animated toggles.</p>
+<hr />
+<h1 id="171-color-independence"><a class="header" href="#171-color-independence">171. Color Independence</a></h1>
+<p>Warnings/managed states use text/icons.</p>
+<hr />
+<h1 id="172-keyboard-desktop"><a class="header" href="#172-keyboard-desktop">172. Keyboard Desktop</a></h1>
+<p>Support:</p>
+<pre><code class="language-text">Ctrl/Cmd+F → Search settings
+Tab
+Arrow navigation
+Space → toggle
+Enter → open
+</code></pre>
+<hr />
+<h1 id="173-android-talkback"><a class="header" href="#173-android-talkback">173. Android TalkBack</a></h1>
+<p>Settings rows use native Compose semantics.</p>
+<hr />
+<h1 id="174-settings-search-accessibility"><a class="header" href="#174-settings-search-accessibility">174. Settings Search Accessibility</a></h1>
+<p>Search result announces category/path.</p>
+<p>Example:</p>
+<pre><code class="language-text">Read receipts, Privacy
+</code></pre>
+<hr />
+<h1 id="175-error-handling"><a class="header" href="#175-error-handling">175. Error Handling</a></h1>
+<p>If update fails:</p>
+<pre><code class="language-text">restore previous effective value
+show inline/snackbar error
+</code></pre>
+<hr />
+<h1 id="176-policy-rejection"><a class="header" href="#176-policy-rejection">176. Policy Rejection</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">This setting is managed by your organization.
+</code></pre>
+<hr />
+<h1 id="177-offline-settings-update"><a class="header" href="#177-offline-settings-update">177. Offline Settings Update</a></h1>
+<p>Device-local settings work immediately.</p>
+<p>Account-wide settings can:</p>
+<pre><code class="language-text">apply locally
+queue sync
+</code></pre>
+<p>if backend semantics allow.</p>
+<hr />
+<h1 id="178-offline-policy-conflict"><a class="header" href="#178-offline-policy-conflict">178. Offline Policy Conflict</a></h1>
+<p>If server/authority later rejects:</p>
+<pre><code class="language-text">Rust restores effective value
+UI explains
+</code></pre>
+<hr />
+<h1 id="179-security-sensitive-offline-change"><a class="header" href="#179-security-sensitive-offline-change">179. Security-Sensitive Offline Change</a></h1>
+<p>Could require online confirmation.</p>
+<p>Example:</p>
+<pre><code class="language-text">delete account
+change recovery policy
+</code></pre>
+<hr />
+<h1 id="180-settings-versioning"><a class="header" href="#180-settings-versioning">180. Settings Versioning</a></h1>
+<p>Rust migrations handle old config versions.</p>
+<p>UI should not care.</p>
+<hr />
+<h1 id="181-unknown-old-setting"><a class="header" href="#181-unknown-old-setting">181. Unknown Old Setting</a></h1>
+<p>Safe defaults.</p>
+<hr />
+<h1 id="182-reset-after-upgrade"><a class="header" href="#182-reset-after-upgrade">182. Reset After Upgrade</a></h1>
+<p>Avoid silently resetting user privacy choices.</p>
+<hr />
+<h1 id="183-backup-of-settings"><a class="header" href="#183-backup-of-settings">183. Backup of Settings</a></h1>
+<p>Account/device settings included according to Part 16 scope.</p>
+<hr />
+<h1 id="184-restore-of-settings"><a class="header" href="#184-restore-of-settings">184. Restore of Settings</a></h1>
+<p>Device-specific settings should not blindly overwrite platform-specific preferences on different device type.</p>
+<hr />
+<h1 id="185-cross-platform-restore"><a class="header" href="#185-cross-platform-restore">185. Cross-Platform Restore</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">desktop window density
+</code></pre>
+<p>should not map to Android.</p>
+<hr />
+<h1 id="186-shared-setting-migration"><a class="header" href="#186-shared-setting-migration">186. Shared Setting Migration</a></h1>
+<p>Only shared semantic settings restore cross-platform.</p>
+<hr />
+<h1 id="187-notification-channel-restore"><a class="header" href="#187-notification-channel-restore">187. Notification Channel Restore</a></h1>
+<p>Android channel settings are system-owned.</p>
+<p>Do not fake restore.</p>
+<hr />
+<h1 id="188-theme-restore"><a class="header" href="#188-theme-restore">188. Theme Restore</a></h1>
+<p>Could be account-wide or device-local.</p>
+<p>Recommendation:</p>
+<pre><code class="language-text">device-local
+</code></pre>
+<p>unless users explicitly want sync.</p>
+<hr />
+<h1 id="189-accessibility-setting-restore"><a class="header" href="#189-accessibility-setting-restore">189. Accessibility Setting Restore</a></h1>
+<p>Prefer device-local/system-linked.</p>
+<hr />
+<h1 id="190-emergency-settings-restore"><a class="header" href="#190-emergency-settings-restore">190. Emergency Settings Restore</a></h1>
+<p>Emergency contacts may be account-wide.</p>
+<p>Location permission is device-local and must be requested again.</p>
+<hr />
+<h1 id="191-plugin-settings-restore"><a class="header" href="#191-plugin-settings-restore">191. Plugin Settings Restore</a></h1>
+<p>Only if plugin installed and compatible.</p>
+<hr />
+<h1 id="192-missing-plugin"><a class="header" href="#192-missing-plugin">192. Missing Plugin</a></h1>
+<p>Preserve dormant config safely or discard per policy.</p>
+<hr />
+<h1 id="193-settings-telemetry"><a class="header" href="#193-settings-telemetry">193. Settings Telemetry</a></h1>
+<p>Do not log sensitive values:</p>
+<pre><code class="language-text">blocked contacts
+emergency contacts
+privacy choices linked to identity
+</code></pre>
+<p>without explicit product need.</p>
+<hr />
+<h1 id="194-safe-metrics"><a class="header" href="#194-safe-metrics">194. Safe Metrics</a></h1>
+<p>Possible:</p>
+<pre><code class="language-text">settings screen latency
+update failure rate
+policy conflict rate
+</code></pre>
+<p>without values/content.</p>
+<hr />
+<h1 id="195-crash-reports"><a class="header" href="#195-crash-reports">195. Crash Reports</a></h1>
+<p>Redact:</p>
+<pre><code class="language-text">contact IDs
+paths
+recovery data
+plugin secrets
+</code></pre>
+<hr />
+<h1 id="196-diagnostics-settings"><a class="header" href="#196-diagnostics-settings">196. Diagnostics Settings</a></h1>
+<p>Allow:</p>
+<pre><code class="language-text">Export Diagnostics
+View Network Status
+Rebuild Search
+Reset Layout
+</code></pre>
+<hr />
+<h1 id="197-developer-settings"><a class="header" href="#197-developer-settings">197. Developer Settings</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">Protocol logging level
+Show IDs
+Experimental transports
+UI performance overlay
+</code></pre>
+<hr />
+<h1 id="198-developer-logging"><a class="header" href="#198-developer-logging">198. Developer Logging</a></h1>
+<p>Never allow enabling plaintext secret/message logs accidentally.</p>
+<hr />
+<h1 id="199-unsafe-developer-toggle"><a class="header" href="#199-unsafe-developer-toggle">199. Unsafe Developer Toggle</a></h1>
+<p>If a diagnostic can expose sensitive data:</p>
+<pre><code class="language-text">strong warning
+temporary enable
+</code></pre>
+<hr />
+<h1 id="200-about"><a class="header" href="#200-about">200. About</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">Version
+Build
+Licenses
+Privacy Policy
+Terms if applicable
+Open Source Licenses
+Diagnostic Version Info
+</code></pre>
+<hr />
+<h1 id="201-license-ux"><a class="header" href="#201-license-ux">201. License UX</a></h1>
+<p>Open-source license notices can be searchable/listed.</p>
+<hr />
+<h1 id="202-update-status"><a class="header" href="#202-update-status">202. Update Status</a></h1>
+<p>Desktop may show:</p>
+<pre><code class="language-text">Check for updates
+</code></pre>
+<p>if updater exists.</p>
+<p>Android typically Play/system distribution.</p>
+<hr />
+<h1 id="203-update-channel"><a class="header" href="#203-update-channel">203. Update Channel</a></h1>
+<p>Advanced:</p>
+<pre><code class="language-text">Stable
+Beta
+</code></pre>
+<p>only if supported.</p>
+<hr />
+<h1 id="204-settings-testing-matrix"><a class="header" href="#204-settings-testing-matrix">204. Settings Testing Matrix</a></h1>
+<p>Required:</p>
+<pre><code class="language-text">account-wide setting
+device-local setting
+managed setting
+offline update
+policy conflict
+search
+reset
+notification permission
+storage cleanup
+privacy toggle
+retention
+plugin permission
+</code></pre>
+<hr />
+<h1 id="205-android-tests"><a class="header" href="#205-android-tests">205. Android Tests</a></h1>
+<p>Verify:</p>
+<pre><code class="language-text">system notification settings
+app permissions
+SAF
+BiometricPrompt
+process death
+TalkBack
+large font
+RTL
+</code></pre>
+<hr />
+<h1 id="206-desktop-tests"><a class="header" href="#206-desktop-tests">206. Desktop Tests</a></h1>
+<p>Verify:</p>
+<pre><code class="language-text">two-pane settings
+keyboard
+native folder picker
+system notification settings
+window settings
+restart-required path
+</code></pre>
+<hr />
+<h1 id="207-multi-device-tests"><a class="header" href="#207-multi-device-tests">207. Multi-Device Tests</a></h1>
+<p>Change account-wide privacy on phone.</p>
+<p>Desktop updates.</p>
+<p>Change desktop density.</p>
+<p>Phone does not change.</p>
+<hr />
+<h1 id="208-managed-policy-tests"><a class="header" href="#208-managed-policy-tests">208. Managed Policy Tests</a></h1>
+<p>Policy locks setting.</p>
+<p>UI shows effective value and reason.</p>
+<hr />
+<h1 id="209-reset-tests"><a class="header" href="#209-reset-tests">209. Reset Tests</a></h1>
+<p>Device reset does not erase account-wide privacy.</p>
+<p>Account preference reset does not delete messages.</p>
+<hr />
+<h1 id="210-data-cleanup-tests"><a class="header" href="#210-data-cleanup-tests">210. Data Cleanup Tests</a></h1>
+<p>Clear cache:</p>
+<pre><code class="language-text">messages remain
+</code></pre>
+<p>Delete local media:</p>
+<pre><code class="language-text">metadata remains
+</code></pre>
+<p>Delete everywhere:</p>
+<pre><code class="language-text">only where authorized
+</code></pre>
+<hr />
+<h1 id="211-accessibility-tests"><a class="header" href="#211-accessibility-tests">211. Accessibility Tests</a></h1>
+<p>Complete all categories with screen reader/keyboard.</p>
+<hr />
+<h1 id="212-performance"><a class="header" href="#212-performance">212. Performance</a></h1>
+<p>Settings snapshot should load quickly from local state.</p>
+<hr />
+<h1 id="213-lazy-sections"><a class="header" href="#213-lazy-sections">213. Lazy Sections</a></h1>
+<p>Expensive diagnostics/storage calculations can load asynchronously.</p>
+<hr />
+<h1 id="214-do-not-block-settings-ui"><a class="header" href="#214-do-not-block-settings-ui">214. Do Not Block Settings UI</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">calculating 400 GB storage usage
+</code></pre>
+<p>should not freeze navigation.</p>
+<hr />
+<h1 id="215-stable-keys"><a class="header" href="#215-stable-keys">215. Stable Keys</a></h1>
+<p>Use:</p>
+<pre><code class="language-text">SettingKey
+</code></pre>
+<p>for row identity.</p>
+<hr />
+<h1 id="216-initial-production-scope"><a class="header" href="#216-initial-production-scope">216. Initial Production Scope</a></h1>
+<p>Ship:</p>
+<pre><code class="language-text">Account/Profile
+Privacy
+Notifications
+Calls &amp; Media
+Files &amp; Storage
+Data &amp; Retention
+Search
+Backup &amp; Recovery links
+Devices &amp; Security links
+Emergency
+Appearance
+Network &amp; Offline
+Advanced diagnostics
+About
+</code></pre>
+<p>Defer:</p>
+<pre><code class="language-text">hundreds of per-contact overrides
+deep transport tuning
+custom policy DSL
+complex theme editor
+experimental toggles exposed to all users
+</code></pre>
+<hr />
+<h1 id="217-definition-of-done"><a class="header" href="#217-definition-of-done">217. Definition of Done</a></h1>
+<p>UI/UX Part 18 is complete when:</p>
+<ul>
+<li>every setting has an explicit scope: account-wide, device-local, conversation/group, or managed</li>
+<li>settings categories are coherent and not implementation-driven</li>
+<li>privacy, notification, media, storage, retention, search, emergency, plugin, appearance, network, and advanced settings are defined</li>
+<li>Android system-owned settings route to platform settings rather than fake in-app controls</li>
+<li>device-local and account-wide settings sync semantics are explicit</li>
+<li>managed policy shows effective value and lock reason</li>
+<li>destructive data controls clearly distinguish this device, all devices, conversation, and everyone</li>
+<li>cache/search indexes/thumbnails are distinguished from authoritative data</li>
+<li>retention semantics never silently imply delete-for-everyone</li>
+<li>backup/recovery/security settings route to their authoritative Part 15/16 surfaces</li>
+<li>plugin permissions are capability-based</li>
+<li>settings updates and side effects are Rust-authoritative</li>
+<li>high-risk settings wait for Rust confirmation</li>
+<li>cross-platform restore does not blindly restore platform-specific preferences</li>
+<li>accessibility, RTL, large font, keyboard/TalkBack, and managed-state semantics are explicit</li>
+<li>typed Rust settings models, update commands, effective-value sources, and events are specified</li>
+<li>offline, policy-conflict, reset, multi-device, cleanup, and platform-permission tests are included</li>
+</ul>
+<hr />
+<h1 id="218-final-architecture"><a class="header" href="#218-final-architecture">218. Final Architecture</a></h1>
+<pre><code class="language-text">                  RUST SETTINGS / POLICY CORE
+                             │
+        ┌────────────────────┼────────────────────┐
+        │                    │                    │
+     Account              Device             Managed Policy
+        │                    │                    │
+     Privacy             Storage             Effective Value
+     Receipts            Appearance          Locked Controls
+     Emergency           Platform Prefs
+        │                    │                    │
+        └────────────────────┼────────────────────┘
+                             │
+                   Settings Presentation
+                    ┌────────┴────────┐
+                    │                 │
+                 Dioxus            Compose
+                    │                 │
+            Desktop Settings    Android Settings
+</code></pre>
+<p>Every setting resolves to:</p>
+<pre><code class="language-text">requested value
++
+scope
++
+policy/system constraints
+=
+effective value
+</code></pre>
+<hr />
+<h1 id="219-final-principle"><a class="header" href="#219-final-principle">219. Final Principle</a></h1>
+<p>A good settings system lets users control the product without requiring them to understand its internals.</p>
+<p>The correct model is:</p>
+<pre><code class="language-text">user intent
++
+clear scope
++
+clear consequences
++
+effective policy
++
+Rust-owned semantics
+</code></pre>
+<p>not:</p>
+<pre><code class="language-text">hundreds of loosely related toggles backed by separate UI-local preferences
+</code></pre>
+<p>This keeps Dioxus desktop and Android Compose consistent while still allowing each platform to own the settings that genuinely belong to the operating system.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="ui-ux-17-emergency-sos-offline-mesh-architecture.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="ui-ux-19-plugin-module-ecosystem-architecture.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="ui-ux-17-emergency-sos-offline-mesh-architecture.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="ui-ux-19-plugin-module-ecosystem-architecture.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

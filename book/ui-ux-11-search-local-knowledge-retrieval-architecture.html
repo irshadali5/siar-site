@@ -1,0 +1,1450 @@
+<!DOCTYPE HTML>
+<html lang="en" class="navy" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>UI/UX 11 — Search &amp; Local Knowledge Retrieval UX - SIAR System Architecture &amp; Technical Wiki</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="Comprehensive system architecture, cryptographic protocols, DTN mesh networking, distributed storage, audio DSP pipelines, and UI/UX design specifications for SIAR.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="theme/custom.css">
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "navy";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('navy')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="Home.html">Architecture Portal & Reading Guide</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part I: Protocol Foundation & Extension Platform</li><li class="chapter-item expanded "><a href="01-protocol-extension-system-architecture.html"><strong aria-hidden="true">1.</strong> 01 — Protocol Extension System Architecture</a></li><li class="chapter-item expanded "><a href="07-capability-negotiation-architecture.html"><strong aria-hidden="true">2.</strong> 07 — Capability Negotiation & Protocol Upgrades</a></li><li class="chapter-item expanded "><a href="21-third-party-protocol-extensions-architecture.html"><strong aria-hidden="true">3.</strong> 21 — Third-Party Protocol Extensions</a></li><li class="chapter-item expanded "><a href="22-wasm-compatible-components-architecture.html"><strong aria-hidden="true">4.</strong> 22 — WebAssembly (WASM) Compatible Components</a></li><li class="chapter-item expanded "><a href="23-external-interoperability-suite-architecture.html"><strong aria-hidden="true">5.</strong> 23 — External Interoperability & Conformance Suite</a></li><li class="chapter-item expanded "><a href="24-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">6.</strong> 24 — Dynamic Plugin & Module Ecosystem</a></li><li class="chapter-item expanded affix "><li class="part-title">Part II: Identity, Trust & Cryptography</li><li class="chapter-item expanded "><a href="02-multi-device-identity-architecture.html"><strong aria-hidden="true">7.</strong> 02 — Multi-Device Identity & Trust Model</a></li><li class="chapter-item expanded "><a href="28-production-security-e2ee-key-management-privacy-architecture.html"><strong aria-hidden="true">8.</strong> 28 — Production Security, E2EE, Key Management & Privacy</a></li><li class="chapter-item expanded affix "><li class="part-title">Part III: Mesh Networking, Transports & Hardware</li><li class="chapter-item expanded "><a href="03-transport-routing-policy-engine-architecture.html"><strong aria-hidden="true">9.</strong> 03 — Transport & Routing Policy Engine</a></li><li class="chapter-item expanded "><a href="11-relay-self-hosted-infrastructure-architecture.html"><strong aria-hidden="true">10.</strong> 11 — Self-Hosted Relay & Coordination Infrastructure</a></li><li class="chapter-item expanded "><a href="12-multipath-networking-architecture.html"><strong aria-hidden="true">11.</strong> 12 — Multipath Networking & Link Aggregation</a></li><li class="chapter-item expanded "><a href="13-battery-aware-scheduling-architecture.html"><strong aria-hidden="true">12.</strong> 13 — Battery-Aware Scheduling & Power Profiles</a></li><li class="chapter-item expanded "><a href="14-proximity-abstraction-architecture.html"><strong aria-hidden="true">13.</strong> 14 — Proximity Abstraction (BLE, Wi-Fi Direct, LoRa)</a></li><li class="chapter-item expanded "><a href="15-qr-nfc-bootstrap-pairing-architecture.html"><strong aria-hidden="true">14.</strong> 15 — Out-of-Band QR & NFC Bootstrap Pairing</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IV: Delay-Tolerant Networking & Emergency Mesh</li><li class="chapter-item expanded "><a href="06-dtn-store-carry-forward-architecture.html"><strong aria-hidden="true">15.</strong> 06 — DTN Store-Carry-Forward & Bundle Forwarding</a></li><li class="chapter-item expanded "><a href="17-emergency-priority-classes-architecture.html"><strong aria-hidden="true">16.</strong> 17 — Emergency Priority Classes & Critical Alert Mesh</a></li><li class="chapter-item expanded affix "><li class="part-title">Part V: Storage, Outbox & Data Lifecycle</li><li class="chapter-item expanded "><a href="04-offline-event-log-architecture.html"><strong aria-hidden="true">17.</strong> 04 — Offline Event Log & Sync Engine</a></li><li class="chapter-item expanded "><a href="05-robust-file-blob-subsystem-architecture.html"><strong aria-hidden="true">18.</strong> 05 — Robust File & Blob Subsystem (Chunking & Resumption)</a></li><li class="chapter-item expanded "><a href="09-crash-recovery-architecture.html"><strong aria-hidden="true">19.</strong> 09 — Crash Recovery & State Integrity</a></li><li class="chapter-item expanded "><a href="32-search-indexing-local-knowledge-privacy-architecture.html"><strong aria-hidden="true">20.</strong> 32 — Search, Indexing & Local Privacy Retrieval</a></li><li class="chapter-item expanded "><a href="33-backup-restore-export-import-archival-portability-architecture.html"><strong aria-hidden="true">21.</strong> 33 — Backup, Restore, Export & Long-Term Archival</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VI: Realtime Media, Calling & Audio DSP</li><li class="chapter-item expanded "><a href="25-android-direct-hardware-surface-zero-copy-media-architecture.html"><strong aria-hidden="true">22.</strong> 25 — Android Direct Surface Zero-Copy Media</a></li><li class="chapter-item expanded "><a href="26-rust-first-audio-dsp-resampling-aec-ns-agc-architecture.html"><strong aria-hidden="true">23.</strong> 26 — Rust-First Audio DSP (AEC, NS, AGC, Resampling)</a></li><li class="chapter-item expanded "><a href="29-realtime-calls-media-session-protocol-architecture.html"><strong aria-hidden="true">24.</strong> 29 — Realtime Calls & Media Session Protocol</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VII: Ephemeral State, Presence & Notifications</li><li class="chapter-item expanded "><a href="30-presence-availability-typing-read-receipts-ephemeral-state-architecture.html"><strong aria-hidden="true">25.</strong> 30 — Presence, Availability, Typing & Read Receipts</a></li><li class="chapter-item expanded "><a href="31-notifications-push-background-delivery-lifecycle-architecture.html"><strong aria-hidden="true">26.</strong> 31 — Notifications, Push Wake & Background Delivery</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VIII: Native Runtimes, Daemons & Embedded Linux</li><li class="chapter-item expanded "><a href="16-daemon-headless-runtime-architecture.html"><strong aria-hidden="true">27.</strong> 16 — Headless Daemon & Background Runtime</a></li><li class="chapter-item expanded "><a href="19-c-abi-ffi-architecture.html"><strong aria-hidden="true">28.</strong> 19 — C-ABI FFI & Native Language Interop</a></li><li class="chapter-item expanded "><a href="20-embedded-linux-node-architecture.html"><strong aria-hidden="true">29.</strong> 20 — Embedded Linux Node & Resource-Constrained Targets</a></li><li class="chapter-item expanded "><a href="27-rust-driven-android-native-build-packaging-automation.html"><strong aria-hidden="true">30.</strong> 27 — Rust-Driven Android Native Build & Packaging Automation</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IX: Reliability, Testing, Fuzzing & Diagnostics</li><li class="chapter-item expanded "><a href="08-resource-limits-backpressure-architecture.html"><strong aria-hidden="true">31.</strong> 08 — Resource Limits, Quotas & Backpressure</a></li><li class="chapter-item expanded "><a href="10-fuzzing-protocol-test-suite-architecture.html"><strong aria-hidden="true">32.</strong> 10 — Fuzzing & Protocol Test Suite</a></li><li class="chapter-item expanded "><a href="18-network-diagnostics-path-visualization-architecture.html"><strong aria-hidden="true">33.</strong> 18 — Network Diagnostics & Path Visualization</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part X: UI/UX Client Architecture (Cross-Platform)</li><li class="chapter-item expanded "><a href="ui-ux-01-product-foundation-cross-platform-interaction-architecture.html"><strong aria-hidden="true">34.</strong> UI/UX 01 — Product UX Foundation & Cross-Platform Interaction</a></li><li class="chapter-item expanded "><a href="ui-ux-02-desktop-dioxus-app-shell-navigation-window-architecture.html"><strong aria-hidden="true">35.</strong> UI/UX 02 — Desktop Dioxus App Shell & Navigation</a></li><li class="chapter-item expanded "><a href="ui-ux-03-android-jetpack-compose-app-shell-navigation-lifecycle-architecture.html"><strong aria-hidden="true">36.</strong> UI/UX 03 — Android Jetpack Compose App Shell & Lifecycle</a></li><li class="chapter-item expanded "><a href="ui-ux-04-conversation-list-inbox-architecture.html"><strong aria-hidden="true">37.</strong> UI/UX 04 — Conversation List & Inbox UX</a></li><li class="chapter-item expanded "><a href="ui-ux-05-conversation-message-timeline-architecture.html"><strong aria-hidden="true">38.</strong> UI/UX 05 — Conversation Message Timeline UX</a></li><li class="chapter-item expanded "><a href="ui-ux-06-message-composer-attachments-voice-notes-drafts-architecture.html"><strong aria-hidden="true">39.</strong> UI/UX 06 — Message Composer, Attachments & Voice Notes</a></li><li class="chapter-item expanded "><a href="ui-ux-07-calls-realtime-media-architecture.html"><strong aria-hidden="true">40.</strong> UI/UX 07 — Calls & Realtime Media UX</a></li><li class="chapter-item expanded "><a href="ui-ux-08-contacts-requests-verification-identity-architecture.html"><strong aria-hidden="true">41.</strong> UI/UX 08 — Contacts, Requests, Verification & Identity</a></li><li class="chapter-item expanded "><a href="ui-ux-09-groups-membership-roles-architecture.html"><strong aria-hidden="true">42.</strong> UI/UX 09 — Groups, Membership & Roles UX</a></li><li class="chapter-item expanded "><a href="ui-ux-10-files-media-gallery-transfer-architecture.html"><strong aria-hidden="true">43.</strong> UI/UX 10 — Files, Media Gallery & Transfer UX</a></li><li class="chapter-item expanded "><a href="ui-ux-11-search-local-knowledge-retrieval-architecture.html" class="active"><strong aria-hidden="true">44.</strong> UI/UX 11 — Search & Local Knowledge Retrieval UX</a></li><li class="chapter-item expanded "><a href="ui-ux-12-nearby-qr-nfc-pairing-device-linking-architecture.html"><strong aria-hidden="true">45.</strong> UI/UX 12 — Nearby, QR/NFC Pairing & Device Linking UX</a></li><li class="chapter-item expanded "><a href="ui-ux-13-notifications-background-incoming-call-architecture.html"><strong aria-hidden="true">46.</strong> UI/UX 13 — Notifications, Background & Incoming Call UX</a></li><li class="chapter-item expanded "><a href="ui-ux-14-presence-typing-receipts-status-architecture.html"><strong aria-hidden="true">47.</strong> UI/UX 14 — Presence, Typing, Receipts & Status UX</a></li><li class="chapter-item expanded "><a href="ui-ux-15-security-center-devices-keys-recovery-architecture.html"><strong aria-hidden="true">48.</strong> UI/UX 15 — Security Center, Devices, Keys & Recovery UX</a></li><li class="chapter-item expanded "><a href="ui-ux-16-backup-restore-export-migration-architecture.html"><strong aria-hidden="true">49.</strong> UI/UX 16 — Backup, Restore, Export & Migration UX</a></li><li class="chapter-item expanded "><a href="ui-ux-17-emergency-sos-offline-mesh-architecture.html"><strong aria-hidden="true">50.</strong> UI/UX 17 — Emergency / SOS / Offline Mesh UX</a></li><li class="chapter-item expanded "><a href="ui-ux-18-settings-privacy-notifications-data-controls-architecture.html"><strong aria-hidden="true">51.</strong> UI/UX 18 — Settings, Privacy, Notifications & Data Controls</a></li><li class="chapter-item expanded "><a href="ui-ux-19-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">52.</strong> UI/UX 19 — Plugin & Module Ecosystem UX</a></li><li class="chapter-item expanded "><a href="ui-ux-20-diagnostics-network-paths-advanced-developer-architecture.html"><strong aria-hidden="true">53.</strong> UI/UX 20 — Diagnostics, Network Paths & Developer UX</a></li><li class="chapter-item expanded "><a href="ui-ux-21-accessibility-inclusive-interaction-architecture.html"><strong aria-hidden="true">54.</strong> UI/UX 21 — Accessibility & Inclusive Interaction</a></li><li class="chapter-item expanded "><a href="ui-ux-22-design-system-tokens-typography-icons-motion-architecture.html"><strong aria-hidden="true">55.</strong> UI/UX 22 — Design System, Tokens, Typography & Motion</a></li><li class="chapter-item expanded "><a href="ui-ux-23-responsive-adaptive-desktop-tablet-foldable-phone-layout-architecture.html"><strong aria-hidden="true">56.</strong> UI/UX 23 — Responsive & Adaptive Layouts (Desktop/Tablet/Foldable/Phone)</a></li><li class="chapter-item expanded "><a href="ui-ux-24-error-loading-empty-offline-degraded-state-architecture.html"><strong aria-hidden="true">57.</strong> UI/UX 24 — Error, Loading, Empty & Degraded-State UX</a></li><li class="chapter-item expanded "><a href="ui-ux-25-onboarding-first-run-permission-education-architecture.html"><strong aria-hidden="true">58.</strong> UI/UX 25 — Onboarding, First Run & Permission Education</a></li><li class="chapter-item expanded "><a href="ui-ux-26-performance-virtualization-large-data-ui-architecture.html"><strong aria-hidden="true">59.</strong> UI/UX 26 — Virtualization & Large-Data UI Performance</a></li><li class="chapter-item expanded "><a href="ui-ux-27-ui-testing-screenshot-interaction-release-quality-gates-architecture.html"><strong aria-hidden="true">60.</strong> UI/UX 27 — UI Testing, Screenshots & Release Quality Gates</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">SIAR System Architecture &amp; Technical Wiki</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar/edit/main/sys-arch/ui-ux-11-search-local-knowledge-retrieval-architecture.md" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="uiux-part-11--search--local-knowledge-retrieval-ux-architecture"><a class="header" href="#uiux-part-11--search--local-knowledge-retrieval-ux-architecture">UI/UX Part 11 — Search &amp; Local Knowledge Retrieval UX Architecture</a></h1>
+<h2 id="reusable-p2p-communication-platform"><a class="header" href="#reusable-p2p-communication-platform">Reusable P2P Communication Platform</a></h2>
+<p><strong>Status:</strong> UI/UX architecture specification<br />
+<strong>UI Series:</strong> Part 11<br />
+<strong>Desktop UI:</strong> Dioxus<br />
+<strong>Android UI:</strong> Kotlin + Jetpack Compose<br />
+<strong>Core runtime:</strong> Rust<br />
+<strong>Primary purpose:</strong> define global search, conversation search, file/contact/link discovery, local knowledge retrieval, optional semantic search, index/rebuild states, privacy, source navigation, pagination, and the Rust presentation contracts for both UIs.</p>
+<hr />
+<h1 id="1-governing-principle"><a class="header" href="#1-governing-principle">1. Governing Principle</a></h1>
+<blockquote>
+<p><strong>Search should feel global and immediate to the user while remaining local-first, privacy-preserving, source-grounded, and reconstructable from authoritative Rust state.</strong></p>
+</blockquote>
+<p>Search must never become a hidden cloud copy of the user's private communication history.</p>
+<hr />
+<h1 id="2-architectural-position"><a class="header" href="#2-architectural-position">2. Architectural Position</a></h1>
+<pre><code class="language-text">Rust Authoritative Data
+        │
+        ├── Messages
+        ├── Files
+        ├── Contacts
+        ├── Calls
+        ├── Links
+        └── Plugin Data
+        │
+        ▼
+Rust Search / Index Layer
+        │
+        ├── lexical index
+        ├── metadata index
+        ├── optional semantic index
+        └── result ranking
+        │
+        ▼
+Search Presentation Service
+        │
+   ┌────┴─────┐
+   │          │
+Dioxus     Compose
+Desktop    Android
+</code></pre>
+<hr />
+<h1 id="3-search-modes"><a class="header" href="#3-search-modes">3. Search Modes</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum SearchMode {
+    Global,
+    Conversation(ConversationId),
+    Contacts,
+    Files,
+    Links,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Future optional modes:</p>
+<pre><code class="language-text">Calls
+Plugins
+Knowledge
+</code></pre>
+<hr />
+<h1 id="4-search-domains"><a class="header" href="#4-search-domains">4. Search Domains</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum SearchDomain {
+    Messages,
+    Files,
+    Contacts,
+    Links,
+    Calls,
+    Plugins,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="5-global-search"><a class="header" href="#5-global-search">5. Global Search</a></h1>
+<p>Searches all locally available, authorized content:</p>
+<pre><code class="language-text">Messages
+Files
+Contacts
+Links
+Calls
+Plugin data
+</code></pre>
+<p>The result set is filtered by Rust authorization rules before it reaches either UI.</p>
+<hr />
+<h1 id="6-conversation-search"><a class="header" href="#6-conversation-search">6. Conversation Search</a></h1>
+<p>Scoped to one conversation.</p>
+<p>Prioritizes:</p>
+<pre><code class="language-text">messages
+attachments
+links
+</code></pre>
+<p>and supports jump-to-message.</p>
+<hr />
+<h1 id="7-inbox-filter-is-not-full-search"><a class="header" href="#7-inbox-filter-is-not-full-search">7. Inbox Filter Is Not Full Search</a></h1>
+<p>Part 04 inbox filtering only filters conversation summaries.</p>
+<p>Part 11 full search queries durable indexed content.</p>
+<hr />
+<h1 id="8-search-entry-points"><a class="header" href="#8-search-entry-points">8. Search Entry Points</a></h1>
+<p>Desktop:</p>
+<pre><code class="language-text">Ctrl/Cmd+K       Command palette / navigation
+Ctrl/Cmd+Shift+F Global content search
+Ctrl/Cmd+F       Current conversation search
+</code></pre>
+<p>Android:</p>
+<pre><code class="language-text">Search icon
+Dedicated Search destination
+Conversation app-bar search
+</code></pre>
+<hr />
+<h1 id="9-query-model"><a class="header" href="#9-query-model">9. Query Model</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct SearchQuery {
+    pub text: String,
+    pub scope: SearchScope,
+    pub filters: SearchFilters,
+    pub mode: SearchQueryMode,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="10-query-modes"><a class="header" href="#10-query-modes">10. Query Modes</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum SearchQueryMode {
+    Lexical,
+    Semantic,
+    Hybrid,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Recommended v1 default:</p>
+<pre><code class="language-text">Lexical
+</code></pre>
+<p>Semantic/hybrid can be added later behind the same presentation contract.</p>
+<hr />
+<h1 id="11-search-scope"><a class="header" href="#11-search-scope">11. Search Scope</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum SearchScope {
+    Global,
+    Conversation(ConversationId),
+    Contact(AccountId),
+    Group(GroupId),
+    Domain(SearchDomain),
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="12-filters"><a class="header" href="#12-filters">12. Filters</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">Sender
+Conversation
+Date
+File type
+Has attachment
+Unread
+Message type
+</code></pre>
+<p>Advanced later:</p>
+<pre><code class="language-text">Exact phrase
+Before
+After
+Mentions me
+From me
+Has link
+</code></pre>
+<hr />
+<h1 id="13-desktop-global-search-layout"><a class="header" href="#13-desktop-global-search-layout">13. Desktop Global Search Layout</a></h1>
+<pre><code class="language-text">+-----------------------------------------------------------+
+| Search [____________________________________] Filters     |
++-----------------------+-----------------------------------+
+| Categories            | Results                           |
+| All                   |                                   |
+| Messages              |                                   |
+| Files                 |                                   |
+| Contacts              |                                   |
+| Links                 |                                   |
+| Calls                 |                                   |
++-----------------------+-----------------------------------+
+| Optional Preview / Source Context                         |
++-----------------------------------------------------------+
+</code></pre>
+<hr />
+<h1 id="14-android-global-search-layout"><a class="header" href="#14-android-global-search-layout">14. Android Global Search Layout</a></h1>
+<pre><code class="language-text">Search App Bar
+Filter Chips
+Result Sections
+LazyColumn
+</code></pre>
+<p>On tablets/foldables:</p>
+<pre><code class="language-text">Result List
++
+Source Preview
+</code></pre>
+<p>when space allows.</p>
+<hr />
+<h1 id="15-search-debounce"><a class="header" href="#15-search-debounce">15. Search Debounce</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">Desktop: 100–200 ms
+Android: 150–300 ms
+</code></pre>
+<p>Tune through measurement.</p>
+<hr />
+<h1 id="16-cancellation"><a class="header" href="#16-cancellation">16. Cancellation</a></h1>
+<p>Each request has a stable identity.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct SearchRequestId(pub u64);
+<span class="boring">}</span></code></pre></pre>
+<p>When the query changes:</p>
+<pre><code class="language-text">cancel/ignore stale request
+</code></pre>
+<p>Only the latest request may update visible results.</p>
+<hr />
+<h1 id="17-search-result-types"><a class="header" href="#17-search-result-types">17. Search Result Types</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum SearchResultView {
+    Message(MessageSearchResultView),
+    File(FileSearchResultView),
+    Contact(ContactSearchResultView),
+    Link(LinkSearchResultView),
+    Call(CallSearchResultView),
+    Plugin(PluginSearchResultView),
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="18-message-search-result"><a class="header" href="#18-message-search-result">18. Message Search Result</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct MessageSearchResultView {
+    pub message: MessageId,
+    pub conversation: ConversationId,
+    pub sender: SenderView,
+    pub snippet: SearchSnippet,
+    pub sent_at: Timestamp,
+    pub rank: SearchRank,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="19-result-snippets"><a class="header" href="#19-result-snippets">19. Result Snippets</a></h1>
+<p>Show a concise local snippet with matching terms emphasized.</p>
+<p>Do not render an entire long message just because it matched.</p>
+<hr />
+<h1 id="20-result-highlighting"><a class="header" href="#20-result-highlighting">20. Result Highlighting</a></h1>
+<p>Use visual emphasis plus normal readable text.</p>
+<p>Do not rely on color alone.</p>
+<hr />
+<h1 id="21-file-search-result"><a class="header" href="#21-file-search-result">21. File Search Result</a></h1>
+<p>Show:</p>
+<pre><code class="language-text">filename
+file type
+conversation
+sender
+date
+content snippet if indexed
+availability state if useful
+</code></pre>
+<hr />
+<h1 id="22-contact-search-result"><a class="header" href="#22-contact-search-result">22. Contact Search Result</a></h1>
+<p>Show:</p>
+<pre><code class="language-text">name
+relationship
+verification state
+</code></pre>
+<hr />
+<h1 id="23-link-search-result"><a class="header" href="#23-link-search-result">23. Link Search Result</a></h1>
+<p>Show:</p>
+<pre><code class="language-text">domain
+title if known
+conversation
+sender
+date
+</code></pre>
+<hr />
+<h1 id="24-call-search-result"><a class="header" href="#24-call-search-result">24. Call Search Result</a></h1>
+<p>If call history is indexed:</p>
+<pre><code class="language-text">contact/group
+date
+duration
+missed/answered
+</code></pre>
+<hr />
+<h1 id="25-plugin-search-result"><a class="header" href="#25-plugin-search-result">25. Plugin Search Result</a></h1>
+<p>Always identify source provider:</p>
+<pre><code class="language-text">From Notes plugin
+</code></pre>
+<p>Plugin search remains permissioned and namespaced.</p>
+<hr />
+<h1 id="26-result-grouping"><a class="header" href="#26-result-grouping">26. Result Grouping</a></h1>
+<p>Global search can show:</p>
+<pre><code class="language-text">Messages
+Files
+Contacts
+Links
+Calls
+</code></pre>
+<p>with a few best results from each.</p>
+<p>Selecting a category opens the complete paged view.</p>
+<hr />
+<h1 id="27-ranking"><a class="header" href="#27-ranking">27. Ranking</a></h1>
+<p>Rust search engine owns relevance and ranking.</p>
+<p>UI must not invent a second ranking algorithm.</p>
+<hr />
+<h1 id="28-sort-options"><a class="header" href="#28-sort-options">28. Sort Options</a></h1>
+<p>Default:</p>
+<pre><code class="language-text">Relevance
+</code></pre>
+<p>Optional:</p>
+<pre><code class="language-text">Newest
+Oldest
+</code></pre>
+<hr />
+<h1 id="29-jump-to-source-message"><a class="header" href="#29-jump-to-source-message">29. Jump to Source Message</a></h1>
+<p>Selecting a message result:</p>
+<pre><code class="language-text">SearchResult
+→ MessageId
+→ request page around MessageId
+→ typed conversation navigation
+→ temporary highlight
+</code></pre>
+<hr />
+<h1 id="30-search-outside-loaded-timeline"><a class="header" href="#30-search-outside-loaded-timeline">30. Search Outside Loaded Timeline</a></h1>
+<p>Use the Part 05 centered page API:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct MessageAroundRequest {
+    pub conversation: ConversationId,
+    pub anchor: MessageId,
+    pub before: usize,
+    pub after: usize,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="31-search-navigation-preservation"><a class="header" href="#31-search-navigation-preservation">31. Search Navigation Preservation</a></h1>
+<p>Returning to search should restore:</p>
+<pre><code class="language-text">query
+filters
+scroll position
+selected result
+</code></pre>
+<hr />
+<h1 id="32-desktop-preview-pane"><a class="header" href="#32-desktop-preview-pane">32. Desktop Preview Pane</a></h1>
+<p>Wide desktop may preview:</p>
+<pre><code class="language-text">message context
+file metadata
+contact profile summary
+</code></pre>
+<p>without leaving search.</p>
+<p>Preview should not accidentally mark a message read unless actual Part 30 read semantics are satisfied.</p>
+<hr />
+<h1 id="33-android-search-navigation"><a class="header" href="#33-android-search-navigation">33. Android Search Navigation</a></h1>
+<p>Phone usually navigates to the source.</p>
+<p>Tablet/foldable may use list/detail preview.</p>
+<hr />
+<h1 id="34-search-history"><a class="header" href="#34-search-history">34. Search History</a></h1>
+<p>Optional local-only feature.</p>
+<p>Store recent query strings:</p>
+<pre><code class="language-text">device-local
+</code></pre>
+<p>with:</p>
+<pre><code class="language-text">Clear history
+Disable history
+</code></pre>
+<hr />
+<h1 id="35-strict-privacy-mode"><a class="header" href="#35-strict-privacy-mode">35. Strict Privacy Mode</a></h1>
+<p>Allow:</p>
+<pre><code class="language-text">Do not save recent searches
+</code></pre>
+<hr />
+<h1 id="36-no-remote-autocomplete"><a class="header" href="#36-no-remote-autocomplete">36. No Remote Autocomplete</a></h1>
+<p>Hard default:</p>
+<pre><code class="language-text">query text does not go to a remote autocomplete/search server
+</code></pre>
+<hr />
+<h1 id="37-local-suggestions"><a class="header" href="#37-local-suggestions">37. Local Suggestions</a></h1>
+<p>Safe local suggestions may include:</p>
+<pre><code class="language-text">recent searches
+recent contacts
+recent conversations
+</code></pre>
+<hr />
+<h1 id="38-lexical-search"><a class="header" href="#38-lexical-search">38. Lexical Search</a></h1>
+<p>Baseline search capabilities:</p>
+<pre><code class="language-text">word match
+phrase match
+prefix
+filters
+Unicode normalization
+</code></pre>
+<hr />
+<h1 id="39-fuzzy-search"><a class="header" href="#39-fuzzy-search">39. Fuzzy Search</a></h1>
+<p>Useful for:</p>
+<pre><code class="language-text">contact names
+filenames
+</code></pre>
+<p>Use bounded fuzziness.</p>
+<hr />
+<h1 id="40-advanced-query-syntax"><a class="header" href="#40-advanced-query-syntax">40. Advanced Query Syntax</a></h1>
+<p>Desktop power users may later support:</p>
+<pre><code class="language-text">from:alice
+in:project
+has:file
+before:2026-08-01
+"exact phrase"
+</code></pre>
+<p>Android should expose equivalent filters visually rather than requiring syntax.</p>
+<hr />
+<h1 id="41-query-parsing"><a class="header" href="#41-query-parsing">41. Query Parsing</a></h1>
+<p>Rust parses and validates query syntax.</p>
+<p>UI can expose a builder/chips over the same semantics.</p>
+<hr />
+<h1 id="42-invalid-query"><a class="header" href="#42-invalid-query">42. Invalid Query</a></h1>
+<p>Show inline:</p>
+<pre><code class="language-text">Invalid date filter
+Unknown search filter
+</code></pre>
+<p>Do not show a modal.</p>
+<hr />
+<h1 id="43-semantic-search"><a class="header" href="#43-semantic-search">43. Semantic Search</a></h1>
+<p>Optional later.</p>
+<p>Must remain local by default.</p>
+<hr />
+<h1 id="44-hybrid-search"><a class="header" href="#44-hybrid-search">44. Hybrid Search</a></h1>
+<p>Combines:</p>
+<pre><code class="language-text">lexical
+metadata
+semantic similarity
+</code></pre>
+<p>Rust owns fusion/ranking.</p>
+<hr />
+<h1 id="45-semantic-ux"><a class="header" href="#45-semantic-ux">45. Semantic UX</a></h1>
+<p>Do not force users to understand embeddings.</p>
+<p>A future product may simply label:</p>
+<pre><code class="language-text">Search by meaning
+</code></pre>
+<p>or transparently use hybrid search.</p>
+<hr />
+<h1 id="46-embedding-privacy"><a class="header" href="#46-embedding-privacy">46. Embedding Privacy</a></h1>
+<p>Embeddings are derived private data.</p>
+<p>Store locally by default.</p>
+<hr />
+<h1 id="47-external-ai"><a class="header" href="#47-external-ai">47. External AI</a></h1>
+<p>If a user explicitly configures an external provider:</p>
+<pre><code class="language-text">provider
+data scope
+retrieved snippets
+</code></pre>
+<p>must be explicit.</p>
+<p>Never silently upload the local search corpus.</p>
+<hr />
+<h1 id="48-local-knowledge-retrieval"><a class="header" href="#48-local-knowledge-retrieval">48. Local Knowledge Retrieval</a></h1>
+<p>Search can power:</p>
+<pre><code class="language-text">local assistant
+question answering
+summarization
+context retrieval
+</code></pre>
+<p>but retrieval must be source-grounded.</p>
+<hr />
+<h1 id="49-knowledge-chunk"><a class="header" href="#49-knowledge-chunk">49. Knowledge Chunk</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct KnowledgeChunkView {
+    pub source_id: SearchSourceId,
+    pub source_type: SearchDomain,
+    pub snippet: String,
+    pub conversation: Option&lt;ConversationId&gt;,
+    pub message: Option&lt;MessageId&gt;,
+    pub file: Option&lt;BlobId&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="50-retrieval-principle"><a class="header" href="#50-retrieval-principle">50. Retrieval Principle</a></h1>
+<p>A local assistant only receives actual retrieved source chunks.</p>
+<p>No fabricated "memory" documents.</p>
+<hr />
+<h1 id="51-source-linked-answers"><a class="header" href="#51-source-linked-answers">51. Source-Linked Answers</a></h1>
+<p>Assistant answers should expose source links to:</p>
+<pre><code class="language-text">message
+file
+conversation
+contact
+</code></pre>
+<p>where relevant.</p>
+<hr />
+<h1 id="52-bounded-retrieval"><a class="header" href="#52-bounded-retrieval">52. Bounded Retrieval</a></h1>
+<p>Never retrieve entire history blindly.</p>
+<p>Use:</p>
+<pre><code class="language-text">max chunks
+max tokens/bytes
+scope limits
+</code></pre>
+<hr />
+<h1 id="53-search-index-states"><a class="header" href="#53-search-index-states">53. Search Index States</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum SearchIndexState {
+    Ready,
+    Building,
+    Updating,
+    Stale,
+    Corrupt,
+    Disabled,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="54-ready"><a class="header" href="#54-ready">54. Ready</a></h1>
+<p>Normal state.</p>
+<hr />
+<h1 id="55-building"><a class="header" href="#55-building">55. Building</a></h1>
+<p>Initial/rebuild state.</p>
+<p>Messaging remains fully usable.</p>
+<hr />
+<h1 id="56-updating"><a class="header" href="#56-updating">56. Updating</a></h1>
+<p>Normal background incremental indexing.</p>
+<p>Usually invisible.</p>
+<hr />
+<h1 id="57-stale"><a class="header" href="#57-stale">57. Stale</a></h1>
+<p>Results may temporarily be incomplete.</p>
+<p>Only surface if user needs to know.</p>
+<hr />
+<h1 id="58-corrupt"><a class="header" href="#58-corrupt">58. Corrupt</a></h1>
+<p>Rust quarantines/rebuilds index.</p>
+<p>UI:</p>
+<pre><code class="language-text">Search index is being repaired
+</code></pre>
+<hr />
+<h1 id="59-disabled"><a class="header" href="#59-disabled">59. Disabled</a></h1>
+<p>Search screen explains:</p>
+<pre><code class="language-text">Search indexing is disabled
+</code></pre>
+<p>with Enable action if policy allows.</p>
+<hr />
+<h1 id="60-search-during-index-build"><a class="header" href="#60-search-during-index-build">60. Search During Index Build</a></h1>
+<p>If partial querying is supported:</p>
+<pre><code class="language-text">show available results
++
+Indexing…
+</code></pre>
+<p>Otherwise show progress without blocking rest of app.</p>
+<hr />
+<h1 id="61-index-rebuild"><a class="header" href="#61-index-rebuild">61. Index Rebuild</a></h1>
+<p>Advanced/settings action:</p>
+<pre><code class="language-text">Rebuild Search Index
+</code></pre>
+<hr />
+<h1 id="62-rebuild-progress"><a class="header" href="#62-rebuild-progress">62. Rebuild Progress</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct SearchIndexProgress {
+    pub completed: u64,
+    pub total_estimate: Option&lt;u64&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="63-search-empty-state"><a class="header" href="#63-search-empty-state">63. Search Empty State</a></h1>
+<p>Empty query:</p>
+<pre><code class="language-text">Search messages, files, contacts, and links
+</code></pre>
+<hr />
+<h1 id="64-no-results"><a class="header" href="#64-no-results">64. No Results</a></h1>
+<pre><code class="language-text">No results for "..."
+</code></pre>
+<p>Potential suggestions:</p>
+<pre><code class="language-text">Remove filters
+Search all conversations
+Check spelling
+</code></pre>
+<hr />
+<h1 id="65-no-results-during-build"><a class="header" href="#65-no-results-during-build">65. No Results During Build</a></h1>
+<p>Show both facts:</p>
+<pre><code class="language-text">No results yet
+Search indexing is still in progress
+</code></pre>
+<hr />
+<h1 id="66-offline-search"><a class="header" href="#66-offline-search">66. Offline Search</a></h1>
+<p>Works against local indexes without Internet.</p>
+<hr />
+<h1 id="67-incomplete-local-history"><a class="header" href="#67-incomplete-local-history">67. Incomplete Local History</a></h1>
+<p>If a device does not have all historical content, search may be incomplete.</p>
+<p>Do not claim complete coverage.</p>
+<hr />
+<h1 id="68-coverage-warning"><a class="header" href="#68-coverage-warning">68. Coverage Warning</a></h1>
+<p>When relevant:</p>
+<pre><code class="language-text">Some older content is not available on this device
+</code></pre>
+<hr />
+<h1 id="69-per-device-search"><a class="header" href="#69-per-device-search">69. Per-Device Search</a></h1>
+<p>Each device maintains its own index.</p>
+<p>Indexes are not synced by default.</p>
+<hr />
+<h1 id="70-different-results-across-devices"><a class="header" href="#70-different-results-across-devices">70. Different Results Across Devices</a></h1>
+<p>This can be normal if devices have different local history/file availability.</p>
+<hr />
+<h1 id="71-trusted-archive-search"><a class="header" href="#71-trusted-archive-search">71. Trusted Archive Search</a></h1>
+<p>Future optional feature:</p>
+<pre><code class="language-text">Search trusted archive
+</code></pre>
+<p>must be explicit.</p>
+<hr />
+<h1 id="72-federated-search"><a class="header" href="#72-federated-search">72. Federated Search</a></h1>
+<p>Future search may query:</p>
+<pre><code class="language-text">local core
+plugins
+trusted archive
+</code></pre>
+<p>with per-provider budgets/timeouts.</p>
+<hr />
+<h1 id="73-provider-failure"><a class="header" href="#73-provider-failure">73. Provider Failure</a></h1>
+<p>A failing plugin provider does not fail whole search.</p>
+<p>UI can show:</p>
+<pre><code class="language-text">Some results are unavailable
+</code></pre>
+<hr />
+<h1 id="74-provider-permissions"><a class="header" href="#74-provider-permissions">74. Provider Permissions</a></h1>
+<p>Plugins search only their own namespace unless granted broader permission.</p>
+<hr />
+<h1 id="75-pagination"><a class="header" href="#75-pagination">75. Pagination</a></h1>
+<p>Use cursor-based paging.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct SearchResultPage {
+    pub request_id: SearchRequestId,
+    pub results: Vec&lt;SearchResultView&gt;,
+    pub next_cursor: Option&lt;SearchCursor&gt;,
+    pub total_estimate: Option&lt;u64&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="76-exact-result-count"><a class="header" href="#76-exact-result-count">76. Exact Result Count</a></h1>
+<p>Optional.</p>
+<p>Do not block expensive queries to compute exact counts for huge datasets.</p>
+<hr />
+<h1 id="77-stable-search-source-identity"><a class="header" href="#77-stable-search-source-identity">77. Stable Search Source Identity</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum SearchSourceId {
+    Message(MessageId),
+    File(BlobId),
+    Contact(AccountId),
+    Link(LinkId),
+    Call(CallId),
+    Plugin {
+        plugin: PluginId,
+        item: PluginItemId,
+    },
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="78-virtualization"><a class="header" href="#78-virtualization">78. Virtualization</a></h1>
+<p>Required for large result sets.</p>
+<p>Desktop:</p>
+<pre><code class="language-text">virtualized result list
+</code></pre>
+<p>Android:</p>
+<pre><code class="language-text">LazyColumn / LazyGrid
+</code></pre>
+<hr />
+<h1 id="79-result-stability"><a class="header" href="#79-result-stability">79. Result Stability</a></h1>
+<p>Avoid continuous result movement while user tries to click.</p>
+<p>Batch/rerank carefully.</p>
+<hr />
+<h1 id="80-v1-result-strategy"><a class="header" href="#80-v1-result-strategy">80. v1 Result Strategy</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">short debounce
+→ stable first page
+</code></pre>
+<p>rather than streaming multiple ranking reorder phases.</p>
+<hr />
+<h1 id="81-conversation-search--desktop"><a class="header" href="#81-conversation-search--desktop">81. Conversation Search — Desktop</a></h1>
+<p>Can open:</p>
+<pre><code class="language-text">right-side search inspector
+</code></pre>
+<p>while timeline remains visible.</p>
+<hr />
+<h1 id="82-conversation-search--android"><a class="header" href="#82-conversation-search--android">82. Conversation Search — Android</a></h1>
+<p>Top app bar enters search mode.</p>
+<p>Results can show:</p>
+<pre><code class="language-text">list of matching messages
+</code></pre>
+<p>or next/previous controls over timeline.</p>
+<hr />
+<h1 id="83-result-navigation"><a class="header" href="#83-result-navigation">83. Result Navigation</a></h1>
+<p>After jumping:</p>
+<pre><code class="language-text">Previous match
+Next match
+3 of 18
+</code></pre>
+<p>if total available.</p>
+<hr />
+<h1 id="84-files-search-integration"><a class="header" href="#84-files-search-integration">84. Files Search Integration</a></h1>
+<p>Part 10 Files destination can scope:</p>
+<pre><code class="language-text">SearchDomain::Files
+</code></pre>
+<hr />
+<h1 id="85-contacts-search-integration"><a class="header" href="#85-contacts-search-integration">85. Contacts Search Integration</a></h1>
+<p>Part 08 can scope:</p>
+<pre><code class="language-text">SearchDomain::Contacts
+</code></pre>
+<hr />
+<h1 id="86-group-search-integration"><a class="header" href="#86-group-search-integration">86. Group Search Integration</a></h1>
+<p>Part 09 can scope:</p>
+<pre><code class="language-text">Conversation(GroupId)
+</code></pre>
+<p>or group member search using dedicated group member API.</p>
+<hr />
+<h1 id="87-unicode--multilingual-search"><a class="header" href="#87-unicode--multilingual-search">87. Unicode &amp; Multilingual Search</a></h1>
+<p>Must handle:</p>
+<pre><code class="language-text">English
+Hindi
+Urdu
+Arabic
+mixed scripts
+emoji
+</code></pre>
+<p>without UI assumptions.</p>
+<hr />
+<h1 id="88-bidi-rendering"><a class="header" href="#88-bidi-rendering">88. Bidi Rendering</a></h1>
+<p>Snippets with mixed RTL/LTR must render safely.</p>
+<hr />
+<h1 id="89-stemminglanguage-processing"><a class="header" href="#89-stemminglanguage-processing">89. Stemming/Language Processing</a></h1>
+<p>Backend feature.</p>
+<p>UI should not promise language-specific behavior unless supported.</p>
+<hr />
+<h1 id="90-search-accessibility"><a class="header" href="#90-search-accessibility">90. Search Accessibility</a></h1>
+<p>Search field label:</p>
+<pre><code class="language-text">Search messages, files, contacts, and links
+</code></pre>
+<hr />
+<h1 id="91-message-result-accessibility"><a class="header" href="#91-message-result-accessibility">91. Message Result Accessibility</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">Message from Alice in Project Group, yesterday, matching deadline
+</code></pre>
+<hr />
+<h1 id="92-file-result-accessibility"><a class="header" href="#92-file-result-accessibility">92. File Result Accessibility</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">PDF timetable.pdf from School Group, 2.4 megabytes
+</code></pre>
+<hr />
+<h1 id="93-result-count-accessibility"><a class="header" href="#93-result-count-accessibility">93. Result Count Accessibility</a></h1>
+<p>Announce once when useful:</p>
+<pre><code class="language-text">18 results
+</code></pre>
+<p>not after every minor update.</p>
+<hr />
+<h1 id="94-search-loading-accessibility"><a class="header" href="#94-search-loading-accessibility">94. Search Loading Accessibility</a></h1>
+<p>Only announce Searching if latency is noticeable.</p>
+<hr />
+<h1 id="95-keyboard-focus--desktop"><a class="header" href="#95-keyboard-focus--desktop">95. Keyboard Focus — Desktop</a></h1>
+<p>Preserve selected <code>SearchSourceId</code> when results update if still present.</p>
+<hr />
+<h1 id="96-android-keyboard-behavior"><a class="header" href="#96-android-keyboard-behavior">96. Android Keyboard Behavior</a></h1>
+<p>Returning from a result should not automatically reopen IME unless search field was active.</p>
+<hr />
+<h1 id="97-filter-accessibility"><a class="header" href="#97-filter-accessibility">97. Filter Accessibility</a></h1>
+<p>All chips/buttons have explicit labels and selected state.</p>
+<hr />
+<h1 id="98-large-font"><a class="header" href="#98-large-font">98. Large Font</a></h1>
+<p>Search chips/result rows wrap without clipping.</p>
+<hr />
+<h1 id="99-rtl"><a class="header" href="#99-rtl">99. RTL</a></h1>
+<p>Search controls mirror correctly.</p>
+<p>Identifiers/fingerprints keep canonical direction where necessary.</p>
+<hr />
+<h1 id="100-reduced-motion"><a class="header" href="#100-reduced-motion">100. Reduced Motion</a></h1>
+<p>Search does not need large transitions.</p>
+<hr />
+<h1 id="101-search-privacy-settings"><a class="header" href="#101-search-privacy-settings">101. Search Privacy Settings</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">Index message text
+Index file contents
+Enable semantic search
+Keep search history
+</code></pre>
+<hr />
+<h1 id="102-recommended-defaults"><a class="header" href="#102-recommended-defaults">102. Recommended Defaults</a></h1>
+<p>Enable local lexical indexing for:</p>
+<pre><code class="language-text">messages
+metadata
+contacts
+filenames
+links
+</code></pre>
+<p>Optional:</p>
+<pre><code class="language-text">file content extraction
+semantic index
+</code></pre>
+<hr />
+<h1 id="103-file-content-indexing"><a class="header" href="#103-file-content-indexing">103. File Content Indexing</a></h1>
+<p>Supported safe parsers may extract:</p>
+<pre><code class="language-text">PDF text
+Markdown
+plain text
+office text
+</code></pre>
+<p>with strict limits.</p>
+<hr />
+<h1 id="104-ocr"><a class="header" href="#104-ocr">104. OCR</a></h1>
+<p>Future optional.</p>
+<p>Do not imply image-text search until OCR exists.</p>
+<hr />
+<h1 id="105-audio-transcription-search"><a class="header" href="#105-audio-transcription-search">105. Audio Transcription Search</a></h1>
+<p>Future optional.</p>
+<p>Must be explicit/local-first where practical.</p>
+<hr />
+<h1 id="106-index-storage"><a class="header" href="#106-index-storage">106. Index Storage</a></h1>
+<p>Storage manager may show:</p>
+<pre><code class="language-text">Search index — 420 MB
+Semantic index — 1.3 GB
+</code></pre>
+<hr />
+<h1 id="107-clear-index"><a class="header" href="#107-clear-index">107. Clear Index</a></h1>
+<p>Because index is derived:</p>
+<pre><code class="language-text">Clear Search Index
+</code></pre>
+<p>is safe.</p>
+<p>Search can rebuild later.</p>
+<hr />
+<h1 id="108-low-storage"><a class="header" href="#108-low-storage">108. Low Storage</a></h1>
+<p>Rust may discard semantic index first.</p>
+<p>UI can explain if user opens storage management.</p>
+<hr />
+<h1 id="109-search-locking"><a class="header" href="#109-search-locking">109. Search Locking</a></h1>
+<p>If app is locked, search results are hidden.</p>
+<hr />
+<h1 id="110-logging"><a class="header" href="#110-logging">110. Logging</a></h1>
+<p>Never log raw search queries/snippets by default.</p>
+<hr />
+<h1 id="111-crash-reports"><a class="header" href="#111-crash-reports">111. Crash Reports</a></h1>
+<p>Redact:</p>
+<pre><code class="language-text">query
+snippet
+file content
+</code></pre>
+<hr />
+<h1 id="112-safe-metrics"><a class="header" href="#112-safe-metrics">112. Safe Metrics</a></h1>
+<p>Possible:</p>
+<pre><code class="language-text">search latency
+result-count bucket
+index size
+rebuild duration
+query cancellation rate
+</code></pre>
+<p>No query content.</p>
+<hr />
+<h1 id="113-performance-goal"><a class="header" href="#113-performance-goal">113. Performance Goal</a></h1>
+<p>Local lexical search should feel near-instant on typical hardware.</p>
+<p>A useful target:</p>
+<pre><code class="language-text">first useful page within ~150 ms
+</code></pre>
+<p>where hardware/corpus permit.</p>
+<hr />
+<h1 id="114-semantic-search-latency"><a class="header" href="#114-semantic-search-latency">114. Semantic Search Latency</a></h1>
+<p>May be slower.</p>
+<p>UI may show:</p>
+<pre><code class="language-text">Refining results…
+</code></pre>
+<p>if hybrid processing is deliberately staged.</p>
+<hr />
+<h1 id="115-background-indexing-priority"><a class="header" href="#115-background-indexing-priority">115. Background Indexing Priority</a></h1>
+<p>Indexing yields to:</p>
+<pre><code class="language-text">calls
+message send/receive
+critical file work
+emergency traffic
+</code></pre>
+<hr />
+<h1 id="116-android-background-indexing"><a class="header" href="#116-android-background-indexing">116. Android Background Indexing</a></h1>
+<p>Respect:</p>
+<pre><code class="language-text">battery
+thermal
+background execution
+</code></pre>
+<p>through Rust scheduler/platform constraints.</p>
+<hr />
+<h1 id="117-desktop-background-indexing"><a class="header" href="#117-desktop-background-indexing">117. Desktop Background Indexing</a></h1>
+<p>Low-priority worker.</p>
+<hr />
+<h1 id="118-search-errors"><a class="header" href="#118-search-errors">118. Search Errors</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum SearchUiErrorKind {
+    QueryInvalid,
+    IndexUnavailable,
+    IndexBuilding,
+    ProviderUnavailable,
+    PermissionDenied,
+    Internal,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="119-error-ux"><a class="header" href="#119-error-ux">119. Error UX</a></h1>
+<p>Query invalid:</p>
+<pre><code class="language-text">inline correction
+</code></pre>
+<p>Index unavailable:</p>
+<pre><code class="language-text">Search unavailable
+Rebuild Index
+</code></pre>
+<p>Provider unavailable:</p>
+<pre><code class="language-text">partial results remain
+</code></pre>
+<hr />
+<h1 id="120-permission-enforcement"><a class="header" href="#120-permission-enforcement">120. Permission Enforcement</a></h1>
+<p>Rust filters unauthorized content before producing UI results.</p>
+<p>Never send secret result then rely on UI hiding.</p>
+<hr />
+<h1 id="121-deleted-result"><a class="header" href="#121-deleted-result">121. Deleted Result</a></h1>
+<p>If result disappears before open:</p>
+<pre><code class="language-text">This result is no longer available
+</code></pre>
+<hr />
+<h1 id="122-edited-message"><a class="header" href="#122-edited-message">122. Edited Message</a></h1>
+<p>Timeline opens current version.</p>
+<p>Search snippet refreshes asynchronously.</p>
+<hr />
+<h1 id="123-removed-local-file"><a class="header" href="#123-removed-local-file">123. Removed Local File</a></h1>
+<p>Metadata result may remain if source message exists.</p>
+<p>Opening can trigger download if available.</p>
+<hr />
+<h1 id="124-left-group"><a class="header" href="#124-left-group">124. Left Group</a></h1>
+<p>Results disappear or become inaccessible according to retention/security policy.</p>
+<hr />
+<h1 id="125-search-screen-snapshot"><a class="header" href="#125-search-screen-snapshot">125. Search Screen Snapshot</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct SearchScreenSnapshot {
+    pub index_state: SearchIndexState,
+    pub recent_queries: Vec&lt;RecentSearchView&gt;,
+    pub enabled_domains: Vec&lt;SearchDomain&gt;,
+    pub semantic_available: bool,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="126-search-presentation-api"><a class="header" href="#126-search-presentation-api">126. Search Presentation API</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait SearchPresentation {
+    async fn snapshot(
+        &amp;self,
+    ) -&gt; Result&lt;SearchScreenSnapshot, UiError&gt;;
+
+    async fn search(
+        &amp;self,
+        request: SearchRequest,
+    ) -&gt; Result&lt;SearchResultPage, UiError&gt;;
+
+    async fn next_page(
+        &amp;self,
+        cursor: SearchCursor,
+    ) -&gt; Result&lt;SearchResultPage, UiError&gt;;
+
+    async fn cancel(
+        &amp;self,
+        request: SearchRequestId,
+    ) -&gt; Result&lt;(), UiError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="127-search-request"><a class="header" href="#127-search-request">127. Search Request</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct SearchRequest {
+    pub request_id: SearchRequestId,
+    pub query: SearchQuery,
+    pub page_size: usize,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="128-search-events"><a class="header" href="#128-search-events">128. Search Events</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum SearchUiEvent {
+    IndexStateChanged(SearchIndexState),
+    IndexProgressChanged(SearchIndexProgress),
+    ProviderStateChanged(SearchProviderState),
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="129-knowledge-retrieval-api"><a class="header" href="#129-knowledge-retrieval-api">129. Knowledge Retrieval API</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait KnowledgeRetrievalPresentation {
+    async fn retrieve(
+        &amp;self,
+        request: KnowledgeRetrievalRequest,
+    ) -&gt; Result&lt;Vec&lt;KnowledgeChunkView&gt;, UiError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="130-retrieval-request"><a class="header" href="#130-retrieval-request">130. Retrieval Request</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct KnowledgeRetrievalRequest {
+    pub query: String,
+    pub scope: SearchScope,
+    pub max_chunks: usize,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="131-android-viewmodel"><a class="header" href="#131-android-viewmodel">131. Android ViewModel</a></h1>
+<p>Owns:</p>
+<pre><code class="language-text">query field
+active filters
+selected category
+search mode
+scroll restoration
+UiEffects
+</code></pre>
+<p>Rust owns:</p>
+<pre><code class="language-text">index
+query execution
+ranking
+permissions
+pagination
+</code></pre>
+<hr />
+<h1 id="132-dioxus-presenter"><a class="header" href="#132-dioxus-presenter">132. Dioxus Presenter</a></h1>
+<p>Owns:</p>
+<pre><code class="language-text">query signal
+filter panel
+preview pane
+selection
+keyboard focus
+</code></pre>
+<hr />
+<h1 id="133-hard-ui-boundaries"><a class="header" href="#133-hard-ui-boundaries">133. Hard UI Boundaries</a></h1>
+<p>Do not:</p>
+<pre><code class="language-text">query DB directly from UI
+parse index files in UI
+implement independent search ranking in Kotlin
+upload search text remotely by default
+</code></pre>
+<hr />
+<h1 id="134-testing-matrix"><a class="header" href="#134-testing-matrix">134. Testing Matrix</a></h1>
+<p>Required:</p>
+<pre><code class="language-text">empty query
+global query
+conversation query
+messages
+files
+contacts
+links
+filters
+no results
+index building
+index rebuild
+offline
+provider failure
+large corpus
+deleted result
+rapid query changes
+</code></pre>
+<hr />
+<h1 id="135-desktop-tests"><a class="header" href="#135-desktop-tests">135. Desktop Tests</a></h1>
+<p>Verify:</p>
+<pre><code class="language-text">keyboard shortcuts
+result navigation
+preview pane
+jump to source
+back to search
+filters
+pagination
+</code></pre>
+<hr />
+<h1 id="136-android-tests"><a class="header" href="#136-android-tests">136. Android Tests</a></h1>
+<p>Verify:</p>
+<pre><code class="language-text">search app bar
+IME
+filter chips
+back navigation
+source jump
+process death
+TalkBack
+large font
+RTL
+</code></pre>
+<hr />
+<h1 id="137-search-cancellation-test"><a class="header" href="#137-search-cancellation-test">137. Search Cancellation Test</a></h1>
+<p>Type rapidly:</p>
+<pre><code class="language-text">a
+al
+ali
+alic
+alice
+</code></pre>
+<p>Only the latest result set is rendered.</p>
+<hr />
+<h1 id="138-index-rebuild-test"><a class="header" href="#138-index-rebuild-test">138. Index Rebuild Test</a></h1>
+<p>Search degrades safely while app remains usable.</p>
+<hr />
+<h1 id="139-privacy-test"><a class="header" href="#139-privacy-test">139. Privacy Test</a></h1>
+<p>No query/snippet leaves device without an explicit configured external-provider action.</p>
+<hr />
+<h1 id="140-plugin-permission-test"><a class="header" href="#140-plugin-permission-test">140. Plugin Permission Test</a></h1>
+<p>Plugin search never crosses unauthorized namespace.</p>
+<hr />
+<h1 id="141-large-corpus-test"><a class="header" href="#141-large-corpus-test">141. Large Corpus Test</a></h1>
+<p>Test:</p>
+<pre><code class="language-text">100k messages
+1M messages
+many files
+</code></pre>
+<p>with bounded memory and paging.</p>
+<hr />
+<h1 id="142-search-jump-test"><a class="header" href="#142-search-jump-test">142. Search Jump Test</a></h1>
+<p>Result deep in history correctly loads around stable <code>MessageId</code>.</p>
+<hr />
+<h1 id="143-search-history-test"><a class="header" href="#143-search-history-test">143. Search History Test</a></h1>
+<p>Clearing history does not clear index.</p>
+<hr />
+<h1 id="144-multi-device-test"><a class="header" href="#144-multi-device-test">144. Multi-Device Test</a></h1>
+<p>Different devices can legitimately show different search coverage while maintaining the same source IDs for shared content.</p>
+<hr />
+<h1 id="145-recommended-v1-scope"><a class="header" href="#145-recommended-v1-scope">145. Recommended v1 Scope</a></h1>
+<p>Ship:</p>
+<pre><code class="language-text">global lexical search
+conversation search
+message results
+file results
+contact results
+link results
+sender/date/type filters
+jump to source
+recent searches local-only
+index rebuild state
+offline search
+desktop keyboard search
+Android search app bar/chips
+</code></pre>
+<p>Defer:</p>
+<pre><code class="language-text">semantic/vector search
+local assistant
+OCR
+audio transcription
+trusted archive search
+complex query language
+cross-device federated search
+</code></pre>
+<p>unless already implemented safely.</p>
+<hr />
+<h1 id="146-definition-of-done"><a class="header" href="#146-definition-of-done">146. Definition of Done</a></h1>
+<p>UI/UX Part 11 is complete when:</p>
+<ul>
+<li>global and conversation search are distinct</li>
+<li>search is local-first and private by default</li>
+<li>Rust owns indexing, parsing, ranking, permissions, and paging</li>
+<li>the UIs never query databases or index formats directly</li>
+<li>result types for messages/files/contacts/links/calls/plugins are defined</li>
+<li>every result can navigate using stable source identities</li>
+<li>stale queries cannot overwrite newer results</li>
+<li>Building/Stale/Corrupt/Disabled index states have clear UX</li>
+<li>index rebuild never blocks core messaging</li>
+<li>large result sets are paged/virtualized</li>
+<li>desktop is keyboard-first and can use a preview pane</li>
+<li>Android uses native search app bar/chips and lifecycle-safe ViewModels</li>
+<li>optional semantic/local-knowledge retrieval remains local-first, bounded, and source-grounded</li>
+<li>external AI use is explicit</li>
+<li>accessibility, RTL, large font, reduced motion, and screen-reader semantics are defined</li>
+<li>query/snippet telemetry is prohibited by default</li>
+<li>Rust search and knowledge retrieval presentation APIs are specified</li>
+<li>offline, incomplete history, provider failure, corruption, deletion races, and large-corpus scenarios are tested</li>
+</ul>
+<hr />
+<h1 id="147-final-architecture"><a class="header" href="#147-final-architecture">147. Final Architecture</a></h1>
+<pre><code class="language-text">                    RUST SEARCH CORE
+                          │
+          ┌───────────────┼───────────────┐
+          │               │               │
+      Lexical Index    Metadata       Optional Semantic
+          │               │               │
+          └───────────────┼───────────────┘
+                          │
+                  Search Presentation
+                    ┌─────┴─────┐
+                    │           │
+                 Dioxus      Compose
+                    │           │
+             Desktop Search  Android Search
+</code></pre>
+<p>Optional local knowledge path:</p>
+<pre><code class="language-text">Search/Retrieval
+      │
+      ▼
+Bounded Source Chunks
+      │
+      ▼
+Local Assistant
+      │
+      ▼
+Source-linked Answer
+</code></pre>
+<p>There is no default path:</p>
+<pre><code class="language-text">private communication history
+→ central search service
+</code></pre>
+<hr />
+<h1 id="148-final-principle"><a class="header" href="#148-final-principle">148. Final Principle</a></h1>
+<p>The search experience should make a large private communication history feel small and navigable without giving up privacy.</p>
+<p>The correct model is:</p>
+<pre><code class="language-text">local indexing
++
+stable source identities
++
+fast lexical retrieval
++
+clear filters
++
+source navigation
++
+optional bounded semantic retrieval
+</code></pre>
+<p>not:</p>
+<pre><code class="language-text">upload the user's communication history so search feels convenient
+</code></pre>
+<p>This gives both Dioxus desktop and Android Compose a fast, useful, trustworthy search experience while the Rust search/index layer remains authoritative and rebuildable.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="ui-ux-10-files-media-gallery-transfer-architecture.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="ui-ux-12-nearby-qr-nfc-pairing-device-linking-architecture.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="ui-ux-10-files-media-gallery-transfer-architecture.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="ui-ux-12-nearby-qr-nfc-pairing-device-linking-architecture.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

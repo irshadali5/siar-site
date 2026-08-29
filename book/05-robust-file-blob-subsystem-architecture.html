@@ -1,0 +1,2695 @@
+<!DOCTYPE HTML>
+<html lang="en" class="navy" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>05 — Robust File &amp; Blob Subsystem (Chunking &amp; Resumption) - SIAR System Architecture &amp; Technical Wiki</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="Comprehensive system architecture, cryptographic protocols, DTN mesh networking, distributed storage, audio DSP pipelines, and UI/UX design specifications for SIAR.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="theme/custom.css">
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "navy";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('navy')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="Home.html">Architecture Portal & Reading Guide</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part I: Protocol Foundation & Extension Platform</li><li class="chapter-item expanded "><a href="01-protocol-extension-system-architecture.html"><strong aria-hidden="true">1.</strong> 01 — Protocol Extension System Architecture</a></li><li class="chapter-item expanded "><a href="07-capability-negotiation-architecture.html"><strong aria-hidden="true">2.</strong> 07 — Capability Negotiation & Protocol Upgrades</a></li><li class="chapter-item expanded "><a href="21-third-party-protocol-extensions-architecture.html"><strong aria-hidden="true">3.</strong> 21 — Third-Party Protocol Extensions</a></li><li class="chapter-item expanded "><a href="22-wasm-compatible-components-architecture.html"><strong aria-hidden="true">4.</strong> 22 — WebAssembly (WASM) Compatible Components</a></li><li class="chapter-item expanded "><a href="23-external-interoperability-suite-architecture.html"><strong aria-hidden="true">5.</strong> 23 — External Interoperability & Conformance Suite</a></li><li class="chapter-item expanded "><a href="24-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">6.</strong> 24 — Dynamic Plugin & Module Ecosystem</a></li><li class="chapter-item expanded affix "><li class="part-title">Part II: Identity, Trust & Cryptography</li><li class="chapter-item expanded "><a href="02-multi-device-identity-architecture.html"><strong aria-hidden="true">7.</strong> 02 — Multi-Device Identity & Trust Model</a></li><li class="chapter-item expanded "><a href="28-production-security-e2ee-key-management-privacy-architecture.html"><strong aria-hidden="true">8.</strong> 28 — Production Security, E2EE, Key Management & Privacy</a></li><li class="chapter-item expanded affix "><li class="part-title">Part III: Mesh Networking, Transports & Hardware</li><li class="chapter-item expanded "><a href="03-transport-routing-policy-engine-architecture.html"><strong aria-hidden="true">9.</strong> 03 — Transport & Routing Policy Engine</a></li><li class="chapter-item expanded "><a href="11-relay-self-hosted-infrastructure-architecture.html"><strong aria-hidden="true">10.</strong> 11 — Self-Hosted Relay & Coordination Infrastructure</a></li><li class="chapter-item expanded "><a href="12-multipath-networking-architecture.html"><strong aria-hidden="true">11.</strong> 12 — Multipath Networking & Link Aggregation</a></li><li class="chapter-item expanded "><a href="13-battery-aware-scheduling-architecture.html"><strong aria-hidden="true">12.</strong> 13 — Battery-Aware Scheduling & Power Profiles</a></li><li class="chapter-item expanded "><a href="14-proximity-abstraction-architecture.html"><strong aria-hidden="true">13.</strong> 14 — Proximity Abstraction (BLE, Wi-Fi Direct, LoRa)</a></li><li class="chapter-item expanded "><a href="15-qr-nfc-bootstrap-pairing-architecture.html"><strong aria-hidden="true">14.</strong> 15 — Out-of-Band QR & NFC Bootstrap Pairing</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IV: Delay-Tolerant Networking & Emergency Mesh</li><li class="chapter-item expanded "><a href="06-dtn-store-carry-forward-architecture.html"><strong aria-hidden="true">15.</strong> 06 — DTN Store-Carry-Forward & Bundle Forwarding</a></li><li class="chapter-item expanded "><a href="17-emergency-priority-classes-architecture.html"><strong aria-hidden="true">16.</strong> 17 — Emergency Priority Classes & Critical Alert Mesh</a></li><li class="chapter-item expanded affix "><li class="part-title">Part V: Storage, Outbox & Data Lifecycle</li><li class="chapter-item expanded "><a href="04-offline-event-log-architecture.html"><strong aria-hidden="true">17.</strong> 04 — Offline Event Log & Sync Engine</a></li><li class="chapter-item expanded "><a href="05-robust-file-blob-subsystem-architecture.html" class="active"><strong aria-hidden="true">18.</strong> 05 — Robust File & Blob Subsystem (Chunking & Resumption)</a></li><li class="chapter-item expanded "><a href="09-crash-recovery-architecture.html"><strong aria-hidden="true">19.</strong> 09 — Crash Recovery & State Integrity</a></li><li class="chapter-item expanded "><a href="32-search-indexing-local-knowledge-privacy-architecture.html"><strong aria-hidden="true">20.</strong> 32 — Search, Indexing & Local Privacy Retrieval</a></li><li class="chapter-item expanded "><a href="33-backup-restore-export-import-archival-portability-architecture.html"><strong aria-hidden="true">21.</strong> 33 — Backup, Restore, Export & Long-Term Archival</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VI: Realtime Media, Calling & Audio DSP</li><li class="chapter-item expanded "><a href="25-android-direct-hardware-surface-zero-copy-media-architecture.html"><strong aria-hidden="true">22.</strong> 25 — Android Direct Surface Zero-Copy Media</a></li><li class="chapter-item expanded "><a href="26-rust-first-audio-dsp-resampling-aec-ns-agc-architecture.html"><strong aria-hidden="true">23.</strong> 26 — Rust-First Audio DSP (AEC, NS, AGC, Resampling)</a></li><li class="chapter-item expanded "><a href="29-realtime-calls-media-session-protocol-architecture.html"><strong aria-hidden="true">24.</strong> 29 — Realtime Calls & Media Session Protocol</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VII: Ephemeral State, Presence & Notifications</li><li class="chapter-item expanded "><a href="30-presence-availability-typing-read-receipts-ephemeral-state-architecture.html"><strong aria-hidden="true">25.</strong> 30 — Presence, Availability, Typing & Read Receipts</a></li><li class="chapter-item expanded "><a href="31-notifications-push-background-delivery-lifecycle-architecture.html"><strong aria-hidden="true">26.</strong> 31 — Notifications, Push Wake & Background Delivery</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VIII: Native Runtimes, Daemons & Embedded Linux</li><li class="chapter-item expanded "><a href="16-daemon-headless-runtime-architecture.html"><strong aria-hidden="true">27.</strong> 16 — Headless Daemon & Background Runtime</a></li><li class="chapter-item expanded "><a href="19-c-abi-ffi-architecture.html"><strong aria-hidden="true">28.</strong> 19 — C-ABI FFI & Native Language Interop</a></li><li class="chapter-item expanded "><a href="20-embedded-linux-node-architecture.html"><strong aria-hidden="true">29.</strong> 20 — Embedded Linux Node & Resource-Constrained Targets</a></li><li class="chapter-item expanded "><a href="27-rust-driven-android-native-build-packaging-automation.html"><strong aria-hidden="true">30.</strong> 27 — Rust-Driven Android Native Build & Packaging Automation</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IX: Reliability, Testing, Fuzzing & Diagnostics</li><li class="chapter-item expanded "><a href="08-resource-limits-backpressure-architecture.html"><strong aria-hidden="true">31.</strong> 08 — Resource Limits, Quotas & Backpressure</a></li><li class="chapter-item expanded "><a href="10-fuzzing-protocol-test-suite-architecture.html"><strong aria-hidden="true">32.</strong> 10 — Fuzzing & Protocol Test Suite</a></li><li class="chapter-item expanded "><a href="18-network-diagnostics-path-visualization-architecture.html"><strong aria-hidden="true">33.</strong> 18 — Network Diagnostics & Path Visualization</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part X: UI/UX Client Architecture (Cross-Platform)</li><li class="chapter-item expanded "><a href="ui-ux-01-product-foundation-cross-platform-interaction-architecture.html"><strong aria-hidden="true">34.</strong> UI/UX 01 — Product UX Foundation & Cross-Platform Interaction</a></li><li class="chapter-item expanded "><a href="ui-ux-02-desktop-dioxus-app-shell-navigation-window-architecture.html"><strong aria-hidden="true">35.</strong> UI/UX 02 — Desktop Dioxus App Shell & Navigation</a></li><li class="chapter-item expanded "><a href="ui-ux-03-android-jetpack-compose-app-shell-navigation-lifecycle-architecture.html"><strong aria-hidden="true">36.</strong> UI/UX 03 — Android Jetpack Compose App Shell & Lifecycle</a></li><li class="chapter-item expanded "><a href="ui-ux-04-conversation-list-inbox-architecture.html"><strong aria-hidden="true">37.</strong> UI/UX 04 — Conversation List & Inbox UX</a></li><li class="chapter-item expanded "><a href="ui-ux-05-conversation-message-timeline-architecture.html"><strong aria-hidden="true">38.</strong> UI/UX 05 — Conversation Message Timeline UX</a></li><li class="chapter-item expanded "><a href="ui-ux-06-message-composer-attachments-voice-notes-drafts-architecture.html"><strong aria-hidden="true">39.</strong> UI/UX 06 — Message Composer, Attachments & Voice Notes</a></li><li class="chapter-item expanded "><a href="ui-ux-07-calls-realtime-media-architecture.html"><strong aria-hidden="true">40.</strong> UI/UX 07 — Calls & Realtime Media UX</a></li><li class="chapter-item expanded "><a href="ui-ux-08-contacts-requests-verification-identity-architecture.html"><strong aria-hidden="true">41.</strong> UI/UX 08 — Contacts, Requests, Verification & Identity</a></li><li class="chapter-item expanded "><a href="ui-ux-09-groups-membership-roles-architecture.html"><strong aria-hidden="true">42.</strong> UI/UX 09 — Groups, Membership & Roles UX</a></li><li class="chapter-item expanded "><a href="ui-ux-10-files-media-gallery-transfer-architecture.html"><strong aria-hidden="true">43.</strong> UI/UX 10 — Files, Media Gallery & Transfer UX</a></li><li class="chapter-item expanded "><a href="ui-ux-11-search-local-knowledge-retrieval-architecture.html"><strong aria-hidden="true">44.</strong> UI/UX 11 — Search & Local Knowledge Retrieval UX</a></li><li class="chapter-item expanded "><a href="ui-ux-12-nearby-qr-nfc-pairing-device-linking-architecture.html"><strong aria-hidden="true">45.</strong> UI/UX 12 — Nearby, QR/NFC Pairing & Device Linking UX</a></li><li class="chapter-item expanded "><a href="ui-ux-13-notifications-background-incoming-call-architecture.html"><strong aria-hidden="true">46.</strong> UI/UX 13 — Notifications, Background & Incoming Call UX</a></li><li class="chapter-item expanded "><a href="ui-ux-14-presence-typing-receipts-status-architecture.html"><strong aria-hidden="true">47.</strong> UI/UX 14 — Presence, Typing, Receipts & Status UX</a></li><li class="chapter-item expanded "><a href="ui-ux-15-security-center-devices-keys-recovery-architecture.html"><strong aria-hidden="true">48.</strong> UI/UX 15 — Security Center, Devices, Keys & Recovery UX</a></li><li class="chapter-item expanded "><a href="ui-ux-16-backup-restore-export-migration-architecture.html"><strong aria-hidden="true">49.</strong> UI/UX 16 — Backup, Restore, Export & Migration UX</a></li><li class="chapter-item expanded "><a href="ui-ux-17-emergency-sos-offline-mesh-architecture.html"><strong aria-hidden="true">50.</strong> UI/UX 17 — Emergency / SOS / Offline Mesh UX</a></li><li class="chapter-item expanded "><a href="ui-ux-18-settings-privacy-notifications-data-controls-architecture.html"><strong aria-hidden="true">51.</strong> UI/UX 18 — Settings, Privacy, Notifications & Data Controls</a></li><li class="chapter-item expanded "><a href="ui-ux-19-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">52.</strong> UI/UX 19 — Plugin & Module Ecosystem UX</a></li><li class="chapter-item expanded "><a href="ui-ux-20-diagnostics-network-paths-advanced-developer-architecture.html"><strong aria-hidden="true">53.</strong> UI/UX 20 — Diagnostics, Network Paths & Developer UX</a></li><li class="chapter-item expanded "><a href="ui-ux-21-accessibility-inclusive-interaction-architecture.html"><strong aria-hidden="true">54.</strong> UI/UX 21 — Accessibility & Inclusive Interaction</a></li><li class="chapter-item expanded "><a href="ui-ux-22-design-system-tokens-typography-icons-motion-architecture.html"><strong aria-hidden="true">55.</strong> UI/UX 22 — Design System, Tokens, Typography & Motion</a></li><li class="chapter-item expanded "><a href="ui-ux-23-responsive-adaptive-desktop-tablet-foldable-phone-layout-architecture.html"><strong aria-hidden="true">56.</strong> UI/UX 23 — Responsive & Adaptive Layouts (Desktop/Tablet/Foldable/Phone)</a></li><li class="chapter-item expanded "><a href="ui-ux-24-error-loading-empty-offline-degraded-state-architecture.html"><strong aria-hidden="true">57.</strong> UI/UX 24 — Error, Loading, Empty & Degraded-State UX</a></li><li class="chapter-item expanded "><a href="ui-ux-25-onboarding-first-run-permission-education-architecture.html"><strong aria-hidden="true">58.</strong> UI/UX 25 — Onboarding, First Run & Permission Education</a></li><li class="chapter-item expanded "><a href="ui-ux-26-performance-virtualization-large-data-ui-architecture.html"><strong aria-hidden="true">59.</strong> UI/UX 26 — Virtualization & Large-Data UI Performance</a></li><li class="chapter-item expanded "><a href="ui-ux-27-ui-testing-screenshot-interaction-release-quality-gates-architecture.html"><strong aria-hidden="true">60.</strong> UI/UX 27 — UI Testing, Screenshots & Release Quality Gates</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">SIAR System Architecture &amp; Technical Wiki</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar/edit/main/sys-arch/05-robust-file-blob-subsystem-architecture.md" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="part-05--robust-file--blob-subsystem-architecture"><a class="header" href="#part-05--robust-file--blob-subsystem-architecture">Part 05 — Robust File / Blob Subsystem Architecture</a></h1>
+<h2 id="reusable-p2p-communication-platform"><a class="header" href="#reusable-p2p-communication-platform">Reusable P2P Communication Platform</a></h2>
+<p><strong>Status:</strong> Architecture specification<br />
+<strong>Part:</strong> 05 of 24<br />
+<strong>Primary language:</strong> Rust<br />
+<strong>Primary goals:</strong> content-addressed storage, resumable transfer, integrity, encryption, low-copy streaming, deduplication, partial availability, multi-transport delivery, crash recovery, reuse across messaging/files/emergency/ERP/custom products</p>
+<hr />
+<h1 id="1-purpose"><a class="header" href="#1-purpose">1. Purpose</a></h1>
+<p>The communication platform needs a dedicated binary-data subsystem that can safely and efficiently handle:</p>
+<ul>
+<li>chat attachments</li>
+<li>photos</li>
+<li>videos</li>
+<li>voice messages</li>
+<li>documents</li>
+<li>large files</li>
+<li>application packages</li>
+<li>emergency images</li>
+<li>diagnostic bundles</li>
+<li>ERP documents</li>
+<li>backups</li>
+<li>future product-specific binary payloads</li>
+</ul>
+<p>The blob subsystem must be reusable independently from messaging.</p>
+<p>The architectural rule is:</p>
+<blockquote>
+<p><strong>Messages reference blobs; messages do not own file-transfer mechanics.</strong></p>
+</blockquote>
+<p>This separation allows:</p>
+<pre><code class="language-text">messaging-only application
+file-only application
+messaging + files
+emergency application
+ERP document transfer
+headless relay
+</code></pre>
+<p>to reuse the same file/blob engine.</p>
+<hr />
+<h1 id="2-core-principles"><a class="header" href="#2-core-principles">2. Core Principles</a></h1>
+<p>The subsystem must provide:</p>
+<ul>
+<li>content addressing</li>
+<li>deterministic integrity verification</li>
+<li>streaming I/O</li>
+<li>bounded memory usage</li>
+<li>chunked transfer</li>
+<li>resumable transfer</li>
+<li>partial availability</li>
+<li>optional parallel transfer</li>
+<li>encryption</li>
+<li>local staging</li>
+<li>deduplication</li>
+<li>storage quotas</li>
+<li>garbage collection</li>
+<li>reference tracking</li>
+<li>transport independence</li>
+<li>crash consistency</li>
+<li>DTN compatibility</li>
+<li>multi-device targeting</li>
+<li>diagnostics</li>
+<li>policy-driven retention</li>
+</ul>
+<p>It must not depend on:</p>
+<ul>
+<li>Dioxus</li>
+<li>messenger screens</li>
+<li>Android UI</li>
+<li>a specific transport</li>
+<li>a specific database</li>
+<li>a central server</li>
+</ul>
+<hr />
+<h1 id="3-architectural-position"><a class="header" href="#3-architectural-position">3. Architectural Position</a></h1>
+<pre><code class="language-text">Application
+    ↓
+Messaging / File Share / ERP / Emergency
+    ↓
+File Service
+    ↓
+Blob Manager
+    ↓
+Chunk Store / Manifest / Encryption
+    ↓
+Transfer Planner
+    ↓
+Routing Policy Engine
+    ↓
+Iroh / LAN / Wi-Fi / Bluetooth / DTN
+</code></pre>
+<p>The file subsystem owns file semantics.</p>
+<p>The routing layer owns path selection.</p>
+<p>The transport layer moves bytes.</p>
+<p>The storage layer persists blobs/chunks.</p>
+<hr />
+<h1 id="4-main-crates"><a class="header" href="#4-main-crates">4. Main Crates</a></h1>
+<p>Recommended split:</p>
+<pre><code class="language-text">comm-files/
+comm-blob-store/
+comm-blob-types/
+comm-transfer/
+comm-transfer-protocol/
+comm-storage-filesystem/
+</code></pre>
+<p>Potential workspace:</p>
+<pre><code class="language-text">crates/
+├── comm-files/
+├── comm-blob-store/
+├── comm-transfer/
+├── comm-transfer-protocol/
+└── comm-storage-filesystem/
+</code></pre>
+<p>Avoid one huge crate if the subsystem grows large.</p>
+<hr />
+<h1 id="5-blob-concept"><a class="header" href="#5-blob-concept">5. Blob Concept</a></h1>
+<p>A blob is an immutable binary object.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct BlobId([u8; 32]);
+<span class="boring">}</span></code></pre></pre>
+<p>A blob is identified by content-derived identity or a secure encrypted-object identity.</p>
+<p>The blob does not inherently know:</p>
+<pre><code class="language-text">conversation
+sender
+recipient
+file name
+UI
+</code></pre>
+<p>Metadata references the blob externally.</p>
+<hr />
+<h1 id="6-content-addressing"><a class="header" href="#6-content-addressing">6. Content Addressing</a></h1>
+<p>Conceptually:</p>
+<pre><code class="language-text">content bytes
+    ↓
+cryptographic hash
+    ↓
+BlobId
+</code></pre>
+<p>Use a strong cryptographic hash such as BLAKE3 or another explicitly selected algorithm.</p>
+<p>Benefits:</p>
+<ul>
+<li>integrity verification</li>
+<li>deduplication</li>
+<li>immutable identity</li>
+<li>resumability</li>
+<li>peer caching</li>
+<li>partial transfer verification</li>
+<li>distributed lookup</li>
+</ul>
+<hr />
+<h1 id="7-plaintext-vs-ciphertext-addressing"><a class="header" href="#7-plaintext-vs-ciphertext-addressing">7. Plaintext vs Ciphertext Addressing</a></h1>
+<p>This is a major design decision.</p>
+<h2 id="option-a--plaintext-addressed"><a class="header" href="#option-a--plaintext-addressed">Option A — plaintext-addressed</a></h2>
+<pre><code class="language-text">hash(plaintext)
+</code></pre>
+<p>Pros:</p>
+<ul>
+<li>stronger deduplication</li>
+</ul>
+<p>Cons:</p>
+<ul>
+<li>leaks equality of identical content</li>
+<li>problematic for privacy</li>
+</ul>
+<h2 id="option-b--ciphertext-addressed"><a class="header" href="#option-b--ciphertext-addressed">Option B — ciphertext-addressed</a></h2>
+<pre><code class="language-text">encrypt
+ ↓
+hash(ciphertext)
+</code></pre>
+<p>Pros:</p>
+<ul>
+<li>better privacy</li>
+<li>avoids plaintext equality leakage</li>
+</ul>
+<p>Cons:</p>
+<ul>
+<li>less cross-user deduplication</li>
+</ul>
+<p>For a privacy-focused communication platform, prefer:</p>
+<blockquote>
+<p><strong>Encrypt first, then content-address the ciphertext.</strong></p>
+</blockquote>
+<hr />
+<h1 id="8-blob-identity-layers"><a class="header" href="#8-blob-identity-layers">8. Blob Identity Layers</a></h1>
+<p>Useful model:</p>
+<pre><code class="language-text">LogicalAttachmentId
+      ↓
+EncryptedBlobId
+      ↓
+ChunkIds
+</code></pre>
+<p>A message may reference a logical attachment record.</p>
+<p>The actual storage identity is the encrypted blob.</p>
+<hr />
+<h1 id="9-blob-descriptor"><a class="header" href="#9-blob-descriptor">9. Blob Descriptor</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct BlobDescriptor {
+    pub blob_id: BlobId,
+    pub size: u64,
+    pub chunking: ChunkingDescriptor,
+    pub encryption: EncryptionDescriptor,
+    pub media_type: Option&lt;MediaType&gt;,
+    pub manifest_id: Option&lt;ManifestId&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Do not trust remote-declared size blindly.</p>
+<hr />
+<h1 id="10-file-metadata"><a class="header" href="#10-file-metadata">10. File Metadata</a></h1>
+<p>User-facing metadata should be separate from blob identity.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct FileMetadata {
+    pub display_name: Option&lt;FileName&gt;,
+    pub media_type: Option&lt;MediaType&gt;,
+    pub logical_size: u64,
+    pub created_at: Option&lt;Timestamp&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>This metadata can be encrypted inside the application message if privacy requires.</p>
+<hr />
+<h1 id="11-chunking"><a class="header" href="#11-chunking">11. Chunking</a></h1>
+<p>Large blobs must be chunked.</p>
+<pre><code class="language-text">Blob
+ ├── Chunk 0
+ ├── Chunk 1
+ ├── Chunk 2
+ └── ...
+</code></pre>
+<p>Chunking enables:</p>
+<ul>
+<li>resume</li>
+<li>parallelism</li>
+<li>corruption isolation</li>
+<li>partial transfer</li>
+<li>DTN carriage</li>
+<li>progress reporting</li>
+<li>cache reuse</li>
+</ul>
+<hr />
+<h1 id="12-fixed-vs-content-defined-chunking"><a class="header" href="#12-fixed-vs-content-defined-chunking">12. Fixed vs Content-Defined Chunking</a></h1>
+<h2 id="fixed-size-chunks"><a class="header" href="#fixed-size-chunks">Fixed-size chunks</a></h2>
+<p>Example:</p>
+<pre><code class="language-text">1 MiB
+4 MiB
+</code></pre>
+<p>Pros:</p>
+<ul>
+<li>simple</li>
+<li>fast</li>
+<li>easy range requests</li>
+</ul>
+<h2 id="content-defined-chunking"><a class="header" href="#content-defined-chunking">Content-defined chunking</a></h2>
+<p>Pros:</p>
+<ul>
+<li>better dedup across modified files</li>
+</ul>
+<p>Cons:</p>
+<ul>
+<li>more CPU</li>
+<li>more metadata</li>
+<li>more complexity</li>
+</ul>
+<p>For v1, prefer:</p>
+<blockquote>
+<p><strong>Fixed-size chunking with a configurable chunk size.</strong></p>
+</blockquote>
+<hr />
+<h1 id="13-chunk-size-policy"><a class="header" href="#13-chunk-size-policy">13. Chunk Size Policy</a></h1>
+<p>Chunk size should depend on workload.</p>
+<p>Example ranges:</p>
+<pre><code class="language-text">small file:
+single chunk
+
+medium:
+256 KiB – 1 MiB chunks
+
+large:
+1 MiB – 4 MiB chunks
+</code></pre>
+<p>Do not hard-code one size for every transport.</p>
+<p>The manifest records the chosen scheme.</p>
+<hr />
+<h1 id="14-chunk-identity"><a class="header" href="#14-chunk-identity">14. Chunk Identity</a></h1>
+<p>Each chunk can have:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct ChunkHash([u8; 32]);
+<span class="boring">}</span></code></pre></pre>
+<p>The manifest includes chunk hashes.</p>
+<p>This allows verifying individual chunks before whole-object completion.</p>
+<hr />
+<h1 id="15-blob-manifest"><a class="header" href="#15-blob-manifest">15. Blob Manifest</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct BlobManifest {
+    pub version: u16,
+    pub blob_id: BlobId,
+    pub total_size: u64,
+    pub chunk_size: u32,
+    pub chunks: Vec&lt;ChunkDescriptor&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Chunk descriptor:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct ChunkDescriptor {
+    pub index: u32,
+    pub offset: u64,
+    pub size: u32,
+    pub hash: ChunkHash,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="16-manifest-limits"><a class="header" href="#16-manifest-limits">16. Manifest Limits</a></h1>
+<p>Bound:</p>
+<pre><code class="language-text">max chunks
+max manifest size
+max file size
+</code></pre>
+<p>Do not allow a tiny network frame to declare millions of chunks and force huge allocation.</p>
+<hr />
+<h1 id="17-manifest-hierarchy"><a class="header" href="#17-manifest-hierarchy">17. Manifest Hierarchy</a></h1>
+<p>For extremely large files, consider hierarchical manifests later.</p>
+<p>Example:</p>
+<pre><code class="language-text">Root manifest
+ ├── Segment manifest A
+ ├── Segment manifest B
+ └── Segment manifest C
+</code></pre>
+<p>This avoids massive flat manifests.</p>
+<p>Not required initially.</p>
+<hr />
+<h1 id="18-encryption-model"><a class="header" href="#18-encryption-model">18. Encryption Model</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">plaintext file
+    ↓
+per-blob random key
+    ↓
+chunk encryption
+    ↓
+ciphertext chunks
+    ↓
+content addressing
+</code></pre>
+<p>Use authenticated encryption.</p>
+<p>Each chunk must be independently verifiable/authenticated.</p>
+<hr />
+<h1 id="19-per-blob-key"><a class="header" href="#19-per-blob-key">19. Per-Blob Key</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct BlobEncryptionKey(SecretBytes);
+<span class="boring">}</span></code></pre></pre>
+<p>The key is not stored in public blob metadata.</p>
+<p>It is distributed through the E2EE application layer.</p>
+<hr />
+<h1 id="20-chunk-nonces"><a class="header" href="#20-chunk-nonces">20. Chunk Nonces</a></h1>
+<p>Never reuse AEAD nonce/key pairs.</p>
+<p>Derive chunk nonce safely from:</p>
+<pre><code class="language-text">blob key
+chunk index
+domain separation
+</code></pre>
+<p>or use securely generated per-chunk nonces recorded in authenticated metadata.</p>
+<p>The exact construction should use a vetted cryptographic design.</p>
+<hr />
+<h1 id="21-encryption-metadata"><a class="header" href="#21-encryption-metadata">21. Encryption Metadata</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct EncryptionDescriptor {
+    pub scheme: EncryptionSchemeId,
+    pub version: u16,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Do not expose raw secret key.</p>
+<hr />
+<h1 id="22-metadata-privacy"><a class="header" href="#22-metadata-privacy">22. Metadata Privacy</a></h1>
+<p>Sensitive metadata can include:</p>
+<pre><code class="language-text">file name
+MIME type
+dimensions
+duration
+creation time
+</code></pre>
+<p>Decide which metadata is:</p>
+<pre><code class="language-text">public transport metadata
+encrypted application metadata
+local-only metadata
+</code></pre>
+<p>Default should minimize exposure.</p>
+<hr />
+<h1 id="23-message-attachment-reference"><a class="header" href="#23-message-attachment-reference">23. Message Attachment Reference</a></h1>
+<p>Messaging stores a reference:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct AttachmentReference {
+    pub blob: BlobDescriptor,
+    pub metadata: EncryptedOrVisibleMetadata,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>The message does not contain the file bytes.</p>
+<hr />
+<h1 id="24-file-only-transfer"><a class="header" href="#24-file-only-transfer">24. File-Only Transfer</a></h1>
+<p>A file-sharing app can use:</p>
+<pre><code class="language-text">FileOffer
+FileAccept
+Transfer
+Blob
+</code></pre>
+<p>without creating a conversation.</p>
+<p>This is a core reusability requirement.</p>
+<hr />
+<h1 id="25-transfer-identity"><a class="header" href="#25-transfer-identity">25. Transfer Identity</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct TransferId([u8; 16]);
+<span class="boring">}</span></code></pre></pre>
+<p>A transfer is distinct from a blob.</p>
+<p>Same blob may have:</p>
+<pre><code class="language-text">multiple transfers
+multiple recipients
+multiple retries
+</code></pre>
+<hr />
+<h1 id="26-transfer-state-machine"><a class="header" href="#26-transfer-state-machine">26. Transfer State Machine</a></h1>
+<pre><code class="language-text">Created
+ ↓
+Offered
+ ↓
+Accepted
+ ↓
+Preparing
+ ↓
+Transferring
+ ↓
+Verifying
+ ↓
+Completed
+</code></pre>
+<p>Alternative states:</p>
+<pre><code class="language-text">Paused
+Deferred
+Cancelled
+Failed
+Expired
+</code></pre>
+<hr />
+<h1 id="27-transfer-record"><a class="header" href="#27-transfer-record">27. Transfer Record</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct TransferRecord {
+    pub transfer_id: TransferId,
+    pub blob_id: BlobId,
+    pub direction: TransferDirection,
+    pub peer: DeviceId,
+    pub state: TransferState,
+    pub created_at: Timestamp,
+    pub updated_at: Timestamp,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="28-transfer-journal"><a class="header" href="#28-transfer-journal">28. Transfer Journal</a></h1>
+<p>High-frequency operational state belongs in a transfer journal/projection.</p>
+<p>Examples:</p>
+<pre><code class="language-text">chunk bitmap
+bytes verified
+active path
+retry count
+</code></pre>
+<p>Do not append a permanent event for every packet.</p>
+<p>Part 04 event log stores meaningful semantic transitions.</p>
+<hr />
+<h1 id="29-resume-bitmap"><a class="header" href="#29-resume-bitmap">29. Resume Bitmap</a></h1>
+<p>For fixed chunking:</p>
+<pre><code class="language-text">received:
+[1,1,1,0,0,1,...]
+</code></pre>
+<p>Store efficiently as:</p>
+<pre><code class="language-text">bitset
+ranges
+</code></pre>
+<p>On restart, receiver knows exactly what is missing.</p>
+<hr />
+<h1 id="30-range-based-resume"><a class="header" href="#30-range-based-resume">30. Range-Based Resume</a></h1>
+<p>Alternative:</p>
+<pre><code class="language-text">received ranges
+</code></pre>
+<p>Example:</p>
+<pre><code class="language-text">0..4 MiB
+8..12 MiB
+</code></pre>
+<p>Useful when transport supports ranges.</p>
+<p>Choose one canonical internal form.</p>
+<hr />
+<h1 id="31-resume-protocol"><a class="header" href="#31-resume-protocol">31. Resume Protocol</a></h1>
+<p>Receiver sends:</p>
+<pre><code class="language-text">manifest known
+missing chunks:
+3,4,9,10
+</code></pre>
+<p>Sender transfers only missing chunks.</p>
+<p>No full restart.</p>
+<hr />
+<h1 id="32-partial-availability"><a class="header" href="#32-partial-availability">32. Partial Availability</a></h1>
+<p>Receiver should be able to access:</p>
+<pre><code class="language-text">thumbnail
+preview
+first playable media segment
+</code></pre>
+<p>before full object completion where application allows.</p>
+<p>The blob store exposes safe partial-read status.</p>
+<hr />
+<h1 id="33-progressive-images"><a class="header" href="#33-progressive-images">33. Progressive Images</a></h1>
+<p>Image flow:</p>
+<pre><code class="language-text">thumbnail blob
+preview blob
+original blob
+</code></pre>
+<p>Prefer separate objects rather than relying only on arbitrary partial decode.</p>
+<p>This simplifies UI and transport policy.</p>
+<hr />
+<h1 id="34-progressive-videofile-handling"><a class="header" href="#34-progressive-videofile-handling">34. Progressive Video/File Handling</a></h1>
+<p>For large video/files, partial transfer may be usable if format supports it.</p>
+<p>The blob layer should not assume every file is stream-playable.</p>
+<p>Media layer decides.</p>
+<hr />
+<h1 id="35-transfer-planner"><a class="header" href="#35-transfer-planner">35. Transfer Planner</a></h1>
+<pre><code class="language-text">TransferPlanner
+├── destination resolution
+├── chunk scheduling
+├── route request generation
+├── concurrency limits
+├── retry planning
+└── policy evaluation
+</code></pre>
+<p>It consumes Part 03 routing decisions.</p>
+<hr />
+<h1 id="36-transport-independence"><a class="header" href="#36-transport-independence">36. Transport Independence</a></h1>
+<p>Transfer engine must not contain:</p>
+<pre><code class="language-text">Iroh-specific send()
+Bluetooth-specific write()
+</code></pre>
+<p>Instead:</p>
+<pre><code class="language-text">Transfer Engine
+     ↓
+Transport/Session abstraction
+</code></pre>
+<p>This allows transfer over:</p>
+<pre><code class="language-text">Iroh
+LAN
+Wi-Fi Direct
+Bluetooth
+DTN
+</code></pre>
+<hr />
+<h1 id="37-streaming-io"><a class="header" href="#37-streaming-io">37. Streaming I/O</a></h1>
+<p>Never:</p>
+<pre><code class="language-text">read entire 2 GB file into Vec&lt;u8&gt;
+</code></pre>
+<p>Use:</p>
+<pre><code class="language-text">File
+ ↓
+bounded reader
+ ↓
+chunk buffer
+ ↓
+encrypt
+ ↓
+transport
+</code></pre>
+<p>Receiver:</p>
+<pre><code class="language-text">transport
+ ↓
+chunk
+ ↓
+verify/decrypt
+ ↓
+temp/staging storage
+</code></pre>
+<hr />
+<h1 id="38-low-copy-data-path"><a class="header" href="#38-low-copy-data-path">38. Low-Copy Data Path</a></h1>
+<p>Use types like:</p>
+<pre><code class="language-text">Bytes
+BytesMut
+Arc&lt;[u8]&gt;
+</code></pre>
+<p>where appropriate.</p>
+<p>Avoid repeated:</p>
+<pre><code class="language-text">Vec → clone → encrypt copy → clone → send
+</code></pre>
+<p>Do not sacrifice safety for theoretical zero-copy.</p>
+<hr />
+<h1 id="39-buffer-pool"><a class="header" href="#39-buffer-pool">39. Buffer Pool</a></h1>
+<p>For high-throughput transfers, a reusable bounded buffer pool can reduce allocations.</p>
+<pre><code class="language-text">BufferPool
+├── max buffers
+├── chunk size classes
+└── backpressure
+</code></pre>
+<p>Do not create unbounded pools.</p>
+<hr />
+<h1 id="40-backpressure"><a class="header" href="#40-backpressure">40. Backpressure</a></h1>
+<p>Pipeline:</p>
+<pre><code class="language-text">disk reader
+ ↓
+bounded chunk queue
+ ↓
+encryptor
+ ↓
+bounded transport queue
+ ↓
+network
+</code></pre>
+<p>If network slows:</p>
+<pre><code class="language-text">reader slows
+</code></pre>
+<p>Memory remains bounded.</p>
+<hr />
+<h1 id="41-parallelism"><a class="header" href="#41-parallelism">41. Parallelism</a></h1>
+<p>Support configurable parallel chunk transfer.</p>
+<p>Example:</p>
+<pre><code class="language-text">4 concurrent chunks
+</code></pre>
+<p>But increase only when:</p>
+<pre><code class="language-text">bandwidth
+CPU
+storage
+battery
+</code></pre>
+<p>justify it.</p>
+<hr />
+<h1 id="42-per-transport-parallelism"><a class="header" href="#42-per-transport-parallelism">42. Per-Transport Parallelism</a></h1>
+<p>Iroh/LAN:</p>
+<pre><code class="language-text">higher parallelism
+</code></pre>
+<p>Bluetooth:</p>
+<pre><code class="language-text">very low parallelism
+</code></pre>
+<p>DTN:</p>
+<pre><code class="language-text">bundle-level scheduling
+</code></pre>
+<p>The transfer engine uses route capabilities.</p>
+<hr />
+<h1 id="43-adaptive-concurrency"><a class="header" href="#43-adaptive-concurrency">43. Adaptive Concurrency</a></h1>
+<p>Future optimization:</p>
+<pre><code class="language-text">increase concurrency
+while throughput improves
+
+reduce
+when:
+loss rises
+latency rises
+memory pressure
+battery saver
+</code></pre>
+<p>Start with deterministic limits.</p>
+<hr />
+<h1 id="44-file-offer-protocol"><a class="header" href="#44-file-offer-protocol">44. File Offer Protocol</a></h1>
+<p>Sender may send:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct FileOffer {
+    pub transfer_id: TransferId,
+    pub blob: BlobDescriptor,
+    pub encrypted_metadata: Bytes,
+    pub expiry: Option&lt;Timestamp&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Receiver decides:</p>
+<pre><code class="language-text">accept
+reject
+defer
+metadata-only
+</code></pre>
+<hr />
+<h1 id="45-auto-accept-policy"><a class="header" href="#45-auto-accept-policy">45. Auto-Accept Policy</a></h1>
+<p>Applications can define:</p>
+<pre><code class="language-text">contacts only
+small files
+Wi-Fi only
+specific MIME types
+emergency thumbnails
+</code></pre>
+<p>File subsystem enforces policy supplied by application.</p>
+<hr />
+<h1 id="46-transfer-authorization"><a class="header" href="#46-transfer-authorization">46. Transfer Authorization</a></h1>
+<p>Before receiving:</p>
+<pre><code class="language-text">peer identity
+authorization
+size policy
+storage quota
+content policy
+</code></pre>
+<p>must be checked.</p>
+<p>Connection alone does not imply permission.</p>
+<hr />
+<h1 id="47-quotas"><a class="header" href="#47-quotas">47. Quotas</a></h1>
+<p>Support:</p>
+<pre><code class="language-text">max file size
+max concurrent transfers
+max per-peer bytes
+max daily received bytes
+max relay storage
+max cache size
+</code></pre>
+<p>This protects resource usage.</p>
+<hr />
+<h1 id="48-storage-reservation"><a class="header" href="#48-storage-reservation">48. Storage Reservation</a></h1>
+<p>Before accepting a large transfer:</p>
+<pre><code class="language-text">reserve expected storage
+</code></pre>
+<p>or verify sufficient quota.</p>
+<p>Avoid accepting 20 GB then failing at 99%.</p>
+<hr />
+<h1 id="49-sparse-files"><a class="header" href="#49-sparse-files">49. Sparse Files</a></h1>
+<p>Where filesystem supports:</p>
+<pre><code class="language-text">sparse allocation
+</code></pre>
+<p>can help partial/range downloads.</p>
+<p>Use platform capability abstraction.</p>
+<p>Not mandatory for correctness.</p>
+<hr />
+<h1 id="50-temporary-staging"><a class="header" href="#50-temporary-staging">50. Temporary Staging</a></h1>
+<p>Incoming incomplete objects should live in:</p>
+<pre><code class="language-text">staging/
+</code></pre>
+<p>not final blob namespace.</p>
+<p>After full verification:</p>
+<pre><code class="language-text">atomic move/commit
+</code></pre>
+<p>to final blob store.</p>
+<hr />
+<h1 id="51-atomic-finalization"><a class="header" href="#51-atomic-finalization">51. Atomic Finalization</a></h1>
+<p>Flow:</p>
+<pre><code class="language-text">receive chunks
+ ↓
+verify each
+ ↓
+verify full manifest/blob
+ ↓
+fsync as policy requires
+ ↓
+atomic rename/commit
+ ↓
+mark Complete
+</code></pre>
+<p>Never expose incomplete object as complete.</p>
+<hr />
+<h1 id="52-crash-recovery"><a class="header" href="#52-crash-recovery">52. Crash Recovery</a></h1>
+<p>On restart:</p>
+<pre><code class="language-text">load transfer journal
+ ↓
+inspect staging files
+ ↓
+verify recorded completed chunks
+ ↓
+resume missing chunks
+</code></pre>
+<p>Do not trust temp files blindly.</p>
+<hr />
+<h1 id="53-temp-file-naming"><a class="header" href="#53-temp-file-naming">53. Temp File Naming</a></h1>
+<p>Use opaque safe IDs:</p>
+<pre><code class="language-text">&lt;TransferId&gt;.partial
+</code></pre>
+<p>Do not use untrusted file names as filesystem paths.</p>
+<hr />
+<h1 id="54-path-traversal-protection"><a class="header" href="#54-path-traversal-protection">54. Path Traversal Protection</a></h1>
+<p>Incoming display name:</p>
+<pre><code class="language-text">../../etc/passwd
+</code></pre>
+<p>must remain just a display string.</p>
+<p>Never construct storage paths directly from remote filenames.</p>
+<hr />
+<h1 id="55-filename-sanitization"><a class="header" href="#55-filename-sanitization">55. Filename Sanitization</a></h1>
+<p>When exporting to user filesystem:</p>
+<pre><code class="language-text">sanitize
+normalize
+resolve collision
+</code></pre>
+<p>Examples:</p>
+<pre><code class="language-text">photo.jpg
+photo (1).jpg
+</code></pre>
+<p>Keep original display name separately if useful.</p>
+<hr />
+<h1 id="56-mime-type-validation"><a class="header" href="#56-mime-type-validation">56. MIME Type Validation</a></h1>
+<p>Remote MIME type is only a hint.</p>
+<p>Where security matters:</p>
+<pre><code class="language-text">sniff/inspect content safely
+</code></pre>
+<p>before opening.</p>
+<p>Do not execute files based on declared MIME.</p>
+<hr />
+<h1 id="57-executable-content"><a class="header" href="#57-executable-content">57. Executable Content</a></h1>
+<p>Downloads may contain:</p>
+<pre><code class="language-text">APK
+EXE
+script
+archive
+</code></pre>
+<p>The communication platform should not auto-execute received files.</p>
+<p>Opening is an explicit application/user action.</p>
+<hr />
+<h1 id="58-archive-safety"><a class="header" href="#58-archive-safety">58. Archive Safety</a></h1>
+<p>If application extracts archives:</p>
+<pre><code class="language-text">zip-slip/path traversal
+decompression bomb
+symlink
+</code></pre>
+<p>must be handled in a separate safe extraction subsystem.</p>
+<p>Blob layer itself stores opaque bytes.</p>
+<hr />
+<h1 id="59-deduplication"><a class="header" href="#59-deduplication">59. Deduplication</a></h1>
+<p>If ciphertext-addressed:</p>
+<pre><code class="language-text">same encrypted object
+→ same blob
+</code></pre>
+<p>can deduplicate locally.</p>
+<p>Different encryption keys generally prevent cross-message plaintext deduplication.</p>
+<p>That is acceptable for privacy.</p>
+<hr />
+<h1 id="60-reference-counting"><a class="header" href="#60-reference-counting">60. Reference Counting</a></h1>
+<p>Track logical references:</p>
+<pre><code class="language-text">message attachment
+file-share history
+draft
+cache pin
+DTN bundle
+backup
+</code></pre>
+<p>Blob becomes GC-eligible when no required references remain.</p>
+<hr />
+<h1 id="61-pinning"><a class="header" href="#61-pinning">61. Pinning</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum PinReason {
+    UserSaved,
+    ActiveTransfer,
+    MessageReference,
+    DtnRequired,
+    BackupPending,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Pinned blobs are not evicted.</p>
+<hr />
+<h1 id="62-cache-vs-durable-blob"><a class="header" href="#62-cache-vs-durable-blob">62. Cache vs Durable Blob</a></h1>
+<p>Classify:</p>
+<pre><code class="language-text">Durable
+Cache
+Temporary
+Relay
+</code></pre>
+<p>Different retention rules apply.</p>
+<hr />
+<h1 id="63-garbage-collection"><a class="header" href="#63-garbage-collection">63. Garbage Collection</a></h1>
+<p>GC flow:</p>
+<pre><code class="language-text">scan unreferenced blobs
+ ↓
+respect grace period
+ ↓
+verify no active transfer
+ ↓
+delete atomically
+</code></pre>
+<p>Never delete a blob solely because it is old.</p>
+<hr />
+<h1 id="64-grace-period"><a class="header" href="#64-grace-period">64. Grace Period</a></h1>
+<p>A short grace period protects against:</p>
+<pre><code class="language-text">race between unreference/re-reference
+projection lag
+transaction timing
+</code></pre>
+<p>Use configurable policy.</p>
+<hr />
+<h1 id="65-cache-eviction"><a class="header" href="#65-cache-eviction">65. Cache Eviction</a></h1>
+<p>Evict in order:</p>
+<pre><code class="language-text">expired temp
+unreferenced previews
+old cache
+completed relay blobs
+large low-priority objects
+</code></pre>
+<p>Do not evict:</p>
+<pre><code class="language-text">user-saved
+active
+critical DTN
+</code></pre>
+<p>unless emergency storage policy explicitly allows.</p>
+<hr />
+<h1 id="66-storage-pressure"><a class="header" href="#66-storage-pressure">66. Storage Pressure</a></h1>
+<p>States:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum StoragePressure {
+    Normal,
+    Elevated,
+    Critical,
+    Full,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Effects:</p>
+<pre><code class="language-text">reduce prefetch
+pause bulk receive
+evict cache
+reject new large files
+preserve critical data
+</code></pre>
+<hr />
+<h1 id="67-relay-blob-storage"><a class="header" href="#67-relay-blob-storage">67. Relay Blob Storage</a></h1>
+<p>A DTN relay may store encrypted blobs/chunks for others.</p>
+<p>Relay storage must be:</p>
+<ul>
+<li>quota-limited</li>
+<li>opaque</li>
+<li>expiring</li>
+<li>separately accounted</li>
+<li>lower trust</li>
+</ul>
+<p>Relay node does not get content keys.</p>
+<hr />
+<h1 id="68-dtn-chunk-strategy"><a class="header" href="#68-dtn-chunk-strategy">68. DTN Chunk Strategy</a></h1>
+<p>Large files should not be blindly copied through BLE mesh.</p>
+<p>Policy may allow:</p>
+<pre><code class="language-text">metadata only
+thumbnail
+selected chunks
+full file only on capable relay
+</code></pre>
+<p>DTN subsystem uses file chunk identities and priorities.</p>
+<hr />
+<h1 id="69-emergency-files"><a class="header" href="#69-emergency-files">69. Emergency Files</a></h1>
+<p>Emergency mode can classify:</p>
+<pre><code class="language-text">SOS text → highest
+location → highest
+thumbnail → high
+voice → high
+full image → medium
+video → low/bulk
+</code></pre>
+<p>Blob engine supplies objects; Part 17 decides priority.</p>
+<hr />
+<h1 id="70-multi-device-file-delivery"><a class="header" href="#70-multi-device-file-delivery">70. Multi-Device File Delivery</a></h1>
+<p>Destination may be:</p>
+<pre><code class="language-text">account
+specific device
+all devices
+</code></pre>
+<p>Example:</p>
+<pre><code class="language-text">send 4 GB file to Bob's laptop only
+</code></pre>
+<p>Part 02 identity resolves target devices.</p>
+<hr />
+<h1 id="71-own-device-blob-sync"><a class="header" href="#71-own-device-blob-sync">71. Own-Device Blob Sync</a></h1>
+<p>Policies:</p>
+<pre><code class="language-text">metadata everywhere
+thumbnail everywhere
+full file on demand
+full file to selected devices
+</code></pre>
+<p>Avoid replicating every large blob to every device automatically.</p>
+<hr />
+<h1 id="72-peer-discovery-of-blob-availability"><a class="header" href="#72-peer-discovery-of-blob-availability">72. Peer Discovery of Blob Availability</a></h1>
+<p>Peers can advertise:</p>
+<pre><code class="language-text">I have BlobId X
+</code></pre>
+<p>only where privacy policy permits.</p>
+<p>Do not globally broadcast private content hashes.</p>
+<p>Availability exchange should occur inside authorized sessions.</p>
+<hr />
+<h1 id="73-swarming"><a class="header" href="#73-swarming">73. Swarming</a></h1>
+<p>Future capability:</p>
+<pre><code class="language-text">download different chunks from multiple authorized peers
+</code></pre>
+<p>Example:</p>
+<pre><code class="language-text">Alice laptop has chunks
+Alice phone has chunks
+recipient fetches from both
+</code></pre>
+<p>This can improve speed/resilience.</p>
+<p>Not necessary for initial release.</p>
+<hr />
+<h1 id="74-source-selection"><a class="header" href="#74-source-selection">74. Source Selection</a></h1>
+<p>For each chunk, potential sources may include:</p>
+<pre><code class="language-text">original sender
+sender's other device
+authorized cache
+relay
+</code></pre>
+<p>Routing chooses path/source according to policy.</p>
+<hr />
+<h1 id="75-trust-of-sources"><a class="header" href="#75-trust-of-sources">75. Trust of Sources</a></h1>
+<p>Content addressing means untrusted transport/source can provide bytes, but receiver still verifies hashes and decryption/authentication.</p>
+<p>Authorization still controls who can learn blob existence/keys.</p>
+<hr />
+<h1 id="76-full-blob-verification"><a class="header" href="#76-full-blob-verification">76. Full Blob Verification</a></h1>
+<p>After all chunks:</p>
+<pre><code class="language-text">reconstruct ordered ciphertext
+ ↓
+verify root/blob identity
+</code></pre>
+<p>Do not rely only on per-chunk hashes if the manifest/root binding is incomplete.</p>
+<hr />
+<h1 id="77-manifest-authentication"><a class="header" href="#77-manifest-authentication">77. Manifest Authentication</a></h1>
+<p>The manifest must be authenticated.</p>
+<p>Possible:</p>
+<pre><code class="language-text">manifest covered by E2EE message signature/authentication
+</code></pre>
+<p>or separately signed/authenticated.</p>
+<p>An attacker must not be able to reorder/replace chunk descriptors.</p>
+<hr />
+<h1 id="78-merkle-tree-option"><a class="header" href="#78-merkle-tree-option">78. Merkle Tree Option</a></h1>
+<p>For large blobs:</p>
+<pre><code class="language-text">Merkle root
+</code></pre>
+<p>can authenticate chunks efficiently.</p>
+<p>Benefits:</p>
+<ul>
+<li>independent chunk verification</li>
+<li>partial proofs</li>
+<li>swarming</li>
+</ul>
+<p>A flat chunk-hash manifest may be sufficient initially.</p>
+<hr />
+<h1 id="79-chunk-compression"><a class="header" href="#79-chunk-compression">79. Chunk Compression</a></h1>
+<p>Do not compress already compressed media blindly.</p>
+<p>Potential compression for:</p>
+<pre><code class="language-text">text archive
+structured data
+</code></pre>
+<p>should be content-aware and application-controlled.</p>
+<p>Never compress encrypted ciphertext expecting useful savings.</p>
+<hr />
+<h1 id="80-file-compression-architecture"><a class="header" href="#80-file-compression-architecture">80. File Compression Architecture</a></h1>
+<p>If compression is used:</p>
+<pre><code class="language-text">plaintext
+ ↓
+optional compression
+ ↓
+encryption
+ ↓
+chunking/addressing
+</code></pre>
+<p>or chunking before encryption depending chosen format.</p>
+<p>The order must be explicitly specified.</p>
+<hr />
+<h1 id="81-compression-bomb-protection"><a class="header" href="#81-compression-bomb-protection">81. Compression Bomb Protection</a></h1>
+<p>If decompression occurs:</p>
+<pre><code class="language-text">max output size
+ratio limits
+streaming decode
+</code></pre>
+<p>must be enforced.</p>
+<hr />
+<h1 id="82-media-derivatives"><a class="header" href="#82-media-derivatives">82. Media Derivatives</a></h1>
+<p>Blob subsystem should support related blobs:</p>
+<pre><code class="language-text">original
+thumbnail
+preview
+transcoded derivative
+waveform
+</code></pre>
+<p>Represent relationships in metadata, not inside storage identity.</p>
+<hr />
+<h1 id="83-image-derivatives"><a class="header" href="#83-image-derivatives">83. Image Derivatives</a></h1>
+<p>For a photo:</p>
+<pre><code class="language-text">original encrypted blob
+thumbnail encrypted blob
+preview encrypted blob
+</code></pre>
+<p>This provides faster conversation rendering and mesh transfer.</p>
+<hr />
+<h1 id="84-voice-note-representation"><a class="header" href="#84-voice-note-representation">84. Voice Note Representation</a></h1>
+<p>Voice note:</p>
+<pre><code class="language-text">Opus blob
+waveform metadata
+duration
+</code></pre>
+<p>The file/blob system stores it as ordinary binary content.</p>
+<hr />
+<h1 id="85-video-attachment"><a class="header" href="#85-video-attachment">85. Video Attachment</a></h1>
+<p>Video file attachment is not the same as realtime call media.</p>
+<p>Video attachment:</p>
+<pre><code class="language-text">blob transfer
+</code></pre>
+<p>Call:</p>
+<pre><code class="language-text">realtime media protocol
+</code></pre>
+<p>Keep these separate.</p>
+<hr />
+<h1 id="86-blob-read-api"><a class="header" href="#86-blob-read-api">86. Blob Read API</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait BlobReader {
+    async fn read_range(
+        &amp;self,
+        range: ByteRange,
+    ) -&gt; Result&lt;Bytes, BlobError&gt;;
+
+    async fn stream(
+        &amp;self,
+    ) -&gt; Result&lt;BlobStream, BlobError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Avoid APIs that require materializing entire objects.</p>
+<hr />
+<h1 id="87-blob-write-api"><a class="header" href="#87-blob-write-api">87. Blob Write API</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait BlobWriter {
+    async fn write_chunk(
+        &amp;mut self,
+        index: u32,
+        data: Bytes,
+    ) -&gt; Result&lt;(), BlobError&gt;;
+
+    async fn finalize(
+        self,
+    ) -&gt; Result&lt;BlobId, BlobError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Writer verifies expected size/hash.</p>
+<hr />
+<h1 id="88-blob-store-trait"><a class="header" href="#88-blob-store-trait">88. Blob Store Trait</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait BlobStore: Send + Sync {
+    async fn contains(&amp;self, id: BlobId) -&gt; Result&lt;bool, BlobError&gt;;
+    async fn stat(&amp;self, id: BlobId) -&gt; Result&lt;BlobStat, BlobError&gt;;
+    async fn open(&amp;self, id: BlobId) -&gt; Result&lt;Box&lt;dyn BlobReader&gt;, BlobError&gt;;
+    async fn begin_write(&amp;self, descriptor: BlobDescriptor)
+        -&gt; Result&lt;Box&lt;dyn BlobWriter&gt;, BlobError&gt;;
+    async fn delete(&amp;self, id: BlobId) -&gt; Result&lt;(), BlobError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="89-metadata-store"><a class="header" href="#89-metadata-store">89. Metadata Store</a></h1>
+<p>Blob bytes and metadata can be separated:</p>
+<pre><code class="language-text">filesystem:
+ciphertext blobs
+
+SQLite:
+descriptors
+references
+transfer state
+quotas
+</code></pre>
+<p>This is a strong practical architecture.</p>
+<hr />
+<h1 id="90-directory-layout"><a class="header" href="#90-directory-layout">90. Directory Layout</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">blob-root/
+├── objects/
+│   ├── ab/
+│   │   └── &lt;blob-id&gt;
+│   ├── cd/
+│   └── ...
+├── staging/
+├── temp/
+└── quarantine/
+</code></pre>
+<p>Prefix sharding avoids giant directories.</p>
+<hr />
+<h1 id="91-quarantine"><a class="header" href="#91-quarantine">91. Quarantine</a></h1>
+<p>Malformed or suspicious received objects may be placed in:</p>
+<pre><code class="language-text">quarantine
+</code></pre>
+<p>for diagnostics before deletion.</p>
+<p>Do not expose them to normal applications.</p>
+<hr />
+<h1 id="92-filesystem-permissions"><a class="header" href="#92-filesystem-permissions">92. Filesystem Permissions</a></h1>
+<p>Blob directories should use restrictive permissions.</p>
+<p>On mobile, app sandbox provides additional isolation.</p>
+<p>On desktop, set application-owned paths carefully.</p>
+<hr />
+<h1 id="93-database-schema"><a class="header" href="#93-database-schema">93. Database Schema</a></h1>
+<p>Conceptual tables:</p>
+<pre><code class="language-text">blobs
+blob_references
+blob_derivatives
+transfers
+transfer_chunks
+transfer_sources
+blob_pins
+storage_quotas
+</code></pre>
+<hr />
+<h1 id="94-blob-table"><a class="header" href="#94-blob-table">94. Blob Table</a></h1>
+<p>Example fields:</p>
+<pre><code class="language-text">blob_id
+size
+state
+created_at
+last_accessed
+storage_class
+reference_count
+</code></pre>
+<p>Do not store content path from untrusted metadata.</p>
+<hr />
+<h1 id="95-transfer-chunk-table"><a class="header" href="#95-transfer-chunk-table">95. Transfer Chunk Table</a></h1>
+<pre><code class="language-text">transfer_id
+chunk_index
+state
+verified
+bytes_received
+retry_count
+</code></pre>
+<p>Use compact representation for very large chunk counts where needed.</p>
+<hr />
+<h1 id="96-chunk-bitmap-optimization"><a class="header" href="#96-chunk-bitmap-optimization">96. Chunk Bitmap Optimization</a></h1>
+<p>For thousands of chunks, storing one SQL row per chunk may be expensive.</p>
+<p>Alternative:</p>
+<pre><code class="language-text">compressed bitmap / roaring bitmap / bitset blob
+</code></pre>
+<p>Benchmark before choosing.</p>
+<hr />
+<h1 id="97-durable-progress"><a class="header" href="#97-durable-progress">97. Durable Progress</a></h1>
+<p>Progress displayed to user should derive from:</p>
+<pre><code class="language-text">verified bytes
+</code></pre>
+<p>not merely bytes received into memory.</p>
+<p>This gives truthful resume semantics.</p>
+<hr />
+<h1 id="98-transfer-ack"><a class="header" href="#98-transfer-ack">98. Transfer ACK</a></h1>
+<p>Sender should distinguish:</p>
+<pre><code class="language-text">transport ACK
+chunk accepted
+blob verified
+user/application accepted
+</code></pre>
+<p>These are different states.</p>
+<hr />
+<h1 id="99-chunk-ack"><a class="header" href="#99-chunk-ack">99. Chunk ACK</a></h1>
+<p>Receiver can ACK:</p>
+<pre><code class="language-text">chunk index verified
+</code></pre>
+<p>or use range/bitmap acknowledgements.</p>
+<p>Avoid ACK per tiny frame if chunk is already large.</p>
+<hr />
+<h1 id="100-completion-ack"><a class="header" href="#100-completion-ack">100. Completion ACK</a></h1>
+<p>Final:</p>
+<pre><code class="language-text">BlobVerified
+</code></pre>
+<p>means receiver persisted and verified complete blob.</p>
+<p>Only then should sender mark transfer complete according to protocol.</p>
+<hr />
+<h1 id="101-transfer-cancellation"><a class="header" href="#101-transfer-cancellation">101. Transfer Cancellation</a></h1>
+<p>Cancellation must:</p>
+<pre><code class="language-text">stop scheduling
+cancel active streams
+persist Cancelled
+apply staging retention policy
+</code></pre>
+<p>User may optionally keep partial data for resume.</p>
+<hr />
+<h1 id="102-pause"><a class="header" href="#102-pause">102. Pause</a></h1>
+<p>Pause differs from cancel.</p>
+<p>Pause retains:</p>
+<pre><code class="language-text">journal
+partial chunks
+metadata
+</code></pre>
+<p>and can resume later.</p>
+<hr />
+<h1 id="103-deferred-transfer"><a class="header" href="#103-deferred-transfer">103. Deferred Transfer</a></h1>
+<p>A transfer may be:</p>
+<pre><code class="language-text">WaitingForWiFi
+WaitingForPeer
+WaitingForStorage
+WaitingForApproval
+WaitingForBattery
+</code></pre>
+<p>This integrates with Part 03 routing policy.</p>
+<hr />
+<h1 id="104-retry"><a class="header" href="#104-retry">104. Retry</a></h1>
+<p>Use exponential backoff where appropriate.</p>
+<p>Retry at:</p>
+<pre><code class="language-text">transfer/session level
+</code></pre>
+<p>not per raw network packet.</p>
+<p>Transport handles lower-level retries.</p>
+<hr />
+<h1 id="105-corrupt-chunk"><a class="header" href="#105-corrupt-chunk">105. Corrupt Chunk</a></h1>
+<p>On hash/authentication failure:</p>
+<pre><code class="language-text">discard chunk
+increment failure count
+request retransmission
+possibly penalize source
+</code></pre>
+<p>Repeated corruption may indicate malicious/broken source.</p>
+<hr />
+<h1 id="106-corrupt-manifest"><a class="header" href="#106-corrupt-manifest">106. Corrupt Manifest</a></h1>
+<p>Reject entire transfer offer if manifest authentication fails.</p>
+<p>Do not attempt "best effort" reconstruction.</p>
+<hr />
+<h1 id="107-multiple-sources"><a class="header" href="#107-multiple-sources">107. Multiple Sources</a></h1>
+<p>If one source repeatedly sends corrupt chunks:</p>
+<pre><code class="language-text">blacklist source for that transfer
+</code></pre>
+<p>while preserving other sources.</p>
+<hr />
+<h1 id="108-rate-limiting"><a class="header" href="#108-rate-limiting">108. Rate Limiting</a></h1>
+<p>Per-peer limits:</p>
+<pre><code class="language-text">offers/sec
+active transfers
+bytes/sec
+stored partial bytes
+</code></pre>
+<p>Unknown peers get stricter limits.</p>
+<hr />
+<h1 id="109-abuse-protection"><a class="header" href="#109-abuse-protection">109. Abuse Protection</a></h1>
+<p>Protect against:</p>
+<pre><code class="language-text">huge fake size
+millions of chunks
+never-completing transfers
+hash mismatch spam
+storage exhaustion
+offer spam
+</code></pre>
+<p>All allocations/storage reservations must be bounded.</p>
+<hr />
+<h1 id="110-resource-policy"><a class="header" href="#110-resource-policy">110. Resource Policy</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct FileResourcePolicy {
+    pub max_parallel_transfers: usize,
+    pub max_parallel_chunks: usize,
+    pub max_buffer_bytes: usize,
+    pub max_staging_bytes: u64,
+    pub max_file_size: u64,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Applications can tighten limits.</p>
+<hr />
+<h1 id="111-battery-awareness"><a class="header" href="#111-battery-awareness">111. Battery Awareness</a></h1>
+<p>Part 13 will deepen this.</p>
+<p>File subsystem should already expose knobs:</p>
+<pre><code class="language-text">pause background bulk on low battery
+reduce concurrency
+prefer Wi-Fi
+avoid expensive discovery
+</code></pre>
+<hr />
+<h1 id="112-memory-pressure"><a class="header" href="#112-memory-pressure">112. Memory Pressure</a></h1>
+<p>On low memory:</p>
+<pre><code class="language-text">shrink buffer pool
+reduce parallel chunks
+release previews
+pause background transfers
+</code></pre>
+<p>Do not lose verified progress.</p>
+<hr />
+<h1 id="113-thermal-pressure"><a class="header" href="#113-thermal-pressure">113. Thermal Pressure</a></h1>
+<p>Large hashing/encryption/transfers can generate heat.</p>
+<p>On thermal stress:</p>
+<pre><code class="language-text">reduce concurrency
+defer noncritical bulk
+</code></pre>
+<hr />
+<h1 id="114-hashing-performance"><a class="header" href="#114-hashing-performance">114. Hashing Performance</a></h1>
+<p>Hash incrementally while streaming.</p>
+<p>Do not read file twice if pipeline can safely combine:</p>
+<pre><code class="language-text">read
+hash
+encrypt
+write/send
+</code></pre>
+<p>But ensure chosen ciphertext-addressing scheme computes the correct final identity.</p>
+<hr />
+<h1 id="115-preprocessing-pipeline"><a class="header" href="#115-preprocessing-pipeline">115. Preprocessing Pipeline</a></h1>
+<p>Potential outgoing flow:</p>
+<pre><code class="language-text">source file
+ ↓
+validate metadata
+ ↓
+optional media derivative generation
+ ↓
+optional compression
+ ↓
+encrypt
+ ↓
+chunk/hash
+ ↓
+stage blob
+ ↓
+transfer
+</code></pre>
+<p>Exact order must be fixed in protocol spec.</p>
+<hr />
+<h1 id="116-staging-before-send"><a class="header" href="#116-staging-before-send">116. Staging Before Send</a></h1>
+<p>For durable resumability, consider preparing encrypted blob locally before transfer.</p>
+<p>Pros:</p>
+<ul>
+<li>stable BlobId</li>
+<li>easier retry</li>
+<li>easier multi-recipient send</li>
+<li>no need to reread original after app restart</li>
+</ul>
+<p>Cons:</p>
+<ul>
+<li>extra storage</li>
+</ul>
+<p>Policy can allow:</p>
+<pre><code class="language-text">stream-only
+stage-before-send
+</code></pre>
+<p>depending on file size/use.</p>
+<hr />
+<h1 id="117-stream-only-mode"><a class="header" href="#117-stream-only-mode">117. Stream-Only Mode</a></h1>
+<p>For very large data or limited storage:</p>
+<pre><code class="language-text">read source
+ ↓
+encrypt/chunk
+ ↓
+send
+</code></pre>
+<p>without retaining full encrypted blob.</p>
+<p>But resume after source changes becomes harder.</p>
+<p>Use only when application semantics permit.</p>
+<hr />
+<h1 id="118-source-mutation-detection"><a class="header" href="#118-source-mutation-detection">118. Source Mutation Detection</a></h1>
+<p>If transferring from a file path/handle:</p>
+<pre><code class="language-text">file may change
+</code></pre>
+<p>Record:</p>
+<pre><code class="language-text">size
+mtime if useful
+inode/file-id if available
+content hash as built
+</code></pre>
+<p>If source changes mid-transfer, abort/restart.</p>
+<p>Do not silently send mixed versions.</p>
+<hr />
+<h1 id="119-immutable-source-snapshot"><a class="header" href="#119-immutable-source-snapshot">119. Immutable Source Snapshot</a></h1>
+<p>Best production approach where feasible:</p>
+<pre><code class="language-text">copy/import source into managed blob staging
+</code></pre>
+<p>Then transfer immutable bytes.</p>
+<p>This simplifies correctness.</p>
+<hr />
+<h1 id="120-user-file-handles"><a class="header" href="#120-user-file-handles">120. User File Handles</a></h1>
+<p>On Android/iOS, source may be a platform URI/handle.</p>
+<p>Platform adapter exposes a stream/descriptor.</p>
+<p>Core never assumes POSIX path access.</p>
+<hr />
+<h1 id="121-android-integration"><a class="header" href="#121-android-integration">121. Android Integration</a></h1>
+<p>Kotlin may handle:</p>
+<pre><code class="language-text">Photo Picker
+Storage Access Framework
+content:// URI
+persistable permissions
+</code></pre>
+<p>Rust owns:</p>
+<pre><code class="language-text">metadata validation
+blob import
+encryption
+chunking
+transfer
+</code></pre>
+<hr />
+<h1 id="122-ios-integration"><a class="header" href="#122-ios-integration">122. iOS Integration</a></h1>
+<p>Platform adapter handles:</p>
+<pre><code class="language-text">document picker
+photo picker
+security-scoped URLs where applicable
+</code></pre>
+<p>Rust core remains unchanged.</p>
+<hr />
+<h1 id="123-desktop-integration"><a class="header" href="#123-desktop-integration">123. Desktop Integration</a></h1>
+<p>Desktop can use native file picker through Dioxus/platform layer.</p>
+<p>Blob engine receives:</p>
+<pre><code class="language-text">safe file source handle/path abstraction
+</code></pre>
+<hr />
+<h1 id="124-file-source-abstraction"><a class="header" href="#124-file-source-abstraction">124. File Source Abstraction</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait FileSource {
+    async fn len(&amp;self) -&gt; Result&lt;u64, FileError&gt;;
+    async fn read_at(&amp;self, offset: u64, buf: &amp;mut [u8]) -&gt; Result&lt;usize, FileError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Avoid tying core to <code>std::fs::File</code> only.</p>
+<hr />
+<h1 id="125-file-sink-abstraction"><a class="header" href="#125-file-sink-abstraction">125. File Sink Abstraction</a></h1>
+<p>For export:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait FileSink {
+    async fn write(&amp;mut self, data: &amp;[u8]) -&gt; Result&lt;(), FileError&gt;;
+    async fn commit(self: Box&lt;Self&gt;) -&gt; Result&lt;(), FileError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Platform implementations can handle Android/iOS document destinations.</p>
+<hr />
+<h1 id="126-export-vs-internal-blob"><a class="header" href="#126-export-vs-internal-blob">126. Export vs Internal Blob</a></h1>
+<p>Keep internal encrypted blob separate from user-visible exported file.</p>
+<p>Flow:</p>
+<pre><code class="language-text">internal blob
+ ↓
+decrypt
+ ↓
+user-selected destination
+</code></pre>
+<p>This preserves app sandbox and content integrity.</p>
+<hr />
+<h1 id="127-local-decryption-cache"><a class="header" href="#127-local-decryption-cache">127. Local Decryption Cache</a></h1>
+<p>Avoid keeping permanent decrypted copies unless explicitly required.</p>
+<p>Options:</p>
+<pre><code class="language-text">decrypt on demand
+temporary cache
+user export
+</code></pre>
+<p>Privacy-sensitive default should minimize plaintext persistence.</p>
+<hr />
+<h1 id="128-thumbnail-cache"><a class="header" href="#128-thumbnail-cache">128. Thumbnail Cache</a></h1>
+<p>Thumbnails may be decrypted and cached.</p>
+<p>Use:</p>
+<pre><code class="language-text">bounded LRU
+storage pressure eviction
+</code></pre>
+<p>Do not let thumbnail cache grow without limit.</p>
+<hr />
+<h1 id="129-media-decode-isolation"><a class="header" href="#129-media-decode-isolation">129. Media Decode Isolation</a></h1>
+<p>Image/video decode should be separate from blob integrity.</p>
+<p>Flow:</p>
+<pre><code class="language-text">verified/decrypted blob
+ ↓
+media decoder
+</code></pre>
+<p>Never decode unverified arbitrary chunks as trusted content unless streaming decoder is hardened and sandboxed appropriately.</p>
+<hr />
+<h1 id="130-iroh-blobs-integration"><a class="header" href="#130-iroh-blobs-integration">130. Iroh Blobs Integration</a></h1>
+<p>If using Iroh's blob capabilities, wrap them behind the platform's blob/transfer abstraction.</p>
+<p>Do not let application code depend directly on Iroh-specific blob types.</p>
+<p>This allows:</p>
+<pre><code class="language-text">Iroh backend
+filesystem backend
+future backend
+</code></pre>
+<p>without changing message/file APIs.</p>
+<hr />
+<h1 id="131-internal-vs-iroh-content-ids"><a class="header" href="#131-internal-vs-iroh-content-ids">131. Internal vs Iroh Content IDs</a></h1>
+<p>If Iroh provides its own content hash/address, define mapping clearly:</p>
+<pre><code class="language-text">Platform BlobId
+↔
+Iroh blob identifier
+</code></pre>
+<p>Do not assume external IDs are identical forever.</p>
+<hr />
+<h1 id="132-direct-transfer-protocol"><a class="header" href="#132-direct-transfer-protocol">132. Direct Transfer Protocol</a></h1>
+<p>A custom file control protocol may negotiate:</p>
+<pre><code class="language-text">offer
+manifest
+missing chunks
+pause
+resume
+cancel
+complete
+</code></pre>
+<p>Bulk data can use optimized transport-specific streams.</p>
+<hr />
+<h1 id="133-protocol-extension-integration"><a class="header" href="#133-protocol-extension-integration">133. Protocol Extension Integration</a></h1>
+<p>Part 01 extension:</p>
+<pre><code class="language-text">files/1
+</code></pre>
+<p>Capabilities may include:</p>
+<pre><code class="language-text">chunking
+resume
+parallel
+content addressing
+partial read
+multi-source
+</code></pre>
+<hr />
+<h1 id="134-capability-negotiation"><a class="header" href="#134-capability-negotiation">134. Capability Negotiation</a></h1>
+<p>Receiver advertises:</p>
+<pre><code class="language-text">max chunk size
+parallelism
+max object size
+resume support
+</code></pre>
+<p>Sender chooses common compatible behavior.</p>
+<hr />
+<h1 id="135-protocol-versioning"><a class="header" href="#135-protocol-versioning">135. Protocol Versioning</a></h1>
+<p>Stable:</p>
+<pre><code class="language-text">files/1
+</code></pre>
+<p>Major incompatible changes become:</p>
+<pre><code class="language-text">files/2
+</code></pre>
+<p>Internal storage schema can evolve independently.</p>
+<hr />
+<h1 id="136-wire-types-vs-domain-types"><a class="header" href="#136-wire-types-vs-domain-types">136. Wire Types vs Domain Types</a></h1>
+<p>Do not serialize:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>TransferRecord
+<span class="boring">}</span></code></pre></pre>
+<p>directly.</p>
+<p>Use:</p>
+<pre><code class="language-text">FileOfferV1
+ChunkRequestV1
+ChunkAckV1
+TransferCompleteV1
+</code></pre>
+<hr />
+<h1 id="137-postcard-usage"><a class="header" href="#137-postcard-usage">137. Postcard Usage</a></h1>
+<p>Postcard is suitable for compact control metadata.</p>
+<p>Do not put large chunk data inside one giant Postcard structure if streaming raw bytes is more efficient.</p>
+<p>Use:</p>
+<pre><code class="language-text">small Postcard header
++
+streamed chunk bytes
+</code></pre>
+<hr />
+<h1 id="138-chunk-frame"><a class="header" href="#138-chunk-frame">138. Chunk Frame</a></h1>
+<p>Conceptually:</p>
+<pre><code class="language-text">ChunkHeader
+├── transfer_id
+├── blob_id
+├── chunk_index
+├── size
+└── hash/proof metadata
+
+followed by:
+chunk bytes
+</code></pre>
+<p>Validate before allocating.</p>
+<hr />
+<h1 id="139-large-length-safety"><a class="header" href="#139-large-length-safety">139. Large-Length Safety</a></h1>
+<p>Use:</p>
+<pre><code class="language-text">u64 for file sizes
+u32 for bounded chunk size
+</code></pre>
+<p>but always compare against local limits before conversion/allocation.</p>
+<p>Never cast untrusted <code>u64</code> directly to <code>usize</code>.</p>
+<hr />
+<h1 id="140-progress-model"><a class="header" href="#140-progress-model">140. Progress Model</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct TransferProgress {
+    pub total_bytes: u64,
+    pub verified_bytes: u64,
+    pub active_bytes_per_sec: Option&lt;u64&gt;,
+    pub state: TransferState,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>UI update frequency should be throttled.</p>
+<hr />
+<h1 id="141-eta"><a class="header" href="#141-eta">141. ETA</a></h1>
+<p>ETA is approximate.</p>
+<p>Do not present false precision.</p>
+<p>Use:</p>
+<pre><code class="language-text">~2 min
+</code></pre>
+<p>or omit when unstable.</p>
+<hr />
+<h1 id="142-ui-independence"><a class="header" href="#142-ui-independence">142. UI Independence</a></h1>
+<p>Blob subsystem emits state/events.</p>
+<p>It does not call:</p>
+<pre><code class="language-text">show progress
+open file
+display image
+</code></pre>
+<p>Dioxus or another UI consumes transfer state.</p>
+<hr />
+<h1 id="143-notification-integration"><a class="header" href="#143-notification-integration">143. Notification Integration</a></h1>
+<p>Background transfer may emit:</p>
+<pre><code class="language-text">completed
+failed
+action required
+</code></pre>
+<p>through notification abstraction.</p>
+<p>Core does not directly call Android notification APIs.</p>
+<hr />
+<h1 id="144-file-acceptance-ux"><a class="header" href="#144-file-acceptance-ux">144. File Acceptance UX</a></h1>
+<p>Application may show:</p>
+<pre><code class="language-text">Document.pdf
+12.4 MB
+From Alice
+[Accept] [Decline]
+</code></pre>
+<p>Blob engine only provides trusted metadata and state.</p>
+<hr />
+<h1 id="145-automatic-download-policy"><a class="header" href="#145-automatic-download-policy">145. Automatic Download Policy</a></h1>
+<p>Policy examples:</p>
+<pre><code class="language-text">images on Wi-Fi
+voice always
+video never
+files manual
+emergency thumbnail automatically
+</code></pre>
+<p>This belongs to application policy integrated with routing/file service.</p>
+<hr />
+<h1 id="146-data-saver"><a class="header" href="#146-data-saver">146. Data Saver</a></h1>
+<p>When enabled:</p>
+<pre><code class="language-text">thumbnail first
+defer originals
+pause background large files
+</code></pre>
+<p>Blob engine exposes dependency relationships between derivative and original.</p>
+<hr />
+<h1 id="147-storage-classes"><a class="header" href="#147-storage-classes">147. Storage Classes</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum BlobStorageClass {
+    Durable,
+    Cached,
+    Temporary,
+    Relay,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Each has:</p>
+<ul>
+<li>retention</li>
+<li>quota</li>
+<li>eviction priority</li>
+</ul>
+<hr />
+<h1 id="148-blob-reference-model"><a class="header" href="#148-blob-reference-model">148. Blob Reference Model</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct BlobReference {
+    pub owner_namespace: NamespaceId,
+    pub object_id: ObjectId,
+    pub blob_id: BlobId,
+    pub role: BlobRole,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Examples:</p>
+<pre><code class="language-text">message attachment
+avatar
+thumbnail
+transfer
+backup
+</code></pre>
+<hr />
+<h1 id="149-reference-integrity"><a class="header" href="#149-reference-integrity">149. Reference Integrity</a></h1>
+<p>Reference updates should be transactional with corresponding domain state.</p>
+<p>Example:</p>
+<pre><code class="language-text">message deleted
+ ↓
+remove message reference
+ ↓
+blob becomes GC candidate
+</code></pre>
+<p>Do not update reference count loosely outside transactions.</p>
+<hr />
+<h1 id="150-reference-count-recovery"><a class="header" href="#150-reference-count-recovery">150. Reference Count Recovery</a></h1>
+<p>Reference count is derived metadata.</p>
+<p>If inconsistent:</p>
+<pre><code class="language-text">rebuild by scanning authoritative references
+</code></pre>
+<p>Do not treat cached count as irreplaceable truth.</p>
+<hr />
+<h1 id="151-gc-mark-and-sweep-option"><a class="header" href="#151-gc-mark-and-sweep-option">151. GC Mark-and-Sweep Option</a></h1>
+<p>For robustness:</p>
+<pre><code class="language-text">mark referenced
+ ↓
+sweep unreferenced + grace-period
+</code></pre>
+<p>can periodically validate counts.</p>
+<hr />
+<h1 id="152-orphan-detection"><a class="header" href="#152-orphan-detection">152. Orphan Detection</a></h1>
+<p>Crash may create staged/unreferenced blobs.</p>
+<p>Periodic cleanup detects:</p>
+<pre><code class="language-text">no transfer
+no reference
+older than grace period
+</code></pre>
+<p>then removes safely.</p>
+<hr />
+<h1 id="153-partial-blob-retention"><a class="header" href="#153-partial-blob-retention">153. Partial Blob Retention</a></h1>
+<p>After failed transfer:</p>
+<pre><code class="language-text">keep for resume
+</code></pre>
+<p>until:</p>
+<pre><code class="language-text">expiry
+user cancel
+storage pressure
+</code></pre>
+<p>Policy-driven.</p>
+<hr />
+<h1 id="154-expiry"><a class="header" href="#154-expiry">154. Expiry</a></h1>
+<p>Transfers and blobs can have:</p>
+<pre><code class="language-text">offer expiry
+transfer expiry
+relay expiry
+cache expiry
+</code></pre>
+<p>These are different.</p>
+<p>Do not use one timestamp for all semantics.</p>
+<hr />
+<h1 id="155-message-deletion"><a class="header" href="#155-message-deletion">155. Message Deletion</a></h1>
+<p>Deleting a message may remove a blob reference.</p>
+<p>If same blob referenced elsewhere:</p>
+<pre><code class="language-text">do not delete
+</code></pre>
+<p>GC handles it.</p>
+<hr />
+<h1 id="156-disappearing-messages"><a class="header" href="#156-disappearing-messages">156. Disappearing Messages</a></h1>
+<p>Blob linked only to disappearing message becomes eligible after:</p>
+<pre><code class="language-text">message expiry
++
+retention grace
+</code></pre>
+<p>unless user explicitly saved it.</p>
+<hr />
+<h1 id="157-user-save"><a class="header" href="#157-user-save">157. User Save</a></h1>
+<p>"Save to device" should create:</p>
+<pre><code class="language-text">user-owned durable reference
+</code></pre>
+<p>or export plaintext to user-selected location.</p>
+<p>Clarify semantics.</p>
+<hr />
+<h1 id="158-backup"><a class="header" href="#158-backup">158. Backup</a></h1>
+<p>Backup policy determines whether to include:</p>
+<pre><code class="language-text">all blobs
+only referenced durable blobs
+thumbnails
+relay cache
+</code></pre>
+<p>Relay cache should normally be excluded.</p>
+<hr />
+<h1 id="159-incremental-backup"><a class="header" href="#159-incremental-backup">159. Incremental Backup</a></h1>
+<p>Content addressing allows efficient:</p>
+<pre><code class="language-text">backup only missing BlobIds
+</code></pre>
+<p>Useful for large datasets.</p>
+<hr />
+<h1 id="160-restore"><a class="header" href="#160-restore">160. Restore</a></h1>
+<p>Restore:</p>
+<pre><code class="language-text">manifest metadata
+ ↓
+blob bytes
+ ↓
+hash verification
+ ↓
+reference rebuild
+</code></pre>
+<p>Never trust backup bytes without integrity checks.</p>
+<hr />
+<h1 id="161-cross-device-backup"><a class="header" href="#161-cross-device-backup">161. Cross-Device Backup</a></h1>
+<p>A user's second device may serve as backup source.</p>
+<p>The file subsystem treats it as another authorized blob source.</p>
+<hr />
+<h1 id="162-serverobject-storage-optional-backend"><a class="header" href="#162-serverobject-storage-optional-backend">162. Server/Object Storage Optional Backend</a></h1>
+<p>Enterprise/cloud products may use:</p>
+<pre><code class="language-text">S3-compatible
+object store
+server cache
+</code></pre>
+<p>through BlobStore adapter.</p>
+<p>The communication SDK should not require cloud object storage.</p>
+<hr />
+<h1 id="163-server-side-encryption"><a class="header" href="#163-server-side-encryption">163. Server-Side Encryption</a></h1>
+<p>If server stores blobs, prefer:</p>
+<pre><code class="language-text">already application-encrypted ciphertext
+</code></pre>
+<p>Server need not receive plaintext.</p>
+<hr />
+<h1 id="164-signed-urls"><a class="header" href="#164-signed-urls">164. Signed URLs</a></h1>
+<p>If a deployment uses object-storage signed URLs, keep that mechanism outside core blob identity.</p>
+<p>It is a transport/access adapter.</p>
+<hr />
+<h1 id="165-public-sharing"><a class="header" href="#165-public-sharing">165. Public Sharing</a></h1>
+<p>If future product supports public share links:</p>
+<pre><code class="language-text">share capability
++
+blob identifier
++
+decryption/access material
+</code></pre>
+<p>must be carefully designed.</p>
+<p>Do not turn private BlobId into public URL by default.</p>
+<hr />
+<h1 id="166-capability-based-file-access"><a class="header" href="#166-capability-based-file-access">166. Capability-Based File Access</a></h1>
+<p>Potential future design:</p>
+<pre><code class="language-text">ReadCapability
+WriteCapability
+ForwardCapability
+</code></pre>
+<p>This integrates with later capability-security architecture.</p>
+<hr />
+<h1 id="167-forwarding-permission"><a class="header" href="#167-forwarding-permission">167. Forwarding Permission</a></h1>
+<p>A file may be:</p>
+<pre><code class="language-text">recipient-only
+forwardable
+relayable ciphertext
+public
+</code></pre>
+<p>Do not conflate:</p>
+<pre><code class="language-text">relay allowed
+</code></pre>
+<p>with:</p>
+<pre><code class="language-text">recipient may re-share plaintext
+</code></pre>
+<hr />
+<h1 id="168-relay-vs-recipient"><a class="header" href="#168-relay-vs-recipient">168. Relay vs Recipient</a></h1>
+<p>Relay:</p>
+<pre><code class="language-text">stores/forwards ciphertext
+</code></pre>
+<p>Recipient:</p>
+<pre><code class="language-text">has decryption authorization
+</code></pre>
+<p>These are distinct roles.</p>
+<hr />
+<h1 id="169-multi-recipient-files"><a class="header" href="#169-multi-recipient-files">169. Multi-Recipient Files</a></h1>
+<p>Avoid re-encrypting gigantic file data separately for every recipient if application cryptographic model can safely share a content key via per-recipient encrypted key wrapping.</p>
+<p>Conceptually:</p>
+<pre><code class="language-text">one encrypted blob
++
+recipient-specific wrapped blob key
+</code></pre>
+<p>This can be much more efficient.</p>
+<hr />
+<h1 id="170-group-attachment"><a class="header" href="#170-group-attachment">170. Group Attachment</a></h1>
+<p>Group message:</p>
+<pre><code class="language-text">one encrypted blob
++
+group-authorized key distribution
+</code></pre>
+<p>Exact group crypto depends on group architecture.</p>
+<hr />
+<h1 id="171-key-revocation-limits"><a class="header" href="#171-key-revocation-limits">171. Key Revocation Limits</a></h1>
+<p>If a recipient already obtained:</p>
+<pre><code class="language-text">blob key + ciphertext
+</code></pre>
+<p>later revocation cannot erase plaintext they could have copied.</p>
+<p>Do not promise remote deletion.</p>
+<hr />
+<h1 id="172-re-keying"><a class="header" href="#172-re-keying">172. Re-Keying</a></h1>
+<p>Future access changes may require:</p>
+<pre><code class="language-text">new blob encryption key
+</code></pre>
+<p>and potentially re-encryption.</p>
+<p>This is expensive for large files.</p>
+<p>Design authorization carefully to avoid unnecessary re-keying.</p>
+<hr />
+<h1 id="173-encryption-key-caching"><a class="header" href="#173-encryption-key-caching">173. Encryption Key Caching</a></h1>
+<p>Cache active keys only in protected memory/state as necessary.</p>
+<p>Do not persist unwrapped keys casually.</p>
+<hr />
+<h1 id="174-transfer-across-transport-changes"><a class="header" href="#174-transfer-across-transport-changes">174. Transfer Across Transport Changes</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">start on Iroh relay
+ ↓
+LAN appears
+ ↓
+pause scheduler
+ ↓
+new authenticated path
+ ↓
+resume missing chunks
+</code></pre>
+<p>Same TransferId and BlobId.</p>
+<hr />
+<h1 id="175-bluetooth--wi-fi-upgrade"><a class="header" href="#175-bluetooth--wi-fi-upgrade">175. Bluetooth → Wi-Fi Upgrade</a></h1>
+<p>Nearby discovery via BLE can bootstrap:</p>
+<pre><code class="language-text">Wi-Fi Direct/Aware
+</code></pre>
+<p>Then file transfer continues on fast path.</p>
+<p>No restart.</p>
+<hr />
+<h1 id="176-wi-fi--dtn-downgrade"><a class="header" href="#176-wi-fi--dtn-downgrade">176. Wi-Fi → DTN Downgrade</a></h1>
+<p>If link disappears:</p>
+<pre><code class="language-text">critical small chunks/metadata may enter DTN
+bulk waits
+</code></pre>
+<p>according to policy.</p>
+<hr />
+<h1 id="177-multipath-readiness"><a class="header" href="#177-multipath-readiness">177. Multipath Readiness</a></h1>
+<p>Chunk architecture naturally supports Part 12 multipath.</p>
+<p>Each path can carry distinct chunks.</p>
+<p>No core file format change is needed.</p>
+<hr />
+<h1 id="178-integrity-under-multipath"><a class="header" href="#178-integrity-under-multipath">178. Integrity Under Multipath</a></h1>
+<p>Every chunk verifies independently.</p>
+<p>Source/path does not affect final blob correctness.</p>
+<hr />
+<h1 id="179-route-scoring-inputs"><a class="header" href="#179-route-scoring-inputs">179. Route Scoring Inputs</a></h1>
+<p>File service tells Part 03:</p>
+<pre><code class="language-text">estimated bytes
+bulk class
+deadline/expiry
+metered policy
+DTN allowed
+multipath allowed
+</code></pre>
+<p>Routing returns plan.</p>
+<hr />
+<h1 id="180-queue-priority"><a class="header" href="#180-queue-priority">180. Queue Priority</a></h1>
+<p>Transfer classes:</p>
+<pre><code class="language-text">EmergencyCritical
+InteractiveAttachment
+UserRequested
+BackgroundSync
+Bulk
+Relay
+</code></pre>
+<p>Part 08 will generalize resource fairness.</p>
+<hr />
+<h1 id="181-concurrent-transfer-fairness"><a class="header" href="#181-concurrent-transfer-fairness">181. Concurrent Transfer Fairness</a></h1>
+<p>One 50 GB file must not block:</p>
+<pre><code class="language-text">small image
+voice note
+SOS attachment
+</code></pre>
+<p>Scheduler should use weighted fairness.</p>
+<hr />
+<h1 id="182-per-peer-fairness"><a class="header" href="#182-per-peer-fairness">182. Per-Peer Fairness</a></h1>
+<p>One peer should not monopolize all upload slots.</p>
+<hr />
+<h1 id="183-per-application-fairness"><a class="header" href="#183-per-application-fairness">183. Per-Application Fairness</a></h1>
+<p>If SDK embedded by multiple product modules, resource quotas can be namespaced.</p>
+<hr />
+<h1 id="184-performance-metrics"><a class="header" href="#184-performance-metrics">184. Performance Metrics</a></h1>
+<p>Track:</p>
+<pre><code class="language-text">hash throughput
+encryption throughput
+disk read/write throughput
+network throughput
+verified bytes/sec
+resume rate
+dedup hit rate
+GC reclaimed bytes
+</code></pre>
+<p>Do not expose content names in telemetry.</p>
+<hr />
+<h1 id="185-diagnostics"><a class="header" href="#185-diagnostics">185. Diagnostics</a></h1>
+<p>Useful diagnostic snapshot:</p>
+<pre><code class="language-text">active transfers
+path
+bytes verified
+chunk counts
+storage usage
+cache usage
+staging usage
+last error
+</code></pre>
+<hr />
+<h1 id="186-error-model"><a class="header" href="#186-error-model">186. Error Model</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum FileError {
+    NotFound,
+    Unauthorized,
+    InvalidManifest,
+    HashMismatch,
+    DecryptionFailed,
+    StorageFull,
+    QuotaExceeded,
+    UnsupportedCapability,
+    SourceChanged,
+    Cancelled,
+    Expired,
+    Transport,
+    Storage,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Use typed errors.</p>
+<hr />
+<h1 id="187-recoverability-classification"><a class="header" href="#187-recoverability-classification">187. Recoverability Classification</a></h1>
+<pre><code class="language-text">Retryable
+Resumable
+Permanent
+UserActionRequired
+</code></pre>
+<p>Example:</p>
+<pre><code class="language-text">network timeout → resumable
+hash mismatch → retryable/source penalty
+unsupported capability → permanent/fallback
+storage full → user action required
+</code></pre>
+<hr />
+<h1 id="188-no-anyhow-in-public-file-api"><a class="header" href="#188-no-anyhow-in-public-file-api">188. No <code>anyhow</code> in Public File API</a></h1>
+<p>Use typed errors in reusable crate boundaries.</p>
+<p><code>anyhow</code> is acceptable at application bootstrap/CLI.</p>
+<hr />
+<h1 id="189-security-invariants"><a class="header" href="#189-security-invariants">189. Security Invariants</a></h1>
+<ol>
+<li>Blob bytes are never trusted before integrity/authentication verification.</li>
+<li>Remote filenames never become storage paths directly.</li>
+<li>Large declared sizes never cause unchecked allocation.</li>
+<li>Receiver never marks complete before full verification.</li>
+<li>Encryption keys do not travel in public blob metadata.</li>
+<li>Relay nodes do not require plaintext keys.</li>
+<li>Duplicate chunks are idempotent.</li>
+<li>Restart does not lose verified progress.</li>
+<li>Cancellation does not corrupt completed blobs.</li>
+<li>A malicious peer cannot exceed configured storage/resource quotas.</li>
+</ol>
+<hr />
+<h1 id="190-testing-layers"><a class="header" href="#190-testing-layers">190. Testing Layers</a></h1>
+<p>Unit:</p>
+<pre><code class="language-text">manifest
+chunk math
+hashing
+reference counting
+state machine
+</code></pre>
+<p>Integration:</p>
+<pre><code class="language-text">send/receive
+pause/resume
+crash/restart
+multi-device
+</code></pre>
+<p>Network:</p>
+<pre><code class="language-text">path switch
+loss
+duplicates
+reordering
+</code></pre>
+<p>Security:</p>
+<pre><code class="language-text">tampered chunk
+tampered manifest
+oversized metadata
+path traversal
+</code></pre>
+<hr />
+<h1 id="191-property-tests"><a class="header" href="#191-property-tests">191. Property Tests</a></h1>
+<p>Invariants:</p>
+<pre><code class="language-text">reassembled verified blob equals original
+duplicate chunk does not increase verified bytes
+completed transfer remains complete after restart
+missing chunk bitmap round-trips
+GC never deletes pinned referenced blob
+</code></pre>
+<hr />
+<h1 id="192-fuzz-targets"><a class="header" href="#192-fuzz-targets">192. Fuzz Targets</a></h1>
+<p>Fuzz:</p>
+<pre><code class="language-text">manifest parser
+file offer
+chunk header
+resume bitmap
+metadata parser
+archive-adjacent metadata if supported
+</code></pre>
+<p>All allocations bounded.</p>
+<hr />
+<h1 id="193-crash-injection"><a class="header" href="#193-crash-injection">193. Crash Injection</a></h1>
+<p>Inject crash:</p>
+<pre><code class="language-text">after offer
+mid chunk
+after chunk write before journal
+after journal before ACK
+during finalization
+during GC
+</code></pre>
+<p>Verify safe recovery.</p>
+<hr />
+<h1 id="194-corruption-tests"><a class="header" href="#194-corruption-tests">194. Corruption Tests</a></h1>
+<p>Modify:</p>
+<pre><code class="language-text">chunk byte
+manifest entry
+blob root
+metadata
+</code></pre>
+<p>Receiver must detect.</p>
+<hr />
+<h1 id="195-large-file-test"><a class="header" href="#195-large-file-test">195. Large File Test</a></h1>
+<p>Test multi-gigabyte logical files without loading whole file into memory.</p>
+<p>Measure:</p>
+<pre><code class="language-text">peak memory
+resume latency
+throughput
+CPU
+</code></pre>
+<hr />
+<h1 id="196-small-file-test"><a class="header" href="#196-small-file-test">196. Small File Test</a></h1>
+<p>Ensure architecture does not impose huge overhead on:</p>
+<pre><code class="language-text">1 KB
+10 KB
+100 KB
+</code></pre>
+<p>Tiny files may use one chunk.</p>
+<hr />
+<h1 id="197-bluetooth-test"><a class="header" href="#197-bluetooth-test">197. Bluetooth Test</a></h1>
+<p>Test:</p>
+<pre><code class="language-text">small file over BLE
+interruption
+resume
+Wi-Fi upgrade
+</code></pre>
+<p>Ensure bounded memory and no restart from zero.</p>
+<hr />
+<h1 id="198-dtn-test"><a class="header" href="#198-dtn-test">198. DTN Test</a></h1>
+<p>Test:</p>
+<pre><code class="language-text">thumbnail carried
+full image deferred
+gateway appears
+remaining data completes
+</code></pre>
+<hr />
+<h1 id="199-multi-source-test"><a class="header" href="#199-multi-source-test">199. Multi-Source Test</a></h1>
+<p>Future:</p>
+<pre><code class="language-text">two sources
+same blob
+different chunks
+</code></pre>
+<p>Receiver verifies one final object.</p>
+<hr />
+<h1 id="200-storage-pressure-test"><a class="header" href="#200-storage-pressure-test">200. Storage Pressure Test</a></h1>
+<p>Fill storage until:</p>
+<pre><code class="language-text">Elevated
+Critical
+Full
+</code></pre>
+<p>Verify:</p>
+<ul>
+<li>cache eviction</li>
+<li>bulk rejection</li>
+<li>critical preservation</li>
+<li>clear UI state</li>
+</ul>
+<hr />
+<h1 id="201-suggested-crate-structure"><a class="header" href="#201-suggested-crate-structure">201. Suggested Crate Structure</a></h1>
+<pre><code class="language-text">crates/comm-files/
+├── src/
+│   ├── lib.rs
+│   ├── file.rs
+│   ├── offer.rs
+│   ├── service.rs
+│   ├── policy.rs
+│   └── error.rs
+
+crates/comm-blob-store/
+├── src/
+│   ├── lib.rs
+│   ├── blob.rs
+│   ├── descriptor.rs
+│   ├── manifest.rs
+│   ├── chunk.rs
+│   ├── reader.rs
+│   ├── writer.rs
+│   ├── refs.rs
+│   ├── gc.rs
+│   ├── quota.rs
+│   └── error.rs
+
+crates/comm-transfer/
+├── src/
+│   ├── planner.rs
+│   ├── scheduler.rs
+│   ├── state.rs
+│   ├── journal.rs
+│   ├── resume.rs
+│   ├── progress.rs
+│   └── error.rs
+
+crates/comm-transfer-protocol/
+├── src/
+│   ├── v1/
+│   ├── codec.rs
+│   └── limits.rs
+</code></pre>
+<hr />
+<h1 id="202-public-api"><a class="header" href="#202-public-api">202. Public API</a></h1>
+<p>Keep high-level API simple:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let transfer = files
+    .send_file(peer, source, policy)
+    .await?;
+
+transfer.pause().await?;
+transfer.resume().await?;
+transfer.cancel().await?;
+<span class="boring">}</span></code></pre></pre>
+<p>Receiving:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let offer = files.next_offer().await?;
+offer.accept(destination_policy).await?;
+<span class="boring">}</span></code></pre></pre>
+<p>The application does not manipulate chunk protocol directly.</p>
+<hr />
+<h1 id="203-blob-api"><a class="header" href="#203-blob-api">203. Blob API</a></h1>
+<p>Applications needing lower-level access can use:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let blob = blobs.import(source).await?;
+let reader = blobs.open(blob.id()).await?;
+<span class="boring">}</span></code></pre></pre>
+<p>Keep low-level API separate from ordinary transfer API.</p>
+<hr />
+<h1 id="204-messaging-integration-api"><a class="header" href="#204-messaging-integration-api">204. Messaging Integration API</a></h1>
+<p>Example:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let blob = files.import_attachment(source).await?;
+
+messaging
+    .send(
+        conversation,
+        MessageContent::Attachment(blob.reference())
+    )
+    .await?;
+<span class="boring">}</span></code></pre></pre>
+<p>Actual file transfer can begin eagerly or on recipient request according to policy.</p>
+<hr />
+<h1 id="205-file-only-api"><a class="header" href="#205-file-only-api">205. File-Only API</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>files
+    .send_file(
+        Destination::Device(device_id),
+        source,
+        FileSendPolicy::default(),
+    )
+    .await?;
+<span class="boring">}</span></code></pre></pre>
+<p>No conversation required.</p>
+<hr />
+<h1 id="206-initial-production-scope"><a class="header" href="#206-initial-production-scope">206. Initial Production Scope</a></h1>
+<p>Implement first:</p>
+<pre><code class="language-text">immutable encrypted blobs
+fixed-size chunking
+chunk hashes
+flat manifest
+filesystem blob store
+SQLite metadata
+resumable transfer
+pause/cancel
+single-source transfer
+bounded parallel chunks
+routing integration
+storage quotas
+reference tracking
+GC
+crash recovery
+</code></pre>
+<p>Defer initially:</p>
+<pre><code class="language-text">content-defined chunking
+full swarming
+hierarchical manifests
+public share links
+complex cloud object-store adapters
+advanced multipath
+</code></pre>
+<hr />
+<h1 id="207-implementation-phases"><a class="header" href="#207-implementation-phases">207. Implementation Phases</a></h1>
+<h2 id="phase-1--blob-primitives"><a class="header" href="#phase-1--blob-primitives">Phase 1 — Blob primitives</a></h2>
+<pre><code class="language-text">BlobId
+ChunkHash
+BlobDescriptor
+Manifest
+</code></pre>
+<h2 id="phase-2--local-store"><a class="header" href="#phase-2--local-store">Phase 2 — Local store</a></h2>
+<pre><code class="language-text">filesystem objects
+staging
+SQLite metadata
+reference tracking
+</code></pre>
+<h2 id="phase-3--encryption-and-import"><a class="header" href="#phase-3--encryption-and-import">Phase 3 — Encryption and import</a></h2>
+<pre><code class="language-text">per-blob key
+chunk encryption
+hashing
+atomic finalization
+</code></pre>
+<h2 id="phase-4--transfer-protocol"><a class="header" href="#phase-4--transfer-protocol">Phase 4 — Transfer protocol</a></h2>
+<pre><code class="language-text">offer
+accept
+manifest
+chunk request
+ACK
+complete
+</code></pre>
+<h2 id="phase-5--resume"><a class="header" href="#phase-5--resume">Phase 5 — Resume</a></h2>
+<pre><code class="language-text">journal
+bitmap/ranges
+restart recovery
+</code></pre>
+<h2 id="phase-6--routing"><a class="header" href="#phase-6--routing">Phase 6 — Routing</a></h2>
+<pre><code class="language-text">Iroh/LAN/Bluetooth/DTN
+path switching
+</code></pre>
+<h2 id="phase-7--resource-management"><a class="header" href="#phase-7--resource-management">Phase 7 — Resource management</a></h2>
+<pre><code class="language-text">quotas
+GC
+storage pressure
+backpressure
+</code></pre>
+<h2 id="phase-8--hardening"><a class="header" href="#phase-8--hardening">Phase 8 — Hardening</a></h2>
+<pre><code class="language-text">fuzzing
+crash injection
+corruption tests
+large-file benchmarks
+</code></pre>
+<hr />
+<h1 id="208-definition-of-done"><a class="header" href="#208-definition-of-done">208. Definition of Done</a></h1>
+<p>Part 05 is complete when:</p>
+<ul>
+<li>file transfer works independently from messaging</li>
+<li>messages reference blobs instead of embedding file bytes</li>
+<li>files can be imported without loading entire content into memory</li>
+<li>blobs are immutable and integrity-addressed</li>
+<li>privacy-sensitive mode addresses ciphertext rather than plaintext</li>
+<li>chunking supports resume</li>
+<li>individual chunks can be verified</li>
+<li>transfer state survives process death</li>
+<li>incomplete data remains in staging until verified</li>
+<li>completed blob finalization is atomic</li>
+<li>storage paths never use remote filenames directly</li>
+<li>quotas prevent storage exhaustion</li>
+<li>GC never deletes referenced/pinned blobs</li>
+<li>files can pause/resume/cancel</li>
+<li>large transfer can switch transport without starting from zero</li>
+<li>Bluetooth/DTN can carry policy-appropriate subsets</li>
+<li>multi-device destination targeting works</li>
+<li>relay nodes can store ciphertext without decryption keys</li>
+<li>Dioxus/Kotlin/iOS UI layers are not dependencies</li>
+<li>public API is small and typed</li>
+<li>fuzz, corruption, crash, resume, and large-file tests exist</li>
+</ul>
+<hr />
+<h1 id="209-relationship-to-earlier-parts"><a class="header" href="#209-relationship-to-earlier-parts">209. Relationship to Earlier Parts</a></h1>
+<p>Part 05 builds on:</p>
+<pre><code class="language-text">01 — Protocol Extension System
+02 — Multi-Device Identity
+03 — Transport &amp; Routing Policy Engine
+04 — Offline Event Log
+</code></pre>
+<p>It directly supports:</p>
+<pre><code class="language-text">06 — DTN / Store-Carry-Forward
+07 — Capability Negotiation Expansion
+08 — Resource Limits &amp; Backpressure
+09 — Crash Recovery
+10 — Protocol Fuzzing &amp; Test Suite
+11 — Relay / Self-Hosted Infrastructure
+12 — Multipath Networking
+13 — Battery-Aware Scheduling
+14 — Proximity Abstraction
+16 — Daemon &amp; Headless Runtime
+17 — Emergency Priority Architecture
+18 — Network Diagnostics &amp; Path Visualization
+20 — Embedded Linux Node
+23 — External Interoperability Suite
+</code></pre>
+<hr />
+<h1 id="210-final-principle"><a class="header" href="#210-final-principle">210. Final Principle</a></h1>
+<p>The file/blob subsystem should make this possible:</p>
+<pre><code class="language-text">A 5 GB file
+can be:
+  imported once
+  encrypted once
+  identified immutably
+  transferred in bounded chunks
+  paused
+  resumed
+  switched from relay to LAN
+  partially carried by DTN where policy allows
+  verified independently
+  referenced by a message
+  sent without messaging
+  cached safely
+  garbage-collected when no longer referenced
+</code></pre>
+<p>without any application layer needing to understand the raw transfer mechanics.</p>
+<p>That is what makes the subsystem reusable, efficient, crash-safe, privacy-preserving, and suitable as a shared binary-data foundation for the entire communication platform.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="04-offline-event-log-architecture.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="09-crash-recovery-architecture.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="04-offline-event-log-architecture.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="09-crash-recovery-architecture.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

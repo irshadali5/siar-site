@@ -1,0 +1,1946 @@
+<!DOCTYPE HTML>
+<html lang="en" class="navy" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>UI/UX 12 — Nearby, QR/NFC Pairing &amp; Device Linking UX - SIAR System Architecture &amp; Technical Wiki</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="Comprehensive system architecture, cryptographic protocols, DTN mesh networking, distributed storage, audio DSP pipelines, and UI/UX design specifications for SIAR.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="theme/custom.css">
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "navy";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('navy')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="Home.html">Architecture Portal & Reading Guide</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part I: Protocol Foundation & Extension Platform</li><li class="chapter-item expanded "><a href="01-protocol-extension-system-architecture.html"><strong aria-hidden="true">1.</strong> 01 — Protocol Extension System Architecture</a></li><li class="chapter-item expanded "><a href="07-capability-negotiation-architecture.html"><strong aria-hidden="true">2.</strong> 07 — Capability Negotiation & Protocol Upgrades</a></li><li class="chapter-item expanded "><a href="21-third-party-protocol-extensions-architecture.html"><strong aria-hidden="true">3.</strong> 21 — Third-Party Protocol Extensions</a></li><li class="chapter-item expanded "><a href="22-wasm-compatible-components-architecture.html"><strong aria-hidden="true">4.</strong> 22 — WebAssembly (WASM) Compatible Components</a></li><li class="chapter-item expanded "><a href="23-external-interoperability-suite-architecture.html"><strong aria-hidden="true">5.</strong> 23 — External Interoperability & Conformance Suite</a></li><li class="chapter-item expanded "><a href="24-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">6.</strong> 24 — Dynamic Plugin & Module Ecosystem</a></li><li class="chapter-item expanded affix "><li class="part-title">Part II: Identity, Trust & Cryptography</li><li class="chapter-item expanded "><a href="02-multi-device-identity-architecture.html"><strong aria-hidden="true">7.</strong> 02 — Multi-Device Identity & Trust Model</a></li><li class="chapter-item expanded "><a href="28-production-security-e2ee-key-management-privacy-architecture.html"><strong aria-hidden="true">8.</strong> 28 — Production Security, E2EE, Key Management & Privacy</a></li><li class="chapter-item expanded affix "><li class="part-title">Part III: Mesh Networking, Transports & Hardware</li><li class="chapter-item expanded "><a href="03-transport-routing-policy-engine-architecture.html"><strong aria-hidden="true">9.</strong> 03 — Transport & Routing Policy Engine</a></li><li class="chapter-item expanded "><a href="11-relay-self-hosted-infrastructure-architecture.html"><strong aria-hidden="true">10.</strong> 11 — Self-Hosted Relay & Coordination Infrastructure</a></li><li class="chapter-item expanded "><a href="12-multipath-networking-architecture.html"><strong aria-hidden="true">11.</strong> 12 — Multipath Networking & Link Aggregation</a></li><li class="chapter-item expanded "><a href="13-battery-aware-scheduling-architecture.html"><strong aria-hidden="true">12.</strong> 13 — Battery-Aware Scheduling & Power Profiles</a></li><li class="chapter-item expanded "><a href="14-proximity-abstraction-architecture.html"><strong aria-hidden="true">13.</strong> 14 — Proximity Abstraction (BLE, Wi-Fi Direct, LoRa)</a></li><li class="chapter-item expanded "><a href="15-qr-nfc-bootstrap-pairing-architecture.html"><strong aria-hidden="true">14.</strong> 15 — Out-of-Band QR & NFC Bootstrap Pairing</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IV: Delay-Tolerant Networking & Emergency Mesh</li><li class="chapter-item expanded "><a href="06-dtn-store-carry-forward-architecture.html"><strong aria-hidden="true">15.</strong> 06 — DTN Store-Carry-Forward & Bundle Forwarding</a></li><li class="chapter-item expanded "><a href="17-emergency-priority-classes-architecture.html"><strong aria-hidden="true">16.</strong> 17 — Emergency Priority Classes & Critical Alert Mesh</a></li><li class="chapter-item expanded affix "><li class="part-title">Part V: Storage, Outbox & Data Lifecycle</li><li class="chapter-item expanded "><a href="04-offline-event-log-architecture.html"><strong aria-hidden="true">17.</strong> 04 — Offline Event Log & Sync Engine</a></li><li class="chapter-item expanded "><a href="05-robust-file-blob-subsystem-architecture.html"><strong aria-hidden="true">18.</strong> 05 — Robust File & Blob Subsystem (Chunking & Resumption)</a></li><li class="chapter-item expanded "><a href="09-crash-recovery-architecture.html"><strong aria-hidden="true">19.</strong> 09 — Crash Recovery & State Integrity</a></li><li class="chapter-item expanded "><a href="32-search-indexing-local-knowledge-privacy-architecture.html"><strong aria-hidden="true">20.</strong> 32 — Search, Indexing & Local Privacy Retrieval</a></li><li class="chapter-item expanded "><a href="33-backup-restore-export-import-archival-portability-architecture.html"><strong aria-hidden="true">21.</strong> 33 — Backup, Restore, Export & Long-Term Archival</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VI: Realtime Media, Calling & Audio DSP</li><li class="chapter-item expanded "><a href="25-android-direct-hardware-surface-zero-copy-media-architecture.html"><strong aria-hidden="true">22.</strong> 25 — Android Direct Surface Zero-Copy Media</a></li><li class="chapter-item expanded "><a href="26-rust-first-audio-dsp-resampling-aec-ns-agc-architecture.html"><strong aria-hidden="true">23.</strong> 26 — Rust-First Audio DSP (AEC, NS, AGC, Resampling)</a></li><li class="chapter-item expanded "><a href="29-realtime-calls-media-session-protocol-architecture.html"><strong aria-hidden="true">24.</strong> 29 — Realtime Calls & Media Session Protocol</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VII: Ephemeral State, Presence & Notifications</li><li class="chapter-item expanded "><a href="30-presence-availability-typing-read-receipts-ephemeral-state-architecture.html"><strong aria-hidden="true">25.</strong> 30 — Presence, Availability, Typing & Read Receipts</a></li><li class="chapter-item expanded "><a href="31-notifications-push-background-delivery-lifecycle-architecture.html"><strong aria-hidden="true">26.</strong> 31 — Notifications, Push Wake & Background Delivery</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VIII: Native Runtimes, Daemons & Embedded Linux</li><li class="chapter-item expanded "><a href="16-daemon-headless-runtime-architecture.html"><strong aria-hidden="true">27.</strong> 16 — Headless Daemon & Background Runtime</a></li><li class="chapter-item expanded "><a href="19-c-abi-ffi-architecture.html"><strong aria-hidden="true">28.</strong> 19 — C-ABI FFI & Native Language Interop</a></li><li class="chapter-item expanded "><a href="20-embedded-linux-node-architecture.html"><strong aria-hidden="true">29.</strong> 20 — Embedded Linux Node & Resource-Constrained Targets</a></li><li class="chapter-item expanded "><a href="27-rust-driven-android-native-build-packaging-automation.html"><strong aria-hidden="true">30.</strong> 27 — Rust-Driven Android Native Build & Packaging Automation</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IX: Reliability, Testing, Fuzzing & Diagnostics</li><li class="chapter-item expanded "><a href="08-resource-limits-backpressure-architecture.html"><strong aria-hidden="true">31.</strong> 08 — Resource Limits, Quotas & Backpressure</a></li><li class="chapter-item expanded "><a href="10-fuzzing-protocol-test-suite-architecture.html"><strong aria-hidden="true">32.</strong> 10 — Fuzzing & Protocol Test Suite</a></li><li class="chapter-item expanded "><a href="18-network-diagnostics-path-visualization-architecture.html"><strong aria-hidden="true">33.</strong> 18 — Network Diagnostics & Path Visualization</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part X: UI/UX Client Architecture (Cross-Platform)</li><li class="chapter-item expanded "><a href="ui-ux-01-product-foundation-cross-platform-interaction-architecture.html"><strong aria-hidden="true">34.</strong> UI/UX 01 — Product UX Foundation & Cross-Platform Interaction</a></li><li class="chapter-item expanded "><a href="ui-ux-02-desktop-dioxus-app-shell-navigation-window-architecture.html"><strong aria-hidden="true">35.</strong> UI/UX 02 — Desktop Dioxus App Shell & Navigation</a></li><li class="chapter-item expanded "><a href="ui-ux-03-android-jetpack-compose-app-shell-navigation-lifecycle-architecture.html"><strong aria-hidden="true">36.</strong> UI/UX 03 — Android Jetpack Compose App Shell & Lifecycle</a></li><li class="chapter-item expanded "><a href="ui-ux-04-conversation-list-inbox-architecture.html"><strong aria-hidden="true">37.</strong> UI/UX 04 — Conversation List & Inbox UX</a></li><li class="chapter-item expanded "><a href="ui-ux-05-conversation-message-timeline-architecture.html"><strong aria-hidden="true">38.</strong> UI/UX 05 — Conversation Message Timeline UX</a></li><li class="chapter-item expanded "><a href="ui-ux-06-message-composer-attachments-voice-notes-drafts-architecture.html"><strong aria-hidden="true">39.</strong> UI/UX 06 — Message Composer, Attachments & Voice Notes</a></li><li class="chapter-item expanded "><a href="ui-ux-07-calls-realtime-media-architecture.html"><strong aria-hidden="true">40.</strong> UI/UX 07 — Calls & Realtime Media UX</a></li><li class="chapter-item expanded "><a href="ui-ux-08-contacts-requests-verification-identity-architecture.html"><strong aria-hidden="true">41.</strong> UI/UX 08 — Contacts, Requests, Verification & Identity</a></li><li class="chapter-item expanded "><a href="ui-ux-09-groups-membership-roles-architecture.html"><strong aria-hidden="true">42.</strong> UI/UX 09 — Groups, Membership & Roles UX</a></li><li class="chapter-item expanded "><a href="ui-ux-10-files-media-gallery-transfer-architecture.html"><strong aria-hidden="true">43.</strong> UI/UX 10 — Files, Media Gallery & Transfer UX</a></li><li class="chapter-item expanded "><a href="ui-ux-11-search-local-knowledge-retrieval-architecture.html"><strong aria-hidden="true">44.</strong> UI/UX 11 — Search & Local Knowledge Retrieval UX</a></li><li class="chapter-item expanded "><a href="ui-ux-12-nearby-qr-nfc-pairing-device-linking-architecture.html" class="active"><strong aria-hidden="true">45.</strong> UI/UX 12 — Nearby, QR/NFC Pairing & Device Linking UX</a></li><li class="chapter-item expanded "><a href="ui-ux-13-notifications-background-incoming-call-architecture.html"><strong aria-hidden="true">46.</strong> UI/UX 13 — Notifications, Background & Incoming Call UX</a></li><li class="chapter-item expanded "><a href="ui-ux-14-presence-typing-receipts-status-architecture.html"><strong aria-hidden="true">47.</strong> UI/UX 14 — Presence, Typing, Receipts & Status UX</a></li><li class="chapter-item expanded "><a href="ui-ux-15-security-center-devices-keys-recovery-architecture.html"><strong aria-hidden="true">48.</strong> UI/UX 15 — Security Center, Devices, Keys & Recovery UX</a></li><li class="chapter-item expanded "><a href="ui-ux-16-backup-restore-export-migration-architecture.html"><strong aria-hidden="true">49.</strong> UI/UX 16 — Backup, Restore, Export & Migration UX</a></li><li class="chapter-item expanded "><a href="ui-ux-17-emergency-sos-offline-mesh-architecture.html"><strong aria-hidden="true">50.</strong> UI/UX 17 — Emergency / SOS / Offline Mesh UX</a></li><li class="chapter-item expanded "><a href="ui-ux-18-settings-privacy-notifications-data-controls-architecture.html"><strong aria-hidden="true">51.</strong> UI/UX 18 — Settings, Privacy, Notifications & Data Controls</a></li><li class="chapter-item expanded "><a href="ui-ux-19-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">52.</strong> UI/UX 19 — Plugin & Module Ecosystem UX</a></li><li class="chapter-item expanded "><a href="ui-ux-20-diagnostics-network-paths-advanced-developer-architecture.html"><strong aria-hidden="true">53.</strong> UI/UX 20 — Diagnostics, Network Paths & Developer UX</a></li><li class="chapter-item expanded "><a href="ui-ux-21-accessibility-inclusive-interaction-architecture.html"><strong aria-hidden="true">54.</strong> UI/UX 21 — Accessibility & Inclusive Interaction</a></li><li class="chapter-item expanded "><a href="ui-ux-22-design-system-tokens-typography-icons-motion-architecture.html"><strong aria-hidden="true">55.</strong> UI/UX 22 — Design System, Tokens, Typography & Motion</a></li><li class="chapter-item expanded "><a href="ui-ux-23-responsive-adaptive-desktop-tablet-foldable-phone-layout-architecture.html"><strong aria-hidden="true">56.</strong> UI/UX 23 — Responsive & Adaptive Layouts (Desktop/Tablet/Foldable/Phone)</a></li><li class="chapter-item expanded "><a href="ui-ux-24-error-loading-empty-offline-degraded-state-architecture.html"><strong aria-hidden="true">57.</strong> UI/UX 24 — Error, Loading, Empty & Degraded-State UX</a></li><li class="chapter-item expanded "><a href="ui-ux-25-onboarding-first-run-permission-education-architecture.html"><strong aria-hidden="true">58.</strong> UI/UX 25 — Onboarding, First Run & Permission Education</a></li><li class="chapter-item expanded "><a href="ui-ux-26-performance-virtualization-large-data-ui-architecture.html"><strong aria-hidden="true">59.</strong> UI/UX 26 — Virtualization & Large-Data UI Performance</a></li><li class="chapter-item expanded "><a href="ui-ux-27-ui-testing-screenshot-interaction-release-quality-gates-architecture.html"><strong aria-hidden="true">60.</strong> UI/UX 27 — UI Testing, Screenshots & Release Quality Gates</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">SIAR System Architecture &amp; Technical Wiki</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar/edit/main/sys-arch/ui-ux-12-nearby-qr-nfc-pairing-device-linking-architecture.md" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="uiux-part-12--nearby-qrnfc-pairing--device-linking-ux-architecture"><a class="header" href="#uiux-part-12--nearby-qrnfc-pairing--device-linking-ux-architecture">UI/UX Part 12 — Nearby, QR/NFC Pairing &amp; Device Linking UX Architecture</a></h1>
+<h2 id="reusable-p2p-communication-platform"><a class="header" href="#reusable-p2p-communication-platform">Reusable P2P Communication Platform</a></h2>
+<p><strong>Status:</strong> UI/UX architecture specification<br />
+<strong>UI Series:</strong> Part 12<br />
+<strong>Desktop UI:</strong> Dioxus<br />
+<strong>Android UI:</strong> Kotlin + Jetpack Compose<br />
+<strong>Core runtime:</strong> Rust<br />
+<strong>Primary purpose:</strong> define the complete nearby-discovery, QR, NFC, SAS, contact-pairing, own-device linking, offline bootstrap, permission, trust, replay/expiry, mismatch, accessibility, privacy, and Rust presentation architecture across desktop and Android.</p>
+<hr />
+<h1 id="1-purpose"><a class="header" href="#1-purpose">1. Purpose</a></h1>
+<p>Nearby/bootstrap flows are where an initially unknown physical device becomes one of several very different things:</p>
+<pre><code class="language-text">a discovered nearby candidate
+a contact
+a cryptographically verified contact
+one of my authorized devices
+a temporary pairing session
+</code></pre>
+<p>These states must never be blurred.</p>
+<p>The governing principle is:</p>
+<blockquote>
+<p><strong>Proximity proves only that something is nearby. Authentication and authorization must still be explicit.</strong></p>
+</blockquote>
+<hr />
+<h1 id="2-architectural-position"><a class="header" href="#2-architectural-position">2. Architectural Position</a></h1>
+<pre><code class="language-text">Platform Discovery
+ BLE / Wi-Fi / NFC / Camera
+          │
+          ▼
+Rust Proximity Abstraction
+          │
+          ├── observations
+          ├── rotating discovery identifiers
+          ├── authenticated bootstrap
+          ├── invite validation
+          ├── SAS transcript
+          └── device authorization
+          │
+          ▼
+Bootstrap Presentation Service
+          │
+   ┌──────┴──────┐
+   │             │
+Dioxus        Compose
+Desktop       Android
+</code></pre>
+<hr />
+<h1 id="3-critical-trust-distinctions"><a class="header" href="#3-critical-trust-distinctions">3. Critical Trust Distinctions</a></h1>
+<pre><code class="language-text">Nearby
+≠
+Known contact
+≠
+Accepted contact
+≠
+Verified contact
+≠
+Authorized own device
+</code></pre>
+<p>The UI must preserve these distinctions in labels, colors, actions, confirmation language, and navigation.</p>
+<hr />
+<h1 id="4-main-entry-points"><a class="header" href="#4-main-entry-points">4. Main Entry Points</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">Contacts → Add Contact
+Contacts → Nearby
+Contacts → Scan QR
+Devices → Link New Device
+Devices → Show Link QR
+</code></pre>
+<p>Optional Android shortcut:</p>
+<pre><code class="language-text">Tap NFC
+</code></pre>
+<hr />
+<h1 id="5-do-not-use-one-generic-pair-button"><a class="header" href="#5-do-not-use-one-generic-pair-button">5. Do Not Use One Generic "Pair" Button</a></h1>
+<p>Bad:</p>
+<pre><code class="language-text">Pair device
+</code></pre>
+<p>for both contacts and account-device authorization.</p>
+<p>Use explicit language:</p>
+<pre><code class="language-text">Add Contact
+Verify Contact
+Link My Device
+</code></pre>
+<hr />
+<h1 id="6-nearby-discovery-concepts"><a class="header" href="#6-nearby-discovery-concepts">6. Nearby Discovery Concepts</a></h1>
+<p>Rust exposes nearby candidates as observations.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct NearbyCandidateView {
+    pub candidate_id: NearbyCandidateId,
+    pub display_hint: Option&lt;String&gt;,
+    pub proximity: ProximityHint,
+    pub state: NearbyCandidateState,
+    pub method: NearbyMethodSummary,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="7-candidate-identity"><a class="header" href="#7-candidate-identity">7. Candidate Identity</a></h1>
+<p><code>NearbyCandidateId</code> is temporary.</p>
+<p>It is not:</p>
+<pre><code class="language-text">AccountId
+DeviceId
+</code></pre>
+<p>until authenticated.</p>
+<hr />
+<h1 id="8-nearby-candidate-states"><a class="header" href="#8-nearby-candidate-states">8. Nearby Candidate States</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum NearbyCandidateState {
+    Discovered,
+    Connecting,
+    Authenticating,
+    AwaitingConfirmation,
+    Authenticated,
+    Failed,
+    Expired,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="9-nearby-methods"><a class="header" href="#9-nearby-methods">9. Nearby Methods</a></h1>
+<p>User-facing:</p>
+<pre><code class="language-text">Nearby
+</code></pre>
+<p>Normal UI should not care whether candidate came from:</p>
+<pre><code class="language-text">BLE
+Wi-Fi Aware
+Wi-Fi Direct
+LAN
+Bluetooth Classic
+</code></pre>
+<hr />
+<h1 id="10-diagnostics"><a class="header" href="#10-diagnostics">10. Diagnostics</a></h1>
+<p>Advanced diagnostics may expose underlying method.</p>
+<hr />
+<h1 id="11-proximity-hint"><a class="header" href="#11-proximity-hint">11. Proximity Hint</a></h1>
+<p>Possible user-facing classes:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum ProximityHint {
+    VeryNear,
+    Near,
+    Nearby,
+    Unknown,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Avoid displaying false precision such as:</p>
+<pre><code class="language-text">1.7 meters
+</code></pre>
+<p>unless hardware truly supports reliable distance.</p>
+<hr />
+<h1 id="12-rssi"><a class="header" href="#12-rssi">12. RSSI</a></h1>
+<p>Raw RSSI belongs only in diagnostics.</p>
+<hr />
+<h1 id="13-nearby-discovery-screen--android"><a class="header" href="#13-nearby-discovery-screen--android">13. Nearby Discovery Screen — Android</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">TopAppBar
+    Nearby
+
+Discovery status
+    Searching nearby…
+
+LazyColumn
+    Candidate
+    Candidate
+    Candidate
+
+Actions
+    Scan QR
+    Enter Code
+</code></pre>
+<hr />
+<h1 id="14-nearby-discovery-screen--desktop"><a class="header" href="#14-nearby-discovery-screen--desktop">14. Nearby Discovery Screen — Desktop</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">Nearby Devices
+Search status
+Candidate list
+
+Alternative:
+    Show My QR
+    Scan QR
+    Enter Code
+</code></pre>
+<hr />
+<h1 id="15-discovery-start"><a class="header" href="#15-discovery-start">15. Discovery Start</a></h1>
+<p>User explicitly enters Nearby or taps:</p>
+<pre><code class="language-text">Find Nearby
+</code></pre>
+<p>Then Rust/platform starts bounded discovery.</p>
+<hr />
+<h1 id="16-no-permanent-discovery"><a class="header" href="#16-no-permanent-discovery">16. No Permanent Discovery</a></h1>
+<p>Do not continuously advertise/scan indefinitely unless user enables a deliberate feature.</p>
+<hr />
+<h1 id="17-discovery-timeout"><a class="header" href="#17-discovery-timeout">17. Discovery Timeout</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">30–120 seconds
+</code></pre>
+<p>then:</p>
+<pre><code class="language-text">No nearby devices found
+Try again
+</code></pre>
+<p>Tune by platform/radio behavior.</p>
+<hr />
+<h1 id="18-discovery-privacy"><a class="header" href="#18-discovery-privacy">18. Discovery Privacy</a></h1>
+<p>Use rotating/ephemeral identifiers.</p>
+<p>UI must not expose stable account ID over unauthenticated nearby advertising.</p>
+<hr />
+<h1 id="19-unknown-candidate"><a class="header" href="#19-unknown-candidate">19. Unknown Candidate</a></h1>
+<p>Show:</p>
+<pre><code class="language-text">Nearby device
+Unverified
+</code></pre>
+<p>not a trusted profile.</p>
+<hr />
+<h1 id="20-display-hint"><a class="header" href="#20-display-hint">20. Display Hint</a></h1>
+<p>A peer may advertise a human-friendly hint only if privacy policy permits.</p>
+<p>Treat it as untrusted until authentication.</p>
+<hr />
+<h1 id="21-selecting-nearby-candidate"><a class="header" href="#21-selecting-nearby-candidate">21. Selecting Nearby Candidate</a></h1>
+<p>Flow:</p>
+<pre><code class="language-text">Tap/click candidate
+→ connect
+→ authenticate bootstrap
+→ compare/confirm identity
+→ choose resulting relationship
+</code></pre>
+<hr />
+<h1 id="22-candidate-connection"><a class="header" href="#22-candidate-connection">22. Candidate Connection</a></h1>
+<p>Show:</p>
+<pre><code class="language-text">Connecting…
+</code></pre>
+<hr />
+<h1 id="23-authentication"><a class="header" href="#23-authentication">23. Authentication</a></h1>
+<p>Normal user-facing text:</p>
+<pre><code class="language-text">Verifying device…
+</code></pre>
+<p>Do not expose transcript internals.</p>
+<hr />
+<h1 id="24-confirmation"><a class="header" href="#24-confirmation">24. Confirmation</a></h1>
+<p>Once authenticated, show:</p>
+<pre><code class="language-text">identity preview
+name
+avatar
+verification method
+SAS/QR confirmation if required
+</code></pre>
+<hr />
+<h1 id="25-nearby-failure"><a class="header" href="#25-nearby-failure">25. Nearby Failure</a></h1>
+<p>Semantic reasons:</p>
+<pre><code class="language-text">Device moved out of range
+Connection failed
+Session expired
+Identity could not be verified
+Unsupported version
+</code></pre>
+<hr />
+<h1 id="26-retry"><a class="header" href="#26-retry">26. Retry</a></h1>
+<p>Creates a new session where required.</p>
+<p>Never reuse expired nonce/session blindly.</p>
+<hr />
+<h1 id="27-qr-bootstrap-types"><a class="header" href="#27-qr-bootstrap-types">27. QR Bootstrap Types</a></h1>
+<p>Use distinct payload types:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum BootstrapQrKind {
+    ContactInvite,
+    ContactVerification,
+    DeviceLink,
+    GroupInvite,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="28-qr-visual-differentiation"><a class="header" href="#28-qr-visual-differentiation">28. QR Visual Differentiation</a></h1>
+<p>Screen title must state:</p>
+<pre><code class="language-text">My Contact QR
+Verify Identity
+Link New Device
+Group Invite
+</code></pre>
+<p>Do not rely on QR appearance alone.</p>
+<hr />
+<h1 id="29-contact-invite-qr"><a class="header" href="#29-contact-invite-qr">29. Contact Invite QR</a></h1>
+<p>Purpose:</p>
+<pre><code class="language-text">share contact identity/invite
+</code></pre>
+<p>May allow recipient to:</p>
+<pre><code class="language-text">add/accept contact
+</code></pre>
+<p>but does not automatically imply completed verification unless protocol flow explicitly authenticates it.</p>
+<hr />
+<h1 id="30-contact-verification-qr"><a class="header" href="#30-contact-verification-qr">30. Contact Verification QR</a></h1>
+<p>Purpose:</p>
+<pre><code class="language-text">verify an already-known contact
+</code></pre>
+<p>Both devices participate in verification transcript.</p>
+<hr />
+<h1 id="31-device-link-qr"><a class="header" href="#31-device-link-qr">31. Device Link QR</a></h1>
+<p>Purpose:</p>
+<pre><code class="language-text">authorize another device under my account
+</code></pre>
+<p>This is the highest-risk QR flow.</p>
+<hr />
+<h1 id="32-device-link-warning"><a class="header" href="#32-device-link-warning">32. Device-Link Warning</a></h1>
+<p>Before showing/accepting:</p>
+<pre><code class="language-text">A linked device can access your account and may receive your messages.
+Only link a device you control.
+</code></pre>
+<hr />
+<h1 id="33-group-invite-qr"><a class="header" href="#33-group-invite-qr">33. Group Invite QR</a></h1>
+<p>Routes to Part 09.</p>
+<p>Not interpreted as contact/device bootstrap.</p>
+<hr />
+<h1 id="34-qr-parser"><a class="header" href="#34-qr-parser">34. QR Parser</a></h1>
+<p>Rust owns payload parsing and cryptographic validation.</p>
+<p>UI never decides QR type from loose text heuristics.</p>
+<hr />
+<h1 id="35-unknown-qr"><a class="header" href="#35-unknown-qr">35. Unknown QR</a></h1>
+<p>Show:</p>
+<pre><code class="language-text">This code is not supported
+</code></pre>
+<p>Never open arbitrary URL automatically from scanner unless explicit product behavior.</p>
+<hr />
+<h1 id="36-malformed-qr"><a class="header" href="#36-malformed-qr">36. Malformed QR</a></h1>
+<p>Show safe error.</p>
+<p>No crash.</p>
+<hr />
+<h1 id="37-expired-qr"><a class="header" href="#37-expired-qr">37. Expired QR</a></h1>
+<pre><code class="language-text">This code has expired
+Ask for a new code
+</code></pre>
+<hr />
+<h1 id="38-revoked-qr"><a class="header" href="#38-revoked-qr">38. Revoked QR</a></h1>
+<pre><code class="language-text">This code is no longer valid
+</code></pre>
+<hr />
+<h1 id="39-already-used-qr"><a class="header" href="#39-already-used-qr">39. Already Used QR</a></h1>
+<p>For single-use invite:</p>
+<pre><code class="language-text">This code has already been used
+</code></pre>
+<hr />
+<h1 id="40-self-qr"><a class="header" href="#40-self-qr">40. Self QR</a></h1>
+<p>Scanning own contact identity:</p>
+<pre><code class="language-text">This is your identity
+</code></pre>
+<p>Do not create self-contact.</p>
+<hr />
+<h1 id="41-contact-qr-screen"><a class="header" href="#41-contact-qr-screen">41. Contact QR Screen</a></h1>
+<p>Recommended contents:</p>
+<pre><code class="language-text">QR
+display name
+short fingerprint
+expiry if applicable
+share/copy code
+</code></pre>
+<hr />
+<h1 id="42-device-link-qr-screen"><a class="header" href="#42-device-link-qr-screen">42. Device Link QR Screen</a></h1>
+<p>Recommended contents:</p>
+<pre><code class="language-text">Link another device
+QR
+expires in…
+Cancel
+</code></pre>
+<p>Avoid contact-style avatar/social language.</p>
+<hr />
+<h1 id="43-qr-expiry-countdown"><a class="header" href="#43-qr-expiry-countdown">43. QR Expiry Countdown</a></h1>
+<p>Can show minute-level countdown.</p>
+<p>Do not run expensive per-row timers.</p>
+<hr />
+<h1 id="44-screenshot-sharing"><a class="header" href="#44-screenshot-sharing">44. Screenshot Sharing</a></h1>
+<p>Assume a QR can be photographed/copied.</p>
+<p>Security cannot depend on physical display secrecy alone.</p>
+<hr />
+<h1 id="45-nfc-bootstrap"><a class="header" href="#45-nfc-bootstrap">45. NFC Bootstrap</a></h1>
+<p>Android-specific high-quality shortcut.</p>
+<p>Flow:</p>
+<pre><code class="language-text">Tap phones
+→ Android NFC
+→ Kotlin obtains payload
+→ Rust validates
+→ confirmation
+</code></pre>
+<hr />
+<h1 id="46-nfc-is-transport-not-trust"><a class="header" href="#46-nfc-is-transport-not-trust">46. NFC Is Transport, Not Trust</a></h1>
+<p>NFC proximity alone does not authorize account/device.</p>
+<hr />
+<h1 id="47-nfc-failure"><a class="header" href="#47-nfc-failure">47. NFC Failure</a></h1>
+<p>Offer fallback:</p>
+<pre><code class="language-text">Scan QR instead
+</code></pre>
+<hr />
+<h1 id="48-nfc-unsupported"><a class="header" href="#48-nfc-unsupported">48. NFC Unsupported</a></h1>
+<p>Hide or disable NFC action.</p>
+<hr />
+<h1 id="49-sas-verification"><a class="header" href="#49-sas-verification">49. SAS Verification</a></h1>
+<p>Short Authentication String allows users to compare:</p>
+<pre><code class="language-text">numbers
+words
+symbols
+</code></pre>
+<hr />
+<h1 id="50-recommended-sas-ux"><a class="header" href="#50-recommended-sas-ux">50. Recommended SAS UX</a></h1>
+<p>Show a short readable code:</p>
+<pre><code class="language-text">482 119
+</code></pre>
+<p>or word sequence.</p>
+<p>Buttons:</p>
+<pre><code class="language-text">Codes match
+Codes do not match
+</code></pre>
+<hr />
+<h1 id="51-do-not-use-confirm-alone"><a class="header" href="#51-do-not-use-confirm-alone">51. Do Not Use "Confirm" Alone</a></h1>
+<p>Explicit wording reduces mistakes.</p>
+<hr />
+<h1 id="52-sas-accessibility"><a class="header" href="#52-sas-accessibility">52. SAS Accessibility</a></h1>
+<p>Code should be:</p>
+<pre><code class="language-text">large
+high contrast
+screen-reader friendly
+grouped
+</code></pre>
+<hr />
+<h1 id="53-sas-canonical-reading"><a class="header" href="#53-sas-canonical-reading">53. SAS Canonical Reading</a></h1>
+<p>Screen reader can announce groups distinctly.</p>
+<p>Example:</p>
+<pre><code class="language-text">482, 119
+</code></pre>
+<hr />
+<h1 id="54-sas-mismatch"><a class="header" href="#54-sas-mismatch">54. SAS Mismatch</a></h1>
+<p>Strong result:</p>
+<pre><code class="language-text">Codes do not match
+Do not continue
+</code></pre>
+<p>Actions:</p>
+<pre><code class="language-text">Cancel
+Try again
+Block
+</code></pre>
+<p>depending context.</p>
+<hr />
+<h1 id="55-mismatch-never-marks-verified"><a class="header" href="#55-mismatch-never-marks-verified">55. Mismatch Never Marks Verified</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="56-interrupted-verification"><a class="header" href="#56-interrupted-verification">56. Interrupted Verification</a></h1>
+<p>Remains:</p>
+<pre><code class="language-text">Unverified
+</code></pre>
+<hr />
+<h1 id="57-verification-success"><a class="header" href="#57-verification-success">57. Verification Success</a></h1>
+<p>Only after Rust confirms transcript:</p>
+<pre><code class="language-text">Identity verified
+</code></pre>
+<hr />
+<h1 id="58-verification-method-history"><a class="header" href="#58-verification-method-history">58. Verification Method History</a></h1>
+<p>Contact security details can record:</p>
+<pre><code class="language-text">Verified by QR
+Verified by code comparison
+</code></pre>
+<p>with timestamp if useful.</p>
+<hr />
+<h1 id="59-contact-pairing-flow"><a class="header" href="#59-contact-pairing-flow">59. Contact Pairing Flow</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">Add Contact
+   ↓
+QR / Nearby / Code
+   ↓
+Authenticated Identity Preview
+   ↓
+Accept Contact
+   ↓
+Optional/Integrated Verification
+   ↓
+Contact Ready
+</code></pre>
+<hr />
+<h1 id="60-acceptance-vs-verification"><a class="header" href="#60-acceptance-vs-verification">60. Acceptance vs Verification</a></h1>
+<p>UI can show:</p>
+<pre><code class="language-text">Contact added
+Identity not yet verified
+</code></pre>
+<p>if verification not completed.</p>
+<hr />
+<h1 id="61-verify-later"><a class="header" href="#61-verify-later">61. Verify Later</a></h1>
+<p>Contact profile can expose:</p>
+<pre><code class="language-text">Verify Identity
+</code></pre>
+<hr />
+<h1 id="62-manual-code-entry"><a class="header" href="#62-manual-code-entry">62. Manual Code Entry</a></h1>
+<p>Fallback for:</p>
+<pre><code class="language-text">no camera
+desktop
+accessibility
+remote sharing
+</code></pre>
+<hr />
+<h1 id="63-manual-code-input"><a class="header" href="#63-manual-code-input">63. Manual Code Input</a></h1>
+<p>Use grouped fields or one pasteable field.</p>
+<hr />
+<h1 id="64-paste-support"><a class="header" href="#64-paste-support">64. Paste Support</a></h1>
+<p>Allow copy/paste invite code.</p>
+<hr />
+<h1 id="65-code-validation"><a class="header" href="#65-code-validation">65. Code Validation</a></h1>
+<p>Rust authoritative.</p>
+<hr />
+<h1 id="66-typo-ux"><a class="header" href="#66-typo-ux">66. Typo UX</a></h1>
+<p>Show:</p>
+<pre><code class="language-text">Invalid code
+</code></pre>
+<p>without leaking detailed parsing internals.</p>
+<hr />
+<h1 id="67-own-device-linking-flow"><a class="header" href="#67-own-device-linking-flow">67. Own-Device Linking Flow</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">Existing trusted device:
+    Devices
+    → Link New Device
+    → Show QR/code
+
+New device:
+    Set up / Link Existing Account
+    → Scan QR/code
+    → Authenticate
+    → Existing device approves
+    → Optional SAS confirmation
+    → New Device Authorized
+</code></pre>
+<hr />
+<h1 id="68-device-link-roles"><a class="header" href="#68-device-link-roles">68. Device-Link Roles</a></h1>
+<p>Existing device:</p>
+<pre><code class="language-text">authorizer
+</code></pre>
+<p>New device:</p>
+<pre><code class="language-text">candidate
+</code></pre>
+<hr />
+<h1 id="69-new-device-identity"><a class="header" href="#69-new-device-identity">69. New Device Identity</a></h1>
+<p>Normally gets fresh:</p>
+<pre><code class="language-text">DeviceId
+device keys
+</code></pre>
+<p>It does not clone old device identity.</p>
+<hr />
+<h1 id="70-device-link-snapshot"><a class="header" href="#70-device-link-snapshot">70. Device Link Snapshot</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct DeviceLinkSessionView {
+    pub session: DeviceLinkSessionId,
+    pub state: DeviceLinkState,
+    pub candidate_name: Option&lt;String&gt;,
+    pub expires_at: Timestamp,
+    pub sas: Option&lt;SasView&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="71-device-link-states"><a class="header" href="#71-device-link-states">71. Device Link States</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum DeviceLinkState {
+    Created,
+    Scanned,
+    Authenticating,
+    AwaitingApproval,
+    AwaitingSas,
+    Authorizing,
+    Complete,
+    Failed,
+    Expired,
+    Cancelled,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="72-explicit-approval"><a class="header" href="#72-explicit-approval">72. Explicit Approval</a></h1>
+<p>Existing device must show:</p>
+<pre><code class="language-text">Link "Pixel 10" to your account?
+</code></pre>
+<p>with consequences.</p>
+<hr />
+<h1 id="73-candidate-device-name"><a class="header" href="#73-candidate-device-name">73. Candidate Device Name</a></h1>
+<p>Treat proposed name as untrusted until linked.</p>
+<hr />
+<h1 id="74-approval-actions"><a class="header" href="#74-approval-actions">74. Approval Actions</a></h1>
+<pre><code class="language-text">Link Device
+Cancel
+</code></pre>
+<hr />
+<h1 id="75-high-risk-confirmation"><a class="header" href="#75-high-risk-confirmation">75. High-Risk Confirmation</a></h1>
+<p>Could require:</p>
+<pre><code class="language-text">biometric/device credential
+</code></pre>
+<p>on Android in high-security mode.</p>
+<p>Desktop may request OS authentication where available.</p>
+<hr />
+<h1 id="76-device-link-completion"><a class="header" href="#76-device-link-completion">76. Device Link Completion</a></h1>
+<p>Show:</p>
+<pre><code class="language-text">Device linked successfully
+</code></pre>
+<p>Then route to:</p>
+<pre><code class="language-text">Devices
+</code></pre>
+<hr />
+<h1 id="77-new-device-sync"><a class="header" href="#77-new-device-sync">77. New Device Sync</a></h1>
+<p>After authorization:</p>
+<pre><code class="language-text">identity metadata
+contacts
+messages/history according to policy
+settings
+</code></pre>
+<p>may sync.</p>
+<p>UI should show separate:</p>
+<pre><code class="language-text">Setting up your device…
+</code></pre>
+<p>not keep "linking" indefinitely.</p>
+<hr />
+<h1 id="78-device-setup-progress"><a class="header" href="#78-device-setup-progress">78. Device Setup Progress</a></h1>
+<p>Possible semantic phases:</p>
+<pre><code class="language-text">Authorizing
+Syncing account
+Syncing conversations
+Rebuilding search
+Ready
+</code></pre>
+<hr />
+<h1 id="79-search-rebuild"><a class="header" href="#79-search-rebuild">79. Search Rebuild</a></h1>
+<p>Part 11 derived local index.</p>
+<p>Do not block device-ready state on full reindex unless required.</p>
+<hr />
+<h1 id="80-device-link-cancellation"><a class="header" href="#80-device-link-cancellation">80. Device Link Cancellation</a></h1>
+<p>Either side may cancel.</p>
+<p>Session becomes unusable.</p>
+<hr />
+<h1 id="81-device-link-expiry"><a class="header" href="#81-device-link-expiry">81. Device Link Expiry</a></h1>
+<p>Short-lived.</p>
+<p>New code required.</p>
+<hr />
+<h1 id="82-replay-protection"><a class="header" href="#82-replay-protection">82. Replay Protection</a></h1>
+<p>If old code reused:</p>
+<pre><code class="language-text">This link code is no longer valid
+</code></pre>
+<p>No details necessary.</p>
+<hr />
+<h1 id="83-existing-device-lost-during-link"><a class="header" href="#83-existing-device-lost-during-link">83. Existing Device Lost During Link</a></h1>
+<p>New candidate does not become authorized without confirmed backend/security completion.</p>
+<hr />
+<h1 id="84-new-device-crashes-during-link"><a class="header" href="#84-new-device-crashes-during-link">84. New Device Crashes During Link</a></h1>
+<p>Session may be resumed only if secure protocol permits.</p>
+<p>Otherwise restart.</p>
+<hr />
+<h1 id="85-duplicate-device-link"><a class="header" href="#85-duplicate-device-link">85. Duplicate Device Link</a></h1>
+<p>If same device already linked:</p>
+<pre><code class="language-text">This device is already linked
+</code></pre>
+<hr />
+<h1 id="86-revoked-device-re-link"><a class="header" href="#86-revoked-device-re-link">86. Revoked Device Re-Link</a></h1>
+<p>Should require fresh authorization.</p>
+<hr />
+<h1 id="87-offline-device-linking"><a class="header" href="#87-offline-device-linking">87. Offline Device Linking</a></h1>
+<p>Ideal local-first flow:</p>
+<pre><code class="language-text">QR
++
+local Wi-Fi/QUIC/Bluetooth
+</code></pre>
+<p>can authorize without Internet if protocol/security supports.</p>
+<hr />
+<h1 id="88-offline-contact-verification"><a class="header" href="#88-offline-contact-verification">88. Offline Contact Verification</a></h1>
+<p>Likewise possible through:</p>
+<pre><code class="language-text">QR/SAS/local transport
+</code></pre>
+<hr />
+<h1 id="89-offline-ux"><a class="header" href="#89-offline-ux">89. Offline UX</a></h1>
+<p>Do not display:</p>
+<pre><code class="language-text">No Internet
+</code></pre>
+<p>as failure if local pairing can continue.</p>
+<hr />
+<h1 id="90-connectivity-requirement"><a class="header" href="#90-connectivity-requirement">90. Connectivity Requirement</a></h1>
+<p>If a specific step needs Internet:</p>
+<pre><code class="language-text">Internet is required for this step
+</code></pre>
+<p>only then.</p>
+<hr />
+<h1 id="91-android-camera-flow"><a class="header" href="#91-android-camera-flow">91. Android Camera Flow</a></h1>
+<p>Compose:</p>
+<pre><code class="language-text">Scan QR
+→ request camera permission contextually
+→ scanner
+→ payload
+→ Rust
+</code></pre>
+<hr />
+<h1 id="92-camera-permission-denied"><a class="header" href="#92-camera-permission-denied">92. Camera Permission Denied</a></h1>
+<p>Offer:</p>
+<pre><code class="language-text">Enter code manually
+Open Settings
+</code></pre>
+<hr />
+<h1 id="93-android-nearby-permissions"><a class="header" href="#93-android-nearby-permissions">93. Android Nearby Permissions</a></h1>
+<p>Kotlin handles version-specific permissions for:</p>
+<pre><code class="language-text">Bluetooth
+Nearby Wi-Fi
+location-related legacy requirements
+</code></pre>
+<p>Rust sees normalized capability.</p>
+<hr />
+<h1 id="94-permission-explanation"><a class="header" href="#94-permission-explanation">94. Permission Explanation</a></h1>
+<p>Use accurate reason:</p>
+<pre><code class="language-text">Nearby access lets this app discover devices close to you.
+</code></pre>
+<hr />
+<h1 id="95-do-not-overclaim-location-use"><a class="header" href="#95-do-not-overclaim-location-use">95. Do Not Overclaim Location Use</a></h1>
+<p>If permission is technically required but precise location is not used/shared, say so accurately.</p>
+<hr />
+<h1 id="96-android-nfc"><a class="header" href="#96-android-nfc">96. Android NFC</a></h1>
+<p>No permission flow should be invented if platform does not require one.</p>
+<p>Use platform capability state.</p>
+<hr />
+<h1 id="97-android-lifecycle"><a class="header" href="#97-android-lifecycle">97. Android Lifecycle</a></h1>
+<p>Discovery should react to:</p>
+<pre><code class="language-text">foreground
+background
+screen changes
+</code></pre>
+<p>Stop expensive scanning when UI no longer needs it unless active link session requires continuation.</p>
+<hr />
+<h1 id="98-process-death"><a class="header" href="#98-process-death">98. Process Death</a></h1>
+<p>Rust durable/session state determines whether pairing can resume.</p>
+<p>Compose does not reconstruct trust from <code>SavedStateHandle</code>.</p>
+<hr />
+<h1 id="99-savedstatehandle"><a class="header" href="#99-savedstatehandle">99. SavedStateHandle</a></h1>
+<p>May store:</p>
+<pre><code class="language-text">current screen
+session ID
+manual code draft
+</code></pre>
+<p>but not trust completion.</p>
+<hr />
+<h1 id="100-desktop-qr-scanner"><a class="header" href="#100-desktop-qr-scanner">100. Desktop QR Scanner</a></h1>
+<p>Options:</p>
+<pre><code class="language-text">webcam
+paste code
+open QR image
+</code></pre>
+<hr />
+<h1 id="101-desktop-v1-recommendation"><a class="header" href="#101-desktop-v1-recommendation">101. Desktop v1 Recommendation</a></h1>
+<p>Support:</p>
+<pre><code class="language-text">show own QR
+paste/manual code
+optional webcam scan
+</code></pre>
+<p>Webcam scanning should not block shipping.</p>
+<hr />
+<h1 id="102-desktop-clipboard"><a class="header" href="#102-desktop-clipboard">102. Desktop Clipboard</a></h1>
+<p>Copy:</p>
+<pre><code class="language-text">invite code
+fingerprint
+</code></pre>
+<p>through explicit action.</p>
+<hr />
+<h1 id="103-open-qr-image"><a class="header" href="#103-open-qr-image">103. Open QR Image</a></h1>
+<p>If supported:</p>
+<pre><code class="language-text">file picker
+→ image decoder
+→ QR parser
+</code></pre>
+<p>with bounded image processing.</p>
+<hr />
+<h1 id="104-desktop-nearby"><a class="header" href="#104-desktop-nearby">104. Desktop Nearby</a></h1>
+<p>Could rely on:</p>
+<pre><code class="language-text">LAN
+Bluetooth if available
+</code></pre>
+<p>behind same Rust proximity API.</p>
+<hr />
+<h1 id="105-no-hardware-assumption"><a class="header" href="#105-no-hardware-assumption">105. No Hardware Assumption</a></h1>
+<p>UI only shows:</p>
+<pre><code class="language-text">Nearby unavailable on this device
+</code></pre>
+<p>if no suitable adapter.</p>
+<hr />
+<h1 id="106-discovery-capability-snapshot"><a class="header" href="#106-discovery-capability-snapshot">106. Discovery Capability Snapshot</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct ProximityCapabilityView {
+    pub nearby_available: bool,
+    pub qr_scan_available: bool,
+    pub nfc_available: bool,
+    pub manual_code_available: bool,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="107-capability-driven-ui"><a class="header" href="#107-capability-driven-ui">107. Capability-Driven UI</a></h1>
+<p>Hide unsupported permanent capabilities.</p>
+<p>Disable temporarily unavailable capabilities with reason.</p>
+<hr />
+<h1 id="108-nearby-candidate-expiry"><a class="header" href="#108-nearby-candidate-expiry">108. Nearby Candidate Expiry</a></h1>
+<p>If candidate disappears:</p>
+<pre><code class="language-text">remove after grace period
+</code></pre>
+<p>or mark:</p>
+<pre><code class="language-text">No longer nearby
+</code></pre>
+<p>briefly.</p>
+<hr />
+<h1 id="109-candidate-list-stability"><a class="header" href="#109-candidate-list-stability">109. Candidate List Stability</a></h1>
+<p>Do not reorder constantly from RSSI fluctuations.</p>
+<p>Sort by:</p>
+<pre><code class="language-text">stable first-seen / semantic proximity class
+</code></pre>
+<p>with hysteresis.</p>
+<hr />
+<h1 id="110-duplicate-discovery"><a class="header" href="#110-duplicate-discovery">110. Duplicate Discovery</a></h1>
+<p>Same physical candidate seen over BLE + LAN:</p>
+<pre><code class="language-text">one candidate
+</code></pre>
+<p>after Rust correlation where safe.</p>
+<hr />
+<h1 id="111-correlation-privacy"><a class="header" href="#111-correlation-privacy">111. Correlation Privacy</a></h1>
+<p>Do not correlate unrelated observations beyond security/privacy model.</p>
+<hr />
+<h1 id="112-nearby-candidate-selection-race"><a class="header" href="#112-nearby-candidate-selection-race">112. Nearby Candidate Selection Race</a></h1>
+<p>If candidate expires after tap:</p>
+<pre><code class="language-text">Device is no longer nearby
+Try again
+</code></pre>
+<hr />
+<h1 id="113-multiple-simultaneous-candidates"><a class="header" href="#113-multiple-simultaneous-candidates">113. Multiple Simultaneous Candidates</a></h1>
+<p>Clearly show target identity at confirmation.</p>
+<p>Avoid accidental approval of wrong nearby device.</p>
+<hr />
+<h1 id="114-user-confirmation-screen"><a class="header" href="#114-user-confirmation-screen">114. User Confirmation Screen</a></h1>
+<p>Before trust-changing action show:</p>
+<pre><code class="language-text">name
+avatar
+SAS/fingerprint
+relationship being created
+</code></pre>
+<hr />
+<h1 id="115-device-link-confirmation"><a class="header" href="#115-device-link-confirmation">115. Device Link Confirmation</a></h1>
+<p>Must explicitly say:</p>
+<pre><code class="language-text">This is one of my devices
+</code></pre>
+<hr />
+<h1 id="116-contact-confirmation"><a class="header" href="#116-contact-confirmation">116. Contact Confirmation</a></h1>
+<p>Must explicitly say:</p>
+<pre><code class="language-text">Add this person as a contact
+</code></pre>
+<hr />
+<h1 id="117-verification-confirmation"><a class="header" href="#117-verification-confirmation">117. Verification Confirmation</a></h1>
+<p>Must explicitly say:</p>
+<pre><code class="language-text">Verify this identity
+</code></pre>
+<hr />
+<h1 id="118-prevent-context-confusion"><a class="header" href="#118-prevent-context-confusion">118. Prevent Context Confusion</a></h1>
+<p>Use different:</p>
+<pre><code class="language-text">screen titles
+icons
+button labels
+help text
+</code></pre>
+<p>for contact vs own-device flows.</p>
+<hr />
+<h1 id="119-qr-sharing"><a class="header" href="#119-qr-sharing">119. QR Sharing</a></h1>
+<p>Android:</p>
+<pre><code class="language-text">system share sheet
+</code></pre>
+<p>Desktop:</p>
+<pre><code class="language-text">copy code
+copy/save QR image optional
+</code></pre>
+<hr />
+<h1 id="120-qr-export-privacy"><a class="header" href="#120-qr-export-privacy">120. QR Export Privacy</a></h1>
+<p>Invite payload may grant capability.</p>
+<p>UI should warn if sharing broadly.</p>
+<hr />
+<h1 id="121-contact-invite-warning"><a class="header" href="#121-contact-invite-warning">121. Contact Invite Warning</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">Anyone with this invite can send you a contact request until it expires.
+</code></pre>
+<p>Exact wording matches backend semantics.</p>
+<hr />
+<h1 id="122-device-link-qr-warning"><a class="header" href="#122-device-link-qr-warning">122. Device Link QR Warning</a></h1>
+<p>Stronger:</p>
+<pre><code class="language-text">Do not share this code. It can be used to link a device to your account until it expires.
+</code></pre>
+<hr />
+<h1 id="123-single-use-link"><a class="header" href="#123-single-use-link">123. Single-Use Link</a></h1>
+<p>Show:</p>
+<pre><code class="language-text">Single use
+</code></pre>
+<p>if true.</p>
+<hr />
+<h1 id="124-revoking-link-session"><a class="header" href="#124-revoking-link-session">124. Revoking Link Session</a></h1>
+<p>User can tap:</p>
+<pre><code class="language-text">Cancel link code
+</code></pre>
+<hr />
+<h1 id="125-pairing-session-list"><a class="header" href="#125-pairing-session-list">125. Pairing Session List</a></h1>
+<p>Devices/security screen could show active:</p>
+<pre><code class="language-text">Pending device link
+</code></pre>
+<p>if session persists.</p>
+<hr />
+<h1 id="126-no-hidden-pending-authorization"><a class="header" href="#126-no-hidden-pending-authorization">126. No Hidden Pending Authorization</a></h1>
+<p>All active device-link sessions should be inspectable/cancellable.</p>
+<hr />
+<h1 id="127-trust-transcript"><a class="header" href="#127-trust-transcript">127. Trust Transcript</a></h1>
+<p>Advanced security details can expose:</p>
+<pre><code class="language-text">method
+time
+session
+</code></pre>
+<p>but not raw secrets.</p>
+<hr />
+<h1 id="128-identity-fingerprint"><a class="header" href="#128-identity-fingerprint">128. Identity Fingerprint</a></h1>
+<p>Part 08.</p>
+<p>Nearby/QR flow routes to same contact identity semantics after authentication.</p>
+<hr />
+<h1 id="129-qr-contact-acceptance-from-unknown-sender"><a class="header" href="#129-qr-contact-acceptance-from-unknown-sender">129. QR Contact Acceptance from Unknown Sender</a></h1>
+<p>Do not auto-create trusted relationship until user confirms.</p>
+<hr />
+<h1 id="130-group-invite-qr"><a class="header" href="#130-group-invite-qr">130. Group Invite QR</a></h1>
+<p>Part 09 receives validated payload.</p>
+<hr />
+<h1 id="131-extension-qr-types"><a class="header" href="#131-extension-qr-types">131. Extension QR Types</a></h1>
+<p>Future plugins may register typed QR payloads only through safe extension registry.</p>
+<hr />
+<h1 id="132-unknown-plugin-qr"><a class="header" href="#132-unknown-plugin-qr">132. Unknown Plugin QR</a></h1>
+<p>Show:</p>
+<pre><code class="language-text">This code requires plugin X
+</code></pre>
+<p>only after safe type identification.</p>
+<hr />
+<h1 id="133-qr-bomb--oversize-data"><a class="header" href="#133-qr-bomb--oversize-data">133. QR Bomb / Oversize Data</a></h1>
+<p>Rust parser enforces:</p>
+<pre><code class="language-text">size
+depth
+field bounds
+</code></pre>
+<hr />
+<h1 id="134-image-decoder-safety"><a class="header" href="#134-image-decoder-safety">134. Image Decoder Safety</a></h1>
+<p>QR image import is bounded/sandboxed where possible.</p>
+<hr />
+<h1 id="135-nfc-payload-bounds"><a class="header" href="#135-nfc-payload-bounds">135. NFC Payload Bounds</a></h1>
+<p>Same.</p>
+<hr />
+<h1 id="136-nearby-protocol-bounds"><a class="header" href="#136-nearby-protocol-bounds">136. Nearby Protocol Bounds</a></h1>
+<p>Untrusted discovery frames are bounded.</p>
+<p>UI never allocates based on advertised length.</p>
+<hr />
+<h1 id="137-security-error-taxonomy"><a class="header" href="#137-security-error-taxonomy">137. Security Error Taxonomy</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum BootstrapFailureKind {
+    Expired,
+    Revoked,
+    Replay,
+    InvalidPayload,
+    IdentityMismatch,
+    SasMismatch,
+    UnsupportedVersion,
+    CandidateUnavailable,
+    PermissionRequired,
+    AuthorizationDenied,
+    Internal,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="138-user-facing-mapping"><a class="header" href="#138-user-facing-mapping">138. User-Facing Mapping</a></h1>
+<p>Expired:</p>
+<pre><code class="language-text">Code expired
+</code></pre>
+<p>Replay/revoked:</p>
+<pre><code class="language-text">Code is no longer valid
+</code></pre>
+<p>Mismatch:</p>
+<pre><code class="language-text">Identity could not be verified
+</code></pre>
+<p>Unsupported:</p>
+<pre><code class="language-text">Update one of the devices and try again
+</code></pre>
+<hr />
+<h1 id="139-do-not-expose-security-oracle-details"><a class="header" href="#139-do-not-expose-security-oracle-details">139. Do Not Expose Security Oracle Details</a></h1>
+<p>Avoid telling attacker exactly which cryptographic field failed.</p>
+<hr />
+<h1 id="140-version-mismatch"><a class="header" href="#140-version-mismatch">140. Version Mismatch</a></h1>
+<p>If safe:</p>
+<pre><code class="language-text">This device uses an incompatible version
+Update the app
+</code></pre>
+<hr />
+<h1 id="141-downgrade-protection"><a class="header" href="#141-downgrade-protection">141. Downgrade Protection</a></h1>
+<p>UI does not offer:</p>
+<pre><code class="language-text">Continue insecurely
+</code></pre>
+<p>if Rust security policy rejects version.</p>
+<hr />
+<h1 id="142-identity-changed-during-pairing"><a class="header" href="#142-identity-changed-during-pairing">142. Identity Changed During Pairing</a></h1>
+<p>Abort.</p>
+<p>Show:</p>
+<pre><code class="language-text">Identity changed during verification
+Start again
+</code></pre>
+<hr />
+<h1 id="143-session-timeout"><a class="header" href="#143-session-timeout">143. Session Timeout</a></h1>
+<p>Show:</p>
+<pre><code class="language-text">Session expired
+</code></pre>
+<p>with:</p>
+<pre><code class="language-text">Create new code
+</code></pre>
+<hr />
+<h1 id="144-accessibility--qr"><a class="header" href="#144-accessibility--qr">144. Accessibility — QR</a></h1>
+<p>QR is never the only path.</p>
+<p>Always offer:</p>
+<pre><code class="language-text">Enter code manually
+Compare code
+</code></pre>
+<p>where protocol supports.</p>
+<hr />
+<h1 id="145-screen-reader"><a class="header" href="#145-screen-reader">145. Screen Reader</a></h1>
+<p>QR screen announces:</p>
+<pre><code class="language-text">Contact invite QR code. Expires in 4 minutes. Manual code 83 14 22.
+</code></pre>
+<p>where safe.</p>
+<hr />
+<h1 id="146-manual-code-grouping"><a class="header" href="#146-manual-code-grouping">146. Manual Code Grouping</a></h1>
+<p>Use large grouped digits/words.</p>
+<hr />
+<h1 id="147-color-independence"><a class="header" href="#147-color-independence">147. Color Independence</a></h1>
+<p>Verified/mismatch/expired state uses:</p>
+<pre><code class="language-text">icon
+text
+</code></pre>
+<p>not color only.</p>
+<hr />
+<h1 id="148-large-font"><a class="header" href="#148-large-font">148. Large Font</a></h1>
+<p>Codes wrap/resize without truncation.</p>
+<hr />
+<h1 id="149-rtl"><a class="header" href="#149-rtl">149. RTL</a></h1>
+<p>UI layout mirrors.</p>
+<p>Cryptographic/manual codes preserve canonical order.</p>
+<hr />
+<h1 id="150-reduced-motion"><a class="header" href="#150-reduced-motion">150. Reduced Motion</a></h1>
+<p>Nearby scanning animation can become static progress/status.</p>
+<hr />
+<h1 id="151-haptics-android"><a class="header" href="#151-haptics-android">151. Haptics Android</a></h1>
+<p>Useful sparingly for:</p>
+<pre><code class="language-text">QR recognized
+NFC detected
+verification success
+mismatch
+</code></pre>
+<hr />
+<h1 id="152-audio-cues"><a class="header" href="#152-audio-cues">152. Audio Cues</a></h1>
+<p>Optional accessibility setting for successful scan.</p>
+<hr />
+<h1 id="153-desktop-keyboard"><a class="header" href="#153-desktop-keyboard">153. Desktop Keyboard</a></h1>
+<p>Nearby list:</p>
+<pre><code class="language-text">Up/Down
+Enter
+</code></pre>
+<p>QR/manual code dialog fully keyboard accessible.</p>
+<hr />
+<h1 id="154-focus-after-scan"><a class="header" href="#154-focus-after-scan">154. Focus After Scan</a></h1>
+<p>Move focus to:</p>
+<pre><code class="language-text">identity confirmation
+</code></pre>
+<p>not hidden scanner control.</p>
+<hr />
+<h1 id="155-talkback-scanner"><a class="header" href="#155-talkback-scanner">155. TalkBack Scanner</a></h1>
+<p>Scanner screen needs:</p>
+<pre><code class="language-text">instructions
+manual-code alternative
+close
+</code></pre>
+<p>Do not require visually aligning QR without alternative.</p>
+<hr />
+<h1 id="156-pairing-history"><a class="header" href="#156-pairing-history">156. Pairing History</a></h1>
+<p>Contact/security details can show completed verification history.</p>
+<p>Do not keep unnecessary failed-session logs indefinitely.</p>
+<hr />
+<h1 id="157-failed-session-privacy"><a class="header" href="#157-failed-session-privacy">157. Failed Session Privacy</a></h1>
+<p>Bound retention.</p>
+<hr />
+<h1 id="158-telemetry"><a class="header" href="#158-telemetry">158. Telemetry</a></h1>
+<p>Never log:</p>
+<pre><code class="language-text">full invite code
+SAS
+QR payload
+fingerprint
+</code></pre>
+<hr />
+<h1 id="159-safe-metrics"><a class="header" href="#159-safe-metrics">159. Safe Metrics</a></h1>
+<p>Possible:</p>
+<pre><code class="language-text">method used
+success/failure class
+time to complete
+permission denial rate
+</code></pre>
+<p>without identifiers/codes.</p>
+<hr />
+<h1 id="160-crash-reports"><a class="header" href="#160-crash-reports">160. Crash Reports</a></h1>
+<p>Redact bootstrap payloads.</p>
+<hr />
+<h1 id="161-nearby-diagnostics"><a class="header" href="#161-nearby-diagnostics">161. Nearby Diagnostics</a></h1>
+<p>Advanced support bundle may include:</p>
+<pre><code class="language-text">adapter state
+discovery method
+failure reason code
+</code></pre>
+<p>without peer identity/secrets.</p>
+<hr />
+<h1 id="162-contact-pairing-presentation-api"><a class="header" href="#162-contact-pairing-presentation-api">162. Contact Pairing Presentation API</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait ContactPairingPresentation {
+    async fn create_invite(
+        &amp;self,
+        policy: ContactInvitePolicy,
+    ) -&gt; Result&lt;ContactInviteView, UiError&gt;;
+
+    async fn inspect_invite(
+        &amp;self,
+        payload: BootstrapPayload,
+    ) -&gt; Result&lt;ContactInvitePreview, UiError&gt;;
+
+    async fn accept_invite(
+        &amp;self,
+        payload: BootstrapPayload,
+    ) -&gt; Result&lt;ContactPairingResult, UiError&gt;;
+
+    async fn cancel_invite(
+        &amp;self,
+        invite: ContactInviteId,
+    ) -&gt; Result&lt;(), UiError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="163-verification-presentation-api"><a class="header" href="#163-verification-presentation-api">163. Verification Presentation API</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait PairVerificationPresentation {
+    async fn begin(
+        &amp;self,
+        account: AccountId,
+        method: VerificationMethod,
+    ) -&gt; Result&lt;VerificationSessionView, UiError&gt;;
+
+    async fn confirm_sas(
+        &amp;self,
+        session: VerificationSessionId,
+        matches: bool,
+    ) -&gt; Result&lt;VerificationResultView, UiError&gt;;
+
+    async fn process_qr(
+        &amp;self,
+        payload: BootstrapPayload,
+    ) -&gt; Result&lt;VerificationResultView, UiError&gt;;
+
+    async fn cancel(
+        &amp;self,
+        session: VerificationSessionId,
+    ) -&gt; Result&lt;(), UiError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="164-nearby-presentation-api"><a class="header" href="#164-nearby-presentation-api">164. Nearby Presentation API</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait NearbyPresentation {
+    async fn capabilities(
+        &amp;self,
+    ) -&gt; Result&lt;ProximityCapabilityView, UiError&gt;;
+
+    async fn start_discovery(
+        &amp;self,
+    ) -&gt; Result&lt;NearbyDiscoverySessionId, UiError&gt;;
+
+    async fn stop_discovery(
+        &amp;self,
+        session: NearbyDiscoverySessionId,
+    ) -&gt; Result&lt;(), UiError&gt;;
+
+    async fn connect(
+        &amp;self,
+        candidate: NearbyCandidateId,
+    ) -&gt; Result&lt;NearbyPairingSessionView, UiError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="165-device-link-presentation-api"><a class="header" href="#165-device-link-presentation-api">165. Device Link Presentation API</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait DeviceLinkPresentation {
+    async fn create_invite(
+        &amp;self,
+    ) -&gt; Result&lt;DeviceLinkInviteView, UiError&gt;;
+
+    async fn inspect_invite(
+        &amp;self,
+        payload: BootstrapPayload,
+    ) -&gt; Result&lt;DeviceLinkPreview, UiError&gt;;
+
+    async fn approve(
+        &amp;self,
+        session: DeviceLinkSessionId,
+    ) -&gt; Result&lt;(), UiError&gt;;
+
+    async fn deny(
+        &amp;self,
+        session: DeviceLinkSessionId,
+    ) -&gt; Result&lt;(), UiError&gt;;
+
+    async fn confirm_sas(
+        &amp;self,
+        session: DeviceLinkSessionId,
+        matches: bool,
+    ) -&gt; Result&lt;(), UiError&gt;;
+
+    async fn cancel(
+        &amp;self,
+        session: DeviceLinkSessionId,
+    ) -&gt; Result&lt;(), UiError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="166-platform-scanner-interface"><a class="header" href="#166-platform-scanner-interface">166. Platform Scanner Interface</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum PlatformBootstrapInput {
+    QrPayload(Vec&lt;u8&gt;),
+    NfcPayload(Vec&lt;u8&gt;),
+    ManualCode(String),
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Platform UI obtains input.</p>
+<p>Rust validates.</p>
+<hr />
+<h1 id="167-do-not-give-cameranfc-to-domain-core"><a class="header" href="#167-do-not-give-cameranfc-to-domain-core">167. Do Not Give Camera/NFC to Domain Core</a></h1>
+<p>Domain receives payload, not Activity/camera objects.</p>
+<hr />
+<h1 id="168-android-viewmodel"><a class="header" href="#168-android-viewmodel">168. Android ViewModel</a></h1>
+<p>Owns:</p>
+<pre><code class="language-text">scanner visibility
+permission effects
+manual-code text
+selected candidate
+confirmation sheets
+</code></pre>
+<p>Rust owns:</p>
+<pre><code class="language-text">candidate/auth/session/trust state
+</code></pre>
+<hr />
+<h1 id="169-dioxus-presenter"><a class="header" href="#169-dioxus-presenter">169. Dioxus Presenter</a></h1>
+<p>Owns:</p>
+<pre><code class="language-text">nearby selection
+manual-code field
+QR window
+webcam/paste flow
+focus
+</code></pre>
+<hr />
+<h1 id="170-nearby-events"><a class="header" href="#170-nearby-events">170. Nearby Events</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum NearbyUiEvent {
+    CandidateAdded(NearbyCandidateView),
+    CandidateUpdated(NearbyCandidateView),
+    CandidateRemoved(NearbyCandidateId),
+    DiscoveryStateChanged(NearbyDiscoveryState),
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="171-verification-events"><a class="header" href="#171-verification-events">171. Verification Events</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum VerificationUiEvent {
+    SessionChanged(VerificationSessionView),
+    VerificationCompleted(VerificationResultView),
+    VerificationFailed(BootstrapFailureKind),
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="172-device-link-events"><a class="header" href="#172-device-link-events">172. Device Link Events</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum DeviceLinkUiEvent {
+    SessionChanged(DeviceLinkSessionView),
+    LinkCompleted(DeviceSummaryView),
+    LinkFailed(BootstrapFailureKind),
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="173-event-locality"><a class="header" href="#173-event-locality">173. Event Locality</a></h1>
+<p>Only update current pairing flow/candidate.</p>
+<p>Do not refresh whole contacts/devices screens unnecessarily.</p>
+<hr />
+<h1 id="174-pairing-session-persistence"><a class="header" href="#174-pairing-session-persistence">174. Pairing Session Persistence</a></h1>
+<p>Sensitive session state remains Rust-owned.</p>
+<p>UI can reconnect by session ID.</p>
+<hr />
+<h1 id="175-expired-session-reattach"><a class="header" href="#175-expired-session-reattach">175. Expired Session Reattach</a></h1>
+<p>Rust returns:</p>
+<pre><code class="language-text">Expired
+</code></pre>
+<p>UI creates fresh flow.</p>
+<hr />
+<h1 id="176-parallel-pairing"><a class="header" href="#176-parallel-pairing">176. Parallel Pairing</a></h1>
+<p>Limit concurrent high-risk device-link sessions.</p>
+<hr />
+<h1 id="177-contact-invites"><a class="header" href="#177-contact-invites">177. Contact Invites</a></h1>
+<p>Multiple may exist if product allows.</p>
+<hr />
+<h1 id="178-own-device-link-limit"><a class="header" href="#178-own-device-link-limit">178. Own-Device Link Limit</a></h1>
+<p>Recommendation:</p>
+<pre><code class="language-text">one or very few active link sessions
+</code></pre>
+<p>to reduce confusion.</p>
+<hr />
+<h1 id="179-pairing-rate-limits"><a class="header" href="#179-pairing-rate-limits">179. Pairing Rate Limits</a></h1>
+<p>Backend security policy.</p>
+<p>UI can show:</p>
+<pre><code class="language-text">Try again later
+</code></pre>
+<hr />
+<h1 id="180-abuse-protection"><a class="header" href="#180-abuse-protection">180. Abuse Protection</a></h1>
+<p>Unknown nearby devices cannot force modal dialogs.</p>
+<p>They only appear in nearby list.</p>
+<hr />
+<h1 id="181-unsolicited-nfc"><a class="header" href="#181-unsolicited-nfc">181. Unsolicited NFC</a></h1>
+<p>Requires deliberate user interaction/session where possible.</p>
+<hr />
+<h1 id="182-unsolicited-qr"><a class="header" href="#182-unsolicited-qr">182. Unsolicited QR</a></h1>
+<p>Scanner requires user opening scanner.</p>
+<hr />
+<h1 id="183-contact-request-after-scan"><a class="header" href="#183-contact-request-after-scan">183. Contact Request After Scan</a></h1>
+<p>User remains in control.</p>
+<p>No silent message permission.</p>
+<hr />
+<h1 id="184-own-device-security"><a class="header" href="#184-own-device-security">184. Own Device Security</a></h1>
+<p>Device-link flow should be accessible from:</p>
+<pre><code class="language-text">Devices
+Security Center
+</code></pre>
+<p>not general contact add shortcut alone.</p>
+<hr />
+<h1 id="185-device-link-audit"><a class="header" href="#185-device-link-audit">185. Device Link Audit</a></h1>
+<p>After link:</p>
+<pre><code class="language-text">New device added
+</code></pre>
+<p>security event appears on existing devices.</p>
+<hr />
+<h1 id="186-device-link-notification"><a class="header" href="#186-device-link-notification">186. Device Link Notification</a></h1>
+<p>Other trusted devices may be notified.</p>
+<hr />
+<h1 id="187-unauthorized-attempt"><a class="header" href="#187-unauthorized-attempt">187. Unauthorized Attempt</a></h1>
+<p>If denied/failed:</p>
+<pre><code class="language-text">Device was not linked
+</code></pre>
+<p>and security system may log event.</p>
+<hr />
+<h1 id="188-revoke-newly-linked-device"><a class="header" href="#188-revoke-newly-linked-device">188. Revoke Newly Linked Device</a></h1>
+<p>Devices screen allows immediate revoke.</p>
+<hr />
+<h1 id="189-device-naming"><a class="header" href="#189-device-naming">189. Device Naming</a></h1>
+<p>After link, user can set friendly local/account device name:</p>
+<pre><code class="language-text">Pixel 10
+Desktop
+Laptop
+</code></pre>
+<hr />
+<h1 id="190-name-is-not-device-identity"><a class="header" href="#190-name-is-not-device-identity">190. Name Is Not Device Identity</a></h1>
+<p><code>DeviceId</code> remains authority.</p>
+<hr />
+<h1 id="191-device-type-icon"><a class="header" href="#191-device-type-icon">191. Device Type Icon</a></h1>
+<p>Android phone/desktop/tablet icons are informational only.</p>
+<hr />
+<h1 id="192-contact-nearby-reverification"><a class="header" href="#192-contact-nearby-reverification">192. Contact Nearby Reverification</a></h1>
+<p>Existing contact discovered nearby can show:</p>
+<pre><code class="language-text">Verify Alice nearby
+</code></pre>
+<p>after authenticated identity match.</p>
+<hr />
+<h1 id="193-identity-mismatch-existing-contact"><a class="header" href="#193-identity-mismatch-existing-contact">193. Identity Mismatch Existing Contact</a></h1>
+<p>Strong warning.</p>
+<p>Do not silently create second contact with same display name.</p>
+<hr />
+<h1 id="194-duplicate-nearby-candidates"><a class="header" href="#194-duplicate-nearby-candidates">194. Duplicate Nearby Candidates</a></h1>
+<p>Rust should deduplicate authenticated same identity.</p>
+<hr />
+<h1 id="195-contact-verification-success-navigation"><a class="header" href="#195-contact-verification-success-navigation">195. Contact Verification Success Navigation</a></h1>
+<p>Return to contact profile/conversation.</p>
+<hr />
+<h1 id="196-device-link-success-navigation"><a class="header" href="#196-device-link-success-navigation">196. Device Link Success Navigation</a></h1>
+<p>Return to:</p>
+<pre><code class="language-text">Devices
+</code></pre>
+<p>not Contacts.</p>
+<hr />
+<h1 id="197-group-invite-success-navigation"><a class="header" href="#197-group-invite-success-navigation">197. Group Invite Success Navigation</a></h1>
+<p>Return to group.</p>
+<hr />
+<h1 id="198-typed-result-routing"><a class="header" href="#198-typed-result-routing">198. Typed Result Routing</a></h1>
+<p>Bootstrap result:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum BootstrapResult {
+    ContactAdded(AccountId),
+    ContactVerified(AccountId),
+    DeviceLinked(DeviceId),
+    GroupJoined(GroupId),
+}
+<span class="boring">}</span></code></pre></pre>
+<p>UI routes accordingly.</p>
+<hr />
+<h1 id="199-no-generic-success-screen"><a class="header" href="#199-no-generic-success-screen">199. No Generic Success Screen</a></h1>
+<p>Use context-specific success message.</p>
+<hr />
+<h1 id="200-empty-nearby-state"><a class="header" href="#200-empty-nearby-state">200. Empty Nearby State</a></h1>
+<pre><code class="language-text">No nearby devices found
+</code></pre>
+<p>Actions:</p>
+<pre><code class="language-text">Try again
+Scan QR
+Enter Code
+</code></pre>
+<hr />
+<h1 id="201-nearby-unavailable"><a class="header" href="#201-nearby-unavailable">201. Nearby Unavailable</a></h1>
+<pre><code class="language-text">Nearby discovery isn't available on this device
+</code></pre>
+<p>Fallbacks remain.</p>
+<hr />
+<h1 id="202-bluetooth-off"><a class="header" href="#202-bluetooth-off">202. Bluetooth Off</a></h1>
+<p>Android can show:</p>
+<pre><code class="language-text">Turn on Bluetooth
+</code></pre>
+<p>via platform settings/action where needed.</p>
+<hr />
+<h1 id="203-wi-fi-off"><a class="header" href="#203-wi-fi-off">203. Wi-Fi Off</a></h1>
+<p>Only request enabling if current method requires it.</p>
+<hr />
+<h1 id="204-airplane-mode"><a class="header" href="#204-airplane-mode">204. Airplane Mode</a></h1>
+<p>Local Bluetooth/Wi-Fi behavior varies.</p>
+<p>UI should use capability state, not assume total impossibility.</p>
+<hr />
+<h1 id="205-camera-unavailable"><a class="header" href="#205-camera-unavailable">205. Camera Unavailable</a></h1>
+<p>Offer manual code.</p>
+<hr />
+<h1 id="206-nfc-off"><a class="header" href="#206-nfc-off">206. NFC Off</a></h1>
+<p>Offer:</p>
+<pre><code class="language-text">Turn on NFC
+</code></pre>
+<p>or QR.</p>
+<hr />
+<h1 id="207-pairing-loading"><a class="header" href="#207-pairing-loading">207. Pairing Loading</a></h1>
+<p>Use semantic steps:</p>
+<pre><code class="language-text">Connecting
+Verifying
+Waiting for confirmation
+Authorizing
+</code></pre>
+<p>not indefinite spinner.</p>
+<hr />
+<h1 id="208-cancellation"><a class="header" href="#208-cancellation">208. Cancellation</a></h1>
+<p>Every waiting screen exposes:</p>
+<pre><code class="language-text">Cancel
+</code></pre>
+<hr />
+<h1 id="209-back-navigation-android"><a class="header" href="#209-back-navigation-android">209. Back Navigation Android</a></h1>
+<p>Back cancels/dismisses only current UI flow.</p>
+<p>If cancelling security session is necessary:</p>
+<pre><code class="language-text">ViewModel asks Rust cancel
+</code></pre>
+<hr />
+<h1 id="210-desktop-escape"><a class="header" href="#210-desktop-escape">210. Desktop Escape</a></h1>
+<p>Esc closes current modal after safe cancellation.</p>
+<hr />
+<h1 id="211-background-android"><a class="header" href="#211-background-android">211. Background Android</a></h1>
+<p>If user leaves scanner:</p>
+<pre><code class="language-text">stop camera
+</code></pre>
+<p>Pairing session may remain if already authenticated.</p>
+<hr />
+<h1 id="212-foreground-return"><a class="header" href="#212-foreground-return">212. Foreground Return</a></h1>
+<p>Request fresh session snapshot.</p>
+<hr />
+<h1 id="213-screen-rotation"><a class="header" href="#213-screen-rotation">213. Screen Rotation</a></h1>
+<p>Does not duplicate scan acceptance.</p>
+<p>Use session IDs.</p>
+<hr />
+<h1 id="214-duplicate-scanner-event"><a class="header" href="#214-duplicate-scanner-event">214. Duplicate Scanner Event</a></h1>
+<p>Same QR may be decoded many frames.</p>
+<p>Deduplicate by payload/session.</p>
+<hr />
+<h1 id="215-hapticvisual-scan-confirmation"><a class="header" href="#215-hapticvisual-scan-confirmation">215. Haptic/Visual Scan Confirmation</a></h1>
+<p>Once recognized:</p>
+<pre><code class="language-text">freeze scanner
+show processing
+</code></pre>
+<p>to avoid repeated scans.</p>
+<hr />
+<h1 id="216-manual-entry-paste"><a class="header" href="#216-manual-entry-paste">216. Manual Entry Paste</a></h1>
+<p>If pasted code includes spaces/hyphens:</p>
+<pre><code class="language-text">normalize safely
+</code></pre>
+<p>in parser.</p>
+<hr />
+<h1 id="217-copy-code"><a class="header" href="#217-copy-code">217. Copy Code</a></h1>
+<p>Display expiration next to code so users understand lifetime.</p>
+<hr />
+<h1 id="218-qr-brightness"><a class="header" href="#218-qr-brightness">218. QR Brightness</a></h1>
+<p>Android may optionally offer:</p>
+<pre><code class="language-text">increase screen brightness
+</code></pre>
+<p>while showing QR.</p>
+<p>Restore afterward.</p>
+<hr />
+<h1 id="219-qr-screen-sleep"><a class="header" href="#219-qr-screen-sleep">219. QR Screen Sleep</a></h1>
+<p>Keep screen awake briefly while actively showing pairing QR if appropriate.</p>
+<hr />
+<h1 id="220-privacy-against-shoulder-surfing"><a class="header" href="#220-privacy-against-shoulder-surfing">220. Privacy Against Shoulder Surfing</a></h1>
+<p>Device-link codes should expire quickly.</p>
+<p>Contact QR may have less-sensitive semantics but still bounded.</p>
+<hr />
+<h1 id="221-screenshot-testing"><a class="header" href="#221-screenshot-testing">221. Screenshot Testing</a></h1>
+<p>Required states:</p>
+<pre><code class="language-text">nearby searching
+candidate found
+connecting
+verification
+SAS
+match
+mismatch
+QR contact
+QR device link
+expired QR
+permission denied
+manual code
+device approval
+link complete
+dark mode
+large font
+RTL
+</code></pre>
+<hr />
+<h1 id="222-android-test-matrix"><a class="header" href="#222-android-test-matrix">222. Android Test Matrix</a></h1>
+<p>Verify:</p>
+<pre><code class="language-text">camera permission
+Bluetooth/nearby permission
+NFC
+QR duplicate frames
+rotation
+background/foreground
+process death
+TalkBack
+manual-code fallback
+</code></pre>
+<hr />
+<h1 id="223-desktop-test-matrix"><a class="header" href="#223-desktop-test-matrix">223. Desktop Test Matrix</a></h1>
+<p>Verify:</p>
+<pre><code class="language-text">nearby list
+keyboard selection
+manual code
+paste code
+QR display
+optional webcam scanner
+focus
+</code></pre>
+<hr />
+<h1 id="224-security-test-matrix"><a class="header" href="#224-security-test-matrix">224. Security Test Matrix</a></h1>
+<p>Verify:</p>
+<pre><code class="language-text">expired invite
+replay
+revoked invite
+wrong SAS
+identity mismatch
+unsupported version
+self scan
+device already linked
+denied authorization
+</code></pre>
+<hr />
+<h1 id="225-offline-tests"><a class="header" href="#225-offline-tests">225. Offline Tests</a></h1>
+<p>Verify QR/SAS/local pairing works without Internet when backend path supports it.</p>
+<hr />
+<h1 id="226-multi-device-test"><a class="header" href="#226-multi-device-test">226. Multi-Device Test</a></h1>
+<p>Link new Android device from desktop.</p>
+<p>Expected:</p>
+<pre><code class="language-text">new unique DeviceId
+security event
+new device appears in Devices
+</code></pre>
+<hr />
+<h1 id="227-contact-vs-device-confusion-test"><a class="header" href="#227-contact-vs-device-confusion-test">227. Contact vs Device Confusion Test</a></h1>
+<p>Ensure a device-link QR can never render ordinary:</p>
+<pre><code class="language-text">Add Contact
+</code></pre>
+<p>confirmation.</p>
+<hr />
+<h1 id="228-qr-type-confusion-test"><a class="header" href="#228-qr-type-confusion-test">228. QR Type Confusion Test</a></h1>
+<p>Group/contact/device QR cannot be interpreted as another type.</p>
+<hr />
+<h1 id="229-accessibility-test"><a class="header" href="#229-accessibility-test">229. Accessibility Test</a></h1>
+<p>Complete contact verification without camera using manual/SAS flow.</p>
+<hr />
+<h1 id="230-performance"><a class="header" href="#230-performance">230. Performance</a></h1>
+<p>Nearby UI update rates must be bounded.</p>
+<p>RSSI changes should not produce 60 recompositions/sec.</p>
+<hr />
+<h1 id="231-discovery-event-coalescing"><a class="header" href="#231-discovery-event-coalescing">231. Discovery Event Coalescing</a></h1>
+<p>Coalesce candidate signal/proximity changes.</p>
+<hr />
+<h1 id="232-scanner-performance"><a class="header" href="#232-scanner-performance">232. Scanner Performance</a></h1>
+<p>QR decoding should run off main UI thread where appropriate.</p>
+<hr />
+<h1 id="233-battery"><a class="header" href="#233-battery">233. Battery</a></h1>
+<p>Discovery/camera/NFC sessions are short-lived and user-driven.</p>
+<hr />
+<h1 id="234-initial-production-scope"><a class="header" href="#234-initial-production-scope">234. Initial Production Scope</a></h1>
+<p>Ship:</p>
+<pre><code class="language-text">Nearby discovery abstraction
+contact invite QR
+contact verification QR/SAS
+manual code
+Android QR camera
+Android NFC where practical
+desktop QR display/manual/paste
+own-device linking as separate flow
+explicit device authorization
+session expiry/replay handling
+offline local pairing where supported
+</code></pre>
+<p>Defer:</p>
+<pre><code class="language-text">continuous ambient discovery
+automatic contact exchange
+ultra-wideband precise distance
+complex social proximity
+background NFC workflows
+</code></pre>
+<hr />
+<h1 id="235-definition-of-done"><a class="header" href="#235-definition-of-done">235. Definition of Done</a></h1>
+<p>UI/UX Part 12 is complete when:</p>
+<ul>
+<li>nearby observation is clearly distinct from authenticated identity</li>
+<li>contact addition, contact verification, own-device linking, and group invites use separate typed flows</li>
+<li>QR payload type is authenticated/validated by Rust</li>
+<li>device-link QR is visually and semantically distinct from contact QR</li>
+<li>own-device authorization requires explicit approval</li>
+<li>SAS comparison has explicit Match/Mismatch actions</li>
+<li>mismatches, expiry, replay, revocation, and version errors cannot result in trust</li>
+<li>Android camera, nearby, NFC, lifecycle, and permission behavior are defined</li>
+<li>desktop manual/paste/QR and optional webcam flows are defined</li>
+<li>QR/manual/SAS accessibility fallbacks are available</li>
+<li>session and trust state remain Rust-owned across lifecycle/process changes</li>
+<li>offline pairing is treated as valid where local transports allow</li>
+<li>no raw Bluetooth/Wi-Fi transport detail leaks into normal UX</li>
+<li>nearby candidate lists are stable, bounded, and privacy-aware</li>
+<li>security-sensitive codes/payloads are excluded from telemetry/logs</li>
+<li>typed Rust presentation APIs for contact pairing, verification, nearby discovery, and device linking are defined</li>
+<li>contact/device/group result routing uses distinct stable IDs</li>
+<li>security, offline, lifecycle, accessibility, and type-confusion test matrices are specified</li>
+</ul>
+<hr />
+<h1 id="236-final-architecture"><a class="header" href="#236-final-architecture">236. Final Architecture</a></h1>
+<pre><code class="language-text">                   PLATFORM INPUTS
+       ┌──────────────┼──────────────┐
+       │              │              │
+     Nearby          QR             NFC
+       │              │              │
+       └──────────────┼──────────────┘
+                      │
+             Rust Bootstrap Core
+                      │
+       ┌──────────────┼───────────────┐
+       │              │               │
+ Contact Pairing  Verification   Device Linking
+       │              │               │
+       └──────────────┼───────────────┘
+                      │
+              Typed Result
+       ┌──────────────┼───────────────┐
+       │              │               │
+   AccountId      Verified        DeviceId
+                  AccountId
+</code></pre>
+<p>Platform UI:</p>
+<pre><code class="language-text">Desktop Dioxus:
+    nearby list
+    QR display
+    manual/paste code
+    optional webcam scan
+
+Android Compose:
+    nearby
+    QR camera
+    NFC
+    manual code
+    platform permissions
+</code></pre>
+<hr />
+<h1 id="237-final-principle"><a class="header" href="#237-final-principle">237. Final Principle</a></h1>
+<p>The proximity/bootstrap UX should make secure pairing feel simple without pretending that proximity itself creates trust.</p>
+<p>The correct mental model is:</p>
+<pre><code class="language-text">I can see this device nearby
+→ I authenticate who it is
+→ I explicitly choose what relationship to create
+</code></pre>
+<p>and, for own devices:</p>
+<pre><code class="language-text">I scanned a device-link code
+→ I verify the candidate
+→ I explicitly authorize it into my account
+</code></pre>
+<p>not:</p>
+<pre><code class="language-text">it is nearby, therefore it is trusted
+</code></pre>
+<p>This preserves the security architecture while giving Dioxus desktop and Android Compose clear, native, offline-capable pairing flows.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="ui-ux-11-search-local-knowledge-retrieval-architecture.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="ui-ux-13-notifications-background-incoming-call-architecture.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="ui-ux-11-search-local-knowledge-retrieval-architecture.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="ui-ux-13-notifications-background-incoming-call-architecture.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

@@ -1,0 +1,1959 @@
+<!DOCTYPE HTML>
+<html lang="en" class="navy" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>UI/UX 17 — Emergency / SOS / Offline Mesh UX - SIAR System Architecture &amp; Technical Wiki</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="Comprehensive system architecture, cryptographic protocols, DTN mesh networking, distributed storage, audio DSP pipelines, and UI/UX design specifications for SIAR.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="theme/custom.css">
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "navy";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('navy')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="Home.html">Architecture Portal & Reading Guide</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part I: Protocol Foundation & Extension Platform</li><li class="chapter-item expanded "><a href="01-protocol-extension-system-architecture.html"><strong aria-hidden="true">1.</strong> 01 — Protocol Extension System Architecture</a></li><li class="chapter-item expanded "><a href="07-capability-negotiation-architecture.html"><strong aria-hidden="true">2.</strong> 07 — Capability Negotiation & Protocol Upgrades</a></li><li class="chapter-item expanded "><a href="21-third-party-protocol-extensions-architecture.html"><strong aria-hidden="true">3.</strong> 21 — Third-Party Protocol Extensions</a></li><li class="chapter-item expanded "><a href="22-wasm-compatible-components-architecture.html"><strong aria-hidden="true">4.</strong> 22 — WebAssembly (WASM) Compatible Components</a></li><li class="chapter-item expanded "><a href="23-external-interoperability-suite-architecture.html"><strong aria-hidden="true">5.</strong> 23 — External Interoperability & Conformance Suite</a></li><li class="chapter-item expanded "><a href="24-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">6.</strong> 24 — Dynamic Plugin & Module Ecosystem</a></li><li class="chapter-item expanded affix "><li class="part-title">Part II: Identity, Trust & Cryptography</li><li class="chapter-item expanded "><a href="02-multi-device-identity-architecture.html"><strong aria-hidden="true">7.</strong> 02 — Multi-Device Identity & Trust Model</a></li><li class="chapter-item expanded "><a href="28-production-security-e2ee-key-management-privacy-architecture.html"><strong aria-hidden="true">8.</strong> 28 — Production Security, E2EE, Key Management & Privacy</a></li><li class="chapter-item expanded affix "><li class="part-title">Part III: Mesh Networking, Transports & Hardware</li><li class="chapter-item expanded "><a href="03-transport-routing-policy-engine-architecture.html"><strong aria-hidden="true">9.</strong> 03 — Transport & Routing Policy Engine</a></li><li class="chapter-item expanded "><a href="11-relay-self-hosted-infrastructure-architecture.html"><strong aria-hidden="true">10.</strong> 11 — Self-Hosted Relay & Coordination Infrastructure</a></li><li class="chapter-item expanded "><a href="12-multipath-networking-architecture.html"><strong aria-hidden="true">11.</strong> 12 — Multipath Networking & Link Aggregation</a></li><li class="chapter-item expanded "><a href="13-battery-aware-scheduling-architecture.html"><strong aria-hidden="true">12.</strong> 13 — Battery-Aware Scheduling & Power Profiles</a></li><li class="chapter-item expanded "><a href="14-proximity-abstraction-architecture.html"><strong aria-hidden="true">13.</strong> 14 — Proximity Abstraction (BLE, Wi-Fi Direct, LoRa)</a></li><li class="chapter-item expanded "><a href="15-qr-nfc-bootstrap-pairing-architecture.html"><strong aria-hidden="true">14.</strong> 15 — Out-of-Band QR & NFC Bootstrap Pairing</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IV: Delay-Tolerant Networking & Emergency Mesh</li><li class="chapter-item expanded "><a href="06-dtn-store-carry-forward-architecture.html"><strong aria-hidden="true">15.</strong> 06 — DTN Store-Carry-Forward & Bundle Forwarding</a></li><li class="chapter-item expanded "><a href="17-emergency-priority-classes-architecture.html"><strong aria-hidden="true">16.</strong> 17 — Emergency Priority Classes & Critical Alert Mesh</a></li><li class="chapter-item expanded affix "><li class="part-title">Part V: Storage, Outbox & Data Lifecycle</li><li class="chapter-item expanded "><a href="04-offline-event-log-architecture.html"><strong aria-hidden="true">17.</strong> 04 — Offline Event Log & Sync Engine</a></li><li class="chapter-item expanded "><a href="05-robust-file-blob-subsystem-architecture.html"><strong aria-hidden="true">18.</strong> 05 — Robust File & Blob Subsystem (Chunking & Resumption)</a></li><li class="chapter-item expanded "><a href="09-crash-recovery-architecture.html"><strong aria-hidden="true">19.</strong> 09 — Crash Recovery & State Integrity</a></li><li class="chapter-item expanded "><a href="32-search-indexing-local-knowledge-privacy-architecture.html"><strong aria-hidden="true">20.</strong> 32 — Search, Indexing & Local Privacy Retrieval</a></li><li class="chapter-item expanded "><a href="33-backup-restore-export-import-archival-portability-architecture.html"><strong aria-hidden="true">21.</strong> 33 — Backup, Restore, Export & Long-Term Archival</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VI: Realtime Media, Calling & Audio DSP</li><li class="chapter-item expanded "><a href="25-android-direct-hardware-surface-zero-copy-media-architecture.html"><strong aria-hidden="true">22.</strong> 25 — Android Direct Surface Zero-Copy Media</a></li><li class="chapter-item expanded "><a href="26-rust-first-audio-dsp-resampling-aec-ns-agc-architecture.html"><strong aria-hidden="true">23.</strong> 26 — Rust-First Audio DSP (AEC, NS, AGC, Resampling)</a></li><li class="chapter-item expanded "><a href="29-realtime-calls-media-session-protocol-architecture.html"><strong aria-hidden="true">24.</strong> 29 — Realtime Calls & Media Session Protocol</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VII: Ephemeral State, Presence & Notifications</li><li class="chapter-item expanded "><a href="30-presence-availability-typing-read-receipts-ephemeral-state-architecture.html"><strong aria-hidden="true">25.</strong> 30 — Presence, Availability, Typing & Read Receipts</a></li><li class="chapter-item expanded "><a href="31-notifications-push-background-delivery-lifecycle-architecture.html"><strong aria-hidden="true">26.</strong> 31 — Notifications, Push Wake & Background Delivery</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VIII: Native Runtimes, Daemons & Embedded Linux</li><li class="chapter-item expanded "><a href="16-daemon-headless-runtime-architecture.html"><strong aria-hidden="true">27.</strong> 16 — Headless Daemon & Background Runtime</a></li><li class="chapter-item expanded "><a href="19-c-abi-ffi-architecture.html"><strong aria-hidden="true">28.</strong> 19 — C-ABI FFI & Native Language Interop</a></li><li class="chapter-item expanded "><a href="20-embedded-linux-node-architecture.html"><strong aria-hidden="true">29.</strong> 20 — Embedded Linux Node & Resource-Constrained Targets</a></li><li class="chapter-item expanded "><a href="27-rust-driven-android-native-build-packaging-automation.html"><strong aria-hidden="true">30.</strong> 27 — Rust-Driven Android Native Build & Packaging Automation</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IX: Reliability, Testing, Fuzzing & Diagnostics</li><li class="chapter-item expanded "><a href="08-resource-limits-backpressure-architecture.html"><strong aria-hidden="true">31.</strong> 08 — Resource Limits, Quotas & Backpressure</a></li><li class="chapter-item expanded "><a href="10-fuzzing-protocol-test-suite-architecture.html"><strong aria-hidden="true">32.</strong> 10 — Fuzzing & Protocol Test Suite</a></li><li class="chapter-item expanded "><a href="18-network-diagnostics-path-visualization-architecture.html"><strong aria-hidden="true">33.</strong> 18 — Network Diagnostics & Path Visualization</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part X: UI/UX Client Architecture (Cross-Platform)</li><li class="chapter-item expanded "><a href="ui-ux-01-product-foundation-cross-platform-interaction-architecture.html"><strong aria-hidden="true">34.</strong> UI/UX 01 — Product UX Foundation & Cross-Platform Interaction</a></li><li class="chapter-item expanded "><a href="ui-ux-02-desktop-dioxus-app-shell-navigation-window-architecture.html"><strong aria-hidden="true">35.</strong> UI/UX 02 — Desktop Dioxus App Shell & Navigation</a></li><li class="chapter-item expanded "><a href="ui-ux-03-android-jetpack-compose-app-shell-navigation-lifecycle-architecture.html"><strong aria-hidden="true">36.</strong> UI/UX 03 — Android Jetpack Compose App Shell & Lifecycle</a></li><li class="chapter-item expanded "><a href="ui-ux-04-conversation-list-inbox-architecture.html"><strong aria-hidden="true">37.</strong> UI/UX 04 — Conversation List & Inbox UX</a></li><li class="chapter-item expanded "><a href="ui-ux-05-conversation-message-timeline-architecture.html"><strong aria-hidden="true">38.</strong> UI/UX 05 — Conversation Message Timeline UX</a></li><li class="chapter-item expanded "><a href="ui-ux-06-message-composer-attachments-voice-notes-drafts-architecture.html"><strong aria-hidden="true">39.</strong> UI/UX 06 — Message Composer, Attachments & Voice Notes</a></li><li class="chapter-item expanded "><a href="ui-ux-07-calls-realtime-media-architecture.html"><strong aria-hidden="true">40.</strong> UI/UX 07 — Calls & Realtime Media UX</a></li><li class="chapter-item expanded "><a href="ui-ux-08-contacts-requests-verification-identity-architecture.html"><strong aria-hidden="true">41.</strong> UI/UX 08 — Contacts, Requests, Verification & Identity</a></li><li class="chapter-item expanded "><a href="ui-ux-09-groups-membership-roles-architecture.html"><strong aria-hidden="true">42.</strong> UI/UX 09 — Groups, Membership & Roles UX</a></li><li class="chapter-item expanded "><a href="ui-ux-10-files-media-gallery-transfer-architecture.html"><strong aria-hidden="true">43.</strong> UI/UX 10 — Files, Media Gallery & Transfer UX</a></li><li class="chapter-item expanded "><a href="ui-ux-11-search-local-knowledge-retrieval-architecture.html"><strong aria-hidden="true">44.</strong> UI/UX 11 — Search & Local Knowledge Retrieval UX</a></li><li class="chapter-item expanded "><a href="ui-ux-12-nearby-qr-nfc-pairing-device-linking-architecture.html"><strong aria-hidden="true">45.</strong> UI/UX 12 — Nearby, QR/NFC Pairing & Device Linking UX</a></li><li class="chapter-item expanded "><a href="ui-ux-13-notifications-background-incoming-call-architecture.html"><strong aria-hidden="true">46.</strong> UI/UX 13 — Notifications, Background & Incoming Call UX</a></li><li class="chapter-item expanded "><a href="ui-ux-14-presence-typing-receipts-status-architecture.html"><strong aria-hidden="true">47.</strong> UI/UX 14 — Presence, Typing, Receipts & Status UX</a></li><li class="chapter-item expanded "><a href="ui-ux-15-security-center-devices-keys-recovery-architecture.html"><strong aria-hidden="true">48.</strong> UI/UX 15 — Security Center, Devices, Keys & Recovery UX</a></li><li class="chapter-item expanded "><a href="ui-ux-16-backup-restore-export-migration-architecture.html"><strong aria-hidden="true">49.</strong> UI/UX 16 — Backup, Restore, Export & Migration UX</a></li><li class="chapter-item expanded "><a href="ui-ux-17-emergency-sos-offline-mesh-architecture.html" class="active"><strong aria-hidden="true">50.</strong> UI/UX 17 — Emergency / SOS / Offline Mesh UX</a></li><li class="chapter-item expanded "><a href="ui-ux-18-settings-privacy-notifications-data-controls-architecture.html"><strong aria-hidden="true">51.</strong> UI/UX 18 — Settings, Privacy, Notifications & Data Controls</a></li><li class="chapter-item expanded "><a href="ui-ux-19-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">52.</strong> UI/UX 19 — Plugin & Module Ecosystem UX</a></li><li class="chapter-item expanded "><a href="ui-ux-20-diagnostics-network-paths-advanced-developer-architecture.html"><strong aria-hidden="true">53.</strong> UI/UX 20 — Diagnostics, Network Paths & Developer UX</a></li><li class="chapter-item expanded "><a href="ui-ux-21-accessibility-inclusive-interaction-architecture.html"><strong aria-hidden="true">54.</strong> UI/UX 21 — Accessibility & Inclusive Interaction</a></li><li class="chapter-item expanded "><a href="ui-ux-22-design-system-tokens-typography-icons-motion-architecture.html"><strong aria-hidden="true">55.</strong> UI/UX 22 — Design System, Tokens, Typography & Motion</a></li><li class="chapter-item expanded "><a href="ui-ux-23-responsive-adaptive-desktop-tablet-foldable-phone-layout-architecture.html"><strong aria-hidden="true">56.</strong> UI/UX 23 — Responsive & Adaptive Layouts (Desktop/Tablet/Foldable/Phone)</a></li><li class="chapter-item expanded "><a href="ui-ux-24-error-loading-empty-offline-degraded-state-architecture.html"><strong aria-hidden="true">57.</strong> UI/UX 24 — Error, Loading, Empty & Degraded-State UX</a></li><li class="chapter-item expanded "><a href="ui-ux-25-onboarding-first-run-permission-education-architecture.html"><strong aria-hidden="true">58.</strong> UI/UX 25 — Onboarding, First Run & Permission Education</a></li><li class="chapter-item expanded "><a href="ui-ux-26-performance-virtualization-large-data-ui-architecture.html"><strong aria-hidden="true">59.</strong> UI/UX 26 — Virtualization & Large-Data UI Performance</a></li><li class="chapter-item expanded "><a href="ui-ux-27-ui-testing-screenshot-interaction-release-quality-gates-architecture.html"><strong aria-hidden="true">60.</strong> UI/UX 27 — UI Testing, Screenshots & Release Quality Gates</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">SIAR System Architecture &amp; Technical Wiki</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar/edit/main/sys-arch/ui-ux-17-emergency-sos-offline-mesh-architecture.md" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="uiux-part-17--emergency--sos--offline-mesh-ux-architecture"><a class="header" href="#uiux-part-17--emergency--sos--offline-mesh-ux-architecture">UI/UX Part 17 — Emergency / SOS / Offline Mesh UX Architecture</a></h1>
+<h2 id="reusable-p2p-communication-platform"><a class="header" href="#reusable-p2p-communication-platform">Reusable P2P Communication Platform</a></h2>
+<p><strong>Status:</strong> UI/UX architecture specification<br />
+<strong>UI Series:</strong> Part 17<br />
+<strong>Desktop UI:</strong> Dioxus<br />
+<strong>Android UI:</strong> Kotlin + Jetpack Compose<br />
+<strong>Core runtime:</strong> Rust<br />
+<strong>Primary purpose:</strong> define the complete emergency/SOS, offline mesh, store-carry-forward, responder acknowledgement, emergency priority, location consent, battery-survival, false-trigger prevention, background delivery, accessibility, and Rust presentation architecture across desktop and Android.</p>
+<hr />
+<h1 id="1-purpose"><a class="header" href="#1-purpose">1. Purpose</a></h1>
+<p>Emergency communication is fundamentally different from ordinary messaging.</p>
+<p>Users may depend on it when:</p>
+<pre><code class="language-text">Internet is unavailable
+cellular data is unavailable
+infrastructure is damaged
+a local Wi-Fi/router still exists
+devices can only reach each other through Bluetooth
+messages must be physically carried by intermediate devices
+battery is critically low
+the app is backgrounded
+the device is locked
+delivery may take minutes or hours
+</code></pre>
+<p>The UX must communicate uncertainty clearly without creating false confidence.</p>
+<p>The governing principle is:</p>
+<blockquote>
+<p><strong>Emergency UX must show what has actually happened, what is still pending, and what delivery paths are available without ever pretending that "sent" means "help is coming."</strong></p>
+</blockquote>
+<hr />
+<h1 id="2-architectural-position"><a class="header" href="#2-architectural-position">2. Architectural Position</a></h1>
+<pre><code class="language-text">Emergency User Intent
+        │
+        ▼
+Rust Emergency Controller
+        │
+        ├── priority class
+        ├── recipient policy
+        ├── routing policy
+        ├── DTN/store-carry-forward
+        ├── expiry
+        ├── acknowledgements
+        ├── deduplication
+        ├── location payload
+        └── security policy
+        │
+        ▼
+Emergency Presentation Service
+        │
+   ┌────┴─────┐
+   │          │
+Dioxus     Compose
+Desktop    Android
+</code></pre>
+<p>Underlying transport may use:</p>
+<pre><code class="language-text">Internet
+LAN
+Wi-Fi Direct/Aware
+Bluetooth
+relay
+mesh
+DTN
+</code></pre>
+<p>The UI remains transport-neutral by default.</p>
+<hr />
+<h1 id="3-emergency-ux-must-not-imply-official-emergency-service-integration"><a class="header" href="#3-emergency-ux-must-not-imply-official-emergency-service-integration">3. Emergency UX Must Not Imply Official Emergency-Service Integration</a></h1>
+<p>Unless the product is actually integrated with emergency services:</p>
+<pre><code class="language-text">SOS sent
+</code></pre>
+<p>must not be presented as:</p>
+<pre><code class="language-text">Police/ambulance dispatched
+</code></pre>
+<p>Hard rule.</p>
+<hr />
+<h1 id="4-core-emergency-concepts"><a class="header" href="#4-core-emergency-concepts">4. Core Emergency Concepts</a></h1>
+<pre><code class="language-text">SOS event
+Emergency contact set
+Emergency message
+Priority class
+Delivery route
+Acknowledgement
+Responder status
+Expiry
+Location payload
+Offline relay
+</code></pre>
+<hr />
+<h1 id="5-emergency-priority-classes"><a class="header" href="#5-emergency-priority-classes">5. Emergency Priority Classes</a></h1>
+<p>Recommended:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum EmergencyPriority {
+    Urgent,
+    Critical,
+    LifeSafety,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Exact semantics belong to backend policy.</p>
+<hr />
+<h1 id="6-priority-is-not-user-drama"><a class="header" href="#6-priority-is-not-user-drama">6. Priority Is Not User Drama</a></h1>
+<p>Do not offer a confusing 10-level severity slider.</p>
+<p>Prefer:</p>
+<pre><code class="language-text">Urgent
+SOS
+</code></pre>
+<p>or a small set of clearly explained levels.</p>
+<hr />
+<h1 id="7-emergency-entry-points"><a class="header" href="#7-emergency-entry-points">7. Emergency Entry Points</a></h1>
+<p>Android:</p>
+<pre><code class="language-text">Chats / main shell → SOS
+lock-screen/notification shortcut only if platform policy permits
+widget/shortcut optional
+</code></pre>
+<p>Desktop:</p>
+<pre><code class="language-text">primary rail / command palette
+tray menu
+dedicated emergency button
+</code></pre>
+<hr />
+<h1 id="8-avoid-accidental-activation"><a class="header" href="#8-avoid-accidental-activation">8. Avoid Accidental Activation</a></h1>
+<p>SOS requires deliberate activation.</p>
+<p>Recommended:</p>
+<pre><code class="language-text">press-and-hold
++
+clear confirmation
+</code></pre>
+<p>or:</p>
+<pre><code class="language-text">tap
+→ confirmation sheet
+→ Send SOS
+</code></pre>
+<hr />
+<h1 id="9-false-trigger-protection"><a class="header" href="#9-false-trigger-protection">9. False Trigger Protection</a></h1>
+<p>Do not use:</p>
+<pre><code class="language-text">single small tap
+</code></pre>
+<p>for irreversible high-priority broadcast.</p>
+<hr />
+<h1 id="10-accessibility-alternative"><a class="header" href="#10-accessibility-alternative">10. Accessibility Alternative</a></h1>
+<p>Hold gestures must have a non-gesture accessible equivalent.</p>
+<p>Example:</p>
+<pre><code class="language-text">Open SOS
+→ Confirm Send
+</code></pre>
+<hr />
+<h1 id="11-emergency-activation-flow"><a class="header" href="#11-emergency-activation-flow">11. Emergency Activation Flow</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">Open SOS
+→ choose recipients/preset
+→ optional message
+→ optional location sharing
+→ review
+→ activate
+</code></pre>
+<p>For very fast emergency mode:</p>
+<pre><code class="language-text">preconfigured SOS preset
+→ press/hold
+→ short cancel countdown
+→ send
+</code></pre>
+<hr />
+<h1 id="12-cancel-countdown"><a class="header" href="#12-cancel-countdown">12. Cancel Countdown</a></h1>
+<p>Optional safety mechanism:</p>
+<pre><code class="language-text">Sending SOS in 5…
+Cancel
+</code></pre>
+<p>Useful for accidental activation.</p>
+<hr />
+<h1 id="13-countdown-accessibility"><a class="header" href="#13-countdown-accessibility">13. Countdown Accessibility</a></h1>
+<p>Announce remaining time.</p>
+<p>Provide large:</p>
+<pre><code class="language-text">Cancel
+</code></pre>
+<p>control.</p>
+<hr />
+<h1 id="14-immediate-mode"><a class="header" href="#14-immediate-mode">14. Immediate Mode</a></h1>
+<p>If user disables countdown in settings:</p>
+<pre><code class="language-text">explicit warning
+</code></pre>
+<p>because accidental activation risk increases.</p>
+<hr />
+<h1 id="15-emergency-presets"><a class="header" href="#15-emergency-presets">15. Emergency Presets</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">Personal SOS
+Family SOS
+Team Emergency
+Disaster Check-In
+</code></pre>
+<hr />
+<h1 id="16-preset-model"><a class="header" href="#16-preset-model">16. Preset Model</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct EmergencyPresetView {
+    pub id: EmergencyPresetId,
+    pub name: String,
+    pub recipients: EmergencyRecipientPolicyView,
+    pub share_location: bool,
+    pub priority: EmergencyPriority,
+    pub expiry: Duration,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="17-trusted-emergency-recipients"><a class="header" href="#17-trusted-emergency-recipients">17. Trusted Emergency Recipients</a></h1>
+<p>User explicitly configures:</p>
+<pre><code class="language-text">trusted contacts
+groups
+own devices
+local emergency group
+</code></pre>
+<hr />
+<h1 id="18-emergency-contact-configuration"><a class="header" href="#18-emergency-contact-configuration">18. Emergency Contact Configuration</a></h1>
+<p>Security-sensitive because these contacts may receive:</p>
+<pre><code class="language-text">priority alerts
+location
+offline relayed messages
+</code></pre>
+<hr />
+<h1 id="19-contact-trust"><a class="header" href="#19-contact-trust">19. Contact Trust</a></h1>
+<p>Emergency contact does not automatically mean cryptographically verified.</p>
+<p>UI should show verification state during setup.</p>
+<hr />
+<h1 id="20-emergency-contact-warning"><a class="header" href="#20-emergency-contact-warning">20. Emergency Contact Warning</a></h1>
+<p>If unverified:</p>
+<pre><code class="language-text">This contact is not verified
+</code></pre>
+<p>but user may still choose them.</p>
+<hr />
+<h1 id="21-recipient-policy-types"><a class="header" href="#21-recipient-policy-types">21. Recipient Policy Types</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum EmergencyRecipientPolicy {
+    SpecificContacts(Vec&lt;AccountId&gt;),
+    Group(GroupId),
+    AllEmergencyContacts,
+    LocalNearbyBroadcast,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="22-nearby-emergency-broadcast"><a class="header" href="#22-nearby-emergency-broadcast">22. Nearby Emergency Broadcast</a></h1>
+<p>Highly sensitive.</p>
+<p>Do not broadcast personal identity/location to every nearby device by default.</p>
+<hr />
+<h1 id="23-local-broadcast-policy"><a class="header" href="#23-local-broadcast-policy">23. Local Broadcast Policy</a></h1>
+<p>If supported, define:</p>
+<pre><code class="language-text">authenticated known peers only
+or
+anonymous/distress beacon mode
+</code></pre>
+<p>as separate product feature.</p>
+<hr />
+<h1 id="24-distress-beacon"><a class="header" href="#24-distress-beacon">24. Distress Beacon</a></h1>
+<p>Optional future mode.</p>
+<p>Could advertise:</p>
+<pre><code class="language-text">A nearby user needs help
+</code></pre>
+<p>without full identity until responder accepts/authenticates.</p>
+<hr />
+<h1 id="25-identity-privacy-in-beacon-mode"><a class="header" href="#25-identity-privacy-in-beacon-mode">25. Identity Privacy in Beacon Mode</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">ephemeral distress identity
+</code></pre>
+<p>until trusted handshake.</p>
+<hr />
+<h1 id="26-sos-event-model"><a class="header" href="#26-sos-event-model">26. SOS Event Model</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct EmergencyEventView {
+    pub id: EmergencyEventId,
+    pub state: EmergencyEventState,
+    pub priority: EmergencyPriority,
+    pub created_at: Timestamp,
+    pub expires_at: Timestamp,
+    pub recipients: EmergencyRecipientSummary,
+    pub delivery: EmergencyDeliverySummary,
+    pub location: Option&lt;EmergencyLocationView&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="27-emergency-event-state"><a class="header" href="#27-emergency-event-state">27. Emergency Event State</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum EmergencyEventState {
+    Preparing,
+    Active,
+    Cancelling,
+    Cancelled,
+    Expired,
+    Resolved,
+    Failed,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="28-active"><a class="header" href="#28-active">28. Active</a></h1>
+<p>Means:</p>
+<pre><code class="language-text">the SOS remains live and eligible for delivery/re-delivery
+</code></pre>
+<p>not:</p>
+<pre><code class="language-text">someone has responded
+</code></pre>
+<hr />
+<h1 id="29-delivery-semantics"><a class="header" href="#29-delivery-semantics">29. Delivery Semantics</a></h1>
+<p>Emergency UX should distinguish:</p>
+<pre><code class="language-text">Created
+Stored locally
+Relaying
+Delivered to device
+Acknowledged by person
+Responder engaged
+Resolved
+</code></pre>
+<hr />
+<h1 id="30-never-collapse-these-into-one-sent"><a class="header" href="#30-never-collapse-these-into-one-sent">30. Never Collapse These Into One "Sent"</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="31-emergency-delivery-state"><a class="header" href="#31-emergency-delivery-state">31. Emergency Delivery State</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum EmergencyDeliveryState {
+    StoredLocal,
+    WaitingForRoute,
+    Relaying,
+    Delivered,
+    Acknowledged,
+    Failed,
+    Expired,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="32-stored-local"><a class="header" href="#32-stored-local">32. Stored Local</a></h1>
+<p>Meaning:</p>
+<pre><code class="language-text">SOS is durably stored on this device
+</code></pre>
+<hr />
+<h1 id="33-waiting-for-route"><a class="header" href="#33-waiting-for-route">33. Waiting for Route</a></h1>
+<p>Meaning:</p>
+<pre><code class="language-text">no current path to recipient
+</code></pre>
+<p>but DTN/mesh may continue trying.</p>
+<hr />
+<h1 id="34-relaying"><a class="header" href="#34-relaying">34. Relaying</a></h1>
+<p>Meaning:</p>
+<pre><code class="language-text">message is being carried/forwarded
+</code></pre>
+<hr />
+<h1 id="35-delivered"><a class="header" href="#35-delivered">35. Delivered</a></h1>
+<p>Meaning:</p>
+<pre><code class="language-text">recipient device accepted event
+</code></pre>
+<p>not necessarily human saw it.</p>
+<hr />
+<h1 id="36-acknowledged"><a class="header" href="#36-acknowledged">36. Acknowledged</a></h1>
+<p>Meaning:</p>
+<pre><code class="language-text">recipient explicitly acknowledged
+</code></pre>
+<hr />
+<h1 id="37-responder-engaged"><a class="header" href="#37-responder-engaged">37. Responder Engaged</a></h1>
+<p>Optional higher-level state:</p>
+<pre><code class="language-text">I'm coming
+I called for help
+I'm safe / monitoring
+</code></pre>
+<p>only if recipient sends explicit response.</p>
+<hr />
+<h1 id="38-emergency-status-screen"><a class="header" href="#38-emergency-status-screen">38. Emergency Status Screen</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">SOS Active
+Created 19:42
+
+Recipients
+    Alice — Delivered
+    Bob — Waiting for route
+    Family Group — Relaying
+
+Location
+    Shared
+
+Actions
+    Update
+    Cancel SOS
+    Mark Resolved
+</code></pre>
+<hr />
+<h1 id="39-main-status-language"><a class="header" href="#39-main-status-language">39. Main Status Language</a></h1>
+<p>Use explicit:</p>
+<pre><code class="language-text">Waiting for route
+Delivered to device
+Acknowledged
+</code></pre>
+<hr />
+<h1 id="40-avoid-misleading-success-color"><a class="header" href="#40-avoid-misleading-success-color">40. Avoid Misleading Success Color</a></h1>
+<p>Delivered can be positive but not equivalent to rescue.</p>
+<hr />
+<h1 id="41-emergency-message-content"><a class="header" href="#41-emergency-message-content">41. Emergency Message Content</a></h1>
+<p>Default prewritten template:</p>
+<pre><code class="language-text">I need help. This is an emergency.
+</code></pre>
+<p>User may add custom text.</p>
+<hr />
+<h1 id="42-message-length"><a class="header" href="#42-message-length">42. Message Length</a></h1>
+<p>Bounded tightly for resilient transport.</p>
+<hr />
+<h1 id="43-minimal-emergency-payload"><a class="header" href="#43-minimal-emergency-payload">43. Minimal Emergency Payload</a></h1>
+<p>Should be deliverable even on constrained routes.</p>
+<p>Potential:</p>
+<pre><code class="language-text">EventId
+sender identity
+priority
+timestamp
+expiry
+small text
+location summary
+auth/signature
+</code></pre>
+<hr />
+<h1 id="44-attachments"><a class="header" href="#44-attachments">44. Attachments</a></h1>
+<p>Do not attach large media to core SOS packet.</p>
+<hr />
+<h1 id="45-emergency-media"><a class="header" href="#45-emergency-media">45. Emergency Media</a></h1>
+<p>Optional secondary message after SOS:</p>
+<pre><code class="language-text">photo
+audio note
+</code></pre>
+<p>lower priority than core distress payload.</p>
+<hr />
+<h1 id="46-core-sos-first"><a class="header" href="#46-core-sos-first">46. Core SOS First</a></h1>
+<p>Hard rule:</p>
+<pre><code class="language-text">small SOS payload sends first
+</code></pre>
+<p>then optional rich media.</p>
+<hr />
+<h1 id="47-location-sharing"><a class="header" href="#47-location-sharing">47. Location Sharing</a></h1>
+<p>Must be explicit and understandable.</p>
+<p>Options:</p>
+<pre><code class="language-text">Do not share
+Approximate location
+Precise location
+</code></pre>
+<p>depending platform/backend.</p>
+<hr />
+<h1 id="48-default-location-policy"><a class="header" href="#48-default-location-policy">48. Default Location Policy</a></h1>
+<p>User can configure preset.</p>
+<p>At send time, show current choice.</p>
+<hr />
+<h1 id="49-location-permission--android"><a class="header" href="#49-location-permission--android">49. Location Permission — Android</a></h1>
+<p>Request only when user chooses location sharing.</p>
+<hr />
+<h1 id="50-permission-denied"><a class="header" href="#50-permission-denied">50. Permission Denied</a></h1>
+<p>SOS still sends without location.</p>
+<p>Show:</p>
+<pre><code class="language-text">SOS will be sent without location
+</code></pre>
+<hr />
+<h1 id="51-location-unavailable"><a class="header" href="#51-location-unavailable">51. Location Unavailable</a></h1>
+<p>Same.</p>
+<hr />
+<h1 id="52-last-known-location"><a class="header" href="#52-last-known-location">52. Last Known Location</a></h1>
+<p>If backend uses last known:</p>
+<pre><code class="language-text">Last known location
+</code></pre>
+<p>must be labeled clearly.</p>
+<hr />
+<h1 id="53-location-timestamp"><a class="header" href="#53-location-timestamp">53. Location Timestamp</a></h1>
+<p>Responder sees:</p>
+<pre><code class="language-text">Location updated 3 min ago
+</code></pre>
+<hr />
+<h1 id="54-continuous-location-updates"><a class="header" href="#54-continuous-location-updates">54. Continuous Location Updates</a></h1>
+<p>Optional.</p>
+<p>Requires explicit choice.</p>
+<hr />
+<h1 id="55-live-location-duration"><a class="header" href="#55-live-location-duration">55. Live Location Duration</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">15 minutes
+1 hour
+Until SOS resolved
+</code></pre>
+<hr />
+<h1 id="56-live-location-battery-cost"><a class="header" href="#56-live-location-battery-cost">56. Live Location Battery Cost</a></h1>
+<p>Explain briefly if meaningful.</p>
+<hr />
+<h1 id="57-location-precision"><a class="header" href="#57-location-precision">57. Location Precision</a></h1>
+<p>Do not display false precision.</p>
+<hr />
+<h1 id="58-offline-location"><a class="header" href="#58-offline-location">58. Offline Location</a></h1>
+<p>GNSS may work without Internet.</p>
+<p>Do not equate no Internet with no location.</p>
+<hr />
+<h1 id="59-location-privacy"><a class="header" href="#59-location-privacy">59. Location Privacy</a></h1>
+<p>Only intended authorized recipients should receive precise location by default.</p>
+<hr />
+<h1 id="60-nearby-relay-privacy"><a class="header" href="#60-nearby-relay-privacy">60. Nearby Relay Privacy</a></h1>
+<p>Intermediate DTN relays should carry encrypted payload without seeing precise content/location where architecture supports.</p>
+<p>UI need not explain cryptographic internals but can say:</p>
+<pre><code class="language-text">Relays can forward the SOS without reading its contents
+</code></pre>
+<p>if true.</p>
+<hr />
+<h1 id="61-dtn--store-carry-forward"><a class="header" href="#61-dtn--store-carry-forward">61. DTN / Store-Carry-Forward</a></h1>
+<p>Core emergency feature.</p>
+<p>Message may travel:</p>
+<pre><code class="language-text">Phone A
+→ nearby Phone B
+→ later Phone C
+→ recipient
+</code></pre>
+<hr />
+<h1 id="62-user-facing-dtn-language"><a class="header" href="#62-user-facing-dtn-language">62. User-Facing DTN Language</a></h1>
+<p>Use:</p>
+<pre><code class="language-text">Relaying through nearby devices
+</code></pre>
+<p>not:</p>
+<pre><code class="language-text">bundle replication hop 4
+</code></pre>
+<hr />
+<h1 id="63-dtn-state"><a class="header" href="#63-dtn-state">63. DTN State</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct DtnDeliveryView {
+    pub copies_in_flight: u32,
+    pub last_forwarded_at: Option&lt;Timestamp&gt;,
+    pub route_state: DtnRouteState,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="64-do-not-show-exact-relay-count-by-default"><a class="header" href="#64-do-not-show-exact-relay-count-by-default">64. Do Not Show Exact Relay Count by Default</a></h1>
+<p>May leak topology and confuse users.</p>
+<p>Normal UI:</p>
+<pre><code class="language-text">Relaying
+</code></pre>
+<p>Advanced diagnostics may show more.</p>
+<hr />
+<h1 id="65-emergency-expiry"><a class="header" href="#65-emergency-expiry">65. Emergency Expiry</a></h1>
+<p>Every SOS should have expiry.</p>
+<hr />
+<h1 id="66-expiry-prevents-forever-forwarding"><a class="header" href="#66-expiry-prevents-forever-forwarding">66. Expiry Prevents Forever-Forwarding</a></h1>
+<p>After expiry:</p>
+<pre><code class="language-text">stop relaying
+</code></pre>
+<p>unless renewed.</p>
+<hr />
+<h1 id="67-expiry-ux"><a class="header" href="#67-expiry-ux">67. Expiry UX</a></h1>
+<p>Show:</p>
+<pre><code class="language-text">Active for 58 more minutes
+</code></pre>
+<p>or:</p>
+<pre><code class="language-text">Expires at 20:45
+</code></pre>
+<hr />
+<h1 id="68-renew-sos"><a class="header" href="#68-renew-sos">68. Renew SOS</a></h1>
+<p>If still needed:</p>
+<pre><code class="language-text">Extend
+</code></pre>
+<p>creates signed renewal according to backend.</p>
+<hr />
+<h1 id="69-cancel-sos"><a class="header" href="#69-cancel-sos">69. Cancel SOS</a></h1>
+<p>Cancellation is itself a high-priority emergency update.</p>
+<hr />
+<h1 id="70-cancellation-semantics"><a class="header" href="#70-cancellation-semantics">70. Cancellation Semantics</a></h1>
+<p>Cancellation should propagate through same mesh/DTN paths.</p>
+<hr />
+<h1 id="71-cancellation-is-not-instant-everywhere"><a class="header" href="#71-cancellation-is-not-instant-everywhere">71. Cancellation Is Not Instant Everywhere</a></h1>
+<p>UI may show:</p>
+<pre><code class="language-text">Cancellation sent
+Some offline devices may receive the cancellation later
+</code></pre>
+<p>if true.</p>
+<hr />
+<h1 id="72-resolved-vs-cancelled"><a class="header" href="#72-resolved-vs-cancelled">72. Resolved vs Cancelled</a></h1>
+<p>Cancelled:</p>
+<pre><code class="language-text">SOS was withdrawn
+</code></pre>
+<p>Resolved:</p>
+<pre><code class="language-text">emergency ended successfully/incident closed
+</code></pre>
+<p>Different semantics.</p>
+<hr />
+<h1 id="73-false-alarm"><a class="header" href="#73-false-alarm">73. False Alarm</a></h1>
+<p>Optional reason:</p>
+<pre><code class="language-text">False alarm
+</code></pre>
+<p>can propagate as resolution note.</p>
+<hr />
+<h1 id="74-emergency-acknowledgement"><a class="header" href="#74-emergency-acknowledgement">74. Emergency Acknowledgement</a></h1>
+<p>Recipient action:</p>
+<pre><code class="language-text">Acknowledge
+</code></pre>
+<p>means:</p>
+<pre><code class="language-text">I saw this
+</code></pre>
+<p>not:</p>
+<pre><code class="language-text">I am responding
+</code></pre>
+<hr />
+<h1 id="75-responder-actions"><a class="header" href="#75-responder-actions">75. Responder Actions</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">Acknowledge
+I'm coming
+I contacted emergency services
+I'm nearby
+Unable to help
+</code></pre>
+<p>Keep initial set small.</p>
+<hr />
+<h1 id="76-responder-status-model"><a class="header" href="#76-responder-status-model">76. Responder Status Model</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum EmergencyResponseKind {
+    Acknowledged,
+    Responding,
+    HelpContacted,
+    Nearby,
+    Unable,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="77-response-honesty"><a class="header" href="#77-response-honesty">77. Response Honesty</a></h1>
+<p>Only show status explicitly sent by responder.</p>
+<hr />
+<h1 id="78-recipient-emergency-screen"><a class="header" href="#78-recipient-emergency-screen">78. Recipient Emergency Screen</a></h1>
+<p>Shows:</p>
+<pre><code class="language-text">SOS from Alice
+priority
+time
+location if shared
+message
+delivery age
+verification state
+</code></pre>
+<p>Actions:</p>
+<pre><code class="language-text">Acknowledge
+Respond
+Message
+Call
+Open Map
+</code></pre>
+<hr />
+<h1 id="79-verification-warning"><a class="header" href="#79-verification-warning">79. Verification Warning</a></h1>
+<p>If sender unverified:</p>
+<pre><code class="language-text">Sender identity is not verified
+</code></pre>
+<p>but do not hide urgent content.</p>
+<hr />
+<h1 id="80-unknown-emergency-sender"><a class="header" href="#80-unknown-emergency-sender">80. Unknown Emergency Sender</a></h1>
+<p>Policy-sensitive.</p>
+<p>May show:</p>
+<pre><code class="language-text">Emergency alert from unknown nearby user
+</code></pre>
+<p>with caution.</p>
+<hr />
+<h1 id="81-abuse-resistance"><a class="header" href="#81-abuse-resistance">81. Abuse Resistance</a></h1>
+<p>Unknown emergency broadcasts need:</p>
+<pre><code class="language-text">rate limits
+authentication policy
+reputation/trust gating
+</code></pre>
+<p>Backend controls.</p>
+<hr />
+<h1 id="82-user-blocking-and-emergencies"><a class="header" href="#82-user-blocking-and-emergencies">82. User Blocking and Emergencies</a></h1>
+<p>Policy decision.</p>
+<p>Recommendation:</p>
+<pre><code class="language-text">blocked contacts do not bypass block
+</code></pre>
+<p>unless emergency contacts explicitly configured with exception.</p>
+<hr />
+<h1 id="83-emergency-contact-override"><a class="header" href="#83-emergency-contact-override">83. Emergency Contact Override</a></h1>
+<p>If user explicitly marks someone an emergency contact, policy may permit high-priority delivery despite mute/DND.</p>
+<hr />
+<h1 id="84-mute-vs-emergency"><a class="header" href="#84-mute-vs-emergency">84. Mute vs Emergency</a></h1>
+<p>Conversation mute should not silently suppress configured SOS alerts.</p>
+<hr />
+<h1 id="85-quiet-hours"><a class="header" href="#85-quiet-hours">85. Quiet Hours</a></h1>
+<p>Emergency channel may bypass app quiet hours if user opted in.</p>
+<hr />
+<h1 id="86-os-dnd"><a class="header" href="#86-os-dnd">86. OS DND</a></h1>
+<p>Respect platform rules.</p>
+<p>Do not promise bypass unless permission/policy exists.</p>
+<hr />
+<h1 id="87-emergency-notification"><a class="header" href="#87-emergency-notification">87. Emergency Notification</a></h1>
+<p>Part 13 category:</p>
+<pre><code class="language-text">Emergency
+</code></pre>
+<p>high urgency.</p>
+<hr />
+<h1 id="88-lock-screen-privacy"><a class="header" href="#88-lock-screen-privacy">88. Lock-Screen Privacy</a></h1>
+<p>Could show:</p>
+<pre><code class="language-text">Emergency alert
+</code></pre>
+<p>or sender identity depending user privacy setting.</p>
+<hr />
+<h1 id="89-android-background"><a class="header" href="#89-android-background">89. Android Background</a></h1>
+<p>Active outgoing SOS should continue through suitable background/foreground-service architecture where required.</p>
+<hr />
+<h1 id="90-android-foreground-service"><a class="header" href="#90-android-foreground-service">90. Android Foreground Service</a></h1>
+<p>If active location/mesh relaying requires it:</p>
+<pre><code class="language-text">SOS active
+</code></pre>
+<p>persistent notification.</p>
+<hr />
+<h1 id="91-foreground-notification-actions"><a class="header" href="#91-foreground-notification-actions">91. Foreground Notification Actions</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">Open
+Cancel
+Stop Location
+</code></pre>
+<p>with high-risk confirmation for cancellation if appropriate.</p>
+<hr />
+<h1 id="92-android-process-death"><a class="header" href="#92-android-process-death">92. Android Process Death</a></h1>
+<p>Durable SOS state persists in Rust/storage.</p>
+<p>On restart:</p>
+<pre><code class="language-text">restore active emergency status
+</code></pre>
+<hr />
+<h1 id="93-reboot-recovery"><a class="header" href="#93-reboot-recovery">93. Reboot Recovery</a></h1>
+<p>If backend/service architecture supports:</p>
+<pre><code class="language-text">resume active SOS
+</code></pre>
+<p>after reboot.</p>
+<p>If not, UI must not pretend continuity.</p>
+<hr />
+<h1 id="94-android-battery-saver"><a class="header" href="#94-android-battery-saver">94. Android Battery Saver</a></h1>
+<p>Emergency work should receive higher scheduling priority than ordinary sync.</p>
+<hr />
+<h1 id="95-desktop-emergency-background"><a class="header" href="#95-desktop-emergency-background">95. Desktop Emergency Background</a></h1>
+<p>Daemon mode:</p>
+<pre><code class="language-text">SOS relaying continues with UI closed
+</code></pre>
+<hr />
+<h1 id="96-desktop-embedded-mode"><a class="header" href="#96-desktop-embedded-mode">96. Desktop Embedded Mode</a></h1>
+<p>If UI/runtime exits:</p>
+<pre><code class="language-text">active SOS may stop
+</code></pre>
+<p>unless separate service exists.</p>
+<p>Warn before quit:</p>
+<pre><code class="language-text">An SOS is active. Quitting may stop relaying.
+</code></pre>
+<hr />
+<h1 id="97-desktop-tray"><a class="header" href="#97-desktop-tray">97. Desktop Tray</a></h1>
+<p>Show:</p>
+<pre><code class="language-text">SOS Active
+Open Emergency Status
+</code></pre>
+<hr />
+<h1 id="98-quit-during-active-sos"><a class="header" href="#98-quit-during-active-sos">98. Quit During Active SOS</a></h1>
+<p>Strong confirmation.</p>
+<hr />
+<h1 id="99-emergency-mode-ui"><a class="header" href="#99-emergency-mode-ui">99. Emergency Mode UI</a></h1>
+<p>Optional simplified survival surface:</p>
+<pre><code class="language-text">SOS status
+battery
+available routes
+nearby peers
+location
+message/update
+</code></pre>
+<hr />
+<h1 id="100-survival-mode"><a class="header" href="#100-survival-mode">100. Survival Mode</a></h1>
+<p>When battery low, emergency subsystem may disable:</p>
+<pre><code class="language-text">thumbnails
+media indexing
+large transfers
+presence chatter
+animations
+</code></pre>
+<hr />
+<h1 id="101-survival-mode-ui"><a class="header" href="#101-survival-mode-ui">101. Survival Mode UI</a></h1>
+<p>Show:</p>
+<pre><code class="language-text">Emergency battery mode
+Non-essential activity reduced
+</code></pre>
+<hr />
+<h1 id="102-battery-threshold"><a class="header" href="#102-battery-threshold">102. Battery Threshold</a></h1>
+<p>Rust/platform decides.</p>
+<hr />
+<h1 id="103-manual-low-power-emergency-mode"><a class="header" href="#103-manual-low-power-emergency-mode">103. Manual Low-Power Emergency Mode</a></h1>
+<p>User may enable:</p>
+<pre><code class="language-text">Preserve Battery
+</code></pre>
+<hr />
+<h1 id="104-emergency-priority-scheduler"><a class="header" href="#104-emergency-priority-scheduler">104. Emergency Priority Scheduler</a></h1>
+<p>Core traffic priority:</p>
+<pre><code class="language-text">SOS control
+SOS acknowledgements
+location updates
+critical text
+</code></pre>
+<p>above:</p>
+<pre><code class="language-text">normal messages
+attachments
+backup
+search indexing
+</code></pre>
+<hr />
+<h1 id="105-normal-ui-effect"><a class="header" href="#105-normal-ui-effect">105. Normal UI Effect</a></h1>
+<p>Transfers may show:</p>
+<pre><code class="language-text">Paused for emergency traffic
+</code></pre>
+<p>if visible.</p>
+<hr />
+<h1 id="106-radio-strategy"><a class="header" href="#106-radio-strategy">106. Radio Strategy</a></h1>
+<p>Rust/network layer may use:</p>
+<pre><code class="language-text">BLE discovery
+Wi-Fi LAN
+Wi-Fi Direct
+Internet relay
+DTN
+</code></pre>
+<p>in parallel/sequentially.</p>
+<hr />
+<h1 id="107-user-facing-route-summary"><a class="header" href="#107-user-facing-route-summary">107. User-Facing Route Summary</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">Internet available
+Nearby relay active
+Waiting for direct route
+</code></pre>
+<hr />
+<h1 id="108-default-route-ui"><a class="header" href="#108-default-route-ui">108. Default Route UI</a></h1>
+<p>Keep simple:</p>
+<pre><code class="language-text">Connected
+Relaying
+Waiting for route
+</code></pre>
+<hr />
+<h1 id="109-diagnostics-route-view"><a class="header" href="#109-diagnostics-route-view">109. Diagnostics Route View</a></h1>
+<p>Part 20 can show exact paths.</p>
+<hr />
+<h1 id="110-offline-indicator"><a class="header" href="#110-offline-indicator">110. Offline Indicator</a></h1>
+<p>Emergency screen should not simply say:</p>
+<pre><code class="language-text">Offline
+</code></pre>
+<p>if nearby/DTN routes exist.</p>
+<p>Use:</p>
+<pre><code class="language-text">No Internet — nearby relay active
+</code></pre>
+<hr />
+<h1 id="111-no-route"><a class="header" href="#111-no-route">111. No Route</a></h1>
+<p>If nothing currently reachable:</p>
+<pre><code class="language-text">No route right now
+Your SOS is stored and will keep trying
+</code></pre>
+<p>if that is true.</p>
+<hr />
+<h1 id="112-stored-and-forward-assurance"><a class="header" href="#112-stored-and-forward-assurance">112. Stored-and-Forward Assurance</a></h1>
+<p>Only say:</p>
+<pre><code class="language-text">will keep trying
+</code></pre>
+<p>if background runtime actually can.</p>
+<hr />
+<h1 id="113-device-sleep-constraints"><a class="header" href="#113-device-sleep-constraints">113. Device Sleep Constraints</a></h1>
+<p>On Android, explain limitations only if OS background restrictions are preventing relay.</p>
+<hr />
+<h1 id="114-background-restriction-warning"><a class="header" href="#114-background-restriction-warning">114. Background Restriction Warning</a></h1>
+<pre><code class="language-text">Battery restrictions may delay offline relaying
+Review Settings
+</code></pre>
+<p>only when diagnosed.</p>
+<hr />
+<h1 id="115-mesh-participation"><a class="header" href="#115-mesh-participation">115. Mesh Participation</a></h1>
+<p>Users can choose whether their device relays encrypted emergency messages for others.</p>
+<hr />
+<h1 id="116-relay-participation-setting"><a class="header" href="#116-relay-participation-setting">116. Relay Participation Setting</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">Allow emergency relay for others
+</code></pre>
+<hr />
+<h1 id="117-relay-privacy-explanation"><a class="header" href="#117-relay-privacy-explanation">117. Relay Privacy Explanation</a></h1>
+<p>If true:</p>
+<pre><code class="language-text">Your device can forward encrypted emergency messages without reading them.
+</code></pre>
+<hr />
+<h1 id="118-relay-resource-limit"><a class="header" href="#118-relay-resource-limit">118. Relay Resource Limit</a></h1>
+<p>User may configure:</p>
+<pre><code class="language-text">Only while charging
+Battery above 20%
+Wi-Fi only
+Always for emergencies
+</code></pre>
+<hr />
+<h1 id="119-default-recommendation"><a class="header" href="#119-default-recommendation">119. Default Recommendation</a></h1>
+<p>Allow emergency relay with strict battery/data bounds if user opts in.</p>
+<hr />
+<h1 id="120-data-usage"><a class="header" href="#120-data-usage">120. Data Usage</a></h1>
+<p>Emergency packets should be small.</p>
+<hr />
+<h1 id="121-roamingmetered-network"><a class="header" href="#121-roamingmetered-network">121. Roaming/Metered Network</a></h1>
+<p>Emergency mode may override ordinary Wi-Fi-only policy if user enabled emergency override.</p>
+<hr />
+<h1 id="122-emergency-data-override"><a class="header" href="#122-emergency-data-override">122. Emergency Data Override</a></h1>
+<p>Explicit setting.</p>
+<hr />
+<h1 id="123-message-duplication"><a class="header" href="#123-message-duplication">123. Message Duplication</a></h1>
+<p>SOS may arrive over multiple paths.</p>
+<p>Deduplicate by:</p>
+<pre><code class="language-text">EmergencyEventId
+</code></pre>
+<hr />
+<h1 id="124-duplicate-notification"><a class="header" href="#124-duplicate-notification">124. Duplicate Notification</a></h1>
+<p>One logical SOS alert.</p>
+<hr />
+<h1 id="125-updated-sos"><a class="header" href="#125-updated-sos">125. Updated SOS</a></h1>
+<p>Updates use same event identity plus revision.</p>
+<hr />
+<h1 id="126-emergency-revision"><a class="header" href="#126-emergency-revision">126. Emergency Revision</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct EmergencyRevision(pub u64);
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="127-update-types"><a class="header" href="#127-update-types">127. Update Types</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">location update
+message update
+priority escalation
+cancellation
+resolution
+</code></pre>
+<hr />
+<h1 id="128-event-ordering"><a class="header" href="#128-event-ordering">128. Event Ordering</a></h1>
+<p>Rust resolves revision order.</p>
+<p>UI does not sort by arrival time.</p>
+<hr />
+<h1 id="129-stale-update"><a class="header" href="#129-stale-update">129. Stale Update</a></h1>
+<p>Ignored.</p>
+<hr />
+<h1 id="130-cancellation-race"><a class="header" href="#130-cancellation-race">130. Cancellation Race</a></h1>
+<p>If acknowledgement and cancellation cross:</p>
+<pre><code class="language-text">UI reflects current Rust event state
+</code></pre>
+<hr />
+<h1 id="131-expiry-race"><a class="header" href="#131-expiry-race">131. Expiry Race</a></h1>
+<p>Late relay after expiry should be rejected/marked expired by backend.</p>
+<hr />
+<h1 id="132-emergency-group-broadcast"><a class="header" href="#132-emergency-group-broadcast">132. Emergency Group Broadcast</a></h1>
+<p>Group SOS can target:</p>
+<pre><code class="language-text">family
+team
+school staff
+local response group
+</code></pre>
+<hr />
+<h1 id="133-group-acknowledgements"><a class="header" href="#133-group-acknowledgements">133. Group Acknowledgements</a></h1>
+<p>Aggregate:</p>
+<pre><code class="language-text">3 acknowledged
+1 responding
+</code></pre>
+<hr />
+<h1 id="134-large-group"><a class="header" href="#134-large-group">134. Large Group</a></h1>
+<p>Do not list hundreds of receipt states inline.</p>
+<p>Use summary + detail screen.</p>
+<hr />
+<h1 id="135-emergency-roles"><a class="header" href="#135-emergency-roles">135. Emergency Roles</a></h1>
+<p>Future managed groups may have:</p>
+<pre><code class="language-text">Coordinator
+Responder
+Member
+</code></pre>
+<hr />
+<h1 id="136-role-authority"><a class="header" href="#136-role-authority">136. Role Authority</a></h1>
+<p>Rust capability-driven.</p>
+<hr />
+<h1 id="137-coordinator-actions"><a class="header" href="#137-coordinator-actions">137. Coordinator Actions</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">mark incident resolved
+broadcast update
+assign responder
+</code></pre>
+<p>future.</p>
+<hr />
+<h1 id="138-personal-sos-v1"><a class="header" href="#138-personal-sos-v1">138. Personal SOS v1</a></h1>
+<p>Keep simpler than incident-management platform.</p>
+<hr />
+<h1 id="139-emergency-history"><a class="header" href="#139-emergency-history">139. Emergency History</a></h1>
+<p>Durable list:</p>
+<pre><code class="language-text">Active
+Recent
+Resolved
+Cancelled
+Expired
+</code></pre>
+<hr />
+<h1 id="140-emergency-history-privacy"><a class="header" href="#140-emergency-history-privacy">140. Emergency History Privacy</a></h1>
+<p>Sensitive.</p>
+<p>Can include:</p>
+<pre><code class="language-text">location
+recipients
+responses
+</code></pre>
+<p>Protect with app lock/security policy.</p>
+<hr />
+<h1 id="141-emergency-event-detail"><a class="header" href="#141-emergency-event-detail">141. Emergency Event Detail</a></h1>
+<p>Show:</p>
+<pre><code class="language-text">timeline
+delivery states
+acknowledgements
+location updates
+resolution
+</code></pre>
+<hr />
+<h1 id="142-timeline-example"><a class="header" href="#142-timeline-example">142. Timeline Example</a></h1>
+<pre><code class="language-text">19:42 SOS created
+19:42 Stored locally
+19:43 Relaying nearby
+19:46 Delivered to Alice
+19:47 Alice acknowledged
+19:49 Alice: Responding
+20:02 SOS resolved
+</code></pre>
+<hr />
+<h1 id="143-audit-reliability"><a class="header" href="#143-audit-reliability">143. Audit Reliability</a></h1>
+<p>These timestamps come from Rust durable event log.</p>
+<hr />
+<h1 id="144-emergency-search"><a class="header" href="#144-emergency-search">144. Emergency Search</a></h1>
+<p>Part 11 may index event metadata if user permits.</p>
+<p>Do not index precise location by default.</p>
+<hr />
+<h1 id="145-emergency-export"><a class="header" href="#145-emergency-export">145. Emergency Export</a></h1>
+<p>Part 16 may export incident history on explicit action.</p>
+<hr />
+<h1 id="146-emergency-backup"><a class="header" href="#146-emergency-backup">146. Emergency Backup</a></h1>
+<p>Part 33 may include resolved event history.</p>
+<p>Active ephemeral relay state should not restore as active emergency after arbitrary backup restore.</p>
+<hr />
+<h1 id="147-critical-restore-rule"><a class="header" href="#147-critical-restore-rule">147. Critical Restore Rule</a></h1>
+<p>Restoring an old backup must never reactivate an old SOS.</p>
+<hr />
+<h1 id="148-migration"><a class="header" href="#148-migration">148. Migration</a></h1>
+<p>Active SOS during device migration is complex.</p>
+<p>Recommendation:</p>
+<pre><code class="language-text">do not migrate active emergency session
+</code></pre>
+<p>keep source device active until resolved.</p>
+<hr />
+<h1 id="149-app-update"><a class="header" href="#149-app-update">149. App Update</a></h1>
+<p>Active SOS should survive compatible app update if runtime/service supports.</p>
+<hr />
+<h1 id="150-security"><a class="header" href="#150-security">150. Security</a></h1>
+<p>Emergency payloads remain authenticated.</p>
+<hr />
+<h1 id="151-e2ee"><a class="header" href="#151-e2ee">151. E2EE</a></h1>
+<p>Recipient-targeted SOS should use end-to-end encryption.</p>
+<hr />
+<h1 id="152-relay-visibility"><a class="header" href="#152-relay-visibility">152. Relay Visibility</a></h1>
+<p>Intermediate relay ideally sees only bounded routing metadata.</p>
+<hr />
+<h1 id="153-metadata-minimization"><a class="header" href="#153-metadata-minimization">153. Metadata Minimization</a></h1>
+<p>Avoid exposing:</p>
+<pre><code class="language-text">full recipient list
+precise location
+message body
+</code></pre>
+<p>to relay nodes.</p>
+<hr />
+<h1 id="154-unknown-relay"><a class="header" href="#154-unknown-relay">154. Unknown Relay</a></h1>
+<p>Relay participation must not grant account/contact trust.</p>
+<hr />
+<h1 id="155-abuse-reporting"><a class="header" href="#155-abuse-reporting">155. Abuse Reporting</a></h1>
+<p>Emergency alerts from unknown sources can be:</p>
+<pre><code class="language-text">Block
+Report
+</code></pre>
+<p>if system supports.</p>
+<hr />
+<h1 id="156-rate-limits"><a class="header" href="#156-rate-limits">156. Rate Limits</a></h1>
+<p>Prevent SOS spam.</p>
+<p>But avoid rate limits that prevent genuine repeated escalation.</p>
+<p>Backend policy needs care.</p>
+<hr />
+<h1 id="157-sender-cancellation-authentication"><a class="header" href="#157-sender-cancellation-authentication">157. Sender Cancellation Authentication</a></h1>
+<p>Only authorized sender/account can cancel their event, except managed coordinator policy.</p>
+<hr />
+<h1 id="158-responder-acknowledgement-authentication"><a class="header" href="#158-responder-acknowledgement-authentication">158. Responder Acknowledgement Authentication</a></h1>
+<p>Signed/authenticated.</p>
+<hr />
+<h1 id="159-location-update-authentication"><a class="header" href="#159-location-update-authentication">159. Location Update Authentication</a></h1>
+<p>Same event identity/revision.</p>
+<hr />
+<h1 id="160-emergency-presentation-snapshot"><a class="header" href="#160-emergency-presentation-snapshot">160. Emergency Presentation Snapshot</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct EmergencyScreenSnapshot {
+    pub active: Option&lt;EmergencyEventView&gt;,
+    pub presets: Vec&lt;EmergencyPresetView&gt;,
+    pub connectivity: EmergencyConnectivityView,
+    pub relay_policy: EmergencyRelayPolicyView,
+    pub battery_mode: EmergencyBatteryModeView,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="161-connectivity-view"><a class="header" href="#161-connectivity-view">161. Connectivity View</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct EmergencyConnectivityView {
+    pub internet: bool,
+    pub nearby_route: bool,
+    pub relay_active: bool,
+    pub store_carry_forward_available: bool,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="162-user-facing-connectivity-mapping"><a class="header" href="#162-user-facing-connectivity-mapping">162. User-Facing Connectivity Mapping</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">Connected
+No Internet — nearby relay available
+Stored — waiting for route
+</code></pre>
+<hr />
+<h1 id="163-emergency-delivery-summary"><a class="header" href="#163-emergency-delivery-summary">163. Emergency Delivery Summary</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct EmergencyDeliverySummary {
+    pub stored_local: bool,
+    pub delivered_recipients: u32,
+    pub acknowledged_recipients: u32,
+    pub responding_recipients: u32,
+    pub waiting_recipients: u32,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="164-emergency-presentation-api"><a class="header" href="#164-emergency-presentation-api">164. Emergency Presentation API</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait EmergencyPresentation {
+    async fn snapshot(
+        &amp;self,
+    ) -&gt; Result&lt;EmergencyScreenSnapshot, UiError&gt;;
+
+    async fn prepare(
+        &amp;self,
+        preset: EmergencyPresetId,
+    ) -&gt; Result&lt;EmergencyDraftView, UiError&gt;;
+
+    async fn activate(
+        &amp;self,
+        command: ActivateEmergencyCommand,
+    ) -&gt; Result&lt;EmergencyEventView, UiError&gt;;
+
+    async fn update(
+        &amp;self,
+        command: UpdateEmergencyCommand,
+    ) -&gt; Result&lt;EmergencyEventView, UiError&gt;;
+
+    async fn cancel(
+        &amp;self,
+        event: EmergencyEventId,
+    ) -&gt; Result&lt;EmergencyEventView, UiError&gt;;
+
+    async fn resolve(
+        &amp;self,
+        event: EmergencyEventId,
+    ) -&gt; Result&lt;EmergencyEventView, UiError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="165-responder-presentation-api"><a class="header" href="#165-responder-presentation-api">165. Responder Presentation API</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait EmergencyResponderPresentation {
+    async fn event(
+        &amp;self,
+        id: EmergencyEventId,
+    ) -&gt; Result&lt;EmergencyIncomingView, UiError&gt;;
+
+    async fn respond(
+        &amp;self,
+        id: EmergencyEventId,
+        response: EmergencyResponseKind,
+    ) -&gt; Result&lt;(), UiError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="166-relay-presentation-api"><a class="header" href="#166-relay-presentation-api">166. Relay Presentation API</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait EmergencyRelayPresentation {
+    async fn policy(
+        &amp;self,
+    ) -&gt; Result&lt;EmergencyRelayPolicyView, UiError&gt;;
+
+    async fn update_policy(
+        &amp;self,
+        update: EmergencyRelayPolicyUpdate,
+    ) -&gt; Result&lt;(), UiError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="167-location-presentation-boundary"><a class="header" href="#167-location-presentation-boundary">167. Location Presentation Boundary</a></h1>
+<p>Rust requests semantic location:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum EmergencyLocationRequest {
+    Approximate,
+    Precise,
+    Continuous { duration: Duration },
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Kotlin/platform obtains permission/location result.</p>
+<hr />
+<h1 id="168-android-platform-effects"><a class="header" href="#168-android-platform-effects">168. Android Platform Effects</a></h1>
+<pre><code class="language-text">RequestLocationPermission
+StartEmergencyForegroundService
+OpenMap
+OpenBatterySettings
+EnableNearby
+</code></pre>
+<hr />
+<h1 id="169-desktop-platform-effects"><a class="header" href="#169-desktop-platform-effects">169. Desktop Platform Effects</a></h1>
+<pre><code class="language-text">RaiseEmergencyWindow
+ShowNativeEmergencyNotification
+OpenMap
+ConfirmQuitDuringSOS
+</code></pre>
+<hr />
+<h1 id="170-emergency-events"><a class="header" href="#170-emergency-events">170. Emergency Events</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum EmergencyUiEvent {
+    EventChanged(EmergencyEventView),
+    DeliveryChanged(EmergencyDeliverySummary),
+    ResponseReceived(EmergencyResponseView),
+    ConnectivityChanged(EmergencyConnectivityView),
+    BatteryModeChanged(EmergencyBatteryModeView),
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="171-android-viewmodel"><a class="header" href="#171-android-viewmodel">171. Android ViewModel</a></h1>
+<p>Owns:</p>
+<pre><code class="language-text">confirmation sheet
+countdown
+permission effects
+map/navigation effects
+screen presentation
+</code></pre>
+<p>Rust owns:</p>
+<pre><code class="language-text">event identity
+delivery
+expiry
+routing
+acknowledgements
+</code></pre>
+<hr />
+<h1 id="172-dioxus-presenter"><a class="header" href="#172-dioxus-presenter">172. Dioxus Presenter</a></h1>
+<p>Owns:</p>
+<pre><code class="language-text">emergency panel/window
+confirmation dialog
+timeline presentation
+diagnostic expansion
+</code></pre>
+<hr />
+<h1 id="173-countdown-ownership"><a class="header" href="#173-countdown-ownership">173. Countdown Ownership</a></h1>
+<p>UI can render countdown.</p>
+<p>Rust owns activation deadline/session so process/lifecycle changes cannot bypass safety semantics.</p>
+<hr />
+<h1 id="174-process-death-during-countdown"><a class="header" href="#174-process-death-during-countdown">174. Process Death During Countdown</a></h1>
+<p>On restart:</p>
+<pre><code class="language-text">Rust tells whether event activated/cancelled/expired
+</code></pre>
+<p>Do not recreate timer from guessed local state.</p>
+<hr />
+<h1 id="175-process-death-during-active-sos"><a class="header" href="#175-process-death-during-active-sos">175. Process Death During Active SOS</a></h1>
+<p>Reload active event.</p>
+<hr />
+<h1 id="176-android-lock-screen"><a class="header" href="#176-android-lock-screen">176. Android Lock Screen</a></h1>
+<p>Incoming emergency alert should be actionable according to notification privacy and platform rules.</p>
+<hr />
+<h1 id="177-outgoing-sos-lock-screen"><a class="header" href="#177-outgoing-sos-lock-screen">177. Outgoing SOS Lock Screen</a></h1>
+<p>Persistent status notification can show:</p>
+<pre><code class="language-text">SOS active
+</code></pre>
+<p>without exposing details.</p>
+<hr />
+<h1 id="178-accessibility--sos-activation"><a class="header" href="#178-accessibility--sos-activation">178. Accessibility — SOS Activation</a></h1>
+<p>Screen reader must clearly announce:</p>
+<pre><code class="language-text">Send SOS to 3 emergency contacts
+</code></pre>
+<p>before final activation.</p>
+<hr />
+<h1 id="179-accessibility--status"><a class="header" href="#179-accessibility--status">179. Accessibility — Status</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">SOS active. Delivered to 2 of 3 contacts. One acknowledgement.
+</code></pre>
+<hr />
+<h1 id="180-location-accessibility"><a class="header" href="#180-location-accessibility">180. Location Accessibility</a></h1>
+<pre><code class="language-text">Precise location shared
+</code></pre>
+<p>or:</p>
+<pre><code class="language-text">Location not shared
+</code></pre>
+<hr />
+<h1 id="181-response-accessibility"><a class="header" href="#181-response-accessibility">181. Response Accessibility</a></h1>
+<pre><code class="language-text">Alice acknowledged
+Bob is responding
+</code></pre>
+<hr />
+<h1 id="182-color-independence"><a class="header" href="#182-color-independence">182. Color Independence</a></h1>
+<p>Emergency status uses:</p>
+<pre><code class="language-text">text
+icons
+shape
+</code></pre>
+<p>not red alone.</p>
+<hr />
+<h1 id="183-large-font"><a class="header" href="#183-large-font">183. Large Font</a></h1>
+<p>Critical controls remain visible.</p>
+<hr />
+<h1 id="184-rtl"><a class="header" href="#184-rtl">184. RTL</a></h1>
+<p>Emergency content/localized labels mirror correctly.</p>
+<p>Coordinates/technical codes preserve canonical formatting.</p>
+<hr />
+<h1 id="185-reduced-motion"><a class="header" href="#185-reduced-motion">185. Reduced Motion</a></h1>
+<p>No pulsing/strobing dependency.</p>
+<hr />
+<h1 id="186-haptics-android"><a class="header" href="#186-haptics-android">186. Haptics Android</a></h1>
+<p>Use meaningful pattern for:</p>
+<pre><code class="language-text">SOS activation
+incoming SOS
+acknowledgement
+</code></pre>
+<p>respecting accessibility/system policy.</p>
+<hr />
+<h1 id="187-sound"><a class="header" href="#187-sound">187. Sound</a></h1>
+<p>Distinct emergency tone optional.</p>
+<p>Must be user-controlled/platform-compliant.</p>
+<hr />
+<h1 id="188-visual-flash"><a class="header" href="#188-visual-flash">188. Visual Flash</a></h1>
+<p>Avoid unsafe flashing.</p>
+<hr />
+<h1 id="189-high-contrast"><a class="header" href="#189-high-contrast">189. High Contrast</a></h1>
+<p>Emergency controls should remain legible outdoors/low-light.</p>
+<hr />
+<h1 id="190-one-handed-android-ux"><a class="header" href="#190-one-handed-android-ux">190. One-Handed Android UX</a></h1>
+<p>Critical buttons reachable.</p>
+<hr />
+<h1 id="191-glovestress-ux"><a class="header" href="#191-glovestress-ux">191. Glove/Stress UX</a></h1>
+<p>Large touch targets.</p>
+<p>Minimal text entry required.</p>
+<hr />
+<h1 id="192-offline-ux-clarity"><a class="header" href="#192-offline-ux-clarity">192. Offline UX Clarity</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">No Internet
+Nearby relay active
+</code></pre>
+<p>or:</p>
+<pre><code class="language-text">No route right now
+SOS stored safely on this device
+</code></pre>
+<hr />
+<h1 id="193-never-show-false-delivered"><a class="header" href="#193-never-show-false-delivered">193. Never Show False "Delivered"</a></h1>
+<p>Until recipient device acknowledgement of delivery semantics exists.</p>
+<hr />
+<h1 id="194-never-show-help-is-coming"><a class="header" href="#194-never-show-help-is-coming">194. Never Show "Help Is Coming"</a></h1>
+<p>Unless explicit responder message says so.</p>
+<hr />
+<h1 id="195-responder-confirmation"><a class="header" href="#195-responder-confirmation">195. Responder Confirmation</a></h1>
+<p>If responder selects:</p>
+<pre><code class="language-text">I'm coming
+</code></pre>
+<p>then UI may display exactly that.</p>
+<hr />
+<h1 id="196-expired-unacknowledged-sos"><a class="header" href="#196-expired-unacknowledged-sos">196. Expired Unacknowledged SOS</a></h1>
+<p>History:</p>
+<pre><code class="language-text">Expired — no acknowledgement received
+</code></pre>
+<hr />
+<h1 id="197-expired-with-delivery"><a class="header" href="#197-expired-with-delivery">197. Expired with Delivery</a></h1>
+<p>Could show:</p>
+<pre><code class="language-text">Expired — delivered to 2 contacts, no acknowledgement
+</code></pre>
+<hr />
+<h1 id="198-resolved-event"><a class="header" href="#198-resolved-event">198. Resolved Event</a></h1>
+<p>Stop relaying.</p>
+<hr />
+<h1 id="199-resolution-note"><a class="header" href="#199-resolution-note">199. Resolution Note</a></h1>
+<p>Optional:</p>
+<pre><code class="language-text">I'm safe now
+</code></pre>
+<hr />
+<h1 id="200-emergency-settings"><a class="header" href="#200-emergency-settings">200. Emergency Settings</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">Emergency Contacts
+SOS Preset
+Location Sharing
+Cancel Countdown
+Emergency Notifications
+Offline Relay Participation
+Battery/Data Policy
+</code></pre>
+<hr />
+<h1 id="201-test-sos"><a class="header" href="#201-test-sos">201. Test SOS</a></h1>
+<p>Important feature:</p>
+<pre><code class="language-text">Test Emergency Setup
+</code></pre>
+<hr />
+<h1 id="202-test-mode"><a class="header" href="#202-test-mode">202. Test Mode</a></h1>
+<p>Must be clearly marked:</p>
+<pre><code class="language-text">TEST
+</code></pre>
+<p>and must not accidentally trigger real emergency behavior.</p>
+<hr />
+<h1 id="203-test-mode-purpose"><a class="header" href="#203-test-mode-purpose">203. Test Mode Purpose</a></h1>
+<p>Validate:</p>
+<pre><code class="language-text">contacts
+notifications
+local relay
+permissions
+location
+</code></pre>
+<hr />
+<h1 id="204-test-event-identity"><a class="header" href="#204-test-event-identity">204. Test Event Identity</a></h1>
+<p>Separate event type.</p>
+<p>Recipients see:</p>
+<pre><code class="language-text">Test SOS
+</code></pre>
+<hr />
+<h1 id="205-recovery-from-test"><a class="header" href="#205-recovery-from-test">205. Recovery From Test</a></h1>
+<p>No real emergency history confusion.</p>
+<hr />
+<h1 id="206-onboarding"><a class="header" href="#206-onboarding">206. Onboarding</a></h1>
+<p>Do not force emergency setup during first-run.</p>
+<p>Offer later.</p>
+<hr />
+<h1 id="207-emergency-readiness-card"><a class="header" href="#207-emergency-readiness-card">207. Emergency Readiness Card</a></h1>
+<p>Settings/security can show:</p>
+<pre><code class="language-text">2 emergency contacts configured
+Location permission ready
+Offline relay enabled
+</code></pre>
+<hr />
+<h1 id="208-permission-readiness"><a class="header" href="#208-permission-readiness">208. Permission Readiness</a></h1>
+<p>Android can detect:</p>
+<pre><code class="language-text">notifications
+location
+nearby
+battery restrictions
+</code></pre>
+<p>without asking until needed where possible.</p>
+<hr />
+<h1 id="209-emergency-diagnostics"><a class="header" href="#209-emergency-diagnostics">209. Emergency Diagnostics</a></h1>
+<p>Useful:</p>
+<pre><code class="language-text">Last route available
+Nearby relay status
+Background restrictions
+Notification permission
+Location permission
+Battery policy
+</code></pre>
+<hr />
+<h1 id="210-no-secret-diagnostics"><a class="header" href="#210-no-secret-diagnostics">210. No Secret Diagnostics</a></h1>
+<p>Do not expose private keys or full location logs unnecessarily.</p>
+<hr />
+<h1 id="211-telemetry"><a class="header" href="#211-telemetry">211. Telemetry</a></h1>
+<p>Emergency events are highly sensitive.</p>
+<p>Default analytics should not collect:</p>
+<pre><code class="language-text">SOS content
+location
+recipients
+response text
+</code></pre>
+<hr />
+<h1 id="212-safe-metrics"><a class="header" href="#212-safe-metrics">212. Safe Metrics</a></h1>
+<p>If product absolutely needs reliability metrics:</p>
+<pre><code class="language-text">delivery latency bucket
+route type bucket
+success/failure class
+battery mode
+</code></pre>
+<p>with strong privacy controls and no identities/location.</p>
+<hr />
+<h1 id="213-crash-reports"><a class="header" href="#213-crash-reports">213. Crash Reports</a></h1>
+<p>Redact emergency content/location.</p>
+<hr />
+<h1 id="214-emergency-history-retention"><a class="header" href="#214-emergency-history-retention">214. Emergency History Retention</a></h1>
+<p>User-controlled or security policy.</p>
+<hr />
+<h1 id="215-delete-emergency-history"><a class="header" href="#215-delete-emergency-history">215. Delete Emergency History</a></h1>
+<p>Separate from active event cancellation.</p>
+<hr />
+<h1 id="216-active-event-cannot-be-deleted"><a class="header" href="#216-active-event-cannot-be-deleted">216. Active Event Cannot Be Deleted</a></h1>
+<p>Resolve/cancel first.</p>
+<hr />
+<h1 id="217-export-incident"><a class="header" href="#217-export-incident">217. Export Incident</a></h1>
+<p>Explicit action only.</p>
+<hr />
+<h1 id="218-multi-device-outgoing-sos"><a class="header" href="#218-multi-device-outgoing-sos">218. Multi-Device Outgoing SOS</a></h1>
+<p>If user triggers SOS on phone:</p>
+<pre><code class="language-text">other trusted devices may show active SOS
+</code></pre>
+<p>but should not create duplicate event.</p>
+<hr />
+<h1 id="219-emergency-event-ownership"><a class="header" href="#219-emergency-event-ownership">219. Emergency Event Ownership</a></h1>
+<p>Account-level event with originating device metadata.</p>
+<hr />
+<h1 id="220-other-device-update"><a class="header" href="#220-other-device-update">220. Other Device Update</a></h1>
+<p>Desktop can show:</p>
+<pre><code class="language-text">SOS active from your phone
+</code></pre>
+<hr />
+<h1 id="221-cancel-from-another-trusted-device"><a class="header" href="#221-cancel-from-another-trusted-device">221. Cancel From Another Trusted Device</a></h1>
+<p>Optional capability.</p>
+<p>High-risk, Rust-authorized.</p>
+<hr />
+<h1 id="222-multi-device-location"><a class="header" href="#222-multi-device-location">222. Multi-Device Location</a></h1>
+<p>Use originating/current authorized source according to policy.</p>
+<p>Do not combine silently.</p>
+<hr />
+<h1 id="223-device-revocation-during-sos"><a class="header" href="#223-device-revocation-during-sos">223. Device Revocation During SOS</a></h1>
+<p>If origin device revoked:</p>
+<pre><code class="language-text">security policy decides whether event remains valid
+</code></pre>
+<p>UI reflects Rust result.</p>
+<hr />
+<h1 id="224-emergency-contact-removed-mid-sos"><a class="header" href="#224-emergency-contact-removed-mid-sos">224. Emergency Contact Removed Mid-SOS</a></h1>
+<p>Existing active recipient set may remain frozen for event consistency.</p>
+<p>Future updates use event policy.</p>
+<hr />
+<h1 id="225-group-membership-change-mid-sos"><a class="header" href="#225-group-membership-change-mid-sos">225. Group Membership Change Mid-SOS</a></h1>
+<p>Same: Rust owns recipient snapshot/change semantics.</p>
+<hr />
+<h1 id="226-large-scale-disaster-mode"><a class="header" href="#226-large-scale-disaster-mode">226. Large-Scale Disaster Mode</a></h1>
+<p>Future architecture can support:</p>
+<pre><code class="language-text">community relays
+incident channels
+resource requests
+safe check-ins
+</code></pre>
+<p>but keep personal SOS v1 focused.</p>
+<hr />
+<h1 id="227-initial-production-scope"><a class="header" href="#227-initial-production-scope">227. Initial Production Scope</a></h1>
+<p>Ship:</p>
+<pre><code class="language-text">personal SOS
+preconfigured emergency contacts
+optional precise/approximate location
+small text payload
+offline store-carry-forward
+nearby relay
+explicit delivery/acknowledgement states
+cancellation
+resolution
+expiry
+Android foreground/background handling
+desktop daemon/tray behavior
+battery-preservation mode
+test SOS
+</code></pre>
+<p>Defer:</p>
+<pre><code class="language-text">public anonymous distress network
+official emergency-service dispatch integration
+large incident command system
+medical profile broadcasting
+crowdsourced disaster mapping
+</code></pre>
+<p>unless explicitly designed, reviewed, and supported.</p>
+<hr />
+<h1 id="228-testing-matrix"><a class="header" href="#228-testing-matrix">228. Testing Matrix</a></h1>
+<p>Required:</p>
+<pre><code class="language-text">normal online SOS
+no Internet + LAN
+Bluetooth-only
+no route
+DTN relay
+delivery
+acknowledgement
+responder state
+cancel
+resolve
+expiry
+location denied
+location stale
+battery low
+process death
+multi-device
+</code></pre>
+<hr />
+<h1 id="229-android-tests"><a class="header" href="#229-android-tests">229. Android Tests</a></h1>
+<p>Verify:</p>
+<pre><code class="language-text">foreground service
+lock-screen notification
+location permission
+nearby permission
+battery saver
+background restriction
+process death
+reboot recovery if supported
+TalkBack
+large font
+</code></pre>
+<hr />
+<h1 id="230-desktop-tests"><a class="header" href="#230-desktop-tests">230. Desktop Tests</a></h1>
+<p>Verify:</p>
+<pre><code class="language-text">daemon active
+UI closed
+tray status
+quit warning
+native alert
+offline relay
+keyboard accessibility
+</code></pre>
+<hr />
+<h1 id="231-dtn-tests"><a class="header" href="#231-dtn-tests">231. DTN Tests</a></h1>
+<pre><code class="language-text">message stored
+peer appears later
+relay forwards
+duplicate path
+expiry
+cancellation propagation
+</code></pre>
+<hr />
+<h1 id="232-false-trigger-tests"><a class="header" href="#232-false-trigger-tests">232. False Trigger Tests</a></h1>
+<p>Verify:</p>
+<pre><code class="language-text">hold/cancel
+countdown
+accessibility alternative
+process death during countdown
+</code></pre>
+<hr />
+<h1 id="233-security-tests"><a class="header" href="#233-security-tests">233. Security Tests</a></h1>
+<pre><code class="language-text">forged SOS
+forged acknowledgement
+stale revision
+unauthorized cancel
+replay
+unknown relay
+</code></pre>
+<hr />
+<h1 id="234-privacy-tests"><a class="header" href="#234-privacy-tests">234. Privacy Tests</a></h1>
+<pre><code class="language-text">location omitted
+approximate only
+precise only to intended recipients
+relay cannot access plaintext if E2EE
+</code></pre>
+<hr />
+<h1 id="235-multi-device-tests"><a class="header" href="#235-multi-device-tests">235. Multi-Device Tests</a></h1>
+<p>One SOS event appears on all own devices without duplicate notifications/event IDs.</p>
+<hr />
+<h1 id="236-scale-tests"><a class="header" href="#236-scale-tests">236. Scale Tests</a></h1>
+<p>Many relay copies remain bounded by Rust quotas.</p>
+<p>UI remains one logical event.</p>
+<hr />
+<h1 id="237-accessibility-tests"><a class="header" href="#237-accessibility-tests">237. Accessibility Tests</a></h1>
+<p>Complete:</p>
+<pre><code class="language-text">activate
+cancel
+view delivery
+acknowledge incoming SOS
+resolve
+</code></pre>
+<p>without color, precise gestures, or visual QR-like interaction.</p>
+<hr />
+<h1 id="238-definition-of-done"><a class="header" href="#238-definition-of-done">238. Definition of Done</a></h1>
+<p>UI/UX Part 17 is complete when:</p>
+<ul>
+<li>emergency/SOS is clearly separated from ordinary messaging</li>
+<li>the UI never implies official emergency-service dispatch unless truly integrated</li>
+<li>SOS activation has deliberate false-trigger protection and accessible alternatives</li>
+<li>trusted emergency recipients and verification state are visible during configuration</li>
+<li>location sharing is explicit, optional, precision-aware, and never required for SOS delivery</li>
+<li>core SOS payload remains small and higher priority than media</li>
+<li>Stored Local, Waiting for Route, Relaying, Delivered, Acknowledged, Responding, Resolved, Cancelled, and Expired are distinct</li>
+<li>"sent" is never used as misleading proof that help is coming</li>
+<li>offline LAN/Bluetooth/mesh/DTN delivery is represented without transport jargon</li>
+<li>expiry and cancellation propagate through the same resilient system</li>
+<li>duplicate delivery paths collapse into one EmergencyEventId</li>
+<li>responder acknowledgements/status are explicit and authenticated</li>
+<li>Android foreground-service, lock-screen, permission, battery, and process-death behavior are defined</li>
+<li>desktop daemon/tray/quit-during-SOS behavior is defined</li>
+<li>emergency battery mode can reduce non-essential system work</li>
+<li>relay participation has clear privacy/resource controls</li>
+<li>emergency history, test mode, multi-device behavior, accessibility, privacy, and diagnostics are explicit</li>
+<li>Rust emergency, responder, relay, location-request, and UI-event contracts are specified</li>
+<li>online/offline/DTN/security/false-trigger/privacy/process-death tests are included</li>
+</ul>
+<hr />
+<h1 id="239-final-architecture"><a class="header" href="#239-final-architecture">239. Final Architecture</a></h1>
+<pre><code class="language-text">                    EMERGENCY USER INTENT
+                              │
+                              ▼
+                    Rust Emergency Core
+                              │
+          ┌───────────────────┼───────────────────┐
+          │                   │                   │
+       Priority             Routing           Security
+          │                   │                   │
+       Expiry           Internet/LAN/DTN       E2EE/Auth
+          │                   │                   │
+          └───────────────────┼───────────────────┘
+                              │
+                  Emergency Presentation
+                     ┌────────┴────────┐
+                     │                 │
+                  Dioxus            Compose
+                     │                 │
+             Desktop SOS UX     Android SOS UX
+</code></pre>
+<p>Delivery truth:</p>
+<pre><code class="language-text">Stored
+→ Waiting for Route
+→ Relaying
+→ Delivered
+→ Acknowledged
+→ Responding
+→ Resolved
+</code></pre>
+<p>not:</p>
+<pre><code class="language-text">Send button tapped
+→ "Help is coming"
+</code></pre>
+<hr />
+<h1 id="240-final-principle"><a class="header" href="#240-final-principle">240. Final Principle</a></h1>
+<p>Emergency UX must optimize for truth under uncertainty.</p>
+<p>The correct model is:</p>
+<pre><code class="language-text">small authenticated SOS
++
+explicit recipients
++
+optional privacy-conscious location
++
+offline store-carry-forward
++
+clear delivery/acknowledgement semantics
++
+battery-aware persistence
+</code></pre>
+<p>not:</p>
+<pre><code class="language-text">a red button that displays "sent" and leaves the user guessing what actually happened
+</code></pre>
+<p>This gives Dioxus desktop and Android Compose a resilient emergency experience that remains understandable even when the network is fragmented, delayed, or entirely local.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="ui-ux-16-backup-restore-export-migration-architecture.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="ui-ux-18-settings-privacy-notifications-data-controls-architecture.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="ui-ux-16-backup-restore-export-migration-architecture.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="ui-ux-18-settings-privacy-notifications-data-controls-architecture.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

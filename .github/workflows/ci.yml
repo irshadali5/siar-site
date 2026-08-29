@@ -1,0 +1,41 @@
+name: CI Quality Gates & PR Conformance
+
+on:
+  pull_request:
+    branches: [ main, master ]
+  push:
+    branches: [ main, master ]
+
+jobs:
+  check-format:
+    name: Code Formatting & Linting
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+      - name: Rustfmt
+        run: cargo fmt --all -- --check
+      - name: Clippy Lint
+        run: cargo clippy --all-targets -- -D warnings
+
+  test-suite:
+    name: Core Unit & Integration Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Cargo Test
+        run: cargo test --workspace --all-features
+
+  wasm-build-check:
+    name: WASM Target Conformance
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+      - name: Build WASM Target
+        run: cargo check --target wasm32-unknown-unknown -p siar-protocol -p siar-crypto-mls

@@ -1,0 +1,44 @@
+version: '3.8'
+
+# SIAR Sovereign Tier 2 Mirror Cluster Stack (MinIO + Caddy Gateway)
+# Architecture: Part 07 - Sovereign Mirroring & Storage Topology
+
+services:
+  minio-sovereign:
+    image: quay.io/minio/minio:RELEASE.2024-08-03T04-33-23Z
+    container_name: siar-minio-mirror
+    restart: unless-stopped
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-siar_admin}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-secure_sovereign_pass_2026}
+      MINIO_PROMETHEUS_AUTH_TYPE: public
+    volumes:
+      - minio_data:/data
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  caddy-tls:
+    image: caddy:2-alpine
+    container_name: siar-edge-gateway
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - minio-sovereign
+
+volumes:
+  minio_data:
+  caddy_data:
+  caddy_config:

@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIAR Decentralized Plugin Marketplace & Extension Registry</title>
+  <meta name="description" content="Discover, verify, and install sandboxed hardware transport drivers (LoRa, Satellite, APRS), off-grid maps, and mesh bots for SIAR.">
+  
+  <!-- OpenGraph / Social Metadata -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://siar.irshad.org.in/plugins.html">
+  <meta property="og:title" content="SIAR Decentralized Plugin Registry">
+  <meta property="og:description" content="Cryptographically verified WASI sandboxed extensions and hardware drivers.">
+
+  <!-- Favicon and CSS -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2300f2fe'><path d='M20.5 11H19V7c0-1.1-.9-2-2-2h-4V3.5C13 2.12 11.88 1 10.5 1S8 2.12 8 3.5V5H4c-1.1 0-1.99.9-1.99 2v3.8H3.5c1.49 0 2.7 1.21 2.7 2.7s-1.21 2.7-2.7 2.7H2V20c0 1.1.9 2 2 2h3.8v-1.5c0-1.49 1.21-2.7 2.7-2.7 1.49 0 2.7 1.21 2.7 2.7V22H17c1.1 0 2-.9 2-2v-4h1.5c1.38 0 2.5-1.12 2.5-2.5s-1.12-2.5-2.5-2.5z'/></svg>">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Top Telemetry Live Bar -->
+  <div class="telemetry-ticker" aria-label="Live Plugin Registry Telemetry">
+    <div class="container">
+      <div class="ticker-wrap">
+        <div class="ticker-content">
+          <div class="ticker-item">
+            <span class="ticker-pulse"></span>
+            <span class="ticker-label">Registry Engine:</span>
+            <span class="ticker-val">Content-Addressed (BLAKE3 Digest)</span>
+          </div>
+          <div class="ticker-item">
+            <span class="ticker-label">Storage Backend:</span>
+            <span class="ticker-val">Iroh Blobs + Anycast Edge CDN</span>
+          </div>
+          <div class="ticker-item">
+            <span class="ticker-label">Runtime Sandbox:</span>
+            <span class="ticker-val">Wasmtime WASI v1 (Zero Network Escape)</span>
+          </div>
+          <div class="ticker-item">
+            <span class="ticker-label">Signature Verification:</span>
+            <span class="ticker-val">Ed25519 Author Attestation</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header & Navigation -->
+  <header class="header-nav">
+    <div class="container nav-inner">
+      <a href="index.html" class="brand-logo" aria-label="SIAR Home">
+        <div class="brand-icon">
+          <svg viewBox="0 0 24 24"><path d="M20.5 11H19V7c0-1.1-.9-2-2-2h-4V3.5C13 2.12 11.88 1 10.5 1S8 2.12 8 3.5V5H4c-1.1 0-1.99.9-1.99 2v3.8H3.5c1.49 0 2.7 1.21 2.7 2.7s-1.21 2.7-2.7 2.7H2V20c0 1.1.9 2 2 2h3.8v-1.5c0-1.49 1.21-2.7 2.7-2.7 1.49 0 2.7 1.21 2.7 2.7V22H17c1.1 0 2-.9 2-2v-4h1.5c1.38 0 2.5-1.12 2.5-2.5s-1.12-2.5-2.5-2.5z"/></svg>
+        </div>
+        <span class="brand-text">SIAR</span>
+        <span class="brand-badge">MARKETPLACE</span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="index.html" class="nav-link">Showcase</a></li>
+        <li><a href="packages.html" class="nav-link">Packages</a></li>
+        <li><a href="verify.html" class="nav-link">SLSA Verifier</a></li>
+        <li><a href="simulator.html" class="nav-link">WASM Lab</a></li>
+        <li><a href="docs.html" class="nav-link">Developer Hub</a></li>
+        <li><a href="#marketplace" class="nav-link">Extensions</a></li>
+        <li><a href="#publish-guide" class="nav-link">Publish</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <!-- OLED Black Mode Toggle -->
+        <button id="btnToggleOled" class="btn-icon" title="Toggle OLED Pure-Black Mode" aria-label="Toggle OLED Mode">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.81.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/>
+          </svg>
+        </button>
+
+        <a href="#publish-guide" class="btn btn-primary btn-sm">Publish Plugin</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container" style="padding-top: 56px;">
+    
+    <!-- Hero Header -->
+    <div style="text-align: center; max-width: 840px; margin: 0 auto 48px;">
+      <span class="section-eyebrow">DECENTRALIZED EXTENSION ECOSYSTEM</span>
+      <h1 class="hero-title" style="font-size: 2.8rem;">
+        SIAR Plugin Marketplace & Extension Registry
+      </h1>
+      <p class="hero-subtitle">
+        Discover, audit, and install cryptographically verified hardware drivers (LoRa, Satellite, Packet Radio), off-grid map tile caches, and automated emergency bot scripts running in strict WASI sandboxes.
+      </p>
+    </div>
+
+    <!-- Section: Marketplace Filters & Grid -->
+    <section id="marketplace">
+      <div class="pkg-explorer-head">
+        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+          <h2 style="font-family: var(--font-display); font-size: 1.6rem; color: #ffffff;">
+            Official & Community Extensions
+          </h2>
+          <span id="pluginCountDisplay" style="font-family: var(--font-mono); font-size: 0.82rem; color: var(--siar-cyan-glow);">
+            Loading extensions...
+          </span>
+        </div>
+
+        <div class="pkg-filter-bar">
+          <div class="pkg-search-wrap">
+            <span class="pkg-search-icon">🔍</span>
+            <input id="pluginSearchInput" type="text" class="pkg-search-input" placeholder="Search extensions (e.g. lora, satellite, maps, weather, kyber)..." aria-label="Search plugins">
+          </div>
+
+          <div class="pkg-eco-filters">
+            <button class="pkg-filter-btn plugin-cat-btn active" data-cat="all">All</button>
+            <button class="pkg-filter-btn plugin-cat-btn" data-cat="transports">📡 Transports</button>
+            <button class="pkg-filter-btn plugin-cat-btn" data-cat="maps">🗺️ Maps & Data</button>
+            <button class="pkg-filter-btn plugin-cat-btn" data-cat="bots">🤖 Mesh Bots</button>
+            <button class="pkg-filter-btn plugin-cat-btn" data-cat="crypto">🔐 Cryptography</button>
+            <button class="pkg-filter-btn plugin-cat-btn" data-cat="themes">🎨 Themes</button>
+          </div>
+
+          <div>
+            <select id="pluginSortSelect" class="select-control" aria-label="Sort extensions">
+              <option value="downloads">Sort: Most Downloads</option>
+              <option value="rating">Sort: Highest Rated</option>
+              <option value="name">Sort: Alphabetical</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Plugin Cards Grid (Rendered by JS) -->
+      <div id="pluginCardsGrid" class="plugin-grid">
+        <!-- Injected via JavaScript -->
+      </div>
+    </section>
+
+    <!-- Section: WASI Sandboxing & Capability Model -->
+    <section style="margin-bottom: 64px;">
+      <div class="section-head" style="text-align: left; margin-bottom: 24px;">
+        <span class="section-eyebrow">SANDBOXED RUNTIME ARCHITECTURE</span>
+        <h2 class="section-title" style="font-size: 1.8rem;">WASI Sandbox & Security Attestation</h2>
+        <p class="section-desc">
+          Third-party extensions execute inside isolated WebAssembly (WASI) sandboxes with fine-grained hardware capability granting.
+        </p>
+      </div>
+
+      <div class="pillars-grid">
+        <div class="siar-glass-card pillar-card">
+          <div class="pillar-icon-box icon-cyan">🛡️</div>
+          <h3 class="pillar-title" style="font-size: 1.15rem;">Zero Network Socket Escape</h3>
+          <p class="pillar-text">
+            Plugins cannot open unauthorized TCP/UDP sockets to the public internet, preventing telemetry exfiltration and malware beaconing.
+          </p>
+        </div>
+
+        <div class="siar-glass-card pillar-card">
+          <div class="pillar-icon-box icon-emerald">⚡</div>
+          <h3 class="pillar-title" style="font-size: 1.15rem;">Strict Memory Ceilings</h3>
+          <p class="pillar-text">
+            Every extension is restricted to a declared heap boundary (e.g. 16MB) and a maximum CPU execution budget per cycle (50ms).
+          </p>
+        </div>
+
+        <div class="siar-glass-card pillar-card">
+          <div class="pillar-icon-box icon-amber">🔐</div>
+          <h3 class="pillar-title" style="font-size: 1.15rem;">BLAKE3 Immutability</h3>
+          <p class="pillar-text">
+            Artifacts are content-addressed by BLAKE3 cryptographic hashes, guaranteeing bit-for-bit immutability against supply-chain tampering.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section: Developer Publishing Guide & Manifest Builder -->
+    <section id="publish-guide" style="margin-bottom: 64px;">
+      <div class="section-head" style="text-align: left; margin-bottom: 24px;">
+        <span class="section-eyebrow">DEVELOPER TOOLCHAIN</span>
+        <h2 class="section-title" style="font-size: 1.8rem;">Publishing an Extension to the Registry</h2>
+        <p class="section-desc">
+          Build, test, and publish your own custom hardware transport or mesh bot in 4 commands:
+        </p>
+      </div>
+
+      <div class="dev-terminal-card" style="margin-bottom: 32px;">
+        <div class="term-body">
+          <pre><code># 1. Scaffold new WebAssembly plugin workspace
+siar plugin new my-custom-extension --type transport
+
+# 2. Compile to WebAssembly WASI target
+cargo build --target wasm32-wasi --release
+
+# 3. Test execution inside local sandbox runner
+siar plugin test --manifest siar-plugin.toml
+
+# 4. Sign with Ed25519 developer key and publish to registry
+siar plugin publish --key ~/.siar/dev-signing-key.pem</code></pre>
+        </div>
+      </div>
+
+      <!-- Interactive Manifest Generator -->
+      <div class="siar-glass-card" style="padding: 24px; border-color: rgba(0, 242, 254, 0.3);">
+        <h3 style="font-family: var(--font-display); font-size: 1.3rem; color: #ffffff; margin-bottom: 16px;">
+          🛠️ Interactive siar-plugin.toml Manifest Generator
+        </h3>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-bottom: 16px;">
+          <div>
+            <label style="font-family: var(--font-mono); font-size: 0.76rem; color: var(--siar-text-muted); display: block; margin-bottom: 4px;">Plugin Name:</label>
+            <input id="genPlugName" type="text" value="my-sensor-driver" class="pkg-search-input" style="padding: 6px 10px; font-size: 0.85rem;">
+          </div>
+
+          <div>
+            <label style="font-family: var(--font-mono); font-size: 0.76rem; color: var(--siar-text-muted); display: block; margin-bottom: 4px;">Category:</label>
+            <select id="genPlugCat" class="select-control" style="width: 100%;">
+              <option value="transports">Transports</option>
+              <option value="maps">Maps & Data</option>
+              <option value="bots">Mesh Bots</option>
+              <option value="crypto">Cryptography</option>
+              <option value="themes">Themes</option>
+            </select>
+          </div>
+
+          <div>
+            <label style="font-family: var(--font-mono); font-size: 0.76rem; color: var(--siar-text-muted); display: block; margin-bottom: 4px;">Max Memory (MB):</label>
+            <input id="genPlugMem" type="number" value="16" class="pkg-search-input" style="padding: 6px 10px; font-size: 0.85rem;">
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 16px; margin-bottom: 16px; font-family: var(--font-mono); font-size: 0.8rem;">
+          <label><input type="checkbox" id="genPlugSpi" checked> Hardware SPI</label>
+          <label><input type="checkbox" id="genPlugGpio" checked> GPIO Pins</label>
+          <label><input type="checkbox" id="genPlugKv" checked> Local Storage KV</label>
+        </div>
+
+        <div>
+          <span class="pkg-meta-label">Generated Manifest (siar-plugin.toml):</span>
+          <pre id="genTomlOutput" class="spec-content-pre" style="padding: 12px; height: 160px; overflow-y: auto; font-size: 0.75rem; margin-top: 6px;"></pre>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Plugin Details Modal -->
+  <div id="pluginModal" class="modal-backdrop" role="dialog" aria-modal="true">
+    <div class="modal-box">
+      <button id="modalPluginCloseBtn" class="modal-close" aria-label="Close modal">&times;</button>
+      <h3 id="modalPluginTitle" style="font-family: var(--font-display); font-size: 1.4rem; color: #ffffff; margin-bottom: 16px;">
+        Plugin Details
+      </h3>
+      <div id="modalPluginBody">
+        <!-- Injected via JavaScript -->
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="brand-logo">
+            <div class="brand-icon">
+              <svg viewBox="0 0 24 24"><path d="M20.5 11H19V7c0-1.1-.9-2-2-2h-4V3.5C13 2.12 11.88 1 10.5 1S8 2.12 8 3.5V5H4c-1.1 0-1.99.9-1.99 2v3.8H3.5c1.49 0 2.7 1.21 2.7 2.7s-1.21 2.7-2.7 2.7H2V20c0 1.1.9 2 2 2h3.8v-1.5c0-1.49 1.21-2.7 2.7-2.7 1.49 0 2.7 1.21 2.7 2.7V22H17c1.1 0 2-.9 2-2v-4h1.5c1.38 0 2.5-1.12 2.5-2.5s-1.12-2.5-2.5-2.5z"/></svg>
+            </div>
+            <span class="brand-text">SIAR</span>
+          </div>
+          <p>
+            Decentralized Plugin Marketplace & Extension Registry. Content-addressed, sandboxed, and cryptographically verified.
+          </p>
+          <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--siar-text-muted);">
+            Registry Index: <code>pkg/registry/index.json</code>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">Marketplace</h4>
+          <ul class="footer-links">
+            <li><a href="#marketplace">All Extensions</a></li>
+            <li><a href="pkg/registry/index.json">Registry Index (JSON)</a></li>
+            <li><a href="#publish-guide">Publishing Guide</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">Portals</h4>
+          <ul class="footer-links">
+            <li><a href="index.html">Product Showcase</a></li>
+            <li><a href="packages.html">Package Center</a></li>
+            <li><a href="verify.html">SLSA Verifier</a></li>
+            <li><a href="docs.html">Developer Hub</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">Open Source</h4>
+          <ul class="footer-links">
+            <li><a href="https://github.com/irshadali5/siar">GitHub Repository</a></li>
+            <li><a href="install.sh">Shell Installer</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>
+          © 2026 SIAR Project & Irshad Ali. Released under dual <strong>Apache-2.0</strong> & <strong>MIT</strong> License.
+        </div>
+        <div style="display: flex; gap: 16px; align-items: center;">
+          <span style="color: var(--siar-emerald-online);">● WASI Sandbox Compliant</span>
+          <span>•</span>
+          <span>BLAKE3 Immutability</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/plugin-marketplace.js"></script>
+</body>
+</html>

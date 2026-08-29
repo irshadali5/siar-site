@@ -1,0 +1,1635 @@
+<!DOCTYPE HTML>
+<html lang="en" class="navy" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>14 — Proximity Abstraction (BLE, Wi-Fi Direct, LoRa) - SIAR System Architecture &amp; Technical Wiki</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="Comprehensive system architecture, cryptographic protocols, DTN mesh networking, distributed storage, audio DSP pipelines, and UI/UX design specifications for SIAR.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="theme/custom.css">
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "navy";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('navy')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="Home.html">Architecture Portal & Reading Guide</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part I: Protocol Foundation & Extension Platform</li><li class="chapter-item expanded "><a href="01-protocol-extension-system-architecture.html"><strong aria-hidden="true">1.</strong> 01 — Protocol Extension System Architecture</a></li><li class="chapter-item expanded "><a href="07-capability-negotiation-architecture.html"><strong aria-hidden="true">2.</strong> 07 — Capability Negotiation & Protocol Upgrades</a></li><li class="chapter-item expanded "><a href="21-third-party-protocol-extensions-architecture.html"><strong aria-hidden="true">3.</strong> 21 — Third-Party Protocol Extensions</a></li><li class="chapter-item expanded "><a href="22-wasm-compatible-components-architecture.html"><strong aria-hidden="true">4.</strong> 22 — WebAssembly (WASM) Compatible Components</a></li><li class="chapter-item expanded "><a href="23-external-interoperability-suite-architecture.html"><strong aria-hidden="true">5.</strong> 23 — External Interoperability & Conformance Suite</a></li><li class="chapter-item expanded "><a href="24-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">6.</strong> 24 — Dynamic Plugin & Module Ecosystem</a></li><li class="chapter-item expanded affix "><li class="part-title">Part II: Identity, Trust & Cryptography</li><li class="chapter-item expanded "><a href="02-multi-device-identity-architecture.html"><strong aria-hidden="true">7.</strong> 02 — Multi-Device Identity & Trust Model</a></li><li class="chapter-item expanded "><a href="28-production-security-e2ee-key-management-privacy-architecture.html"><strong aria-hidden="true">8.</strong> 28 — Production Security, E2EE, Key Management & Privacy</a></li><li class="chapter-item expanded affix "><li class="part-title">Part III: Mesh Networking, Transports & Hardware</li><li class="chapter-item expanded "><a href="03-transport-routing-policy-engine-architecture.html"><strong aria-hidden="true">9.</strong> 03 — Transport & Routing Policy Engine</a></li><li class="chapter-item expanded "><a href="11-relay-self-hosted-infrastructure-architecture.html"><strong aria-hidden="true">10.</strong> 11 — Self-Hosted Relay & Coordination Infrastructure</a></li><li class="chapter-item expanded "><a href="12-multipath-networking-architecture.html"><strong aria-hidden="true">11.</strong> 12 — Multipath Networking & Link Aggregation</a></li><li class="chapter-item expanded "><a href="13-battery-aware-scheduling-architecture.html"><strong aria-hidden="true">12.</strong> 13 — Battery-Aware Scheduling & Power Profiles</a></li><li class="chapter-item expanded "><a href="14-proximity-abstraction-architecture.html" class="active"><strong aria-hidden="true">13.</strong> 14 — Proximity Abstraction (BLE, Wi-Fi Direct, LoRa)</a></li><li class="chapter-item expanded "><a href="15-qr-nfc-bootstrap-pairing-architecture.html"><strong aria-hidden="true">14.</strong> 15 — Out-of-Band QR & NFC Bootstrap Pairing</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IV: Delay-Tolerant Networking & Emergency Mesh</li><li class="chapter-item expanded "><a href="06-dtn-store-carry-forward-architecture.html"><strong aria-hidden="true">15.</strong> 06 — DTN Store-Carry-Forward & Bundle Forwarding</a></li><li class="chapter-item expanded "><a href="17-emergency-priority-classes-architecture.html"><strong aria-hidden="true">16.</strong> 17 — Emergency Priority Classes & Critical Alert Mesh</a></li><li class="chapter-item expanded affix "><li class="part-title">Part V: Storage, Outbox & Data Lifecycle</li><li class="chapter-item expanded "><a href="04-offline-event-log-architecture.html"><strong aria-hidden="true">17.</strong> 04 — Offline Event Log & Sync Engine</a></li><li class="chapter-item expanded "><a href="05-robust-file-blob-subsystem-architecture.html"><strong aria-hidden="true">18.</strong> 05 — Robust File & Blob Subsystem (Chunking & Resumption)</a></li><li class="chapter-item expanded "><a href="09-crash-recovery-architecture.html"><strong aria-hidden="true">19.</strong> 09 — Crash Recovery & State Integrity</a></li><li class="chapter-item expanded "><a href="32-search-indexing-local-knowledge-privacy-architecture.html"><strong aria-hidden="true">20.</strong> 32 — Search, Indexing & Local Privacy Retrieval</a></li><li class="chapter-item expanded "><a href="33-backup-restore-export-import-archival-portability-architecture.html"><strong aria-hidden="true">21.</strong> 33 — Backup, Restore, Export & Long-Term Archival</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VI: Realtime Media, Calling & Audio DSP</li><li class="chapter-item expanded "><a href="25-android-direct-hardware-surface-zero-copy-media-architecture.html"><strong aria-hidden="true">22.</strong> 25 — Android Direct Surface Zero-Copy Media</a></li><li class="chapter-item expanded "><a href="26-rust-first-audio-dsp-resampling-aec-ns-agc-architecture.html"><strong aria-hidden="true">23.</strong> 26 — Rust-First Audio DSP (AEC, NS, AGC, Resampling)</a></li><li class="chapter-item expanded "><a href="29-realtime-calls-media-session-protocol-architecture.html"><strong aria-hidden="true">24.</strong> 29 — Realtime Calls & Media Session Protocol</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VII: Ephemeral State, Presence & Notifications</li><li class="chapter-item expanded "><a href="30-presence-availability-typing-read-receipts-ephemeral-state-architecture.html"><strong aria-hidden="true">25.</strong> 30 — Presence, Availability, Typing & Read Receipts</a></li><li class="chapter-item expanded "><a href="31-notifications-push-background-delivery-lifecycle-architecture.html"><strong aria-hidden="true">26.</strong> 31 — Notifications, Push Wake & Background Delivery</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VIII: Native Runtimes, Daemons & Embedded Linux</li><li class="chapter-item expanded "><a href="16-daemon-headless-runtime-architecture.html"><strong aria-hidden="true">27.</strong> 16 — Headless Daemon & Background Runtime</a></li><li class="chapter-item expanded "><a href="19-c-abi-ffi-architecture.html"><strong aria-hidden="true">28.</strong> 19 — C-ABI FFI & Native Language Interop</a></li><li class="chapter-item expanded "><a href="20-embedded-linux-node-architecture.html"><strong aria-hidden="true">29.</strong> 20 — Embedded Linux Node & Resource-Constrained Targets</a></li><li class="chapter-item expanded "><a href="27-rust-driven-android-native-build-packaging-automation.html"><strong aria-hidden="true">30.</strong> 27 — Rust-Driven Android Native Build & Packaging Automation</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IX: Reliability, Testing, Fuzzing & Diagnostics</li><li class="chapter-item expanded "><a href="08-resource-limits-backpressure-architecture.html"><strong aria-hidden="true">31.</strong> 08 — Resource Limits, Quotas & Backpressure</a></li><li class="chapter-item expanded "><a href="10-fuzzing-protocol-test-suite-architecture.html"><strong aria-hidden="true">32.</strong> 10 — Fuzzing & Protocol Test Suite</a></li><li class="chapter-item expanded "><a href="18-network-diagnostics-path-visualization-architecture.html"><strong aria-hidden="true">33.</strong> 18 — Network Diagnostics & Path Visualization</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part X: UI/UX Client Architecture (Cross-Platform)</li><li class="chapter-item expanded "><a href="ui-ux-01-product-foundation-cross-platform-interaction-architecture.html"><strong aria-hidden="true">34.</strong> UI/UX 01 — Product UX Foundation & Cross-Platform Interaction</a></li><li class="chapter-item expanded "><a href="ui-ux-02-desktop-dioxus-app-shell-navigation-window-architecture.html"><strong aria-hidden="true">35.</strong> UI/UX 02 — Desktop Dioxus App Shell & Navigation</a></li><li class="chapter-item expanded "><a href="ui-ux-03-android-jetpack-compose-app-shell-navigation-lifecycle-architecture.html"><strong aria-hidden="true">36.</strong> UI/UX 03 — Android Jetpack Compose App Shell & Lifecycle</a></li><li class="chapter-item expanded "><a href="ui-ux-04-conversation-list-inbox-architecture.html"><strong aria-hidden="true">37.</strong> UI/UX 04 — Conversation List & Inbox UX</a></li><li class="chapter-item expanded "><a href="ui-ux-05-conversation-message-timeline-architecture.html"><strong aria-hidden="true">38.</strong> UI/UX 05 — Conversation Message Timeline UX</a></li><li class="chapter-item expanded "><a href="ui-ux-06-message-composer-attachments-voice-notes-drafts-architecture.html"><strong aria-hidden="true">39.</strong> UI/UX 06 — Message Composer, Attachments & Voice Notes</a></li><li class="chapter-item expanded "><a href="ui-ux-07-calls-realtime-media-architecture.html"><strong aria-hidden="true">40.</strong> UI/UX 07 — Calls & Realtime Media UX</a></li><li class="chapter-item expanded "><a href="ui-ux-08-contacts-requests-verification-identity-architecture.html"><strong aria-hidden="true">41.</strong> UI/UX 08 — Contacts, Requests, Verification & Identity</a></li><li class="chapter-item expanded "><a href="ui-ux-09-groups-membership-roles-architecture.html"><strong aria-hidden="true">42.</strong> UI/UX 09 — Groups, Membership & Roles UX</a></li><li class="chapter-item expanded "><a href="ui-ux-10-files-media-gallery-transfer-architecture.html"><strong aria-hidden="true">43.</strong> UI/UX 10 — Files, Media Gallery & Transfer UX</a></li><li class="chapter-item expanded "><a href="ui-ux-11-search-local-knowledge-retrieval-architecture.html"><strong aria-hidden="true">44.</strong> UI/UX 11 — Search & Local Knowledge Retrieval UX</a></li><li class="chapter-item expanded "><a href="ui-ux-12-nearby-qr-nfc-pairing-device-linking-architecture.html"><strong aria-hidden="true">45.</strong> UI/UX 12 — Nearby, QR/NFC Pairing & Device Linking UX</a></li><li class="chapter-item expanded "><a href="ui-ux-13-notifications-background-incoming-call-architecture.html"><strong aria-hidden="true">46.</strong> UI/UX 13 — Notifications, Background & Incoming Call UX</a></li><li class="chapter-item expanded "><a href="ui-ux-14-presence-typing-receipts-status-architecture.html"><strong aria-hidden="true">47.</strong> UI/UX 14 — Presence, Typing, Receipts & Status UX</a></li><li class="chapter-item expanded "><a href="ui-ux-15-security-center-devices-keys-recovery-architecture.html"><strong aria-hidden="true">48.</strong> UI/UX 15 — Security Center, Devices, Keys & Recovery UX</a></li><li class="chapter-item expanded "><a href="ui-ux-16-backup-restore-export-migration-architecture.html"><strong aria-hidden="true">49.</strong> UI/UX 16 — Backup, Restore, Export & Migration UX</a></li><li class="chapter-item expanded "><a href="ui-ux-17-emergency-sos-offline-mesh-architecture.html"><strong aria-hidden="true">50.</strong> UI/UX 17 — Emergency / SOS / Offline Mesh UX</a></li><li class="chapter-item expanded "><a href="ui-ux-18-settings-privacy-notifications-data-controls-architecture.html"><strong aria-hidden="true">51.</strong> UI/UX 18 — Settings, Privacy, Notifications & Data Controls</a></li><li class="chapter-item expanded "><a href="ui-ux-19-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">52.</strong> UI/UX 19 — Plugin & Module Ecosystem UX</a></li><li class="chapter-item expanded "><a href="ui-ux-20-diagnostics-network-paths-advanced-developer-architecture.html"><strong aria-hidden="true">53.</strong> UI/UX 20 — Diagnostics, Network Paths & Developer UX</a></li><li class="chapter-item expanded "><a href="ui-ux-21-accessibility-inclusive-interaction-architecture.html"><strong aria-hidden="true">54.</strong> UI/UX 21 — Accessibility & Inclusive Interaction</a></li><li class="chapter-item expanded "><a href="ui-ux-22-design-system-tokens-typography-icons-motion-architecture.html"><strong aria-hidden="true">55.</strong> UI/UX 22 — Design System, Tokens, Typography & Motion</a></li><li class="chapter-item expanded "><a href="ui-ux-23-responsive-adaptive-desktop-tablet-foldable-phone-layout-architecture.html"><strong aria-hidden="true">56.</strong> UI/UX 23 — Responsive & Adaptive Layouts (Desktop/Tablet/Foldable/Phone)</a></li><li class="chapter-item expanded "><a href="ui-ux-24-error-loading-empty-offline-degraded-state-architecture.html"><strong aria-hidden="true">57.</strong> UI/UX 24 — Error, Loading, Empty & Degraded-State UX</a></li><li class="chapter-item expanded "><a href="ui-ux-25-onboarding-first-run-permission-education-architecture.html"><strong aria-hidden="true">58.</strong> UI/UX 25 — Onboarding, First Run & Permission Education</a></li><li class="chapter-item expanded "><a href="ui-ux-26-performance-virtualization-large-data-ui-architecture.html"><strong aria-hidden="true">59.</strong> UI/UX 26 — Virtualization & Large-Data UI Performance</a></li><li class="chapter-item expanded "><a href="ui-ux-27-ui-testing-screenshot-interaction-release-quality-gates-architecture.html"><strong aria-hidden="true">60.</strong> UI/UX 27 — UI Testing, Screenshots & Release Quality Gates</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">SIAR System Architecture &amp; Technical Wiki</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar/edit/main/sys-arch/14-proximity-abstraction-architecture.md" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="part-14--proximity-abstraction-architecture"><a class="header" href="#part-14--proximity-abstraction-architecture">Part 14 — Proximity Abstraction Architecture</a></h1>
+<h2 id="reusable-p2p-communication-platform"><a class="header" href="#reusable-p2p-communication-platform">Reusable P2P Communication Platform</a></h2>
+<p><strong>Status:</strong> Architecture specification<br />
+<strong>Part:</strong> 14 of 24<br />
+<strong>Primary language:</strong> Rust<br />
+<strong>Primary goals:</strong> unify nearby discovery and local short-range connectivity across BLE, Bluetooth Classic, Wi‑Fi Direct, Wi‑Fi Aware, LAN, QR/NFC bootstrap, and future proximity technologies while preserving privacy, battery efficiency, transport neutrality, and reuse across messaging, files, DTN, emergency, ERP, and custom products.</p>
+<hr />
+<h1 id="1-purpose"><a class="header" href="#1-purpose">1. Purpose</a></h1>
+<p>The platform needs one neutral model for "nearby devices" even though every OS exposes different APIs.</p>
+<p>Potential proximity mechanisms include:</p>
+<pre><code class="language-text">Bluetooth LE
+Bluetooth Classic
+Wi-Fi Direct
+Wi-Fi Aware
+LAN / mDNS-style discovery
+QR bootstrap
+NFC bootstrap
+device hotspot / local network
+future UWB or other proximity radios
+</code></pre>
+<p>The core must not become polluted with Android callbacks, Linux D-Bus objects, Windows Bluetooth handles, Apple framework types, or device-specific assumptions.</p>
+<p>Correct architecture:</p>
+<pre><code class="language-text">Platform APIs
+      ↓
+Platform Proximity Adapters
+      ↓
+Proximity Core
+      ↓
+Nearby Peer / Path Candidates
+      ↓
+Routing / DTN / Files / Pairing / UI
+</code></pre>
+<p>Fundamental rule:</p>
+<blockquote>
+<p><strong>Upper layers reason about nearby peers and local path opportunities, not raw radio APIs.</strong></p>
+</blockquote>
+<hr />
+<h1 id="2-architectural-position"><a class="header" href="#2-architectural-position">2. Architectural Position</a></h1>
+<pre><code class="language-text">Android / iOS / Linux / Windows / macOS
+               ↓
+      Proximity Platform Adapter
+               ↓
+        comm-proximity
+        ├── discovery
+        ├── advertising
+        ├── observations
+        ├── privacy tokens
+        ├── session bootstrap
+        ├── path escalation
+        └── diagnostics
+               ↓
+   ┌───────────┼───────────┐
+   │           │           │
+Routing       DTN        Pairing
+   │           │           │
+Files       Emergency     UI
+</code></pre>
+<hr />
+<h1 id="3-nearby-does-not-mean-trusted"><a class="header" href="#3-nearby-does-not-mean-trusted">3. Nearby Does Not Mean Trusted</a></h1>
+<p>A device being nearby does not prove:</p>
+<pre><code class="language-text">identity
+ownership
+authorization
+contact relationship
+trust
+</code></pre>
+<p>A proximity observation only means:</p>
+<pre><code class="language-text">a potentially reachable endpoint exists nearby
+</code></pre>
+<p>Identity binding happens later through Part 02.</p>
+<hr />
+<h1 id="4-nearby-peer-model"><a class="header" href="#4-nearby-peer-model">4. Nearby Peer Model</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct NearbyPeer {
+    pub observation_id: ObservationId,
+    pub ephemeral_id: EphemeralPeerId,
+    pub observed_via: ProximityTransportKind,
+    pub signal: Option&lt;SignalInfo&gt;,
+    pub capabilities: ProximityCapabilityHint,
+    pub last_seen: Timestamp,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Never expose raw MAC address as platform identity.</p>
+<hr />
+<h1 id="5-proximity-transport-kinds"><a class="header" href="#5-proximity-transport-kinds">5. Proximity Transport Kinds</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum ProximityTransportKind {
+    BluetoothLe,
+    BluetoothClassic,
+    WifiDirect,
+    WifiAware,
+    Lan,
+    QrBootstrap,
+    NfcBootstrap,
+    Future(u16),
+}
+<span class="boring">}</span></code></pre></pre>
+<p>QR and NFC are bootstrap methods rather than continuous bulk transports, but they fit the same discovery/handshake entry model.</p>
+<hr />
+<h1 id="6-observation-identity"><a class="header" href="#6-observation-identity">6. Observation Identity</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct ObservationId([u8; 16]);
+<span class="boring">}</span></code></pre></pre>
+<p>An <code>ObservationId</code> identifies a local observation instance.</p>
+<p>It is not:</p>
+<pre><code class="language-text">AccountId
+DeviceId
+transport identity
+</code></pre>
+<hr />
+<h1 id="7-ephemeral-peer-identity"><a class="header" href="#7-ephemeral-peer-identity">7. Ephemeral Peer Identity</a></h1>
+<p>Nearby advertisements use rotating identifiers.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct EphemeralPeerId([u8; 16]);
+<span class="boring">}</span></code></pre></pre>
+<p>Goals:</p>
+<pre><code class="language-text">reduce passive tracking
+avoid exposing stable user identity
+allow temporary session correlation
+support secure later binding
+</code></pre>
+<hr />
+<h1 id="8-never-broadcast-stable-identity-by-default"><a class="header" href="#8-never-broadcast-stable-identity-by-default">8. Never Broadcast Stable Identity by Default</a></h1>
+<p>Do not advertise:</p>
+<pre><code class="language-text">AccountId
+DeviceId
+email
+phone number
+display name
+device name
+</code></pre>
+<p>over BLE/LAN beacons.</p>
+<p>Use short-lived opaque tokens.</p>
+<hr />
+<h1 id="9-ephemeral-rotation"><a class="header" href="#9-ephemeral-rotation">9. Ephemeral Rotation</a></h1>
+<p>Rotate based on:</p>
+<pre><code class="language-text">time window
+session boundary
+privacy policy
+pairing mode
+</code></pre>
+<p>The exact period should balance:</p>
+<pre><code class="language-text">privacy
+reconnect continuity
+battery use
+radio overhead
+</code></pre>
+<hr />
+<h1 id="10-identity-binding"><a class="header" href="#10-identity-binding">10. Identity Binding</a></h1>
+<p>Once a secure session forms:</p>
+<pre><code class="language-text">EphemeralPeerId
+      ↓
+authenticated session
+      ↓
+DeviceId
+      ↓
+AccountId
+</code></pre>
+<p>Only then may upper layers merge observations into known-device state.</p>
+<hr />
+<h1 id="11-discovery-and-connection-must-be-separate"><a class="header" href="#11-discovery-and-connection-must-be-separate">11. Discovery and Connection Must Be Separate</a></h1>
+<p>Discovery:</p>
+<pre><code class="language-text">peer observed
+</code></pre>
+<p>Connection:</p>
+<pre><code class="language-text">usable transport session established
+</code></pre>
+<p>Authentication:</p>
+<pre><code class="language-text">peer identity verified
+</code></pre>
+<p>These are distinct phases.</p>
+<hr />
+<h1 id="12-discovery-state-machine"><a class="header" href="#12-discovery-state-machine">12. Discovery State Machine</a></h1>
+<pre><code class="language-text">Idle
+ ↓
+Scanning
+ ↓
+Observed
+ ↓
+Updated
+ ↓
+Expired/Lost
+</code></pre>
+<p>Connection state:</p>
+<pre><code class="language-text">Candidate
+ ↓
+Connecting
+ ↓
+TransportReady
+ ↓
+Authenticated
+ ↓
+UsablePath
+</code></pre>
+<hr />
+<h1 id="13-observation-expiry"><a class="header" href="#13-observation-expiry">13. Observation Expiry</a></h1>
+<p>Nearby peers must age out.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct ObservationTtl(pub Duration);
+<span class="boring">}</span></code></pre></pre>
+<p>A peer not seen recently must not stay permanently listed as nearby.</p>
+<hr />
+<h1 id="14-signal-model"><a class="header" href="#14-signal-model">14. Signal Model</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct SignalInfo {
+    pub strength: SignalStrengthClass,
+    pub raw_rssi: Option&lt;i16&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="15-signal-strength-class"><a class="header" href="#15-signal-strength-class">15. Signal Strength Class</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum SignalStrengthClass {
+    VeryWeak,
+    Weak,
+    Medium,
+    Strong,
+    VeryStrong,
+    Unknown,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Do not convert RSSI into fake exact physical distance.</p>
+<hr />
+<h1 id="16-capability-hints"><a class="header" href="#16-capability-hints">16. Capability Hints</a></h1>
+<p>Advertisements may expose tiny coarse hints:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct ProximityCapabilityHint {
+    pub supports_pairing: bool,
+    pub supports_dtn: bool,
+    pub supports_wifi_upgrade: bool,
+    pub gateway_hint: bool,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Detailed capability negotiation belongs to Part 07.</p>
+<hr />
+<h1 id="17-advertisement-payload"><a class="header" href="#17-advertisement-payload">17. Advertisement Payload</a></h1>
+<p>Keep it tiny.</p>
+<p>Example:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct ProximityAdvertisementV1 {
+    pub protocol_version: u8,
+    pub ephemeral_id: [u8; 16],
+    pub capability_bits: u16,
+    pub short_token: Option&lt;[u8; 8]&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Do not include:</p>
+<pre><code class="language-text">certificate chains
+full bundle inventory
+full capability matrix
+stable account identifiers
+</code></pre>
+<hr />
+<h1 id="18-progressive-disclosure"><a class="header" href="#18-progressive-disclosure">18. Progressive Disclosure</a></h1>
+<pre><code class="language-text">Advertisement
+      ↓
+Nearby transport
+      ↓
+Secure handshake
+      ↓
+Identity binding
+      ↓
+Capability negotiation
+      ↓
+Feature use
+</code></pre>
+<p>This improves privacy and reduces radio overhead.</p>
+<hr />
+<h1 id="19-discovery-api"><a class="header" href="#19-discovery-api">19. Discovery API</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait ProximityDiscovery {
+    async fn start_scan(
+        &amp;self,
+        policy: ScanPolicy,
+    ) -&gt; Result&lt;ScanHandle, ProximityError&gt;;
+
+    fn events(&amp;self) -&gt; ProximityEventStream;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="20-proximity-events"><a class="header" href="#20-proximity-events">20. Proximity Events</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum ProximityEvent {
+    Observed(NearbyPeer),
+    Updated(NearbyPeer),
+    Lost(ObservationId),
+    PathHint(ProximityPathHint),
+    PermissionChanged(ProximityPermissionState),
+    Error(ProximityError),
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="21-discovery-purpose"><a class="header" href="#21-discovery-purpose">21. Discovery Purpose</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum DiscoveryPurpose {
+    General,
+    Pairing,
+    SendFile,
+    Dtn,
+    Emergency,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Purpose allows policy to tune aggressiveness.</p>
+<hr />
+<h1 id="22-scan-modes"><a class="header" href="#22-scan-modes">22. Scan Modes</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum ScanMode {
+    Passive,
+    Balanced,
+    Active,
+    Emergency,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="23-passive-scan"><a class="header" href="#23-passive-scan">23. Passive Scan</a></h1>
+<p>Use for:</p>
+<pre><code class="language-text">background
+battery saver
+long-lived low-power DTN presence
+</code></pre>
+<p>Characteristics:</p>
+<pre><code class="language-text">low duty cycle
+no expensive Wi-Fi setup
+minimal wakeups
+</code></pre>
+<hr />
+<h1 id="24-balanced-scan"><a class="header" href="#24-balanced-scan">24. Balanced Scan</a></h1>
+<p>Default foreground/background compromise.</p>
+<hr />
+<h1 id="25-active-scan"><a class="header" href="#25-active-scan">25. Active Scan</a></h1>
+<p>Use when user explicitly opens:</p>
+<pre><code class="language-text">Nearby
+Pair device
+Send nearby
+</code></pre>
+<p>Higher duty cycle is temporarily acceptable.</p>
+<hr />
+<h1 id="26-emergency-scan"><a class="header" href="#26-emergency-scan">26. Emergency Scan</a></h1>
+<p>Emergency mode can enable:</p>
+<pre><code class="language-text">higher BLE duty cycle
+local Wi-Fi discovery
+DTN peer search
+gateway search
+</code></pre>
+<p>but still respects hard resource limits.</p>
+<hr />
+<h1 id="27-advertising-api"><a class="header" href="#27-advertising-api">27. Advertising API</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait ProximityAdvertiser {
+    async fn advertise(
+        &amp;self,
+        policy: AdvertisePolicy,
+    ) -&gt; Result&lt;AdvertiseHandle, ProximityError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="28-visibility-modes"><a class="header" href="#28-visibility-modes">28. Visibility Modes</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum VisibilityPolicy {
+    Hidden,
+    PairingMode,
+    ContactsOrAuthorized,
+    DtnRelay,
+    Emergency,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>"Contacts only" does not mean broadcasting contact identity. It means continuing secure interaction only after authorization proof.</p>
+<hr />
+<h1 id="29-pairing-visibility"><a class="header" href="#29-pairing-visibility">29. Pairing Visibility</a></h1>
+<p>Pairing mode should:</p>
+<pre><code class="language-text">be explicit
+be temporary
+expire automatically
+</code></pre>
+<p>Do not keep devices permanently discoverable.</p>
+<hr />
+<h1 id="30-bluetooth-le-role"><a class="header" href="#30-bluetooth-le-role">30. Bluetooth LE Role</a></h1>
+<p>BLE is best suited for:</p>
+<pre><code class="language-text">discovery
+control signaling
+small messages
+DTN encounter bootstrap
+pairing
+Wi-Fi upgrade negotiation
+</code></pre>
+<p>It is not the preferred path for:</p>
+<pre><code class="language-text">large files
+video attachments
+realtime high-rate media
+</code></pre>
+<hr />
+<h1 id="31-bluetooth-classic-role"><a class="header" href="#31-bluetooth-classic-role">31. Bluetooth Classic Role</a></h1>
+<p>Bluetooth Classic may provide:</p>
+<pre><code class="language-text">moderate local transfer
+legacy device support
+fallback data transport
+</code></pre>
+<p>where platform APIs support it.</p>
+<hr />
+<h1 id="32-wi-fi-direct-role"><a class="header" href="#32-wi-fi-direct-role">32. Wi-Fi Direct Role</a></h1>
+<p>Use for:</p>
+<pre><code class="language-text">large nearby file transfers
+high-throughput local sessions
+no-router environments
+</code></pre>
+<p>It has higher setup cost and should be activated selectively.</p>
+<hr />
+<h1 id="33-wi-fi-aware-role"><a class="header" href="#33-wi-fi-aware-role">33. Wi-Fi Aware Role</a></h1>
+<p>Where available:</p>
+<pre><code class="language-text">nearby service discovery
+peer-aware data path
+router-independent communication
+</code></pre>
+<p>Especially useful on supported Android devices.</p>
+<hr />
+<h1 id="34-lan-role"><a class="header" href="#34-lan-role">34. LAN Role</a></h1>
+<p>If peers share a router/local network:</p>
+<pre><code class="language-text">LAN direct
+</code></pre>
+<p>is often ideal:</p>
+<pre><code class="language-text">low latency
+high bandwidth
+no Internet dependency
+low setup cost
+</code></pre>
+<hr />
+<h1 id="35-lan-discovery-privacy"><a class="header" href="#35-lan-discovery-privacy">35. LAN Discovery Privacy</a></h1>
+<p>Do not publish user identity through service names.</p>
+<p>Use opaque ephemeral service instances and authenticate later.</p>
+<hr />
+<h1 id="36-avoid-blind-subnet-scanning"><a class="header" href="#36-avoid-blind-subnet-scanning">36. Avoid Blind Subnet Scanning</a></h1>
+<p>Default LAN discovery should not scan every IP in the subnet.</p>
+<p>Prefer:</p>
+<pre><code class="language-text">service discovery
+known-peer probing
+signed endpoint hints
+</code></pre>
+<p>Reasons:</p>
+<pre><code class="language-text">battery
+network noise
+security software
+latency
+privacy
+</code></pre>
+<hr />
+<h1 id="37-existing-path-preference"><a class="header" href="#37-existing-path-preference">37. Existing-Path Preference</a></h1>
+<p>If an authenticated local path already exists:</p>
+<pre><code class="language-text">reuse it
+</code></pre>
+<p>before activating another radio.</p>
+<hr />
+<h1 id="38-transport-escalation"><a class="header" href="#38-transport-escalation">38. Transport Escalation</a></h1>
+<p>Recommended model:</p>
+<pre><code class="language-text">BLE discovers peer
+       ↓
+secure handshake
+       ↓
+operation estimated
+       ↓
+small data → stay on BLE/existing path
+large data → negotiate Wi-Fi upgrade
+</code></pre>
+<hr />
+<h1 id="39-tiny-payload-rule"><a class="header" href="#39-tiny-payload-rule">39. Tiny-Payload Rule</a></h1>
+<p>Do not create Wi-Fi Direct merely to send:</p>
+<pre><code class="language-text">1 KB message
+small receipt
+tiny DTN bundle
+</code></pre>
+<hr />
+<h1 id="40-large-file-rule"><a class="header" href="#40-large-file-rule">40. Large-File Rule</a></h1>
+<p>For large nearby file:</p>
+<pre><code class="language-text">BLE discovery
+      ↓
+Wi-Fi Direct/Aware or LAN
+      ↓
+chunked file transfer
+</code></pre>
+<hr />
+<h1 id="41-dtn-encounter-flow"><a class="header" href="#41-dtn-encounter-flow">41. DTN Encounter Flow</a></h1>
+<pre><code class="language-text">BLE/LAN observation
+      ↓
+DTN capability hint
+      ↓
+secure session
+      ↓
+inventory reconciliation
+      ↓
+bundle transfer
+      ↓
+optional Wi-Fi upgrade
+</code></pre>
+<p>Part 06 owns forwarding logic.</p>
+<hr />
+<h1 id="42-routing-integration"><a class="header" href="#42-routing-integration">42. Routing Integration</a></h1>
+<p>Part 14 emits path candidates.</p>
+<p>Part 03 decides whether they are useful.</p>
+<p>Example candidates:</p>
+<pre><code class="language-text">BluetoothLe
+BluetoothClassic
+WifiDirect
+WifiAware
+Lan
+</code></pre>
+<hr />
+<h1 id="43-routing-inputs"><a class="header" href="#43-routing-inputs">43. Routing Inputs</a></h1>
+<p>Each proximity path provides:</p>
+<pre><code class="language-text">capacity class
+setup cost
+energy cost
+health
+current availability
+</code></pre>
+<hr />
+<h1 id="44-path-hint"><a class="header" href="#44-path-hint">44. Path Hint</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct ProximityPathHint {
+    pub observation_id: ObservationId,
+    pub transport: ProximityTransportKind,
+    pub expected_capacity: CapacityClass,
+    pub setup_cost: SetupCostClass,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="45-capacity-class"><a class="header" href="#45-capacity-class">45. Capacity Class</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum CapacityClass {
+    Tiny,
+    Low,
+    Medium,
+    High,
+    VeryHigh,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="46-setup-cost"><a class="header" href="#46-setup-cost">46. Setup Cost</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum SetupCostClass {
+    VeryLow,
+    Low,
+    Medium,
+    High,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="47-multipath-integration"><a class="header" href="#47-multipath-integration">47. Multipath Integration</a></h1>
+<p>Part 12 can compose:</p>
+<pre><code class="language-text">BLE control + Wi-Fi data
+LAN + Iroh
+Wi-Fi Direct + relay
+</code></pre>
+<p>Proximity reports local paths; multipath decides composition.</p>
+<hr />
+<h1 id="48-file-integration"><a class="header" href="#48-file-integration">48. File Integration</a></h1>
+<p>Part 05 should receive:</p>
+<pre><code class="language-text">authenticated DeviceId
+usable path candidates
+</code></pre>
+<p>not raw BLE handles.</p>
+<hr />
+<h1 id="49-pairing-integration"><a class="header" href="#49-pairing-integration">49. Pairing Integration</a></h1>
+<p>Part 15 uses Part 14 for:</p>
+<pre><code class="language-text">QR discovery
+NFC bootstrap
+BLE discovery
+nearby session establishment
+</code></pre>
+<p>Identity authorization remains Part 02.</p>
+<hr />
+<h1 id="50-battery-integration"><a class="header" href="#50-battery-integration">50. Battery Integration</a></h1>
+<p>Part 13 determines:</p>
+<pre><code class="language-text">scan duty cycle
+advertisement duty cycle
+Wi-Fi escalation
+background behavior
+</code></pre>
+<hr />
+<h1 id="51-resource-integration"><a class="header" href="#51-resource-integration">51. Resource Integration</a></h1>
+<p>Part 08 limits:</p>
+<pre><code class="language-text">tracked nearby peers
+handshakes
+scan jobs
+Wi-Fi setup jobs
+memory
+radio operations
+</code></pre>
+<hr />
+<h1 id="52-nearby-peer-table"><a class="header" href="#52-nearby-peer-table">52. Nearby Peer Table</a></h1>
+<p>Must be bounded.</p>
+<pre><code class="language-text">max observations
+TTL
+LRU
+rate limits
+</code></pre>
+<p>Never retain an unbounded radio-observation history.</p>
+<hr />
+<h1 id="53-multi-transport-observation"><a class="header" href="#53-multi-transport-observation">53. Multi-Transport Observation</a></h1>
+<p>Before identity binding:</p>
+<pre><code class="language-text">BLE observation
+LAN observation
+Wi-Fi observation
+</code></pre>
+<p>remain separate unless cryptographically linked.</p>
+<hr />
+<h1 id="54-post-authentication-merge"><a class="header" href="#54-post-authentication-merge">54. Post-Authentication Merge</a></h1>
+<p>After all observations authenticate to same <code>DeviceId</code>:</p>
+<pre><code class="language-text">DeviceId
+ ├── BLE path
+ ├── LAN path
+ └── Wi-Fi path
+</code></pre>
+<p>Routing now sees one peer with multiple candidate paths.</p>
+<hr />
+<h1 id="55-do-not-fingerprint-to-merge"><a class="header" href="#55-do-not-fingerprint-to-merge">55. Do Not Fingerprint to Merge</a></h1>
+<p>Avoid correlating anonymous nearby observations by:</p>
+<pre><code class="language-text">radio fingerprints
+device quirks
+timing patterns
+</code></pre>
+<p>just to guess they are the same device.</p>
+<p>Privacy is more important.</p>
+<hr />
+<h1 id="56-discovery-flood-protection"><a class="header" href="#56-discovery-flood-protection">56. Discovery Flood Protection</a></h1>
+<p>Hostile environments may send thousands of fake advertisements.</p>
+<p>Enforce:</p>
+<pre><code class="language-text">max observations
+events/sec
+handshakes/sec
+metadata bytes
+</code></pre>
+<hr />
+<h1 id="57-cheap-validation-first"><a class="header" href="#57-cheap-validation-first">57. Cheap Validation First</a></h1>
+<p>Processing order:</p>
+<pre><code class="language-text">length check
+version check
+basic structure
+rate limit
+then expensive crypto/session work
+</code></pre>
+<hr />
+<h1 id="58-handshake-escalation"><a class="header" href="#58-handshake-escalation">58. Handshake Escalation</a></h1>
+<p>Do not establish secure session with every observed peer automatically.</p>
+<p>Trigger based on:</p>
+<pre><code class="language-text">user intent
+trusted token match
+DTN policy
+emergency policy
+</code></pre>
+<hr />
+<h1 id="59-connection-intent"><a class="header" href="#59-connection-intent">59. Connection Intent</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum ConnectionIntent {
+    Pair,
+    Message,
+    FileTransfer,
+    DtnRelay,
+    Emergency,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="60-proximity-session"><a class="header" href="#60-proximity-session">60. Proximity Session</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct ProximitySession {
+    pub session_id: SessionId,
+    pub transport: ProximityTransportKind,
+    pub ephemeral_peer: EphemeralPeerId,
+    pub authenticated_peer: Option&lt;DeviceId&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="61-secure-session-rule"><a class="header" href="#61-secure-session-rule">61. Secure Session Rule</a></h1>
+<p>No private application protocol should trust the transport alone.</p>
+<p>After connection:</p>
+<pre><code class="language-text">run normal cryptographic identity handshake
+</code></pre>
+<hr />
+<h1 id="62-physical-proximity-is-not-authentication"><a class="header" href="#62-physical-proximity-is-not-authentication">62. Physical Proximity Is Not Authentication</a></h1>
+<p>Signal strength does not prove identity.</p>
+<p>Being physically nearby does not prove authorization.</p>
+<hr />
+<h1 id="63-relaydistance-attacks"><a class="header" href="#63-relaydistance-attacks">63. Relay/Distance Attacks</a></h1>
+<p>Attackers may relay radio interactions.</p>
+<p>Sensitive pairing must use:</p>
+<pre><code class="language-text">QR secret
+numeric comparison
+NFC touch
+authenticated transcript
+</code></pre>
+<p>Part 15 handles this.</p>
+<hr />
+<h1 id="64-gateway-hints"><a class="header" href="#64-gateway-hints">64. Gateway Hints</a></h1>
+<p>A nearby node may advertise:</p>
+<pre><code class="language-text">gateway available
+</code></pre>
+<p>This is a hint only.</p>
+<p>Routing/DTN verifies actual connectivity before relying on it.</p>
+<hr />
+<h1 id="65-dtn-relay-hint"><a class="header" href="#65-dtn-relay-hint">65. DTN Relay Hint</a></h1>
+<p>Advertisement may say:</p>
+<pre><code class="language-text">DTN supported
+</code></pre>
+<p>but never publish full bundle inventory.</p>
+<hr />
+<h1 id="66-wi-fi-upgrade-hint"><a class="header" href="#66-wi-fi-upgrade-hint">66. Wi-Fi Upgrade Hint</a></h1>
+<p>Nearby peer can advertise:</p>
+<pre><code class="language-text">Wi-Fi upgrade available
+</code></pre>
+<p>Detailed negotiation occurs later.</p>
+<hr />
+<h1 id="67-android-adapter-responsibilities"><a class="header" href="#67-android-adapter-responsibilities">67. Android Adapter Responsibilities</a></h1>
+<p>Kotlin/platform side:</p>
+<pre><code class="language-text">BLE scanning
+BLE advertising
+Bluetooth Classic APIs
+Wi-Fi Aware APIs
+Wi-Fi Direct APIs
+permissions
+OS lifecycle
+network handles
+</code></pre>
+<p>Rust side:</p>
+<pre><code class="language-text">discovery policy
+privacy tokens
+peer model
+transport escalation
+routing integration
+DTN integration
+identity binding
+</code></pre>
+<hr />
+<h1 id="68-kotlin-boundary"><a class="header" href="#68-kotlin-boundary">68. Kotlin Boundary</a></h1>
+<p>Do not place:</p>
+<pre><code class="language-text">DTN forwarding policy
+pairing business logic
+routing scoring
+file semantics
+</code></pre>
+<p>in Kotlin.</p>
+<p>Keep the policy core in Rust.</p>
+<hr />
+<h1 id="69-android-permission-model"><a class="header" href="#69-android-permission-model">69. Android Permission Model</a></h1>
+<p>Adapter should normalize current permission state into:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum ProximityPermissionState {
+    Granted,
+    Denied,
+    Restricted,
+    NeedsUserAction,
+    Unknown,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="70-permission-aware-behavior"><a class="header" href="#70-permission-aware-behavior">70. Permission-Aware Behavior</a></h1>
+<p>If permission unavailable:</p>
+<pre><code class="language-text">stop attempts
+surface typed state
+wait for user/platform change
+</code></pre>
+<p>Do not retry continuously.</p>
+<hr />
+<h1 id="71-android-background-restrictions"><a class="header" href="#71-android-background-restrictions">71. Android Background Restrictions</a></h1>
+<p>Adapter reports:</p>
+<pre><code class="language-text">foreground
+background allowed
+background restricted
+</code></pre>
+<p>Part 13 adjusts scan/advertising policy.</p>
+<hr />
+<h1 id="72-ios-adapter"><a class="header" href="#72-ios-adapter">72. iOS Adapter</a></h1>
+<p>Map available Apple proximity frameworks into the same neutral model.</p>
+<p>Do not pretend unsupported technologies exist.</p>
+<hr />
+<h1 id="73-desktop-adapters"><a class="header" href="#73-desktop-adapters">73. Desktop Adapters</a></h1>
+<p>Provide:</p>
+<pre><code class="language-text">Linux
+Windows
+macOS
+</code></pre>
+<p>implementations behind the same trait.</p>
+<p>LAN discovery should remain first-class even if Bluetooth capabilities differ.</p>
+<hr />
+<h1 id="74-linux-adapter"><a class="header" href="#74-linux-adapter">74. Linux Adapter</a></h1>
+<p>Linux-specific details such as:</p>
+<pre><code class="language-text">BlueZ
+D-Bus
+network interfaces
+</code></pre>
+<p>must not leak into core crates.</p>
+<hr />
+<h1 id="75-windows-adapter"><a class="header" href="#75-windows-adapter">75. Windows Adapter</a></h1>
+<p>Windows native proximity APIs remain inside platform crate.</p>
+<hr />
+<h1 id="76-macos-adapter"><a class="header" href="#76-macos-adapter">76. macOS Adapter</a></h1>
+<p>macOS native APIs remain inside platform crate.</p>
+<p>Final behavior must be tested on macOS hardware/CI.</p>
+<hr />
+<h1 id="77-qr-bootstrap"><a class="header" href="#77-qr-bootstrap">77. QR Bootstrap</a></h1>
+<p>QR provides intentional local bootstrap.</p>
+<p>Typical flow:</p>
+<pre><code class="language-text">display QR
+      ↓
+scan
+      ↓
+bootstrap secret/token
+      ↓
+authenticate
+      ↓
+select best network path
+</code></pre>
+<hr />
+<h1 id="78-nfc-bootstrap"><a class="header" href="#78-nfc-bootstrap">78. NFC Bootstrap</a></h1>
+<p>NFC can exchange:</p>
+<pre><code class="language-text">ephemeral key
+session token
+pairing challenge
+</code></pre>
+<p>then move actual communication to another transport.</p>
+<hr />
+<h1 id="79-qrnfc-are-not-bulk-transports"><a class="header" href="#79-qrnfc-are-not-bulk-transports">79. QR/NFC Are Not Bulk Transports</a></h1>
+<p>Do not send large file data through NFC/QR.</p>
+<p>They bootstrap trust/session discovery.</p>
+<hr />
+<h1 id="80-qrnfc-path-upgrade"><a class="header" href="#80-qrnfc-path-upgrade">80. QR/NFC Path Upgrade</a></h1>
+<pre><code class="language-text">QR/NFC
+   ↓
+secure session identity
+   ↓
+LAN / Wi-Fi / Iroh / BLE
+</code></pre>
+<hr />
+<h1 id="81-discovery-scope"><a class="header" href="#81-discovery-scope">81. Discovery Scope</a></h1>
+<p>A scan can be filtered by purpose.</p>
+<p>Examples:</p>
+<pre><code class="language-text">Pairing → pairing advertisements only
+DTN → DTN-capable peers
+File share → nearby authenticated/file-capable candidates
+</code></pre>
+<hr />
+<h1 id="82-power-aware-scanning"><a class="header" href="#82-power-aware-scanning">82. Power-Aware Scanning</a></h1>
+<p>Part 13 may choose:</p>
+<pre><code class="language-text">Foreground Active
+Background Passive
+Saver Rare
+Emergency Aggressive-but-bounded
+</code></pre>
+<hr />
+<h1 id="83-scan-window"><a class="header" href="#83-scan-window">83. Scan Window</a></h1>
+<p>Foreground manual scan should be finite unless user keeps the screen active.</p>
+<hr />
+<h1 id="84-advertisement-expiry"><a class="header" href="#84-advertisement-expiry">84. Advertisement Expiry</a></h1>
+<p>Pairing visibility expires quickly.</p>
+<p>DTN/emergency visibility follows separate policy.</p>
+<hr />
+<h1 id="85-router-isolated-lan"><a class="header" href="#85-router-isolated-lan">85. Router-Isolated LAN</a></h1>
+<p>Some Wi-Fi networks prevent peer-to-peer LAN traffic.</p>
+<p>The system must detect:</p>
+<pre><code class="language-text">candidate exists
+connection fails
+</code></pre>
+<p>then routing falls back.</p>
+<hr />
+<h1 id="86-captive-portal"><a class="header" href="#86-captive-portal">86. Captive Portal</a></h1>
+<p>Local LAN may still work while Internet is blocked.</p>
+<p>This is a useful local-first path.</p>
+<hr />
+<h1 id="87-airplane-mode"><a class="header" href="#87-airplane-mode">87. Airplane Mode</a></h1>
+<p>Airplane mode does not necessarily mean all proximity transports are unavailable.</p>
+<p>Bluetooth/Wi-Fi may be manually re-enabled.</p>
+<p>Use actual adapter state.</p>
+<hr />
+<h1 id="88-platform-state-invalidation"><a class="header" href="#88-platform-state-invalidation">88. Platform State Invalidation</a></h1>
+<p>Events:</p>
+<pre><code class="language-text">Bluetooth off
+Wi-Fi off
+permission revoked
+network lost
+</code></pre>
+<p>must invalidate affected candidates.</p>
+<hr />
+<h1 id="89-observation-persistence"><a class="header" href="#89-observation-persistence">89. Observation Persistence</a></h1>
+<p>Live proximity observations are ephemeral.</p>
+<p>After process restart:</p>
+<pre><code class="language-text">rescan
+</code></pre>
+<p>Do not restore stale "nearby now" state.</p>
+<hr />
+<h1 id="90-persistent-hints"><a class="header" href="#90-persistent-hints">90. Persistent Hints</a></h1>
+<p>It may be useful to retain:</p>
+<pre><code class="language-text">last successful local path type
+known peer supports proximity
+</code></pre>
+<p>as hints only.</p>
+<hr />
+<h1 id="91-event-log-boundary"><a class="header" href="#91-event-log-boundary">91. Event Log Boundary</a></h1>
+<p>Do not permanently journal:</p>
+<pre><code class="language-text">peer observed
+peer lost
+RSSI changed
+</code></pre>
+<p>Meaningful domain transitions such as:</p>
+<pre><code class="language-text">DevicePaired
+BundleForwarded
+</code></pre>
+<p>belong to their own domain logs.</p>
+<hr />
+<h1 id="92-ui-model"><a class="header" href="#92-ui-model">92. UI Model</a></h1>
+<p>Normal UI should expose:</p>
+<pre><code class="language-text">Nearby
+Known nearby devices
+Pairing requests
+Emergency relay available
+</code></pre>
+<p>not platform-specific radio jargon.</p>
+<hr />
+<h1 id="93-pre-authentication-ui"><a class="header" href="#93-pre-authentication-ui">93. Pre-Authentication UI</a></h1>
+<p>Before identity:</p>
+<pre><code class="language-text">Nearby device
+Strong signal
+File-capable
+</code></pre>
+<p>Do not show guessed personal names.</p>
+<hr />
+<h1 id="94-post-authentication-ui"><a class="header" href="#94-post-authentication-ui">94. Post-Authentication UI</a></h1>
+<p>After secure identity:</p>
+<pre><code class="language-text">Bob's Phone
+</code></pre>
+<p>if product policy allows displaying the known device name.</p>
+<hr />
+<h1 id="95-nearby-file-ux"><a class="header" href="#95-nearby-file-ux">95. Nearby File UX</a></h1>
+<pre><code class="language-text">Share nearby
+ ↓
+discover
+ ↓
+select peer
+ ↓
+authenticate
+ ↓
+choose best path
+ ↓
+transfer
+</code></pre>
+<hr />
+<h1 id="96-emergency-ux"><a class="header" href="#96-emergency-ux">96. Emergency UX</a></h1>
+<p>DTN proximity can work automatically.</p>
+<p>User should not need to manually select every relay.</p>
+<hr />
+<h1 id="97-privacy-threats"><a class="header" href="#97-privacy-threats">97. Privacy Threats</a></h1>
+<p>Protect against:</p>
+<pre><code class="language-text">stable-radio tracking
+device-name leakage
+nearby graph collection
+fingerprinting
+pairing spam
+gateway spoofing
+</code></pre>
+<hr />
+<h1 id="98-telemetry-privacy"><a class="header" href="#98-telemetry-privacy">98. Telemetry Privacy</a></h1>
+<p>Never export by default:</p>
+<pre><code class="language-text">raw MAC
+EphemeralPeerId
+nearby peer graph
+exact RSSI history
+</code></pre>
+<hr />
+<h1 id="99-metrics"><a class="header" href="#99-metrics">99. Metrics</a></h1>
+<p>Safe aggregate metrics:</p>
+<pre><code class="language-text">scan duration
+observation count
+successful secure nearby sessions
+Wi-Fi upgrades
+permission failures
+</code></pre>
+<hr />
+<h1 id="100-diagnostics"><a class="header" href="#100-diagnostics">100. Diagnostics</a></h1>
+<p>Advanced local diagnostics:</p>
+<pre><code class="language-text">BLE: scanning
+LAN: available
+Wi-Fi Aware: unsupported
+Wi-Fi Direct: idle
+Observed peers: 3
+Authenticated local peers: 1
+</code></pre>
+<hr />
+<h1 id="101-abuse-protection"><a class="header" href="#101-abuse-protection">101. Abuse Protection</a></h1>
+<p>Rate-limit:</p>
+<pre><code class="language-text">advertisements
+pairing attempts
+secure handshakes
+Wi-Fi upgrade requests
+DTN encounter requests
+</code></pre>
+<hr />
+<h1 id="102-pairing-spam"><a class="header" href="#102-pairing-spam">102. Pairing Spam</a></h1>
+<p>Repeated unknown pairing requests:</p>
+<pre><code class="language-text">rate limit
+temporary ignore
+</code></pre>
+<p>Avoid repeated user prompts.</p>
+<hr />
+<h1 id="103-gateway-spoofing"><a class="header" href="#103-gateway-spoofing">103. Gateway Spoofing</a></h1>
+<p>Gateway hints only improve ranking after verification.</p>
+<hr />
+<h1 id="104-authority-spoofing"><a class="header" href="#104-authority-spoofing">104. Authority Spoofing</a></h1>
+<p>An unknown nearby device cannot become a trusted emergency authority merely by setting a capability bit.</p>
+<p>Authority is cryptographically verified later.</p>
+<hr />
+<h1 id="105-protocol-versioning"><a class="header" href="#105-protocol-versioning">105. Protocol Versioning</a></h1>
+<p>Nearby advertisement includes small version.</p>
+<p>Unknown incompatible major:</p>
+<pre><code class="language-text">ignore safely
+</code></pre>
+<p>or use explicit compatible fallback.</p>
+<hr />
+<h1 id="106-parser-safety"><a class="header" href="#106-parser-safety">106. Parser Safety</a></h1>
+<p>Advertisement parser must be:</p>
+<pre><code class="language-text">bounded
+non-allocating or minimally allocating
+panic-free
+</code></pre>
+<hr />
+<h1 id="107-fuzzing"><a class="header" href="#107-fuzzing">107. Fuzzing</a></h1>
+<p>Part 10 should fuzz:</p>
+<pre><code class="language-text">advertisement parser
+LAN discovery record
+capability bitset
+bootstrap token
+proximity control frames
+</code></pre>
+<hr />
+<h1 id="108-flood-test"><a class="header" href="#108-flood-test">108. Flood Test</a></h1>
+<p>Inject massive fake advertisements.</p>
+<p>Expected:</p>
+<pre><code class="language-text">bounded observations
+bounded handshakes
+bounded memory
+</code></pre>
+<hr />
+<h1 id="109-expiry-test"><a class="header" href="#109-expiry-test">109. Expiry Test</a></h1>
+<p>Peer disappears.</p>
+<p>Expected:</p>
+<pre><code class="language-text">observation expires
+candidate removed
+</code></pre>
+<hr />
+<h1 id="110-rotation-test"><a class="header" href="#110-rotation-test">110. Rotation Test</a></h1>
+<p>Ephemeral ID changes.</p>
+<p>Expected:</p>
+<pre><code class="language-text">old anonymous observation not automatically linked
+</code></pre>
+<p>unless authenticated continuity proves identity.</p>
+<hr />
+<h1 id="111-multi-transport-merge-test"><a class="header" href="#111-multi-transport-merge-test">111. Multi-Transport Merge Test</a></h1>
+<p>Same DeviceId authenticates through BLE and LAN.</p>
+<p>Expected:</p>
+<pre><code class="language-text">one logical peer
+multiple path candidates
+</code></pre>
+<hr />
+<h1 id="112-permission-test"><a class="header" href="#112-permission-test">112. Permission Test</a></h1>
+<p>Permission revoked during scan.</p>
+<p>Expected:</p>
+<pre><code class="language-text">scan stops
+state becomes NeedsUserAction/Denied
+no retry storm
+</code></pre>
+<hr />
+<h1 id="113-tiny-message-test"><a class="header" href="#113-tiny-message-test">113. Tiny Message Test</a></h1>
+<p>BLE + Wi-Fi upgrade available.</p>
+<p>Send 1 KB.</p>
+<p>Expected:</p>
+<pre><code class="language-text">no unnecessary Wi-Fi Direct setup
+</code></pre>
+<hr />
+<h1 id="114-large-file-test"><a class="header" href="#114-large-file-test">114. Large File Test</a></h1>
+<p>Same peer, large file.</p>
+<p>Expected:</p>
+<pre><code class="language-text">Wi-Fi upgrade attempted if policy allows
+</code></pre>
+<hr />
+<h1 id="115-dtn-encounter-test"><a class="header" href="#115-dtn-encounter-test">115. DTN Encounter Test</a></h1>
+<p>BLE-only environment.</p>
+<p>Expected:</p>
+<pre><code class="language-text">DTN inventory and small critical bundle exchange
+</code></pre>
+<hr />
+<h1 id="116-lan-offline-test"><a class="header" href="#116-lan-offline-test">116. LAN Offline Test</a></h1>
+<p>Two devices on router with no Internet.</p>
+<p>Expected:</p>
+<pre><code class="language-text">local discovery
+authenticated local communication
+</code></pre>
+<hr />
+<h1 id="117-ap-isolation-test"><a class="header" href="#117-ap-isolation-test">117. AP Isolation Test</a></h1>
+<p>Discovery hint exists but direct LAN blocked.</p>
+<p>Expected:</p>
+<pre><code class="language-text">path marked failed
+routing fallback
+</code></pre>
+<hr />
+<h1 id="118-battery-test"><a class="header" href="#118-battery-test">118. Battery Test</a></h1>
+<p>Saver mode:</p>
+<pre><code class="language-text">lower duty cycle
+</code></pre>
+<p>Emergency mode:</p>
+<pre><code class="language-text">higher bounded duty cycle
+</code></pre>
+<hr />
+<h1 id="119-process-restart-test"><a class="header" href="#119-process-restart-test">119. Process Restart Test</a></h1>
+<p>After restart:</p>
+<pre><code class="language-text">no stale nearby observations
+fresh scan according to current power policy
+</code></pre>
+<hr />
+<h1 id="120-platform-trait"><a class="header" href="#120-platform-trait">120. Platform Trait</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait ProximityPlatform: Send + Sync {
+    async fn scan(
+        &amp;self,
+        request: PlatformScanRequest,
+    ) -&gt; Result&lt;PlatformScanHandle, ProximityError&gt;;
+
+    async fn advertise(
+        &amp;self,
+        request: PlatformAdvertiseRequest,
+    ) -&gt; Result&lt;PlatformAdvertiseHandle, ProximityError&gt;;
+
+    async fn connect(
+        &amp;self,
+        candidate: PlatformProximityCandidate,
+    ) -&gt; Result&lt;PlatformProximityConnection, ProximityError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="121-suggested-crate-structure"><a class="header" href="#121-suggested-crate-structure">121. Suggested Crate Structure</a></h1>
+<pre><code class="language-text">crates/comm-proximity/
+├── src/
+│   ├── lib.rs
+│   ├── peer.rs
+│   ├── observation.rs
+│   ├── advertisement.rs
+│   ├── discovery.rs
+│   ├── advertise.rs
+│   ├── session.rs
+│   ├── transport.rs
+│   ├── privacy.rs
+│   ├── escalation.rs
+│   ├── policy.rs
+│   ├── diagnostics.rs
+│   └── error.rs
+└── Cargo.toml
+</code></pre>
+<p>Platform crates:</p>
+<pre><code class="language-text">comm-proximity-android
+comm-proximity-ios
+comm-proximity-linux
+comm-proximity-windows
+comm-proximity-macos
+</code></pre>
+<hr />
+<h1 id="122-android-adapter-structure"><a class="header" href="#122-android-adapter-structure">122. Android Adapter Structure</a></h1>
+<pre><code class="language-text">comm-proximity-android/
+├── ble/
+├── bluetooth_classic/
+├── wifi_aware/
+├── wifi_direct/
+├── permissions/
+├── lifecycle/
+└── bridge/
+</code></pre>
+<p>Kotlin bridge should remain as small as practical.</p>
+<hr />
+<h1 id="123-error-model"><a class="header" href="#123-error-model">123. Error Model</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum ProximityError {
+    Unsupported,
+    PermissionDenied,
+    Disabled,
+    BackgroundRestricted,
+    ResourceDenied,
+    MalformedAdvertisement,
+    ConnectionFailed,
+    AuthenticationFailed,
+    Timeout,
+    Cancelled,
+    Platform,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="124-retry-semantics"><a class="header" href="#124-retry-semantics">124. Retry Semantics</a></h1>
+<pre><code class="language-text">Timeout → retryable
+Bluetooth off → user/platform action
+Permission denied → user action
+Malformed advertisement → drop
+Resource denied → defer
+</code></pre>
+<hr />
+<h1 id="125-public-api"><a class="header" href="#125-public-api">125. Public API</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let scan = proximity
+    .scan(DiscoveryPurpose::FileTransfer)
+    .await?;
+
+while let Some(peer) = scan.next().await {
+    // Safe nearby peer model
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Connect:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let session = proximity
+    .connect(
+        observation_id,
+        ConnectionIntent::FileTransfer,
+    )
+    .await?;
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="126-application-boundary"><a class="header" href="#126-application-boundary">126. Application Boundary</a></h1>
+<p>Upper-level apps should request:</p>
+<pre><code class="language-text">find nearby peers
+connect nearby
+send nearby
+</code></pre>
+<p>never:</p>
+<pre><code class="language-text">start BLE scanner directly
+</code></pre>
+<hr />
+<h1 id="127-initial-production-scope"><a class="header" href="#127-initial-production-scope">127. Initial Production Scope</a></h1>
+<p>Implement first:</p>
+<pre><code class="language-text">NearbyPeer model
+ObservationId
+EphemeralPeerId
+BLE discovery/advertising
+LAN discovery
+Android Wi-Fi Direct/Aware adapter
+scan policies
+observation expiry
+secure-session handoff
+routing integration
+DTN integration
+battery integration
+permission handling
+</code></pre>
+<p>Defer initially:</p>
+<pre><code class="language-text">UWB
+precise distance estimation
+cross-radio fingerprint correlation
+custom mesh routing inside proximity core
+</code></pre>
+<hr />
+<h1 id="128-implementation-phases"><a class="header" href="#128-implementation-phases">128. Implementation Phases</a></h1>
+<h2 id="phase-1--core-model"><a class="header" href="#phase-1--core-model">Phase 1 — Core Model</a></h2>
+<pre><code class="language-text">NearbyPeer
+ObservationId
+EphemeralPeerId
+ProximityEvent
+</code></pre>
+<h2 id="phase-2--ble--lan"><a class="header" href="#phase-2--ble--lan">Phase 2 — BLE + LAN</a></h2>
+<pre><code class="language-text">scan
+advertise
+TTL
+</code></pre>
+<h2 id="phase-3--secure-session-handoff"><a class="header" href="#phase-3--secure-session-handoff">Phase 3 — Secure Session Handoff</a></h2>
+<pre><code class="language-text">connect
+authenticate
+identity bind
+multi-path merge
+</code></pre>
+<h2 id="phase-4--wi-fi-escalation"><a class="header" href="#phase-4--wi-fi-escalation">Phase 4 — Wi-Fi Escalation</a></h2>
+<pre><code class="language-text">Wi-Fi Direct
+Wi-Fi Aware
+large-transfer upgrade
+</code></pre>
+<h2 id="phase-5--dtn"><a class="header" href="#phase-5--dtn">Phase 5 — DTN</a></h2>
+<pre><code class="language-text">encounter discovery
+relay hints
+gateway hints
+</code></pre>
+<h2 id="phase-6--battery--permissions"><a class="header" href="#phase-6--battery--permissions">Phase 6 — Battery + Permissions</a></h2>
+<pre><code class="language-text">duty cycle
+background restrictions
+Android permissions
+</code></pre>
+<h2 id="phase-7--pairing-hooks"><a class="header" href="#phase-7--pairing-hooks">Phase 7 — Pairing Hooks</a></h2>
+<pre><code class="language-text">QR
+NFC
+temporary pairing visibility
+</code></pre>
+<h2 id="phase-8--hardening"><a class="header" href="#phase-8--hardening">Phase 8 — Hardening</a></h2>
+<pre><code class="language-text">fuzzing
+flood testing
+privacy tests
+real-device tests
+</code></pre>
+<hr />
+<h1 id="129-definition-of-done"><a class="header" href="#129-definition-of-done">129. Definition of Done</a></h1>
+<p>Part 14 is complete when:</p>
+<ul>
+<li>upper layers can discover nearby peers without platform-specific APIs</li>
+<li>observations are distinct from trusted identities</li>
+<li>stable AccountId/DeviceId values are not broadcast by default</li>
+<li>ephemeral IDs rotate</li>
+<li>nearby observations expire automatically</li>
+<li>BLE, Wi-Fi, and LAN map into one neutral model</li>
+<li>routing receives local path candidates</li>
+<li>DTN receives encounter notifications</li>
+<li>large nearby transfers can upgrade from BLE discovery to Wi-Fi</li>
+<li>tiny payloads do not trigger expensive Wi-Fi setup</li>
+<li>battery policy controls scan/advertising duty cycle</li>
+<li>permission/background restrictions are typed</li>
+<li>multiple authenticated observations of the same DeviceId merge correctly</li>
+<li>hostile advertisements cannot cause unbounded memory or handshake work</li>
+<li>QR/NFC bootstrap into the same secure identity/session model</li>
+<li>normal UI can present a single "Nearby" concept</li>
+<li>fuzz, flood, permission, privacy, transport-upgrade, and real-device tests exist</li>
+</ul>
+<hr />
+<h1 id="130-relationship-to-earlier-parts"><a class="header" href="#130-relationship-to-earlier-parts">130. Relationship to Earlier Parts</a></h1>
+<p>Part 14 builds on:</p>
+<pre><code class="language-text">01 — Protocol Extension System
+02 — Multi-Device Identity
+03 — Transport &amp; Routing Policy Engine
+04 — Offline Event Log
+05 — Robust File / Blob Subsystem
+06 — DTN / Store-Carry-Forward
+07 — Capability Negotiation
+08 — Resource Limits &amp; Backpressure
+09 — Crash Recovery
+10 — Fuzzing &amp; Protocol Test Suite
+11 — Relay / Self-Hosted Infrastructure
+12 — Multipath Networking
+13 — Battery-Aware Scheduling
+</code></pre>
+<p>It directly supports:</p>
+<pre><code class="language-text">15 — QR / NFC Bootstrap Pairing
+16 — Daemon &amp; Headless Runtime
+17 — Emergency Priority Architecture
+18 — Network Diagnostics &amp; Path Visualization
+20 — Embedded Linux Node
+22 — Third-Party Protocol Extensions
+24 — Plugin / Module Ecosystem
+</code></pre>
+<hr />
+<h1 id="131-final-principle"><a class="header" href="#131-final-principle">131. Final Principle</a></h1>
+<p>The proximity layer should make this flow possible:</p>
+<pre><code class="language-text">User opens Nearby.
+
+The runtime may use:
+BLE
+LAN
+Wi-Fi Aware
+Wi-Fi Direct
+
+The UI simply shows:
+Nearby devices.
+
+A large file is selected:
+BLE discovers the peer.
+The peer is authenticated.
+Wi-Fi Direct becomes available.
+The transfer upgrades automatically.
+
+Later Internet disappears:
+the same proximity layer discovers DTN peers
+and enables store-carry-forward encounters.
+</code></pre>
+<p>No messaging, file, DTN, or UI code should need to understand Android BLE callbacks, Linux D-Bus, Windows Bluetooth APIs, or platform-specific Wi-Fi sessions.</p>
+<p>The proximity abstraction turns all of those mechanisms into:</p>
+<pre><code class="language-text">NearbyPeer
++
+ProximitySession
++
+PathCandidate
+</code></pre>
+<p>That is what keeps the wider platform privacy-preserving, local-first, battery-aware, portable, and reusable.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="13-battery-aware-scheduling-architecture.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="15-qr-nfc-bootstrap-pairing-architecture.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="13-battery-aware-scheduling-architecture.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="15-qr-nfc-bootstrap-pairing-architecture.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

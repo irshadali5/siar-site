@@ -1,0 +1,1904 @@
+<!DOCTYPE HTML>
+<html lang="en" class="navy" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>19 — C-ABI FFI &amp; Native Language Interop - SIAR System Architecture &amp; Technical Wiki</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="Comprehensive system architecture, cryptographic protocols, DTN mesh networking, distributed storage, audio DSP pipelines, and UI/UX design specifications for SIAR.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="theme/custom.css">
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "navy";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('navy')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="Home.html">Architecture Portal & Reading Guide</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part I: Protocol Foundation & Extension Platform</li><li class="chapter-item expanded "><a href="01-protocol-extension-system-architecture.html"><strong aria-hidden="true">1.</strong> 01 — Protocol Extension System Architecture</a></li><li class="chapter-item expanded "><a href="07-capability-negotiation-architecture.html"><strong aria-hidden="true">2.</strong> 07 — Capability Negotiation & Protocol Upgrades</a></li><li class="chapter-item expanded "><a href="21-third-party-protocol-extensions-architecture.html"><strong aria-hidden="true">3.</strong> 21 — Third-Party Protocol Extensions</a></li><li class="chapter-item expanded "><a href="22-wasm-compatible-components-architecture.html"><strong aria-hidden="true">4.</strong> 22 — WebAssembly (WASM) Compatible Components</a></li><li class="chapter-item expanded "><a href="23-external-interoperability-suite-architecture.html"><strong aria-hidden="true">5.</strong> 23 — External Interoperability & Conformance Suite</a></li><li class="chapter-item expanded "><a href="24-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">6.</strong> 24 — Dynamic Plugin & Module Ecosystem</a></li><li class="chapter-item expanded affix "><li class="part-title">Part II: Identity, Trust & Cryptography</li><li class="chapter-item expanded "><a href="02-multi-device-identity-architecture.html"><strong aria-hidden="true">7.</strong> 02 — Multi-Device Identity & Trust Model</a></li><li class="chapter-item expanded "><a href="28-production-security-e2ee-key-management-privacy-architecture.html"><strong aria-hidden="true">8.</strong> 28 — Production Security, E2EE, Key Management & Privacy</a></li><li class="chapter-item expanded affix "><li class="part-title">Part III: Mesh Networking, Transports & Hardware</li><li class="chapter-item expanded "><a href="03-transport-routing-policy-engine-architecture.html"><strong aria-hidden="true">9.</strong> 03 — Transport & Routing Policy Engine</a></li><li class="chapter-item expanded "><a href="11-relay-self-hosted-infrastructure-architecture.html"><strong aria-hidden="true">10.</strong> 11 — Self-Hosted Relay & Coordination Infrastructure</a></li><li class="chapter-item expanded "><a href="12-multipath-networking-architecture.html"><strong aria-hidden="true">11.</strong> 12 — Multipath Networking & Link Aggregation</a></li><li class="chapter-item expanded "><a href="13-battery-aware-scheduling-architecture.html"><strong aria-hidden="true">12.</strong> 13 — Battery-Aware Scheduling & Power Profiles</a></li><li class="chapter-item expanded "><a href="14-proximity-abstraction-architecture.html"><strong aria-hidden="true">13.</strong> 14 — Proximity Abstraction (BLE, Wi-Fi Direct, LoRa)</a></li><li class="chapter-item expanded "><a href="15-qr-nfc-bootstrap-pairing-architecture.html"><strong aria-hidden="true">14.</strong> 15 — Out-of-Band QR & NFC Bootstrap Pairing</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IV: Delay-Tolerant Networking & Emergency Mesh</li><li class="chapter-item expanded "><a href="06-dtn-store-carry-forward-architecture.html"><strong aria-hidden="true">15.</strong> 06 — DTN Store-Carry-Forward & Bundle Forwarding</a></li><li class="chapter-item expanded "><a href="17-emergency-priority-classes-architecture.html"><strong aria-hidden="true">16.</strong> 17 — Emergency Priority Classes & Critical Alert Mesh</a></li><li class="chapter-item expanded affix "><li class="part-title">Part V: Storage, Outbox & Data Lifecycle</li><li class="chapter-item expanded "><a href="04-offline-event-log-architecture.html"><strong aria-hidden="true">17.</strong> 04 — Offline Event Log & Sync Engine</a></li><li class="chapter-item expanded "><a href="05-robust-file-blob-subsystem-architecture.html"><strong aria-hidden="true">18.</strong> 05 — Robust File & Blob Subsystem (Chunking & Resumption)</a></li><li class="chapter-item expanded "><a href="09-crash-recovery-architecture.html"><strong aria-hidden="true">19.</strong> 09 — Crash Recovery & State Integrity</a></li><li class="chapter-item expanded "><a href="32-search-indexing-local-knowledge-privacy-architecture.html"><strong aria-hidden="true">20.</strong> 32 — Search, Indexing & Local Privacy Retrieval</a></li><li class="chapter-item expanded "><a href="33-backup-restore-export-import-archival-portability-architecture.html"><strong aria-hidden="true">21.</strong> 33 — Backup, Restore, Export & Long-Term Archival</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VI: Realtime Media, Calling & Audio DSP</li><li class="chapter-item expanded "><a href="25-android-direct-hardware-surface-zero-copy-media-architecture.html"><strong aria-hidden="true">22.</strong> 25 — Android Direct Surface Zero-Copy Media</a></li><li class="chapter-item expanded "><a href="26-rust-first-audio-dsp-resampling-aec-ns-agc-architecture.html"><strong aria-hidden="true">23.</strong> 26 — Rust-First Audio DSP (AEC, NS, AGC, Resampling)</a></li><li class="chapter-item expanded "><a href="29-realtime-calls-media-session-protocol-architecture.html"><strong aria-hidden="true">24.</strong> 29 — Realtime Calls & Media Session Protocol</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VII: Ephemeral State, Presence & Notifications</li><li class="chapter-item expanded "><a href="30-presence-availability-typing-read-receipts-ephemeral-state-architecture.html"><strong aria-hidden="true">25.</strong> 30 — Presence, Availability, Typing & Read Receipts</a></li><li class="chapter-item expanded "><a href="31-notifications-push-background-delivery-lifecycle-architecture.html"><strong aria-hidden="true">26.</strong> 31 — Notifications, Push Wake & Background Delivery</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VIII: Native Runtimes, Daemons & Embedded Linux</li><li class="chapter-item expanded "><a href="16-daemon-headless-runtime-architecture.html"><strong aria-hidden="true">27.</strong> 16 — Headless Daemon & Background Runtime</a></li><li class="chapter-item expanded "><a href="19-c-abi-ffi-architecture.html" class="active"><strong aria-hidden="true">28.</strong> 19 — C-ABI FFI & Native Language Interop</a></li><li class="chapter-item expanded "><a href="20-embedded-linux-node-architecture.html"><strong aria-hidden="true">29.</strong> 20 — Embedded Linux Node & Resource-Constrained Targets</a></li><li class="chapter-item expanded "><a href="27-rust-driven-android-native-build-packaging-automation.html"><strong aria-hidden="true">30.</strong> 27 — Rust-Driven Android Native Build & Packaging Automation</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IX: Reliability, Testing, Fuzzing & Diagnostics</li><li class="chapter-item expanded "><a href="08-resource-limits-backpressure-architecture.html"><strong aria-hidden="true">31.</strong> 08 — Resource Limits, Quotas & Backpressure</a></li><li class="chapter-item expanded "><a href="10-fuzzing-protocol-test-suite-architecture.html"><strong aria-hidden="true">32.</strong> 10 — Fuzzing & Protocol Test Suite</a></li><li class="chapter-item expanded "><a href="18-network-diagnostics-path-visualization-architecture.html"><strong aria-hidden="true">33.</strong> 18 — Network Diagnostics & Path Visualization</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part X: UI/UX Client Architecture (Cross-Platform)</li><li class="chapter-item expanded "><a href="ui-ux-01-product-foundation-cross-platform-interaction-architecture.html"><strong aria-hidden="true">34.</strong> UI/UX 01 — Product UX Foundation & Cross-Platform Interaction</a></li><li class="chapter-item expanded "><a href="ui-ux-02-desktop-dioxus-app-shell-navigation-window-architecture.html"><strong aria-hidden="true">35.</strong> UI/UX 02 — Desktop Dioxus App Shell & Navigation</a></li><li class="chapter-item expanded "><a href="ui-ux-03-android-jetpack-compose-app-shell-navigation-lifecycle-architecture.html"><strong aria-hidden="true">36.</strong> UI/UX 03 — Android Jetpack Compose App Shell & Lifecycle</a></li><li class="chapter-item expanded "><a href="ui-ux-04-conversation-list-inbox-architecture.html"><strong aria-hidden="true">37.</strong> UI/UX 04 — Conversation List & Inbox UX</a></li><li class="chapter-item expanded "><a href="ui-ux-05-conversation-message-timeline-architecture.html"><strong aria-hidden="true">38.</strong> UI/UX 05 — Conversation Message Timeline UX</a></li><li class="chapter-item expanded "><a href="ui-ux-06-message-composer-attachments-voice-notes-drafts-architecture.html"><strong aria-hidden="true">39.</strong> UI/UX 06 — Message Composer, Attachments & Voice Notes</a></li><li class="chapter-item expanded "><a href="ui-ux-07-calls-realtime-media-architecture.html"><strong aria-hidden="true">40.</strong> UI/UX 07 — Calls & Realtime Media UX</a></li><li class="chapter-item expanded "><a href="ui-ux-08-contacts-requests-verification-identity-architecture.html"><strong aria-hidden="true">41.</strong> UI/UX 08 — Contacts, Requests, Verification & Identity</a></li><li class="chapter-item expanded "><a href="ui-ux-09-groups-membership-roles-architecture.html"><strong aria-hidden="true">42.</strong> UI/UX 09 — Groups, Membership & Roles UX</a></li><li class="chapter-item expanded "><a href="ui-ux-10-files-media-gallery-transfer-architecture.html"><strong aria-hidden="true">43.</strong> UI/UX 10 — Files, Media Gallery & Transfer UX</a></li><li class="chapter-item expanded "><a href="ui-ux-11-search-local-knowledge-retrieval-architecture.html"><strong aria-hidden="true">44.</strong> UI/UX 11 — Search & Local Knowledge Retrieval UX</a></li><li class="chapter-item expanded "><a href="ui-ux-12-nearby-qr-nfc-pairing-device-linking-architecture.html"><strong aria-hidden="true">45.</strong> UI/UX 12 — Nearby, QR/NFC Pairing & Device Linking UX</a></li><li class="chapter-item expanded "><a href="ui-ux-13-notifications-background-incoming-call-architecture.html"><strong aria-hidden="true">46.</strong> UI/UX 13 — Notifications, Background & Incoming Call UX</a></li><li class="chapter-item expanded "><a href="ui-ux-14-presence-typing-receipts-status-architecture.html"><strong aria-hidden="true">47.</strong> UI/UX 14 — Presence, Typing, Receipts & Status UX</a></li><li class="chapter-item expanded "><a href="ui-ux-15-security-center-devices-keys-recovery-architecture.html"><strong aria-hidden="true">48.</strong> UI/UX 15 — Security Center, Devices, Keys & Recovery UX</a></li><li class="chapter-item expanded "><a href="ui-ux-16-backup-restore-export-migration-architecture.html"><strong aria-hidden="true">49.</strong> UI/UX 16 — Backup, Restore, Export & Migration UX</a></li><li class="chapter-item expanded "><a href="ui-ux-17-emergency-sos-offline-mesh-architecture.html"><strong aria-hidden="true">50.</strong> UI/UX 17 — Emergency / SOS / Offline Mesh UX</a></li><li class="chapter-item expanded "><a href="ui-ux-18-settings-privacy-notifications-data-controls-architecture.html"><strong aria-hidden="true">51.</strong> UI/UX 18 — Settings, Privacy, Notifications & Data Controls</a></li><li class="chapter-item expanded "><a href="ui-ux-19-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">52.</strong> UI/UX 19 — Plugin & Module Ecosystem UX</a></li><li class="chapter-item expanded "><a href="ui-ux-20-diagnostics-network-paths-advanced-developer-architecture.html"><strong aria-hidden="true">53.</strong> UI/UX 20 — Diagnostics, Network Paths & Developer UX</a></li><li class="chapter-item expanded "><a href="ui-ux-21-accessibility-inclusive-interaction-architecture.html"><strong aria-hidden="true">54.</strong> UI/UX 21 — Accessibility & Inclusive Interaction</a></li><li class="chapter-item expanded "><a href="ui-ux-22-design-system-tokens-typography-icons-motion-architecture.html"><strong aria-hidden="true">55.</strong> UI/UX 22 — Design System, Tokens, Typography & Motion</a></li><li class="chapter-item expanded "><a href="ui-ux-23-responsive-adaptive-desktop-tablet-foldable-phone-layout-architecture.html"><strong aria-hidden="true">56.</strong> UI/UX 23 — Responsive & Adaptive Layouts (Desktop/Tablet/Foldable/Phone)</a></li><li class="chapter-item expanded "><a href="ui-ux-24-error-loading-empty-offline-degraded-state-architecture.html"><strong aria-hidden="true">57.</strong> UI/UX 24 — Error, Loading, Empty & Degraded-State UX</a></li><li class="chapter-item expanded "><a href="ui-ux-25-onboarding-first-run-permission-education-architecture.html"><strong aria-hidden="true">58.</strong> UI/UX 25 — Onboarding, First Run & Permission Education</a></li><li class="chapter-item expanded "><a href="ui-ux-26-performance-virtualization-large-data-ui-architecture.html"><strong aria-hidden="true">59.</strong> UI/UX 26 — Virtualization & Large-Data UI Performance</a></li><li class="chapter-item expanded "><a href="ui-ux-27-ui-testing-screenshot-interaction-release-quality-gates-architecture.html"><strong aria-hidden="true">60.</strong> UI/UX 27 — UI Testing, Screenshots & Release Quality Gates</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">SIAR System Architecture &amp; Technical Wiki</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar/edit/main/sys-arch/19-c-abi-ffi-architecture.md" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="part-19--c-abi--ffi-architecture"><a class="header" href="#part-19--c-abi--ffi-architecture">Part 19 — C ABI / FFI Architecture</a></h1>
+<h2 id="reusable-p2p-communication-platform"><a class="header" href="#reusable-p2p-communication-platform">Reusable P2P Communication Platform</a></h2>
+<p><strong>Status:</strong> Architecture specification<br />
+<strong>Part:</strong> 19 of 24<br />
+<strong>Primary implementation language:</strong> Rust<br />
+<strong>Primary ABI:</strong> C-compatible ABI<br />
+<strong>Primary goals:</strong> stable cross-language integration, safe ownership, ABI/version stability, async interop, zero/low-copy data paths, mobile/desktop bindings, daemon/library dual mode, error isolation, panic containment, reusable SDK distribution</p>
+<hr />
+<h1 id="1-purpose"><a class="header" href="#1-purpose">1. Purpose</a></h1>
+<p>The communication platform is written primarily in Rust, but reusable infrastructure becomes much more valuable if other products can consume it without rewriting their entire application in Rust.</p>
+<p>Potential consumers include:</p>
+<pre><code class="language-text">C
+C++
+Kotlin / Java
+Swift / Objective-C
+Python
+Dart / Flutter
+Go
+C#
+Node.js
+other native runtimes
+</code></pre>
+<p>The architecture therefore needs a stable foreign-function boundary.</p>
+<p>The core rule is:</p>
+<blockquote>
+<p><strong>Rust internals remain Rust; the public cross-language contract is a small, explicit, versioned C ABI built around opaque handles and stable data-transfer rules.</strong></p>
+</blockquote>
+<p>Do not expose:</p>
+<pre><code class="language-text">Rust struct layout
+Rust enums directly
+Arc&lt;T&gt;
+Box&lt;T&gt; internals
+Vec&lt;T&gt; internals
+String internals
+trait objects
+async Future
+panic unwinding
+</code></pre>
+<p>across the ABI.</p>
+<hr />
+<h1 id="2-why-c-abi-first"><a class="header" href="#2-why-c-abi-first">2. Why C ABI First</a></h1>
+<p>C ABI is the most portable native interoperability layer.</p>
+<p>It can be consumed by:</p>
+<pre><code class="language-text">C/C++
+JNI/JNA
+Swift/Objective-C
+Python ctypes/cffi
+Dart FFI
+C#
+Go cgo
+Node native addons
+</code></pre>
+<p>This gives one stable low-level boundary instead of independently designing incompatible bindings for each language.</p>
+<hr />
+<h1 id="3-architectural-position"><a class="header" href="#3-architectural-position">3. Architectural Position</a></h1>
+<pre><code class="language-text">                 Rust Core
+     ┌────────────────────────────┐
+     │ comm-runtime               │
+     │ comm-messaging             │
+     │ comm-files                 │
+     │ comm-dtn                   │
+     │ comm-routing               │
+     │ comm-diagnostics           │
+     └──────────────┬─────────────┘
+                    │
+              comm-ffi-core
+                    │
+               C ABI Layer
+       ┌────────────┼─────────────┐
+       │            │             │
+     C/C++       Kotlin/Java    Swift
+       │            │             │
+     Python       Android         iOS/macOS
+       │
+   Dart/Flutter
+</code></pre>
+<hr />
+<h1 id="4-ffi-scope"><a class="header" href="#4-ffi-scope">4. FFI Scope</a></h1>
+<p>The C ABI should expose high-level platform operations:</p>
+<pre><code class="language-text">runtime creation
+runtime start/stop
+identity/device operations
+send message
+send file
+query status
+subscribe to events
+network diagnostics
+DTN status
+bootstrap/pairing
+</code></pre>
+<p>It should not expose every internal crate function.</p>
+<hr />
+<h1 id="5-stable-boundary-principle"><a class="header" href="#5-stable-boundary-principle">5. Stable Boundary Principle</a></h1>
+<p>The ABI should remain stable even if internal Rust architecture changes.</p>
+<p>For example:</p>
+<pre><code class="language-text">Rust internal:
+HashMap&lt;DeviceId, Arc&lt;PeerRuntime&gt;&gt;
+
+C ABI:
+comm_peer_handle_t
+</code></pre>
+<p>Internal layout can change freely.</p>
+<hr />
+<h1 id="6-opaque-handles"><a class="header" href="#6-opaque-handles">6. Opaque Handles</a></h1>
+<p>Represent internal objects as opaque handles.</p>
+<p>Example C:</p>
+<pre><code class="language-c">typedef struct comm_runtime comm_runtime_t;
+typedef struct comm_client comm_client_t;
+typedef struct comm_transfer comm_transfer_t;
+typedef struct comm_subscription comm_subscription_t;
+</code></pre>
+<p>Actual memory layout remains private.</p>
+<hr />
+<h1 id="7-handle-ownership"><a class="header" href="#7-handle-ownership">7. Handle Ownership</a></h1>
+<p>Every handle must have explicit lifecycle.</p>
+<p>Example:</p>
+<pre><code class="language-c">comm_runtime_t* comm_runtime_create(...);
+void comm_runtime_destroy(comm_runtime_t*);
+</code></pre>
+<p>No ambiguous ownership.</p>
+<hr />
+<h1 id="8-raii-wrappers-in-high-level-bindings"><a class="header" href="#8-raii-wrappers-in-high-level-bindings">8. RAII Wrappers in High-Level Bindings</a></h1>
+<p>C API is manual.</p>
+<p>Generated/manual language wrappers should convert to native resource models:</p>
+<pre><code class="language-text">C++ → RAII class
+Swift → deinit wrapper
+Kotlin → Closeable
+Python → context manager/finalizer
+Dart → Finalizer/explicit close
+</code></pre>
+<hr />
+<h1 id="9-handle-registry-vs-raw-pointer"><a class="header" href="#9-handle-registry-vs-raw-pointer">9. Handle Registry vs Raw Pointer</a></h1>
+<p>Two possible designs:</p>
+<h2 id="raw-opaque-pointer"><a class="header" href="#raw-opaque-pointer">Raw opaque pointer</a></h2>
+<pre><code class="language-text">fast
+simple
+</code></pre>
+<p>but invalid pointer misuse is dangerous.</p>
+<h2 id="integer-handle-registry"><a class="header" href="#integer-handle-registry">Integer handle registry</a></h2>
+<pre><code class="language-text">safer validation
+generation checking
+cross-thread use easier
+</code></pre>
+<p>Recommended for public FFI:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct FfiHandle {
+    index: u32,
+    generation: u32,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Expose as 64-bit integer.</p>
+<hr />
+<h1 id="10-handle-type"><a class="header" href="#10-handle-type">10. Handle Type</a></h1>
+<pre><code class="language-c">typedef uint64_t comm_handle_t;
+</code></pre>
+<p>Special value:</p>
+<pre><code class="language-text">0 = invalid/null handle
+</code></pre>
+<hr />
+<h1 id="11-typed-handles"><a class="header" href="#11-typed-handles">11. Typed Handles</a></h1>
+<p>Avoid one untyped global namespace when possible.</p>
+<p>C typedef aliases:</p>
+<pre><code class="language-c">typedef comm_handle_t comm_runtime_handle_t;
+typedef comm_handle_t comm_transfer_handle_t;
+typedef comm_handle_t comm_subscription_handle_t;
+</code></pre>
+<p>Runtime validates object type internally.</p>
+<hr />
+<h1 id="12-generation-counter"><a class="header" href="#12-generation-counter">12. Generation Counter</a></h1>
+<p>Handle generation prevents stale-handle reuse.</p>
+<p>Example:</p>
+<pre><code class="language-text">slot 42 generation 3
+destroyed
+slot 42 reused generation 4
+
+old handle gen 3
+→ invalid
+</code></pre>
+<hr />
+<h1 id="13-handle-registry"><a class="header" href="#13-handle-registry">13. Handle Registry</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct HandleRegistry {
+    // bounded typed slabs / arenas
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Requirements:</p>
+<pre><code class="language-text">thread-safe
+generation checked
+bounded
+no use-after-free
+</code></pre>
+<hr />
+<h1 id="14-ffi-object-graph"><a class="header" href="#14-ffi-object-graph">14. FFI Object Graph</a></h1>
+<p>Avoid returning nested borrowed pointers.</p>
+<p>Prefer handles and copied/owned DTOs.</p>
+<p>Example:</p>
+<pre><code class="language-text">RuntimeHandle
+TransferHandle
+SubscriptionHandle
+</code></pre>
+<hr />
+<h1 id="15-abi-versioning"><a class="header" href="#15-abi-versioning">15. ABI Versioning</a></h1>
+<p>Expose:</p>
+<pre><code class="language-c">uint32_t comm_abi_version_major(void);
+uint32_t comm_abi_version_minor(void);
+</code></pre>
+<hr />
+<h1 id="16-major-version-rule"><a class="header" href="#16-major-version-rule">16. Major Version Rule</a></h1>
+<p>Breaking C ABI change:</p>
+<pre><code class="language-text">major++
+</code></pre>
+<p>Examples:</p>
+<pre><code class="language-text">function signature change
+struct field reorder
+enum value meaning change
+ownership contract change
+</code></pre>
+<hr />
+<h1 id="17-minor-version-rule"><a class="header" href="#17-minor-version-rule">17. Minor Version Rule</a></h1>
+<p>Backward-compatible additions:</p>
+<pre><code class="language-text">new function
+new optional feature
+new enum value where extensible
+</code></pre>
+<hr />
+<h1 id="18-abi-compatibility-query"><a class="header" href="#18-abi-compatibility-query">18. ABI Compatibility Query</a></h1>
+<pre><code class="language-c">comm_result_t comm_check_abi_compat(
+    uint32_t required_major,
+    uint32_t required_minor
+);
+</code></pre>
+<hr />
+<h1 id="19-symbol-naming"><a class="header" href="#19-symbol-naming">19. Symbol Naming</a></h1>
+<p>Prefix all symbols:</p>
+<pre><code class="language-text">comm_
+</code></pre>
+<p>Never export generic names like:</p>
+<pre><code class="language-text">init
+send
+free
+</code></pre>
+<hr />
+<h1 id="20-symbol-visibility"><a class="header" href="#20-symbol-visibility">20. Symbol Visibility</a></h1>
+<p>Hide all non-public symbols.</p>
+<p>Build shared library with only intended C API exports.</p>
+<hr />
+<h1 id="21-header-generation"><a class="header" href="#21-header-generation">21. Header Generation</a></h1>
+<p>Maintain one canonical public header:</p>
+<pre><code class="language-text">include/comm.h
+</code></pre>
+<p>Can be generated with:</p>
+<pre><code class="language-text">cbindgen
+</code></pre>
+<p>but generation must be reviewed and ABI-tested.</p>
+<hr />
+<h1 id="22-c-header-rule"><a class="header" href="#22-c-header-rule">22. C Header Rule</a></h1>
+<p>Public header should use only C-compatible types:</p>
+<pre><code class="language-text">stdint.h
+stddef.h
+stdbool.h where appropriate
+</code></pre>
+<p>Avoid compiler-specific layout unless explicitly guarded.</p>
+<hr />
+<h1 id="23-primitive-types"><a class="header" href="#23-primitive-types">23. Primitive Types</a></h1>
+<p>Use fixed-width integers:</p>
+<pre><code class="language-text">uint8_t
+uint16_t
+uint32_t
+uint64_t
+int32_t
+</code></pre>
+<p>Avoid:</p>
+<pre><code class="language-text">long
+usize
+isize
+</code></pre>
+<p>in stable ABI.</p>
+<hr />
+<h1 id="24-boolean-type"><a class="header" href="#24-boolean-type">24. Boolean Type</a></h1>
+<p>Prefer a fixed-width integer representation where cross-binding ambiguity exists.</p>
+<p>Do not rely on language-specific bool ABI assumptions everywhere.</p>
+<hr />
+<h1 id="25-enums"><a class="header" href="#25-enums">25. Enums</a></h1>
+<p>Expose enums as fixed-width integer typedefs.</p>
+<p>Example:</p>
+<pre><code class="language-c">typedef uint32_t comm_runtime_state_t;
+</code></pre>
+<p>Constants:</p>
+<pre><code class="language-c">#define COMM_RUNTIME_READY 1u
+#define COMM_RUNTIME_DEGRADED 2u
+</code></pre>
+<p>This gives better forward compatibility.</p>
+<hr />
+<h1 id="26-unknown-enum-values"><a class="header" href="#26-unknown-enum-values">26. Unknown Enum Values</a></h1>
+<p>Consumers must tolerate unknown values.</p>
+<p>Bindings should map:</p>
+<pre><code class="language-text">known enum
+or
+Unknown(raw)
+</code></pre>
+<p>where language supports.</p>
+<hr />
+<h1 id="27-struct-layout"><a class="header" href="#27-struct-layout">27. Struct Layout</a></h1>
+<p>If exporting structs directly, require:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[repr(C)]
+<span class="boring">}</span></code></pre></pre>
+<p>Use direct structs only for:</p>
+<pre><code class="language-text">small immutable POD-like DTOs
+</code></pre>
+<p>Avoid complex nested layouts.</p>
+<hr />
+<h1 id="28-extensible-struct-pattern"><a class="header" href="#28-extensible-struct-pattern">28. Extensible Struct Pattern</a></h1>
+<p>Stable config structs can use:</p>
+<pre><code class="language-c">typedef struct {
+    uint32_t struct_size;
+    uint32_t version;
+    ...
+} comm_runtime_config_t;
+</code></pre>
+<p>This supports adding fields later.</p>
+<hr />
+<h1 id="29-struct_size"><a class="header" href="#29-struct_size">29. <code>struct_size</code></a></h1>
+<p>Caller sets:</p>
+<pre><code class="language-text">sizeof(comm_runtime_config_t)
+</code></pre>
+<p>Library reads only fields available in caller's version.</p>
+<hr />
+<h1 id="30-strings"><a class="header" href="#30-strings">30. Strings</a></h1>
+<p>Use UTF-8 length-delimited bytes.</p>
+<pre><code class="language-c">typedef struct {
+    const uint8_t* ptr;
+    size_t len;
+} comm_bytes_view_t;
+</code></pre>
+<p>No NUL-termination requirement for the primary ABI.</p>
+<hr />
+<h1 id="31-borrowed-inputs"><a class="header" href="#31-borrowed-inputs">31. Borrowed Inputs</a></h1>
+<p>For synchronous input:</p>
+<pre><code class="language-text">caller owns memory
+library reads only during the call
+</code></pre>
+<p>unless explicit transfer-of-ownership API says otherwise.</p>
+<hr />
+<h1 id="32-owned-output-buffers"><a class="header" href="#32-owned-output-buffers">32. Owned Output Buffers</a></h1>
+<pre><code class="language-c">typedef struct {
+    uint8_t* ptr;
+    size_t len;
+    size_t cap;
+} comm_owned_buffer_t;
+</code></pre>
+<p>Must be released by Rust:</p>
+<pre><code class="language-c">void comm_buffer_free(comm_owned_buffer_t buffer);
+</code></pre>
+<p>Never free with a foreign allocator.</p>
+<hr />
+<h1 id="33-allocator-boundary"><a class="header" href="#33-allocator-boundary">33. Allocator Boundary</a></h1>
+<p>Memory allocated by Rust is freed by Rust.</p>
+<p>Memory allocated by caller remains caller-owned unless explicit ownership transfer occurs.</p>
+<hr />
+<h1 id="34-large-data-paths"><a class="header" href="#34-large-data-paths">34. Large Data Paths</a></h1>
+<p>Do not move multi-gigabyte files through generic copied buffers.</p>
+<p>Prefer:</p>
+<pre><code class="language-text">file path
+file descriptor/handle
+stream source
+stream sink
+</code></pre>
+<hr />
+<h1 id="35-borrowed-callback-memory"><a class="header" href="#35-borrowed-callback-memory">35. Borrowed Callback Memory</a></h1>
+<p>If an event callback receives borrowed data:</p>
+<pre><code class="language-text">valid only until callback returns
+</code></pre>
+<p>Provide owned-copy helpers where needed.</p>
+<hr />
+<h1 id="36-callback-api"><a class="header" href="#36-callback-api">36. Callback API</a></h1>
+<pre><code class="language-c">typedef void (*comm_event_callback_t)(
+    const comm_event_t* event,
+    void* user_data
+);
+</code></pre>
+<p>Rules:</p>
+<pre><code class="language-text">callback may not block core networking
+user_data is opaque
+callback thread semantics are documented
+</code></pre>
+<hr />
+<h1 id="37-callback-dispatch"><a class="header" href="#37-callback-dispatch">37. Callback Dispatch</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">internal event
+ ↓
+bounded queue
+ ↓
+dedicated FFI dispatcher
+ ↓
+foreign callback
+</code></pre>
+<p>Do not call foreign callbacks while holding important runtime locks.</p>
+<hr />
+<h1 id="38-callback-backpressure"><a class="header" href="#38-callback-backpressure">38. Callback Backpressure</a></h1>
+<p>Slow consumers must not block networking.</p>
+<p>Use:</p>
+<pre><code class="language-text">bounded queues
+coalescing
+drop stale ephemeral events
+resync-required events
+</code></pre>
+<hr />
+<h1 id="39-subscription-handle"><a class="header" href="#39-subscription-handle">39. Subscription Handle</a></h1>
+<pre><code class="language-c">comm_result_t comm_subscribe(
+    comm_runtime_handle_t runtime,
+    uint32_t topic,
+    comm_event_callback_t callback,
+    void* user_data,
+    comm_subscription_handle_t* out_subscription
+);
+</code></pre>
+<p>Cancellation:</p>
+<pre><code class="language-c">comm_result_t comm_subscription_cancel(
+    comm_subscription_handle_t subscription
+);
+</code></pre>
+<hr />
+<h1 id="40-polling-alternative"><a class="header" href="#40-polling-alternative">40. Polling Alternative</a></h1>
+<p>Provide event polling for runtimes where callbacks are awkward.</p>
+<pre><code class="language-c">comm_result_t comm_poll_event(
+    comm_subscription_handle_t subscription,
+    comm_event_t* out_event
+);
+</code></pre>
+<hr />
+<h1 id="41-async-model"><a class="header" href="#41-async-model">41. Async Model</a></h1>
+<p>Rust <code>Future</code> never crosses the C ABI.</p>
+<p>Use:</p>
+<pre><code class="language-text">operation handle
+poll/status
+callback completion
+cancel
+</code></pre>
+<hr />
+<h1 id="42-operation-handle"><a class="header" href="#42-operation-handle">42. Operation Handle</a></h1>
+<pre><code class="language-c">typedef comm_handle_t comm_operation_handle_t;
+</code></pre>
+<p>Start operation:</p>
+<pre><code class="language-c">comm_result_t comm_send_file_async(
+    comm_runtime_handle_t runtime,
+    ...,
+    comm_operation_handle_t* out_operation
+);
+</code></pre>
+<hr />
+<h1 id="43-operation-status"><a class="header" href="#43-operation-status">43. Operation Status</a></h1>
+<pre><code class="language-c">comm_result_t comm_operation_status(
+    comm_operation_handle_t operation,
+    comm_operation_status_t* out_status
+);
+</code></pre>
+<hr />
+<h1 id="44-cancellation"><a class="header" href="#44-cancellation">44. Cancellation</a></h1>
+<pre><code class="language-c">comm_result_t comm_operation_cancel(
+    comm_operation_handle_t operation
+);
+</code></pre>
+<p>This maps to structured Rust cancellation.</p>
+<hr />
+<h1 id="45-high-level-async-wrappers"><a class="header" href="#45-high-level-async-wrappers">45. High-Level Async Wrappers</a></h1>
+<p>Bindings convert operation handles into:</p>
+<pre><code class="language-text">Kotlin suspend
+Swift async/await
+Python asyncio
+Dart Future
+C# Task
+Java CompletableFuture
+</code></pre>
+<hr />
+<h1 id="46-error-model"><a class="header" href="#46-error-model">46. Error Model</a></h1>
+<p>Use stable numeric error codes.</p>
+<pre><code class="language-c">typedef uint32_t comm_error_code_t;
+</code></pre>
+<p>Success:</p>
+<pre><code class="language-text">0
+</code></pre>
+<hr />
+<h1 id="47-error-domains"><a class="header" href="#47-error-domains">47. Error Domains</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">Runtime
+Network
+Identity
+Storage
+Files
+DTN
+Capability
+Permission
+Resource
+Bootstrap
+Diagnostics
+</code></pre>
+<hr />
+<h1 id="48-rich-error-information"><a class="header" href="#48-rich-error-information">48. Rich Error Information</a></h1>
+<p>An error object may expose:</p>
+<pre><code class="language-text">domain
+code
+retryable
+user-action hint
+diagnostic ID
+</code></pre>
+<p>Do not make error strings the programmatic API.</p>
+<hr />
+<h1 id="49-no-panic-across-ffi"><a class="header" href="#49-no-panic-across-ffi">49. No Panic Across FFI</a></h1>
+<p>Every exported function must prevent Rust unwinding across the ABI.</p>
+<p>Use boundary panic protection where unwind strategy permits.</p>
+<p>Unexpected panic maps to a stable internal error or process abort according to configured panic strategy.</p>
+<hr />
+<h1 id="50-in-process-vs-daemon-ffi"><a class="header" href="#50-in-process-vs-daemon-ffi">50. In-Process vs Daemon FFI</a></h1>
+<p>Support both.</p>
+<h2 id="in-process"><a class="header" href="#in-process">In-Process</a></h2>
+<pre><code class="language-text">Foreign App
+ ↓
+C ABI
+ ↓
+Rust Runtime
+</code></pre>
+<h2 id="daemon-backed"><a class="header" href="#daemon-backed">Daemon-Backed</a></h2>
+<pre><code class="language-text">Foreign App
+ ↓
+C ABI client
+ ↓
+Local IPC
+ ↓
+comm-daemon
+</code></pre>
+<p>Daemon mode provides stronger crash and language-runtime isolation.</p>
+<hr />
+<h1 id="51-unified-sdk-semantics"><a class="header" href="#51-unified-sdk-semantics">51. Unified SDK Semantics</a></h1>
+<p>The same high-level operations should exist across both backends:</p>
+<pre><code class="language-text">send message
+send file
+query state
+subscribe
+bootstrap
+diagnostics
+</code></pre>
+<hr />
+<h1 id="52-ffi-workspace"><a class="header" href="#52-ffi-workspace">52. FFI Workspace</a></h1>
+<pre><code class="language-text">crates/
+├── comm-ffi-types/
+├── comm-ffi-core/
+├── comm-ffi-daemon-client/
+├── comm-ffi-platform/
+└── comm-sdk-model/
+
+bindings/
+├── c/
+├── cpp/
+├── kotlin/
+├── swift/
+├── python/
+├── dart/
+├── csharp/
+└── go/
+
+include/
+└── comm.h
+</code></pre>
+<hr />
+<h1 id="53-comm-ffi-types"><a class="header" href="#53-comm-ffi-types">53. <code>comm-ffi-types</code></a></h1>
+<p>Contains only:</p>
+<pre><code class="language-text">repr(C) DTOs
+constants
+versions
+error codes
+</code></pre>
+<p>No runtime behavior.</p>
+<hr />
+<h1 id="54-comm-ffi-core"><a class="header" href="#54-comm-ffi-core">54. <code>comm-ffi-core</code></a></h1>
+<p>Owns:</p>
+<pre><code class="language-text">handle registry
+pointer validation
+buffer helpers
+callback dispatch
+panic boundaries
+runtime mappings
+</code></pre>
+<hr />
+<h1 id="55-comm-ffi-daemon-client"><a class="header" href="#55-comm-ffi-daemon-client">55. <code>comm-ffi-daemon-client</code></a></h1>
+<p>Maps the same public API onto Part 16 IPC.</p>
+<hr />
+<h1 id="56-comm-sdk-model"><a class="header" href="#56-comm-sdk-model">56. <code>comm-sdk-model</code></a></h1>
+<p>Contains stable high-level Rust DTOs before conversion into C structures.</p>
+<p>This decouples domain internals from ABI internals.</p>
+<hr />
+<h1 id="57-c-binding"><a class="header" href="#57-c-binding">57. C++ Binding</a></h1>
+<p>Wrap C handles in RAII.</p>
+<p>Properties:</p>
+<pre><code class="language-text">move-only where ownership is unique
+automatic release
+typed results
+no raw free()
+</code></pre>
+<hr />
+<h1 id="58-kotlin--android-binding"><a class="header" href="#58-kotlin--android-binding">58. Kotlin / Android Binding</a></h1>
+<p>Architecture:</p>
+<pre><code class="language-text">Kotlin
+ ↓
+thin JNI layer
+ ↓
+C ABI / FFI adapter
+ ↓
+Rust Runtime
+</code></pre>
+<p>Keep JNI narrow.</p>
+<hr />
+<h1 id="59-kotlin-coroutines"><a class="header" href="#59-kotlin-coroutines">59. Kotlin Coroutines</a></h1>
+<p>Map async operation handles to:</p>
+<pre><code class="language-kotlin">suspend fun
+</code></pre>
+<p>and events to:</p>
+<pre><code class="language-kotlin">Flow&lt;Event&gt;
+</code></pre>
+<p>with bounded buffering.</p>
+<hr />
+<h1 id="60-android-platform-objects"><a class="header" href="#60-android-platform-objects">60. Android Platform Objects</a></h1>
+<p>Some objects cannot be represented portably:</p>
+<pre><code class="language-text">Context
+Uri
+Network
+ParcelFileDescriptor
+</code></pre>
+<p>Use a platform-specific JNI adapter.</p>
+<p>Do not contaminate the generic C ABI with Android classes.</p>
+<hr />
+<h1 id="61-android-large-files"><a class="header" href="#61-android-large-files">61. Android Large Files</a></h1>
+<p>Prefer:</p>
+<pre><code class="language-text">ParcelFileDescriptor
+→ duplicated raw FD
+→ Rust FileSource
+</code></pre>
+<p>rather than copying through JVM arrays.</p>
+<hr />
+<h1 id="62-swift-binding"><a class="header" href="#62-swift-binding">62. Swift Binding</a></h1>
+<p>Architecture:</p>
+<pre><code class="language-text">Swift
+ ↓
+C module / wrapper
+ ↓
+C ABI
+ ↓
+Rust
+</code></pre>
+<p>Map operations to:</p>
+<pre><code class="language-text">async throws
+</code></pre>
+<p>and events to:</p>
+<pre><code class="language-text">AsyncStream
+</code></pre>
+<p>where practical.</p>
+<hr />
+<h1 id="63-swift-memory"><a class="header" href="#63-swift-memory">63. Swift Memory</a></h1>
+<p>Convert Rust-owned buffers to Swift <code>Data</code>/<code>String</code>, then free through Rust API.</p>
+<hr />
+<h1 id="64-python-binding"><a class="header" href="#64-python-binding">64. Python Binding</a></h1>
+<p>Options:</p>
+<pre><code class="language-text">cffi
+ctypes
+PyO3 wrapper over service APIs
+</code></pre>
+<p>For stable ABI distribution, a C ABI-backed wrapper is attractive.</p>
+<hr />
+<h1 id="65-python-async"><a class="header" href="#65-python-async">65. Python Async</a></h1>
+<p>Use:</p>
+<pre><code class="language-text">asyncio Future
+</code></pre>
+<p>and ensure callbacks enter Python safely with GIL handling.</p>
+<hr />
+<h1 id="66-dart--flutter-binding"><a class="header" href="#66-dart--flutter-binding">66. Dart / Flutter Binding</a></h1>
+<p>Use:</p>
+<pre><code class="language-text">dart:ffi
+</code></pre>
+<p>Map:</p>
+<pre><code class="language-text">operation handle → Future
+subscription → Stream
+</code></pre>
+<p>Respect Dart isolate/threading rules.</p>
+<hr />
+<h1 id="67-go-binding"><a class="header" href="#67-go-binding">67. Go Binding</a></h1>
+<p>Use cgo if needed, but daemon mode can be cleaner for many Go server applications.</p>
+<hr />
+<h1 id="68-c-binding"><a class="header" href="#68-c-binding">68. C# Binding</a></h1>
+<p>Use P/Invoke.</p>
+<p>Map operation handles to <code>Task</code>.</p>
+<hr />
+<h1 id="69-nodejs-binding"><a class="header" href="#69-nodejs-binding">69. Node.js Binding</a></h1>
+<p>Use N-API wrapper or daemon-client wrapper.</p>
+<p>Do not block the Node event loop with synchronous native network calls.</p>
+<hr />
+<h1 id="70-thread-safety-contract"><a class="header" href="#70-thread-safety-contract">70. Thread-Safety Contract</a></h1>
+<p>Every handle type must document:</p>
+<pre><code class="language-text">thread-safe
+thread-confined
+serialized internally
+</code></pre>
+<p>Recommended defaults:</p>
+<pre><code class="language-text">runtime/client handles → thread-safe
+callbacks → serialized per subscription
+temporary builder objects → may be thread-confined
+</code></pre>
+<hr />
+<h1 id="71-reentrancy"><a class="header" href="#71-reentrancy">71. Reentrancy</a></h1>
+<p>Foreign callbacks may call query APIs.</p>
+<p>Avoid invoking callbacks while holding global internal locks.</p>
+<hr />
+<h1 id="72-async-runtime-ownership"><a class="header" href="#72-async-runtime-ownership">72. Async Runtime Ownership</a></h1>
+<p>Create one long-lived async runtime per in-process runtime instance, not per FFI call.</p>
+<hr />
+<h1 id="73-runtime-lifecycle-api"><a class="header" href="#73-runtime-lifecycle-api">73. Runtime Lifecycle API</a></h1>
+<pre><code class="language-c">comm_result_t comm_runtime_create(
+    const comm_runtime_config_t* config,
+    comm_runtime_handle_t* out_runtime
+);
+
+comm_result_t comm_runtime_start(
+    comm_runtime_handle_t runtime
+);
+
+comm_result_t comm_runtime_stop(
+    comm_runtime_handle_t runtime
+);
+
+comm_result_t comm_handle_release(
+    comm_handle_t handle
+);
+</code></pre>
+<hr />
+<h1 id="74-shutdown-idempotency"><a class="header" href="#74-shutdown-idempotency">74. Shutdown Idempotency</a></h1>
+<p>Repeated stop/release must never double-free.</p>
+<p>Return a stable invalid/already-closed result where appropriate.</p>
+<hr />
+<h1 id="75-configuration-dto"><a class="header" href="#75-configuration-dto">75. Configuration DTO</a></h1>
+<p>Use versioned extensible C structs.</p>
+<p>Example:</p>
+<pre><code class="language-c">typedef struct {
+    uint32_t struct_size;
+    uint32_t api_version;
+    uint32_t runtime_mode;
+    uint32_t log_level;
+    uint64_t memory_budget;
+} comm_runtime_config_t;
+</code></pre>
+<hr />
+<h1 id="76-typed-dto-vs-binary-envelope"><a class="header" href="#76-typed-dto-vs-binary-envelope">76. Typed DTO vs Binary Envelope</a></h1>
+<p>Use typed C DTOs for:</p>
+<pre><code class="language-text">common stable API
+</code></pre>
+<p>Use binary/versioned envelopes for:</p>
+<pre><code class="language-text">extension-specific payloads
+large evolving diagnostic data
+</code></pre>
+<hr />
+<h1 id="77-postcard-at-the-ffi-edge"><a class="header" href="#77-postcard-at-the-ffi-edge">77. Postcard at the FFI Edge</a></h1>
+<p>Postcard remains excellent internally, but foreign SDK consumers should not be forced to implement Postcard for basic operations.</p>
+<p>Use it only for explicit advanced binary extension APIs.</p>
+<hr />
+<h1 id="78-json-at-the-ffi-edge"><a class="header" href="#78-json-at-the-ffi-edge">78. JSON at the FFI Edge</a></h1>
+<p>JSON is acceptable for:</p>
+<pre><code class="language-text">diagnostic export
+external admin tooling
+human/tool interoperability
+</code></pre>
+<p>Not as the main high-throughput core ABI.</p>
+<hr />
+<h1 id="79-ron-at-the-ffi-edge"><a class="header" href="#79-ron-at-the-ffi-edge">79. RON at the FFI Edge</a></h1>
+<p>RON is suitable for:</p>
+<pre><code class="language-text">configuration
+developer tools
+scenario files
+</code></pre>
+<p>not primary cross-language runtime communication.</p>
+<hr />
+<h1 id="80-stable-ids"><a class="header" href="#80-stable-ids">80. Stable IDs</a></h1>
+<p>Expose fixed-size IDs.</p>
+<p>Example:</p>
+<pre><code class="language-c">typedef struct {
+    uint8_t bytes[16];
+} comm_id128_t;
+</code></pre>
+<p>Use 32-byte equivalent when domain IDs require it.</p>
+<hr />
+<h1 id="81-time-types"><a class="header" href="#81-time-types">81. Time Types</a></h1>
+<p>Use documented fixed-width integer timestamps.</p>
+<p>Example:</p>
+<pre><code class="language-text">int64_t Unix milliseconds
+</code></pre>
+<p>Use monotonic time internally for durations, not across ABI.</p>
+<hr />
+<h1 id="82-optional-values"><a class="header" href="#82-optional-values">82. Optional Values</a></h1>
+<p>Use explicit:</p>
+<pre><code class="language-text">has_value
+value
+</code></pre>
+<p>for C DTOs where no safe sentinel exists.</p>
+<hr />
+<h1 id="83-arrays"><a class="header" href="#83-arrays">83. Arrays</a></h1>
+<p>Inputs:</p>
+<pre><code class="language-c">const T* ptr;
+size_t len;
+</code></pre>
+<p>Outputs:</p>
+<pre><code class="language-text">owned buffer
+or
+explicit freeable array
+</code></pre>
+<p>All lengths validated before allocation.</p>
+<hr />
+<h1 id="84-null-semantics"><a class="header" href="#84-null-semantics">84. Null Semantics</a></h1>
+<p>Every pointer argument must specify whether:</p>
+<pre><code class="language-text">null allowed
+null + len 0 allowed
+null always invalid
+</code></pre>
+<hr />
+<h1 id="85-ffi-security"><a class="header" href="#85-ffi-security">85. FFI Security</a></h1>
+<p>Foreign callers are not automatically trusted.</p>
+<p>Validate:</p>
+<pre><code class="language-text">handle
+pointer
+length
+enum value
+struct_size
+version
+</code></pre>
+<p>before expensive work.</p>
+<hr />
+<h1 id="86-double-destroy"><a class="header" href="#86-double-destroy">86. Double Destroy</a></h1>
+<p>A second destroy/release returns:</p>
+<pre><code class="language-text">InvalidHandle
+</code></pre>
+<p>not memory corruption.</p>
+<hr />
+<h1 id="87-concurrent-destroy"><a class="header" href="#87-concurrent-destroy">87. Concurrent Destroy</a></h1>
+<p>Use registry state/reference counting so:</p>
+<pre><code class="language-text">thread A uses
+thread B closes
+</code></pre>
+<p>results in typed failure, never UAF.</p>
+<hr />
+<h1 id="88-handle-state"><a class="header" href="#88-handle-state">88. Handle State</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum HandleState {
+    Live,
+    Closing,
+    Closed,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="89-releasing-a-view-vs-cancelling-work"><a class="header" href="#89-releasing-a-view-vs-cancelling-work">89. Releasing a View vs Cancelling Work</a></h1>
+<p>Important:</p>
+<pre><code class="language-text">release transfer handle
+≠
+cancel transfer
+</code></pre>
+<p>A GC finalizer must not accidentally cancel durable work.</p>
+<hr />
+<h1 id="90-reacquiring-durable-operations"><a class="header" href="#90-reacquiring-durable-operations">90. Reacquiring Durable Operations</a></h1>
+<p>Foreign app should be able to query:</p>
+<pre><code class="language-text">TransferId
+MessageId
+EmergencyId
+</code></pre>
+<p>after UI/process restart.</p>
+<hr />
+<h1 id="91-event-model"><a class="header" href="#91-event-model">91. Event Model</a></h1>
+<p>Common event DTOs may use:</p>
+<pre><code class="language-text">event type
+sequence
+version
+payload
+</code></pre>
+<p>High-level bindings translate to native sealed enums/classes.</p>
+<hr />
+<h1 id="92-event-ordering"><a class="header" href="#92-event-ordering">92. Event Ordering</a></h1>
+<p>Document:</p>
+<pre><code class="language-text">ordered per subscription
+global total order not guaranteed unless explicitly provided
+</code></pre>
+<hr />
+<h1 id="93-event-gap-detection"><a class="header" href="#93-event-gap-detection">93. Event Gap Detection</a></h1>
+<p>Sequence numbers allow:</p>
+<pre><code class="language-text">gap detected
+→ request snapshot
+</code></pre>
+<p>following Part 16 semantics.</p>
+<hr />
+<h1 id="94-subscription-backpressure"><a class="header" href="#94-subscription-backpressure">94. Subscription Backpressure</a></h1>
+<p>Coalesce:</p>
+<pre><code class="language-text">transfer progress
+network metrics
+presence
+</code></pre>
+<p>Preserve:</p>
+<pre><code class="language-text">security state
+terminal operation state
+critical emergency events
+</code></pre>
+<hr />
+<h1 id="95-platform-vtable--reverse-ffi"><a class="header" href="#95-platform-vtable--reverse-ffi">95. Platform Vtable / Reverse FFI</a></h1>
+<p>Rust sometimes needs platform services.</p>
+<p>Expose a narrow versioned vtable.</p>
+<pre><code class="language-c">typedef struct {
+    uint32_t struct_size;
+    uint32_t version;
+    void* user_data;
+    comm_result_t (*open_file)(...);
+    comm_result_t (*notify)(...);
+} comm_platform_vtable_t;
+</code></pre>
+<hr />
+<h1 id="96-reverse-ffi-rule"><a class="header" href="#96-reverse-ffi-rule">96. Reverse FFI Rule</a></h1>
+<p>Rust requests semantic platform actions.</p>
+<p>It should not embed Android/iOS UI policy.</p>
+<hr />
+<h1 id="97-optional-hooks"><a class="header" href="#97-optional-hooks">97. Optional Hooks</a></h1>
+<p>Null optional function pointer means:</p>
+<pre><code class="language-text">unsupported
+</code></pre>
+<p>Never crash.</p>
+<hr />
+<h1 id="98-secure-store-bridge"><a class="header" href="#98-secure-store-bridge">98. Secure Store Bridge</a></h1>
+<p>For platform keys:</p>
+<pre><code class="language-text">Android Keystore
+Apple Keychain/Secure Enclave
+TPM
+</code></pre>
+<p>prefer opaque key handles and signing APIs over exporting private key bytes.</p>
+<hr />
+<h1 id="99-key-separation"><a class="header" href="#99-key-separation">99. Key Separation</a></h1>
+<p>Never pass private identity keys into Kotlin/Swift just because it is convenient.</p>
+<p>Keep key access behind secure-store abstraction.</p>
+<hr />
+<h1 id="100-proximity-ffi"><a class="header" href="#100-proximity-ffi">100. Proximity FFI</a></h1>
+<p>Expose neutral:</p>
+<pre><code class="language-text">NearbyPeer
+ProximityEvent
+connect intent
+</code></pre>
+<p>not raw Android <code>BluetoothDevice</code>.</p>
+<hr />
+<h1 id="101-bootstrap-ffi"><a class="header" href="#101-bootstrap-ffi">101. Bootstrap FFI</a></h1>
+<p>Expose:</p>
+<pre><code class="language-text">create invitation
+get QR payload
+accept payload
+get SAS
+approve/reject
+</code></pre>
+<p>Camera/NFC I/O stays platform-specific.</p>
+<hr />
+<h1 id="102-diagnostics-ffi"><a class="header" href="#102-diagnostics-ffi">102. Diagnostics FFI</a></h1>
+<p>Expose:</p>
+<pre><code class="language-text">basic path/status DTOs
+advanced diagnostics snapshot
+network doctor
+event stream
+</code></pre>
+<hr />
+<h1 id="103-emergency-ffi"><a class="header" href="#103-emergency-ffi">103. Emergency FFI</a></h1>
+<p>Expose high-level:</p>
+<pre><code class="language-text">send_sos
+cancel_emergency
+ack_emergency
+</code></pre>
+<p>Do not allow raw unauthenticated setting of <code>AuthorityCritical</code>.</p>
+<hr />
+<h1 id="104-extension-ffi"><a class="header" href="#104-extension-ffi">104. Extension FFI</a></h1>
+<p>Third-party extensions should use a generic namespaced API rather than adding a new exported symbol for every extension.</p>
+<p>Conceptually:</p>
+<pre><code class="language-c">comm_result_t comm_extension_call(
+    comm_runtime_handle_t runtime,
+    comm_bytes_view_t namespace_id,
+    comm_bytes_view_t request,
+    comm_operation_handle_t* out_operation
+);
+</code></pre>
+<hr />
+<h1 id="105-plugin-abi-is-separate"><a class="header" href="#105-plugin-abi-is-separate">105. Plugin ABI Is Separate</a></h1>
+<p>Part 24 plugin/module ABI should be narrower than the full application ABI and designed for sandboxing.</p>
+<p>Do not automatically expose all user data or runtime controls to plugins.</p>
+<hr />
+<h1 id="106-native-artifact-matrix"><a class="header" href="#106-native-artifact-matrix">106. Native Artifact Matrix</a></h1>
+<p>Linux:</p>
+<pre><code class="language-text">libcomm.so
+libcomm.a optional
+comm.h
+pkg-config
+</code></pre>
+<p>Windows:</p>
+<pre><code class="language-text">comm.dll
+comm.lib
+comm.h
+PDB symbols
+</code></pre>
+<p>macOS:</p>
+<pre><code class="language-text">libcomm.dylib
+or framework/XCFramework packaging
+</code></pre>
+<p>Android:</p>
+<pre><code class="language-text">.so per ABI
+AAR wrapper
+</code></pre>
+<p>Apple mobile:</p>
+<pre><code class="language-text">XCFramework
+Swift Package wrapper
+</code></pre>
+<hr />
+<h1 id="107-android-packaging"><a class="header" href="#107-android-packaging">107. Android Packaging</a></h1>
+<p>Official Android SDK can publish an AAR containing:</p>
+<pre><code class="language-text">Kotlin API
+JNI bridge
+native libraries
+</code></pre>
+<hr />
+<h1 id="108-apple-packaging"><a class="header" href="#108-apple-packaging">108. Apple Packaging</a></h1>
+<p>Prefer:</p>
+<pre><code class="language-text">XCFramework
++
+Swift Package
+</code></pre>
+<p>Final production signing/build validation requires Apple toolchains.</p>
+<hr />
+<h1 id="109-python-packaging"><a class="header" href="#109-python-packaging">109. Python Packaging</a></h1>
+<p>Provide wheels for supported targets when practical.</p>
+<hr />
+<h1 id="110-flutter-packaging"><a class="header" href="#110-flutter-packaging">110. Flutter Packaging</a></h1>
+<p>Provide a Flutter plugin package with native binaries and platform shims.</p>
+<hr />
+<h1 id="111-cc-packaging"><a class="header" href="#111-cc-packaging">111. C/C++ Packaging</a></h1>
+<p>Provide:</p>
+<pre><code class="language-text">header
+shared/static library
+CMake config
+pkg-config
+examples
+</code></pre>
+<hr />
+<h1 id="112-sdk-versioning-dimensions"><a class="header" href="#112-sdk-versioning-dimensions">112. SDK Versioning Dimensions</a></h1>
+<p>Keep separate:</p>
+<pre><code class="language-text">SDK semantic version
+C ABI version
+daemon IPC version
+wire protocol version
+storage schema version
+</code></pre>
+<p>Do not conflate them.</p>
+<hr />
+<h1 id="113-version-info-api"><a class="header" href="#113-version-info-api">113. Version Info API</a></h1>
+<p>Expose:</p>
+<pre><code class="language-c">comm_version_info_t comm_version_info(void);
+</code></pre>
+<p>Include:</p>
+<pre><code class="language-text">SDK version
+ABI version
+build ID
+</code></pre>
+<hr />
+<h1 id="114-feature-capability-query"><a class="header" href="#114-feature-capability-query">114. Feature Capability Query</a></h1>
+<p>SDK exposes built-in capabilities.</p>
+<p>A binding can ask whether this build includes:</p>
+<pre><code class="language-text">files
+DTN
+proximity
+emergency
+daemon backend
+</code></pre>
+<hr />
+<h1 id="115-official-sdk-abi-policy"><a class="header" href="#115-official-sdk-abi-policy">115. Official SDK ABI Policy</a></h1>
+<p>For official binaries, prefer one stable superset ABI.</p>
+<p>Disabled features return:</p>
+<pre><code class="language-text">Unsupported
+</code></pre>
+<p>rather than disappearing unpredictably.</p>
+<hr />
+<h1 id="116-binding-generation"><a class="header" href="#116-binding-generation">116. Binding Generation</a></h1>
+<p>Potential tooling:</p>
+<pre><code class="language-text">cbindgen
+UniFFI
+JNI code generation
+Swift module maps
+</code></pre>
+<p>The tool is implementation detail.</p>
+<p>The ABI contract must remain understandable independently.</p>
+<hr />
+<h1 id="117-unsafe-code-concentration"><a class="header" href="#117-unsafe-code-concentration">117. Unsafe Code Concentration</a></h1>
+<p>Keep unsafe in a few modules:</p>
+<pre><code class="language-text">ffi_ptr.rs
+ffi_buffer.rs
+ffi_callback.rs
+ffi_handle.rs
+</code></pre>
+<p>Core communication crates should remain safe Rust wherever possible.</p>
+<hr />
+<h1 id="118-unsafe-documentation"><a class="header" href="#118-unsafe-documentation">118. Unsafe Documentation</a></h1>
+<p>Every unsafe block documents:</p>
+<pre><code class="language-text">preconditions
+ownership
+lifetime
+threading
+why operation is valid
+</code></pre>
+<hr />
+<h1 id="119-strict-lints"><a class="header" href="#119-strict-lints">119. Strict Lints</a></h1>
+<p>Enable:</p>
+<pre><code class="language-text">unsafe_op_in_unsafe_fn
+missing_safety_doc
+</code></pre>
+<p>and related lints.</p>
+<hr />
+<h1 id="120-ffi-test-matrix"><a class="header" href="#120-ffi-test-matrix">120. FFI Test Matrix</a></h1>
+<p>Required:</p>
+<pre><code class="language-text">C smoke
+C++ RAII
+Kotlin Android
+Swift
+Python
+Dart/Flutter
+</code></pre>
+<p>as official bindings mature.</p>
+<hr />
+<h1 id="121-abi-golden-tests"><a class="header" href="#121-abi-golden-tests">121. ABI Golden Tests</a></h1>
+<p>Persist expected:</p>
+<pre><code class="language-text">sizeof
+alignof
+field offsets
+enum numeric values
+symbol list
+</code></pre>
+<p>for stable C types.</p>
+<hr />
+<h1 id="122-abi-diff-ci"><a class="header" href="#122-abi-diff-ci">122. ABI Diff CI</a></h1>
+<p>Compare shared-library ABI against previous release.</p>
+<p>Unexpected break:</p>
+<pre><code class="language-text">CI failure
+</code></pre>
+<hr />
+<h1 id="123-header-diff-ci"><a class="header" href="#123-header-diff-ci">123. Header Diff CI</a></h1>
+<p><code>comm.h</code> changes require explicit review.</p>
+<hr />
+<h1 id="124-symbol-export-ci"><a class="header" href="#124-symbol-export-ci">124. Symbol Export CI</a></h1>
+<p>Ensure only approved symbols are exported.</p>
+<hr />
+<h1 id="125-c-smoke-test"><a class="header" href="#125-c-smoke-test">125. C Smoke Test</a></h1>
+<p>Compile pure C example against released library.</p>
+<p>This is mandatory for ABI confidence.</p>
+<hr />
+<h1 id="126-fuzzing"><a class="header" href="#126-fuzzing">126. Fuzzing</a></h1>
+<p>Part 10 should fuzz:</p>
+<pre><code class="language-text">config structs
+enum values
+byte views
+handle sequences
+operation lifecycle
+event payload decoding
+</code></pre>
+<hr />
+<h1 id="127-sequence-fuzzing"><a class="header" href="#127-sequence-fuzzing">127. Sequence Fuzzing</a></h1>
+<p>Generate:</p>
+<pre><code class="language-text">create
+start
+subscribe
+send
+cancel
+release
+destroy
+use stale handle
+</code></pre>
+<p>Assert:</p>
+<pre><code class="language-text">no panic
+no UAF
+no double free
+</code></pre>
+<hr />
+<h1 id="128-sanitizers"><a class="header" href="#128-sanitizers">128. Sanitizers</a></h1>
+<p>Run FFI harnesses under:</p>
+<pre><code class="language-text">ASan
+UBSan
+TSan where supported
+</code></pre>
+<hr />
+<h1 id="129-miri"><a class="header" href="#129-miri">129. Miri</a></h1>
+<p>Use Miri for unsafe Rust helpers:</p>
+<pre><code class="language-text">pointer conversions
+buffer ownership
+handle registry
+</code></pre>
+<hr />
+<h1 id="130-reentrancy-tests"><a class="header" href="#130-reentrancy-tests">130. Reentrancy Tests</a></h1>
+<p>Callback calls back into:</p>
+<pre><code class="language-text">query runtime
+cancel operation
+</code></pre>
+<p>No deadlock.</p>
+<hr />
+<h1 id="131-slow-callback-test"><a class="header" href="#131-slow-callback-test">131. Slow Callback Test</a></h1>
+<p>Foreign callback intentionally blocks.</p>
+<p>Expected:</p>
+<pre><code class="language-text">core network continues
+event queue bounded
+</code></pre>
+<hr />
+<h1 id="132-concurrent-destroy-test"><a class="header" href="#132-concurrent-destroy-test">132. Concurrent Destroy Test</a></h1>
+<p>One thread uses a handle while another closes it.</p>
+<p>Expected:</p>
+<pre><code class="language-text">typed error
+no UAF
+</code></pre>
+<hr />
+<h1 id="133-panic-boundary-test"><a class="header" href="#133-panic-boundary-test">133. Panic Boundary Test</a></h1>
+<p>Inject internal panic in test build.</p>
+<p>Expected:</p>
+<pre><code class="language-text">no unwind crosses C boundary
+</code></pre>
+<hr />
+<h1 id="134-memory-leak-test"><a class="header" href="#134-memory-leak-test">134. Memory Leak Test</a></h1>
+<p>Repeated:</p>
+<pre><code class="language-text">create/destroy
+subscribe/cancel
+operation handle acquire/release
+</code></pre>
+<p>must return handle counts to baseline.</p>
+<hr />
+<h1 id="135-daemon-restart-test"><a class="header" href="#135-daemon-restart-test">135. Daemon Restart Test</a></h1>
+<p>Daemon-backed SDK:</p>
+<pre><code class="language-text">daemon restarts
+client reconnects
+durable operation remains
+subscriptions resync
+</code></pre>
+<hr />
+<h1 id="136-binding-compatibility-test"><a class="header" href="#136-binding-compatibility-test">136. Binding Compatibility Test</a></h1>
+<p>Old binding binary should work with newer compatible ABI release.</p>
+<hr />
+<h1 id="137-documentation-requirements"><a class="header" href="#137-documentation-requirements">137. Documentation Requirements</a></h1>
+<p>Every public function documents:</p>
+<pre><code class="language-text">ownership
+nullability
+threading
+blocking behavior
+callback behavior
+error codes
+version added
+</code></pre>
+<hr />
+<h1 id="138-example-applications"><a class="header" href="#138-example-applications">138. Example Applications</a></h1>
+<p>Provide:</p>
+<pre><code class="language-text">examples/c
+examples/cpp
+examples/android-kotlin
+examples/swift
+examples/python
+examples/flutter
+</code></pre>
+<hr />
+<h1 id="139-c-example-scope"><a class="header" href="#139-c-example-scope">139. C Example Scope</a></h1>
+<p>Show:</p>
+<pre><code class="language-text">runtime start
+subscribe
+send message
+shutdown
+</code></pre>
+<hr />
+<h1 id="140-kotlin-example-scope"><a class="header" href="#140-kotlin-example-scope">140. Kotlin Example Scope</a></h1>
+<p>Show:</p>
+<pre><code class="language-text">service-scoped runtime
+Flow events
+suspend send
+large-file FD transfer
+</code></pre>
+<hr />
+<h1 id="141-swift-example-scope"><a class="header" href="#141-swift-example-scope">141. Swift Example Scope</a></h1>
+<p>Show:</p>
+<pre><code class="language-text">async send
+AsyncStream events
+</code></pre>
+<hr />
+<h1 id="142-python-example-scope"><a class="header" href="#142-python-example-scope">142. Python Example Scope</a></h1>
+<p>Show:</p>
+<pre><code class="language-text">asyncio
+context manager
+event subscription
+</code></pre>
+<hr />
+<h1 id="143-flutter-example-scope"><a class="header" href="#143-flutter-example-scope">143. Flutter Example Scope</a></h1>
+<p>Show:</p>
+<pre><code class="language-text">Future send
+Stream progress
+dispose/reconnect
+</code></pre>
+<hr />
+<h1 id="144-distribution-manifest"><a class="header" href="#144-distribution-manifest">144. Distribution Manifest</a></h1>
+<p>Each SDK release should include:</p>
+<pre><code class="language-text">native binaries
+headers
+binding package
+checksums
+version info
+license notices
+compatibility notes
+</code></pre>
+<hr />
+<h1 id="145-deprecation-policy"><a class="header" href="#145-deprecation-policy">145. Deprecation Policy</a></h1>
+<p>Mark API deprecated before removal.</p>
+<p>Breaking removal waits for next ABI major.</p>
+<hr />
+<h1 id="146-error-code-stability"><a class="header" href="#146-error-code-stability">146. Error-Code Stability</a></h1>
+<p>Never reuse an existing error code for different meaning.</p>
+<hr />
+<h1 id="147-enum-stability"><a class="header" href="#147-enum-stability">147. Enum Stability</a></h1>
+<p>Never reuse retired enum numeric values.</p>
+<hr />
+<h1 id="148-struct-stability"><a class="header" href="#148-struct-stability">148. Struct Stability</a></h1>
+<p>Do not reorder fields inside same ABI major.</p>
+<hr />
+<h1 id="149-32-bit-considerations"><a class="header" href="#149-32-bit-considerations">149. 32-bit Considerations</a></h1>
+<p>If supporting 32-bit Android/embedded:</p>
+<pre><code class="language-text">test size_t assumptions
+pointer-width assumptions
+alignment
+</code></pre>
+<p>Wire/protocol sizes remain fixed-width.</p>
+<hr />
+<h1 id="150-endianness-boundary"><a class="header" href="#150-endianness-boundary">150. Endianness Boundary</a></h1>
+<p>In-process C ABI uses target-native representation.</p>
+<p>Network/IPC serialization remains independently specified and canonical.</p>
+<hr />
+<h1 id="151-performance"><a class="header" href="#151-performance">151. Performance</a></h1>
+<p>FFI should not become a per-byte or per-packet crossing.</p>
+<p>Prefer coarse operations:</p>
+<pre><code class="language-text">send chunk stream
+start transfer
+query snapshot
+receive batched events
+</code></pre>
+<hr />
+<h1 id="152-minimize-crossing-frequency"><a class="header" href="#152-minimize-crossing-frequency">152. Minimize Crossing Frequency</a></h1>
+<p>Bad:</p>
+<pre><code class="language-text">foreign call for every packet
+</code></pre>
+<p>Good:</p>
+<pre><code class="language-text">foreign starts transfer
+Rust owns hot path
+foreign receives progress snapshots
+</code></pre>
+<hr />
+<h1 id="153-zero-copy-priority"><a class="header" href="#153-zero-copy-priority">153. Zero-Copy Priority</a></h1>
+<p>Most valuable zero/low-copy cases:</p>
+<pre><code class="language-text">large file input
+large file output
+media buffers
+diagnostic exports
+</code></pre>
+<p>Do not overcomplicate tiny message paths.</p>
+<hr />
+<h1 id="154-media-ffi"><a class="header" href="#154-media-ffi">154. Media FFI</a></h1>
+<p>If external product supplies media frames:</p>
+<pre><code class="language-text">buffer ownership
+timestamp
+format
+lifetime
+</code></pre>
+<p>must be explicit.</p>
+<p>Prefer buffer pool or frame handle abstraction over raw long-lived pointers.</p>
+<hr />
+<h1 id="155-media-codec-boundary"><a class="header" href="#155-media-codec-boundary">155. Media Codec Boundary</a></h1>
+<p>Android hardware codecs may remain in Kotlin/platform side while Rust owns call/session logic.</p>
+<p>Desktop AV1 software codec may stay fully Rust/native.</p>
+<p>FFI should support both without forcing one codec implementation architecture.</p>
+<hr />
+<h1 id="156-buffer-pool-handle"><a class="header" href="#156-buffer-pool-handle">156. Buffer Pool Handle</a></h1>
+<p>Advanced API may expose:</p>
+<pre><code class="language-text">comm_buffer_handle_t
+</code></pre>
+<p>for reusable media/file buffers.</p>
+<p>Add only after profiling shows value.</p>
+<hr />
+<h1 id="157-main-thread-safety"><a class="header" href="#157-main-thread-safety">157. Main-Thread Safety</a></h1>
+<p>Generic C ABI must not assume UI thread.</p>
+<p>Bindings handle dispatch.</p>
+<hr />
+<h1 id="158-foreign-gc-runtime"><a class="header" href="#158-foreign-gc-runtime">158. Foreign GC Runtime</a></h1>
+<p>Never rely on foreign GC timing for durable operation completion.</p>
+<p>Explicit close/release APIs are primary.</p>
+<hr />
+<h1 id="159-resource-limits"><a class="header" href="#159-resource-limits">159. Resource Limits</a></h1>
+<p>Part 08 applies to FFI:</p>
+<pre><code class="language-text">max handles
+max subscriptions
+max pending callbacks
+max async ops
+</code></pre>
+<p>A foreign app cannot allocate infinite handles.</p>
+<hr />
+<h1 id="160-diagnostics"><a class="header" href="#160-diagnostics">160. Diagnostics</a></h1>
+<p>Expose developer-only FFI counters:</p>
+<pre><code class="language-text">live handles
+callback queue depth
+invalid handle calls
+</code></pre>
+<p>No raw pointer values.</p>
+<hr />
+<h1 id="161-crash-recovery"><a class="header" href="#161-crash-recovery">161. Crash Recovery</a></h1>
+<p>In-process host crash ends runtime process.</p>
+<p>Durable state recovers on next start.</p>
+<p>Daemon-backed mode can survive host UI/process crash independently.</p>
+<hr />
+<h1 id="162-security-boundary"><a class="header" href="#162-security-boundary">162. Security Boundary</a></h1>
+<p>FFI is a memory-safety boundary.</p>
+<p>Treat all foreign inputs as hostile until validated.</p>
+<hr />
+<h1 id="163-authorization-boundary"><a class="header" href="#163-authorization-boundary">163. Authorization Boundary</a></h1>
+<p>FFI caller having access to a function does not mean it has protocol authority.</p>
+<p>Runtime still enforces:</p>
+<pre><code class="language-text">identity roles
+priority authorization
+peer permissions
+policy
+</code></pre>
+<hr />
+<h1 id="164-public-api-example"><a class="header" href="#164-public-api-example">164. Public API Example</a></h1>
+<pre><code class="language-c">comm_result_t comm_runtime_create(
+    const comm_runtime_config_t* config,
+    comm_runtime_handle_t* out_runtime
+);
+
+comm_result_t comm_send_message(
+    comm_runtime_handle_t runtime,
+    const comm_peer_ref_t* peer,
+    comm_bytes_view_t text_utf8,
+    comm_operation_handle_t* out_operation
+);
+
+comm_result_t comm_subscribe(
+    comm_runtime_handle_t runtime,
+    uint32_t topic,
+    comm_event_callback_t callback,
+    void* user_data,
+    comm_subscription_handle_t* out_subscription
+);
+
+comm_result_t comm_subscription_cancel(
+    comm_subscription_handle_t subscription
+);
+
+comm_result_t comm_handle_release(
+    comm_handle_t handle
+);
+</code></pre>
+<hr />
+<h1 id="165-initial-production-scope"><a class="header" href="#165-initial-production-scope">165. Initial Production Scope</a></h1>
+<p>Implement first:</p>
+<pre><code class="language-text">ABI versioning
+generation-checked opaque handles
+stable error codes
+UTF-8 byte views
+owned output buffers
+runtime lifecycle
+async operation handles
+subscriptions
+bounded callback dispatcher
+message API
+file API
+diagnostics API
+bootstrap API
+panic containment
+C/C++ wrapper
+Kotlin Android wrapper
+Swift wrapper
+</code></pre>
+<p>Then:</p>
+<pre><code class="language-text">Python
+Dart/Flutter
+C#
+Go
+daemon-backed SDK
+generic extension API
+</code></pre>
+<p>Defer initially:</p>
+<pre><code class="language-text">every language at once
+complex cross-process shared-memory ABI
+direct Rust-layout exposure
+</code></pre>
+<hr />
+<h1 id="166-implementation-phases"><a class="header" href="#166-implementation-phases">166. Implementation Phases</a></h1>
+<h2 id="phase-1--abi-foundation"><a class="header" href="#phase-1--abi-foundation">Phase 1 — ABI Foundation</a></h2>
+<pre><code class="language-text">versions
+types
+error model
+handle registry
+buffers
+</code></pre>
+<h2 id="phase-2--runtime-lifecycle"><a class="header" href="#phase-2--runtime-lifecycle">Phase 2 — Runtime Lifecycle</a></h2>
+<pre><code class="language-text">create
+start
+stop
+release
+</code></pre>
+<h2 id="phase-3--async-operations"><a class="header" href="#phase-3--async-operations">Phase 3 — Async Operations</a></h2>
+<pre><code class="language-text">operation handles
+status
+cancel
+completion
+</code></pre>
+<h2 id="phase-4--events"><a class="header" href="#phase-4--events">Phase 4 — Events</a></h2>
+<pre><code class="language-text">subscription
+callback dispatcher
+polling
+backpressure
+</code></pre>
+<h2 id="phase-5--core-apis"><a class="header" href="#phase-5--core-apis">Phase 5 — Core APIs</a></h2>
+<pre><code class="language-text">messaging
+files
+diagnostics
+bootstrap
+emergency
+</code></pre>
+<h2 id="phase-6--mobile-bindings"><a class="header" href="#phase-6--mobile-bindings">Phase 6 — Mobile Bindings</a></h2>
+<pre><code class="language-text">Kotlin/JNI
+Swift
+platform service vtables
+</code></pre>
+<h2 id="phase-7--other-bindings"><a class="header" href="#phase-7--other-bindings">Phase 7 — Other Bindings</a></h2>
+<pre><code class="language-text">C++
+Python
+Dart
+C#
+Go
+Node
+</code></pre>
+<h2 id="phase-8--daemon-backend"><a class="header" href="#phase-8--daemon-backend">Phase 8 — Daemon Backend</a></h2>
+<pre><code class="language-text">same public semantics
+IPC-backed implementation
+</code></pre>
+<h2 id="phase-9--hardening"><a class="header" href="#phase-9--hardening">Phase 9 — Hardening</a></h2>
+<pre><code class="language-text">ABI diff
+fuzz
+ASan
+UBSan
+TSan
+Miri
+reentrancy
+leak tests
+</code></pre>
+<hr />
+<h1 id="167-definition-of-done"><a class="header" href="#167-definition-of-done">167. Definition of Done</a></h1>
+<p>Part 19 is complete when:</p>
+<ul>
+<li>no Rust layout is exposed as stable ABI</li>
+<li>all long-lived objects use validated opaque handles</li>
+<li>stale handles are rejected</li>
+<li>ownership and free rules are explicit</li>
+<li>Rust memory is always freed by Rust</li>
+<li>async work uses operation handles rather than raw Rust Futures</li>
+<li>callbacks are bounded and isolated from core network workers</li>
+<li>callback threading and reentrancy are documented</li>
+<li>no Rust panic unwinds across the C ABI</li>
+<li>stable numeric errors exist</li>
+<li>C, C++, Kotlin, Swift, Python, and Dart can all consume the same platform model</li>
+<li>large file data can avoid unnecessary copies</li>
+<li>daemon-backed and in-process SDK modes share semantics</li>
+<li>Android/iOS objects stay in platform-specific bridges</li>
+<li>private identity keys are not unnecessarily copied across FFI</li>
+<li>ABI golden tests verify sizes, offsets, constants, and symbols</li>
+<li>older compatible bindings work with newer ABI releases</li>
+<li>fuzz, sanitizer, Miri, stale-handle, concurrent-destroy, reentrancy, and leak tests exist</li>
+</ul>
+<hr />
+<h1 id="168-relationship-to-earlier-parts"><a class="header" href="#168-relationship-to-earlier-parts">168. Relationship to Earlier Parts</a></h1>
+<p>Part 19 exposes stable integration surfaces for:</p>
+<pre><code class="language-text">01 — Protocol Extension System
+02 — Multi-Device Identity
+03 — Transport &amp; Routing Policy Engine
+04 — Offline Event Log
+05 — Robust File / Blob Subsystem
+06 — DTN / Store-Carry-Forward
+07 — Capability Negotiation
+08 — Resource Limits &amp; Backpressure
+09 — Crash Recovery
+10 — Fuzzing &amp; Protocol Test Suite
+11 — Relay / Self-Hosted Infrastructure
+12 — Multipath Networking
+13 — Battery-Aware Scheduling
+14 — Proximity Abstraction
+15 — QR / NFC Bootstrap
+16 — Daemon &amp; Headless Runtime
+17 — Emergency Priority Classes
+18 — Network Diagnostics &amp; Path Visualization
+</code></pre>
+<p>It directly prepares:</p>
+<pre><code class="language-text">20 — Embedded Linux Node
+21 — WASM-Compatible Components
+22 — Third-Party Protocol Extensions
+23 — External Interoperability Suite
+24 — Plugin / Module Ecosystem
+</code></pre>
+<hr />
+<h1 id="169-final-architecture"><a class="header" href="#169-final-architecture">169. Final Architecture</a></h1>
+<pre><code class="language-text">                      RUST CORE
+                         │
+                  Stable SDK Model
+                         │
+                   comm-ffi-core
+                         │
+                     C ABI v1
+          ┌──────────────┼───────────────┐
+          │              │               │
+         C++           Kotlin           Swift
+          │              │               │
+       Desktop        Android         iOS/macOS
+          │
+       Python
+          │
+       Dart/Flutter
+</code></pre>
+<p>Optional daemon-backed mode:</p>
+<pre><code class="language-text">Foreign App
+    │
+Language Binding
+    │
+Stable C ABI
+    │
+FFI Daemon Client
+    │
+Local Secure IPC
+    │
+comm-daemon
+    │
+Communication Runtime
+</code></pre>
+<hr />
+<h1 id="170-final-principle"><a class="header" href="#170-final-principle">170. Final Principle</a></h1>
+<p>The FFI layer should make this possible:</p>
+<pre><code class="language-text">A Flutter application sends files.
+
+An Android Kotlin application uses nearby Bluetooth and NFC.
+
+A Swift application uses the same identity and messaging engine.
+
+A Python automation tool queries transfer state.
+
+A C++ desktop product embeds messaging.
+
+All of them reuse the same Rust communication platform.
+</code></pre>
+<p>None of those applications need to know:</p>
+<pre><code class="language-text">how Arc works
+how Tokio schedules futures
+how Rust enums are laid out
+how the internal database is structured
+</code></pre>
+<p>They see only:</p>
+<pre><code class="language-text">stable handles
+stable functions
+stable errors
+stable events
+stable ownership rules
+</code></pre>
+<p>That is the purpose of Part 19: make the Rust communication engine reusable as a language-neutral SDK without sacrificing safety at the boundary.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="16-daemon-headless-runtime-architecture.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="20-embedded-linux-node-architecture.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="16-daemon-headless-runtime-architecture.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="20-embedded-linux-node-architecture.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

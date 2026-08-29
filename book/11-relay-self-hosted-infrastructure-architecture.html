@@ -1,0 +1,2311 @@
+<!DOCTYPE HTML>
+<html lang="en" class="navy" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>11 — Self-Hosted Relay &amp; Coordination Infrastructure - SIAR System Architecture &amp; Technical Wiki</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="Comprehensive system architecture, cryptographic protocols, DTN mesh networking, distributed storage, audio DSP pipelines, and UI/UX design specifications for SIAR.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="theme/custom.css">
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "navy";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('navy')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="Home.html">Architecture Portal & Reading Guide</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part I: Protocol Foundation & Extension Platform</li><li class="chapter-item expanded "><a href="01-protocol-extension-system-architecture.html"><strong aria-hidden="true">1.</strong> 01 — Protocol Extension System Architecture</a></li><li class="chapter-item expanded "><a href="07-capability-negotiation-architecture.html"><strong aria-hidden="true">2.</strong> 07 — Capability Negotiation & Protocol Upgrades</a></li><li class="chapter-item expanded "><a href="21-third-party-protocol-extensions-architecture.html"><strong aria-hidden="true">3.</strong> 21 — Third-Party Protocol Extensions</a></li><li class="chapter-item expanded "><a href="22-wasm-compatible-components-architecture.html"><strong aria-hidden="true">4.</strong> 22 — WebAssembly (WASM) Compatible Components</a></li><li class="chapter-item expanded "><a href="23-external-interoperability-suite-architecture.html"><strong aria-hidden="true">5.</strong> 23 — External Interoperability & Conformance Suite</a></li><li class="chapter-item expanded "><a href="24-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">6.</strong> 24 — Dynamic Plugin & Module Ecosystem</a></li><li class="chapter-item expanded affix "><li class="part-title">Part II: Identity, Trust & Cryptography</li><li class="chapter-item expanded "><a href="02-multi-device-identity-architecture.html"><strong aria-hidden="true">7.</strong> 02 — Multi-Device Identity & Trust Model</a></li><li class="chapter-item expanded "><a href="28-production-security-e2ee-key-management-privacy-architecture.html"><strong aria-hidden="true">8.</strong> 28 — Production Security, E2EE, Key Management & Privacy</a></li><li class="chapter-item expanded affix "><li class="part-title">Part III: Mesh Networking, Transports & Hardware</li><li class="chapter-item expanded "><a href="03-transport-routing-policy-engine-architecture.html"><strong aria-hidden="true">9.</strong> 03 — Transport & Routing Policy Engine</a></li><li class="chapter-item expanded "><a href="11-relay-self-hosted-infrastructure-architecture.html" class="active"><strong aria-hidden="true">10.</strong> 11 — Self-Hosted Relay & Coordination Infrastructure</a></li><li class="chapter-item expanded "><a href="12-multipath-networking-architecture.html"><strong aria-hidden="true">11.</strong> 12 — Multipath Networking & Link Aggregation</a></li><li class="chapter-item expanded "><a href="13-battery-aware-scheduling-architecture.html"><strong aria-hidden="true">12.</strong> 13 — Battery-Aware Scheduling & Power Profiles</a></li><li class="chapter-item expanded "><a href="14-proximity-abstraction-architecture.html"><strong aria-hidden="true">13.</strong> 14 — Proximity Abstraction (BLE, Wi-Fi Direct, LoRa)</a></li><li class="chapter-item expanded "><a href="15-qr-nfc-bootstrap-pairing-architecture.html"><strong aria-hidden="true">14.</strong> 15 — Out-of-Band QR & NFC Bootstrap Pairing</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IV: Delay-Tolerant Networking & Emergency Mesh</li><li class="chapter-item expanded "><a href="06-dtn-store-carry-forward-architecture.html"><strong aria-hidden="true">15.</strong> 06 — DTN Store-Carry-Forward & Bundle Forwarding</a></li><li class="chapter-item expanded "><a href="17-emergency-priority-classes-architecture.html"><strong aria-hidden="true">16.</strong> 17 — Emergency Priority Classes & Critical Alert Mesh</a></li><li class="chapter-item expanded affix "><li class="part-title">Part V: Storage, Outbox & Data Lifecycle</li><li class="chapter-item expanded "><a href="04-offline-event-log-architecture.html"><strong aria-hidden="true">17.</strong> 04 — Offline Event Log & Sync Engine</a></li><li class="chapter-item expanded "><a href="05-robust-file-blob-subsystem-architecture.html"><strong aria-hidden="true">18.</strong> 05 — Robust File & Blob Subsystem (Chunking & Resumption)</a></li><li class="chapter-item expanded "><a href="09-crash-recovery-architecture.html"><strong aria-hidden="true">19.</strong> 09 — Crash Recovery & State Integrity</a></li><li class="chapter-item expanded "><a href="32-search-indexing-local-knowledge-privacy-architecture.html"><strong aria-hidden="true">20.</strong> 32 — Search, Indexing & Local Privacy Retrieval</a></li><li class="chapter-item expanded "><a href="33-backup-restore-export-import-archival-portability-architecture.html"><strong aria-hidden="true">21.</strong> 33 — Backup, Restore, Export & Long-Term Archival</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VI: Realtime Media, Calling & Audio DSP</li><li class="chapter-item expanded "><a href="25-android-direct-hardware-surface-zero-copy-media-architecture.html"><strong aria-hidden="true">22.</strong> 25 — Android Direct Surface Zero-Copy Media</a></li><li class="chapter-item expanded "><a href="26-rust-first-audio-dsp-resampling-aec-ns-agc-architecture.html"><strong aria-hidden="true">23.</strong> 26 — Rust-First Audio DSP (AEC, NS, AGC, Resampling)</a></li><li class="chapter-item expanded "><a href="29-realtime-calls-media-session-protocol-architecture.html"><strong aria-hidden="true">24.</strong> 29 — Realtime Calls & Media Session Protocol</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VII: Ephemeral State, Presence & Notifications</li><li class="chapter-item expanded "><a href="30-presence-availability-typing-read-receipts-ephemeral-state-architecture.html"><strong aria-hidden="true">25.</strong> 30 — Presence, Availability, Typing & Read Receipts</a></li><li class="chapter-item expanded "><a href="31-notifications-push-background-delivery-lifecycle-architecture.html"><strong aria-hidden="true">26.</strong> 31 — Notifications, Push Wake & Background Delivery</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VIII: Native Runtimes, Daemons & Embedded Linux</li><li class="chapter-item expanded "><a href="16-daemon-headless-runtime-architecture.html"><strong aria-hidden="true">27.</strong> 16 — Headless Daemon & Background Runtime</a></li><li class="chapter-item expanded "><a href="19-c-abi-ffi-architecture.html"><strong aria-hidden="true">28.</strong> 19 — C-ABI FFI & Native Language Interop</a></li><li class="chapter-item expanded "><a href="20-embedded-linux-node-architecture.html"><strong aria-hidden="true">29.</strong> 20 — Embedded Linux Node & Resource-Constrained Targets</a></li><li class="chapter-item expanded "><a href="27-rust-driven-android-native-build-packaging-automation.html"><strong aria-hidden="true">30.</strong> 27 — Rust-Driven Android Native Build & Packaging Automation</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IX: Reliability, Testing, Fuzzing & Diagnostics</li><li class="chapter-item expanded "><a href="08-resource-limits-backpressure-architecture.html"><strong aria-hidden="true">31.</strong> 08 — Resource Limits, Quotas & Backpressure</a></li><li class="chapter-item expanded "><a href="10-fuzzing-protocol-test-suite-architecture.html"><strong aria-hidden="true">32.</strong> 10 — Fuzzing & Protocol Test Suite</a></li><li class="chapter-item expanded "><a href="18-network-diagnostics-path-visualization-architecture.html"><strong aria-hidden="true">33.</strong> 18 — Network Diagnostics & Path Visualization</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part X: UI/UX Client Architecture (Cross-Platform)</li><li class="chapter-item expanded "><a href="ui-ux-01-product-foundation-cross-platform-interaction-architecture.html"><strong aria-hidden="true">34.</strong> UI/UX 01 — Product UX Foundation & Cross-Platform Interaction</a></li><li class="chapter-item expanded "><a href="ui-ux-02-desktop-dioxus-app-shell-navigation-window-architecture.html"><strong aria-hidden="true">35.</strong> UI/UX 02 — Desktop Dioxus App Shell & Navigation</a></li><li class="chapter-item expanded "><a href="ui-ux-03-android-jetpack-compose-app-shell-navigation-lifecycle-architecture.html"><strong aria-hidden="true">36.</strong> UI/UX 03 — Android Jetpack Compose App Shell & Lifecycle</a></li><li class="chapter-item expanded "><a href="ui-ux-04-conversation-list-inbox-architecture.html"><strong aria-hidden="true">37.</strong> UI/UX 04 — Conversation List & Inbox UX</a></li><li class="chapter-item expanded "><a href="ui-ux-05-conversation-message-timeline-architecture.html"><strong aria-hidden="true">38.</strong> UI/UX 05 — Conversation Message Timeline UX</a></li><li class="chapter-item expanded "><a href="ui-ux-06-message-composer-attachments-voice-notes-drafts-architecture.html"><strong aria-hidden="true">39.</strong> UI/UX 06 — Message Composer, Attachments & Voice Notes</a></li><li class="chapter-item expanded "><a href="ui-ux-07-calls-realtime-media-architecture.html"><strong aria-hidden="true">40.</strong> UI/UX 07 — Calls & Realtime Media UX</a></li><li class="chapter-item expanded "><a href="ui-ux-08-contacts-requests-verification-identity-architecture.html"><strong aria-hidden="true">41.</strong> UI/UX 08 — Contacts, Requests, Verification & Identity</a></li><li class="chapter-item expanded "><a href="ui-ux-09-groups-membership-roles-architecture.html"><strong aria-hidden="true">42.</strong> UI/UX 09 — Groups, Membership & Roles UX</a></li><li class="chapter-item expanded "><a href="ui-ux-10-files-media-gallery-transfer-architecture.html"><strong aria-hidden="true">43.</strong> UI/UX 10 — Files, Media Gallery & Transfer UX</a></li><li class="chapter-item expanded "><a href="ui-ux-11-search-local-knowledge-retrieval-architecture.html"><strong aria-hidden="true">44.</strong> UI/UX 11 — Search & Local Knowledge Retrieval UX</a></li><li class="chapter-item expanded "><a href="ui-ux-12-nearby-qr-nfc-pairing-device-linking-architecture.html"><strong aria-hidden="true">45.</strong> UI/UX 12 — Nearby, QR/NFC Pairing & Device Linking UX</a></li><li class="chapter-item expanded "><a href="ui-ux-13-notifications-background-incoming-call-architecture.html"><strong aria-hidden="true">46.</strong> UI/UX 13 — Notifications, Background & Incoming Call UX</a></li><li class="chapter-item expanded "><a href="ui-ux-14-presence-typing-receipts-status-architecture.html"><strong aria-hidden="true">47.</strong> UI/UX 14 — Presence, Typing, Receipts & Status UX</a></li><li class="chapter-item expanded "><a href="ui-ux-15-security-center-devices-keys-recovery-architecture.html"><strong aria-hidden="true">48.</strong> UI/UX 15 — Security Center, Devices, Keys & Recovery UX</a></li><li class="chapter-item expanded "><a href="ui-ux-16-backup-restore-export-migration-architecture.html"><strong aria-hidden="true">49.</strong> UI/UX 16 — Backup, Restore, Export & Migration UX</a></li><li class="chapter-item expanded "><a href="ui-ux-17-emergency-sos-offline-mesh-architecture.html"><strong aria-hidden="true">50.</strong> UI/UX 17 — Emergency / SOS / Offline Mesh UX</a></li><li class="chapter-item expanded "><a href="ui-ux-18-settings-privacy-notifications-data-controls-architecture.html"><strong aria-hidden="true">51.</strong> UI/UX 18 — Settings, Privacy, Notifications & Data Controls</a></li><li class="chapter-item expanded "><a href="ui-ux-19-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">52.</strong> UI/UX 19 — Plugin & Module Ecosystem UX</a></li><li class="chapter-item expanded "><a href="ui-ux-20-diagnostics-network-paths-advanced-developer-architecture.html"><strong aria-hidden="true">53.</strong> UI/UX 20 — Diagnostics, Network Paths & Developer UX</a></li><li class="chapter-item expanded "><a href="ui-ux-21-accessibility-inclusive-interaction-architecture.html"><strong aria-hidden="true">54.</strong> UI/UX 21 — Accessibility & Inclusive Interaction</a></li><li class="chapter-item expanded "><a href="ui-ux-22-design-system-tokens-typography-icons-motion-architecture.html"><strong aria-hidden="true">55.</strong> UI/UX 22 — Design System, Tokens, Typography & Motion</a></li><li class="chapter-item expanded "><a href="ui-ux-23-responsive-adaptive-desktop-tablet-foldable-phone-layout-architecture.html"><strong aria-hidden="true">56.</strong> UI/UX 23 — Responsive & Adaptive Layouts (Desktop/Tablet/Foldable/Phone)</a></li><li class="chapter-item expanded "><a href="ui-ux-24-error-loading-empty-offline-degraded-state-architecture.html"><strong aria-hidden="true">57.</strong> UI/UX 24 — Error, Loading, Empty & Degraded-State UX</a></li><li class="chapter-item expanded "><a href="ui-ux-25-onboarding-first-run-permission-education-architecture.html"><strong aria-hidden="true">58.</strong> UI/UX 25 — Onboarding, First Run & Permission Education</a></li><li class="chapter-item expanded "><a href="ui-ux-26-performance-virtualization-large-data-ui-architecture.html"><strong aria-hidden="true">59.</strong> UI/UX 26 — Virtualization & Large-Data UI Performance</a></li><li class="chapter-item expanded "><a href="ui-ux-27-ui-testing-screenshot-interaction-release-quality-gates-architecture.html"><strong aria-hidden="true">60.</strong> UI/UX 27 — UI Testing, Screenshots & Release Quality Gates</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">SIAR System Architecture &amp; Technical Wiki</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar/edit/main/sys-arch/11-relay-self-hosted-infrastructure-architecture.md" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="part-11--relay--self-hosted-infrastructure-architecture"><a class="header" href="#part-11--relay--self-hosted-infrastructure-architecture">Part 11 — Relay &amp; Self-Hosted Infrastructure Architecture</a></h1>
+<h2 id="reusable-p2p-communication-platform"><a class="header" href="#reusable-p2p-communication-platform">Reusable P2P Communication Platform</a></h2>
+<p><strong>Status:</strong> Architecture specification<br />
+<strong>Part:</strong> 11 of 24<br />
+<strong>Primary language:</strong> Rust<br />
+<strong>Primary networking foundation:</strong> Iroh-first, infrastructure-neutral above the adapter boundary<br />
+<strong>Primary goals:</strong> reliable NAT fallback, self-hosting, regional resilience, private deployments, relay isolation, gateway bridging, scalable operations, graceful degradation, observability, abuse resistance, and production-ready Internet infrastructure</p>
+<hr />
+<h1 id="1-purpose"><a class="header" href="#1-purpose">1. Purpose</a></h1>
+<p>A peer-to-peer communication platform should attempt direct communication wherever practical, but production software cannot assume every pair of devices can establish a direct path.</p>
+<p>Real-world environments include:</p>
+<pre><code class="language-text">carrier-grade NAT
+enterprise firewalls
+symmetric NAT
+restricted UDP
+mobile carrier networks
+hotel/campus Wi-Fi
+double NAT
+corporate proxies
+unstable Internet
+regional outages
+</code></pre>
+<p>Therefore the platform requires a reliable relay layer.</p>
+<p>The relay layer must support:</p>
+<pre><code class="language-text">public/community relay use
+dedicated relay use
+self-hosted relays
+organization-private relays
+regional relay fleets
+multi-cloud deployment
+DTN gateway bridging
+controlled relay-only policies
+</code></pre>
+<p>while preserving:</p>
+<pre><code class="language-text">end-to-end application security
+transport independence
+self-hosting
+no product-level relay lock-in
+</code></pre>
+<hr />
+<h1 id="2-current-iroh-grounding"><a class="header" href="#2-current-iroh-grounding">2. Current Iroh Grounding</a></h1>
+<p>The platform should use Iroh's relay functionality as its primary Internet relay implementation.</p>
+<p>Current Iroh architecture provides:</p>
+<pre><code class="language-text">direct peer connection where possible
+NAT traversal
+relay fallback
+configurable relay sets
+self-hosted relay deployment
+dedicated relay infrastructure
+</code></pre>
+<p>The communication platform should still expose its own relay abstraction.</p>
+<p>Correct layering:</p>
+<pre><code class="language-text">Application
+   ↓
+Communication Runtime
+   ↓
+Routing Policy
+   ↓
+Relay Abstraction
+   ↓
+Iroh Relay Adapter
+   ↓
+iroh-relay
+</code></pre>
+<p>Not:</p>
+<pre><code class="language-text">Application business logic
+   ↓
+iroh-relay internals
+</code></pre>
+<hr />
+<h1 id="3-fundamental-principle"><a class="header" href="#3-fundamental-principle">3. Fundamental Principle</a></h1>
+<p>A relay is a:</p>
+<pre><code class="language-text">connectivity/data-path helper
+</code></pre>
+<p>not:</p>
+<pre><code class="language-text">message database
+account authority
+identity source of truth
+plaintext server
+product business backend
+</code></pre>
+<p>The relay should remain as ignorant of application content as practical.</p>
+<p>For private messaging:</p>
+<pre><code class="language-text">Peer A
+  ↓ encrypted transport/application traffic
+Relay
+  ↓ encrypted transport/application traffic
+Peer B
+</code></pre>
+<p>The relay should not need message plaintext.</p>
+<hr />
+<h1 id="4-infrastructure-layers"><a class="header" href="#4-infrastructure-layers">4. Infrastructure Layers</a></h1>
+<p>Separate four infrastructure responsibilities:</p>
+<pre><code class="language-text">Relay Plane
+Discovery / Rendezvous Plane
+Bootstrap / Configuration Plane
+Operational Control Plane
+</code></pre>
+<p>These may be deployed together initially but must remain architecturally separate.</p>
+<hr />
+<h1 id="5-relay-plane"><a class="header" href="#5-relay-plane">5. Relay Plane</a></h1>
+<p>Responsibilities:</p>
+<pre><code class="language-text">maintain endpoint reachability
+forward traffic when direct path unavailable
+handle connection multiplexing
+enforce relay quotas
+expose health metrics
+support TLS/network ingress
+</code></pre>
+<p>The relay plane must not own:</p>
+<pre><code class="language-text">contacts
+message history
+files in plaintext
+group membership semantics
+ERP records
+</code></pre>
+<hr />
+<h1 id="6-discovery--rendezvous-plane"><a class="header" href="#6-discovery--rendezvous-plane">6. Discovery / Rendezvous Plane</a></h1>
+<p>Responsibilities:</p>
+<pre><code class="language-text">help peers discover current contact information
+publish signed endpoint information
+provide relay hints
+support address lookup
+</code></pre>
+<p>Discovery is not the same as relay.</p>
+<p>A peer may discover another device through:</p>
+<pre><code class="language-text">directory
+DNS-like discovery
+QR
+LAN
+Bluetooth
+own-device sync
+</code></pre>
+<p>and still use a relay for transport.</p>
+<hr />
+<h1 id="7-bootstrap-plane"><a class="header" href="#7-bootstrap-plane">7. Bootstrap Plane</a></h1>
+<p>New client needs:</p>
+<pre><code class="language-text">initial relay set
+protocol configuration
+trusted service identifiers
+minimum version policy
+</code></pre>
+<p>Bootstrap configuration can ship inside the application and later update through signed configuration.</p>
+<hr />
+<h1 id="8-operational-control-plane"><a class="header" href="#8-operational-control-plane">8. Operational Control Plane</a></h1>
+<p>Operators need:</p>
+<pre><code class="language-text">relay registry
+deployment state
+health
+metrics
+configuration rollout
+certificate status
+quota policy
+version status
+incident controls
+</code></pre>
+<p>This control plane is administrative infrastructure.</p>
+<p>It should not become the P2P application's source of user truth.</p>
+<hr />
+<h1 id="9-deployment-models"><a class="header" href="#9-deployment-models">9. Deployment Models</a></h1>
+<p>Support multiple modes.</p>
+<h2 id="mode-a--communitypublic-relays"><a class="header" href="#mode-a--communitypublic-relays">Mode A — Community/Public Relays</a></h2>
+<p>Useful for:</p>
+<pre><code class="language-text">development
+small deployments
+fallback
+bootstrap
+</code></pre>
+<h2 id="mode-b--dedicated-managed-relays"><a class="header" href="#mode-b--dedicated-managed-relays">Mode B — Dedicated Managed Relays</a></h2>
+<p>Useful for:</p>
+<pre><code class="language-text">production
+known capacity
+regional control
+SLA
+</code></pre>
+<h2 id="mode-c--self-hosted-relay"><a class="header" href="#mode-c--self-hosted-relay">Mode C — Self-Hosted Relay</a></h2>
+<p>Useful for:</p>
+<pre><code class="language-text">privacy-sensitive deployments
+enterprise
+schools
+government
+community networks
+cost control
+</code></pre>
+<h2 id="mode-d--hybrid"><a class="header" href="#mode-d--hybrid">Mode D — Hybrid</a></h2>
+<pre><code class="language-text">self-hosted preferred
++
+public fallback
+</code></pre>
+<p>This is a strong general-purpose architecture.</p>
+<hr />
+<h1 id="10-relay-provider-abstraction"><a class="header" href="#10-relay-provider-abstraction">10. Relay Provider Abstraction</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait RelayProvider {
+    async fn relay_candidates(
+        &amp;self,
+        ctx: &amp;RelaySelectionContext,
+    ) -&gt; Result&lt;Vec&lt;RelayCandidate&gt;, RelayError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Possible implementations:</p>
+<pre><code class="language-text">StaticRelayProvider
+IrohDefaultRelayProvider
+SelfHostedRelayProvider
+OrganizationRelayProvider
+HybridRelayProvider
+</code></pre>
+<hr />
+<h1 id="11-relay-candidate"><a class="header" href="#11-relay-candidate">11. Relay Candidate</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct RelayCandidate {
+    pub relay_id: RelayId,
+    pub endpoint: RelayEndpoint,
+    pub region: Option&lt;RegionId&gt;,
+    pub provider: RelayProviderId,
+    pub health: RelayHealth,
+    pub policy: RelayPolicyMetadata,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Do not leak raw provider-specific structs upward.</p>
+<hr />
+<h1 id="12-relay-identity"><a class="header" href="#12-relay-identity">12. Relay Identity</a></h1>
+<p>Each managed relay should have a stable administrative identity:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct RelayId([u8; 16]);
+<span class="boring">}</span></code></pre></pre>
+<p>Separate:</p>
+<pre><code class="language-text">RelayId
+</code></pre>
+<p>from:</p>
+<pre><code class="language-text">DNS hostname
+IP address
+deployment instance
+</code></pre>
+<p>A relay can change IP/instance while preserving logical identity.</p>
+<hr />
+<h1 id="13-relay-endpoint"><a class="header" href="#13-relay-endpoint">13. Relay Endpoint</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct RelayEndpoint {
+    pub url: RelayUrl,
+    pub transport_security: RelayTlsPolicy,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Iroh adapter converts this into its current relay configuration type.</p>
+<hr />
+<h1 id="14-relay-selection"><a class="header" href="#14-relay-selection">14. Relay Selection</a></h1>
+<p>Relay selection should consider:</p>
+<pre><code class="language-text">reachability
+latency
+health
+region
+load
+operator policy
+privacy
+cost
+tenant isolation
+</code></pre>
+<p>Iroh may make its own home-relay decisions internally; the platform's infrastructure layer still determines which relay set is eligible.</p>
+<hr />
+<h1 id="15-home-relay-concept"><a class="header" href="#15-home-relay-concept">15. Home Relay Concept</a></h1>
+<p>A device should normally maintain a stable preferred relay relationship for reachability.</p>
+<p>Architecture:</p>
+<pre><code class="language-text">Configured relay set
+       ↓
+probe
+       ↓
+preferred/home relay
+       ↓
+fallback relays
+</code></pre>
+<p>Do not switch continuously for tiny latency improvements.</p>
+<p>Use hysteresis.</p>
+<hr />
+<h1 id="16-relay-hysteresis"><a class="header" href="#16-relay-hysteresis">16. Relay Hysteresis</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct RelaySwitchPolicy {
+    pub minimum_hold_time: Duration,
+    pub latency_improvement_threshold: Duration,
+    pub failure_override: bool,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>This prevents relay thrashing.</p>
+<hr />
+<h1 id="17-relay-health"><a class="header" href="#17-relay-health">17. Relay Health</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum RelayHealth {
+    Healthy,
+    Degraded,
+    Unreachable,
+    Maintenance,
+    Unknown,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Health inputs:</p>
+<pre><code class="language-text">connectivity
+handshake success
+latency
+packet/stream failures
+capacity
+operator status
+</code></pre>
+<hr />
+<h1 id="18-multi-relay-resilience"><a class="header" href="#18-multi-relay-resilience">18. Multi-Relay Resilience</a></h1>
+<p>Never operate production with exactly one unavoidable relay.</p>
+<p>Recommended:</p>
+<pre><code class="language-text">Region A Relay 1
+Region A Relay 2
+Region B Relay 1
+Region B Relay 2
+</code></pre>
+<p>Clients receive a set.</p>
+<p>Direct paths still remain preferred where policy permits.</p>
+<hr />
+<h1 id="19-failure-domains"><a class="header" href="#19-failure-domains">19. Failure Domains</a></h1>
+<p>Do not deploy all relays behind:</p>
+<pre><code class="language-text">same VM
+same availability zone
+same provider
+same DNS failure domain
+</code></pre>
+<p>Production architecture should support:</p>
+<pre><code class="language-text">multi-AZ
+multi-region
+optionally multi-cloud
+</code></pre>
+<hr />
+<h1 id="20-regional-architecture"><a class="header" href="#20-regional-architecture">20. Regional Architecture</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">India
+├── Delhi relay
+├── Mumbai relay
+└── Bengaluru relay
+
+Europe
+├── Frankfurt relay
+└── London relay
+
+Asia-Pacific
+└── Singapore relay
+</code></pre>
+<p>Client chooses eligible low-latency healthy relay.</p>
+<hr />
+<h1 id="21-region-selection"><a class="header" href="#21-region-selection">21. Region Selection</a></h1>
+<p>Inputs:</p>
+<pre><code class="language-text">latency probe
+current network
+configured region preference
+organization policy
+data residency policy
+</code></pre>
+<p>Do not rely solely on IP geolocation.</p>
+<hr />
+<h1 id="22-data-residency"><a class="header" href="#22-data-residency">22. Data Residency</a></h1>
+<p>Enterprise deployments may require:</p>
+<pre><code class="language-text">relay traffic stays within selected region/provider
+</code></pre>
+<p>Expose:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum RelayRegionPolicy {
+    Any,
+    Preferred(Vec&lt;RegionId&gt;),
+    Restricted(Vec&lt;RegionId&gt;),
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="23-tenant-isolation"><a class="header" href="#23-tenant-isolation">23. Tenant Isolation</a></h1>
+<p>Production SaaS may need:</p>
+<pre><code class="language-text">shared relay fleet
+dedicated tenant relay
+</code></pre>
+<p>Support both.</p>
+<p>Dedicated relays provide stronger:</p>
+<pre><code class="language-text">capacity isolation
+operational isolation
+version control
+</code></pre>
+<hr />
+<h1 id="24-relay-pools"><a class="header" href="#24-relay-pools">24. Relay Pools</a></h1>
+<p>Logical grouping:</p>
+<pre><code class="language-text">public-fallback
+consumer-production
+enterprise-eu
+enterprise-in
+emergency
+development
+</code></pre>
+<p>A client policy selects one or more pools.</p>
+<hr />
+<h1 id="25-relay-configuration"><a class="header" href="#25-relay-configuration">25. Relay Configuration</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct RelayConfig {
+    pub pools: Vec&lt;RelayPoolConfig&gt;,
+    pub selection: RelaySelectionPolicy,
+    pub fallback: RelayFallbackPolicy,
+    pub health: RelayHealthPolicy,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="26-signed-infrastructure-configuration"><a class="header" href="#26-signed-infrastructure-configuration">26. Signed Infrastructure Configuration</a></h1>
+<p>Clients may receive updated relay sets.</p>
+<p>The configuration should be:</p>
+<pre><code class="language-text">versioned
+signed
+expiry-bound
+rollback-protected
+</code></pre>
+<p>Do not trust arbitrary relay URLs delivered by an untrusted server.</p>
+<hr />
+<h1 id="27-infrastructure-config-envelope"><a class="header" href="#27-infrastructure-config-envelope">27. Infrastructure Config Envelope</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct InfrastructureConfig {
+    pub version: u64,
+    pub valid_from: Timestamp,
+    pub valid_until: Timestamp,
+    pub relay_pools: Vec&lt;RelayPoolConfig&gt;,
+    pub bootstrap: BootstrapPolicy,
+    pub signature: Signature,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="28-rollback-protection"><a class="header" href="#28-rollback-protection">28. Rollback Protection</a></h1>
+<p>If client has trusted:</p>
+<pre><code class="language-text">infra config v42
+</code></pre>
+<p>it should not silently accept:</p>
+<pre><code class="language-text">v37
+</code></pre>
+<p>unless recovery policy explicitly allows it.</p>
+<hr />
+<h1 id="29-offline-bootstrap"><a class="header" href="#29-offline-bootstrap">29. Offline Bootstrap</a></h1>
+<p>If config service unavailable:</p>
+<pre><code class="language-text">use last-known-valid signed relay set
+</code></pre>
+<p>or bundled defaults.</p>
+<p>The app must not become unusable merely because configuration control plane is offline.</p>
+<hr />
+<h1 id="30-bootstrap-expiry"><a class="header" href="#30-bootstrap-expiry">30. Bootstrap Expiry</a></h1>
+<p>Expired config may enter:</p>
+<pre><code class="language-text">grace mode
+</code></pre>
+<p>rather than immediately disabling all networking.</p>
+<p>Security-critical revocations may require stricter handling.</p>
+<hr />
+<h1 id="31-self-hosted-relay-deployment"><a class="header" href="#31-self-hosted-relay-deployment">31. Self-Hosted Relay Deployment</a></h1>
+<p>A self-hosted installation should support:</p>
+<pre><code class="language-text">single-node
+HA pair
+regional fleet
+Kubernetes
+systemd VM
+container
+bare metal
+</code></pre>
+<p>Do not require Kubernetes.</p>
+<hr />
+<h1 id="32-recommended-small-deployment"><a class="header" href="#32-recommended-small-deployment">32. Recommended Small Deployment</a></h1>
+<pre><code class="language-text">DNS
+ ↓
+Relay VM
+├── iroh-relay
+├── metrics exporter
+└── system supervisor
+</code></pre>
+<p>This is enough for many organizations.</p>
+<hr />
+<h1 id="33-recommended-ha-deployment"><a class="header" href="#33-recommended-ha-deployment">33. Recommended HA Deployment</a></h1>
+<pre><code class="language-text">relay1.example
+relay2.example
+relay3.example
+</code></pre>
+<p>Clients know all three.</p>
+<p>Prefer client-side selection/failover rather than hiding every relay behind generic TCP load balancing that may interfere with protocol behavior.</p>
+<hr />
+<h1 id="34-tls"><a class="header" href="#34-tls">34. TLS</a></h1>
+<p>Self-hosted relay ingress must use secure TLS as required by current Iroh deployment architecture.</p>
+<p>Certificate management should support:</p>
+<pre><code class="language-text">ACME
+operator-provided certificates
+rotation
+expiry monitoring
+</code></pre>
+<hr />
+<h1 id="35-certificate-monitoring"><a class="header" href="#35-certificate-monitoring">35. Certificate Monitoring</a></h1>
+<p>Alert before:</p>
+<pre><code class="language-text">certificate expiry
+ACME renewal failure
+DNS misconfiguration
+</code></pre>
+<p>This is operationally critical.</p>
+<hr />
+<h1 id="36-dns"><a class="header" href="#36-dns">36. DNS</a></h1>
+<p>Use stable hostnames.</p>
+<p>Avoid hard-coding relay IPs into clients.</p>
+<p>DNS gives:</p>
+<pre><code class="language-text">instance replacement
+provider migration
+address rotation
+</code></pre>
+<p>but signed infrastructure config determines which names are trusted.</p>
+<hr />
+<h1 id="37-public-ip-requirement"><a class="header" href="#37-public-ip-requirement">37. Public IP Requirement</a></h1>
+<p>Internet relays normally require publicly reachable infrastructure.</p>
+<p>Self-hosted home-lab deployments must ensure:</p>
+<pre><code class="language-text">public reachability
+port/firewall configuration
+DNS
+TLS
+</code></pre>
+<p>A relay behind restrictive NAT defeats the purpose.</p>
+<hr />
+<h1 id="38-relay-firewall-policy"><a class="header" href="#38-relay-firewall-policy">38. Relay Firewall Policy</a></h1>
+<p>Expose only required ports/services.</p>
+<p>Management interfaces should be:</p>
+<pre><code class="language-text">private network
+VPN
+admin authentication
+</code></pre>
+<p>not public unless explicitly secured.</p>
+<hr />
+<h1 id="39-relay-statelessness-goal"><a class="header" href="#39-relay-statelessness-goal">39. Relay Statelessness Goal</a></h1>
+<p>Keep relay application state minimal.</p>
+<p>Ideal relay stores:</p>
+<pre><code class="language-text">active connection state
+temporary routing state
+metrics
+rate-limit counters
+</code></pre>
+<p>not user application history.</p>
+<p>This improves:</p>
+<pre><code class="language-text">horizontal scaling
+replacement
+privacy
+disaster recovery
+</code></pre>
+<hr />
+<h1 id="40-persistent-relay-state"><a class="header" href="#40-persistent-relay-state">40. Persistent Relay State</a></h1>
+<p>If operational state requires persistence:</p>
+<pre><code class="language-text">configuration
+tenant policy
+rate-limit policy
+audit events
+</code></pre>
+<p>keep it separate from user message content.</p>
+<hr />
+<h1 id="41-e2ee-boundary"><a class="header" href="#41-e2ee-boundary">41. E2EE Boundary</a></h1>
+<p>Even when transport traffic passes through relay:</p>
+<pre><code class="language-text">application payload remains end-to-end protected
+</code></pre>
+<p>The relay must never be considered a trusted plaintext middlebox.</p>
+<hr />
+<h1 id="42-metadata-reality"><a class="header" href="#42-metadata-reality">42. Metadata Reality</a></h1>
+<p>Relay operators may still observe some metadata:</p>
+<pre><code class="language-text">connection timing
+traffic volume
+relay client addresses
+</code></pre>
+<p>Do not claim relay use provides metadata anonymity.</p>
+<p>Privacy documentation must be explicit.</p>
+<hr />
+<h1 id="43-relay-only-privacy-mode"><a class="header" href="#43-relay-only-privacy-mode">43. Relay-Only Privacy Mode</a></h1>
+<p>The platform may later support a policy that prefers/forces relay-only paths where underlying Iroh support permits.</p>
+<p>Possible reasons:</p>
+<pre><code class="language-text">hide direct peer IP from remote peer
+enterprise network policy
+diagnostics
+</code></pre>
+<p>Trade-offs:</p>
+<pre><code class="language-text">higher latency
+higher bandwidth cost
+relay metadata exposure
+</code></pre>
+<hr />
+<h1 id="44-direct-preferred-default"><a class="header" href="#44-direct-preferred-default">44. Direct-Preferred Default</a></h1>
+<p>General default:</p>
+<pre><code class="language-text">direct if healthy
+relay fallback
+</code></pre>
+<p>This minimizes:</p>
+<pre><code class="language-text">latency
+relay cost
+central dependency
+</code></pre>
+<hr />
+<h1 id="45-relay-preferred-policy"><a class="header" href="#45-relay-preferred-policy">45. Relay-Preferred Policy</a></h1>
+<p>Some deployments may choose:</p>
+<pre><code class="language-text">relay preferred
+</code></pre>
+<p>for operational predictability.</p>
+<p>Expose policy, do not hard-code.</p>
+<hr />
+<h1 id="46-relay-fallback-chain"><a class="header" href="#46-relay-fallback-chain">46. Relay Fallback Chain</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">Direct
+ ↓ failure
+Private relay
+ ↓ failure
+Managed dedicated relay
+ ↓ failure
+Public fallback
+</code></pre>
+<p>Policy can restrict any layer.</p>
+<hr />
+<h1 id="47-private-only-deployment"><a class="header" href="#47-private-only-deployment">47. Private-Only Deployment</a></h1>
+<p>Enterprise mode:</p>
+<pre><code class="language-text">Direct
++
+organization relays
+</code></pre>
+<p>and:</p>
+<pre><code class="language-text">no public relays
+</code></pre>
+<p>This should be fully supported.</p>
+<hr />
+<h1 id="48-air-gapped--local-mode"><a class="header" href="#48-air-gapped--local-mode">48. Air-Gapped / Local Mode</a></h1>
+<p>If no Internet:</p>
+<pre><code class="language-text">relay infrastructure irrelevant
+</code></pre>
+<p>Routing falls back to:</p>
+<pre><code class="language-text">LAN
+Wi-Fi
+Bluetooth
+DTN
+</code></pre>
+<p>The core product remains functional.</p>
+<hr />
+<h1 id="49-relay-capacity-planning"><a class="header" href="#49-relay-capacity-planning">49. Relay Capacity Planning</a></h1>
+<p>Capacity dimensions:</p>
+<pre><code class="language-text">concurrent connections
+bandwidth
+network packets
+CPU
+memory
+file descriptors
+egress cost
+</code></pre>
+<p>Do not size only by registered user count.</p>
+<hr />
+<h1 id="50-capacity-formula"><a class="header" href="#50-capacity-formula">50. Capacity Formula</a></h1>
+<p>Conceptual estimates:</p>
+<pre><code class="language-text">concurrent endpoints
+×
+average relay-use fraction
+×
+average relayed throughput
+</code></pre>
+<p>plus peak factors.</p>
+<p>Measure production traffic rather than relying solely on estimates.</p>
+<hr />
+<h1 id="51-direct-connection-ratio"><a class="header" href="#51-direct-connection-ratio">51. Direct Connection Ratio</a></h1>
+<p>Important operational metric:</p>
+<pre><code class="language-text">direct connection percentage
+relay fallback percentage
+</code></pre>
+<p>High unexpected relay usage may indicate:</p>
+<pre><code class="language-text">NAT traversal issue
+network policy
+regional degradation
+client regression
+</code></pre>
+<hr />
+<h1 id="52-relay-bandwidth-cost"><a class="header" href="#52-relay-bandwidth-cost">52. Relay Bandwidth Cost</a></h1>
+<p>Relay traffic creates infrastructure egress.</p>
+<p>Large files/video can dominate cost.</p>
+<p>Routing policy should prefer direct paths when safe and possible.</p>
+<hr />
+<h1 id="53-file-transfer-policy"><a class="header" href="#53-file-transfer-policy">53. File Transfer Policy</a></h1>
+<p>For large files:</p>
+<pre><code class="language-text">direct/LAN preferred
+relay allowed
+</code></pre>
+<p>Optional application policy:</p>
+<pre><code class="language-text">ask before &gt; X GB over metered/relay path
+</code></pre>
+<hr />
+<h1 id="54-call-traffic"><a class="header" href="#54-call-traffic">54. Call Traffic</a></h1>
+<p>Realtime audio/video over relay needs:</p>
+<pre><code class="language-text">low latency
+sufficient bandwidth
+capacity isolation
+</code></pre>
+<p>Relay fleet should monitor realtime quality separately from bulk traffic.</p>
+<hr />
+<h1 id="55-traffic-classes"><a class="header" href="#55-traffic-classes">55. Traffic Classes</a></h1>
+<p>Relay infrastructure may classify at connection/session level:</p>
+<pre><code class="language-text">control
+interactive
+realtime
+bulk
+</code></pre>
+<p>without needing application plaintext.</p>
+<p>Enforcement must not compromise E2EE.</p>
+<hr />
+<h1 id="56-qos"><a class="header" href="#56-qos">56. QoS</a></h1>
+<p>Possible:</p>
+<pre><code class="language-text">per-tenant rate limits
+connection class limits
+bulk shaping
+</code></pre>
+<p>Do not create protocol-level starvation of critical control.</p>
+<hr />
+<h1 id="57-resource-limits"><a class="header" href="#57-resource-limits">57. Resource Limits</a></h1>
+<p>Part 08 applies server-side too.</p>
+<p>Relay hard limits:</p>
+<pre><code class="language-text">connections
+streams
+memory
+FDs
+bandwidth
+handshakes/sec
+unknown-client rate
+</code></pre>
+<hr />
+<h1 id="58-admission-control"><a class="header" href="#58-admission-control">58. Admission Control</a></h1>
+<p>New relay connection passes:</p>
+<pre><code class="language-text">global capacity
+tenant policy
+authentication/API policy if used
+rate limit
+</code></pre>
+<p>before expensive resources.</p>
+<hr />
+<h1 id="59-authentication-to-relay"><a class="header" href="#59-authentication-to-relay">59. Authentication to Relay</a></h1>
+<p>Different deployments may use:</p>
+<pre><code class="language-text">open relay access
+project API keys
+tenant credentials
+network ACL
+</code></pre>
+<p>Relay-access authorization is separate from P2P identity.</p>
+<hr />
+<h1 id="60-relay-access-credential"><a class="header" href="#60-relay-access-credential">60. Relay Access Credential</a></h1>
+<p>Do not reuse:</p>
+<pre><code class="language-text">user E2EE private key
+</code></pre>
+<p>as relay billing/access credential.</p>
+<p>Separate concerns.</p>
+<hr />
+<h1 id="61-credential-rotation"><a class="header" href="#61-credential-rotation">61. Credential Rotation</a></h1>
+<p>Relay access credentials should support:</p>
+<pre><code class="language-text">rotation
+revocation
+overlap window
+</code></pre>
+<p>without changing account identity.</p>
+<hr />
+<h1 id="62-rate-limiting"><a class="header" href="#62-rate-limiting">62. Rate Limiting</a></h1>
+<p>Protect against:</p>
+<pre><code class="language-text">connection floods
+bandwidth abuse
+handshake CPU abuse
+tenant runaway traffic
+</code></pre>
+<p>Use:</p>
+<pre><code class="language-text">token buckets
+connection caps
+per-source limits
+</code></pre>
+<hr />
+<h1 id="63-ddos-reality"><a class="header" href="#63-ddos-reality">63. DDoS Reality</a></h1>
+<p>A public relay is exposed infrastructure.</p>
+<p>Architecture must expect:</p>
+<pre><code class="language-text">volumetric attacks
+connection attacks
+protocol abuse
+</code></pre>
+<p>Application-level Rust safety alone cannot solve network DDoS.</p>
+<p>Use provider/network protections where needed.</p>
+<hr />
+<h1 id="64-front-door-infrastructure"><a class="header" href="#64-front-door-infrastructure">64. Front-Door Infrastructure</a></h1>
+<p>Depending on protocol constraints and provider support:</p>
+<pre><code class="language-text">DDoS-protected network edge
+firewall
+provider anti-DDoS
+</code></pre>
+<p>may sit before relay.</p>
+<p>Do not assume generic HTTP CDN proxying is compatible.</p>
+<hr />
+<h1 id="65-relay-abuse-monitoring"><a class="header" href="#65-relay-abuse-monitoring">65. Relay Abuse Monitoring</a></h1>
+<p>Track:</p>
+<pre><code class="language-text">connections/sec
+failed handshake
+bandwidth per tenant
+abnormal duration
+protocol parse errors
+</code></pre>
+<hr />
+<h1 id="66-privacy-preserving-metrics"><a class="header" href="#66-privacy-preserving-metrics">66. Privacy-Preserving Metrics</a></h1>
+<p>Aggregate by:</p>
+<pre><code class="language-text">relay
+region
+tenant
+traffic class
+</code></pre>
+<p>Avoid exporting raw peer identities unless needed for security/admin and properly protected.</p>
+<hr />
+<h1 id="67-structured-logging"><a class="header" href="#67-structured-logging">67. Structured Logging</a></h1>
+<p>Fields:</p>
+<pre><code class="language-text">relay_id
+region
+connection_id
+protocol result
+latency
+bytes
+error code
+</code></pre>
+<p>Do not log payload bytes.</p>
+<hr />
+<h1 id="68-log-retention"><a class="header" href="#68-log-retention">68. Log Retention</a></h1>
+<p>Relay logs can reveal metadata.</p>
+<p>Use:</p>
+<pre><code class="language-text">short retention by default
+access control
+redaction
+</code></pre>
+<p>Longer security retention only when justified.</p>
+<hr />
+<h1 id="69-health-endpoints"><a class="header" href="#69-health-endpoints">69. Health Endpoints</a></h1>
+<p>Expose:</p>
+<pre><code class="language-text">liveness
+readiness
+metrics
+version
+</code></pre>
+<p>Administrative endpoints should not reveal sensitive configuration.</p>
+<hr />
+<h1 id="70-liveness"><a class="header" href="#70-liveness">70. Liveness</a></h1>
+<p>Answers:</p>
+<pre><code class="language-text">process alive?
+</code></pre>
+<hr />
+<h1 id="71-readiness"><a class="header" href="#71-readiness">71. Readiness</a></h1>
+<p>Answers:</p>
+<pre><code class="language-text">can accept production relay traffic?
+</code></pre>
+<p>A relay may be alive but not ready because:</p>
+<pre><code class="language-text">certificate missing
+config invalid
+capacity exhausted
+</code></pre>
+<hr />
+<h1 id="72-synthetic-probes"><a class="header" href="#72-synthetic-probes">72. Synthetic Probes</a></h1>
+<p>Run external probes:</p>
+<pre><code class="language-text">connect
+relay test traffic
+measure latency
+</code></pre>
+<p>from multiple regions.</p>
+<p>This detects failures beyond process-level health.</p>
+<hr />
+<h1 id="73-relay-doctor-tool"><a class="header" href="#73-relay-doctor-tool">73. Relay Doctor Tool</a></h1>
+<p>Provide operator command:</p>
+<pre><code class="language-text">comm-relay doctor
+</code></pre>
+<p>Checks:</p>
+<pre><code class="language-text">DNS
+TLS
+ports
+Iroh relay handshake
+latency
+configuration
+system limits
+</code></pre>
+<hr />
+<h1 id="74-version-reporting"><a class="header" href="#74-version-reporting">74. Version Reporting</a></h1>
+<p>Every relay exposes administrative:</p>
+<pre><code class="language-text">software version
+protocol version
+build ID
+</code></pre>
+<p>for fleet control.</p>
+<p>Do not reveal excessive internals publicly.</p>
+<hr />
+<h1 id="75-upgrade-policy"><a class="header" href="#75-upgrade-policy">75. Upgrade Policy</a></h1>
+<p>Use:</p>
+<pre><code class="language-text">canary
+blue/green
+rolling
+</code></pre>
+<p>upgrades.</p>
+<p>Never upgrade all global relays simultaneously.</p>
+<hr />
+<h1 id="76-canary-relay"><a class="header" href="#76-canary-relay">76. Canary Relay</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">5% eligible clients
+</code></pre>
+<p>or internal test fleet first.</p>
+<p>Watch:</p>
+<pre><code class="language-text">connection failures
+latency
+direct/relay ratio
+CPU
+memory
+</code></pre>
+<hr />
+<h1 id="77-version-locking"><a class="header" href="#77-version-locking">77. Version Locking</a></h1>
+<p>Enterprise/self-hosted deployments may intentionally stay on tested relay versions.</p>
+<p>Infrastructure config should record compatibility constraints.</p>
+<hr />
+<h1 id="78-clientrelay-compatibility"><a class="header" href="#78-clientrelay-compatibility">78. Client/Relay Compatibility</a></h1>
+<p>Clients should support documented compatible relay protocol versions.</p>
+<p>Do not tie relay upgrade to application UI release unnecessarily.</p>
+<hr />
+<h1 id="79-rollback"><a class="header" href="#79-rollback">79. Rollback</a></h1>
+<p>Keep previous known-good relay deployment artifact available.</p>
+<p>Rollback should not require changing peer identity/application data.</p>
+<hr />
+<h1 id="80-graceful-draining"><a class="header" href="#80-graceful-draining">80. Graceful Draining</a></h1>
+<p>Before relay shutdown:</p>
+<pre><code class="language-text">mark not-ready
+stop new sessions
+allow existing sessions to drain
+</code></pre>
+<p>Then terminate after timeout.</p>
+<hr />
+<h1 id="81-forced-shutdown"><a class="header" href="#81-forced-shutdown">81. Forced Shutdown</a></h1>
+<p>If emergency:</p>
+<pre><code class="language-text">clients fail over
+</code></pre>
+<p>The platform must tolerate abrupt relay loss.</p>
+<hr />
+<h1 id="82-client-failover"><a class="header" href="#82-client-failover">82. Client Failover</a></h1>
+<p>Relay disappears:</p>
+<pre><code class="language-text">existing path fails
+ ↓
+routing reevaluates
+ ↓
+direct or alternate relay selected
+</code></pre>
+<p>No message/file semantic state is lost.</p>
+<hr />
+<h1 id="83-relay-failure-during-file-transfer"><a class="header" href="#83-relay-failure-during-file-transfer">83. Relay Failure During File Transfer</a></h1>
+<p>Part 05 resumes missing chunks on new path.</p>
+<p>Do not restart entire file.</p>
+<hr />
+<h1 id="84-relay-failure-during-call"><a class="header" href="#84-relay-failure-during-call">84. Relay Failure During Call</a></h1>
+<p>Media path may:</p>
+<pre><code class="language-text">switch relay/path
+adapt temporarily
+</code></pre>
+<p>If transition impossible:</p>
+<pre><code class="language-text">reconnect call
+</code></pre>
+<p>No protocol should assume relay immutability.</p>
+<hr />
+<h1 id="85-dns-failure"><a class="header" href="#85-dns-failure">85. DNS Failure</a></h1>
+<p>Clients should retain:</p>
+<pre><code class="language-text">resolved addresses for reasonable TTL
+known relay set
+</code></pre>
+<p>but obey certificate/security validation.</p>
+<p>Signed config + DNS resiliency complement each other.</p>
+<hr />
+<h1 id="86-control-plane-failure"><a class="header" href="#86-control-plane-failure">86. Control Plane Failure</a></h1>
+<p>If admin/control service is down:</p>
+<pre><code class="language-text">relay data plane should continue
+</code></pre>
+<p>where possible.</p>
+<p>Do not require live central database lookup for every packet.</p>
+<hr />
+<h1 id="87-database-independence"><a class="header" href="#87-database-independence">87. Database Independence</a></h1>
+<p>Relay data plane should avoid mandatory Postgres dependency for basic forwarding.</p>
+<p>This improves:</p>
+<pre><code class="language-text">availability
+latency
+operational simplicity
+</code></pre>
+<hr />
+<h1 id="88-optional-control-database"><a class="header" href="#88-optional-control-database">88. Optional Control Database</a></h1>
+<p>For hosted SaaS operations:</p>
+<pre><code class="language-text">tenants
+API credentials
+relay registry
+quota config
+audit metadata
+</code></pre>
+<p>may live in Postgres/Neon.</p>
+<p>But relay forwarding should cache required policy locally.</p>
+<hr />
+<h1 id="89-control-data-cache"><a class="header" href="#89-control-data-cache">89. Control Data Cache</a></h1>
+<p>Relay can receive signed/versioned policy snapshot.</p>
+<p>If database temporarily unavailable:</p>
+<pre><code class="language-text">continue with last-valid policy
+</code></pre>
+<p>within expiry/grace.</p>
+<hr />
+<h1 id="90-neonpostgres-role"><a class="header" href="#90-neonpostgres-role">90. Neon/Postgres Role</a></h1>
+<p>If your wider platform already uses Neon/Postgres, use it for:</p>
+<pre><code class="language-text">operator/admin metadata
+tenant configuration
+billing counters
+relay fleet registry
+</code></pre>
+<p>not the per-packet relay hot path.</p>
+<hr />
+<h1 id="91-metrics-storage"><a class="header" href="#91-metrics-storage">91. Metrics Storage</a></h1>
+<p>Use metrics backend suitable for time series.</p>
+<p>Keep this separate from application Postgres if scale demands.</p>
+<p>Architecture does not mandate a specific vendor.</p>
+<hr />
+<h1 id="92-object-storage"><a class="header" href="#92-object-storage">92. Object Storage</a></h1>
+<p>Relay should not use object storage for ordinary live forwarding.</p>
+<p>DTN/store-forward gateways may use dedicated encrypted blob storage under Part 06/05 architecture.</p>
+<hr />
+<h1 id="93-relay-vs-dtn-gateway"><a class="header" href="#93-relay-vs-dtn-gateway">93. Relay vs DTN Gateway</a></h1>
+<p>Important distinction:</p>
+<h2 id="relay"><a class="header" href="#relay">Relay</a></h2>
+<pre><code class="language-text">continuous-ish network path helper
+</code></pre>
+<h2 id="dtn-gateway"><a class="header" href="#dtn-gateway">DTN Gateway</a></h2>
+<pre><code class="language-text">durably stores bundles across time
+</code></pre>
+<p>Do not silently make all relays DTN stores.</p>
+<hr />
+<h1 id="94-combined-relay--dtn-gateway"><a class="header" href="#94-combined-relay--dtn-gateway">94. Combined Relay + DTN Gateway</a></h1>
+<p>A server may run both:</p>
+<pre><code class="language-text">iroh relay
++
+DTN gateway service
+</code></pre>
+<p>but keep separate resource quotas and security boundaries.</p>
+<hr />
+<h1 id="95-gateway-architecture"><a class="header" href="#95-gateway-architecture">95. Gateway Architecture</a></h1>
+<pre><code class="language-text">Local DTN
+ ↓
+Gateway Node
+ ├── comm-dtn
+ ├── comm-routing
+ ├── Iroh endpoint
+ └── optional iroh-relay nearby/colocated
+ ↓
+Internet
+</code></pre>
+<p>Gateway can deliver bundles to remote peers.</p>
+<hr />
+<h1 id="96-disaster-deployment"><a class="header" href="#96-disaster-deployment">96. Disaster Deployment</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">Shelter Raspberry Pi
+├── Wi-Fi AP
+├── BLE
+├── DTN store
+└── intermittent satellite/4G Internet
+
+When Internet available:
+    DTN → Iroh → remote destination
+</code></pre>
+<p>No central cloud is needed during partition.</p>
+<hr />
+<h1 id="97-community-relay"><a class="header" href="#97-community-relay">97. Community Relay</a></h1>
+<p>A community organization can host:</p>
+<pre><code class="language-text">one or more relays
++
+optional DTN gateways
+</code></pre>
+<p>for local users.</p>
+<p>This supports local sovereignty.</p>
+<hr />
+<h1 id="98-enterprise-relay"><a class="header" href="#98-enterprise-relay">98. Enterprise Relay</a></h1>
+<p>Enterprise can require:</p>
+<pre><code class="language-text">organization relays only
+specific regions
+private DNS
+VPN-admin access
+</code></pre>
+<p>Application code remains unchanged.</p>
+<hr />
+<h1 id="99-schoolerp-deployment"><a class="header" href="#99-schoolerp-deployment">99. School/ERP Deployment</a></h1>
+<p>A school could:</p>
+<pre><code class="language-text">use public/dedicated Internet relays normally
+</code></pre>
+<p>while local-campus devices may communicate directly/LAN.</p>
+<p>The relay layer does not need ERP domain knowledge.</p>
+<hr />
+<h1 id="100-relay-discovery"><a class="header" href="#100-relay-discovery">100. Relay Discovery</a></h1>
+<p>Relay URLs may come from:</p>
+<pre><code class="language-text">bundled configuration
+signed config update
+organization provisioning
+manual advanced config
+</code></pre>
+<p>Not from arbitrary remote message payload.</p>
+<hr />
+<h1 id="101-manual-self-hosted-relay"><a class="header" href="#101-manual-self-hosted-relay">101. Manual Self-Hosted Relay</a></h1>
+<p>Advanced UI/CLI may allow:</p>
+<pre><code class="language-text">Add relay URL
+</code></pre>
+<p>but should show:</p>
+<pre><code class="language-text">unverified custom infrastructure
+</code></pre>
+<p>until trust policy validates it.</p>
+<hr />
+<h1 id="102-provisioning-profiles"><a class="header" href="#102-provisioning-profiles">102. Provisioning Profiles</a></h1>
+<p>Enterprise installer can provide signed:</p>
+<pre><code class="language-text">organization infrastructure profile
+</code></pre>
+<p>containing relay pools and policies.</p>
+<hr />
+<h1 id="103-relay-policy-object"><a class="header" href="#103-relay-policy-object">103. Relay Policy Object</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct RelayPolicy {
+    pub allowed_pools: Vec&lt;RelayPoolId&gt;,
+    pub allow_public_fallback: bool,
+    pub preferred_regions: Vec&lt;RegionId&gt;,
+    pub relay_only: bool,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="104-routing-integration"><a class="header" href="#104-routing-integration">104. Routing Integration</a></h1>
+<p>Part 03 sees relay paths as candidates:</p>
+<pre><code class="language-text">IrohDirect
+IrohRelay(relay_id)
+</code></pre>
+<p>It compares:</p>
+<pre><code class="language-text">latency
+health
+policy
+cost
+</code></pre>
+<hr />
+<h1 id="105-capability-integration"><a class="header" href="#105-capability-integration">105. Capability Integration</a></h1>
+<p>Part 07 can expose:</p>
+<pre><code class="language-text">relay mode support
+infrastructure protocol version
+</code></pre>
+<p>but detailed relay fleet info need not be advertised peer-to-peer.</p>
+<hr />
+<h1 id="106-resource-integration"><a class="header" href="#106-resource-integration">106. Resource Integration</a></h1>
+<p>Part 08 server profile controls:</p>
+<pre><code class="language-text">connections
+streams
+bandwidth
+memory
+FDs
+tenant quota
+</code></pre>
+<hr />
+<h1 id="107-crash-recovery-integration"><a class="header" href="#107-crash-recovery-integration">107. Crash Recovery Integration</a></h1>
+<p>Part 09 relay process can restart.</p>
+<p>Live connections disappear; clients reconnect/fail over.</p>
+<p>Relay persistent control metadata recovers separately.</p>
+<p>P2P application semantic state remains at endpoints.</p>
+<hr />
+<h1 id="108-test-integration"><a class="header" href="#108-test-integration">108. Test Integration</a></h1>
+<p>Part 10 should include:</p>
+<pre><code class="language-text">relay failure
+relay switch
+TLS failure
+DNS failure
+multi-relay selection
+version mismatch
+rate-limit behavior
+</code></pre>
+<hr />
+<h1 id="109-local-test-fleet"><a class="header" href="#109-local-test-fleet">109. Local Test Fleet</a></h1>
+<p>Development:</p>
+<pre><code class="language-text">relay-a
+relay-b
+client-a
+client-b
+</code></pre>
+<p>run via local processes/containers.</p>
+<p>Inject:</p>
+<pre><code class="language-text">packet loss
+relay kill
+DNS switch
+</code></pre>
+<hr />
+<h1 id="110-relay-protocol-fuzzing"><a class="header" href="#110-relay-protocol-fuzzing">110. Relay Protocol Fuzzing</a></h1>
+<p>Fuzz relay protocol parser/adapters.</p>
+<p>Current upstream Iroh test coverage should be complemented by your platform's adapter and configuration tests.</p>
+<hr />
+<h1 id="111-self-hosted-configuration-validation"><a class="header" href="#111-self-hosted-configuration-validation">111. Self-Hosted Configuration Validation</a></h1>
+<p>Before start validate:</p>
+<pre><code class="language-text">hostname
+TLS
+listen ports
+capacity
+metrics bind
+admin bind
+</code></pre>
+<p>Fail fast on unsafe config.</p>
+<hr />
+<h1 id="112-ron-configuration"><a class="header" href="#112-ron-configuration">112. RON Configuration</a></h1>
+<p>Your platform wrapper may use RON:</p>
+<pre><code class="language-ron">(
+    relay_id: "in-delhi-1",
+    region: "in-delhi",
+    mode: SelfHosted,
+    public_hostname: "relay.example",
+)
+</code></pre>
+<p>Then translate into current Iroh relay configuration.</p>
+<p>Do not fork Iroh's config format unnecessarily unless wrapper adds real value.</p>
+<hr />
+<h1 id="113-secrets"><a class="header" href="#113-secrets">113. Secrets</a></h1>
+<p>Relay secrets/API credentials belong in:</p>
+<pre><code class="language-text">environment secret
+secret manager
+protected file
+</code></pre>
+<p>not committed RON config.</p>
+<hr />
+<h1 id="114-configuration-split"><a class="header" href="#114-configuration-split">114. Configuration Split</a></h1>
+<pre><code class="language-text">relay.ron
+</code></pre>
+<p>contains non-secret policy.</p>
+<p>Secrets loaded separately.</p>
+<hr />
+<h1 id="115-container-deployment"><a class="header" href="#115-container-deployment">115. Container Deployment</a></h1>
+<p>Container image should:</p>
+<pre><code class="language-text">run as non-root where possible
+read-only root filesystem where practical
+explicit writable paths
+health checks
+version labels
+</code></pre>
+<hr />
+<h1 id="116-systemd-deployment"><a class="header" href="#116-systemd-deployment">116. Systemd Deployment</a></h1>
+<p>Provide:</p>
+<pre><code class="language-text">systemd service
+restart policy
+resource limits
+sandboxing
+</code></pre>
+<p>for simple Linux deployments.</p>
+<hr />
+<h1 id="117-kubernetes-deployment"><a class="header" href="#117-kubernetes-deployment">117. Kubernetes Deployment</a></h1>
+<p>Optional architecture:</p>
+<pre><code class="language-text">Deployment/Stateful-style service as required by network model
+PodDisruptionBudget
+anti-affinity
+metrics
+rolling update
+</code></pre>
+<p>Do not make Kubernetes mandatory.</p>
+<hr />
+<h1 id="118-autoscaling"><a class="header" href="#118-autoscaling">118. Autoscaling</a></h1>
+<p>Relay autoscaling based on:</p>
+<pre><code class="language-text">concurrent connections
+bandwidth
+CPU
+memory
+</code></pre>
+<p>not just HTTP request count.</p>
+<hr />
+<h1 id="119-scaling-caveat"><a class="header" href="#119-scaling-caveat">119. Scaling Caveat</a></h1>
+<p>Relay connections may be long-lived.</p>
+<p>Traditional request-per-second autoscaling may react poorly.</p>
+<p>Prefer connection/bandwidth-aware scaling.</p>
+<hr />
+<h1 id="120-stable-relay-identity-vs-instance"><a class="header" href="#120-stable-relay-identity-vs-instance">120. Stable Relay Identity vs Instance</a></h1>
+<p>Logical relay:</p>
+<pre><code class="language-text">india-west-1
+</code></pre>
+<p>may be served by changing infrastructure instances.</p>
+<p>Client trust should be tied to configured service identity/URL policy rather than ephemeral VM identity.</p>
+<hr />
+<h1 id="121-drain-aware-autoscaling"><a class="header" href="#121-drain-aware-autoscaling">121. Drain-Aware Autoscaling</a></h1>
+<p>Before scaling down:</p>
+<pre><code class="language-text">drain
+</code></pre>
+<p>to reduce connection disruption.</p>
+<hr />
+<h1 id="122-load-balancing"><a class="header" href="#122-load-balancing">122. Load Balancing</a></h1>
+<p>Use only load-balancing patterns compatible with Iroh relay behavior.</p>
+<p>Do not assume any generic Layer-7 HTTP load balancer works transparently.</p>
+<p>Test chosen deployment.</p>
+<hr />
+<h1 id="123-anycast"><a class="header" href="#123-anycast">123. Anycast</a></h1>
+<p>Potential future optimization for global relay ingress.</p>
+<p>Complex operationally.</p>
+<p>Not necessary initially.</p>
+<hr />
+<h1 id="124-multi-cloud"><a class="header" href="#124-multi-cloud">124. Multi-Cloud</a></h1>
+<p>Useful only after scale/reliability justify.</p>
+<p>Recommended abstraction supports:</p>
+<pre><code class="language-text">AWS
+GCP
+Azure
+Hetzner
+bare metal
+</code></pre>
+<p>without client changes.</p>
+<hr />
+<h1 id="125-cost-aware-relay-selection"><a class="header" href="#125-cost-aware-relay-selection">125. Cost-Aware Relay Selection</a></h1>
+<p>Operator may assign:</p>
+<pre><code class="language-text">cost class
+</code></pre>
+<p>to relay pools.</p>
+<p>Clients can prefer lower-cost while respecting latency/reliability.</p>
+<p>Do not expose financial pricing details to peers.</p>
+<hr />
+<h1 id="126-bandwidth-quotas"><a class="header" href="#126-bandwidth-quotas">126. Bandwidth Quotas</a></h1>
+<p>Per project/tenant:</p>
+<pre><code class="language-text">soft quota
+hard quota
+burst
+</code></pre>
+<p>But critical safety communication may have reserved policy depending deployment.</p>
+<hr />
+<h1 id="127-billing-separation"><a class="header" href="#127-billing-separation">127. Billing Separation</a></h1>
+<p>Hosted relay billing is operational SaaS logic.</p>
+<p>It must not affect:</p>
+<pre><code class="language-text">message encryption
+identity
+protocol semantics
+</code></pre>
+<hr />
+<h1 id="128-abuse-isolation"><a class="header" href="#128-abuse-isolation">128. Abuse Isolation</a></h1>
+<p>One tenant's abuse should not make other tenants unusable.</p>
+<p>Use:</p>
+<pre><code class="language-text">per-tenant quotas
+dedicated pools for large customers
+global emergency protection
+</code></pre>
+<hr />
+<h1 id="129-noisy-neighbor-detection"><a class="header" href="#129-noisy-neighbor-detection">129. Noisy Neighbor Detection</a></h1>
+<p>Metrics:</p>
+<pre><code class="language-text">tenant connection share
+bandwidth share
+error share
+</code></pre>
+<p>trigger throttling/migration.</p>
+<hr />
+<h1 id="130-private-relay-authentication"><a class="header" href="#130-private-relay-authentication">130. Private Relay Authentication</a></h1>
+<p>Enterprise relay can require project credential before providing relay service.</p>
+<p>This prevents public abuse.</p>
+<p>P2P peer authentication happens separately end-to-end.</p>
+<hr />
+<h1 id="131-relay-audit-events"><a class="header" href="#131-relay-audit-events">131. Relay Audit Events</a></h1>
+<p>Operator audit:</p>
+<pre><code class="language-text">config changed
+credential rotated
+relay added
+relay drained
+version upgraded
+</code></pre>
+<p>not user message events.</p>
+<hr />
+<h1 id="132-administrative-rbac"><a class="header" href="#132-administrative-rbac">132. Administrative RBAC</a></h1>
+<p>Control plane roles:</p>
+<pre><code class="language-text">Viewer
+Operator
+SecurityAdmin
+InfrastructureAdmin
+</code></pre>
+<p>Separate from communication user roles.</p>
+<hr />
+<h1 id="133-secure-admin-interface"><a class="header" href="#133-secure-admin-interface">133. Secure Admin Interface</a></h1>
+<p>Use:</p>
+<pre><code class="language-text">strong authentication
+TLS
+least privilege
+audit trail
+</code></pre>
+<p>Avoid exposing unauthenticated debug endpoints.</p>
+<hr />
+<h1 id="134-sshadmin-access"><a class="header" href="#134-sshadmin-access">134. SSH/Admin Access</a></h1>
+<p>Prefer:</p>
+<pre><code class="language-text">short-lived keys
+VPN/private network
+restricted operators
+</code></pre>
+<p>Production operations should be reproducible, not manual snowflake servers.</p>
+<hr />
+<h1 id="135-infrastructure-as-code"><a class="header" href="#135-infrastructure-as-code">135. Infrastructure as Code</a></h1>
+<p>Maintain:</p>
+<pre><code class="language-text">Terraform/OpenTofu or equivalent
+Ansible/system config
+container manifests
+</code></pre>
+<p>The application architecture does not depend on one IaC tool.</p>
+<hr />
+<h1 id="136-immutable-deployment"><a class="header" href="#136-immutable-deployment">136. Immutable Deployment</a></h1>
+<p>Prefer:</p>
+<pre><code class="language-text">replace instance
+</code></pre>
+<p>over manually mutating production server for upgrades.</p>
+<p>This makes rollback/recovery easier.</p>
+<hr />
+<h1 id="137-secrets-rotation-runbook"><a class="header" href="#137-secrets-rotation-runbook">137. Secrets Rotation Runbook</a></h1>
+<p>Document:</p>
+<pre><code class="language-text">issue new credential
+deploy overlap
+update clients/control plane
+revoke old
+verify
+</code></pre>
+<hr />
+<h1 id="138-certificate-failure-runbook"><a class="header" href="#138-certificate-failure-runbook">138. Certificate Failure Runbook</a></h1>
+<p>Document:</p>
+<pre><code class="language-text">renew
+switch relay
+disable affected endpoint
+verify failover
+</code></pre>
+<hr />
+<h1 id="139-region-failure-runbook"><a class="header" href="#139-region-failure-runbook">139. Region Failure Runbook</a></h1>
+<pre><code class="language-text">mark region unhealthy
+clients select alternate
+drain DNS/config
+investigate
+</code></pre>
+<hr />
+<h1 id="140-relay-compromise"><a class="header" href="#140-relay-compromise">140. Relay Compromise</a></h1>
+<p>If relay host compromised:</p>
+<pre><code class="language-text">remove from signed config
+rotate relay/admin credentials
+rebuild from clean image
+review metadata exposure
+</code></pre>
+<p>E2EE should limit content compromise.</p>
+<hr />
+<h1 id="141-relay-compromise-limits"><a class="header" href="#141-relay-compromise-limits">141. Relay Compromise Limits</a></h1>
+<p>A relay compromise may expose:</p>
+<pre><code class="language-text">metadata
+traffic timing
+IP addresses
+operational credentials
+</code></pre>
+<p>but should not expose:</p>
+<pre><code class="language-text">application plaintext
+account private keys
+blob decryption keys
+</code></pre>
+<p>if boundaries are respected.</p>
+<hr />
+<h1 id="142-key-separation"><a class="header" href="#142-key-separation">142. Key Separation</a></h1>
+<p>Relay TLS/admin keys:</p>
+<pre><code class="language-text">≠ account identity keys
+≠ device keys
+≠ message encryption keys
+</code></pre>
+<hr />
+<h1 id="143-incident-kill-switch"><a class="header" href="#143-incident-kill-switch">143. Incident Kill Switch</a></h1>
+<p>Signed infrastructure config should be able to:</p>
+<pre><code class="language-text">remove relay
+disable pool
+force fallback
+</code></pre>
+<p>without application update.</p>
+<hr />
+<h1 id="144-emergency-bootstrap"><a class="header" href="#144-emergency-bootstrap">144. Emergency Bootstrap</a></h1>
+<p>Keep at least one independent fallback path:</p>
+<pre><code class="language-text">bundled known relays
+</code></pre>
+<p>for control-plane outage.</p>
+<hr />
+<h1 id="145-split-brain-config"><a class="header" href="#145-split-brain-config">145. Split-Brain Config</a></h1>
+<p>If clients hold different relay-set versions:</p>
+<pre><code class="language-text">they can still communicate directly
+</code></pre>
+<p>and may use different compatible relays.</p>
+<p>Infrastructure config should not become application-level consensus.</p>
+<hr />
+<h1 id="146-relay-discovery-privacy"><a class="header" href="#146-relay-discovery-privacy">146. Relay Discovery Privacy</a></h1>
+<p>Do not expose user's full relay configuration to arbitrary peers unless protocol needs it.</p>
+<p>Peer only needs connectivity information needed for current endpoint discovery.</p>
+<hr />
+<h1 id="147-nat-traversal-observability"><a class="header" href="#147-nat-traversal-observability">147. NAT Traversal Observability</a></h1>
+<p>Track:</p>
+<pre><code class="language-text">direct success
+hole-punch attempts
+relay fallback
+time to usable path
+</code></pre>
+<p>This is one of the most useful network health metrics.</p>
+<hr />
+<h1 id="148-path-upgrade-observability"><a class="header" href="#148-path-upgrade-observability">148. Path Upgrade Observability</a></h1>
+<p>Connections may begin relayed and become direct.</p>
+<p>Record:</p>
+<pre><code class="language-text">relay → direct
+</code></pre>
+<p>as diagnostics.</p>
+<p>This helps cost/performance analysis.</p>
+<hr />
+<h1 id="149-relay-stickiness-observability"><a class="header" href="#149-relay-stickiness-observability">149. Relay Stickiness Observability</a></h1>
+<p>Monitor:</p>
+<pre><code class="language-text">relay switches/session
+</code></pre>
+<p>High churn indicates instability.</p>
+<hr />
+<h1 id="150-slos"><a class="header" href="#150-slos">150. SLOs</a></h1>
+<p>Example relay SLO dimensions:</p>
+<pre><code class="language-text">availability
+connection success
+median/P95 relay latency
+failover success
+TLS availability
+</code></pre>
+<p>Set actual numeric targets after benchmarking.</p>
+<hr />
+<h1 id="151-sli-definitions"><a class="header" href="#151-sli-definitions">151. SLI Definitions</a></h1>
+<p>Define exact measurement:</p>
+<pre><code class="language-text">connection_success =
+successful relay connection /
+eligible relay connection attempts
+</code></pre>
+<p>Avoid vague "uptime".</p>
+<hr />
+<h1 id="152-alerting"><a class="header" href="#152-alerting">152. Alerting</a></h1>
+<p>Alert on:</p>
+<pre><code class="language-text">connection failure spike
+latency spike
+bandwidth saturation
+FD pressure
+memory pressure
+certificate expiry
+region unreachable
+</code></pre>
+<hr />
+<h1 id="153-alert-noise"><a class="header" href="#153-alert-noise">153. Alert Noise</a></h1>
+<p>Use:</p>
+<pre><code class="language-text">multi-window thresholds
+</code></pre>
+<p>to avoid paging on tiny transient fluctuations.</p>
+<hr />
+<h1 id="154-dashboard"><a class="header" href="#154-dashboard">154. Dashboard</a></h1>
+<p>Operator dashboard:</p>
+<pre><code class="language-text">relay fleet
+regions
+health
+connections
+bandwidth
+direct/relay ratio
+errors
+versions
+certificate status
+</code></pre>
+<p>No application plaintext.</p>
+<hr />
+<h1 id="155-logs-vs-metrics-vs-traces"><a class="header" href="#155-logs-vs-metrics-vs-traces">155. Logs vs Metrics vs Traces</a></h1>
+<p>Use:</p>
+<pre><code class="language-text">metrics → fleet health
+logs → discrete errors/audit
+traces → selected connection diagnostics
+</code></pre>
+<p>Do not trace every byte.</p>
+<hr />
+<h1 id="156-trace-sampling"><a class="header" href="#156-trace-sampling">156. Trace Sampling</a></h1>
+<p>High-volume relay fleet should sample traces.</p>
+<p>Security/critical failures may use higher sampling.</p>
+<hr />
+<h1 id="157-client-diagnostics"><a class="header" href="#157-client-diagnostics">157. Client Diagnostics</a></h1>
+<p>Client can expose:</p>
+<pre><code class="language-text">home relay
+relay RTT
+direct/relayed status
+last failover
+</code></pre>
+<p>to advanced diagnostics.</p>
+<hr />
+<h1 id="158-user-facing-network-state"><a class="header" href="#158-user-facing-network-state">158. User-Facing Network State</a></h1>
+<p>Normal UI:</p>
+<pre><code class="language-text">Connected
+Connecting
+Limited network
+Offline
+</code></pre>
+<p>Do not make ordinary users choose relay servers.</p>
+<hr />
+<h1 id="159-advanced-user-ui"><a class="header" href="#159-advanced-user-ui">159. Advanced User UI</a></h1>
+<p>Optional:</p>
+<pre><code class="language-text">Use community relays
+Use custom relay
+Private relay only
+</code></pre>
+<p>with clear consequences.</p>
+<hr />
+<h1 id="160-self-hosted-admin-ux"><a class="header" href="#160-self-hosted-admin-ux">160. Self-Hosted Admin UX</a></h1>
+<p>A future admin console may manage:</p>
+<pre><code class="language-text">relay URL
+health
+region
+version
+credential status
+</code></pre>
+<p>but CLI/config should remain sufficient.</p>
+<hr />
+<h1 id="161-headless-control"><a class="header" href="#161-headless-control">161. Headless Control</a></h1>
+<p>All relay operations must be scriptable.</p>
+<p>No GUI dependency.</p>
+<hr />
+<h1 id="162-infrastructure-api"><a class="header" href="#162-infrastructure-api">162. Infrastructure API</a></h1>
+<p>Potential internal interface:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait InfrastructureDirectory {
+    async fn relay_pools(&amp;self) -&gt; Result&lt;Vec&lt;RelayPool&gt;, InfraError&gt;;
+    async fn config_version(&amp;self) -&gt; Result&lt;u64, InfraError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="163-relay-adapter-interface"><a class="header" href="#163-relay-adapter-interface">163. Relay Adapter Interface</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait RelayAdapter {
+    async fn configure(
+        &amp;self,
+        relays: &amp;[RelayCandidate],
+    ) -&gt; Result&lt;(), RelayError&gt;;
+
+    async fn health(
+        &amp;self,
+    ) -&gt; Result&lt;Vec&lt;RelayRuntimeStatus&gt;, RelayError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Iroh implementation translates to current endpoint relay configuration.</p>
+<hr />
+<h1 id="164-iroh-specific-module"><a class="header" href="#164-iroh-specific-module">164. Iroh-Specific Module</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">comm-transport-iroh/
+├── endpoint.rs
+├── relay.rs
+├── discovery.rs
+└── metrics.rs
+</code></pre>
+<p>Keep current Iroh API churn contained here.</p>
+<hr />
+<h1 id="165-iroh-version-isolation"><a class="header" href="#165-iroh-version-isolation">165. Iroh Version Isolation</a></h1>
+<p>Because Iroh is still evolving toward a stable long-term API, avoid spreading its concrete types across all crates.</p>
+<p>This substantially lowers upgrade cost.</p>
+<hr />
+<h1 id="166-adapter-compatibility-tests"><a class="header" href="#166-adapter-compatibility-tests">166. Adapter Compatibility Tests</a></h1>
+<p>For every Iroh upgrade:</p>
+<pre><code class="language-text">relay config
+direct fallback
+home relay selection
+connection establishment
+</code></pre>
+<p>must pass Part 10 regression tests.</p>
+<hr />
+<h1 id="167-relay-config-compatibility"><a class="header" href="#167-relay-config-compatibility">167. Relay Config Compatibility</a></h1>
+<p>Your persistent application config should use your own stable schema.</p>
+<p>Translate into the current Iroh API at runtime.</p>
+<p>This avoids forcing user config migration on every upstream API rename.</p>
+<hr />
+<h1 id="168-production-upgrade-discipline"><a class="header" href="#168-production-upgrade-discipline">168. Production Upgrade Discipline</a></h1>
+<p>When upgrading Iroh:</p>
+<pre><code class="language-text">read changelog
+run protocol tests
+run relay failover tests
+canary
+then production
+</code></pre>
+<p>Never auto-bump critical networking dependencies blindly.</p>
+<hr />
+<h1 id="169-upstream-vs-platform-responsibility"><a class="header" href="#169-upstream-vs-platform-responsibility">169. Upstream vs Platform Responsibility</a></h1>
+<p>Use Iroh for:</p>
+<pre><code class="language-text">QUIC connectivity
+NAT traversal
+relay transport
+endpoint behavior
+</code></pre>
+<p>Your platform owns:</p>
+<pre><code class="language-text">product relay policy
+tenant policy
+self-hosting profiles
+signed infrastructure config
+observability integration
+DTN gateway integration
+</code></pre>
+<hr />
+<h1 id="170-relay-security-review"><a class="header" href="#170-relay-security-review">170. Relay Security Review</a></h1>
+<p>Review:</p>
+<pre><code class="language-text">TLS config
+admin exposure
+rate limits
+dependency versions
+container privileges
+logging
+credentials
+</code></pre>
+<p>before release.</p>
+<hr />
+<h1 id="171-fuzzing"><a class="header" href="#171-fuzzing">171. Fuzzing</a></h1>
+<p>Part 10 should fuzz:</p>
+<pre><code class="language-text">your relay config parser
+relay policy messages
+control-plane config envelope
+adapter boundary
+</code></pre>
+<p>Upstream protocol fuzzing remains upstream responsibility plus integration regression.</p>
+<hr />
+<h1 id="172-chaos-testing"><a class="header" href="#172-chaos-testing">172. Chaos Testing</a></h1>
+<p>Kill:</p>
+<pre><code class="language-text">home relay
+whole region
+DNS
+control database
+</code></pre>
+<p>during:</p>
+<pre><code class="language-text">message
+file
+call
+</code></pre>
+<p>Expected:</p>
+<pre><code class="language-text">safe failover/degradation
+</code></pre>
+<hr />
+<h1 id="173-regional-partition-test"><a class="header" href="#173-regional-partition-test">173. Regional Partition Test</a></h1>
+<p>Clients in:</p>
+<pre><code class="language-text">Region A
+Region B
+</code></pre>
+<p>with Region A relays down.</p>
+<p>Direct connections or alternate regions should continue according to policy.</p>
+<hr />
+<h1 id="174-private-only-failure-test"><a class="header" href="#174-private-only-failure-test">174. Private-Only Failure Test</a></h1>
+<p>If organization relay fleet is entirely unavailable and public fallback forbidden:</p>
+<pre><code class="language-text">Internet P2P may still work direct
+</code></pre>
+<p>where reachable.</p>
+<p>If not:</p>
+<pre><code class="language-text">client reports limited/offline
+</code></pre>
+<p>and may use local/DTN paths.</p>
+<hr />
+<h1 id="175-certificate-expiry-test"><a class="header" href="#175-certificate-expiry-test">175. Certificate Expiry Test</a></h1>
+<p>Simulate expired relay cert.</p>
+<p>Client must:</p>
+<pre><code class="language-text">reject insecure connection
+select alternate
+</code></pre>
+<p>never disable validation silently.</p>
+<hr />
+<h1 id="176-config-rollback-test"><a class="header" href="#176-config-rollback-test">176. Config Rollback Test</a></h1>
+<p>Feed older signed infra config.</p>
+<p>Expected:</p>
+<pre><code class="language-text">reject/ignore according to rollback policy
+</code></pre>
+<hr />
+<h1 id="177-config-signature-test"><a class="header" href="#177-config-signature-test">177. Config Signature Test</a></h1>
+<p>Tamper relay URL.</p>
+<p>Expected:</p>
+<pre><code class="language-text">config rejected
+</code></pre>
+<hr />
+<h1 id="178-rate-limit-test"><a class="header" href="#178-rate-limit-test">178. Rate-Limit Test</a></h1>
+<p>Flood self-hosted relay.</p>
+<p>Expected:</p>
+<pre><code class="language-text">bounded resources
+other tenants remain usable
+</code></pre>
+<hr />
+<h1 id="179-soak-test"><a class="header" href="#179-soak-test">179. Soak Test</a></h1>
+<p>Run:</p>
+<pre><code class="language-text">thousands of connect/disconnect cycles
+</code></pre>
+<p>checking:</p>
+<pre><code class="language-text">memory
+FDs
+connection leaks
+relay switch behavior
+</code></pre>
+<hr />
+<h1 id="180-long-lived-session-test"><a class="header" href="#180-long-lived-session-test">180. Long-Lived Session Test</a></h1>
+<p>Keep connections alive for:</p>
+<pre><code class="language-text">hours/days
+</code></pre>
+<p>through network changes.</p>
+<p>Ensure relay infrastructure remains stable.</p>
+<hr />
+<h1 id="181-capacity-test"><a class="header" href="#181-capacity-test">181. Capacity Test</a></h1>
+<p>Load until:</p>
+<pre><code class="language-text">soft threshold
+</code></pre>
+<p>then:</p>
+<pre><code class="language-text">hard threshold
+</code></pre>
+<p>Validate:</p>
+<pre><code class="language-text">admission
+metrics
+alerts
+graceful degradation
+</code></pre>
+<hr />
+<h1 id="182-security-test"><a class="header" href="#182-security-test">182. Security Test</a></h1>
+<p>Attempt:</p>
+<pre><code class="language-text">unauthorized admin access
+invalid credentials
+malformed client
+oversized handshake
+</code></pre>
+<p>No crash/unbounded allocation.</p>
+<hr />
+<h1 id="183-suggested-workspace"><a class="header" href="#183-suggested-workspace">183. Suggested Workspace</a></h1>
+<pre><code class="language-text">infrastructure/
+├── relay/
+│   ├── README.md
+│   ├── configs/
+│   ├── systemd/
+│   ├── container/
+│   ├── kubernetes/
+│   └── dashboards/
+│
+├── bootstrap/
+├── control-plane/
+├── observability/
+└── runbooks/
+
+crates/
+├── comm-relay-policy/
+├── comm-infra-config/
+├── comm-transport-iroh/
+└── comm-relay-admin/
+</code></pre>
+<hr />
+<h1 id="184-comm-relay-policy"><a class="header" href="#184-comm-relay-policy">184. <code>comm-relay-policy</code></a></h1>
+<p>Responsibilities:</p>
+<pre><code class="language-text">relay pools
+selection policy
+region policy
+fallback rules
+cost classes
+</code></pre>
+<p>No Iroh concrete API types.</p>
+<hr />
+<h1 id="185-comm-infra-config"><a class="header" href="#185-comm-infra-config">185. <code>comm-infra-config</code></a></h1>
+<p>Responsibilities:</p>
+<pre><code class="language-text">signed config
+version
+rollback protection
+bootstrap
+serialization
+</code></pre>
+<hr />
+<h1 id="186-comm-relay-admin"><a class="header" href="#186-comm-relay-admin">186. <code>comm-relay-admin</code></a></h1>
+<p>Optional operator tooling:</p>
+<pre><code class="language-text">health
+fleet status
+config validation
+doctor
+</code></pre>
+<hr />
+<h1 id="187-deployment-artifacts"><a class="header" href="#187-deployment-artifacts">187. Deployment Artifacts</a></h1>
+<p>Repository should provide:</p>
+<pre><code class="language-text">example self-host config
+systemd unit
+container build
+health-check script
+metrics example
+firewall guidance
+runbooks
+</code></pre>
+<hr />
+<h1 id="188-documentation"><a class="header" href="#188-documentation">188. Documentation</a></h1>
+<p>Required:</p>
+<pre><code class="language-text">self-hosting.md
+relay-security.md
+relay-scaling.md
+relay-observability.md
+relay-upgrades.md
+relay-incident-response.md
+private-enterprise-deployment.md
+dtn-gateway.md
+</code></pre>
+<hr />
+<h1 id="189-initial-production-scope"><a class="header" href="#189-initial-production-scope">189. Initial Production Scope</a></h1>
+<p>Implement first:</p>
+<pre><code class="language-text">Iroh relay adapter
+static + signed relay pools
+self-hosted single-node deployment
+3+ relay production pool support
+health probes
+client failover
+region tags
+metrics
+rate limits
+systemd/container deployment
+TLS/certificate monitoring
+relay doctor
+</code></pre>
+<p>Then:</p>
+<pre><code class="language-text">dedicated tenant pools
+control-plane config service
+multi-region automation
+blue/green rollout
+DTN gateway
+</code></pre>
+<p>Defer initially:</p>
+<pre><code class="language-text">anycast
+complex global autoscaling
+multi-cloud orchestration
+custom relay protocol
+</code></pre>
+<hr />
+<h1 id="190-implementation-phases"><a class="header" href="#190-implementation-phases">190. Implementation Phases</a></h1>
+<h2 id="phase-1--relay-abstraction"><a class="header" href="#phase-1--relay-abstraction">Phase 1 — Relay Abstraction</a></h2>
+<pre><code class="language-text">RelayId
+RelayCandidate
+RelayPool
+RelayPolicy
+</code></pre>
+<h2 id="phase-2--iroh-adapter"><a class="header" href="#phase-2--iroh-adapter">Phase 2 — Iroh Adapter</a></h2>
+<pre><code class="language-text">current relay config mapping
+health
+home relay diagnostics
+</code></pre>
+<h2 id="phase-3--self-hosting"><a class="header" href="#phase-3--self-hosting">Phase 3 — Self-Hosting</a></h2>
+<pre><code class="language-text">single relay
+DNS
+TLS
+systemd/container
+</code></pre>
+<h2 id="phase-4--resilience"><a class="header" href="#phase-4--resilience">Phase 4 — Resilience</a></h2>
+<pre><code class="language-text">multi-relay
+failover
+hysteresis
+regional pools
+</code></pre>
+<h2 id="phase-5--operations"><a class="header" href="#phase-5--operations">Phase 5 — Operations</a></h2>
+<pre><code class="language-text">metrics
+alerts
+doctor
+runbooks
+</code></pre>
+<h2 id="phase-6--securityisolation"><a class="header" href="#phase-6--securityisolation">Phase 6 — Security/Isolation</a></h2>
+<pre><code class="language-text">access credentials
+tenant quota
+admin RBAC
+signed infra config
+</code></pre>
+<h2 id="phase-7--dtn-gateway"><a class="header" href="#phase-7--dtn-gateway">Phase 7 — DTN Gateway</a></h2>
+<pre><code class="language-text">local store-carry-forward
+Internet bridge
+Iroh delivery
+</code></pre>
+<h2 id="phase-8--scale"><a class="header" href="#phase-8--scale">Phase 8 — Scale</a></h2>
+<pre><code class="language-text">multi-region
+canary/blue-green
+capacity testing
+</code></pre>
+<hr />
+<h1 id="191-definition-of-done"><a class="header" href="#191-definition-of-done">191. Definition of Done</a></h1>
+<p>Part 11 is complete when:</p>
+<ul>
+<li>direct P2P remains preferred where policy allows</li>
+<li>NAT traversal failure can use configured relay infrastructure</li>
+<li>the application can use public, dedicated, or self-hosted relay pools</li>
+<li>public fallback can be disabled</li>
+<li>relay URLs are not hard-coded throughout application logic</li>
+<li>Iroh-specific relay types stay behind an adapter</li>
+<li>relay configuration can be updated through signed/versioned policy</li>
+<li>relay config rollback is prevented</li>
+<li>clients have multiple production relay candidates</li>
+<li>relay failure does not corrupt message/file state</li>
+<li>large file transfer resumes after relay switch</li>
+<li>relay control-plane failure does not automatically stop data-plane service</li>
+<li>application plaintext is not required at relay</li>
+<li>relay/admin credentials are separate from user/device keys</li>
+<li>per-tenant/per-peer resource limits exist</li>
+<li>TLS/certificate health is monitored</li>
+<li>health/readiness/synthetic probes exist</li>
+<li>observability reveals direct-vs-relay behavior</li>
+<li>regional failover is tested</li>
+<li>self-hosted deployment works without Kubernetes</li>
+<li>headless DTN gateway can bridge local offline networks to Iroh/Internet</li>
+<li>chaos, certificate, config-signature, rate-limit, and soak tests exist</li>
+</ul>
+<hr />
+<h1 id="192-relationship-to-earlier-parts"><a class="header" href="#192-relationship-to-earlier-parts">192. Relationship to Earlier Parts</a></h1>
+<p>Part 11 builds on:</p>
+<pre><code class="language-text">01 — Protocol Extension System
+02 — Multi-Device Identity
+03 — Transport &amp; Routing Policy Engine
+04 — Offline Event Log
+05 — Robust File / Blob Subsystem
+06 — DTN / Store-Carry-Forward
+07 — Capability Negotiation
+08 — Resource Limits &amp; Backpressure
+09 — Crash Recovery
+10 — Fuzzing &amp; Protocol Test Suite
+</code></pre>
+<p>It prepares:</p>
+<pre><code class="language-text">12 — Multipath Networking
+13 — Battery-Aware Scheduling
+14 — Proximity Abstraction
+15 — QR / NFC Bootstrap Pairing
+16 — Daemon &amp; Headless Runtime
+17 — Emergency Priority Architecture
+18 — Network Diagnostics &amp; Path Visualization
+19 — C ABI / FFI
+20 — Embedded Linux Node
+21 — WASM-Compatible Components
+22 — Third-Party Protocol Extensions
+23 — External Interoperability Suite
+24 — Plugin / Module Ecosystem
+</code></pre>
+<hr />
+<h1 id="193-final-architecture"><a class="header" href="#193-final-architecture">193. Final Architecture</a></h1>
+<pre><code class="language-text">                           CLIENTS
+                ┌────────────┼────────────┐
+                │            │            │
+             Android       Desktop      Headless
+                │            │            │
+                └────── Communication ────┘
+                             Runtime
+                                │
+                         Routing Policy
+                                │
+             ┌──────────────────┼───────────────────┐
+             │                  │                   │
+          Direct P2P         Relay Path          Local/DTN
+             │                  │                   │
+             │          Relay Abstraction           │
+             │                  │                   │
+             │        ┌─────────┼─────────┐         │
+             │        │         │         │         │
+             │      Public   Dedicated  Self-host   │
+             │        │         │         │         │
+             │        └─────────┼─────────┘         │
+             │                Iroh                  │
+             └──────────────────┼───────────────────┘
+                                │
+                         Remote Endpoint
+</code></pre>
+<p>Operational infrastructure:</p>
+<pre><code class="language-text">                    Signed Infrastructure Config
+                              │
+                 ┌────────────┼────────────┐
+                 │            │            │
+              Relay Fleet   Health      Operator
+                 │          /Metrics    Control
+          ┌──────┼──────┐
+          │      │      │
+        Region  Region  Region
+          A      B      C
+</code></pre>
+<p>Disaster bridge:</p>
+<pre><code class="language-text">Offline Mesh
+    ↓
+DTN Gateway
+    ↓
+Internet available later
+    ↓
+Iroh Direct/Relay
+    ↓
+Destination
+</code></pre>
+<hr />
+<h1 id="194-final-principle"><a class="header" href="#194-final-principle">194. Final Principle</a></h1>
+<p>The relay architecture should ensure:</p>
+<blockquote>
+<p><strong>Relays improve reachability without becoming the center of trust or the center of product state.</strong></p>
+</blockquote>
+<p>The application should be able to move between:</p>
+<pre><code class="language-text">community relays
+managed dedicated relays
+self-hosted relays
+organization-private relays
+</code></pre>
+<p>without redesigning messaging, files, identity, or DTN.</p>
+<p>When direct networking works:</p>
+<pre><code class="language-text">use direct
+</code></pre>
+<p>When it does not:</p>
+<pre><code class="language-text">relay reliably
+</code></pre>
+<p>When Internet disappears entirely:</p>
+<pre><code class="language-text">local/mesh/DTN continues
+</code></pre>
+<p>When Internet returns:</p>
+<pre><code class="language-text">DTN gateways bridge back into Iroh
+</code></pre>
+<p>That layered behavior is what makes the communication platform resilient enough for ordinary consumer use, enterprise deployment, self-hosting, and disaster/emergency operation.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="03-transport-routing-policy-engine-architecture.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="12-multipath-networking-architecture.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="03-transport-routing-policy-engine-architecture.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="12-multipath-networking-architecture.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

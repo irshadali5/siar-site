@@ -1,0 +1,2247 @@
+<!DOCTYPE HTML>
+<html lang="en" class="navy" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>08 — Resource Limits, Quotas &amp; Backpressure - SIAR System Architecture &amp; Technical Wiki</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="Comprehensive system architecture, cryptographic protocols, DTN mesh networking, distributed storage, audio DSP pipelines, and UI/UX design specifications for SIAR.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="theme/custom.css">
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "navy";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('navy')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="Home.html">Architecture Portal & Reading Guide</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part I: Protocol Foundation & Extension Platform</li><li class="chapter-item expanded "><a href="01-protocol-extension-system-architecture.html"><strong aria-hidden="true">1.</strong> 01 — Protocol Extension System Architecture</a></li><li class="chapter-item expanded "><a href="07-capability-negotiation-architecture.html"><strong aria-hidden="true">2.</strong> 07 — Capability Negotiation & Protocol Upgrades</a></li><li class="chapter-item expanded "><a href="21-third-party-protocol-extensions-architecture.html"><strong aria-hidden="true">3.</strong> 21 — Third-Party Protocol Extensions</a></li><li class="chapter-item expanded "><a href="22-wasm-compatible-components-architecture.html"><strong aria-hidden="true">4.</strong> 22 — WebAssembly (WASM) Compatible Components</a></li><li class="chapter-item expanded "><a href="23-external-interoperability-suite-architecture.html"><strong aria-hidden="true">5.</strong> 23 — External Interoperability & Conformance Suite</a></li><li class="chapter-item expanded "><a href="24-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">6.</strong> 24 — Dynamic Plugin & Module Ecosystem</a></li><li class="chapter-item expanded affix "><li class="part-title">Part II: Identity, Trust & Cryptography</li><li class="chapter-item expanded "><a href="02-multi-device-identity-architecture.html"><strong aria-hidden="true">7.</strong> 02 — Multi-Device Identity & Trust Model</a></li><li class="chapter-item expanded "><a href="28-production-security-e2ee-key-management-privacy-architecture.html"><strong aria-hidden="true">8.</strong> 28 — Production Security, E2EE, Key Management & Privacy</a></li><li class="chapter-item expanded affix "><li class="part-title">Part III: Mesh Networking, Transports & Hardware</li><li class="chapter-item expanded "><a href="03-transport-routing-policy-engine-architecture.html"><strong aria-hidden="true">9.</strong> 03 — Transport & Routing Policy Engine</a></li><li class="chapter-item expanded "><a href="11-relay-self-hosted-infrastructure-architecture.html"><strong aria-hidden="true">10.</strong> 11 — Self-Hosted Relay & Coordination Infrastructure</a></li><li class="chapter-item expanded "><a href="12-multipath-networking-architecture.html"><strong aria-hidden="true">11.</strong> 12 — Multipath Networking & Link Aggregation</a></li><li class="chapter-item expanded "><a href="13-battery-aware-scheduling-architecture.html"><strong aria-hidden="true">12.</strong> 13 — Battery-Aware Scheduling & Power Profiles</a></li><li class="chapter-item expanded "><a href="14-proximity-abstraction-architecture.html"><strong aria-hidden="true">13.</strong> 14 — Proximity Abstraction (BLE, Wi-Fi Direct, LoRa)</a></li><li class="chapter-item expanded "><a href="15-qr-nfc-bootstrap-pairing-architecture.html"><strong aria-hidden="true">14.</strong> 15 — Out-of-Band QR & NFC Bootstrap Pairing</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IV: Delay-Tolerant Networking & Emergency Mesh</li><li class="chapter-item expanded "><a href="06-dtn-store-carry-forward-architecture.html"><strong aria-hidden="true">15.</strong> 06 — DTN Store-Carry-Forward & Bundle Forwarding</a></li><li class="chapter-item expanded "><a href="17-emergency-priority-classes-architecture.html"><strong aria-hidden="true">16.</strong> 17 — Emergency Priority Classes & Critical Alert Mesh</a></li><li class="chapter-item expanded affix "><li class="part-title">Part V: Storage, Outbox & Data Lifecycle</li><li class="chapter-item expanded "><a href="04-offline-event-log-architecture.html"><strong aria-hidden="true">17.</strong> 04 — Offline Event Log & Sync Engine</a></li><li class="chapter-item expanded "><a href="05-robust-file-blob-subsystem-architecture.html"><strong aria-hidden="true">18.</strong> 05 — Robust File & Blob Subsystem (Chunking & Resumption)</a></li><li class="chapter-item expanded "><a href="09-crash-recovery-architecture.html"><strong aria-hidden="true">19.</strong> 09 — Crash Recovery & State Integrity</a></li><li class="chapter-item expanded "><a href="32-search-indexing-local-knowledge-privacy-architecture.html"><strong aria-hidden="true">20.</strong> 32 — Search, Indexing & Local Privacy Retrieval</a></li><li class="chapter-item expanded "><a href="33-backup-restore-export-import-archival-portability-architecture.html"><strong aria-hidden="true">21.</strong> 33 — Backup, Restore, Export & Long-Term Archival</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VI: Realtime Media, Calling & Audio DSP</li><li class="chapter-item expanded "><a href="25-android-direct-hardware-surface-zero-copy-media-architecture.html"><strong aria-hidden="true">22.</strong> 25 — Android Direct Surface Zero-Copy Media</a></li><li class="chapter-item expanded "><a href="26-rust-first-audio-dsp-resampling-aec-ns-agc-architecture.html"><strong aria-hidden="true">23.</strong> 26 — Rust-First Audio DSP (AEC, NS, AGC, Resampling)</a></li><li class="chapter-item expanded "><a href="29-realtime-calls-media-session-protocol-architecture.html"><strong aria-hidden="true">24.</strong> 29 — Realtime Calls & Media Session Protocol</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VII: Ephemeral State, Presence & Notifications</li><li class="chapter-item expanded "><a href="30-presence-availability-typing-read-receipts-ephemeral-state-architecture.html"><strong aria-hidden="true">25.</strong> 30 — Presence, Availability, Typing & Read Receipts</a></li><li class="chapter-item expanded "><a href="31-notifications-push-background-delivery-lifecycle-architecture.html"><strong aria-hidden="true">26.</strong> 31 — Notifications, Push Wake & Background Delivery</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VIII: Native Runtimes, Daemons & Embedded Linux</li><li class="chapter-item expanded "><a href="16-daemon-headless-runtime-architecture.html"><strong aria-hidden="true">27.</strong> 16 — Headless Daemon & Background Runtime</a></li><li class="chapter-item expanded "><a href="19-c-abi-ffi-architecture.html"><strong aria-hidden="true">28.</strong> 19 — C-ABI FFI & Native Language Interop</a></li><li class="chapter-item expanded "><a href="20-embedded-linux-node-architecture.html"><strong aria-hidden="true">29.</strong> 20 — Embedded Linux Node & Resource-Constrained Targets</a></li><li class="chapter-item expanded "><a href="27-rust-driven-android-native-build-packaging-automation.html"><strong aria-hidden="true">30.</strong> 27 — Rust-Driven Android Native Build & Packaging Automation</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IX: Reliability, Testing, Fuzzing & Diagnostics</li><li class="chapter-item expanded "><a href="08-resource-limits-backpressure-architecture.html" class="active"><strong aria-hidden="true">31.</strong> 08 — Resource Limits, Quotas & Backpressure</a></li><li class="chapter-item expanded "><a href="10-fuzzing-protocol-test-suite-architecture.html"><strong aria-hidden="true">32.</strong> 10 — Fuzzing & Protocol Test Suite</a></li><li class="chapter-item expanded "><a href="18-network-diagnostics-path-visualization-architecture.html"><strong aria-hidden="true">33.</strong> 18 — Network Diagnostics & Path Visualization</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part X: UI/UX Client Architecture (Cross-Platform)</li><li class="chapter-item expanded "><a href="ui-ux-01-product-foundation-cross-platform-interaction-architecture.html"><strong aria-hidden="true">34.</strong> UI/UX 01 — Product UX Foundation & Cross-Platform Interaction</a></li><li class="chapter-item expanded "><a href="ui-ux-02-desktop-dioxus-app-shell-navigation-window-architecture.html"><strong aria-hidden="true">35.</strong> UI/UX 02 — Desktop Dioxus App Shell & Navigation</a></li><li class="chapter-item expanded "><a href="ui-ux-03-android-jetpack-compose-app-shell-navigation-lifecycle-architecture.html"><strong aria-hidden="true">36.</strong> UI/UX 03 — Android Jetpack Compose App Shell & Lifecycle</a></li><li class="chapter-item expanded "><a href="ui-ux-04-conversation-list-inbox-architecture.html"><strong aria-hidden="true">37.</strong> UI/UX 04 — Conversation List & Inbox UX</a></li><li class="chapter-item expanded "><a href="ui-ux-05-conversation-message-timeline-architecture.html"><strong aria-hidden="true">38.</strong> UI/UX 05 — Conversation Message Timeline UX</a></li><li class="chapter-item expanded "><a href="ui-ux-06-message-composer-attachments-voice-notes-drafts-architecture.html"><strong aria-hidden="true">39.</strong> UI/UX 06 — Message Composer, Attachments & Voice Notes</a></li><li class="chapter-item expanded "><a href="ui-ux-07-calls-realtime-media-architecture.html"><strong aria-hidden="true">40.</strong> UI/UX 07 — Calls & Realtime Media UX</a></li><li class="chapter-item expanded "><a href="ui-ux-08-contacts-requests-verification-identity-architecture.html"><strong aria-hidden="true">41.</strong> UI/UX 08 — Contacts, Requests, Verification & Identity</a></li><li class="chapter-item expanded "><a href="ui-ux-09-groups-membership-roles-architecture.html"><strong aria-hidden="true">42.</strong> UI/UX 09 — Groups, Membership & Roles UX</a></li><li class="chapter-item expanded "><a href="ui-ux-10-files-media-gallery-transfer-architecture.html"><strong aria-hidden="true">43.</strong> UI/UX 10 — Files, Media Gallery & Transfer UX</a></li><li class="chapter-item expanded "><a href="ui-ux-11-search-local-knowledge-retrieval-architecture.html"><strong aria-hidden="true">44.</strong> UI/UX 11 — Search & Local Knowledge Retrieval UX</a></li><li class="chapter-item expanded "><a href="ui-ux-12-nearby-qr-nfc-pairing-device-linking-architecture.html"><strong aria-hidden="true">45.</strong> UI/UX 12 — Nearby, QR/NFC Pairing & Device Linking UX</a></li><li class="chapter-item expanded "><a href="ui-ux-13-notifications-background-incoming-call-architecture.html"><strong aria-hidden="true">46.</strong> UI/UX 13 — Notifications, Background & Incoming Call UX</a></li><li class="chapter-item expanded "><a href="ui-ux-14-presence-typing-receipts-status-architecture.html"><strong aria-hidden="true">47.</strong> UI/UX 14 — Presence, Typing, Receipts & Status UX</a></li><li class="chapter-item expanded "><a href="ui-ux-15-security-center-devices-keys-recovery-architecture.html"><strong aria-hidden="true">48.</strong> UI/UX 15 — Security Center, Devices, Keys & Recovery UX</a></li><li class="chapter-item expanded "><a href="ui-ux-16-backup-restore-export-migration-architecture.html"><strong aria-hidden="true">49.</strong> UI/UX 16 — Backup, Restore, Export & Migration UX</a></li><li class="chapter-item expanded "><a href="ui-ux-17-emergency-sos-offline-mesh-architecture.html"><strong aria-hidden="true">50.</strong> UI/UX 17 — Emergency / SOS / Offline Mesh UX</a></li><li class="chapter-item expanded "><a href="ui-ux-18-settings-privacy-notifications-data-controls-architecture.html"><strong aria-hidden="true">51.</strong> UI/UX 18 — Settings, Privacy, Notifications & Data Controls</a></li><li class="chapter-item expanded "><a href="ui-ux-19-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">52.</strong> UI/UX 19 — Plugin & Module Ecosystem UX</a></li><li class="chapter-item expanded "><a href="ui-ux-20-diagnostics-network-paths-advanced-developer-architecture.html"><strong aria-hidden="true">53.</strong> UI/UX 20 — Diagnostics, Network Paths & Developer UX</a></li><li class="chapter-item expanded "><a href="ui-ux-21-accessibility-inclusive-interaction-architecture.html"><strong aria-hidden="true">54.</strong> UI/UX 21 — Accessibility & Inclusive Interaction</a></li><li class="chapter-item expanded "><a href="ui-ux-22-design-system-tokens-typography-icons-motion-architecture.html"><strong aria-hidden="true">55.</strong> UI/UX 22 — Design System, Tokens, Typography & Motion</a></li><li class="chapter-item expanded "><a href="ui-ux-23-responsive-adaptive-desktop-tablet-foldable-phone-layout-architecture.html"><strong aria-hidden="true">56.</strong> UI/UX 23 — Responsive & Adaptive Layouts (Desktop/Tablet/Foldable/Phone)</a></li><li class="chapter-item expanded "><a href="ui-ux-24-error-loading-empty-offline-degraded-state-architecture.html"><strong aria-hidden="true">57.</strong> UI/UX 24 — Error, Loading, Empty & Degraded-State UX</a></li><li class="chapter-item expanded "><a href="ui-ux-25-onboarding-first-run-permission-education-architecture.html"><strong aria-hidden="true">58.</strong> UI/UX 25 — Onboarding, First Run & Permission Education</a></li><li class="chapter-item expanded "><a href="ui-ux-26-performance-virtualization-large-data-ui-architecture.html"><strong aria-hidden="true">59.</strong> UI/UX 26 — Virtualization & Large-Data UI Performance</a></li><li class="chapter-item expanded "><a href="ui-ux-27-ui-testing-screenshot-interaction-release-quality-gates-architecture.html"><strong aria-hidden="true">60.</strong> UI/UX 27 — UI Testing, Screenshots & Release Quality Gates</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">SIAR System Architecture &amp; Technical Wiki</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar/edit/main/sys-arch/08-resource-limits-backpressure-architecture.md" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="part-08--resource-limits--backpressure-architecture"><a class="header" href="#part-08--resource-limits--backpressure-architecture">Part 08 — Resource Limits &amp; Backpressure Architecture</a></h1>
+<h2 id="reusable-p2p-communication-platform"><a class="header" href="#reusable-p2p-communication-platform">Reusable P2P Communication Platform</a></h2>
+<p><strong>Status:</strong> Architecture specification<br />
+<strong>Part:</strong> 08 of 24<br />
+<strong>Primary language:</strong> Rust<br />
+<strong>Primary goals:</strong> bounded resource usage, memory safety under load, deterministic overload behavior, backpressure propagation, fairness, admission control, peer quotas, extension isolation, mobile/embedded efficiency, resilience against abuse and accidental overload</p>
+<hr />
+<h1 id="1-purpose"><a class="header" href="#1-purpose">1. Purpose</a></h1>
+<p>A production communication platform must remain stable when:</p>
+<ul>
+<li>many peers connect simultaneously</li>
+<li>one peer sends too much data</li>
+<li>a large file transfer saturates memory</li>
+<li>Bluetooth becomes slow</li>
+<li>DTN storage fills</li>
+<li>a call consumes bandwidth</li>
+<li>the device enters low-memory mode</li>
+<li>Android restricts background execution</li>
+<li>disk becomes nearly full</li>
+<li>third-party extensions behave aggressively</li>
+<li>network conditions collapse</li>
+<li>a malicious peer attempts resource exhaustion</li>
+</ul>
+<p>The platform must never rely on:</p>
+<pre><code class="language-text">"we probably won't receive that much traffic"
+</code></pre>
+<p>Instead, every subsystem must have explicit, bounded resource contracts.</p>
+<p>The core rule is:</p>
+<blockquote>
+<p><strong>Every queue, buffer, stream, cache, task class, peer, extension, and storage pool must have a defined upper bound or admission policy.</strong></p>
+</blockquote>
+<p>When a limit is reached, the system must:</p>
+<pre><code class="language-text">slow producers
+defer work
+reject work
+shed low-priority work
+or downgrade quality
+</code></pre>
+<p>rather than growing without bound.</p>
+<hr />
+<h1 id="2-fundamental-architecture"><a class="header" href="#2-fundamental-architecture">2. Fundamental Architecture</a></h1>
+<pre><code class="language-text">Application
+    ↓
+Feature Layer
+    ↓
+Resource Admission
+    ↓
+Bounded Queues
+    ↓
+Scheduler / Fairness
+    ↓
+Transport / Storage / CPU
+</code></pre>
+<p>Feedback flows upward:</p>
+<pre><code class="language-text">Transport/Storage Pressure
+         ↑
+Scheduler
+         ↑
+Backpressure Signal
+         ↑
+Producer
+</code></pre>
+<p>This architecture must be shared across:</p>
+<pre><code class="language-text">messaging
+files
+DTN
+routing
+calls
+presence
+sync
+daemon IPC
+plugins/extensions
+</code></pre>
+<hr />
+<h1 id="3-resource-dimensions"><a class="header" href="#3-resource-dimensions">3. Resource Dimensions</a></h1>
+<p>The platform must reason about multiple resource dimensions independently.</p>
+<p>Primary dimensions:</p>
+<pre><code class="language-text">Memory
+CPU
+Storage
+Network bandwidth
+Concurrent connections
+Concurrent streams
+Queue depth
+File descriptors
+Background execution budget
+Battery/energy
+Thermal headroom
+</code></pre>
+<p>Do not collapse all pressure into one generic "busy" flag.</p>
+<hr />
+<h1 id="4-resource-classes"><a class="header" href="#4-resource-classes">4. Resource Classes</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum ResourceKind {
+    Memory,
+    Cpu,
+    Storage,
+    Network,
+    Connections,
+    Streams,
+    QueueSlots,
+    FileDescriptors,
+    Energy,
+    Thermal,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Different limits require different reactions.</p>
+<hr />
+<h1 id="5-resource-policy-layers"><a class="header" href="#5-resource-policy-layers">5. Resource Policy Layers</a></h1>
+<p>Policies should stack:</p>
+<pre><code class="language-text">System hard limits
+      ↓
+Runtime defaults
+      ↓
+Application limits
+      ↓
+Extension limits
+      ↓
+Peer limits
+      ↓
+Operation limits
+</code></pre>
+<p>A lower layer can tighten limits, but cannot exceed hard safety ceilings.</p>
+<hr />
+<h1 id="6-hard-safety-limits"><a class="header" href="#6-hard-safety-limits">6. Hard Safety Limits</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">max frame size
+max event size
+max manifest size
+max concurrent streams
+max memory buffers
+max DTN storage
+max pending outbox operations
+</code></pre>
+<p>These protect correctness and availability.</p>
+<p>They are not user preferences.</p>
+<hr />
+<h1 id="7-soft-limits"><a class="header" href="#7-soft-limits">7. Soft Limits</a></h1>
+<p>Soft limits may trigger adaptation:</p>
+<pre><code class="language-text">reduce parallelism
+pause background transfers
+lower video bitrate
+defer sync
+evict cache
+</code></pre>
+<p>before hard rejection.</p>
+<hr />
+<h1 id="8-resource-budget"><a class="header" href="#8-resource-budget">8. Resource Budget</a></h1>
+<p>Use explicit resource budgets.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct ResourceBudget {
+    pub memory_bytes: u64,
+    pub storage_bytes: u64,
+    pub network_bytes_per_sec: Option&lt;u64&gt;,
+    pub max_connections: u32,
+    pub max_streams: u32,
+    pub max_tasks: u32,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Not every runtime can know exact CPU/energy quantities; coarse classes are acceptable.</p>
+<hr />
+<h1 id="9-global-runtime-budget"><a class="header" href="#9-global-runtime-budget">9. Global Runtime Budget</a></h1>
+<p>Each <code>CommunicationRuntime</code> owns one global budget.</p>
+<pre><code class="language-text">CommunicationRuntime
+  ├── Messaging
+  ├── Files
+  ├── DTN
+  ├── Calls
+  └── Extensions
+</code></pre>
+<p>Subcomponents consume from shared global pools.</p>
+<p>This prevents each subsystem from assuming it owns the whole machine.</p>
+<hr />
+<h1 id="10-sub-budgets"><a class="header" href="#10-sub-budgets">10. Sub-Budgets</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">Global memory budget: 256 MiB
+
+Files:       96 MiB
+Calls:       64 MiB
+Messaging:   32 MiB
+DTN:         32 MiB
+Other:       32 MiB
+</code></pre>
+<p>Actual values vary by device class.</p>
+<p>Unused budget may be borrowable under policy.</p>
+<hr />
+<h1 id="11-budget-borrowing"><a class="header" href="#11-budget-borrowing">11. Budget Borrowing</a></h1>
+<p>Allow controlled temporary borrowing:</p>
+<pre><code class="language-text">Files borrows from unused Messaging pool
+</code></pre>
+<p>but never beyond global hard ceiling.</p>
+<p>Borrowing should be revocable under pressure.</p>
+<hr />
+<h1 id="12-device-resource-profiles"><a class="header" href="#12-device-resource-profiles">12. Device Resource Profiles</a></h1>
+<p>Recommended profiles:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum ResourceProfile {
+    Embedded,
+    MobileLow,
+    MobileNormal,
+    Desktop,
+    Server,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Each profile provides sensible defaults.</p>
+<hr />
+<h1 id="13-embedded-profile"><a class="header" href="#13-embedded-profile">13. Embedded Profile</a></h1>
+<p>Example characteristics:</p>
+<pre><code class="language-text">small memory
+few streams
+low concurrency
+small caches
+limited relay storage
+</code></pre>
+<p>Part 20 can specialize further.</p>
+<hr />
+<h1 id="14-mobile-low-profile"><a class="header" href="#14-mobile-low-profile">14. Mobile Low Profile</a></h1>
+<p>Optimized for:</p>
+<pre><code class="language-text">4 GB RAM class device
+background limits
+battery sensitivity
+</code></pre>
+<hr />
+<h1 id="15-desktop-profile"><a class="header" href="#15-desktop-profile">15. Desktop Profile</a></h1>
+<p>Allows:</p>
+<pre><code class="language-text">more parallel transfers
+larger caches
+more connections
+</code></pre>
+<p>without becoming unbounded.</p>
+<hr />
+<h1 id="16-server-profile"><a class="header" href="#16-server-profile">16. Server Profile</a></h1>
+<p>Allows:</p>
+<pre><code class="language-text">high concurrency
+large relay store
+many peers
+</code></pre>
+<p>with stricter per-tenant/peer quotas.</p>
+<hr />
+<h1 id="17-bounded-queue-principle"><a class="header" href="#17-bounded-queue-principle">17. Bounded Queue Principle</a></h1>
+<p>Every queue must declare capacity.</p>
+<p>Bad:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>unbounded_channel()
+<span class="boring">}</span></code></pre></pre>
+<p>for arbitrary network/user data.</p>
+<p>Good:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>bounded_channel(capacity)
+<span class="boring">}</span></code></pre></pre>
+<p>with documented overflow behavior.</p>
+<hr />
+<h1 id="18-queue-categories"><a class="header" href="#18-queue-categories">18. Queue Categories</a></h1>
+<p>Typical queues:</p>
+<pre><code class="language-text">control
+interactive
+bulk
+background
+DTN
+notification
+projection
+IPC
+</code></pre>
+<p>Each should have independent capacity.</p>
+<hr />
+<h1 id="19-priority-queues"><a class="header" href="#19-priority-queues">19. Priority Queues</a></h1>
+<p>Recommended classes:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum WorkPriority {
+    Critical,
+    Control,
+    Interactive,
+    Normal,
+    Bulk,
+    Background,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>This aligns with Parts 03 and 06.</p>
+<hr />
+<h1 id="20-queue-capacity-by-priority"><a class="header" href="#20-queue-capacity-by-priority">20. Queue Capacity by Priority</a></h1>
+<p>Reserve slots for higher-priority traffic.</p>
+<p>Example:</p>
+<pre><code class="language-text">Critical reserve
+Control reserve
+Shared normal pool
+Bulk limited
+Background limited
+</code></pre>
+<p>Bulk traffic must not consume capacity needed for receipts/SOS/control frames.</p>
+<hr />
+<h1 id="21-backpressure-semantics"><a class="header" href="#21-backpressure-semantics">21. Backpressure Semantics</a></h1>
+<p>Backpressure means:</p>
+<pre><code class="language-text">consumer slower than producer
+</code></pre>
+<p>The producer must not continue indefinitely.</p>
+<p>Possible responses:</p>
+<pre><code class="language-text">await capacity
+return Busy
+defer operation
+drop stale data
+reduce production rate
+</code></pre>
+<p>Behavior depends on work class.</p>
+<hr />
+<h1 id="22-durable-vs-ephemeral-backpressure"><a class="header" href="#22-durable-vs-ephemeral-backpressure">22. Durable vs Ephemeral Backpressure</a></h1>
+<p>Durable operation:</p>
+<pre><code class="language-text">message/file
+</code></pre>
+<p>should generally:</p>
+<pre><code class="language-text">persist
+defer
+retry later
+</code></pre>
+<p>Ephemeral operation:</p>
+<pre><code class="language-text">typing indicator
+video frame
+presence update
+</code></pre>
+<p>can be dropped when stale.</p>
+<hr />
+<h1 id="23-backpressure-result"><a class="header" href="#23-backpressure-result">23. Backpressure Result</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum AdmissionResult {
+    Accepted,
+    Deferred(DeferredReason),
+    Rejected(RejectReason),
+    Dropped(DropReason),
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Do not hide overload behind silent failures.</p>
+<hr />
+<h1 id="24-admission-control"><a class="header" href="#24-admission-control">24. Admission Control</a></h1>
+<p>Every expensive operation passes admission before resource allocation.</p>
+<p>Example:</p>
+<pre><code class="language-text">incoming file offer
+ ↓
+check file size
+storage reservation
+peer quota
+global transfer slots
+memory budget
+ ↓
+accept/reject/defer
+</code></pre>
+<hr />
+<h1 id="25-admission-controller"><a class="header" href="#25-admission-controller">25. Admission Controller</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait AdmissionController {
+    fn admit(
+        &amp;self,
+        request: &amp;ResourceRequest,
+        snapshot: &amp;ResourceSnapshot,
+    ) -&gt; AdmissionDecision;
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Keep decision deterministic.</p>
+<hr />
+<h1 id="26-resource-request"><a class="header" href="#26-resource-request">26. Resource Request</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct ResourceRequest {
+    pub owner: ResourceOwner,
+    pub priority: WorkPriority,
+    pub memory: u64,
+    pub storage: u64,
+    pub streams: u32,
+    pub connections: u32,
+    pub bandwidth_class: BandwidthClass,
+    pub durable: bool,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="27-resource-owner"><a class="header" href="#27-resource-owner">27. Resource Owner</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum ResourceOwner {
+    Core,
+    Messaging,
+    Files,
+    Dtn,
+    Calls,
+    Extension(ProtocolId),
+    Peer(DeviceId),
+}
+<span class="boring">}</span></code></pre></pre>
+<p>This enables accounting.</p>
+<hr />
+<h1 id="28-hierarchical-accounting"><a class="header" href="#28-hierarchical-accounting">28. Hierarchical Accounting</a></h1>
+<p>Charge usage to:</p>
+<pre><code class="language-text">runtime
+ ↓
+extension
+ ↓
+peer
+ ↓
+operation
+</code></pre>
+<p>Example:</p>
+<pre><code class="language-text">Files
+  Bob
+    Transfer 123
+</code></pre>
+<p>This makes quota enforcement explainable.</p>
+<hr />
+<h1 id="29-per-peer-quotas"><a class="header" href="#29-per-peer-quotas">29. Per-Peer Quotas</a></h1>
+<p>Recommended limits:</p>
+<pre><code class="language-text">max active streams
+max pending messages
+max inbound bytes
+max staged files
+max DTN relay bytes
+max requests/sec
+</code></pre>
+<p>Unknown peers get smaller defaults.</p>
+<hr />
+<h1 id="30-trust-aware-quotas"><a class="header" href="#30-trust-aware-quotas">30. Trust-Aware Quotas</a></h1>
+<p>Quota classes:</p>
+<pre><code class="language-text">Unknown
+Known
+Verified
+Organization
+Authority
+LocalOwnDevice
+</code></pre>
+<p>Higher trust can increase quotas.</p>
+<p>Never make trusted peers unlimited.</p>
+<hr />
+<h1 id="31-per-extension-quotas"><a class="header" href="#31-per-extension-quotas">31. Per-Extension Quotas</a></h1>
+<p>Third-party/custom extensions must not monopolize resources.</p>
+<p>Each extension receives:</p>
+<pre><code class="language-text">memory budget
+queue budget
+stream budget
+storage budget
+CPU work budget
+</code></pre>
+<hr />
+<h1 id="32-extension-admission"><a class="header" href="#32-extension-admission">32. Extension Admission</a></h1>
+<p>Extension registration may declare:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct ExtensionResourceLimits {
+    pub max_memory_bytes: u64,
+    pub max_queued_ops: u32,
+    pub max_streams: u16,
+    pub max_storage_bytes: u64,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Runtime can tighten these.</p>
+<hr />
+<h1 id="33-cpu-budgeting"><a class="header" href="#33-cpu-budgeting">33. CPU Budgeting</a></h1>
+<p>Precise CPU quotas are difficult in-process.</p>
+<p>Use practical controls:</p>
+<pre><code class="language-text">max concurrent CPU-heavy jobs
+worker semaphore
+task priority
+batch size
+yield points
+</code></pre>
+<p>Examples:</p>
+<pre><code class="language-text">hashing
+AV1 software encode
+image processing
+compression
+</code></pre>
+<hr />
+<h1 id="34-cpu-work-classes"><a class="header" href="#34-cpu-work-classes">34. CPU Work Classes</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum CpuWorkClass {
+    Critical,
+    Interactive,
+    Bulk,
+    Background,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Use separate semaphores/pools when needed.</p>
+<hr />
+<h1 id="35-blocking-work-pool"><a class="header" href="#35-blocking-work-pool">35. Blocking Work Pool</a></h1>
+<p>CPU-heavy/blocking operations should not run on the async executor core threads.</p>
+<p>Use bounded:</p>
+<pre><code class="language-text">blocking/compute pool
+</code></pre>
+<p>with admission.</p>
+<hr />
+<h1 id="36-hashing-concurrency"><a class="header" href="#36-hashing-concurrency">36. Hashing Concurrency</a></h1>
+<p>Large-file hashing should be bounded.</p>
+<p>Do not hash 20 multi-gigabyte files concurrently because 20 transfers arrived.</p>
+<hr />
+<h1 id="37-av1-software-encoding"><a class="header" href="#37-av1-software-encoding">37. AV1 Software Encoding</a></h1>
+<p>Software AV1 can consume substantial CPU.</p>
+<p>Media subsystem must acquire:</p>
+<pre><code class="language-text">CPU media permits
+</code></pre>
+<p>and degrade quality if unavailable.</p>
+<hr />
+<h1 id="38-memory-pool"><a class="header" href="#38-memory-pool">38. Memory Pool</a></h1>
+<p>For high-throughput paths, use bounded buffer pools.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>BufferPool {
+    max_bytes,
+    block_sizes,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Borrowing buffer waits or fails according to priority.</p>
+<hr />
+<h1 id="39-buffer-ownership"><a class="header" href="#39-buffer-ownership">39. Buffer Ownership</a></h1>
+<p>Prefer explicit RAII permits:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let permit = memory_pool.acquire(bytes).await?;
+<span class="boring">}</span></code></pre></pre>
+<p>Dropping permit releases accounting.</p>
+<p>This reduces leaks.</p>
+<hr />
+<h1 id="40-memory-permit"><a class="header" href="#40-memory-permit">40. Memory Permit</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct MemoryPermit {
+    bytes: u64,
+    owner: ResourceOwner,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>No manual "release()" ideally.</p>
+<hr />
+<h1 id="41-stream-permit"><a class="header" href="#41-stream-permit">41. Stream Permit</a></h1>
+<p>Same pattern:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let stream_permit = stream_limiter.acquire(peer).await?;
+<span class="boring">}</span></code></pre></pre>
+<p>Release on drop.</p>
+<hr />
+<h1 id="42-connection-limits"><a class="header" href="#42-connection-limits">42. Connection Limits</a></h1>
+<p>Global:</p>
+<pre><code class="language-text">max active peer sessions
+</code></pre>
+<p>Per peer:</p>
+<pre><code class="language-text">max parallel connections
+</code></pre>
+<p>Transport should generally reuse sessions.</p>
+<hr />
+<h1 id="43-file-descriptor-limits"><a class="header" href="#43-file-descriptor-limits">43. File Descriptor Limits</a></h1>
+<p>Desktop/server may exhaust OS FDs.</p>
+<p>Bound:</p>
+<pre><code class="language-text">open blob readers
+open staging files
+sockets
+watchers
+</code></pre>
+<p>Use pooled/closed resources.</p>
+<hr />
+<h1 id="44-storage-budgets"><a class="header" href="#44-storage-budgets">44. Storage Budgets</a></h1>
+<p>Separate:</p>
+<pre><code class="language-text">durable user data
+cache
+staging
+relay
+temporary
+</code></pre>
+<p>Do not use one undifferentiated disk quota.</p>
+<hr />
+<h1 id="45-storage-classes"><a class="header" href="#45-storage-classes">45. Storage Classes</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum StorageClass {
+    Durable,
+    Cache,
+    Staging,
+    Relay,
+    Temporary,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Each class has:</p>
+<pre><code class="language-text">hard quota
+soft watermark
+eviction policy
+</code></pre>
+<hr />
+<h1 id="46-storage-watermarks"><a class="header" href="#46-storage-watermarks">46. Storage Watermarks</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">Normal &lt; 70%
+Elevated 70–85%
+Critical 85–95%
+Full &gt; 95%
+</code></pre>
+<p>Exact thresholds configurable.</p>
+<hr />
+<h1 id="47-storage-pressure-actions"><a class="header" href="#47-storage-pressure-actions">47. Storage Pressure Actions</a></h1>
+<p>Normal:</p>
+<pre><code class="language-text">full functionality
+</code></pre>
+<p>Elevated:</p>
+<pre><code class="language-text">reduce prefetch
+start cache cleanup
+</code></pre>
+<p>Critical:</p>
+<pre><code class="language-text">pause background bulk
+reject large relay bundles
+aggressive cache eviction
+</code></pre>
+<p>Full:</p>
+<pre><code class="language-text">accept only minimal critical durable data if reserved space exists
+</code></pre>
+<hr />
+<h1 id="48-critical-storage-reserve"><a class="header" href="#48-critical-storage-reserve">48. Critical Storage Reserve</a></h1>
+<p>Reserve bytes for:</p>
+<pre><code class="language-text">identity changes
+small messages
+SOS
+delivery ACKs
+security events
+</code></pre>
+<p>Bulk files must not consume this reserve.</p>
+<hr />
+<h1 id="49-storage-reservation"><a class="header" href="#49-storage-reservation">49. Storage Reservation</a></h1>
+<p>Before accepting large file:</p>
+<pre><code class="language-text">reserve expected bytes
+</code></pre>
+<p>This avoids overcommit.</p>
+<p>Reservation itself must expire if transfer never starts.</p>
+<hr />
+<h1 id="50-storage-reservation-record"><a class="header" href="#50-storage-reservation-record">50. Storage Reservation Record</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct StorageReservation {
+    pub id: ReservationId,
+    pub bytes: u64,
+    pub owner: ResourceOwner,
+    pub expires_at: Timestamp,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Persist if required for crash recovery.</p>
+<hr />
+<h1 id="51-network-bandwidth-budget"><a class="header" href="#51-network-bandwidth-budget">51. Network Bandwidth Budget</a></h1>
+<p>Traffic classes:</p>
+<pre><code class="language-text">Realtime
+Interactive
+Normal
+Bulk
+Background
+</code></pre>
+<p>Calls and control traffic should receive reserved capacity.</p>
+<hr />
+<h1 id="52-traffic-shaping"><a class="header" href="#52-traffic-shaping">52. Traffic Shaping</a></h1>
+<p>Use token-bucket or scheduler-based shaping.</p>
+<p>Example:</p>
+<pre><code class="language-text">Bulk capped while call active
+Background capped always on metered
+</code></pre>
+<hr />
+<h1 id="53-token-bucket"><a class="header" href="#53-token-bucket">53. Token Bucket</a></h1>
+<p>Conceptual:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>TokenBucket {
+    rate,
+    burst,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Useful for:</p>
+<pre><code class="language-text">per-peer bytes/sec
+per-extension bandwidth
+unknown-peer intake
+</code></pre>
+<hr />
+<h1 id="54-bandwidth-fairness"><a class="header" href="#54-bandwidth-fairness">54. Bandwidth Fairness</a></h1>
+<p>One transfer must not monopolize link.</p>
+<p>Use:</p>
+<pre><code class="language-text">weighted fair scheduling
+</code></pre>
+<p>across peers/extensions/priority classes.</p>
+<hr />
+<h1 id="55-weighted-fair-queueing"><a class="header" href="#55-weighted-fair-queueing">55. Weighted Fair Queueing</a></h1>
+<p>Example weights:</p>
+<pre><code class="language-text">Control 8
+Interactive 6
+Normal 4
+Bulk 2
+Background 1
+</code></pre>
+<p>Critical traffic gets special bounded preemption.</p>
+<hr />
+<h1 id="56-strict-priority-risks"><a class="header" href="#56-strict-priority-risks">56. Strict Priority Risks</a></h1>
+<p>Pure strict priority can starve bulk forever.</p>
+<p>Use:</p>
+<pre><code class="language-text">weighted fairness
++
+critical reserve
+</code></pre>
+<p>rather than absolute priority for all classes.</p>
+<hr />
+<h1 id="57-emergency-preemption"><a class="header" href="#57-emergency-preemption">57. Emergency Preemption</a></h1>
+<p>Emergency can temporarily preempt:</p>
+<pre><code class="language-text">background sync
+bulk file chunks
+relay cache work
+</code></pre>
+<p>but not violate hard safety/resource bounds.</p>
+<hr />
+<h1 id="58-realtime-drop-policy"><a class="header" href="#58-realtime-drop-policy">58. Realtime Drop Policy</a></h1>
+<p>Realtime media frames become useless after deadline.</p>
+<p>If queue full:</p>
+<pre><code class="language-text">drop stale frame
+</code></pre>
+<p>not:</p>
+<pre><code class="language-text">block and accumulate seconds of latency
+</code></pre>
+<hr />
+<h1 id="59-typingpresence-drop-policy"><a class="header" href="#59-typingpresence-drop-policy">59. Typing/Presence Drop Policy</a></h1>
+<p>Ephemeral state should coalesce.</p>
+<p>Example:</p>
+<pre><code class="language-text">typing=true
+typing=true
+typing=true
+</code></pre>
+<p>keep latest state, not all events.</p>
+<hr />
+<h1 id="60-coalescing"><a class="header" href="#60-coalescing">60. Coalescing</a></h1>
+<p>Useful for:</p>
+<pre><code class="language-text">progress updates
+presence
+network metrics
+typing
+capability deltas
+</code></pre>
+<p>Do not queue every redundant update.</p>
+<hr />
+<h1 id="61-latest-value-channel"><a class="header" href="#61-latest-value-channel">61. Latest-Value Channel</a></h1>
+<p>For state-like updates use:</p>
+<pre><code class="language-text">watch/latest-value
+</code></pre>
+<p>rather than FIFO event queue where appropriate.</p>
+<hr />
+<h1 id="62-messaging-backpressure"><a class="header" href="#62-messaging-backpressure">62. Messaging Backpressure</a></h1>
+<p>If outbound message queue is full:</p>
+<pre><code class="language-text">persist message
+mark deferred
+</code></pre>
+<p>Do not lose durable message.</p>
+<p>UI can show:</p>
+<pre><code class="language-text">Waiting to send
+</code></pre>
+<hr />
+<h1 id="63-message-inbound-limit"><a class="header" href="#63-message-inbound-limit">63. Message Inbound Limit</a></h1>
+<p>Incoming messages must obey:</p>
+<pre><code class="language-text">max message size
+max messages/sec
+max pending unprocessed
+</code></pre>
+<p>Unknown peers stricter.</p>
+<hr />
+<h1 id="64-file-backpressure"><a class="header" href="#64-file-backpressure">64. File Backpressure</a></h1>
+<p>File reader must slow when:</p>
+<pre><code class="language-text">network queue full
+encryptor busy
+memory pool exhausted
+</code></pre>
+<p>Do not read ahead unboundedly.</p>
+<hr />
+<h1 id="65-transfer-slots"><a class="header" href="#65-transfer-slots">65. Transfer Slots</a></h1>
+<p>Global:</p>
+<pre><code class="language-text">max active transfers
+</code></pre>
+<p>Per peer:</p>
+<pre><code class="language-text">max active transfers per peer
+</code></pre>
+<p>Extra transfers enter durable deferred state.</p>
+<hr />
+<h1 id="66-dtn-backpressure"><a class="header" href="#66-dtn-backpressure">66. DTN Backpressure</a></h1>
+<p>DTN relay intake checks:</p>
+<pre><code class="language-text">relay quota
+priority
+peer quota
+storage pressure
+</code></pre>
+<p>Low-priority bundles may be rejected/evicted first.</p>
+<hr />
+<h1 id="67-dtn-encounter-budget"><a class="header" href="#67-dtn-encounter-budget">67. DTN Encounter Budget</a></h1>
+<p>During short contact:</p>
+<pre><code class="language-text">max bytes to exchange
+max bundle count
+</code></pre>
+<p>This prevents one peer from consuming entire encounter.</p>
+<hr />
+<h1 id="68-routing-backpressure"><a class="header" href="#68-routing-backpressure">68. Routing Backpressure</a></h1>
+<p>Routing should not create unlimited path acquisition attempts.</p>
+<p>Limit:</p>
+<pre><code class="language-text">concurrent connects
+active discovery jobs
+retry timers
+</code></pre>
+<hr />
+<h1 id="69-connection-storm-protection"><a class="header" href="#69-connection-storm-protection">69. Connection Storm Protection</a></h1>
+<p>If 1000 peers appear:</p>
+<pre><code class="language-text">do not connect to all simultaneously
+</code></pre>
+<p>Use admission + priority + queue.</p>
+<hr />
+<h1 id="70-discovery-backpressure"><a class="header" href="#70-discovery-backpressure">70. Discovery Backpressure</a></h1>
+<p>Nearby discovery results can be noisy.</p>
+<p>Coalesce/update peer state instead of queueing every advertisement.</p>
+<hr />
+<h1 id="71-capability-negotiation-limits"><a class="header" href="#71-capability-negotiation-limits">71. Capability Negotiation Limits</a></h1>
+<p>Part 07 negotiation must bound:</p>
+<pre><code class="language-text">capability count
+parameter bytes
+concurrent negotiations
+</code></pre>
+<p>A peer cannot hold unlimited negotiation sessions.</p>
+<hr />
+<h1 id="72-event-log-backpressure"><a class="header" href="#72-event-log-backpressure">72. Event Log Backpressure</a></h1>
+<p>Part 04 append path needs:</p>
+<pre><code class="language-text">max batch size
+bounded writer queue
+projection lag thresholds
+</code></pre>
+<p>If storage cannot keep up, producers receive backpressure.</p>
+<hr />
+<h1 id="73-projection-lag"><a class="header" href="#73-projection-lag">73. Projection Lag</a></h1>
+<p>Define:</p>
+<pre><code class="language-text">Healthy
+Lagging
+Critical
+</code></pre>
+<p>If critical projection lags too far:</p>
+<pre><code class="language-text">slow writes
+shed secondary work
+</code></pre>
+<p>Do not let projection memory backlog grow without bound.</p>
+<hr />
+<h1 id="74-outbox-backpressure"><a class="header" href="#74-outbox-backpressure">74. Outbox Backpressure</a></h1>
+<p>Outbox can grow durably, but must have:</p>
+<pre><code class="language-text">max count
+max bytes
+retention/expiry
+</code></pre>
+<p>If user queues too much offline:</p>
+<pre><code class="language-text">defer/reject new bulk
+</code></pre>
+<p>while preserving critical messaging reserve.</p>
+<hr />
+<h1 id="75-daemon-ipc-backpressure"><a class="header" href="#75-daemon-ipc-backpressure">75. Daemon IPC Backpressure</a></h1>
+<p>Part 16 daemon clients must not receive unbounded event streams.</p>
+<p>Per client:</p>
+<pre><code class="language-text">bounded IPC send queue
+snapshot/resync mechanism
+</code></pre>
+<p>If GUI falls behind:</p>
+<pre><code class="language-text">drop/coalesce noncritical updates
+request fresh snapshot
+</code></pre>
+<hr />
+<h1 id="76-ffi-backpressure"><a class="header" href="#76-ffi-backpressure">76. FFI Backpressure</a></h1>
+<p>Part 19 callbacks must not be called infinitely fast.</p>
+<p>Use:</p>
+<pre><code class="language-text">poll API
+bounded event queue
+coalescing
+</code></pre>
+<p>depending on host language.</p>
+<hr />
+<h1 id="77-plugin-backpressure"><a class="header" href="#77-plugin-backpressure">77. Plugin Backpressure</a></h1>
+<p>Part 24 plugins/extensions receive:</p>
+<pre><code class="language-text">bounded mailboxes
+resource budgets
+timeouts
+</code></pre>
+<p>A slow plugin cannot block core runtime.</p>
+<hr />
+<h1 id="78-admission-by-cost-estimate"><a class="header" href="#78-admission-by-cost-estimate">78. Admission by Cost Estimate</a></h1>
+<p>Operations declare expected cost.</p>
+<p>Example:</p>
+<pre><code class="language-text">5 GB file
+</code></pre>
+<p>can be rejected before hashing if:</p>
+<pre><code class="language-text">staging quota insufficient
+</code></pre>
+<hr />
+<h1 id="79-cost-estimate-accuracy"><a class="header" href="#79-cost-estimate-accuracy">79. Cost Estimate Accuracy</a></h1>
+<p>Estimates may be imperfect.</p>
+<p>Use:</p>
+<pre><code class="language-text">reservation
++
+runtime accounting
+</code></pre>
+<p>to correct.</p>
+<p>Do not trust application-supplied estimate blindly.</p>
+<hr />
+<h1 id="80-resource-snapshot"><a class="header" href="#80-resource-snapshot">80. Resource Snapshot</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct ResourceSnapshot {
+    pub memory: ResourceUsage,
+    pub storage: StorageUsage,
+    pub connections: CountUsage,
+    pub streams: CountUsage,
+    pub network: NetworkUsage,
+    pub pressure: PressureState,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="81-pressure-state"><a class="header" href="#81-pressure-state">81. Pressure State</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum PressureState {
+    Normal,
+    Elevated,
+    Critical,
+    Exhausted,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>This is generic presentation.</p>
+<p>Subsystem-specific actions remain typed.</p>
+<hr />
+<h1 id="82-memory-pressure-sources"><a class="header" href="#82-memory-pressure-sources">82. Memory Pressure Sources</a></h1>
+<p>Platform may report:</p>
+<pre><code class="language-text">Android trim memory
+iOS memory warning
+OS low-memory
+internal budget exhaustion
+</code></pre>
+<p>Combine into runtime pressure state.</p>
+<hr />
+<h1 id="83-memory-pressure-response"><a class="header" href="#83-memory-pressure-response">83. Memory Pressure Response</a></h1>
+<p>Elevated:</p>
+<pre><code class="language-text">shrink caches
+reduce read-ahead
+</code></pre>
+<p>Critical:</p>
+<pre><code class="language-text">pause bulk
+release previews
+reduce buffer pools
+drop ephemeral state
+</code></pre>
+<p>Exhausted:</p>
+<pre><code class="language-text">reject new noncritical work
+preserve core control
+</code></pre>
+<hr />
+<h1 id="84-android-memory-integration"><a class="header" href="#84-android-memory-integration">84. Android Memory Integration</a></h1>
+<p>Kotlin reports:</p>
+<pre><code class="language-text">trim-memory level
+</code></pre>
+<p>Rust translates into policy.</p>
+<p>Do not duplicate resource policy in Kotlin.</p>
+<hr />
+<h1 id="85-ios-memory-integration"><a class="header" href="#85-ios-memory-integration">85. iOS Memory Integration</a></h1>
+<p>Platform adapter reports memory warnings.</p>
+<p>Rust performs same shared degradation logic.</p>
+<hr />
+<h1 id="86-cpu-pressure"><a class="header" href="#86-cpu-pressure">86. CPU Pressure</a></h1>
+<p>Detect via:</p>
+<pre><code class="language-text">worker queue depth
+task latency
+thermal signal
+media encoder overload
+</code></pre>
+<p>Use coarse pressure state.</p>
+<hr />
+<h1 id="87-cpu-pressure-response"><a class="header" href="#87-cpu-pressure-response">87. CPU Pressure Response</a></h1>
+<pre><code class="language-text">reduce parallel hashes
+lower AV1 encode complexity
+pause background compression
+reduce indexing concurrency
+</code></pre>
+<hr />
+<h1 id="88-thermal-pressure"><a class="header" href="#88-thermal-pressure">88. Thermal Pressure</a></h1>
+<p>Thermal state can force:</p>
+<pre><code class="language-text">lower media quality
+reduce Wi-Fi heavy transfer
+reduce CPU jobs
+</code></pre>
+<p>Critical communication remains available.</p>
+<hr />
+<h1 id="89-batteryenergy-budget"><a class="header" href="#89-batteryenergy-budget">89. Battery/Energy Budget</a></h1>
+<p>Part 13 will define detailed policy.</p>
+<p>Part 08 needs general integration:</p>
+<pre><code class="language-text">background work budget
+radio activation budget
+CPU-heavy work budget
+</code></pre>
+<hr />
+<h1 id="90-resource-reservation-hierarchy"><a class="header" href="#90-resource-reservation-hierarchy">90. Resource Reservation Hierarchy</a></h1>
+<p>For operation:</p>
+<pre><code class="language-text">admit
+ ↓
+reserve
+ ↓
+execute
+ ↓
+release
+</code></pre>
+<p>Reservations should be RAII where possible.</p>
+<hr />
+<h1 id="91-multi-resource-reservation"><a class="header" href="#91-multi-resource-reservation">91. Multi-Resource Reservation</a></h1>
+<p>Some operations need multiple resources atomically.</p>
+<p>Example file transfer:</p>
+<pre><code class="language-text">1 transfer slot
+2 stream slots
+8 MiB memory
+500 MiB storage reservation
+</code></pre>
+<p>Avoid deadlocks from acquiring resources in arbitrary order.</p>
+<hr />
+<h1 id="92-reservation-order"><a class="header" href="#92-reservation-order">92. Reservation Order</a></h1>
+<p>Define canonical order:</p>
+<pre><code class="language-text">Global admission
+Storage
+Memory
+Connections
+Streams
+CPU
+</code></pre>
+<p>or use central allocator that grants bundle atomically.</p>
+<hr />
+<h1 id="93-deadlock-avoidance"><a class="header" href="#93-deadlock-avoidance">93. Deadlock Avoidance</a></h1>
+<p>Never:</p>
+<pre><code class="language-text">hold memory permit
+wait forever for stream permit
+while another task holds stream and waits for memory
+</code></pre>
+<p>Use:</p>
+<ul>
+<li>fixed acquisition order</li>
+<li>timeout</li>
+<li>combined reservation</li>
+<li>release-and-retry</li>
+</ul>
+<hr />
+<h1 id="94-resource-permit-bundle"><a class="header" href="#94-resource-permit-bundle">94. Resource Permit Bundle</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct ResourcePermitBundle {
+    pub memory: Option&lt;MemoryPermit&gt;,
+    pub storage: Option&lt;StoragePermit&gt;,
+    pub streams: Vec&lt;StreamPermit&gt;,
+    pub task: Option&lt;TaskPermit&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="95-permit-expiry"><a class="header" href="#95-permit-expiry">95. Permit Expiry</a></h1>
+<p>Reservations before work starts may expire.</p>
+<p>Active permits tied to live operation.</p>
+<hr />
+<h1 id="96-cancellation-safety"><a class="header" href="#96-cancellation-safety">96. Cancellation Safety</a></h1>
+<p>When operation is cancelled:</p>
+<pre><code class="language-text">drop permits
+cancel tasks
+release reserved storage if unused
+</code></pre>
+<p>RAII simplifies this.</p>
+<hr />
+<h1 id="97-panic-safety"><a class="header" href="#97-panic-safety">97. Panic Safety</a></h1>
+<p>If task panics:</p>
+<pre><code class="language-text">permits release on drop
+</code></pre>
+<p>Do not require explicit cleanup only.</p>
+<p>Core runtime should catch boundary panics where appropriate.</p>
+<hr />
+<h1 id="98-fair-semaphores"><a class="header" href="#98-fair-semaphores">98. Fair Semaphores</a></h1>
+<p>Use fairness to prevent one task repeatedly reacquiring permits.</p>
+<p>Tokio/futures primitives may need wrapper behavior depending on guarantees.</p>
+<hr />
+<h1 id="99-starvation-detection"><a class="header" href="#99-starvation-detection">99. Starvation Detection</a></h1>
+<p>Track wait time.</p>
+<p>If low-priority task waits too long:</p>
+<pre><code class="language-text">age its priority slightly
+</code></pre>
+<p>without outranking critical safety work.</p>
+<hr />
+<h1 id="100-aging"><a class="header" href="#100-aging">100. Aging</a></h1>
+<pre><code class="language-text">effective priority = base + bounded wait-age boost
+</code></pre>
+<p>Useful for bulk transfer fairness.</p>
+<hr />
+<h1 id="101-load-shedding"><a class="header" href="#101-load-shedding">101. Load Shedding</a></h1>
+<p>When critically overloaded:</p>
+<pre><code class="language-text">drop/reject low-value work
+</code></pre>
+<p>Priority order:</p>
+<pre><code class="language-text">ephemeral
+background
+bulk
+normal
+interactive
+control
+critical
+</code></pre>
+<p>Durable work should be deferred rather than silently dropped where possible.</p>
+<hr />
+<h1 id="102-shed-examples"><a class="header" href="#102-shed-examples">102. Shed Examples</a></h1>
+<p>Drop:</p>
+<pre><code class="language-text">old typing state
+stale presence
+old diagnostics update
+stale video frame
+</code></pre>
+<p>Defer:</p>
+<pre><code class="language-text">large file
+background sync
+thumbnail prefetch
+</code></pre>
+<p>Preserve:</p>
+<pre><code class="language-text">device revocation
+SOS
+small text
+delivery ACK
+</code></pre>
+<hr />
+<h1 id="103-overload-mode"><a class="header" href="#103-overload-mode">103. Overload Mode</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum OverloadMode {
+    Normal,
+    Constrained,
+    CriticalOnly,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Runtime can switch based on combined pressure.</p>
+<hr />
+<h1 id="104-critical-only-mode"><a class="header" href="#104-critical-only-mode">104. Critical-Only Mode</a></h1>
+<p>Accept only:</p>
+<pre><code class="language-text">security events
+small critical messages
+SOS
+essential ACKs
+shutdown/recovery control
+</code></pre>
+<p>when resources are exhausted.</p>
+<hr />
+<h1 id="105-user-feedback"><a class="header" href="#105-user-feedback">105. User Feedback</a></h1>
+<p>Normal users should see:</p>
+<pre><code class="language-text">Waiting for storage
+Waiting for Wi-Fi
+Device is low on storage
+Background transfer paused
+</code></pre>
+<p>not internal queue codes.</p>
+<hr />
+<h1 id="106-developer-diagnostics"><a class="header" href="#106-developer-diagnostics">106. Developer Diagnostics</a></h1>
+<p>Advanced view:</p>
+<pre><code class="language-text">Memory: 72/128 MiB
+Streams: 14/32
+Transfers: 3/4
+DTN relay: 420/512 MiB
+Bulk queue: 48/64
+Pressure: Elevated
+</code></pre>
+<hr />
+<h1 id="107-resource-metrics"><a class="header" href="#107-resource-metrics">107. Resource Metrics</a></h1>
+<p>Track:</p>
+<pre><code class="language-text">current usage
+peak usage
+admission rejects
+deferred count
+queue wait
+permit wait
+evictions
+shed operations
+</code></pre>
+<hr />
+<h1 id="108-cardinality-discipline"><a class="header" href="#108-cardinality-discipline">108. Cardinality Discipline</a></h1>
+<p>Do not export metrics with unbounded labels like raw peer ID.</p>
+<p>Use:</p>
+<pre><code class="language-text">trust class
+extension
+priority
+resource class
+</code></pre>
+<hr />
+<h1 id="109-per-peer-diagnostics"><a class="header" href="#109-per-peer-diagnostics">109. Per-Peer Diagnostics</a></h1>
+<p>Local debugging can inspect one peer specifically.</p>
+<p>Do not export such detail to telemetry by default.</p>
+<hr />
+<h1 id="110-resource-leak-detection"><a class="header" href="#110-resource-leak-detection">110. Resource Leak Detection</a></h1>
+<p>Debug builds/testing can track:</p>
+<pre><code class="language-text">permits not released
+tasks still alive
+staging reservations orphaned
+</code></pre>
+<hr />
+<h1 id="111-timeout-policy"><a class="header" href="#111-timeout-policy">111. Timeout Policy</a></h1>
+<p>Resource waits should have operation-specific timeout.</p>
+<p>Examples:</p>
+<pre><code class="language-text">video frame: milliseconds
+text send admission: seconds/local persist
+background file: may wait indefinitely durably
+</code></pre>
+<hr />
+<h1 id="112-wait-vs-fail"><a class="header" href="#112-wait-vs-fail">112. Wait vs Fail</a></h1>
+<p>Durable background transfer:</p>
+<pre><code class="language-text">wait/defer
+</code></pre>
+<p>Interactive call setup:</p>
+<pre><code class="language-text">fail fast with fallback
+</code></pre>
+<p>Policy varies by class.</p>
+<hr />
+<h1 id="113-messaging-limits"><a class="header" href="#113-messaging-limits">113. Messaging Limits</a></h1>
+<p>Recommended configurable limits:</p>
+<pre><code class="language-text">max message bytes
+max attachments
+max pending outbound messages
+max inbound rate per peer
+max unresolved remote events
+</code></pre>
+<hr />
+<h1 id="114-file-limits"><a class="header" href="#114-file-limits">114. File Limits</a></h1>
+<pre><code class="language-text">max file size
+max chunk size
+max parallel chunks
+max active transfers
+max staging bytes
+max manifest entries
+</code></pre>
+<hr />
+<h1 id="115-dtn-limits"><a class="header" href="#115-dtn-limits">115. DTN Limits</a></h1>
+<pre><code class="language-text">max bundle size
+max relay bytes
+max bundles
+max replication budget
+max hop limit
+max peer intake/sec
+</code></pre>
+<hr />
+<h1 id="116-routing-limits"><a class="header" href="#116-routing-limits">116. Routing Limits</a></h1>
+<pre><code class="language-text">max candidates per destination
+max concurrent path acquisitions
+max retry timers
+max discovery escalations
+</code></pre>
+<hr />
+<h1 id="117-capability-limits"><a class="header" href="#117-capability-limits">117. Capability Limits</a></h1>
+<pre><code class="language-text">max capabilities
+max extension count
+max parameter bytes
+max dynamic updates/sec
+</code></pre>
+<hr />
+<h1 id="118-call-limits"><a class="header" href="#118-call-limits">118. Call Limits</a></h1>
+<pre><code class="language-text">max active calls
+max video tracks
+max decoder buffers
+max encoder workers
+</code></pre>
+<hr />
+<h1 id="119-group-limits"><a class="header" href="#119-group-limits">119. Group Limits</a></h1>
+<pre><code class="language-text">max group members
+max simultaneous group fan-out
+max group update backlog
+</code></pre>
+<hr />
+<h1 id="120-sync-limits"><a class="header" href="#120-sync-limits">120. Sync Limits</a></h1>
+<pre><code class="language-text">max events per batch
+max concurrent stream syncs
+max history backfill bytes
+</code></pre>
+<hr />
+<h1 id="121-limit-negotiation"><a class="header" href="#121-limit-negotiation">121. Limit Negotiation</a></h1>
+<p>Part 07 can negotiate peer-facing maxima.</p>
+<p>Effective limit:</p>
+<pre><code class="language-text">min(
+    local hard limit,
+    local policy,
+    negotiated remote limit,
+    current pressure limit
+)
+</code></pre>
+<hr />
+<h1 id="122-runtime-tightening"><a class="header" href="#122-runtime-tightening">122. Runtime Tightening</a></h1>
+<p>Negotiated:</p>
+<pre><code class="language-text">parallel chunks = 8
+</code></pre>
+<p>Current pressure:</p>
+<pre><code class="language-text">effective = 2
+</code></pre>
+<p>No renegotiation required for local throttling unless peer behavior depends on it.</p>
+<hr />
+<h1 id="123-inbound-limit-enforcement"><a class="header" href="#123-inbound-limit-enforcement">123. Inbound Limit Enforcement</a></h1>
+<p>Always enforce before allocation.</p>
+<p>Example:</p>
+<pre><code class="language-text">declared frame = 100 MB
+local max = 1 MB
+→ reject header
+</code></pre>
+<p>Do not allocate then reject.</p>
+<hr />
+<h1 id="124-length-conversion-safety"><a class="header" href="#124-length-conversion-safety">124. Length Conversion Safety</a></h1>
+<p>Never cast untrusted:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>u64 -&gt; usize
+<span class="boring">}</span></code></pre></pre>
+<p>before bounds validation.</p>
+<hr />
+<h1 id="125-decompression-limits"><a class="header" href="#125-decompression-limits">125. Decompression Limits</a></h1>
+<p>If compression exists:</p>
+<pre><code class="language-text">max decompressed size
+max ratio
+streaming limits
+</code></pre>
+<p>Protect against decompression bombs.</p>
+<hr />
+<h1 id="126-recursive-structure-limits"><a class="header" href="#126-recursive-structure-limits">126. Recursive Structure Limits</a></h1>
+<p>Bound:</p>
+<pre><code class="language-text">nesting depth
+list length
+map length
+</code></pre>
+<p>in protocol/application payloads.</p>
+<hr />
+<h1 id="127-hashcpu-dos"><a class="header" href="#127-hashcpu-dos">127. Hash/CPU DoS</a></h1>
+<p>An attacker can send many objects requiring hashing/signature verification.</p>
+<p>Use:</p>
+<pre><code class="language-text">verification queue
+per-peer CPU quota
+rate limits
+</code></pre>
+<hr />
+<h1 id="128-signature-verification-budget"><a class="header" href="#128-signature-verification-budget">128. Signature Verification Budget</a></h1>
+<p>Batch/parallelize carefully.</p>
+<p>Unknown peers should not consume unlimited crypto verification CPU.</p>
+<hr />
+<h1 id="129-unknown-peer-admission"><a class="header" href="#129-unknown-peer-admission">129. Unknown Peer Admission</a></h1>
+<p>Before expensive crypto work, perform cheap checks:</p>
+<pre><code class="language-text">length
+syntax
+rate limit
+cookie/challenge
+</code></pre>
+<p>where protocol permits.</p>
+<hr />
+<h1 id="130-connection-admission"><a class="header" href="#130-connection-admission">130. Connection Admission</a></h1>
+<p>Before full session establishment:</p>
+<pre><code class="language-text">global connection slot
+per-source rate
+handshake budget
+</code></pre>
+<p>Protect against connection floods.</p>
+<hr />
+<h1 id="131-handshake-budget"><a class="header" href="#131-handshake-budget">131. Handshake Budget</a></h1>
+<p>Separate:</p>
+<pre><code class="language-text">half-open
+authenticated
+active
+</code></pre>
+<p>connection pools.</p>
+<p>Half-open sessions receive smallest budget.</p>
+<hr />
+<h1 id="132-abuse-escalation"><a class="header" href="#132-abuse-escalation">132. Abuse Escalation</a></h1>
+<p>Repeated violations:</p>
+<pre><code class="language-text">rate limit
+temporary quarantine
+disconnect
+block
+</code></pre>
+<p>Security/abuse subsystem informs admission.</p>
+<hr />
+<h1 id="133-queue-poisoning-protection"><a class="header" href="#133-queue-poisoning-protection">133. Queue Poisoning Protection</a></h1>
+<p>A peer must not fill high-priority queue with fake critical work.</p>
+<p>Priority requests are mapped through authorization policy.</p>
+<hr />
+<h1 id="134-priority-authorization"><a class="header" href="#134-priority-authorization">134. Priority Authorization</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">Unknown peer asks Critical
+→ downgrade to Normal or reject
+</code></pre>
+<p>Only trusted authority/user-local action can claim certain classes.</p>
+<hr />
+<h1 id="135-resource-accounting-across-retries"><a class="header" href="#135-resource-accounting-across-retries">135. Resource Accounting Across Retries</a></h1>
+<p>Retry should not leak reservations.</p>
+<p>Each retry:</p>
+<pre><code class="language-text">reuse or reacquire cleanly
+</code></pre>
+<p>Do not accumulate storage/memory permits.</p>
+<hr />
+<h1 id="136-resource-accounting-across-path-switch"><a class="header" href="#136-resource-accounting-across-path-switch">136. Resource Accounting Across Path Switch</a></h1>
+<p>File transfer switching path keeps:</p>
+<pre><code class="language-text">transfer slot
+storage reservation
+</code></pre>
+<p>but may release/acquire stream/connection permits.</p>
+<hr />
+<h1 id="137-resource-accounting-across-process-restart"><a class="header" href="#137-resource-accounting-across-process-restart">137. Resource Accounting Across Process Restart</a></h1>
+<p>Durable reservations:</p>
+<pre><code class="language-text">storage
+</code></pre>
+<p>may need reconstruction.</p>
+<p>In-memory permits:</p>
+<pre><code class="language-text">memory
+streams
+CPU
+</code></pre>
+<p>are rebuilt.</p>
+<hr />
+<h1 id="138-crash-recovery-integration"><a class="header" href="#138-crash-recovery-integration">138. Crash Recovery Integration</a></h1>
+<p>Part 09 should reconcile:</p>
+<pre><code class="language-text">orphan storage reservation
+staging file
+work queue
+active operation state
+</code></pre>
+<p>after abnormal shutdown.</p>
+<hr />
+<h1 id="139-event-log-integration"><a class="header" href="#139-event-log-integration">139. Event Log Integration</a></h1>
+<p>Part 04 records meaningful overload transitions only where useful.</p>
+<p>Do not journal every permit acquisition.</p>
+<p>Examples worth recording:</p>
+<pre><code class="language-text">TransferDeferredStorage
+TransferPausedResourcePressure
+</code></pre>
+<hr />
+<h1 id="140-resource-state-as-projection"><a class="header" href="#140-resource-state-as-projection">140. Resource State as Projection</a></h1>
+<p>Operational resource state is mostly runtime/diagnostic.</p>
+<p>Persistent settings:</p>
+<pre><code class="language-text">user quota
+app policy
+</code></pre>
+<p>live in config/storage.</p>
+<hr />
+<h1 id="141-resource-config"><a class="header" href="#141-resource-config">141. Resource Config</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct ResourceConfig {
+    pub profile: ResourceProfile,
+    pub memory: MemoryLimits,
+    pub storage: StorageLimits,
+    pub network: NetworkLimits,
+    pub peers: PeerLimits,
+    pub queues: QueueLimits,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Validate at startup.</p>
+<hr />
+<h1 id="142-config-validation"><a class="header" href="#142-config-validation">142. Config Validation</a></h1>
+<p>Reject inconsistent config.</p>
+<p>Examples:</p>
+<pre><code class="language-text">critical reserve &gt; total storage quota
+per-peer streams &gt; global streams
+bulk queue &gt; global queue memory budget
+</code></pre>
+<hr />
+<h1 id="143-dynamic-config"><a class="header" href="#143-dynamic-config">143. Dynamic Config</a></h1>
+<p>Admins/users may change:</p>
+<pre><code class="language-text">relay storage quota
+max parallel transfers
+data saver
+</code></pre>
+<p>Runtime applies safely.</p>
+<hr />
+<h1 id="144-enterprise-tenant-quotas"><a class="header" href="#144-enterprise-tenant-quotas">144. Enterprise Tenant Quotas</a></h1>
+<p>For multi-tenant/server:</p>
+<pre><code class="language-text">per tenant
+per org
+per user
+per peer
+</code></pre>
+<p>hierarchical accounting is required.</p>
+<hr />
+<h1 id="145-tenant-isolation"><a class="header" href="#145-tenant-isolation">145. Tenant Isolation</a></h1>
+<p>Tenant A cannot consume Tenant B's reserved critical budget.</p>
+<p>Shared spare capacity can be borrowable under policy.</p>
+<hr />
+<h1 id="146-server-overload"><a class="header" href="#146-server-overload">146. Server Overload</a></h1>
+<p>Server mode should degrade:</p>
+<pre><code class="language-text">reject new bulk
+limit unknown peers
+preserve authenticated control
+</code></pre>
+<p>rather than crash.</p>
+<hr />
+<h1 id="147-headless-relay-mode"><a class="header" href="#147-headless-relay-mode">147. Headless Relay Mode</a></h1>
+<p>Relay-specific budget:</p>
+<pre><code class="language-text">relay storage
+relay bandwidth
+peer count
+bundle intake
+</code></pre>
+<p>No UI memory reserved.</p>
+<hr />
+<h1 id="148-mobile-background-mode"><a class="header" href="#148-mobile-background-mode">148. Mobile Background Mode</a></h1>
+<p>When backgrounded:</p>
+<pre><code class="language-text">reduce queues
+pause bulk
+reduce CPU jobs
+keep essential durable/control
+</code></pre>
+<p>OS policy may further restrict.</p>
+<hr />
+<h1 id="149-foreground-mode"><a class="header" href="#149-foreground-mode">149. Foreground Mode</a></h1>
+<p>Can temporarily increase:</p>
+<pre><code class="language-text">discovery
+transfer concurrency
+UI cache
+</code></pre>
+<p>within hard limits.</p>
+<hr />
+<h1 id="150-battery-saver-mode"><a class="header" href="#150-battery-saver-mode">150. Battery Saver Mode</a></h1>
+<p>Part 13 integrates by tightening:</p>
+<pre><code class="language-text">CPU permits
+network bulk rates
+scan concurrency
+</code></pre>
+<hr />
+<h1 id="151-emergency-mode"><a class="header" href="#151-emergency-mode">151. Emergency Mode</a></h1>
+<p>May reallocate resources:</p>
+<pre><code class="language-text">more critical queue reserve
+less background cache
+more DTN critical reserve
+</code></pre>
+<p>but not exceed global hard ceilings.</p>
+<hr />
+<h1 id="152-call-active-mode"><a class="header" href="#152-call-active-mode">152. Call Active Mode</a></h1>
+<p>Reserve:</p>
+<pre><code class="language-text">bandwidth
+CPU
+memory
+audio/video buffers
+</code></pre>
+<p>and throttle:</p>
+<pre><code class="language-text">bulk transfer
+background sync
+</code></pre>
+<hr />
+<h1 id="153-reservation-preemption"><a class="header" href="#153-reservation-preemption">153. Reservation Preemption</a></h1>
+<p>Some low-priority reservations can be preemptible.</p>
+<p>Example:</p>
+<pre><code class="language-text">background thumbnail cache
+</code></pre>
+<p>High-priority operation can reclaim.</p>
+<p>Do not preempt resources that would corrupt active durable work without safe pause.</p>
+<hr />
+<h1 id="154-preemptible-permit"><a class="header" href="#154-preemptible-permit">154. Preemptible Permit</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum PermitClass {
+    Hard,
+    Preemptible,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Use carefully.</p>
+<hr />
+<h1 id="155-safe-pause"><a class="header" href="#155-safe-pause">155. Safe Pause</a></h1>
+<p>File transfer can pause at chunk boundary.</p>
+<p>This makes it preemptible.</p>
+<p>Identity update cannot be partially paused mid-commit.</p>
+<hr />
+<h1 id="156-scheduler-architecture"><a class="header" href="#156-scheduler-architecture">156. Scheduler Architecture</a></h1>
+<pre><code class="language-text">Ingress
+ ↓
+Admission
+ ↓
+Priority queues
+ ↓
+Fair scheduler
+ ↓
+Resource permit acquisition
+ ↓
+Worker
+ ↓
+Feedback
+</code></pre>
+<hr />
+<h1 id="157-scheduler-shards"><a class="header" href="#157-scheduler-shards">157. Scheduler Shards</a></h1>
+<p>Potentially separate:</p>
+<pre><code class="language-text">network scheduler
+CPU scheduler
+storage scheduler
+</code></pre>
+<p>Coordinated by admission layer.</p>
+<p>Avoid one giant lock.</p>
+<hr />
+<h1 id="158-lock-contention"><a class="header" href="#158-lock-contention">158. Lock Contention</a></h1>
+<p>Resource accounting hot paths should use:</p>
+<pre><code class="language-text">atomics
+sharded counters
+small critical sections
+</code></pre>
+<p>where profiling justifies.</p>
+<p>Correctness first.</p>
+<hr />
+<h1 id="159-async-cancellation"><a class="header" href="#159-async-cancellation">159. Async Cancellation</a></h1>
+<p>All waits on:</p>
+<pre><code class="language-text">queue
+permit
+storage reservation
+</code></pre>
+<p>must be cancellable.</p>
+<hr />
+<h1 id="160-structured-concurrency"><a class="header" href="#160-structured-concurrency">160. Structured Concurrency</a></h1>
+<p>Operations should own child tasks.</p>
+<p>Cancel parent:</p>
+<pre><code class="language-text">children cancel
+permits release
+</code></pre>
+<p>Avoid detached task leaks.</p>
+<hr />
+<h1 id="161-task-registry"><a class="header" href="#161-task-registry">161. Task Registry</a></h1>
+<p>Runtime may track:</p>
+<pre><code class="language-text">active task count
+owner
+priority
+age
+</code></pre>
+<p>for diagnostics.</p>
+<hr />
+<h1 id="162-no-fire-and-forget-by-default"><a class="header" href="#162-no-fire-and-forget-by-default">162. No Fire-and-Forget by Default</a></h1>
+<p>Do not spawn untracked long-lived tasks.</p>
+<p>Long-lived services belong to supervised runtime.</p>
+<hr />
+<h1 id="163-supervisor"><a class="header" href="#163-supervisor">163. Supervisor</a></h1>
+<pre><code class="language-text">RuntimeSupervisor
+├── routing worker
+├── event projector
+├── transfer scheduler
+├── DTN engine
+└── capability updater
+</code></pre>
+<p>Supervisor enforces lifecycle/resource limits.</p>
+<hr />
+<h1 id="164-restart-policy"><a class="header" href="#164-restart-policy">164. Restart Policy</a></h1>
+<p>A failed worker may restart with bounded backoff.</p>
+<p>Repeated crash:</p>
+<pre><code class="language-text">mark subsystem degraded
+</code></pre>
+<p>Do not infinite restart loop.</p>
+<hr />
+<h1 id="165-resource-pressure-notifications"><a class="header" href="#165-resource-pressure-notifications">165. Resource Pressure Notifications</a></h1>
+<p>Internal event:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum ResourceEvent {
+    PressureChanged(ResourceKind, PressureState),
+    AdmissionRejected(ResourceOwner),
+    QuotaExceeded(ResourceOwner),
+}
+<span class="boring">}</span></code></pre></pre>
+<p>UI/application can subscribe to high-level state.</p>
+<hr />
+<h1 id="166-rate-limited-diagnostics"><a class="header" href="#166-rate-limited-diagnostics">166. Rate-Limited Diagnostics</a></h1>
+<p>Do not emit resource event per packet.</p>
+<p>Coalesce pressure changes.</p>
+<hr />
+<h1 id="167-ui-mapping"><a class="header" href="#167-ui-mapping">167. UI Mapping</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">Storage nearly full
+Large transfers paused
+Low-memory mode
+Too many active transfers
+</code></pre>
+<p>Normal users should not see semaphore counts.</p>
+<hr />
+<h1 id="168-developer-view"><a class="header" href="#168-developer-view">168. Developer View</a></h1>
+<p>Advanced:</p>
+<pre><code class="language-text">Memory pool 86%
+Bulk queue 64/64
+DTN relay 91%
+CPU heavy workers 4/4
+Peer Bob streams 8/8
+</code></pre>
+<hr />
+<h1 id="169-resource-error-model"><a class="header" href="#169-resource-error-model">169. Resource Error Model</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum ResourceError {
+    HardLimitExceeded,
+    QuotaExceeded,
+    Busy,
+    Deferred,
+    StorageFull,
+    MemoryPressure,
+    TooManyConnections,
+    TooManyStreams,
+    Cancelled,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="170-retryability"><a class="header" href="#170-retryability">170. Retryability</a></h1>
+<p>Classify:</p>
+<pre><code class="language-text">Busy → retryable
+StorageFull → user action/policy
+HardLimitExceeded → permanent for request
+Cancelled → terminal
+</code></pre>
+<hr />
+<h1 id="171-no-generic-string-errors"><a class="header" href="#171-no-generic-string-errors">171. No Generic String Errors</a></h1>
+<p>Public reusable API must return typed errors.</p>
+<hr />
+<h1 id="172-testing-strategy"><a class="header" href="#172-testing-strategy">172. Testing Strategy</a></h1>
+<p>Unit tests:</p>
+<pre><code class="language-text">quota accounting
+queue capacity
+priority scheduling
+permit release
+watermark transitions
+</code></pre>
+<p>Integration:</p>
+<pre><code class="language-text">file + call contention
+DTN + storage pressure
+many peers
+</code></pre>
+<p>Fault:</p>
+<pre><code class="language-text">worker crash
+permit cancellation
+disk full
+low-memory signal
+</code></pre>
+<hr />
+<h1 id="173-property-tests"><a class="header" href="#173-property-tests">173. Property Tests</a></h1>
+<p>Invariants:</p>
+<pre><code class="language-text">usage never exceeds hard budget
+released permit returns capacity
+critical reserve cannot be consumed by bulk
+peer quota &lt;= global quota
+duplicate reservation release does not underflow
+</code></pre>
+<hr />
+<h1 id="174-concurrency-tests"><a class="header" href="#174-concurrency-tests">174. Concurrency Tests</a></h1>
+<p>Run many tasks acquiring/releasing resources.</p>
+<p>Assert:</p>
+<pre><code class="language-text">no deadlock
+no starvation beyond policy
+no accounting drift
+</code></pre>
+<hr />
+<h1 id="175-backpressure-test"><a class="header" href="#175-backpressure-test">175. Backpressure Test</a></h1>
+<p>Producer generates 1M items.</p>
+<p>Consumer slow.</p>
+<p>Expected:</p>
+<pre><code class="language-text">bounded memory
+producer slowed/rejected
+</code></pre>
+<p>not OOM.</p>
+<hr />
+<h1 id="176-file-saturation-test"><a class="header" href="#176-file-saturation-test">176. File Saturation Test</a></h1>
+<p>Start:</p>
+<pre><code class="language-text">100 large transfers
+</code></pre>
+<p>with limit 4.</p>
+<p>Expected:</p>
+<pre><code class="language-text">4 active
+96 deferred
+bounded staging/memory
+</code></pre>
+<hr />
+<h1 id="177-call-priority-test"><a class="header" href="#177-call-priority-test">177. Call Priority Test</a></h1>
+<p>Start bulk transfer.</p>
+<p>Then start video call.</p>
+<p>Expected:</p>
+<pre><code class="language-text">call reserves resources
+bulk throttles
+call quality protected
+</code></pre>
+<hr />
+<h1 id="178-emergency-preemption-test"><a class="header" href="#178-emergency-preemption-test">178. Emergency Preemption Test</a></h1>
+<p>Fill normal/bulk queues.</p>
+<p>Inject SOS.</p>
+<p>Expected:</p>
+<pre><code class="language-text">SOS admitted through reserved critical capacity
+</code></pre>
+<hr />
+<h1 id="179-unknown-peer-flood-test"><a class="header" href="#179-unknown-peer-flood-test">179. Unknown Peer Flood Test</a></h1>
+<p>Unknown peer sends:</p>
+<pre><code class="language-text">many file offers
+many bundle offers
+many handshakes
+</code></pre>
+<p>Expected:</p>
+<pre><code class="language-text">rate limited
+bounded CPU/memory/storage
+</code></pre>
+<hr />
+<h1 id="180-storage-full-test"><a class="header" href="#180-storage-full-test">180. Storage Full Test</a></h1>
+<p>Fill disk.</p>
+<p>Expected:</p>
+<pre><code class="language-text">cache eviction
+bulk rejected
+critical reserve preserved
+no corrupt partial commits
+</code></pre>
+<hr />
+<h1 id="181-low-memory-test"><a class="header" href="#181-low-memory-test">181. Low-Memory Test</a></h1>
+<p>Trigger pressure.</p>
+<p>Expected:</p>
+<pre><code class="language-text">cache shrinks
+parallelism drops
+ephemeral queues coalesce/drop
+durable state survives
+</code></pre>
+<hr />
+<h1 id="182-cancellation-test"><a class="header" href="#182-cancellation-test">182. Cancellation Test</a></h1>
+<p>Cancel task while waiting for multiple permits.</p>
+<p>Expected:</p>
+<pre><code class="language-text">no leaked permits
+</code></pre>
+<hr />
+<h1 id="183-panic-test"><a class="header" href="#183-panic-test">183. Panic Test</a></h1>
+<p>Worker panics while holding permits.</p>
+<p>Expected:</p>
+<pre><code class="language-text">RAII releases
+supervisor handles worker failure
+</code></pre>
+<hr />
+<h1 id="184-fuzz-targets"><a class="header" href="#184-fuzz-targets">184. Fuzz Targets</a></h1>
+<p>Fuzz:</p>
+<pre><code class="language-text">resource config parser
+quota update messages if network-exposed
+admission request decoding
+limit negotiation
+</code></pre>
+<hr />
+<h1 id="185-benchmarking"><a class="header" href="#185-benchmarking">185. Benchmarking</a></h1>
+<p>Benchmark:</p>
+<pre><code class="language-text">permit acquisition
+queue operations
+scheduler throughput
+1000 peers
+10k deferred ops
+</code></pre>
+<p>Resource layer must remain cheap relative to network/storage work.</p>
+<hr />
+<h1 id="186-suggested-crate-structure"><a class="header" href="#186-suggested-crate-structure">186. Suggested Crate Structure</a></h1>
+<pre><code class="language-text">crates/comm-resource/
+├── src/
+│   ├── lib.rs
+│   ├── budget.rs
+│   ├── profile.rs
+│   ├── owner.rs
+│   ├── request.rs
+│   ├── admission.rs
+│   ├── permit.rs
+│   ├── memory.rs
+│   ├── storage.rs
+│   ├── network.rs
+│   ├── connection.rs
+│   ├── stream.rs
+│   ├── queue.rs
+│   ├── scheduler.rs
+│   ├── fairness.rs
+│   ├── pressure.rs
+│   ├── quota.rs
+│   ├── metrics.rs
+│   ├── diagnostics.rs
+│   └── error.rs
+└── Cargo.toml
+</code></pre>
+<hr />
+<h1 id="187-core-public-api"><a class="header" href="#187-core-public-api">187. Core Public API</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let permit = resources
+    .admit(ResourceRequest::file_transfer(...))
+    .await?;
+
+run_transfer(permit).await?;
+<span class="boring">}</span></code></pre></pre>
+<p>High-level feature APIs should hide most manual resource plumbing.</p>
+<hr />
+<h1 id="188-feature-integration-api"><a class="header" href="#188-feature-integration-api">188. Feature Integration API</a></h1>
+<p>Messaging/file/DTN layers can request typed permits:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>resources.messaging().acquire_message(...)
+resources.files().acquire_transfer(...)
+resources.dtn().reserve_bundle(...)
+<span class="boring">}</span></code></pre></pre>
+<p>This keeps policies domain-aware.</p>
+<hr />
+<h1 id="189-initial-production-scope"><a class="header" href="#189-initial-production-scope">189. Initial Production Scope</a></h1>
+<p>Implement first:</p>
+<pre><code class="language-text">global runtime budget
+per-feature budgets
+per-peer quotas
+bounded queues
+priority classes
+critical reserve
+memory permits
+stream/connection permits
+storage reservation
+transfer concurrency
+token-bucket rate limiting
+pressure states
+load shedding
+diagnostics
+</code></pre>
+<p>Defer initially:</p>
+<pre><code class="language-text">complex adaptive borrowing
+fine-grained CPU accounting
+advanced predictive scheduling
+cross-process cgroup integration
+</code></pre>
+<hr />
+<h1 id="190-implementation-phases"><a class="header" href="#190-implementation-phases">190. Implementation Phases</a></h1>
+<h2 id="phase-1--resource-model"><a class="header" href="#phase-1--resource-model">Phase 1 — Resource Model</a></h2>
+<pre><code class="language-text">ResourceKind
+ResourceProfile
+ResourceBudget
+ResourceOwner
+PressureState
+</code></pre>
+<h2 id="phase-2--permits"><a class="header" href="#phase-2--permits">Phase 2 — Permits</a></h2>
+<pre><code class="language-text">memory
+connections
+streams
+tasks
+</code></pre>
+<h2 id="phase-3--queues"><a class="header" href="#phase-3--queues">Phase 3 — Queues</a></h2>
+<pre><code class="language-text">bounded queues
+priority
+critical reserve
+</code></pre>
+<h2 id="phase-4--storage"><a class="header" href="#phase-4--storage">Phase 4 — Storage</a></h2>
+<pre><code class="language-text">quotas
+reservations
+watermarks
+eviction signals
+</code></pre>
+<h2 id="phase-5--fairness"><a class="header" href="#phase-5--fairness">Phase 5 — Fairness</a></h2>
+<pre><code class="language-text">peer
+extension
+priority
+bandwidth shaping
+</code></pre>
+<h2 id="phase-6--platform-pressure"><a class="header" href="#phase-6--platform-pressure">Phase 6 — Platform Pressure</a></h2>
+<pre><code class="language-text">Android memory
+iOS memory
+thermal
+background
+</code></pre>
+<h2 id="phase-7--hardening"><a class="header" href="#phase-7--hardening">Phase 7 — Hardening</a></h2>
+<pre><code class="language-text">flood tests
+deadlock tests
+panic/cancel tests
+benchmarks
+</code></pre>
+<hr />
+<h1 id="191-definition-of-done"><a class="header" href="#191-definition-of-done">191. Definition of Done</a></h1>
+<p>Part 08 is complete when:</p>
+<ul>
+<li>no unbounded queue exists on external/high-volume data paths</li>
+<li>every large allocation is preceded by validated limits</li>
+<li>files cannot consume all memory/storage</li>
+<li>one peer cannot monopolize streams or bandwidth</li>
+<li>one extension cannot monopolize runtime resources</li>
+<li>bulk traffic cannot starve control/critical traffic</li>
+<li>SOS/security events have reserved capacity</li>
+<li>durable work defers rather than disappears under overload</li>
+<li>stale ephemeral work can be dropped/coalesced</li>
+<li>storage has separate durable/cache/staging/relay quotas</li>
+<li>active calls can reserve realtime resources</li>
+<li>Android/iOS pressure signals tighten shared Rust policy</li>
+<li>cancellation/panic releases permits safely</li>
+<li>admission behavior is deterministic and observable</li>
+<li>unknown-peer floods remain bounded</li>
+<li>process restart can reconcile persistent reservations</li>
+<li>resource metrics and diagnostics are available</li>
+<li>property/concurrency/flood/storage-full tests exist</li>
+</ul>
+<hr />
+<h1 id="192-relationship-to-earlier-parts"><a class="header" href="#192-relationship-to-earlier-parts">192. Relationship to Earlier Parts</a></h1>
+<p>Part 08 builds on:</p>
+<pre><code class="language-text">01 — Protocol Extension System
+02 — Multi-Device Identity
+03 — Transport &amp; Routing Policy Engine
+04 — Offline Event Log
+05 — Robust File / Blob Subsystem
+06 — DTN / Store-Carry-Forward
+07 — Capability Negotiation
+</code></pre>
+<p>It directly supports:</p>
+<pre><code class="language-text">09 — Crash Recovery
+10 — Protocol Fuzzing &amp; Test Suite
+11 — Relay / Self-Hosted Infrastructure
+12 — Multipath Networking
+13 — Battery-Aware Scheduling
+14 — Proximity Abstraction
+16 — Daemon &amp; Headless Runtime
+17 — Emergency Priority Architecture
+18 — Network Diagnostics &amp; Path Visualization
+19 — C ABI / FFI
+20 — Embedded Linux Node
+22 — Third-Party Protocol Extensions
+24 — Plugin / Module Ecosystem
+</code></pre>
+<hr />
+<h1 id="193-final-principle"><a class="header" href="#193-final-principle">193. Final Principle</a></h1>
+<p>A communication platform is not production-ready merely because it is fast under normal load.</p>
+<p>It is production-ready when overload is <strong>predictable and bounded</strong>.</p>
+<p>The system must be able to say:</p>
+<pre><code class="language-text">This transfer is deferred.
+This peer has reached its quota.
+This queue is full.
+This background work is paused.
+This stale media frame is dropped.
+This SOS still has reserved capacity.
+</code></pre>
+<p>instead of:</p>
+<pre><code class="language-text">keep allocating until the process crashes
+</code></pre>
+<p>The resource-limit and backpressure layer is therefore a platform-wide safety system.</p>
+<p>It ensures that messaging, files, DTN, calls, routing, headless nodes, and third-party extensions can coexist on mobile, desktop, server, and embedded devices without one subsystem destroying the reliability of the rest.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="27-rust-driven-android-native-build-packaging-automation.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="10-fuzzing-protocol-test-suite-architecture.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="27-rust-driven-android-native-build-packaging-automation.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="10-fuzzing-protocol-test-suite-architecture.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

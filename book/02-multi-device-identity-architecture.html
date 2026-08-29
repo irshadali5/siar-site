@@ -1,0 +1,2908 @@
+<!DOCTYPE HTML>
+<html lang="en" class="navy" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>02 — Multi-Device Identity &amp; Trust Model - SIAR System Architecture &amp; Technical Wiki</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="Comprehensive system architecture, cryptographic protocols, DTN mesh networking, distributed storage, audio DSP pipelines, and UI/UX design specifications for SIAR.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="theme/custom.css">
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "navy";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('navy')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="Home.html">Architecture Portal & Reading Guide</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part I: Protocol Foundation & Extension Platform</li><li class="chapter-item expanded "><a href="01-protocol-extension-system-architecture.html"><strong aria-hidden="true">1.</strong> 01 — Protocol Extension System Architecture</a></li><li class="chapter-item expanded "><a href="07-capability-negotiation-architecture.html"><strong aria-hidden="true">2.</strong> 07 — Capability Negotiation & Protocol Upgrades</a></li><li class="chapter-item expanded "><a href="21-third-party-protocol-extensions-architecture.html"><strong aria-hidden="true">3.</strong> 21 — Third-Party Protocol Extensions</a></li><li class="chapter-item expanded "><a href="22-wasm-compatible-components-architecture.html"><strong aria-hidden="true">4.</strong> 22 — WebAssembly (WASM) Compatible Components</a></li><li class="chapter-item expanded "><a href="23-external-interoperability-suite-architecture.html"><strong aria-hidden="true">5.</strong> 23 — External Interoperability & Conformance Suite</a></li><li class="chapter-item expanded "><a href="24-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">6.</strong> 24 — Dynamic Plugin & Module Ecosystem</a></li><li class="chapter-item expanded affix "><li class="part-title">Part II: Identity, Trust & Cryptography</li><li class="chapter-item expanded "><a href="02-multi-device-identity-architecture.html" class="active"><strong aria-hidden="true">7.</strong> 02 — Multi-Device Identity & Trust Model</a></li><li class="chapter-item expanded "><a href="28-production-security-e2ee-key-management-privacy-architecture.html"><strong aria-hidden="true">8.</strong> 28 — Production Security, E2EE, Key Management & Privacy</a></li><li class="chapter-item expanded affix "><li class="part-title">Part III: Mesh Networking, Transports & Hardware</li><li class="chapter-item expanded "><a href="03-transport-routing-policy-engine-architecture.html"><strong aria-hidden="true">9.</strong> 03 — Transport & Routing Policy Engine</a></li><li class="chapter-item expanded "><a href="11-relay-self-hosted-infrastructure-architecture.html"><strong aria-hidden="true">10.</strong> 11 — Self-Hosted Relay & Coordination Infrastructure</a></li><li class="chapter-item expanded "><a href="12-multipath-networking-architecture.html"><strong aria-hidden="true">11.</strong> 12 — Multipath Networking & Link Aggregation</a></li><li class="chapter-item expanded "><a href="13-battery-aware-scheduling-architecture.html"><strong aria-hidden="true">12.</strong> 13 — Battery-Aware Scheduling & Power Profiles</a></li><li class="chapter-item expanded "><a href="14-proximity-abstraction-architecture.html"><strong aria-hidden="true">13.</strong> 14 — Proximity Abstraction (BLE, Wi-Fi Direct, LoRa)</a></li><li class="chapter-item expanded "><a href="15-qr-nfc-bootstrap-pairing-architecture.html"><strong aria-hidden="true">14.</strong> 15 — Out-of-Band QR & NFC Bootstrap Pairing</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IV: Delay-Tolerant Networking & Emergency Mesh</li><li class="chapter-item expanded "><a href="06-dtn-store-carry-forward-architecture.html"><strong aria-hidden="true">15.</strong> 06 — DTN Store-Carry-Forward & Bundle Forwarding</a></li><li class="chapter-item expanded "><a href="17-emergency-priority-classes-architecture.html"><strong aria-hidden="true">16.</strong> 17 — Emergency Priority Classes & Critical Alert Mesh</a></li><li class="chapter-item expanded affix "><li class="part-title">Part V: Storage, Outbox & Data Lifecycle</li><li class="chapter-item expanded "><a href="04-offline-event-log-architecture.html"><strong aria-hidden="true">17.</strong> 04 — Offline Event Log & Sync Engine</a></li><li class="chapter-item expanded "><a href="05-robust-file-blob-subsystem-architecture.html"><strong aria-hidden="true">18.</strong> 05 — Robust File & Blob Subsystem (Chunking & Resumption)</a></li><li class="chapter-item expanded "><a href="09-crash-recovery-architecture.html"><strong aria-hidden="true">19.</strong> 09 — Crash Recovery & State Integrity</a></li><li class="chapter-item expanded "><a href="32-search-indexing-local-knowledge-privacy-architecture.html"><strong aria-hidden="true">20.</strong> 32 — Search, Indexing & Local Privacy Retrieval</a></li><li class="chapter-item expanded "><a href="33-backup-restore-export-import-archival-portability-architecture.html"><strong aria-hidden="true">21.</strong> 33 — Backup, Restore, Export & Long-Term Archival</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VI: Realtime Media, Calling & Audio DSP</li><li class="chapter-item expanded "><a href="25-android-direct-hardware-surface-zero-copy-media-architecture.html"><strong aria-hidden="true">22.</strong> 25 — Android Direct Surface Zero-Copy Media</a></li><li class="chapter-item expanded "><a href="26-rust-first-audio-dsp-resampling-aec-ns-agc-architecture.html"><strong aria-hidden="true">23.</strong> 26 — Rust-First Audio DSP (AEC, NS, AGC, Resampling)</a></li><li class="chapter-item expanded "><a href="29-realtime-calls-media-session-protocol-architecture.html"><strong aria-hidden="true">24.</strong> 29 — Realtime Calls & Media Session Protocol</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VII: Ephemeral State, Presence & Notifications</li><li class="chapter-item expanded "><a href="30-presence-availability-typing-read-receipts-ephemeral-state-architecture.html"><strong aria-hidden="true">25.</strong> 30 — Presence, Availability, Typing & Read Receipts</a></li><li class="chapter-item expanded "><a href="31-notifications-push-background-delivery-lifecycle-architecture.html"><strong aria-hidden="true">26.</strong> 31 — Notifications, Push Wake & Background Delivery</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VIII: Native Runtimes, Daemons & Embedded Linux</li><li class="chapter-item expanded "><a href="16-daemon-headless-runtime-architecture.html"><strong aria-hidden="true">27.</strong> 16 — Headless Daemon & Background Runtime</a></li><li class="chapter-item expanded "><a href="19-c-abi-ffi-architecture.html"><strong aria-hidden="true">28.</strong> 19 — C-ABI FFI & Native Language Interop</a></li><li class="chapter-item expanded "><a href="20-embedded-linux-node-architecture.html"><strong aria-hidden="true">29.</strong> 20 — Embedded Linux Node & Resource-Constrained Targets</a></li><li class="chapter-item expanded "><a href="27-rust-driven-android-native-build-packaging-automation.html"><strong aria-hidden="true">30.</strong> 27 — Rust-Driven Android Native Build & Packaging Automation</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IX: Reliability, Testing, Fuzzing & Diagnostics</li><li class="chapter-item expanded "><a href="08-resource-limits-backpressure-architecture.html"><strong aria-hidden="true">31.</strong> 08 — Resource Limits, Quotas & Backpressure</a></li><li class="chapter-item expanded "><a href="10-fuzzing-protocol-test-suite-architecture.html"><strong aria-hidden="true">32.</strong> 10 — Fuzzing & Protocol Test Suite</a></li><li class="chapter-item expanded "><a href="18-network-diagnostics-path-visualization-architecture.html"><strong aria-hidden="true">33.</strong> 18 — Network Diagnostics & Path Visualization</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part X: UI/UX Client Architecture (Cross-Platform)</li><li class="chapter-item expanded "><a href="ui-ux-01-product-foundation-cross-platform-interaction-architecture.html"><strong aria-hidden="true">34.</strong> UI/UX 01 — Product UX Foundation & Cross-Platform Interaction</a></li><li class="chapter-item expanded "><a href="ui-ux-02-desktop-dioxus-app-shell-navigation-window-architecture.html"><strong aria-hidden="true">35.</strong> UI/UX 02 — Desktop Dioxus App Shell & Navigation</a></li><li class="chapter-item expanded "><a href="ui-ux-03-android-jetpack-compose-app-shell-navigation-lifecycle-architecture.html"><strong aria-hidden="true">36.</strong> UI/UX 03 — Android Jetpack Compose App Shell & Lifecycle</a></li><li class="chapter-item expanded "><a href="ui-ux-04-conversation-list-inbox-architecture.html"><strong aria-hidden="true">37.</strong> UI/UX 04 — Conversation List & Inbox UX</a></li><li class="chapter-item expanded "><a href="ui-ux-05-conversation-message-timeline-architecture.html"><strong aria-hidden="true">38.</strong> UI/UX 05 — Conversation Message Timeline UX</a></li><li class="chapter-item expanded "><a href="ui-ux-06-message-composer-attachments-voice-notes-drafts-architecture.html"><strong aria-hidden="true">39.</strong> UI/UX 06 — Message Composer, Attachments & Voice Notes</a></li><li class="chapter-item expanded "><a href="ui-ux-07-calls-realtime-media-architecture.html"><strong aria-hidden="true">40.</strong> UI/UX 07 — Calls & Realtime Media UX</a></li><li class="chapter-item expanded "><a href="ui-ux-08-contacts-requests-verification-identity-architecture.html"><strong aria-hidden="true">41.</strong> UI/UX 08 — Contacts, Requests, Verification & Identity</a></li><li class="chapter-item expanded "><a href="ui-ux-09-groups-membership-roles-architecture.html"><strong aria-hidden="true">42.</strong> UI/UX 09 — Groups, Membership & Roles UX</a></li><li class="chapter-item expanded "><a href="ui-ux-10-files-media-gallery-transfer-architecture.html"><strong aria-hidden="true">43.</strong> UI/UX 10 — Files, Media Gallery & Transfer UX</a></li><li class="chapter-item expanded "><a href="ui-ux-11-search-local-knowledge-retrieval-architecture.html"><strong aria-hidden="true">44.</strong> UI/UX 11 — Search & Local Knowledge Retrieval UX</a></li><li class="chapter-item expanded "><a href="ui-ux-12-nearby-qr-nfc-pairing-device-linking-architecture.html"><strong aria-hidden="true">45.</strong> UI/UX 12 — Nearby, QR/NFC Pairing & Device Linking UX</a></li><li class="chapter-item expanded "><a href="ui-ux-13-notifications-background-incoming-call-architecture.html"><strong aria-hidden="true">46.</strong> UI/UX 13 — Notifications, Background & Incoming Call UX</a></li><li class="chapter-item expanded "><a href="ui-ux-14-presence-typing-receipts-status-architecture.html"><strong aria-hidden="true">47.</strong> UI/UX 14 — Presence, Typing, Receipts & Status UX</a></li><li class="chapter-item expanded "><a href="ui-ux-15-security-center-devices-keys-recovery-architecture.html"><strong aria-hidden="true">48.</strong> UI/UX 15 — Security Center, Devices, Keys & Recovery UX</a></li><li class="chapter-item expanded "><a href="ui-ux-16-backup-restore-export-migration-architecture.html"><strong aria-hidden="true">49.</strong> UI/UX 16 — Backup, Restore, Export & Migration UX</a></li><li class="chapter-item expanded "><a href="ui-ux-17-emergency-sos-offline-mesh-architecture.html"><strong aria-hidden="true">50.</strong> UI/UX 17 — Emergency / SOS / Offline Mesh UX</a></li><li class="chapter-item expanded "><a href="ui-ux-18-settings-privacy-notifications-data-controls-architecture.html"><strong aria-hidden="true">51.</strong> UI/UX 18 — Settings, Privacy, Notifications & Data Controls</a></li><li class="chapter-item expanded "><a href="ui-ux-19-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">52.</strong> UI/UX 19 — Plugin & Module Ecosystem UX</a></li><li class="chapter-item expanded "><a href="ui-ux-20-diagnostics-network-paths-advanced-developer-architecture.html"><strong aria-hidden="true">53.</strong> UI/UX 20 — Diagnostics, Network Paths & Developer UX</a></li><li class="chapter-item expanded "><a href="ui-ux-21-accessibility-inclusive-interaction-architecture.html"><strong aria-hidden="true">54.</strong> UI/UX 21 — Accessibility & Inclusive Interaction</a></li><li class="chapter-item expanded "><a href="ui-ux-22-design-system-tokens-typography-icons-motion-architecture.html"><strong aria-hidden="true">55.</strong> UI/UX 22 — Design System, Tokens, Typography & Motion</a></li><li class="chapter-item expanded "><a href="ui-ux-23-responsive-adaptive-desktop-tablet-foldable-phone-layout-architecture.html"><strong aria-hidden="true">56.</strong> UI/UX 23 — Responsive & Adaptive Layouts (Desktop/Tablet/Foldable/Phone)</a></li><li class="chapter-item expanded "><a href="ui-ux-24-error-loading-empty-offline-degraded-state-architecture.html"><strong aria-hidden="true">57.</strong> UI/UX 24 — Error, Loading, Empty & Degraded-State UX</a></li><li class="chapter-item expanded "><a href="ui-ux-25-onboarding-first-run-permission-education-architecture.html"><strong aria-hidden="true">58.</strong> UI/UX 25 — Onboarding, First Run & Permission Education</a></li><li class="chapter-item expanded "><a href="ui-ux-26-performance-virtualization-large-data-ui-architecture.html"><strong aria-hidden="true">59.</strong> UI/UX 26 — Virtualization & Large-Data UI Performance</a></li><li class="chapter-item expanded "><a href="ui-ux-27-ui-testing-screenshot-interaction-release-quality-gates-architecture.html"><strong aria-hidden="true">60.</strong> UI/UX 27 — UI Testing, Screenshots & Release Quality Gates</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">SIAR System Architecture &amp; Technical Wiki</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar/edit/main/sys-arch/02-multi-device-identity-architecture.md" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="part-02--multi-device-identity-architecture"><a class="header" href="#part-02--multi-device-identity-architecture">Part 02 — Multi-Device Identity Architecture</a></h1>
+<h2 id="reusable-p2p-communication-platform"><a class="header" href="#reusable-p2p-communication-platform">Reusable P2P Communication Platform</a></h2>
+<p><strong>Status:</strong> Architecture specification<br />
+<strong>Part:</strong> 02 of 24<br />
+<strong>Primary language:</strong> Rust<br />
+<strong>Primary goals:</strong> multi-device accounts, cryptographic separation, secure linking, revocation, recovery, portability, reuse across messaging/files/emergency/ERP products</p>
+<hr />
+<h1 id="1-purpose"><a class="header" href="#1-purpose">1. Purpose</a></h1>
+<p>The communication platform must not model a person, organization, or application identity as a single device key.</p>
+<p>A modern user may have:</p>
+<pre><code class="language-text">phone
+laptop
+desktop
+tablet
+secondary phone
+headless node
+</code></pre>
+<p>and all of them may belong to the same logical identity.</p>
+<p>The architecture must therefore distinguish:</p>
+<pre><code class="language-text">Account Identity
+Device Identity
+Transport Identity
+Session Identity
+Application Profile
+</code></pre>
+<p>These are related, but they are not the same thing.</p>
+<p>The multi-device identity system must support:</p>
+<ul>
+<li>secure device linking</li>
+<li>independent device keys</li>
+<li>multiple active devices</li>
+<li>device-specific transport addresses</li>
+<li>device revocation</li>
+<li>account recovery</li>
+<li>key rotation</li>
+<li>cross-device synchronization</li>
+<li>sender-device attribution</li>
+<li>per-device trust</li>
+<li>per-device capabilities</li>
+<li>offline pairing</li>
+<li>QR/NFC bootstrap</li>
+<li>enterprise/organization use</li>
+<li>application namespaces</li>
+<li>future headless nodes</li>
+</ul>
+<p>The identity layer must remain reusable outside the messenger.</p>
+<hr />
+<h1 id="2-fundamental-identity-model"><a class="header" href="#2-fundamental-identity-model">2. Fundamental Identity Model</a></h1>
+<p>The central model is:</p>
+<pre><code class="language-text">Logical Identity
+      │
+      ├── Device A
+      │     ├── identity key
+      │     ├── transport identity
+      │     └── session state
+      │
+      ├── Device B
+      │     ├── identity key
+      │     ├── transport identity
+      │     └── session state
+      │
+      └── Device C
+            ├── identity key
+            ├── transport identity
+            └── session state
+</code></pre>
+<p>Never model:</p>
+<pre><code class="language-text">one user = one long-lived private key
+</code></pre>
+<p>That creates weak revocation and recovery semantics.</p>
+<hr />
+<h1 id="3-identity-layers"><a class="header" href="#3-identity-layers">3. Identity Layers</a></h1>
+<p>The architecture should expose at least five layers.</p>
+<h2 id="31-account-identity"><a class="header" href="#31-account-identity">3.1 Account Identity</a></h2>
+<p>Represents the long-lived logical principal.</p>
+<p>Examples:</p>
+<pre><code class="language-text">person
+organization
+service account
+emergency authority
+business unit
+</code></pre>
+<h2 id="32-device-identity"><a class="header" href="#32-device-identity">3.2 Device Identity</a></h2>
+<p>Represents one independently revocable device.</p>
+<h2 id="33-transport-identity"><a class="header" href="#33-transport-identity">3.3 Transport Identity</a></h2>
+<p>Represents transport-specific addressing/cryptographic identity.</p>
+<p>Example:</p>
+<pre><code class="language-text">Iroh EndpointId
+</code></pre>
+<h2 id="34-session-identity"><a class="header" href="#34-session-identity">3.4 Session Identity</a></h2>
+<p>Represents ephemeral authenticated communication state.</p>
+<h2 id="35-application-profile"><a class="header" href="#35-application-profile">3.5 Application Profile</a></h2>
+<p>Represents non-cryptographic user-facing data:</p>
+<pre><code class="language-text">display name
+avatar
+status
+organization role
+</code></pre>
+<p>Do not collapse these layers.</p>
+<hr />
+<h1 id="4-strong-type-model"><a class="header" href="#4-strong-type-model">4. Strong Type Model</a></h1>
+<p>Recommended types:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct AccountId([u8; 32]);
+pub struct DeviceId([u8; 16]);
+pub struct IdentityKeyId([u8; 32]);
+pub struct TransportIdentityId([u8; 32]);
+pub struct SessionId([u8; 16]);
+pub struct DeviceCertificateId([u8; 32]);
+<span class="boring">}</span></code></pre></pre>
+<p>Do not use:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>String
+<span class="boring">}</span></code></pre></pre>
+<p>for every identifier.</p>
+<p>Strong types prevent accidental cross-use.</p>
+<hr />
+<h1 id="5-account-identity"><a class="header" href="#5-account-identity">5. Account Identity</a></h1>
+<p>The account identity is the durable logical principal.</p>
+<p>It should be stable across device replacement.</p>
+<p>Conceptually:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct AccountIdentity {
+    pub account_id: AccountId,
+    pub root_public_key: PublicKey,
+    pub generation: u64,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>The root private key should not necessarily be online continuously.</p>
+<p>For stronger security, consider:</p>
+<pre><code class="language-text">root identity key
+    ↓
+signs device certificates
+</code></pre>
+<p>rather than:</p>
+<pre><code class="language-text">root key used for every message/session
+</code></pre>
+<hr />
+<h1 id="6-root-key-strategy"><a class="header" href="#6-root-key-strategy">6. Root Key Strategy</a></h1>
+<p>Recommended architecture:</p>
+<pre><code class="language-text">Root Identity Key
+        │
+        ├── signs Device Certificate A
+        ├── signs Device Certificate B
+        └── signs Device Certificate C
+</code></pre>
+<p>The root key is used rarely.</p>
+<p>Benefits:</p>
+<ul>
+<li>easier device revocation</li>
+<li>easier auditing</li>
+<li>less exposure</li>
+<li>better recovery</li>
+<li>device independence</li>
+</ul>
+<p>The root key may be:</p>
+<pre><code class="language-text">hardware-protected
+recovery-derived
+offline-backed-up
+</code></pre>
+<p>depending on product mode.</p>
+<hr />
+<h1 id="7-device-identity"><a class="header" href="#7-device-identity">7. Device Identity</a></h1>
+<p>Each device gets its own keypair.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct DeviceIdentity {
+    pub account_id: AccountId,
+    pub device_id: DeviceId,
+    pub signing_public_key: PublicKey,
+    pub device_certificate: DeviceCertificate,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>The device private key:</p>
+<ul>
+<li>never leaves the device under normal operation</li>
+<li>is stored in secure storage</li>
+<li>can be revoked independently</li>
+<li>signs device-level operations</li>
+</ul>
+<hr />
+<h1 id="8-device-certificate"><a class="header" href="#8-device-certificate">8. Device Certificate</a></h1>
+<p>A device certificate binds:</p>
+<pre><code class="language-text">Account
+   ↓
+Device
+   ↓
+Device public key
+</code></pre>
+<p>Conceptually:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct DeviceCertificate {
+    pub account_id: AccountId,
+    pub device_id: DeviceId,
+    pub device_public_key: PublicKey,
+    pub issued_at: Timestamp,
+    pub expires_at: Option&lt;Timestamp&gt;,
+    pub capabilities: DeviceCapabilitySet,
+    pub generation: u64,
+    pub signature: Signature,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>The signature is made by the account root or authorized linking authority.</p>
+<hr />
+<h1 id="9-device-certificate-semantics"><a class="header" href="#9-device-certificate-semantics">9. Device Certificate Semantics</a></h1>
+<p>The certificate proves:</p>
+<pre><code class="language-text">This device key belongs to this logical account.
+</code></pre>
+<p>It does not automatically prove:</p>
+<pre><code class="language-text">this device is currently trusted
+this device is not revoked
+this device may perform every operation
+</code></pre>
+<p>Revocation and authorization are separate checks.</p>
+<hr />
+<h1 id="10-transport-identity"><a class="header" href="#10-transport-identity">10. Transport Identity</a></h1>
+<p>Transport identities must not become account identity.</p>
+<p>For Iroh:</p>
+<pre><code class="language-text">EndpointId
+</code></pre>
+<p>should be treated as:</p>
+<pre><code class="language-text">transport address/identity
+</code></pre>
+<p>not:</p>
+<pre><code class="language-text">user identity
+</code></pre>
+<p>A device descriptor can bind them:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct DeviceEndpoint {
+    pub device_id: DeviceId,
+    pub transport: TransportKind,
+    pub transport_identity: TransportIdentity,
+    pub expires_at: Option&lt;Timestamp&gt;,
+    pub signature: Signature,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="11-why-transport-identity-must-be-separate"><a class="header" href="#11-why-transport-identity-must-be-separate">11. Why Transport Identity Must Be Separate</a></h1>
+<p>Transport identities may change because of:</p>
+<ul>
+<li>reinstall</li>
+<li>key rotation</li>
+<li>migration</li>
+<li>different transport implementation</li>
+<li>temporary relay identity</li>
+<li>privacy rotation</li>
+</ul>
+<p>The account identity should remain stable.</p>
+<hr />
+<h1 id="12-application-profile-separation"><a class="header" href="#12-application-profile-separation">12. Application Profile Separation</a></h1>
+<p>User profile:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct AccountProfile {
+    pub display_name: DisplayName,
+    pub avatar: Option&lt;BlobId&gt;,
+    pub status: Option&lt;StatusText&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>must not define cryptographic identity.</p>
+<p>Changing:</p>
+<pre><code class="language-text">display name
+avatar
+status
+</code></pre>
+<p>must not rotate identity keys.</p>
+<hr />
+<h1 id="13-device-metadata"><a class="header" href="#13-device-metadata">13. Device Metadata</a></h1>
+<p>Useful metadata:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct DeviceMetadata {
+    pub device_name: DeviceName,
+    pub platform: PlatformKind,
+    pub device_class: DeviceClass,
+    pub capabilities: DeviceCapabilitySet,
+    pub created_at: Timestamp,
+    pub last_seen: Option&lt;Timestamp&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Device names are presentation data.</p>
+<p>Never use:</p>
+<pre><code class="language-text">"My Pixel"
+</code></pre>
+<p>as security identity.</p>
+<hr />
+<h1 id="14-device-capability-set"><a class="header" href="#14-device-capability-set">14. Device Capability Set</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">messaging
+files
+calls
+AV1 hardware decode
+AV1 hardware encode
+H264 hardware
+H265 hardware
+Bluetooth
+Wi-Fi Aware
+DTN relay
+headless node
+</code></pre>
+<p>Capabilities can change.</p>
+<p>Therefore:</p>
+<pre><code class="language-text">capabilities are signed state
+not permanent identity
+</code></pre>
+<hr />
+<h1 id="15-linking-a-new-device"><a class="header" href="#15-linking-a-new-device">15. Linking a New Device</a></h1>
+<p>Core flow:</p>
+<pre><code class="language-text">Existing trusted device
+        ↓
+Generate linking invitation
+        ↓
+New device scans/receives invitation
+        ↓
+Mutual authentication
+        ↓
+User verifies
+        ↓
+New device key generated
+        ↓
+Device certificate issued
+        ↓
+Device added to account state
+        ↓
+Other devices learn update
+</code></pre>
+<p>The linking process must not transmit existing device private keys.</p>
+<hr />
+<h1 id="16-device-linking-invitation"><a class="header" href="#16-device-linking-invitation">16. Device Linking Invitation</a></h1>
+<p>A linking invitation should be:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct DeviceLinkInvite {
+    pub account_id: AccountId,
+    pub inviter_device: DeviceId,
+    pub ephemeral_link_key: PublicKey,
+    pub expires_at: Timestamp,
+    pub nonce: [u8; 16],
+    pub signature: Signature,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>It must be:</p>
+<ul>
+<li>short-lived</li>
+<li>one-time</li>
+<li>authenticated</li>
+<li>replay-resistant</li>
+</ul>
+<hr />
+<h1 id="17-qr-linking"><a class="header" href="#17-qr-linking">17. QR Linking</a></h1>
+<p>QR is suitable for offline linking.</p>
+<p>QR payload may include:</p>
+<pre><code class="language-text">account id
+inviting device id
+ephemeral key
+expiration
+protocol version
+short authentication code
+</code></pre>
+<p>The QR should not contain:</p>
+<pre><code class="language-text">private keys
+session keys
+message history
+</code></pre>
+<hr />
+<h1 id="18-nfc-linking"><a class="header" href="#18-nfc-linking">18. NFC Linking</a></h1>
+<p>NFC can be an optional bootstrap mechanism.</p>
+<p>Use it to exchange:</p>
+<pre><code class="language-text">ephemeral linking material
+</code></pre>
+<p>not to bypass verification.</p>
+<p>NFC proves proximity, not identity.</p>
+<hr />
+<h1 id="19-numeric-verification"><a class="header" href="#19-numeric-verification">19. Numeric Verification</a></h1>
+<p>For high assurance:</p>
+<pre><code class="language-text">New device shows 6–12 digit code
+Existing device shows same code
+User compares
+</code></pre>
+<p>The code is derived from the authenticated handshake transcript.</p>
+<p>Do not generate an unrelated random code.</p>
+<hr />
+<h1 id="20-linking-trust-decision"><a class="header" href="#20-linking-trust-decision">20. Linking Trust Decision</a></h1>
+<p>The existing device must explicitly approve:</p>
+<pre><code class="language-text">Add "Tablet" to your account?
+</code></pre>
+<p>Show:</p>
+<pre><code class="language-text">device type
+platform
+approximate time
+link method
+verification status
+</code></pre>
+<p>Avoid silent device addition.</p>
+<hr />
+<h1 id="21-new-device-key-generation"><a class="header" href="#21-new-device-key-generation">21. New Device Key Generation</a></h1>
+<p>New device generates locally:</p>
+<pre><code class="language-text">device signing key
+transport key
+session/bootstrap material
+local database key
+</code></pre>
+<p>Private keys remain local.</p>
+<p>The existing device signs only the new public identity information.</p>
+<hr />
+<h1 id="22-device-addition-event"><a class="header" href="#22-device-addition-event">22. Device Addition Event</a></h1>
+<p>Represent device lifecycle as signed events.</p>
+<p>Example:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum DeviceEvent {
+    Added(DeviceCertificate),
+    Revoked(DeviceRevocation),
+    Renamed(DeviceRename),
+    CapabilityUpdated(DeviceCapabilityUpdate),
+    TransportUpdated(DeviceTransportUpdate),
+}
+<span class="boring">}</span></code></pre></pre>
+<p>This creates a clear audit trail.</p>
+<hr />
+<h1 id="23-account-device-state"><a class="header" href="#23-account-device-state">23. Account Device State</a></h1>
+<p>Current state is derived from:</p>
+<pre><code class="language-text">ordered signed device events
+</code></pre>
+<p>or a signed snapshot plus events.</p>
+<p>Do not maintain an unverified mutable map without provenance.</p>
+<hr />
+<h1 id="24-device-generation-number"><a class="header" href="#24-device-generation-number">24. Device Generation Number</a></h1>
+<p>Each account state can include a monotonic generation.</p>
+<p>Example:</p>
+<pre><code class="language-text">generation 42
+</code></pre>
+<p>A new device update:</p>
+<pre><code class="language-text">generation 43
+</code></pre>
+<p>This helps detect stale state.</p>
+<p>Do not rely solely on wall-clock timestamps.</p>
+<hr />
+<h1 id="25-device-revocation"><a class="header" href="#25-device-revocation">25. Device Revocation</a></h1>
+<p>Revocation is a first-class operation.</p>
+<p>Flow:</p>
+<pre><code class="language-text">Trusted device
+   ↓
+Revoke Device B
+   ↓
+signed revocation event
+   ↓
+generation increments
+   ↓
+sync to all devices
+   ↓
+future sessions reject Device B
+</code></pre>
+<hr />
+<h1 id="26-revocation-semantics"><a class="header" href="#26-revocation-semantics">26. Revocation Semantics</a></h1>
+<p>Revocation should prevent:</p>
+<pre><code class="language-text">future session establishment
+future group key delivery
+future device synchronization
+future account-authorized operations
+</code></pre>
+<p>It cannot guarantee deletion of data already copied to the revoked device.</p>
+<p>Documentation and UI must state this accurately.</p>
+<hr />
+<h1 id="27-immediate-local-revocation"><a class="header" href="#27-immediate-local-revocation">27. Immediate Local Revocation</a></h1>
+<p>As soon as Device A revokes Device B:</p>
+<pre><code class="language-text">Device A
+</code></pre>
+<p>must immediately:</p>
+<ul>
+<li>stop sending new data to B</li>
+<li>stop trusting B</li>
+<li>remove B from future fan-out</li>
+<li>update local authorization</li>
+</ul>
+<p>Do not wait for a server round trip.</p>
+<hr />
+<h1 id="28-offline-revocation-propagation"><a class="header" href="#28-offline-revocation-propagation">28. Offline Revocation Propagation</a></h1>
+<p>If other devices are offline:</p>
+<pre><code class="language-text">revocation event
+</code></pre>
+<p>must propagate later through:</p>
+<ul>
+<li>direct sync</li>
+<li>relay/mailbox</li>
+<li>DTN</li>
+<li>linked-device synchronization</li>
+</ul>
+<p>Revocation state must therefore be durable.</p>
+<hr />
+<h1 id="29-revocation-conflict-rules"><a class="header" href="#29-revocation-conflict-rules">29. Revocation Conflict Rules</a></h1>
+<p>Suppose:</p>
+<pre><code class="language-text">Device A revokes B
+Device C offline adds some state involving B
+</code></pre>
+<p>Security-sensitive state must prefer:</p>
+<pre><code class="language-text">revocation
+</code></pre>
+<p>once authenticated.</p>
+<p>Revoked devices cannot regain authority through stale sync.</p>
+<hr />
+<h1 id="30-device-expiry"><a class="header" href="#30-device-expiry">30. Device Expiry</a></h1>
+<p>Optional device certificates may expire.</p>
+<p>Useful for:</p>
+<pre><code class="language-text">temporary device
+shared terminal
+emergency node
+enterprise guest device
+</code></pre>
+<p>Expiration is not a replacement for revocation.</p>
+<hr />
+<h1 id="31-device-rotation"><a class="header" href="#31-device-rotation">31. Device Rotation</a></h1>
+<p>Keys may rotate without changing logical <code>DeviceId</code>.</p>
+<p>Flow:</p>
+<pre><code class="language-text">Device key generation N
+   ↓
+rotation event
+   ↓
+generation N+1
+</code></pre>
+<p>Old keys become invalid for future authentication.</p>
+<hr />
+<h1 id="32-rotation-reasons"><a class="header" href="#32-rotation-reasons">32. Rotation Reasons</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">scheduled rotation
+suspected compromise
+secure-storage migration
+algorithm upgrade
+device OS migration
+</code></pre>
+<p>The system must support rotation before an emergency requires it.</p>
+<hr />
+<h1 id="33-root-key-rotation"><a class="header" href="#33-root-key-rotation">33. Root Key Rotation</a></h1>
+<p>Root identity rotation is much more serious.</p>
+<p>Architecture should support:</p>
+<pre><code class="language-text">old root
+  ↓ signs transition
+new root
+</code></pre>
+<p>The transition event must be verifiable.</p>
+<p>Never simply replace root key metadata locally.</p>
+<hr />
+<h1 id="34-root-rotation-event"><a class="header" href="#34-root-rotation-event">34. Root Rotation Event</a></h1>
+<p>Conceptually:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct RootRotation {
+    pub account_id: AccountId,
+    pub old_root: PublicKey,
+    pub new_root: PublicKey,
+    pub generation: u64,
+    pub old_signature: Signature,
+    pub new_signature: Signature,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>This provides continuity.</p>
+<hr />
+<h1 id="35-compromised-root-scenario"><a class="header" href="#35-compromised-root-scenario">35. Compromised Root Scenario</a></h1>
+<p>If the root private key itself is compromised, recovery requires a stronger mechanism.</p>
+<p>Possible future strategies:</p>
+<pre><code class="language-text">recovery quorum
+trusted-device quorum
+offline recovery secret
+social recovery
+organization authority
+</code></pre>
+<p>Do not claim that ordinary rotation solves a compromised root.</p>
+<hr />
+<h1 id="36-recovery-architecture"><a class="header" href="#36-recovery-architecture">36. Recovery Architecture</a></h1>
+<p>Recovery should be designed from the beginning.</p>
+<p>Possible modes:</p>
+<pre><code class="language-text">Recovery key
+Trusted device
+Multi-device quorum
+Organization-managed recovery
+No recovery
+</code></pre>
+<p>Different products may choose different policies.</p>
+<hr />
+<h1 id="37-recovery-policy-type"><a class="header" href="#37-recovery-policy-type">37. Recovery Policy Type</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum RecoveryPolicy {
+    None,
+    RecoverySecret,
+    TrustedDeviceQuorum { threshold: u8 },
+    OrganizationManaged,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>The core identity system should support policy variation.</p>
+<hr />
+<h1 id="38-recovery-secret"><a class="header" href="#38-recovery-secret">38. Recovery Secret</a></h1>
+<p>A recovery secret should not simply be:</p>
+<pre><code class="language-text">password → private key
+</code></pre>
+<p>without strong KDF and policy.</p>
+<p>Use a hardened derivation and authenticated recovery record.</p>
+<p>The recovery secret should normally:</p>
+<ul>
+<li>recreate account authority</li>
+<li>not decrypt all past device-local storage automatically</li>
+<li>require explicit new device issuance</li>
+</ul>
+<hr />
+<h1 id="39-recovery-device-addition"><a class="header" href="#39-recovery-device-addition">39. Recovery Device Addition</a></h1>
+<p>Recovery path:</p>
+<pre><code class="language-text">User loses all devices
+   ↓
+uses recovery mechanism
+   ↓
+reestablishes account authority
+   ↓
+creates new device identity
+   ↓
+revokes lost devices
+</code></pre>
+<p>Past message recovery is a separate backup problem.</p>
+<p>Identity recovery and data backup must not be conflated.</p>
+<hr />
+<h1 id="40-multi-device-messaging-fan-out"><a class="header" href="#40-multi-device-messaging-fan-out">40. Multi-Device Messaging Fan-Out</a></h1>
+<p>For 1:1 communication:</p>
+<pre><code class="language-text">Alice Account
+├── Phone
+├── Laptop
+└── Tablet
+
+Bob Account
+├── Phone
+└── Laptop
+</code></pre>
+<p>When Alice sends to Bob:</p>
+<pre><code class="language-text">Bob Phone
+Bob Laptop
+Alice's other devices
+</code></pre>
+<p>may each need the event.</p>
+<p>The exact cryptographic fan-out mechanism can evolve, but the identity model must expose device membership.</p>
+<hr />
+<h1 id="41-sender-attribution"><a class="header" href="#41-sender-attribution">41. Sender Attribution</a></h1>
+<p>A message should identify:</p>
+<pre><code class="language-text">logical account
++
+originating device
+</code></pre>
+<p>Example:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct SenderIdentity {
+    pub account_id: AccountId,
+    pub device_id: DeviceId,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>This enables:</p>
+<ul>
+<li>auditing</li>
+<li>compromised-device analysis</li>
+<li>multi-device sync</li>
+<li>device-specific receipts</li>
+</ul>
+<hr />
+<h1 id="42-account-level-presentation"><a class="header" href="#42-account-level-presentation">42. Account-Level Presentation</a></h1>
+<p>UI can normally display:</p>
+<pre><code class="language-text">Alice
+</code></pre>
+<p>not:</p>
+<pre><code class="language-text">Alice / Pixel 9
+</code></pre>
+<p>Device attribution remains available in:</p>
+<ul>
+<li>security details</li>
+<li>diagnostics</li>
+<li>enterprise audit</li>
+<li>identity-change warnings</li>
+</ul>
+<hr />
+<h1 id="43-device-level-receipts"><a class="header" href="#43-device-level-receipts">43. Device-Level Receipts</a></h1>
+<p>Delivery can occur per device.</p>
+<p>Example:</p>
+<pre><code class="language-text">Bob Phone → delivered
+Bob Laptop → offline
+</code></pre>
+<p>Account-level UI may aggregate:</p>
+<pre><code class="language-text">Delivered to Bob
+</code></pre>
+<p>according to product policy.</p>
+<p>The core should retain device-level truth.</p>
+<hr />
+<h1 id="44-sync-between-users-own-devices"><a class="header" href="#44-sync-between-users-own-devices">44. Sync Between User's Own Devices</a></h1>
+<p>Own-device sync must be explicit.</p>
+<p>Examples:</p>
+<pre><code class="language-text">sent messages
+read state
+contacts
+group state
+settings
+drafts optionally
+</code></pre>
+<p>Do not treat own devices as automatically fully trusted for every application secret.</p>
+<p>Per-data-class policy is useful.</p>
+<hr />
+<h1 id="45-device-trust-classes"><a class="header" href="#45-device-trust-classes">45. Device Trust Classes</a></h1>
+<p>Possible:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum DeviceTrustClass {
+    Full,
+    Limited,
+    Temporary,
+    Headless,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Examples:</p>
+<pre><code class="language-text">Primary phone → Full
+Laptop → Full
+Public kiosk → Limited
+Emergency relay → Headless
+</code></pre>
+<p>Applications can constrain synchronization accordingly.</p>
+<hr />
+<h1 id="46-headless-devices"><a class="header" href="#46-headless-devices">46. Headless Devices</a></h1>
+<p>The identity architecture must support:</p>
+<pre><code class="language-text">NAS
+Raspberry Pi
+home relay
+enterprise gateway
+emergency node
+</code></pre>
+<p>These may belong to:</p>
+<pre><code class="language-text">user account
+organization account
+service identity
+</code></pre>
+<p>Do not assume every device has a screen.</p>
+<hr />
+<h1 id="47-service-identities"><a class="header" href="#47-service-identities">47. Service Identities</a></h1>
+<p>Some applications need non-human principals.</p>
+<p>Example:</p>
+<pre><code class="language-text">school server
+emergency authority
+automation service
+document relay
+</code></pre>
+<p>Use the same identity primitives.</p>
+<p>Do not create a completely separate authentication model unless necessary.</p>
+<hr />
+<h1 id="48-organization-identity"><a class="header" href="#48-organization-identity">48. Organization Identity</a></h1>
+<p>An organization may own:</p>
+<pre><code class="language-text">Organization Account
+├── server device
+├── admin device
+├── relay
+└── automation node
+</code></pre>
+<p>Authorization is layered above identity.</p>
+<p>Identity proves:</p>
+<pre><code class="language-text">this device belongs to this organization principal
+</code></pre>
+<p>Authorization decides:</p>
+<pre><code class="language-text">what it may do
+</code></pre>
+<hr />
+<h1 id="49-multiple-accounts-on-one-device"><a class="header" href="#49-multiple-accounts-on-one-device">49. Multiple Accounts on One Device</a></h1>
+<p>The core should allow:</p>
+<pre><code class="language-text">personal
+work
+organization
+</code></pre>
+<p>identities on one physical device.</p>
+<p>Each requires isolated:</p>
+<pre><code class="language-text">keys
+storage namespace
+session state
+trust graph
+device membership
+</code></pre>
+<p>The application may choose whether to expose this feature.</p>
+<hr />
+<h1 id="50-application-namespace"><a class="header" href="#50-application-namespace">50. Application Namespace</a></h1>
+<p>One physical device may run multiple applications using the communication SDK.</p>
+<p>Therefore device state should include:</p>
+<pre><code class="language-text">application namespace
+</code></pre>
+<p>where appropriate.</p>
+<p>Do not automatically share:</p>
+<pre><code class="language-text">contacts
+message history
+file access
+session state
+</code></pre>
+<p>across applications.</p>
+<hr />
+<h1 id="51-cross-application-identity-reuse"><a class="header" href="#51-cross-application-identity-reuse">51. Cross-Application Identity Reuse</a></h1>
+<p>This should be explicit, not automatic.</p>
+<p>Possible modes:</p>
+<pre><code class="language-text">Isolated identity per app
+Shared identity with user consent
+Organization-managed identity
+</code></pre>
+<p>The default should favor isolation.</p>
+<hr />
+<h1 id="52-device-directory"><a class="header" href="#52-device-directory">52. Device Directory</a></h1>
+<p>Each account maintains a signed device directory.</p>
+<p>Conceptually:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct DeviceDirectory {
+    pub account_id: AccountId,
+    pub generation: u64,
+    pub devices: Vec&lt;DeviceDirectoryEntry&gt;,
+    pub signature: Signature,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>This can be a compact snapshot derived from events.</p>
+<hr />
+<h1 id="53-device-directory-entry"><a class="header" href="#53-device-directory-entry">53. Device Directory Entry</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct DeviceDirectoryEntry {
+    pub device_id: DeviceId,
+    pub certificate: DeviceCertificate,
+    pub status: DeviceStatus,
+    pub transport_endpoints: Vec&lt;DeviceEndpoint&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Status:</p>
+<pre><code class="language-text">Active
+Revoked
+Expired
+</code></pre>
+<hr />
+<h1 id="54-device-directory-synchronization"><a class="header" href="#54-device-directory-synchronization">54. Device Directory Synchronization</a></h1>
+<p>A peer should not require a central server to learn device changes.</p>
+<p>Possible paths:</p>
+<pre><code class="language-text">direct peer
+own-device sync
+mailbox
+relay
+DTN
+directory service
+</code></pre>
+<p>The directory is signed, so transport is not trusted for authenticity.</p>
+<hr />
+<h1 id="55-stale-device-directory"><a class="header" href="#55-stale-device-directory">55. Stale Device Directory</a></h1>
+<p>A peer may have stale account state.</p>
+<p>If a device presents:</p>
+<pre><code class="language-text">newer signed generation
+</code></pre>
+<p>the peer can update.</p>
+<p>If a device presents:</p>
+<pre><code class="language-text">older generation
+</code></pre>
+<p>the peer should not roll back.</p>
+<hr />
+<h1 id="56-rollback-protection"><a class="header" href="#56-rollback-protection">56. Rollback Protection</a></h1>
+<p>Maintain:</p>
+<pre><code class="language-text">highest trusted generation per account
+</code></pre>
+<p>or stronger state continuity.</p>
+<p>Never accept:</p>
+<pre><code class="language-text">generation 17
+</code></pre>
+<p>after already trusting:</p>
+<pre><code class="language-text">generation 22
+</code></pre>
+<p>unless a specific recovery protocol authorizes it.</p>
+<hr />
+<h1 id="57-fork-detection"><a class="header" href="#57-fork-detection">57. Fork Detection</a></h1>
+<p>Two conflicting signed account states at the same generation may indicate:</p>
+<pre><code class="language-text">bug
+compromise
+concurrent invalid update
+</code></pre>
+<p>The system should detect this.</p>
+<p>Do not silently choose one.</p>
+<p>Raise:</p>
+<pre><code class="language-text">IdentityForkDetected
+</code></pre>
+<p>and require reconciliation/security handling.</p>
+<hr />
+<h1 id="58-concurrent-device-changes"><a class="header" href="#58-concurrent-device-changes">58. Concurrent Device Changes</a></h1>
+<p>To avoid unnecessary forks, device-state updates should use a defined concurrency model.</p>
+<p>Options:</p>
+<pre><code class="language-text">single account authority
+quorum
+serialized event chain
+</code></pre>
+<p>For initial implementation:</p>
+<pre><code class="language-text">serialized signed account-state chain
+</code></pre>
+<p>is easier to reason about.</p>
+<hr />
+<h1 id="59-account-state-chain"><a class="header" href="#59-account-state-chain">59. Account State Chain</a></h1>
+<p>Each state event references:</p>
+<pre><code class="language-text">previous_state_hash
+</code></pre>
+<p>Example:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct AccountStateEvent {
+    pub account_id: AccountId,
+    pub generation: u64,
+    pub prev_hash: StateHash,
+    pub event: DeviceEvent,
+    pub signature: Signature,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>This creates tamper-evident continuity.</p>
+<hr />
+<h1 id="60-device-linking-authority"><a class="header" href="#60-device-linking-authority">60. Device Linking Authority</a></h1>
+<p>Who may add a new device?</p>
+<p>Possible policies:</p>
+<pre><code class="language-text">root authority only
+any full-trust device
+threshold of trusted devices
+organization admin
+</code></pre>
+<p>Make this configurable.</p>
+<hr />
+<h1 id="61-default-consumer-policy"><a class="header" href="#61-default-consumer-policy">61. Default Consumer Policy</a></h1>
+<p>For a normal messenger:</p>
+<pre><code class="language-text">existing verified full-trust device
+</code></pre>
+<p>can authorize a new device.</p>
+<p>For enterprise:</p>
+<pre><code class="language-text">organization policy
+</code></pre>
+<p>may require admin approval.</p>
+<hr />
+<h1 id="62-link-approval-certificate"><a class="header" href="#62-link-approval-certificate">62. Link Approval Certificate</a></h1>
+<p>If device-to-device approval is allowed, the account architecture must define how a device gains delegation authority.</p>
+<p>Example:</p>
+<pre><code class="language-text">root certificate
+   ↓
+delegates device-link authority
+</code></pre>
+<p>Do not let any device arbitrarily add peers.</p>
+<hr />
+<h1 id="63-device-roles"><a class="header" href="#63-device-roles">63. Device Roles</a></h1>
+<p>Possible device roles:</p>
+<pre><code class="language-text">Primary
+Standard
+Limited
+Relay
+Recovery
+Admin
+</code></pre>
+<p>These are account-level capabilities, not UI labels only.</p>
+<hr />
+<h1 id="64-security-capabilities"><a class="header" href="#64-security-capabilities">64. Security Capabilities</a></h1>
+<p>A device certificate may include:</p>
+<pre><code class="language-text">can_link_device
+can_revoke_device
+can_rotate_account_state
+can_receive_messages
+can_sync_history
+can_relay
+</code></pre>
+<p>Use explicit capability semantics.</p>
+<hr />
+<h1 id="65-principle-of-least-authority"><a class="header" href="#65-principle-of-least-authority">65. Principle of Least Authority</a></h1>
+<p>A headless relay should not need:</p>
+<pre><code class="language-text">account root authority
+message decryption keys
+device linking authority
+</code></pre>
+<p>It should receive only the minimum credentials required.</p>
+<hr />
+<h1 id="66-multi-device-file-transfer"><a class="header" href="#66-multi-device-file-transfer">66. Multi-Device File Transfer</a></h1>
+<p>A file may target:</p>
+<pre><code class="language-text">account
+specific device
+device group
+</code></pre>
+<p>Examples:</p>
+<pre><code class="language-text">Send to Bob's account
+Send only to Bob's laptop
+Sync file to all my devices
+</code></pre>
+<p>The identity layer must support device resolution.</p>
+<hr />
+<h1 id="67-account-address-vs-device-address"><a class="header" href="#67-account-address-vs-device-address">67. Account Address vs Device Address</a></h1>
+<p>Define:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum Destination {
+    Account(AccountId),
+    Device(DeviceId),
+    Devices(Vec&lt;DeviceId&gt;),
+}
+<span class="boring">}</span></code></pre></pre>
+<p>The application can choose semantics.</p>
+<p>Routing resolves account destinations into active authorized devices.</p>
+<hr />
+<h1 id="68-device-resolution"><a class="header" href="#68-device-resolution">68. Device Resolution</a></h1>
+<p>Flow:</p>
+<pre><code class="language-text">Destination Account
+     ↓
+Device Directory
+     ↓
+Active authorized devices
+     ↓
+Transport endpoints
+     ↓
+Routing
+</code></pre>
+<p>Do not make the application manually maintain endpoint lists.</p>
+<hr />
+<h1 id="69-fan-out-policy"><a class="header" href="#69-fan-out-policy">69. Fan-Out Policy</a></h1>
+<p>Possible policies:</p>
+<pre><code class="language-text">All active devices
+Primary device only
+Best reachable device
+At least one device
+Application-defined subset
+</code></pre>
+<p>Messaging may choose:</p>
+<pre><code class="language-text">all relevant devices
+</code></pre>
+<p>Large files may choose:</p>
+<pre><code class="language-text">specific device
+</code></pre>
+<hr />
+<h1 id="70-own-device-synchronization-policy"><a class="header" href="#70-own-device-synchronization-policy">70. Own-Device Synchronization Policy</a></h1>
+<p>Own-device sync may differ by data type.</p>
+<p>Example:</p>
+<pre><code class="language-text">messages → all full devices
+settings → selected devices
+large files → on demand
+drafts → optional
+emergency state → all full devices
+</code></pre>
+<p>This policy belongs above identity but uses device metadata.</p>
+<hr />
+<h1 id="71-device-presence"><a class="header" href="#71-device-presence">71. Device Presence</a></h1>
+<p>Presence should be device-aware.</p>
+<p>Example:</p>
+<pre><code class="language-text">Account Alice:
+Phone online
+Laptop offline
+Tablet nearby
+</code></pre>
+<p>Account-level presence can derive:</p>
+<pre><code class="language-text">Alice reachable
+</code></pre>
+<p>without losing device-level detail internally.</p>
+<hr />
+<h1 id="72-reachability-vs-trust"><a class="header" href="#72-reachability-vs-trust">72. Reachability vs Trust</a></h1>
+<p>A device may be:</p>
+<pre><code class="language-text">trusted but unreachable
+reachable but revoked
+reachable but unknown
+</code></pre>
+<p>These are distinct states.</p>
+<p>Never combine them into one boolean.</p>
+<hr />
+<h1 id="73-device-state-type"><a class="header" href="#73-device-state-type">73. Device State Type</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct DeviceState {
+    pub trust: DeviceTrustState,
+    pub reachability: DeviceReachability,
+    pub lifecycle: DeviceLifecycle,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>This makes invalid assumptions harder.</p>
+<hr />
+<h1 id="74-device-lifecycle"><a class="header" href="#74-device-lifecycle">74. Device Lifecycle</a></h1>
+<pre><code class="language-text">PendingLink
+Active
+Suspended
+Revoked
+Expired
+</code></pre>
+<p><code>Suspended</code> can be useful for:</p>
+<pre><code class="language-text">temporarily disabled device
+enterprise policy
+suspected compromise under investigation
+</code></pre>
+<hr />
+<h1 id="75-suspension-vs-revocation"><a class="header" href="#75-suspension-vs-revocation">75. Suspension vs Revocation</a></h1>
+<p>Suspension:</p>
+<pre><code class="language-text">temporary
+reversible
+</code></pre>
+<p>Revocation:</p>
+<pre><code class="language-text">security-significant
+normally permanent for that key generation
+</code></pre>
+<p>Do not use the same operation for both.</p>
+<hr />
+<h1 id="76-lost-device-flow"><a class="header" href="#76-lost-device-flow">76. Lost Device Flow</a></h1>
+<p>User reports:</p>
+<pre><code class="language-text">Phone lost
+</code></pre>
+<p>System should allow:</p>
+<pre><code class="language-text">revoke lost device
+rotate affected conversation/group state
+invalidate device sessions
+remove device from fan-out
+</code></pre>
+<p>The exact data-key rotation can occur asynchronously.</p>
+<hr />
+<h1 id="77-compromised-device-flow"><a class="header" href="#77-compromised-device-flow">77. Compromised Device Flow</a></h1>
+<p>Stronger than simple loss.</p>
+<p>Recommended response:</p>
+<pre><code class="language-text">revoke device
+rotate account-sensitive session material
+rotate group membership keys
+invalidate device tokens
+trigger security warning
+</code></pre>
+<p>Do not assume revocation alone erases any keys already obtained.</p>
+<hr />
+<h1 id="78-device-reinstallation"><a class="header" href="#78-device-reinstallation">78. Device Reinstallation</a></h1>
+<p>Reinstall should normally create:</p>
+<pre><code class="language-text">new DeviceId
+new device key
+</code></pre>
+<p>rather than silently resurrecting the previous device identity.</p>
+<p>This makes security history clearer.</p>
+<hr />
+<h1 id="79-device-migration"><a class="header" href="#79-device-migration">79. Device Migration</a></h1>
+<p>A deliberate migration can preserve user experience.</p>
+<p>Flow:</p>
+<pre><code class="language-text">Old device
+   ↓
+authenticated migration
+   ↓
+new device identity
+   ↓
+state transfer
+   ↓
+old device optionally revoked
+</code></pre>
+<p>Private device keys should still not be copied unless the architecture explicitly defines secure key migration.</p>
+<hr />
+<h1 id="80-secure-storage"><a class="header" href="#80-secure-storage">80. Secure Storage</a></h1>
+<p>Private device material should use platform secure storage.</p>
+<p>Android:</p>
+<pre><code class="language-text">Android Keystore
+</code></pre>
+<p>Apple:</p>
+<pre><code class="language-text">Keychain / Secure Enclave where appropriate
+</code></pre>
+<p>Desktop:</p>
+<pre><code class="language-text">platform credential/key store
+encrypted fallback
+</code></pre>
+<p>The identity crate should depend on a <code>SecureStore</code> abstraction.</p>
+<hr />
+<h1 id="81-secure-store-trait"><a class="header" href="#81-secure-store-trait">81. Secure Store Trait</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait SecureStore {
+    async fn store_secret(
+        &amp;self,
+        key: SecretKeyId,
+        secret: SecretBytes,
+    ) -&gt; Result&lt;(), SecureStoreError&gt;;
+
+    async fn load_secret(
+        &amp;self,
+        key: SecretKeyId,
+    ) -&gt; Result&lt;SecretBytes, SecureStoreError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Avoid returning copyable secret types casually.</p>
+<hr />
+<h1 id="82-secret-types"><a class="header" href="#82-secret-types">82. Secret Types</a></h1>
+<p>Use wrappers such as:</p>
+<pre><code class="language-text">SecretBytes
+Zeroizing
+secrecy-style wrappers
+</code></pre>
+<p>to reduce accidental logging/copying.</p>
+<p>Never derive:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>Debug
+<span class="boring">}</span></code></pre></pre>
+<p>for raw secret material.</p>
+<hr />
+<h1 id="83-local-database-key"><a class="header" href="#83-local-database-key">83. Local Database Key</a></h1>
+<p>Each device may have a local database encryption key.</p>
+<p>This key is distinct from:</p>
+<pre><code class="language-text">account root key
+device signing key
+session key
+</code></pre>
+<p>Do not reuse one key for multiple purposes.</p>
+<hr />
+<h1 id="84-key-separation"><a class="header" href="#84-key-separation">84. Key Separation</a></h1>
+<p>Use domain-separated derivation.</p>
+<p>Conceptually:</p>
+<pre><code class="language-text">root material
+├── identity signing
+├── device certification
+├── recovery
+└── other explicit domains
+</code></pre>
+<p>Never:</p>
+<pre><code class="language-text">same key
+for signing + encryption + database
+</code></pre>
+<hr />
+<h1 id="85-session-keys"><a class="header" href="#85-session-keys">85. Session Keys</a></h1>
+<p>Session keys are ephemeral or periodically renewed.</p>
+<p>They should not become part of long-lived device directory state.</p>
+<p>Identity authenticates session establishment.</p>
+<p>Session cryptography protects current communication.</p>
+<hr />
+<h1 id="86-prekeys--offline-session-bootstrap"><a class="header" href="#86-prekeys--offline-session-bootstrap">86. Prekeys / Offline Session Bootstrap</a></h1>
+<p>For asynchronous E2EE messaging, the architecture may require:</p>
+<pre><code class="language-text">signed prekeys
+one-time prekeys
+device-specific prekey bundles
+</code></pre>
+<p>Each bundle belongs to a specific device.</p>
+<p>The account directory helps discover which device bundles are valid.</p>
+<hr />
+<h1 id="87-prekey-bundle-type"><a class="header" href="#87-prekey-bundle-type">87. Prekey Bundle Type</a></h1>
+<p>Conceptually:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct DevicePrekeyBundle {
+    pub account_id: AccountId,
+    pub device_id: DeviceId,
+    pub identity_key: PublicKey,
+    pub signed_prekey: SignedPrekey,
+    pub one_time_prekeys: Vec&lt;OneTimePrekey&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>The exact cryptographic protocol should use a proven design.</p>
+<hr />
+<h1 id="88-prekey-expiry"><a class="header" href="#88-prekey-expiry">88. Prekey Expiry</a></h1>
+<p>Prekeys must:</p>
+<pre><code class="language-text">expire
+rotate
+replenish
+</code></pre>
+<p>Do not maintain indefinite prekey material.</p>
+<hr />
+<h1 id="89-device-authentication-during-session"><a class="header" href="#89-device-authentication-during-session">89. Device Authentication During Session</a></h1>
+<p>Peer presents:</p>
+<pre><code class="language-text">device certificate
+device key proof
+current account-state generation
+</code></pre>
+<p>The remote verifies:</p>
+<pre><code class="language-text">certificate valid
+device active
+not revoked
+account continuity valid
+</code></pre>
+<p>before application protocol becomes trusted.</p>
+<hr />
+<h1 id="90-stale-peer-handling"><a class="header" href="#90-stale-peer-handling">90. Stale Peer Handling</a></h1>
+<p>If remote cannot verify current device status due to stale state:</p>
+<p>Possible policy:</p>
+<pre><code class="language-text">allow limited communication
+request newer account state
+delay sensitive operation
+</code></pre>
+<p>Do not silently trust stale high-risk identity information.</p>
+<hr />
+<h1 id="91-offline-identity-verification"><a class="header" href="#91-offline-identity-verification">91. Offline Identity Verification</a></h1>
+<p>Two users without Internet can verify via:</p>
+<pre><code class="language-text">QR
+numeric code
+NFC
+manual fingerprint
+</code></pre>
+<p>The verification should bind:</p>
+<pre><code class="language-text">account root identity
+</code></pre>
+<p>not just current transport endpoint.</p>
+<p>This prevents re-verifying every transport change.</p>
+<hr />
+<h1 id="92-contact-verification"><a class="header" href="#92-contact-verification">92. Contact Verification</a></h1>
+<p>A verified contact state should be tied to:</p>
+<pre><code class="language-text">AccountId / root identity
+</code></pre>
+<p>with awareness of root rotation.</p>
+<p>New devices signed under the verified account can inherit account-level trust according to policy.</p>
+<hr />
+<h1 id="93-new-device-notification"><a class="header" href="#93-new-device-notification">93. New Device Notification</a></h1>
+<p>When a contact adds a device:</p>
+<pre><code class="language-text">Alice added a new device.
+</code></pre>
+<p>The UI may show this as informational or security-significant depending on verification policy.</p>
+<p>Do not silently hide device changes in high-security mode.</p>
+<hr />
+<h1 id="94-identity-change-notification"><a class="header" href="#94-identity-change-notification">94. Identity Change Notification</a></h1>
+<p>If account root changes unexpectedly:</p>
+<pre><code class="language-text">Security identity changed.
+</code></pre>
+<p>This is more serious than adding a device.</p>
+<p>The distinction must be explicit.</p>
+<hr />
+<h1 id="95-verification-modes"><a class="header" href="#95-verification-modes">95. Verification Modes</a></h1>
+<p>Possible:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum VerificationPolicy {
+    TrustAccountRoot,
+    VerifyEveryDevice,
+    HighSecurity,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Default messenger:</p>
+<pre><code class="language-text">verify account root
+</code></pre>
+<p>Enterprise/high-security:</p>
+<pre><code class="language-text">may require every device approval
+</code></pre>
+<hr />
+<h1 id="96-device-transparency-log"><a class="header" href="#96-device-transparency-log">96. Device Transparency Log</a></h1>
+<p>A future enhancement can provide:</p>
+<pre><code class="language-text">append-only transparency log
+</code></pre>
+<p>for device additions/revocations.</p>
+<p>This can help detect:</p>
+<pre><code class="language-text">hidden unauthorized device additions
+</code></pre>
+<p>The core architecture should leave room for it.</p>
+<hr />
+<h1 id="97-self-hosted-transparency"><a class="header" href="#97-self-hosted-transparency">97. Self-Hosted Transparency</a></h1>
+<p>Enterprise deployments may host:</p>
+<pre><code class="language-text">organization device transparency service
+</code></pre>
+<p>without changing basic identity semantics.</p>
+<hr />
+<h1 id="98-no-mandatory-central-directory"><a class="header" href="#98-no-mandatory-central-directory">98. No Mandatory Central Directory</a></h1>
+<p>The identity system must work:</p>
+<pre><code class="language-text">P2P
+offline
+LAN-only
+DTN
+</code></pre>
+<p>A directory server may improve discovery, but it is not the source of cryptographic truth.</p>
+<hr />
+<h1 id="99-directory-service-role"><a class="header" href="#99-directory-service-role">99. Directory Service Role</a></h1>
+<p>Optional directory service can provide:</p>
+<pre><code class="language-text">latest signed device directory
+prekey bundles
+transport hints
+</code></pre>
+<p>It must not be trusted to forge identities.</p>
+<p>All state is verified cryptographically.</p>
+<hr />
+<h1 id="100-device-state-through-dtn"><a class="header" href="#100-device-state-through-dtn">100. Device State Through DTN</a></h1>
+<p>Signed device-state updates can be transported through:</p>
+<pre><code class="language-text">store-carry-forward
+</code></pre>
+<p>because authenticity does not depend on the relay.</p>
+<p>This is important for disaster scenarios.</p>
+<hr />
+<h1 id="101-emergency-identity"><a class="header" href="#101-emergency-identity">101. Emergency Identity</a></h1>
+<p>Emergency apps may need:</p>
+<pre><code class="language-text">person identity
+authority identity
+responder identity
+anonymous/limited identity
+</code></pre>
+<p>The identity layer should support different principal types without embedding emergency business rules.</p>
+<hr />
+<h1 id="102-authority-identity"><a class="header" href="#102-authority-identity">102. Authority Identity</a></h1>
+<p>An authority account may certify:</p>
+<pre><code class="language-text">Police Device
+Hospital Device
+Rescue Coordinator
+</code></pre>
+<p>The UI can display:</p>
+<pre><code class="language-text">Verified Authority
+</code></pre>
+<p>only when cryptographic policy validates it.</p>
+<hr />
+<h1 id="103-identity-claims"><a class="header" href="#103-identity-claims">103. Identity Claims</a></h1>
+<p>Keep optional claims separate from core identity.</p>
+<p>Examples:</p>
+<pre><code class="language-text">organization
+role
+department
+emergency authority
+</code></pre>
+<p>Claims should be signed by an appropriate issuer.</p>
+<p>Do not hard-code them into <code>AccountId</code>.</p>
+<hr />
+<h1 id="104-claim-type"><a class="header" href="#104-claim-type">104. Claim Type</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct IdentityClaim {
+    pub subject: AccountId,
+    pub claim_type: ClaimType,
+    pub value: ClaimValue,
+    pub issuer: IssuerId,
+    pub expires_at: Option&lt;Timestamp&gt;,
+    pub signature: Signature,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Applications decide which issuers they trust.</p>
+<hr />
+<h1 id="105-privacy"><a class="header" href="#105-privacy">105. Privacy</a></h1>
+<p>Device directories reveal metadata.</p>
+<p>Minimize:</p>
+<pre><code class="language-text">device names
+exact platform
+last seen
+capabilities
+</code></pre>
+<p>to only what is necessary.</p>
+<p>Some information can be shared only after authenticated contact/session establishment.</p>
+<hr />
+<h1 id="106-public-vs-private-device-metadata"><a class="header" href="#106-public-vs-private-device-metadata">106. Public vs Private Device Metadata</a></h1>
+<p>Public:</p>
+<pre><code class="language-text">device id
+device key
+required certificate fields
+</code></pre>
+<p>Private/authenticated:</p>
+<pre><code class="language-text">friendly device name
+platform detail
+last-seen
+capabilities
+</code></pre>
+<p>This reduces unnecessary metadata exposure.</p>
+<hr />
+<h1 id="107-rotating-discovery-tokens"><a class="header" href="#107-rotating-discovery-tokens">107. Rotating Discovery Tokens</a></h1>
+<p>Nearby discovery must not advertise permanent:</p>
+<pre><code class="language-text">AccountId
+DeviceId
+</code></pre>
+<p>in plaintext.</p>
+<p>Use rotating ephemeral discovery tokens.</p>
+<p>Authenticated handshake resolves them to actual device identity.</p>
+<hr />
+<h1 id="108-device-tracking-resistance"><a class="header" href="#108-device-tracking-resistance">108. Device Tracking Resistance</a></h1>
+<p>Avoid stable:</p>
+<pre><code class="language-text">BLE identifiers
+Wi-Fi service identifiers
+transport advertisements
+</code></pre>
+<p>that allow passive tracking.</p>
+<p>Transport discovery identity and cryptographic account identity should be separated.</p>
+<hr />
+<h1 id="109-address-book-mapping"><a class="header" href="#109-address-book-mapping">109. Address Book Mapping</a></h1>
+<p>The messenger may map:</p>
+<pre><code class="language-text">AccountId → Contact
+</code></pre>
+<p>but the identity SDK should not own:</p>
+<pre><code class="language-text">phone-number address book
+social graph
+contact labels
+</code></pre>
+<p>Those are application concerns.</p>
+<hr />
+<h1 id="110-device-audit-log"><a class="header" href="#110-device-audit-log">110. Device Audit Log</a></h1>
+<p>Each account should expose a local audit view:</p>
+<pre><code class="language-text">Device added
+Device revoked
+Key rotated
+Recovery used
+Root changed
+</code></pre>
+<p>This is especially useful in enterprise and security-sensitive contexts.</p>
+<hr />
+<h1 id="111-audit-event-type"><a class="header" href="#111-audit-event-type">111. Audit Event Type</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum IdentityAuditEvent {
+    DeviceLinked,
+    DeviceRevoked,
+    DeviceSuspended,
+    DeviceRotated,
+    RootRotated,
+    RecoveryUsed,
+    ForkDetected,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Do not include secrets.</p>
+<hr />
+<h1 id="112-notifications"><a class="header" href="#112-notifications">112. Notifications</a></h1>
+<p>Security-significant events may trigger:</p>
+<pre><code class="language-text">local notification
+cross-device notification
+email/push optional
+</code></pre>
+<p>The identity layer emits events; the product decides presentation.</p>
+<hr />
+<h1 id="113-cross-device-consistency"><a class="header" href="#113-cross-device-consistency">113. Cross-Device Consistency</a></h1>
+<p>Eventually all active trusted devices should converge on:</p>
+<pre><code class="language-text">same account generation
+same active device set
+same revocation set
+</code></pre>
+<p>Temporary divergence is expected offline.</p>
+<p>Security rules must remain conservative during divergence.</p>
+<hr />
+<h1 id="114-reconciliation"><a class="header" href="#114-reconciliation">114. Reconciliation</a></h1>
+<p>When devices reconnect:</p>
+<pre><code class="language-text">exchange generation
+compare state hash
+request missing events
+verify chain
+apply
+</code></pre>
+<p>Do not exchange entire history unnecessarily.</p>
+<hr />
+<h1 id="115-merkle--hash-chain-support"><a class="header" href="#115-merkle--hash-chain-support">115. Merkle / Hash Chain Support</a></h1>
+<p>For many events, use:</p>
+<pre><code class="language-text">state hash
+event chain
+Merkle summaries
+</code></pre>
+<p>to efficiently reconcile.</p>
+<p>The first implementation can start with ordered signed events and later optimize.</p>
+<hr />
+<h1 id="116-identity-storage"><a class="header" href="#116-identity-storage">116. Identity Storage</a></h1>
+<p>Suggested storage:</p>
+<pre><code class="language-text">accounts
+device_certificates
+device_events
+device_directory_snapshots
+trust_state
+verification_state
+prekey_bundles
+recovery_metadata
+identity_audit
+</code></pre>
+<p>Secret material belongs in secure storage, not ordinary tables.</p>
+<hr />
+<h1 id="117-storage-interface"><a class="header" href="#117-storage-interface">117. Storage Interface</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait IdentityStore {
+    async fn account_state(...);
+    async fn append_device_event(...);
+    async fn device_certificate(...);
+    async fn trust_state(...);
+    async fn save_trust_state(...);
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Keep secret store separate:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>SecureStore
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="118-transaction-boundaries"><a class="header" href="#118-transaction-boundaries">118. Transaction Boundaries</a></h1>
+<p>Device addition:</p>
+<pre><code class="language-text">verify certificate
+ ↓
+append event
+ ↓
+update snapshot
+ ↓
+commit
+ ↓
+emit event
+</code></pre>
+<p>Never emit:</p>
+<pre><code class="language-text">DeviceAdded
+</code></pre>
+<p>before durable persistence.</p>
+<hr />
+<h1 id="119-idempotency"><a class="header" href="#119-idempotency">119. Idempotency</a></h1>
+<p>Receiving the same device event repeatedly should produce:</p>
+<pre><code class="language-text">one logical state change
+</code></pre>
+<p>Use unique:</p>
+<pre><code class="language-text">event id / hash
+</code></pre>
+<p>and generation constraints.</p>
+<hr />
+<h1 id="120-replay-protection"><a class="header" href="#120-replay-protection">120. Replay Protection</a></h1>
+<p>Reject:</p>
+<pre><code class="language-text">old device-add event
+old transport endpoint
+old revoked certificate
+</code></pre>
+<p>when newer state is known.</p>
+<p>Use:</p>
+<pre><code class="language-text">generation
+state hash
+certificate generation
+expiry
+</code></pre>
+<hr />
+<h1 id="121-device-specific-authorization"><a class="header" href="#121-device-specific-authorization">121. Device-Specific Authorization</a></h1>
+<p>Applications may authorize per device.</p>
+<p>Example:</p>
+<pre><code class="language-text">Bob's laptop can receive 2 GB file
+Bob's phone should receive only metadata
+</code></pre>
+<p>This can combine:</p>
+<pre><code class="language-text">device capability
+user policy
+network policy
+</code></pre>
+<hr />
+<h1 id="122-enterprise-device-policy"><a class="header" href="#122-enterprise-device-policy">122. Enterprise Device Policy</a></h1>
+<p>An enterprise can require:</p>
+<pre><code class="language-text">approved device
+managed device
+minimum app version
+hardware-backed keys
+device attestation
+</code></pre>
+<p>These should be optional policy layers.</p>
+<p>Do not make attestation mandatory for the core protocol.</p>
+<hr />
+<h1 id="123-platform-attestation"><a class="header" href="#123-platform-attestation">123. Platform Attestation</a></h1>
+<p>Android/iOS attestation can supplement identity.</p>
+<p>It must not replace cryptographic identity.</p>
+<p>Attestation answers:</p>
+<pre><code class="language-text">What environment is this device running in?
+</code></pre>
+<p>Identity answers:</p>
+<pre><code class="language-text">Which logical device/account is this?
+</code></pre>
+<hr />
+<h1 id="124-device-health-claims"><a class="header" href="#124-device-health-claims">124. Device Health Claims</a></h1>
+<p>Optional:</p>
+<pre><code class="language-text">OS version
+app version
+secure storage available
+hardware key support
+</code></pre>
+<p>These are claims/capabilities, not identity itself.</p>
+<hr />
+<h1 id="125-version-compatibility"><a class="header" href="#125-version-compatibility">125. Version Compatibility</a></h1>
+<p>Device directory schema must be versioned.</p>
+<p>Wire state:</p>
+<pre><code class="language-text">DeviceCertificateV1
+DeviceEventV1
+</code></pre>
+<p>Internal Rust structs may evolve independently.</p>
+<hr />
+<h1 id="126-serialization"><a class="header" href="#126-serialization">126. Serialization</a></h1>
+<p>Use explicit protocol-safe types.</p>
+<p>Avoid:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>usize
+SystemTime internals
+platform enums
+<span class="boring">}</span></code></pre></pre>
+<p>on wire.</p>
+<p>Prefer:</p>
+<pre><code class="language-text">u16
+u32
+u64
+fixed arrays
+bounded bytes
+explicit timestamps
+</code></pre>
+<hr />
+<h1 id="127-input-limits"><a class="header" href="#127-input-limits">127. Input Limits</a></h1>
+<p>Limit:</p>
+<pre><code class="language-text">max devices per account
+max endpoints per device
+max claims
+max metadata length
+max device name length
+max event chain batch
+</code></pre>
+<p>Do not let an attacker force unbounded device-directory allocation.</p>
+<hr />
+<h1 id="128-device-count-policy"><a class="header" href="#128-device-count-policy">128. Device Count Policy</a></h1>
+<p>Default normal account:</p>
+<pre><code class="language-text">small bounded number
+</code></pre>
+<p>Enterprise may configure larger limits.</p>
+<p>The core should not assume:</p>
+<pre><code class="language-text">exactly 5 devices
+</code></pre>
+<p>but must still enforce resource limits.</p>
+<hr />
+<h1 id="129-session-cache"><a class="header" href="#129-session-cache">129. Session Cache</a></h1>
+<p>Maintain device-authenticated session cache:</p>
+<pre><code class="language-text">AccountId
+DeviceId
+AccountGeneration
+SessionId
+LastAuthenticated
+</code></pre>
+<p>Invalidate when:</p>
+<pre><code class="language-text">device revoked
+root changed
+certificate rotated
+</code></pre>
+<hr />
+<h1 id="130-revocation-cache"><a class="header" href="#130-revocation-cache">130. Revocation Cache</a></h1>
+<p>Fast path:</p>
+<pre><code class="language-text">revoked device set
+</code></pre>
+<p>for session validation.</p>
+<p>This must be derived from durable authenticated state.</p>
+<hr />
+<h1 id="131-device-identity-api"><a class="header" href="#131-device-identity-api">131. Device Identity API</a></h1>
+<p>Recommended public clients:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>IdentityClient
+DeviceClient
+TrustClient
+RecoveryClient
+<span class="boring">}</span></code></pre></pre>
+<p>Keep public API small.</p>
+<hr />
+<h1 id="132-example-api"><a class="header" href="#132-example-api">132. Example API</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let identity = client.identity();
+
+let invite = identity
+    .create_device_link_invite(LinkPolicy::default())
+    .await?;
+
+let result = identity
+    .approve_device_link(link_request)
+    .await?;
+<span class="boring">}</span></code></pre></pre>
+<p>Application should not directly construct signed device certificates.</p>
+<hr />
+<h1 id="133-revoke-api"><a class="header" href="#133-revoke-api">133. Revoke API</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>identity
+    .revoke_device(
+        device_id,
+        RevocationReason::Lost,
+    )
+    .await?;
+<span class="boring">}</span></code></pre></pre>
+<p>The library handles:</p>
+<pre><code class="language-text">signed event
+generation
+persistence
+sync notification
+session invalidation
+</code></pre>
+<hr />
+<h1 id="134-recovery-api"><a class="header" href="#134-recovery-api">134. Recovery API</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let recovery = identity
+    .begin_recovery(recovery_material)
+    .await?;
+<span class="boring">}</span></code></pre></pre>
+<p>Recovery should be a guided state machine, not one monolithic call.</p>
+<hr />
+<h1 id="135-state-machine-for-linking"><a class="header" href="#135-state-machine-for-linking">135. State Machine for Linking</a></h1>
+<pre><code class="language-text">Created
+ ↓
+InviteShared
+ ↓
+PeerConnected
+ ↓
+Verified
+ ↓
+Approved
+ ↓
+CertificateIssued
+ ↓
+Committed
+ ↓
+Completed
+</code></pre>
+<p>Failure states:</p>
+<pre><code class="language-text">Expired
+Rejected
+VerificationFailed
+Cancelled
+</code></pre>
+<hr />
+<h1 id="136-state-machine-for-recovery"><a class="header" href="#136-state-machine-for-recovery">136. State Machine for Recovery</a></h1>
+<pre><code class="language-text">Started
+ ↓
+RecoveryMaterialVerified
+ ↓
+AuthorityRestored
+ ↓
+NewDeviceCreated
+ ↓
+OldDevicesReviewed
+ ↓
+RevocationsCommitted
+ ↓
+Completed
+</code></pre>
+<p>Persist progress safely where appropriate.</p>
+<hr />
+<h1 id="137-ui-boundary"><a class="header" href="#137-ui-boundary">137. UI Boundary</a></h1>
+<p>Dioxus receives view models:</p>
+<pre><code class="language-text">DeviceListVm
+DeviceLinkVm
+SecurityIdentityVm
+RecoveryVm
+</code></pre>
+<p>It never receives:</p>
+<pre><code class="language-text">root private key
+device private key
+session key
+</code></pre>
+<hr />
+<h1 id="138-android-kotlin-boundary"><a class="header" href="#138-android-kotlin-boundary">138. Android Kotlin Boundary</a></h1>
+<p>Kotlin may handle:</p>
+<pre><code class="language-text">Android Keystore
+biometric confirmation
+QR camera
+NFC
+system notifications
+</code></pre>
+<p>Rust owns:</p>
+<pre><code class="language-text">identity state
+certificate logic
+linking protocol
+revocation
+recovery policy
+</code></pre>
+<hr />
+<h1 id="139-ios-boundary"><a class="header" href="#139-ios-boundary">139. iOS Boundary</a></h1>
+<p>Equivalent pattern:</p>
+<pre><code class="language-text">Keychain/Secure Enclave
+camera
+NFC where available
+system authentication
+</code></pre>
+<p>through platform adapter.</p>
+<p>No identity business logic should be duplicated in Swift.</p>
+<hr />
+<h1 id="140-headless-linking"><a class="header" href="#140-headless-linking">140. Headless Linking</a></h1>
+<p>Headless nodes can link through:</p>
+<pre><code class="language-text">CLI approval
+QR rendered elsewhere
+one-time token
+admin-issued certificate
+</code></pre>
+<p>The same identity semantics apply.</p>
+<hr />
+<h1 id="141-file-only-product-reuse"><a class="header" href="#141-file-only-product-reuse">141. File-Only Product Reuse</a></h1>
+<p>A file-transfer app may use:</p>
+<pre><code class="language-text">AccountId
+DeviceId
+DeviceDirectory
+device pairing
+device revocation
+</code></pre>
+<p>without:</p>
+<pre><code class="language-text">contacts
+message history
+conversation model
+</code></pre>
+<p>This proves identity is reusable.</p>
+<hr />
+<h1 id="142-erp-reuse"><a class="header" href="#142-erp-reuse">142. ERP Reuse</a></h1>
+<p>ERP can map:</p>
+<pre><code class="language-text">EmployeeId
+   ↓
+AccountId
+</code></pre>
+<p>or maintain its own mapping.</p>
+<p>The communication SDK should not know what an employee is.</p>
+<hr />
+<h1 id="143-emergency-reuse"><a class="header" href="#143-emergency-reuse">143. Emergency Reuse</a></h1>
+<p>Emergency application can link:</p>
+<pre><code class="language-text">Responder Account
+├── phone
+├── radio gateway
+└── vehicle node
+</code></pre>
+<p>without changing identity semantics.</p>
+<hr />
+<h1 id="144-service-to-service-reuse"><a class="header" href="#144-service-to-service-reuse">144. Service-to-Service Reuse</a></h1>
+<p>Headless services can use:</p>
+<pre><code class="language-text">organization identity
+device certificate
+transport identity
+</code></pre>
+<p>for secure automated communication.</p>
+<hr />
+<h1 id="145-privacy-preserving-device-names"><a class="header" href="#145-privacy-preserving-device-names">145. Privacy-Preserving Device Names</a></h1>
+<p>Friendly names may stay local.</p>
+<p>Remote peers do not need to know:</p>
+<pre><code class="language-text">"Irshad's Bedroom PC"
+</code></pre>
+<p>unless user explicitly shares it.</p>
+<p>Use generic capability descriptors by default.</p>
+<hr />
+<h1 id="146-device-removal-ux-semantics"><a class="header" href="#146-device-removal-ux-semantics">146. Device Removal UX Semantics</a></h1>
+<p>UI should distinguish:</p>
+<pre><code class="language-text">Remove device
+</code></pre>
+<p>from:</p>
+<pre><code class="language-text">Revoke compromised device
+</code></pre>
+<p>If both map to revocation technically, presentation should explain consequences.</p>
+<hr />
+<h1 id="147-device-history-retention"><a class="header" href="#147-device-history-retention">147. Device History Retention</a></h1>
+<p>Keep historical records:</p>
+<pre><code class="language-text">revoked device id
+revocation time
+certificate fingerprint
+reason
+</code></pre>
+<p>without retaining unnecessary sensitive metadata forever.</p>
+<p>This helps security audits.</p>
+<hr />
+<h1 id="148-key-compromise-warnings"><a class="header" href="#148-key-compromise-warnings">148. Key Compromise Warnings</a></h1>
+<p>If a formerly revoked device appears:</p>
+<pre><code class="language-text">reject authentication
+log security event
+optional user warning
+</code></pre>
+<p>Do not silently reconnect.</p>
+<hr />
+<h1 id="149-root-trust-cache"><a class="header" href="#149-root-trust-cache">149. Root Trust Cache</a></h1>
+<p>For verified contacts, store:</p>
+<pre><code class="language-text">trusted root fingerprint
+verification time
+verification method
+</code></pre>
+<p>Root changes require explicit policy.</p>
+<hr />
+<h1 id="150-verification-methods"><a class="header" href="#150-verification-methods">150. Verification Methods</a></h1>
+<p>Possible:</p>
+<pre><code class="language-text">QR
+numeric code
+manual fingerprint
+organization certificate
+trusted directory
+</code></pre>
+<p>Record method for audit.</p>
+<hr />
+<h1 id="151-device-linking-over-existing-secure-session"><a class="header" href="#151-device-linking-over-existing-secure-session">151. Device Linking Over Existing Secure Session</a></h1>
+<p>Preferred when possible:</p>
+<pre><code class="language-text">existing trusted device
+    ↓
+authenticated channel
+    ↓
+link negotiation
+</code></pre>
+<p>QR/NFC supplies bootstrap proof.</p>
+<p>The actual certificate transfer uses the secure channel.</p>
+<hr />
+<h1 id="152-device-linking-without-internet"><a class="header" href="#152-device-linking-without-internet">152. Device Linking Without Internet</a></h1>
+<p>Must work:</p>
+<pre><code class="language-text">Bluetooth
+Wi-Fi Direct
+LAN
+QR bootstrap
+</code></pre>
+<p>No central service is required.</p>
+<p>This is essential for emergency/disaster use.</p>
+<hr />
+<h1 id="153-device-linking-with-internet"><a class="header" href="#153-device-linking-with-internet">153. Device Linking With Internet</a></h1>
+<p>Internet can simplify:</p>
+<pre><code class="language-text">rendezvous
+push
+directory update
+</code></pre>
+<p>but cryptographic authority remains local/account-controlled.</p>
+<hr />
+<h1 id="154-recovery-without-internet"><a class="header" href="#154-recovery-without-internet">154. Recovery Without Internet</a></h1>
+<p>If recovery policy supports offline secret/quorum:</p>
+<pre><code class="language-text">recovery
+</code></pre>
+<p>must not require a cloud server.</p>
+<p>This is valuable for resilient communication.</p>
+<hr />
+<h1 id="155-backup-relationship"><a class="header" href="#155-backup-relationship">155. Backup Relationship</a></h1>
+<p>Identity backup should contain:</p>
+<pre><code class="language-text">recovery material
+public account state
+encrypted necessary metadata
+</code></pre>
+<p>not blindly copy:</p>
+<pre><code class="language-text">all active session state
+all device private keys
+</code></pre>
+<p>unless explicitly designed.</p>
+<hr />
+<h1 id="156-new-device-history-bootstrap"><a class="header" href="#156-new-device-history-bootstrap">156. New Device History Bootstrap</a></h1>
+<p>After linking, a new device may request:</p>
+<pre><code class="language-text">conversation history
+files
+contacts
+settings
+</code></pre>
+<p>This is a synchronization problem layered above identity.</p>
+<p>Identity only establishes:</p>
+<pre><code class="language-text">this device is authorized to participate
+</code></pre>
+<hr />
+<h1 id="157-history-authorization"><a class="header" href="#157-history-authorization">157. History Authorization</a></h1>
+<p>A linked device may not automatically receive all old data.</p>
+<p>Policy examples:</p>
+<pre><code class="language-text">new device gets full history
+new device gets future messages only
+new device gets selected history
+</code></pre>
+<p>This belongs to product/data policy.</p>
+<hr />
+<h1 id="158-device-removal-and-backups"><a class="header" href="#158-device-removal-and-backups">158. Device Removal and Backups</a></h1>
+<p>Revoking a device does not erase:</p>
+<pre><code class="language-text">backups
+exports
+screenshots
+copied files
+</code></pre>
+<p>The system must not claim otherwise.</p>
+<hr />
+<h1 id="159-threat-model"><a class="header" href="#159-threat-model">159. Threat Model</a></h1>
+<p>Protect against:</p>
+<pre><code class="language-text">stolen device
+malicious linking attempt
+replayed linking invite
+stale directory rollback
+rogue transport endpoint
+revoked device reconnect
+identity fork
+device key theft
+root key rotation attack
+directory server compromise
+relay compromise
+</code></pre>
+<p>The design must assume network infrastructure is untrusted.</p>
+<hr />
+<h1 id="160-trust-assumptions"><a class="header" href="#160-trust-assumptions">160. Trust Assumptions</a></h1>
+<p>The core trusts:</p>
+<pre><code class="language-text">cryptographic verification
+configured authorization policy
+secure storage to its documented guarantees
+</code></pre>
+<p>It does not trust:</p>
+<pre><code class="language-text">relay
+LAN
+Bluetooth peer name
+IP address
+server database
+device display name
+</code></pre>
+<hr />
+<h1 id="161-security-invariants"><a class="header" href="#161-security-invariants">161. Security Invariants</a></h1>
+<ol>
+<li>A device cannot become account-authorized without valid authority.</li>
+<li>Revoked devices cannot establish future trusted sessions.</li>
+<li>Old account state cannot roll back newer trusted state.</li>
+<li>Transport identity cannot substitute for account identity.</li>
+<li>Application profile changes cannot change identity.</li>
+<li>Private device keys do not leave device under normal operation.</li>
+<li>New devices receive only data authorized by product policy.</li>
+<li>Device linking is replay-resistant.</li>
+<li>Account root changes are explicitly verifiable.</li>
+<li>Identity state is usable without a central server.</li>
+</ol>
+<hr />
+<h1 id="162-testing-strategy"><a class="header" href="#162-testing-strategy">162. Testing Strategy</a></h1>
+<p>Unit tests:</p>
+<pre><code class="language-text">certificate verification
+generation ordering
+revocation
+rotation
+linking invite expiry
+capability enforcement
+</code></pre>
+<p>Integration tests:</p>
+<pre><code class="language-text">link device
+sync directory
+revoke device
+attempt reconnect
+</code></pre>
+<p>Fault tests:</p>
+<pre><code class="language-text">duplicate events
+out-of-order events
+stale directory
+conflicting generation
+process death during linking
+</code></pre>
+<hr />
+<h1 id="163-property-tests"><a class="header" href="#163-property-tests">163. Property Tests</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">revoked device never becomes active after reconciliation
+higher generation never rolls back
+duplicate event is idempotent
+valid event chain verifies
+tampered chain fails
+</code></pre>
+<hr />
+<h1 id="164-fuzz-targets"><a class="header" href="#164-fuzz-targets">164. Fuzz Targets</a></h1>
+<p>Fuzz:</p>
+<pre><code class="language-text">device certificate parser
+device event parser
+directory snapshot
+link invite
+recovery record
+identity claim
+</code></pre>
+<p>All input sizes must be bounded.</p>
+<hr />
+<h1 id="165-simulated-multi-device-tests"><a class="header" href="#165-simulated-multi-device-tests">165. Simulated Multi-Device Tests</a></h1>
+<p>Topology:</p>
+<pre><code class="language-text">Alice:
+A1 Phone
+A2 Laptop
+A3 Tablet
+
+Bob:
+B1 Phone
+B2 Laptop
+</code></pre>
+<p>Test:</p>
+<pre><code class="language-text">A1 adds A3
+A2 offline
+A3 sends
+A2 reconnects
+A1 revokes A3
+Bob receives updated directory
+A3 reconnect attempt rejected
+</code></pre>
+<hr />
+<h1 id="166-disaster-test"><a class="header" href="#166-disaster-test">166. Disaster Test</a></h1>
+<pre><code class="language-text">A1 no Internet
+A2 nearby via BLE
+A3 reachable through DTN
+</code></pre>
+<p>Device-state update:</p>
+<pre><code class="language-text">A1 revokes A3
+</code></pre>
+<p>must eventually propagate through:</p>
+<pre><code class="language-text">A2
+DTN
+gateway
+</code></pre>
+<p>and remain cryptographically valid.</p>
+<hr />
+<h1 id="167-performance-goals"><a class="header" href="#167-performance-goals">167. Performance Goals</a></h1>
+<p>Identity operations are not usually hot-path data-plane operations.</p>
+<p>Prioritize:</p>
+<pre><code class="language-text">correctness
+security
+small metadata
+incremental sync
+bounded directories
+</code></pre>
+<p>Avoid repeatedly verifying full account history for every message.</p>
+<p>Use validated cached state.</p>
+<hr />
+<h1 id="168-cache-strategy"><a class="header" href="#168-cache-strategy">168. Cache Strategy</a></h1>
+<p>Cache:</p>
+<pre><code class="language-text">verified device certificate
+active device set
+revocation set
+highest generation
+transport endpoints
+</code></pre>
+<p>Invalidate on signed state update.</p>
+<hr />
+<h1 id="169-device-directory-size"><a class="header" href="#169-device-directory-size">169. Device Directory Size</a></h1>
+<p>Do not transmit full history unnecessarily.</p>
+<p>Normal handshake can send:</p>
+<pre><code class="language-text">account id
+device certificate
+generation
+state hash
+</code></pre>
+<p>Then request:</p>
+<pre><code class="language-text">missing state
+</code></pre>
+<p>only if needed.</p>
+<hr />
+<h1 id="170-protocol-extension-integration"><a class="header" href="#170-protocol-extension-integration">170. Protocol Extension Integration</a></h1>
+<p>Part 01 defined protocol extensions.</p>
+<p>Identity participates before application extensions become trusted.</p>
+<p>Handshake:</p>
+<pre><code class="language-text">Core transport
+ ↓
+Identity binding
+ ↓
+Account/device verification
+ ↓
+Extension negotiation
+ ↓
+Messaging/files/etc.
+</code></pre>
+<p>Identity is therefore foundational.</p>
+<hr />
+<h1 id="171-capability-negotiation-integration"><a class="header" href="#171-capability-negotiation-integration">171. Capability Negotiation Integration</a></h1>
+<p>Device capabilities advertise:</p>
+<pre><code class="language-text">which extensions
+which media
+which transports
+</code></pre>
+<p>but capabilities must be bound to authenticated device identity.</p>
+<p>Do not trust anonymous capability advertisements for authorization.</p>
+<hr />
+<h1 id="172-routing-integration"><a class="header" href="#172-routing-integration">172. Routing Integration</a></h1>
+<p>Routing uses:</p>
+<pre><code class="language-text">DeviceDirectory
+</code></pre>
+<p>to resolve:</p>
+<pre><code class="language-text">AccountId
+   ↓
+active devices
+   ↓
+transport endpoints
+</code></pre>
+<p>Routing cannot send account-level traffic correctly without identity resolution.</p>
+<hr />
+<h1 id="173-dtn-integration"><a class="header" href="#173-dtn-integration">173. DTN Integration</a></h1>
+<p>DTN destinations can use opaque identifiers derived from:</p>
+<pre><code class="language-text">AccountId
+DeviceId
+routing capability
+</code></pre>
+<p>Relay peers do not need full account metadata.</p>
+<hr />
+<h1 id="174-file-integration"><a class="header" href="#174-file-integration">174. File Integration</a></h1>
+<p>File transfer target can be:</p>
+<pre><code class="language-text">account
+device
+selected devices
+</code></pre>
+<p>This allows:</p>
+<pre><code class="language-text">send to laptop only
+</code></pre>
+<p>without creating a fake conversation.</p>
+<hr />
+<h1 id="175-messaging-integration"><a class="header" href="#175-messaging-integration">175. Messaging Integration</a></h1>
+<p>Messaging can fan out to:</p>
+<pre><code class="language-text">recipient devices
+sender's other devices
+</code></pre>
+<p>using authenticated device membership.</p>
+<p>This allows consistent multi-device history.</p>
+<hr />
+<h1 id="176-call-integration"><a class="header" href="#176-call-integration">176. Call Integration</a></h1>
+<p>Call invitation may target:</p>
+<pre><code class="language-text">account
+</code></pre>
+<p>and ring:</p>
+<pre><code class="language-text">all eligible devices
+</code></pre>
+<p>First device to accept can establish call ownership.</p>
+<p>Other devices receive:</p>
+<pre><code class="language-text">call answered elsewhere
+</code></pre>
+<hr />
+<h1 id="177-call-ring-arbitration"><a class="header" href="#177-call-ring-arbitration">177. Call Ring Arbitration</a></h1>
+<p>Need deterministic state:</p>
+<pre><code class="language-text">Ringing
+AcceptedBy(DeviceId)
+Cancelled
+Expired
+</code></pre>
+<p>This avoids simultaneous multi-device answers.</p>
+<p>Identity provides the device list; call protocol handles arbitration.</p>
+<hr />
+<h1 id="178-notification-integration"><a class="header" href="#178-notification-integration">178. Notification Integration</a></h1>
+<p>Push targets are device-specific.</p>
+<p>Maintain:</p>
+<pre><code class="language-text">DeviceId → push endpoint
+</code></pre>
+<p>as application/platform metadata.</p>
+<p>Push token is not identity.</p>
+<hr />
+<h1 id="179-device-endpoint-privacy"><a class="header" href="#179-device-endpoint-privacy">179. Device Endpoint Privacy</a></h1>
+<p>Transport/push endpoints should be:</p>
+<pre><code class="language-text">rotatable
+expiring
+scoped
+</code></pre>
+<p>where possible.</p>
+<p>Do not expose them permanently in public profile data.</p>
+<hr />
+<h1 id="180-device-link-rate-limits"><a class="header" href="#180-device-link-rate-limits">180. Device Link Rate Limits</a></h1>
+<p>Protect against link spam.</p>
+<p>Limit:</p>
+<pre><code class="language-text">active invites
+attempts per time window
+failed verification attempts
+</code></pre>
+<p>and require user confirmation.</p>
+<hr />
+<h1 id="181-recovery-rate-limits"><a class="header" href="#181-recovery-rate-limits">181. Recovery Rate Limits</a></h1>
+<p>Recovery attempts should be rate-limited where infrastructure participates.</p>
+<p>Offline recovery should use strong local cryptographic proof rather than relying solely on rate limits.</p>
+<hr />
+<h1 id="182-ux-states"><a class="header" href="#182-ux-states">182. UX States</a></h1>
+<p>Device management UI:</p>
+<pre><code class="language-text">This device
+Other devices
+Recently revoked
+Security alerts
+</code></pre>
+<p>Each row:</p>
+<pre><code class="language-text">name
+platform
+last active
+trust status
+role
+</code></pre>
+<p>Sensitive actions require confirmation.</p>
+<hr />
+<h1 id="183-new-device-ux"><a class="header" href="#183-new-device-ux">183. New Device UX</a></h1>
+<p>Flow:</p>
+<pre><code class="language-text">Settings
+ ↓
+Linked Devices
+ ↓
+Link New Device
+ ↓
+Show/Scan QR
+ ↓
+Verify
+ ↓
+Approve
+ ↓
+Sync
+</code></pre>
+<p>Do not mix this with ordinary contact pairing.</p>
+<hr />
+<h1 id="184-contact-pairing-vs-device-linking"><a class="header" href="#184-contact-pairing-vs-device-linking">184. Contact Pairing vs Device Linking</a></h1>
+<p>These are distinct.</p>
+<p>Contact pairing:</p>
+<pre><code class="language-text">Alice ↔ Bob
+</code></pre>
+<p>Device linking:</p>
+<pre><code class="language-text">Alice Phone ↔ Alice Laptop
+</code></pre>
+<p>They must use different protocol states and UI language.</p>
+<hr />
+<h1 id="185-device-name-validation"><a class="header" href="#185-device-name-validation">185. Device Name Validation</a></h1>
+<p>Device display names should be:</p>
+<pre><code class="language-text">bounded
+sanitized
+localizable
+non-authoritative
+</code></pre>
+<p>Do not permit device name to influence security policy.</p>
+<hr />
+<h1 id="186-audit-export"><a class="header" href="#186-audit-export">186. Audit Export</a></h1>
+<p>Support exporting:</p>
+<pre><code class="language-text">device list
+security fingerprints
+revocation history
+identity generation
+</code></pre>
+<p>without exporting private keys.</p>
+<p>Useful for enterprise/security support.</p>
+<hr />
+<h1 id="187-api-surface"><a class="header" href="#187-api-surface">187. API Surface</a></h1>
+<p>Suggested modules:</p>
+<pre><code class="language-text">identity/
+├── account.rs
+├── device.rs
+├── certificate.rs
+├── directory.rs
+├── event.rs
+├── trust.rs
+├── linking.rs
+├── recovery.rs
+├── claims.rs
+├── audit.rs
+└── error.rs
+</code></pre>
+<hr />
+<h1 id="188-crate-split"><a class="header" href="#188-crate-split">188. Crate Split</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">comm-identity-types
+comm-identity
+comm-identity-protocol
+comm-identity-storage
+</code></pre>
+<p>Keep split only if complexity justifies it.</p>
+<p>Initially:</p>
+<pre><code class="language-text">comm-identity
+</code></pre>
+<p>with internal modules may be sufficient.</p>
+<hr />
+<h1 id="189-error-types"><a class="header" href="#189-error-types">189. Error Types</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum IdentityError {
+    InvalidCertificate,
+    RevokedDevice,
+    ExpiredDevice,
+    StaleGeneration,
+    ForkDetected,
+    LinkExpired,
+    LinkRejected,
+    VerificationFailed,
+    Unauthorized,
+    RecoveryFailed,
+    Storage,
+    Crypto,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Do not collapse into:</p>
+<pre><code class="language-text">Identity failed
+</code></pre>
+<hr />
+<h1 id="190-no-anyhow-in-public-domain-api"><a class="header" href="#190-no-anyhow-in-public-domain-api">190. No <code>anyhow</code> in Public Domain API</a></h1>
+<p>Use typed errors for reusable library boundaries.</p>
+<p><code>anyhow</code> can be used in:</p>
+<pre><code class="language-text">CLI
+application bootstrap
+top-level integration
+</code></pre>
+<p>but not as the identity protocol contract.</p>
+<hr />
+<h1 id="191-migration-strategy"><a class="header" href="#191-migration-strategy">191. Migration Strategy</a></h1>
+<p>Persistent identity schema must support migrations.</p>
+<p>Never rewrite identity state destructively without backup/recovery strategy.</p>
+<p>Migration tests should include:</p>
+<pre><code class="language-text">old device directory
+old certificates
+old trust state
+old recovery metadata
+</code></pre>
+<hr />
+<h1 id="192-algorithm-agility"><a class="header" href="#192-algorithm-agility">192. Algorithm Agility</a></h1>
+<p>Do not hard-code one cryptographic algorithm into every type name.</p>
+<p>Use:</p>
+<pre><code class="language-text">AlgorithmId
+KeyType
+SignatureScheme
+</code></pre>
+<p>where future migration matters.</p>
+<p>But avoid needless generic abstraction in the first implementation.</p>
+<hr />
+<h1 id="193-algorithm-downgrade-protection"><a class="header" href="#193-algorithm-downgrade-protection">193. Algorithm Downgrade Protection</a></h1>
+<p>A peer must not force:</p>
+<pre><code class="language-text">old weak algorithm
+</code></pre>
+<p>if policy requires stronger.</p>
+<p>Negotiation chooses:</p>
+<pre><code class="language-text">mutually supported
+∩
+locally allowed
+</code></pre>
+<hr />
+<h1 id="194-root-key-backup"><a class="header" href="#194-root-key-backup">194. Root Key Backup</a></h1>
+<p>If user chooses recovery backup:</p>
+<pre><code class="language-text">encrypted export
+</code></pre>
+<p>must be:</p>
+<ul>
+<li>authenticated</li>
+<li>strongly derived</li>
+<li>versioned</li>
+<li>integrity-protected</li>
+</ul>
+<p>Never export raw private key in plaintext.</p>
+<hr />
+<h1 id="195-backup-import"><a class="header" href="#195-backup-import">195. Backup Import</a></h1>
+<p>Import must verify:</p>
+<pre><code class="language-text">format version
+integrity
+account identity
+recovery policy
+</code></pre>
+<p>before replacing local state.</p>
+<hr />
+<h1 id="196-identity-reset"><a class="header" href="#196-identity-reset">196. Identity Reset</a></h1>
+<p>Resetting identity means:</p>
+<pre><code class="language-text">new account identity
+</code></pre>
+<p>not:</p>
+<pre><code class="language-text">clear app cache
+</code></pre>
+<p>UI must explain:</p>
+<pre><code class="language-text">contacts may see you as a new identity
+old encrypted relationships may not carry over
+</code></pre>
+<hr />
+<h1 id="197-account-deletion"><a class="header" href="#197-account-deletion">197. Account Deletion</a></h1>
+<p>Account deletion in a P2P system cannot erase all copies everywhere.</p>
+<p>It can:</p>
+<pre><code class="language-text">revoke devices
+publish tombstone/state
+delete local secrets
+request server cleanup
+</code></pre>
+<p>but must not promise impossible remote deletion.</p>
+<hr />
+<h1 id="198-organization-offboarding"><a class="header" href="#198-organization-offboarding">198. Organization Offboarding</a></h1>
+<p>Enterprise example:</p>
+<pre><code class="language-text">employee leaves
+ ↓
+revoke organization device/capability
+ ↓
+remove from future keys
+ ↓
+block future sessions
+</code></pre>
+<p>Personal identity may remain unaffected if separated properly.</p>
+<hr />
+<h1 id="199-multi-tenant-safety"><a class="header" href="#199-multi-tenant-safety">199. Multi-Tenant Safety</a></h1>
+<p>If platform is embedded in a multi-tenant app:</p>
+<pre><code class="language-text">Tenant A
+Tenant B
+</code></pre>
+<p>must have isolated:</p>
+<pre><code class="language-text">identity namespaces
+device directories
+trust graphs
+storage
+</code></pre>
+<p>Never key solely by <code>AccountId</code> if tenant context is required.</p>
+<hr />
+<h1 id="200-recommended-initial-implementation"><a class="header" href="#200-recommended-initial-implementation">200. Recommended Initial Implementation</a></h1>
+<p>For the first production version, implement:</p>
+<pre><code class="language-text">AccountId
+DeviceId
+root identity key
+device signing key
+device certificate
+signed device directory
+device add
+device revoke
+device transport endpoint binding
+QR link
+numeric verification
+account generation
+rollback protection
+device-level session authentication
+secure storage abstraction
+</code></pre>
+<p>Defer initially:</p>
+<pre><code class="language-text">social recovery
+transparency log
+complex quorum recovery
+attestation enforcement
+multi-root organizations
+</code></pre>
+<p>but leave extension points.</p>
+<hr />
+<h1 id="201-implementation-phases"><a class="header" href="#201-implementation-phases">201. Implementation Phases</a></h1>
+<h2 id="phase-1--types"><a class="header" href="#phase-1--types">Phase 1 — Types</a></h2>
+<p>Implement:</p>
+<pre><code class="language-text">AccountId
+DeviceId
+DeviceCertificate
+DeviceStatus
+DeviceDirectory
+</code></pre>
+<h2 id="phase-2--local-identity"><a class="header" href="#phase-2--local-identity">Phase 2 — Local Identity</a></h2>
+<pre><code class="language-text">root key generation
+device key generation
+secure storage
+certificate issuance
+</code></pre>
+<h2 id="phase-3--linking"><a class="header" href="#phase-3--linking">Phase 3 — Linking</a></h2>
+<pre><code class="language-text">invite
+QR
+ephemeral handshake
+numeric verification
+approval
+certificate commit
+</code></pre>
+<h2 id="phase-4--revocation"><a class="header" href="#phase-4--revocation">Phase 4 — Revocation</a></h2>
+<pre><code class="language-text">signed revocation
+generation
+session invalidation
+fan-out update
+</code></pre>
+<h2 id="phase-5--directory-sync"><a class="header" href="#phase-5--directory-sync">Phase 5 — Directory Sync</a></h2>
+<pre><code class="language-text">hash
+generation exchange
+incremental events
+</code></pre>
+<h2 id="phase-6--recovery"><a class="header" href="#phase-6--recovery">Phase 6 — Recovery</a></h2>
+<pre><code class="language-text">basic recovery secret or trusted-device policy
+</code></pre>
+<h2 id="phase-7--hardening"><a class="header" href="#phase-7--hardening">Phase 7 — Hardening</a></h2>
+<pre><code class="language-text">fuzzing
+fault injection
+rollback tests
+fork tests
+migration tests
+</code></pre>
+<hr />
+<h1 id="202-definition-of-done"><a class="header" href="#202-definition-of-done">202. Definition of Done</a></h1>
+<p>Part 02 is complete when:</p>
+<ul>
+<li>one account can contain multiple devices</li>
+<li>every device has independent keys</li>
+<li>transport identity is separate from account identity</li>
+<li>devices can be linked without Internet</li>
+<li>linking is authenticated and replay-resistant</li>
+<li>user confirmation is required</li>
+<li>device revocation is durable</li>
+<li>revoked devices cannot create future trusted sessions</li>
+<li>device state cannot roll back</li>
+<li>stale directories are detected</li>
+<li>account generation is monotonic</li>
+<li>own-device sync can discover active devices</li>
+<li>file transfer can target specific devices</li>
+<li>messaging can fan out across devices</li>
+<li>Dioxus does not receive secret keys</li>
+<li>Kotlin/Swift do not own identity logic</li>
+<li>secure storage is abstracted</li>
+<li>identity works without a central server</li>
+<li>device-state updates can travel through DTN</li>
+<li>the system supports headless/service devices</li>
+<li>file-only products can reuse the identity layer</li>
+<li>fuzz/property/integration tests exist</li>
+</ul>
+<hr />
+<h1 id="203-relationship-to-other-architecture-parts"><a class="header" href="#203-relationship-to-other-architecture-parts">203. Relationship to Other Architecture Parts</a></h1>
+<p>Part 02 feeds directly into:</p>
+<pre><code class="language-text">03 — Transport &amp; Routing Policy Engine
+04 — Offline Event Log
+05 — Robust File / Blob Subsystem
+06 — DTN / Store-Carry-Forward
+07 — Capability Negotiation Expansion
+11 — Relay / Self-Hosted Infrastructure
+14 — Proximity Abstraction
+15 — QR / NFC Bootstrap Pairing
+16 — Daemon &amp; Headless Runtime
+17 — Emergency Priority Architecture
+19 — C ABI / FFI
+20 — Embedded Linux Node
+23 — External Interoperability Suite
+</code></pre>
+<p>Transport needs device resolution.</p>
+<p>Messaging needs device fan-out.</p>
+<p>Files need specific-device targeting.</p>
+<p>DTN needs authenticated destination identities.</p>
+<p>Emergency systems need device-independent principal identity.</p>
+<hr />
+<h1 id="204-final-principle"><a class="header" href="#204-final-principle">204. Final Principle</a></h1>
+<p>The platform should treat a logical person or organization as a <strong>cryptographic account containing independently revocable devices</strong>, not as a single device key.</p>
+<p>The correct model is:</p>
+<pre><code class="language-text">Account
+  │
+  ├── Device A
+  ├── Device B
+  ├── Device C
+  └── Revoked Device D
+</code></pre>
+<p>with:</p>
+<pre><code class="language-text">Account identity
+≠
+Device identity
+≠
+Transport identity
+≠
+Session identity
+≠
+User profile
+</code></pre>
+<p>That separation gives the platform:</p>
+<ul>
+<li>secure multi-device operation</li>
+<li>device replacement</li>
+<li>device revocation</li>
+<li>offline linking</li>
+<li>headless-node support</li>
+<li>reusable identity for messaging/files/ERP/emergency products</li>
+<li>future recovery mechanisms</li>
+<li>transport independence</li>
+<li>better long-term protocol stability</li>
+</ul>
+<p>This identity architecture should be implemented before higher-level multi-device messaging or file synchronization is considered production-ready.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="24-plugin-module-ecosystem-architecture.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="28-production-security-e2ee-key-management-privacy-architecture.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="24-plugin-module-ecosystem-architecture.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="28-production-security-e2ee-key-management-privacy-architecture.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>
