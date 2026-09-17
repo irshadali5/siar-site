@@ -1,0 +1,2333 @@
+<!DOCTYPE HTML>
+<html lang="en" class="navy" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>87 — Anonymous Network Content Feed, Timeline, Subscription, Recommendation, Ranking &amp; Privacy-Preserving Discovery Architecture - SIAR System Architecture &amp; Technical Wiki</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="Comprehensive system architecture, cryptographic protocols, DTN mesh networking, distributed storage, audio DSP pipelines, and UI/UX design specifications for SIAR.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="theme/custom.css">
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "navy";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('navy')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="Home.html">Architecture Portal & Reading Guide</a></li><li class="chapter-item expanded affix "><a href="design-rationale.html">System Architecture Design Rationale</a></li><li class="chapter-item expanded affix "><a href="system-capabilities-comparison.html">System Capabilities & Comparison Matrix</a></li><li class="chapter-item expanded affix "><a href="spec-order.html">Master Specification Execution Order</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part I: Protocol Foundation & Extension Platform</li><li class="chapter-item expanded "><a href="01-protocol-extension-system-architecture.html"><strong aria-hidden="true">1.</strong> 01 — Protocol Extension System Architecture</a></li><li class="chapter-item expanded "><a href="07-capability-negotiation-architecture.html"><strong aria-hidden="true">2.</strong> 07 — Capability Negotiation Architecture</a></li><li class="chapter-item expanded "><a href="21-third-party-protocol-extensions-architecture.html"><strong aria-hidden="true">3.</strong> 21 — Third-Party Protocol Extensions Architecture</a></li><li class="chapter-item expanded "><a href="22-wasm-compatible-components-architecture.html"><strong aria-hidden="true">4.</strong> 22 — WASM-Compatible Components Architecture</a></li><li class="chapter-item expanded "><a href="23-external-interoperability-suite-architecture.html"><strong aria-hidden="true">5.</strong> 23 — External Interoperability Suite Architecture</a></li><li class="chapter-item expanded "><a href="24-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">6.</strong> 24 — Plugin / Module Ecosystem Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part II: Identity, Trust & Cryptography</li><li class="chapter-item expanded "><a href="02-multi-device-identity-architecture.html"><strong aria-hidden="true">7.</strong> 02 — Multi-Device Identity Architecture</a></li><li class="chapter-item expanded "><a href="28-production-security-e2ee-key-management-privacy-architecture.html"><strong aria-hidden="true">8.</strong> 28 — Production Security, E2EE, Key Management, Abuse Resistance & Privacy Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part III: Mesh Networking, Transports & Hardware</li><li class="chapter-item expanded "><a href="03-transport-routing-policy-engine-architecture.html"><strong aria-hidden="true">9.</strong> 03 — Transport & Routing Policy Engine Architecture</a></li><li class="chapter-item expanded "><a href="11-relay-self-hosted-infrastructure-architecture.html"><strong aria-hidden="true">10.</strong> 11 — Relay & Self-Hosted Infrastructure Architecture</a></li><li class="chapter-item expanded "><a href="12-multipath-networking-architecture.html"><strong aria-hidden="true">11.</strong> 12 — Multipath Networking Architecture</a></li><li class="chapter-item expanded "><a href="13-battery-aware-scheduling-architecture.html"><strong aria-hidden="true">12.</strong> 13 — Battery-Aware Scheduling Architecture</a></li><li class="chapter-item expanded "><a href="14-proximity-abstraction-architecture.html"><strong aria-hidden="true">13.</strong> 14 — Proximity Abstraction Architecture</a></li><li class="chapter-item expanded "><a href="15-qr-nfc-bootstrap-pairing-architecture.html"><strong aria-hidden="true">14.</strong> 15 — QR / NFC Bootstrap & Secure Pairing Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IV: Delay-Tolerant Networking & Emergency Mesh</li><li class="chapter-item expanded "><a href="06-dtn-store-carry-forward-architecture.html"><strong aria-hidden="true">15.</strong> 06 — DTN / Store-Carry-Forward Architecture</a></li><li class="chapter-item expanded "><a href="17-emergency-priority-classes-architecture.html"><strong aria-hidden="true">16.</strong> 17 — Emergency Priority Classes Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part V: Storage, Outbox & Data Lifecycle</li><li class="chapter-item expanded "><a href="04-offline-event-log-architecture.html"><strong aria-hidden="true">17.</strong> 04 — Offline Event Log Architecture</a></li><li class="chapter-item expanded "><a href="05-robust-file-blob-subsystem-architecture.html"><strong aria-hidden="true">18.</strong> 05 — Robust File / Blob Subsystem Architecture</a></li><li class="chapter-item expanded "><a href="09-crash-recovery-architecture.html"><strong aria-hidden="true">19.</strong> 09 — Crash Recovery Architecture</a></li><li class="chapter-item expanded "><a href="32-search-indexing-local-knowledge-privacy-architecture.html"><strong aria-hidden="true">20.</strong> 32 — Search, Indexing, Local Knowledge Retrieval & Privacy-Preserving Discovery Architecture</a></li><li class="chapter-item expanded "><a href="33-backup-restore-export-import-archival-portability-architecture.html"><strong aria-hidden="true">21.</strong> 33 — Backup, Restore, Export/Import, Archival & Long-Term Data Portability Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VI: Realtime Media, Calling & Audio DSP</li><li class="chapter-item expanded "><a href="25-android-direct-hardware-surface-zero-copy-media-architecture.html"><strong aria-hidden="true">22.</strong> 25 — Android Direct Hardware Surface / Zero-Copy Media Pipeline Architecture</a></li><li class="chapter-item expanded "><a href="26-rust-first-audio-dsp-resampling-aec-ns-agc-architecture.html"><strong aria-hidden="true">23.</strong> 26 — Rust-First Audio DSP, Resampling, AEC/NS/AGC & Hardware-Aware Audio Pipeline Architecture</a></li><li class="chapter-item expanded "><a href="29-realtime-calls-media-session-protocol-architecture.html"><strong aria-hidden="true">24.</strong> 29 — Realtime Calls & Media Session Protocol Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VII: Ephemeral State, Presence & Notifications</li><li class="chapter-item expanded "><a href="30-presence-availability-typing-read-receipts-ephemeral-state-architecture.html"><strong aria-hidden="true">25.</strong> 30 — Presence, Availability, Typing, Read Receipts & Ephemeral Realtime State Architecture</a></li><li class="chapter-item expanded "><a href="31-notifications-push-background-delivery-lifecycle-architecture.html"><strong aria-hidden="true">26.</strong> 31 — Notifications, Push Wake, Background Delivery & OS Lifecycle Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VIII: Native Runtimes, Daemons & Embedded Linux</li><li class="chapter-item expanded "><a href="16-daemon-headless-runtime-architecture.html"><strong aria-hidden="true">27.</strong> 16 — Daemon & Headless Runtime Architecture</a></li><li class="chapter-item expanded "><a href="19-c-abi-ffi-architecture.html"><strong aria-hidden="true">28.</strong> 19 — C ABI / FFI Architecture</a></li><li class="chapter-item expanded "><a href="20-embedded-linux-node-architecture.html"><strong aria-hidden="true">29.</strong> 20 — Embedded Linux Node Architecture</a></li><li class="chapter-item expanded "><a href="27-rust-driven-android-native-build-packaging-automation.html"><strong aria-hidden="true">30.</strong> 27 — Rust-Driven Android Native Build & Packaging Automation Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IX: Reliability, Testing, Fuzzing & Diagnostics</li><li class="chapter-item expanded "><a href="08-resource-limits-backpressure-architecture.html"><strong aria-hidden="true">31.</strong> 08 — Resource Limits & Backpressure Architecture</a></li><li class="chapter-item expanded "><a href="10-fuzzing-protocol-test-suite-architecture.html"><strong aria-hidden="true">32.</strong> 10 — Fuzzing & Protocol Test Suite Architecture</a></li><li class="chapter-item expanded "><a href="18-network-diagnostics-path-visualization-architecture.html"><strong aria-hidden="true">33.</strong> 18 — Network Diagnostics & Path Visualization Architecture</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part X: UI/UX Client Architecture (Cross-Platform)</li><li class="chapter-item expanded "><a href="ui-ux-01-product-foundation-cross-platform-interaction-architecture.html"><strong aria-hidden="true">34.</strong> UI/UX 01 — Product UX Foundation & Cross-Platform Interaction Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-02-desktop-dioxus-app-shell-navigation-window-architecture.html"><strong aria-hidden="true">35.</strong> UI/UX 02 — Desktop Dioxus App Shell, Navigation & Window Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-03-android-jetpack-compose-app-shell-navigation-lifecycle-architecture.html"><strong aria-hidden="true">36.</strong> UI/UX 03 — Android Jetpack Compose App Shell, Navigation & Lifecycle Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-04-conversation-list-inbox-architecture.html"><strong aria-hidden="true">37.</strong> UI/UX 04 — Conversation List / Inbox UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-05-conversation-message-timeline-architecture.html"><strong aria-hidden="true">38.</strong> UI/UX 05 — Conversation / Message Timeline UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-06-message-composer-attachments-voice-notes-drafts-architecture.html"><strong aria-hidden="true">39.</strong> UI/UX 06 — Message Composer, Attachments, Voice Notes & Drafts UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-07-calls-realtime-media-architecture.html"><strong aria-hidden="true">40.</strong> UI/UX 07 — Calls & Realtime Media UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-08-contacts-requests-verification-identity-architecture.html"><strong aria-hidden="true">41.</strong> UI/UX 08 — Contacts, Requests, Verification & Identity UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-09-groups-membership-roles-architecture.html"><strong aria-hidden="true">42.</strong> UI/UX 09 — Groups, Membership & Roles UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-10-files-media-gallery-transfer-architecture.html"><strong aria-hidden="true">43.</strong> UI/UX 10 — Files, Media Gallery & Transfer UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-11-search-local-knowledge-retrieval-architecture.html"><strong aria-hidden="true">44.</strong> UI/UX 11 — Search & Local Knowledge Retrieval UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-12-nearby-qr-nfc-pairing-device-linking-architecture.html"><strong aria-hidden="true">45.</strong> UI/UX 12 — Nearby, QR/NFC Pairing & Device Linking UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-13-notifications-background-incoming-call-architecture.html"><strong aria-hidden="true">46.</strong> UI/UX 13 — Notifications, Background & Incoming Call UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-14-presence-typing-receipts-status-architecture.html"><strong aria-hidden="true">47.</strong> UI/UX 14 — Presence, Typing, Receipts & Status UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-15-security-center-devices-keys-recovery-architecture.html"><strong aria-hidden="true">48.</strong> UI/UX 15 — Security Center, Devices, Keys & Recovery UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-16-backup-restore-export-migration-architecture.html"><strong aria-hidden="true">49.</strong> UI/UX 16 — Backup, Restore, Export & Migration UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-17-emergency-sos-offline-mesh-architecture.html"><strong aria-hidden="true">50.</strong> UI/UX 17 — Emergency / SOS / Offline Mesh UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-18-settings-privacy-notifications-data-controls-architecture.html"><strong aria-hidden="true">51.</strong> UI/UX 18 — Settings, Privacy, Notifications & Data Controls UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-19-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">52.</strong> UI/UX 19 — Plugin / Module Ecosystem UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-20-diagnostics-network-paths-advanced-developer-architecture.html"><strong aria-hidden="true">53.</strong> UI/UX 20 — Diagnostics, Network Paths & Advanced Developer UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-21-accessibility-inclusive-interaction-architecture.html"><strong aria-hidden="true">54.</strong> UI/UX 21 — Accessibility & Inclusive Interaction Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-22-design-system-tokens-typography-icons-motion-architecture.html"><strong aria-hidden="true">55.</strong> UI/UX 22 — Design System, Tokens, Typography, Icons & Motion Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-23-responsive-adaptive-desktop-tablet-foldable-phone-layout-architecture.html"><strong aria-hidden="true">56.</strong> UI/UX 23 — Responsive / Adaptive Desktop, Tablet, Foldable & Phone Layout Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-24-error-loading-empty-offline-degraded-state-architecture.html"><strong aria-hidden="true">57.</strong> UI/UX 24 — Error, Loading, Empty, Offline & Degraded-State UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-25-onboarding-first-run-permission-education-architecture.html"><strong aria-hidden="true">58.</strong> UI/UX 25 — Onboarding, First Run & Permission Education UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-26-performance-virtualization-large-data-ui-architecture.html"><strong aria-hidden="true">59.</strong> UI/UX 26 — Performance, Virtualization & Large-Data UI Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-27-ui-testing-screenshot-interaction-release-quality-gates-architecture.html"><strong aria-hidden="true">60.</strong> UI/UX 27 — UI Testing, Screenshot/Interaction Tests & Release Quality Gates Architecture</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part XI: Anonymous Network — Core Mixnet Mechanics</li><li class="chapter-item expanded "><a href="34-mixnet-loopix-sphinx-nym-high-anonymity-transport-architecture.html"><strong aria-hidden="true">61.</strong> 34 — Mixnet, Loopix, Sphinx, Nym & High-Anonymity Transport Architecture</a></li><li class="chapter-item expanded "><a href="35-anonymous-mailbox-offline-receiving-reply-capability-architecture.html"><strong aria-hidden="true">62.</strong> 35 — Anonymous Mailbox, Offline Receiving & Reply Capability Architecture</a></li><li class="chapter-item expanded "><a href="36-sphinx-packet-cell-fragmentation-anonymous-message-framing-architecture.html"><strong aria-hidden="true">63.</strong> 36 — Sphinx Packet, Cell, Fragmentation & Anonymous Message Framing Architecture</a></li><li class="chapter-item expanded "><a href="37-cover-traffic-traffic-shaping-timing-obfuscation-loop-traffic-architecture.html"><strong aria-hidden="true">64.</strong> 37 — Cover Traffic, Traffic Shaping, Timing Obfuscation & Loop Traffic Architecture</a></li><li class="chapter-item expanded "><a href="38-native-loopix-inspired-mixnet-topology-mix-nodes-layering-packet-forwarding-architecture.html"><strong aria-hidden="true">65.</strong> 38 — Native Loopix-Inspired Mixnet Topology, Mix Nodes, Layering & Packet Forwarding Architecture</a></li><li class="chapter-item expanded "><a href="39-mixnet-directory-node-admission-identity-sybil-resistance-topology-governance-architecture.html"><strong aria-hidden="true">66.</strong> 39 — Mixnet Directory, Node Admission, Identity, Sybil Resistance & Topology Governance Architecture</a></li><li class="chapter-item expanded "><a href="40-anonymous-attachment-transfer-rendezvous-large-file-privacy-high-bandwidth-data-architecture.html"><strong aria-hidden="true">67.</strong> 40 — Anonymous Attachment Transfer, Rendezvous, Large-File Privacy & High-Bandwidth Anonymous Data Architecture</a></li><li class="chapter-item expanded "><a href="41-censorship-resistance-bridges-pluggable-transports-traffic-obfuscation-architecture.html"><strong aria-hidden="true">68.</strong> 41 — Censorship Resistance, Bridges, Pluggable Transports & Traffic Obfuscation Architecture</a></li><li class="chapter-item expanded "><a href="42-anonymity-threat-model-traffic-analysis-correlation-formal-privacy-verification-architecture.html"><strong aria-hidden="true">69.</strong> 42 — Anonymity Threat Model, Traffic Analysis, Correlation Attacks & Formal Privacy Verification Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part XII: Anonymous Network — Anonymous Application Primitives</li><li class="chapter-item expanded "><a href="43-anonymous-group-messaging-membership-privacy-sender-key-large-group-anonymity-architecture.html"><strong aria-hidden="true">70.</strong> 43 — Anonymous Group Messaging, Membership Privacy, Sender-Key Distribution & Large-Group Anonymity Architecture</a></li><li class="chapter-item expanded "><a href="44-anonymous-voice-video-call-signaling-relay-privacy-realtime-metadata-private-session-architecture.html"><strong aria-hidden="true">71.</strong> 44 — Anonymous Voice/Video Call Signaling, Relay Privacy, Realtime Metadata Protection & Private Realtime Session Architecture</a></li><li class="chapter-item expanded "><a href="45-anonymous-presence-discovery-contact-bootstrap-private-social-graph-architecture.html"><strong aria-hidden="true">72.</strong> 45 — Anonymous Presence, Discovery, Contact Bootstrap & Private Social Graph Architecture</a></li><li class="chapter-item expanded "><a href="46-anonymous-reputation-trust-signals-abuse-reporting-privacy-preserving-moderation-architecture.html"><strong aria-hidden="true">73.</strong> 46 — Anonymous Reputation, Trust Signals, Abuse Reporting & Privacy-Preserving Moderation Architecture</a></li><li class="chapter-item expanded "><a href="47-anonymous-payments-resource-credits-quotas-privacy-preserving-service-accounting-architecture.html"><strong aria-hidden="true">74.</strong> 47 — Anonymous Payments, Resource Credits, Quotas & Privacy-Preserving Service Accounting Architecture</a></li><li class="chapter-item expanded "><a href="48-anonymous-service-discovery-provider-selection-capability-advertisement-privacy-preserving-marketplace-architecture.html"><strong aria-hidden="true">75.</strong> 48 — Anonymous Service Discovery, Provider Selection, Capability Advertisement & Privacy-Preserving Marketplace Architecture</a></li><li class="chapter-item expanded "><a href="49-anonymous-resource-scheduling-capacity-markets-load-balancing-privacy-preserving-infrastructure-allocation-architecture.html"><strong aria-hidden="true">76.</strong> 49 — Anonymous Resource Scheduling, Capacity Markets, Load Balancing & Privacy-Preserving Infrastructure Allocation Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part XIII: Anonymous Network — Sovereign Protocol Policies & Governance</li><li class="chapter-item expanded "><a href="50-anonymous-network-reliability-disaster-recovery-partition-tolerance-multi-region-continuity-architecture.html"><strong aria-hidden="true">77.</strong> 50 — Anonymous Network Reliability, Disaster Recovery, Partition Tolerance & Multi-Region Continuity Architecture</a></li><li class="chapter-item expanded "><a href="51-anonymous-network-observability-slos-privacy-safe-telemetry-incident-detection-operations-architecture.html"><strong aria-hidden="true">78.</strong> 51 — Anonymous Network Observability, SLOs, Privacy-Safe Telemetry, Incident Detection & Operations Architecture</a></li><li class="chapter-item expanded "><a href="52-anonymous-network-upgrade-protocol-evolution-compatibility-migration-zero-downtime-rollout-architecture.html"><strong aria-hidden="true">79.</strong> 52 — Anonymous Network Upgrade, Protocol Evolution, Compatibility, Migration & Zero-Downtime Rollout Architecture</a></li><li class="chapter-item expanded "><a href="53-anonymous-network-governance-policy-distribution-trust-roots-multi-authority-emergency-decision-architecture.html"><strong aria-hidden="true">80.</strong> 53 — Anonymous Network Governance, Policy Distribution, Trust Roots, Multi-Authority Control & Emergency Decision Architecture</a></li><li class="chapter-item expanded "><a href="54-anonymous-network-economics-incentives-operator-sustainability-subsidies-privacy-preserving-compensation-architecture.html"><strong aria-hidden="true">81.</strong> 54 — Anonymous Network Economics, Incentives, Operator Sustainability, Subsidies & Privacy-Preserving Compensation Architecture</a></li><li class="chapter-item expanded "><a href="55-anonymous-network-legal-compliance-boundary-jurisdiction-isolation-data-minimization-lawful-operations-architecture.html"><strong aria-hidden="true">82.</strong> 55 — Anonymous Network Legal/Compliance Boundary, Jurisdiction Isolation, Data-Minimization & Lawful Operations Architecture</a></li><li class="chapter-item expanded "><a href="56-anonymous-network-privacy-policy-user-consent-transparency-data-rights-privacy-control-architecture.html"><strong aria-hidden="true">83.</strong> 56 — Anonymous Network Privacy Policy, User Consent, Transparency, Data Rights & Privacy-Control Architecture</a></li><li class="chapter-item expanded "><a href="57-anonymous-network-identity-recovery-account-portability-device-reprovisioning-privacy-preserving-continuity-architecture.html"><strong aria-hidden="true">84.</strong> 57 — Anonymous Network Identity Recovery, Account Portability, Device Re-Provisioning & Privacy-Preserving Continuity Architecture</a></li><li class="chapter-item expanded "><a href="58-anonymous-network-federation-inter-network-peering-cross-domain-trust-privacy-preserving-interoperability-architecture.html"><strong aria-hidden="true">85.</strong> 58 — Anonymous Network Federation, Inter-Network Peering, Cross-Domain Trust & Privacy-Preserving Interoperability Architecture</a></li><li class="chapter-item expanded "><a href="59-anonymous-network-naming-addressing-namespace-isolation-private-resolution-anti-enumeration-architecture.html"><strong aria-hidden="true">86.</strong> 59 — Anonymous Network Naming, Addressing, Namespace Isolation, Private Resolution & Anti-Enumeration Architecture</a></li><li class="chapter-item expanded "><a href="60-anonymous-network-time-clock-privacy-replay-windows-epoch-coordination-temporal-metadata-resistance-architecture.html"><strong aria-hidden="true">87.</strong> 60 — Anonymous Network Time, Clock Privacy, Replay Windows, Epoch Coordination & Temporal Metadata Resistance Architecture</a></li><li class="chapter-item expanded "><a href="61-anonymous-network-configuration-secrets-runtime-policy-remote-administration-secure-control-plane-management-architecture.html"><strong aria-hidden="true">88.</strong> 61 — Anonymous Network Configuration, Secrets, Runtime Policy, Remote Administration & Secure Control-Plane Management Architecture</a></li><li class="chapter-item expanded "><a href="62-anonymous-network-deployment-packaging-infrastructure-provisioning-bare-metal-vm-container-runtime-reproducible-operations-architecture.html"><strong aria-hidden="true">89.</strong> 62 — Anonymous Network Deployment, Packaging, Infrastructure Provisioning, Bare-Metal/VM/Container Runtime & Reproducible Operations Architecture</a></li><li class="chapter-item expanded "><a href="63-anonymous-network-performance-engineering-benchmarking-capacity-planning-resource-isolation-production-sizing-architecture.html"><strong aria-hidden="true">90.</strong> 63 — Anonymous Network Performance Engineering, Benchmarking, Capacity Planning, Resource Isolation & Production Sizing Architecture</a></li><li class="chapter-item expanded "><a href="64-anonymous-network-testing-verification-simulation-fault-injection-adversarial-validation-release-quality-architecture.html"><strong aria-hidden="true">91.</strong> 64 — Anonymous Network Testing, Verification, Simulation, Fault Injection, Adversarial Validation & Release Quality Architecture</a></li><li class="chapter-item expanded "><a href="65-anonymous-network-documentation-operator-runbooks-incident-playbooks-architecture-decision-records-production-knowledge-architecture.html"><strong aria-hidden="true">92.</strong> 65 — Anonymous Network Documentation, Operator Runbooks, Incident Playbooks, Architecture Decision Records & Production Knowledge Architecture</a></li><li class="chapter-item expanded "><a href="66-anonymous-network-cryptographic-agility-post-quantum-migration-key-lifecycle-long-term-security-architecture.html"><strong aria-hidden="true">93.</strong> 66 — Anonymous Network Cryptographic Agility, Post-Quantum Migration, Key Lifecycle & Long-Term Security Architecture</a></li><li class="chapter-item expanded "><a href="67-anonymous-network-data-lifecycle-storage-minimization-secure-deletion-retention-archival-cryptographic-erasure-architecture.html"><strong aria-hidden="true">94.</strong> 67 — Anonymous Network Data Lifecycle, Storage Minimization, Secure Deletion, Retention, Archival & Cryptographic Erasure Architecture</a></li><li class="chapter-item expanded "><a href="68-anonymous-network-api-sdk-extension-boundary-capability-security-third-party-integration-architecture.html"><strong aria-hidden="true">95.</strong> 68 — Anonymous Network API, SDK, Extension Boundary, Capability Security & Third-Party Integration Architecture</a></li><li class="chapter-item expanded "><a href="69-anonymous-network-multi-tenant-isolation-organizational-boundaries-delegated-administration-enterprise-policy-architecture.html"><strong aria-hidden="true">96.</strong> 69 — Anonymous Network Multi-Tenant Isolation, Organizational Boundaries, Delegated Administration & Enterprise Policy Architecture</a></li><li class="chapter-item expanded "><a href="70-anonymous-network-disaster-exercises-business-continuity-validation-crisis-coordination-operational-resilience-governance-architecture.html"><strong aria-hidden="true">97.</strong> 70 — Anonymous Network Disaster Exercises, Business Continuity Validation, Crisis Coordination & Operational Resilience Governance Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part XIV: Anonymous Network — Zero-Trust Infrastructure & Attestation</li><li class="chapter-item expanded "><a href="71-anonymous-network-trustworthy-boot-host-attestation-runtime-integrity-binary-measurement-compromise-detection-architecture.html"><strong aria-hidden="true">98.</strong> 71 — Anonymous Network Trustworthy Boot, Host Attestation, Runtime Integrity, Binary Measurement & Compromise Detection Architecture</a></li><li class="chapter-item expanded "><a href="72-anonymous-network-hardware-security-modules-secure-elements-key-custody-signing-ceremonies-high-assurance-cryptographic-operations-architecture.html"><strong aria-hidden="true">99.</strong> 72 — Anonymous Network Hardware Security Modules, Secure Elements, Key Custody, Signing Ceremonies & High-Assurance Cryptographic Operations Architecture</a></li><li class="chapter-item expanded "><a href="73-anonymous-network-supply-chain-transparency-dependency-provenance-reproducible-builds-sbom-artifact-trust-compromise-recovery-architecture.html"><strong aria-hidden="true">100.</strong> 73 — Anonymous Network Supply-Chain Transparency, Dependency Provenance, Reproducible Builds, SBOM, Artifact Trust & Compromise Recovery Architecture</a></li><li class="chapter-item expanded "><a href="74-anonymous-network-database-persistent-state-transaction-boundaries-schema-evolution-storage-engine-architecture.html"><strong aria-hidden="true">101.</strong> 74 — Anonymous Network Database, Persistent State, Transaction Boundaries, Schema Evolution & Storage-Engine Architecture</a></li><li class="chapter-item expanded "><a href="75-anonymous-network-event-streaming-message-bus-durable-queues-internal-pubsub-distributed-workflow-architecture.html"><strong aria-hidden="true">102.</strong> 75 — Anonymous Network Event Streaming, Message Bus, Durable Queues, Internal Pub/Sub & Distributed Workflow Architecture</a></li><li class="chapter-item expanded "><a href="76-anonymous-network-distributed-consensus-leader-election-membership-quorum-state-coordination-architecture.html"><strong aria-hidden="true">103.</strong> 76 — Anonymous Network Distributed Consensus, Leader Election, Membership, Quorum State & Coordination Architecture</a></li><li class="chapter-item expanded "><a href="77-anonymous-network-service-discovery-naming-endpoint-resolution-load-balancing-traffic-steering-architecture.html"><strong aria-hidden="true">104.</strong> 77 — Anonymous Network Service Discovery, Naming, Endpoint Resolution, Load Balancing & Traffic Steering Architecture</a></li><li class="chapter-item expanded "><a href="78-anonymous-network-edge-gateway-ingress-egress-reverse-proxy-api-gateway-waf-boundary-enforcement-architecture.html"><strong aria-hidden="true">105.</strong> 78 — Anonymous Network Edge Gateway, Ingress/Egress, Reverse Proxy, API Gateway, WAF & Boundary Enforcement Architecture</a></li><li class="chapter-item expanded "><a href="79-anonymous-network-internal-service-to-service-communication-zero-trust-networking-mtls-service-identity-east-west-security-architecture.html"><strong aria-hidden="true">106.</strong> 79 — Anonymous Network Internal Service-to-Service Communication, Zero-Trust Networking, mTLS, Service Identity & East-West Security Architecture</a></li><li class="chapter-item expanded "><a href="80-anonymous-network-secrets-distribution-dynamic-credentials-certificate-authority-workload-enrollment-secretless-runtime-architecture.html"><strong aria-hidden="true">107.</strong> 80 — Anonymous Network Secrets Distribution, Dynamic Credentials, Certificate Authority, Workload Enrollment & Secretless Runtime Architecture</a></li><li class="chapter-item expanded "><a href="81-anonymous-network-authorization-policy-decision-enforcement-capability-evaluation-abac-rbac-distributed-access-control-architecture.html"><strong aria-hidden="true">108.</strong> 81 — Anonymous Network Authorization, Policy Decision/Enforcement Points, Capability Evaluation, ABAC/RBAC & Distributed Access-Control Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part XV: Anonymous Network — Private Cloud Services & Anti-Surveillance</li><li class="chapter-item expanded "><a href="82-anonymous-network-identity-provider-authentication-mfa-passkeys-session-management-account-security-architecture.html"><strong aria-hidden="true">109.</strong> 82 — Anonymous Network Identity Provider, Authentication, MFA, Passkeys, Session Management & Account Security Architecture</a></li><li class="chapter-item expanded "><a href="83-anonymous-network-account-lifecycle-registration-enrollment-suspension-deactivation-deletion-identity-state-governance-architecture.html"><strong aria-hidden="true">110.</strong> 83 — Anonymous Network Account Lifecycle, Registration, Enrollment, Suspension, Deactivation, Deletion & Identity-State Governance Architecture</a></li><li class="chapter-item expanded "><a href="84-anonymous-network-profile-preferences-settings-personalization-synchronization-privacy-preserving-user-state-architecture.html"><strong aria-hidden="true">111.</strong> 84 — Anonymous Network Profile, Preferences, Settings, Personalization, Synchronization & Privacy-Preserving User-State Architecture</a></li><li class="chapter-item expanded "><a href="85-anonymous-network-contacts-address-book-relationship-graph-invitations-trust-state-privacy-preserving-social-connectivity-architecture.html"><strong aria-hidden="true">112.</strong> 85 — Anonymous Network Contacts, Address Book, Relationship Graph, Invitations, Trust State & Privacy-Preserving Social Connectivity Architecture</a></li><li class="chapter-item expanded "><a href="86-anonymous-network-group-directory-communities-channels-membership-discovery-moderation-boundaries-privacy-preserving-social-spaces-architecture.html"><strong aria-hidden="true">113.</strong> 86 — Anonymous Network Group Directory, Communities, Channels, Membership Discovery, Moderation Boundaries & Privacy-Preserving Social Spaces Architecture</a></li><li class="chapter-item expanded "><a href="87-anonymous-network-content-feed-timeline-subscription-recommendation-ranking-privacy-preserving-discovery-architecture.html" class="active"><strong aria-hidden="true">114.</strong> 87 — Anonymous Network Content Feed, Timeline, Subscription, Recommendation, Ranking & Privacy-Preserving Discovery Architecture</a></li><li class="chapter-item expanded "><a href="88-anonymous-network-content-publishing-posts-articles-media-drafts-revisions-distribution-creator-state-architecture.html"><strong aria-hidden="true">115.</strong> 88 — Anonymous Network Content Publishing, Posts, Articles, Media, Drafts, Revisions, Distribution & Creator-State Architecture</a></li><li class="chapter-item expanded "><a href="89-anonymous-network-comments-replies-threads-reactions-mentions-resharing-privacy-preserving-interaction-architecture.html"><strong aria-hidden="true">116.</strong> 89 — Anonymous Network Comments, Replies, Threads, Reactions, Mentions, Resharing & Privacy-Preserving Interaction Architecture</a></li><li class="chapter-item expanded "><a href="90-anonymous-network-notifications-activity-inbox-mentions-interaction-aggregation-digest-privacy-preserving-attention-architecture.html"><strong aria-hidden="true">117.</strong> 90 — Anonymous Network Notifications, Activity Inbox, Mentions, Interaction Aggregation, Digest & Privacy-Preserving Attention Architecture</a></li><li class="chapter-item expanded "><a href="91-anonymous-network-search-indexing-query-privacy-relevance-ranking-federated-search-private-information-retrieval-architecture.html"><strong aria-hidden="true">118.</strong> 91 — Anonymous Network Search, Indexing, Query Privacy, Relevance Ranking, Federated Search & Private Information Retrieval Architecture</a></li><li class="chapter-item expanded "><a href="92-anonymous-network-analytics-metrics-product-insights-privacy-preserving-aggregation-differential-privacy-anti-surveillance-data-architecture.html"><strong aria-hidden="true">119.</strong> 92 — Anonymous Network Analytics, Metrics, Product Insights, Privacy-Preserving Aggregation, Differential Privacy & Anti-Surveillance Data Architecture</a></li><li class="chapter-item expanded "><a href="93-anonymous-network-experimentation-feature-evaluation-ab-testing-rollouts-cohort-assignment-privacy-preserving-product-validation-architecture.html"><strong aria-hidden="true">120.</strong> 93 — Anonymous Network Experimentation, Feature Evaluation, A/B Testing, Rollouts, Cohort Assignment & Privacy-Preserving Product Validation Architecture</a></li><li class="chapter-item expanded "><a href="94-anonymous-network-audit-transparency-user-visible-security-history-verifiable-actions-privacy-preserving-accountability-architecture.html"><strong aria-hidden="true">121.</strong> 94 — Anonymous Network Audit, Transparency, User-Visible Security History, Verifiable Actions & Privacy-Preserving Accountability Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part XVI: Anonymous Network — Defense, SecOps & Vulnerability Management</li><li class="chapter-item expanded "><a href="95-anonymous-network-policy-compliance-engine-continuous-control-evaluation-security-posture-evidence-collection-privacy-preserving-assurance-architecture.html"><strong aria-hidden="true">122.</strong> 95 — Anonymous Network Policy Compliance Engine, Continuous Control Evaluation, Security Posture, Evidence Collection & Privacy-Preserving Assurance Architecture</a></li><li class="chapter-item expanded "><a href="96-anonymous-network-incident-response-detection-triage-containment-forensics-recovery-privacy-preserving-security-operations-architecture.html"><strong aria-hidden="true">123.</strong> 96 — Anonymous Network Incident Response, Detection, Triage, Containment, Forensics, Recovery & Privacy-Preserving Security Operations Architecture</a></li><li class="chapter-item expanded "><a href="97-anonymous-network-security-operations-center-threat-intelligence-indicators-of-compromise-detection-engineering-hunting-privacy-preserving-defensive-intelligence-architecture.html"><strong aria-hidden="true">124.</strong> 97 — Anonymous Network Security Operations Center, Threat Intelligence, Indicators of Compromise, Detection Engineering, Hunting & Privacy-Preserving Defensive Intelligence Architecture</a></li><li class="chapter-item expanded "><a href="98-anonymous-network-vulnerability-management-exposure-discovery-patch-prioritization-remediation-coordination-privacy-preserving-security-maintenance-architecture.html"><strong aria-hidden="true">125.</strong> 98 — Anonymous Network Vulnerability Management, Exposure Discovery, Patch Prioritization, Remediation Coordination & Privacy-Preserving Security Maintenance Architecture</a></li><li class="chapter-item expanded "><a href="99-anonymous-network-secure-update-patch-distribution-release-channels-client-upgrade-enforcement-rollback-protection-privacy-preserving-software-maintenance-architecture.html"><strong aria-hidden="true">126.</strong> 99 — Anonymous Network Secure Update, Patch Distribution, Release Channels, Client Upgrade Enforcement, Rollback Protection & Privacy-Preserving Software Maintenance Architecture</a></li><li class="chapter-item expanded "><a href="100-anonymous-network-disaster-recovery-backup-integrity-restore-orchestration-regional-failover-continuity-validation-privacy-preserving-resilience-architecture.html"><strong aria-hidden="true">127.</strong> 100 — Anonymous Network Disaster Recovery, Backup Integrity, Restore Orchestration, Regional Failover, Continuity Validation & Privacy-Preserving Resilience Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part XVII: Anonymous Network — SRE, Fleet Management & Physical Site Reliability</li><li class="chapter-item expanded "><a href="101-anonymous-network-capacity-management-load-shedding-admission-control-autoscaling-resource-fairness-privacy-preserving-availability-architecture.html"><strong aria-hidden="true">128.</strong> 101 — Anonymous Network Capacity Management, Load Shedding, Admission Control, Autoscaling, Resource Fairness & Privacy-Preserving Availability Architecture</a></li><li class="chapter-item expanded "><a href="102-anonymous-network-cost-governance-resource-accounting-budget-enforcement-capacity-economics-privacy-preserving-finops-architecture.html"><strong aria-hidden="true">129.</strong> 102 — Anonymous Network Cost Governance, Resource Accounting, Budget Enforcement, Capacity Economics & Privacy-Preserving FinOps Architecture</a></li><li class="chapter-item expanded "><a href="103-anonymous-network-data-residency-sovereignty-regional-placement-cross-border-transfer-jurisdiction-policy-privacy-preserving-geographic-governance-architecture.html"><strong aria-hidden="true">130.</strong> 103 — Anonymous Network Data Residency, Sovereignty, Regional Placement, Cross-Border Transfer, Jurisdiction Policy & Privacy-Preserving Geographic Governance Architecture</a></li><li class="chapter-item expanded "><a href="104-anonymous-network-service-ownership-operational-responsibility-escalation-on-call-change-authority-privacy-preserving-organizational-governance-architecture.html"><strong aria-hidden="true">131.</strong> 104 — Anonymous Network Service Ownership, Operational Responsibility, Escalation, On-Call, Change Authority & Privacy-Preserving Organizational Governance Architecture</a></li><li class="chapter-item expanded "><a href="105-anonymous-network-configuration-drift-desired-state-change-reconciliation-policy-convergence-privacy-preserving-infrastructure-state-governance-architecture.html"><strong aria-hidden="true">132.</strong> 105 — Anonymous Network Configuration Drift, Desired State, Change Reconciliation, Policy Convergence & Privacy-Preserving Infrastructure State Governance Architecture</a></li><li class="chapter-item expanded "><a href="106-anonymous-network-infrastructure-inventory-asset-graph-service-dependency-mapping-configuration-item-lifecycle-privacy-preserving-operational-topology-architecture.html"><strong aria-hidden="true">133.</strong> 106 — Anonymous Network Infrastructure Inventory, Asset Graph, Service Dependency Mapping, Configuration Item Lifecycle & Privacy-Preserving Operational Topology Architecture</a></li><li class="chapter-item expanded "><a href="107-anonymous-network-change-impact-analysis-dependency-aware-rollout-planning-pre-change-simulation-safe-execution-privacy-preserving-operational-decision-architecture.html"><strong aria-hidden="true">134.</strong> 107 — Anonymous Network Change Impact Analysis, Dependency-Aware Rollout Planning, Pre-Change Simulation, Safe Execution & Privacy-Preserving Operational Decision Architecture</a></li><li class="chapter-item expanded "><a href="108-anonymous-network-release-readiness-production-certification-go-no-go-decision-operational-acceptance-privacy-preserving-launch-governance-architecture.html"><strong aria-hidden="true">135.</strong> 108 — Anonymous Network Release Readiness, Production Certification, Go/No-Go Decision, Operational Acceptance & Privacy-Preserving Launch Governance Architecture</a></li><li class="chapter-item expanded "><a href="109-anonymous-network-service-level-objectives-error-budgets-reliability-policy-availability-governance-privacy-preserving-reliability-engineering-architecture.html"><strong aria-hidden="true">136.</strong> 109 — Anonymous Network Service Level Objectives, Error Budgets, Reliability Policy, Availability Governance & Privacy-Preserving Reliability Engineering Architecture</a></li><li class="chapter-item expanded "><a href="110-anonymous-network-availability-modeling-fault-domains-redundancy-planning-failure-correlation-reliability-simulation-privacy-preserving-resilience-engineering-architecture.html"><strong aria-hidden="true">137.</strong> 110 — Anonymous Network Availability Modeling, Fault Domains, Redundancy Planning, Failure Correlation, Reliability Simulation & Privacy-Preserving Resilience Engineering Architecture</a></li><li class="chapter-item expanded "><a href="111-anonymous-network-capacity-forecasting-demand-modeling-growth-planning-saturation-prediction-privacy-preserving-infrastructure-forecast-architecture.html"><strong aria-hidden="true">138.</strong> 111 — Anonymous Network Capacity Forecasting, Demand Modeling, Growth Planning, Saturation Prediction & Privacy-Preserving Infrastructure Forecast Architecture</a></li><li class="chapter-item expanded "><a href="112-anonymous-network-performance-budgeting-latency-decomposition-throughput-modeling-tail-latency-control-privacy-preserving-performance-engineering-architecture.html"><strong aria-hidden="true">139.</strong> 112 — Anonymous Network Performance Budgeting, Latency Decomposition, Throughput Modeling, Tail-Latency Control & Privacy-Preserving Performance Engineering Architecture</a></li><li class="chapter-item expanded "><a href="113-anonymous-network-resource-efficiency-work-consolidation-compute-memory-io-optimization-energy-awareness-privacy-preserving-efficiency-engineering-architecture.html"><strong aria-hidden="true">140.</strong> 113 — Anonymous Network Resource Efficiency, Work Consolidation, Compute/Memory/I/O Optimization, Energy Awareness & Privacy-Preserving Efficiency Engineering Architecture</a></li><li class="chapter-item expanded "><a href="114-anonymous-network-sustainability-carbon-aware-scheduling-hardware-lifecycle-resource-reuse-privacy-preserving-environmental-efficiency-architecture.html"><strong aria-hidden="true">141.</strong> 114 — Anonymous Network Sustainability, Carbon-Aware Scheduling, Hardware Lifecycle, Resource Reuse & Privacy-Preserving Environmental Efficiency Architecture</a></li><li class="chapter-item expanded "><a href="115-anonymous-network-hardware-fleet-management-firmware-lifecycle-secure-provisioning-maintenance-scheduling-privacy-preserving-physical-infrastructure-governance-architecture.html"><strong aria-hidden="true">142.</strong> 115 — Anonymous Network Hardware Fleet Management, Firmware Lifecycle, Secure Provisioning, Maintenance Scheduling & Privacy-Preserving Physical Infrastructure Governance Architecture</a></li><li class="chapter-item expanded "><a href="116-anonymous-network-data-center-edge-site-facility-power-cooling-environmental-monitoring-privacy-preserving-physical-site-reliability-architecture.html"><strong aria-hidden="true">143.</strong> 116 — Anonymous Network Data Center, Edge Site, Facility Power, Cooling, Environmental Monitoring & Privacy-Preserving Physical Site Reliability Architecture</a></li><li class="chapter-item expanded "><a href="117-anonymous-network-physical-security-tamper-detection-site-access-control-chain-of-custody-asset-protection-privacy-preserving-facility-security-architecture.html"><strong aria-hidden="true">144.</strong> 117 — Anonymous Network Physical Security, Tamper Detection, Site Access Control, Chain of Custody, Asset Protection & Privacy-Preserving Facility Security Architecture</a></li><li class="chapter-item expanded "><a href="118-anonymous-network-physical-disaster-preparedness-fire-flood-earthquake-response-site-evacuation-asset-salvage-emergency-logistics-privacy-preserving-facility-continuity-architecture.html"><strong aria-hidden="true">145.</strong> 118 — Anonymous Network Physical Disaster Preparedness, Fire/Flood/Earthquake Response, Site Evacuation, Asset Salvage, Emergency Logistics & Privacy-Preserving Facility Continuity Architecture</a></li><li class="chapter-item expanded "><a href="119-anonymous-network-crisis-command-emergency-decision-authority-multi-team-coordination-communications-situation-awareness-privacy-preserving-incident-command-architecture.html"><strong aria-hidden="true">146.</strong> 119 — Anonymous Network Crisis Command, Emergency Decision Authority, Multi-Team Coordination, Communications, Situation Awareness & Privacy-Preserving Incident Command Architecture</a></li><li class="chapter-item expanded "><a href="120-anonymous-network-post-incident-review-root-cause-analysis-corrective-actions-organizational-learning-recurrence-prevention-privacy-preserving-reliability-improvement-architecture.html"><strong aria-hidden="true">147.</strong> 120 — Anonymous Network Post-Incident Review, Root-Cause Analysis, Corrective Actions, Organizational Learning, Recurrence Prevention & Privacy-Preserving Reliability Improvement Architecture</a></li><li class="chapter-item expanded "><a href="121-anonymous-network-reliability-risk-register-technical-debt-governance-systemic-weakness-tracking-remediation-portfolio-privacy-preserving-engineering-risk-architecture.html"><strong aria-hidden="true">148.</strong> 121 — Anonymous Network Reliability Risk Register, Technical Debt Governance, Systemic Weakness Tracking, Remediation Portfolio & Privacy-Preserving Engineering Risk Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part XVIII: Anonymous Network — Governance, Traceability, SDK & Plugin Ecosystem</li><li class="chapter-item expanded "><a href="122-anonymous-network-architecture-governance-technical-standards-adr-lifecycle-design-review-exception-management-privacy-preserving-engineering-decision-architecture.html"><strong aria-hidden="true">149.</strong> 122 — Anonymous Network Architecture Governance, Technical Standards, ADR Lifecycle, Design Review, Exception Management & Privacy-Preserving Engineering Decision Architecture</a></li><li class="chapter-item expanded "><a href="123-anonymous-network-engineering-knowledge-graph-architecture-traceability-requirement-to-code-mapping-decision-provenance-privacy-preserving-technical-knowledge-architecture.html"><strong aria-hidden="true">150.</strong> 123 — Anonymous Network Engineering Knowledge Graph, Architecture Traceability, Requirement-to-Code Mapping, Decision Provenance & Privacy-Preserving Technical Knowledge Architecture</a></li><li class="chapter-item expanded "><a href="124-anonymous-network-requirements-engineering-specification-lifecycle-acceptance-criteria-verification-planning-change-traceability-privacy-preserving-product-technical-requirement-architecture.html"><strong aria-hidden="true">151.</strong> 124 — Anonymous Network Requirements Engineering, Specification Lifecycle, Acceptance Criteria, Verification Planning, Change Traceability & Privacy-Preserving Product/Technical Requirement Architecture</a></li><li class="chapter-item expanded "><a href="125-anonymous-network-test-strategy-governance-verification-matrix-coverage-traceability-qualification-evidence-release-confidence-privacy-preserving-engineering-assurance-architecture.html"><strong aria-hidden="true">152.</strong> 125 — Anonymous Network Test Strategy Governance, Verification Matrix, Coverage Traceability, Qualification Evidence, Release Confidence & Privacy-Preserving Engineering Assurance Architecture</a></li><li class="chapter-item expanded "><a href="126-anonymous-network-release-evidence-repository-certification-records-artifact-qualification-lineage-compliance-trace-packages-privacy-preserving-assurance-archive-architecture.html"><strong aria-hidden="true">153.</strong> 126 — Anonymous Network Release Evidence Repository, Certification Records, Artifact Qualification Lineage, Compliance Trace Packages & Privacy-Preserving Assurance Archive Architecture</a></li><li class="chapter-item expanded "><a href="127-anonymous-network-product-qualification-feature-maturity-levels-capability-readiness-general-availability-criteria-privacy-preserving-product-readiness-governance-architecture.html"><strong aria-hidden="true">154.</strong> 127 — Anonymous Network Product Qualification, Feature Maturity Levels, Capability Readiness, General Availability Criteria & Privacy-Preserving Product Readiness Governance Architecture</a></li><li class="chapter-item expanded "><a href="128-anonymous-network-product-lifecycle-governance-capability-evolution-backward-compatibility-migration-deprecation-sunset-privacy-preserving-end-of-life-architecture.html"><strong aria-hidden="true">155.</strong> 128 — Anonymous Network Product Lifecycle Governance, Capability Evolution, Backward Compatibility, Migration, Deprecation, Sunset & Privacy-Preserving End-of-Life Architecture</a></li><li class="chapter-item expanded "><a href="129-anonymous-network-api-protocol-compatibility-registry-version-negotiation-schema-evolution-interoperability-certification-privacy-preserving-compatibility-governance-architecture.html"><strong aria-hidden="true">156.</strong> 129 — Anonymous Network API & Protocol Compatibility Registry, Version Negotiation, Schema Evolution, Interoperability Certification & Privacy-Preserving Compatibility Governance Architecture</a></li><li class="chapter-item expanded "><a href="130-anonymous-network-sdk-client-library-generated-bindings-developer-compatibility-integration-certification-privacy-preserving-developer-platform-architecture.html"><strong aria-hidden="true">157.</strong> 130 — Anonymous Network SDK, Client Library, Generated Bindings, Developer Compatibility, Integration Certification & Privacy-Preserving Developer Platform Architecture</a></li><li class="chapter-item expanded "><a href="131-anonymous-network-developer-portal-api-documentation-sandbox-environments-credential-provisioning-integration-onboarding-support-privacy-preserving-developer-experience-architecture.html"><strong aria-hidden="true">158.</strong> 131 — Anonymous Network Developer Portal, API Documentation, Sandbox Environments, Credential Provisioning, Integration Onboarding, Support & Privacy-Preserving Developer Experience Architecture</a></li><li class="chapter-item expanded "><a href="132-anonymous-network-developer-cli-project-automation-local-integration-emulator-contract-testing-ci-integration-privacy-preserving-developer-toolchain-architecture.html"><strong aria-hidden="true">159.</strong> 132 — Anonymous Network Developer CLI, Project Automation, Local Integration Emulator, Contract Testing, CI Integration & Privacy-Preserving Developer Toolchain Architecture</a></li><li class="chapter-item expanded "><a href="133-anonymous-network-extension-marketplace-integration-distribution-package-discovery-trust-signals-review-revocation-privacy-preserving-developer-ecosystem-architecture.html"><strong aria-hidden="true">160.</strong> 133 — Anonymous Network Extension Marketplace, Integration Distribution, Package Discovery, Trust Signals, Review, Revocation & Privacy-Preserving Developer Ecosystem Architecture</a></li><li class="chapter-item expanded "><a href="134-anonymous-network-extension-runtime-plugin-sandboxing-capability-brokerage-resource-isolation-lifecycle-supervision-privacy-preserving-execution-architecture.html"><strong aria-hidden="true">161.</strong> 134 — Anonymous Network Extension Runtime, Plugin Sandboxing, Capability Brokerage, Resource Isolation, Lifecycle Supervision & Privacy-Preserving Execution Architecture</a></li><li class="chapter-item expanded "><a href="135-anonymous-network-extension-permission-model-consent-ux-delegated-authority-capability-attenuation-scope-review-privacy-preserving-authorization-architecture.html"><strong aria-hidden="true">162.</strong> 135 — Anonymous Network Extension Permission Model, Consent UX, Delegated Authority, Capability Attenuation, Scope Review & Privacy-Preserving Authorization Architecture</a></li><li class="chapter-item expanded "><a href="136-anonymous-network-extension-data-governance-data-access-mediation-information-flow-control-retention-deletion-export-privacy-preserving-extension-data-architecture.html"><strong aria-hidden="true">163.</strong> 136 — Anonymous Network Extension Data Governance, Data Access Mediation, Information-Flow Control, Retention, Deletion, Export & Privacy-Preserving Extension Data Architecture</a></li><li class="chapter-item expanded "><a href="137-anonymous-network-extension-inter-process-communication-event-bus-host-calls-shared-memory-streaming-backpressure-privacy-preserving-runtime-communication-architecture.html"><strong aria-hidden="true">164.</strong> 137 — Anonymous Network Extension Inter-Process Communication, Event Bus, Host Calls, Shared Memory, Streaming, Backpressure & Privacy-Preserving Runtime Communication Architecture</a></li><li class="chapter-item expanded "><a href="138-anonymous-network-extension-background-execution-durable-jobs-triggers-scheduling-wakeups-mobile-lifecycle-quotas-privacy-preserving-automation-runtime-architecture.html"><strong aria-hidden="true">165.</strong> 138 — Anonymous Network Extension Background Execution, Durable Jobs, Triggers, Scheduling, Wakeups, Mobile Lifecycle, Quotas & Privacy-Preserving Automation Runtime Architecture</a></li><li class="chapter-item expanded "><a href="140-anonymous-network-extension-ui-surface-embedded-panels-commands-menus-context-actions-theming-accessibility-privacy-preserving-host-ui-integration-architecture.html"><strong aria-hidden="true">166.</strong> 140 — Anonymous Network Extension UI Surface, Embedded Panels, Commands, Menus, Context Actions, Theming, Accessibility & Privacy-Preserving Host UI Integration Architecture</a></li><li class="chapter-item expanded "><a href="141-anonymous-network-extension-state-synchronization-cross-device-settings-ui-state-installation-state-capability-consistency-privacy-preserving-extension-state-convergence-architecture.html"><strong aria-hidden="true">167.</strong> 141 — Anonymous Network Extension State Synchronization, Cross-Device Settings, UI State, Installation State, Capability Consistency & Privacy-Preserving Extension State Convergence Architecture</a></li><li class="chapter-item expanded "><a href="142-anonymous-network-extension-dependency-management-package-resolution-version-constraints-lockfiles-dependency-isolation-supply-chain-policy-privacy-preserving-dependency-governance-architecture.html"><strong aria-hidden="true">168.</strong> 142 — Anonymous Network Extension Dependency Management, Package Resolution, Version Constraints, Lockfiles, Dependency Isolation, Supply-Chain Policy & Privacy-Preserving Dependency Governance Architecture</a></li><li class="chapter-item expanded "><a href="143-anonymous-network-extension-update-orchestration-dependency-aware-rollouts-state-migration-rollback-hot-upgrade-compatibility-gates-privacy-preserving-extension-evolution-architecture.html"><strong aria-hidden="true">169.</strong> 143 — Anonymous Network Extension Update Orchestration, Dependency-Aware Rollouts, State Migration, Rollback, Hot Upgrade, Compatibility Gates & Privacy-Preserving Extension Evolution Architecture</a></li><li class="chapter-item expanded "><a href="144-anonymous-network-extension-testing-certification-compatibility-matrix-sandbox-validation-fault-injection-security-privacy-qualification-release-evidence-architecture.html"><strong aria-hidden="true">170.</strong> 144 — Anonymous Network Extension Testing, Certification, Compatibility Matrix, Sandbox Validation, Fault Injection, Security/Privacy Qualification & Release Evidence Architecture</a></li><li class="chapter-item expanded "><a href="145-anonymous-network-extension-observability-runtime-health-crash-reporting-diagnostics-developer-telemetry-slos-privacy-preserving-extension-operations-architecture.html"><strong aria-hidden="true">171.</strong> 145 — Anonymous Network Extension Observability, Runtime Health, Crash Reporting, Diagnostics, Developer Telemetry, SLOs & Privacy-Preserving Extension Operations Architecture</a></li><li class="chapter-item expanded "><a href="146-anonymous-network-extension-incident-response-abuse-detection-quarantine-emergency-disable-forensics-recovery-privacy-preserving-extension-security-operations-architecture.html"><strong aria-hidden="true">172.</strong> 146 — Anonymous Network Extension Incident Response, Abuse Detection, Quarantine, Emergency Disable, Forensics, Recovery & Privacy-Preserving Extension Security Operations Architecture</a></li><li class="chapter-item expanded "><a href="147-anonymous-network-extension-governance-publisher-policy-ecosystem-rules-dispute-resolution-appeals-enforcement-consistency-privacy-preserving-marketplace-governance-architecture.html"><strong aria-hidden="true">173.</strong> 147 — Anonymous Network Extension Governance, Publisher Policy, Ecosystem Rules, Dispute Resolution, Appeals, Enforcement Consistency & Privacy-Preserving Marketplace Governance Architecture</a></li><li class="chapter-item expanded "><a href="148-anonymous-network-extension-business-model-pricing-revenue-sharing-paid-extensions-subscriptions-billing-integration-refunds-entitlements-privacy-preserving-marketplace-economics-architecture.html"><strong aria-hidden="true">174.</strong> 148 — Anonymous Network Extension Business Model, Pricing, Revenue Sharing, Paid Extensions, Subscriptions, Billing Integration, Refunds, Entitlements & Privacy-Preserving Marketplace Economics Architecture</a></li><li class="chapter-item expanded "><a href="149-anonymous-network-extension-licensing-open-source-commercial-license-enforcement-seat-activation-license-keys-offline-licensing-compliance-audit-privacy-preserving-software-license-architecture.html"><strong aria-hidden="true">175.</strong> 149 — Anonymous Network Extension Licensing, Open-Source/Commercial License Enforcement, Seat Activation, License Keys, Offline Licensing, Compliance, Audit & Privacy-Preserving Software License Architecture</a></li><li class="chapter-item expanded "><a href="150-anonymous-network-extension-developer-relations-publisher-support-documentation-governance-compatibility-communication-migration-guidance-ecosystem-education-privacy-preserving-developer-success-architecture.html"><strong aria-hidden="true">176.</strong> 150 — Anonymous Network Extension Developer Relations, Publisher Support, Documentation Governance, Compatibility Communication, Migration Guidance, Ecosystem Education & Privacy-Preserving Developer Success Architecture</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">SIAR System Architecture &amp; Technical Wiki</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar/edit/main/sys-arch/87-anonymous-network-content-feed-timeline-subscription-recommendation-ranking-privacy-preserving-discovery-architecture.md" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="core-system-architecture-part-87--anonymous-network-content-feed-timeline-subscription-recommendation-ranking--privacy-preserving-discovery-architecture"><a class="header" href="#core-system-architecture-part-87--anonymous-network-content-feed-timeline-subscription-recommendation-ranking--privacy-preserving-discovery-architecture">Core System Architecture Part 87 — Anonymous Network Content Feed, Timeline, Subscription, Recommendation, Ranking &amp; Privacy-Preserving Discovery Architecture</a></h1>
+<h2 id="siar--secure-local-first-multi-transport-communication-platform"><a class="header" href="#siar--secure-local-first-multi-transport-communication-platform">SIAR — Secure, Local-First, Multi-Transport Communication Platform</a></h2>
+<p><strong>Series:</strong> Core System Architecture<br />
+<strong>Part:</strong> 87<br />
+<strong>Status:</strong> Architecture specification<br />
+<strong>Primary language:</strong> Rust<br />
+<strong>Builds on:</strong> Core System Architecture Parts 32, 43, 45–48, 56, 58–59, 67–69, 74–86</p>
+<p><strong>Primary purpose:</strong> define SIAR's content feed, timeline, subscription, recommendation, ranking, discovery, trending, creator/subscriber privacy, local/on-device personalization, federated content ingestion, anti-manipulation, and privacy-preserving content distribution architecture without creating a centralized behavioral surveillance engine.</p>
+<hr />
+<h1 id="1-purpose"><a class="header" href="#1-purpose">1. Purpose</a></h1>
+<p>Content feeds are powerful because they help users discover:</p>
+<pre><code class="language-text">posts
+announcements
+public channels
+communities
+articles
+media
+updates
+</code></pre>
+<p>But feed systems are also one of the most privacy-invasive parts of modern platforms.</p>
+<p>Typical centralized feeds collect:</p>
+<pre><code class="language-text">what users viewed
+what they paused on
+what they clicked
+what they ignored
+who they follow
+what topics they prefer
+how long they watched
+</code></pre>
+<p>The governing principle is:</p>
+<blockquote>
+<p><strong>SIAR feeds should help users discover and organize content without requiring centralized behavioral profiles, global social graphs, or opaque engagement-maximizing ranking systems.</strong></p>
+</blockquote>
+<hr />
+<h1 id="2-architectural-position"><a class="header" href="#2-architectural-position">2. Architectural Position</a></h1>
+<pre><code class="language-text">Subscriptions / Public Sources / Local Signals
+                    │
+                    ▼
+             Feed Candidate Set
+                    │
+                    ▼
+            Privacy Policy Filter
+                    │
+                    ▼
+          Local / Explicit Ranking
+                    │
+                    ▼
+                Timeline
+</code></pre>
+<hr />
+<h1 id="3-core-separation"><a class="header" href="#3-core-separation">3. Core Separation</a></h1>
+<p>Keep distinct:</p>
+<pre><code class="language-text">subscription
+feed candidate
+timeline item
+ranking score
+recommendation source
+public trend signal
+behavioral signal
+creator identity
+subscriber identity
+</code></pre>
+<hr />
+<h1 id="4-non-goals"><a class="header" href="#4-non-goals">4. Non-Goals</a></h1>
+<p>Part 87 does not create:</p>
+<pre><code class="language-text">a global engagement graph
+a centralized per-user interest profile
+a mandatory algorithmic feed
+a hidden infinite-scroll recommender optimized for addiction
+</code></pre>
+<hr />
+<h1 id="5-feed-types"><a class="header" href="#5-feed-types">5. Feed Types</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum FeedType {
+    Chronological,
+    Subscription,
+    Curated,
+    LocalRecommended,
+    PublicDiscovery,
+    Trending,
+    Managed,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="6-chronological-feed"><a class="header" href="#6-chronological-feed">6. Chronological Feed</a></h1>
+<p>Pure time/order-based.</p>
+<hr />
+<h1 id="7-subscription-feed"><a class="header" href="#7-subscription-feed">7. Subscription Feed</a></h1>
+<p>Only explicitly followed sources.</p>
+<hr />
+<h1 id="8-curated-feed"><a class="header" href="#8-curated-feed">8. Curated Feed</a></h1>
+<p>User/admin-selected sources.</p>
+<hr />
+<h1 id="9-localrecommended"><a class="header" href="#9-localrecommended">9. LocalRecommended</a></h1>
+<p>On-device recommendation.</p>
+<hr />
+<h1 id="10-publicdiscovery"><a class="header" href="#10-publicdiscovery">10. PublicDiscovery</a></h1>
+<p>Public/listed content.</p>
+<hr />
+<h1 id="11-trending"><a class="header" href="#11-trending">11. Trending</a></h1>
+<p>Aggregate public trend signal.</p>
+<hr />
+<h1 id="12-managed"><a class="header" href="#12-managed">12. Managed</a></h1>
+<p>Organization-scoped feed.</p>
+<hr />
+<h1 id="13-hard-rule"><a class="header" href="#13-hard-rule">13. Hard Rule</a></h1>
+<p>Chronological/subscription feed must always remain available when the feature exists.</p>
+<hr />
+<h1 id="14-feed-source"><a class="header" href="#14-feed-source">14. Feed Source</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum FeedSource {
+    Contact(RelationshipId),
+    SocialSpace(SocialSpaceId),
+    Channel(ChannelId),
+    Publisher(PublisherRef),
+    Federation(FederationDomainId),
+    LocalCollection(LocalCollectionId),
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="15-feed-source-identity"><a class="header" href="#15-feed-source-identity">15. Feed Source Identity</a></h1>
+<p>Scoped.</p>
+<hr />
+<h1 id="16-no-global-user-id-requirement"><a class="header" href="#16-no-global-user-id-requirement">16. No Global User ID Requirement</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="17-subscription"><a class="header" href="#17-subscription">17. Subscription</a></h1>
+<p>Explicit user intent.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct Subscription {
+    pub subscription_id: SubscriptionId,
+    pub source: FeedSource,
+    pub state: SubscriptionState,
+    pub delivery: SubscriptionDelivery,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="18-subscription-state"><a class="header" href="#18-subscription-state">18. Subscription State</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum SubscriptionState {
+    Active,
+    Muted,
+    Paused,
+    Unsubscribed,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="19-muted"><a class="header" href="#19-muted">19. Muted</a></h1>
+<p>Still subscribed but hidden from notification/high-priority feed.</p>
+<hr />
+<h1 id="20-paused"><a class="header" href="#20-paused">20. Paused</a></h1>
+<p>Temporary stop.</p>
+<hr />
+<h1 id="21-unsubscribed"><a class="header" href="#21-unsubscribed">21. Unsubscribed</a></h1>
+<p>No new feed items.</p>
+<hr />
+<h1 id="22-hard-rule"><a class="header" href="#22-hard-rule">22. Hard Rule</a></h1>
+<p>Subscription does not imply public disclosure of subscriber identity.</p>
+<hr />
+<h1 id="23-subscriber-privacy"><a class="header" href="#23-subscriber-privacy">23. Subscriber Privacy</a></h1>
+<p>Creator should not receive subscriber list by default.</p>
+<hr />
+<h1 id="24-public-channels"><a class="header" href="#24-public-channels">24. Public Channels</a></h1>
+<p>Can expose aggregate subscriber count only.</p>
+<hr />
+<h1 id="25-no-individual-subscriber-export"><a class="header" href="#25-no-individual-subscriber-export">25. No Individual Subscriber Export</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="26-subscription-identity"><a class="header" href="#26-subscription-identity">26. Subscription Identity</a></h1>
+<p>Opaque.</p>
+<hr />
+<h1 id="27-no-accountid-embedded-in-feed-distribution-key"><a class="header" href="#27-no-accountid-embedded-in-feed-distribution-key">27. No AccountId Embedded In Feed Distribution Key</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="28-subscription-capability"><a class="header" href="#28-subscription-capability">28. Subscription Capability</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct SubscriptionCapability {
+    pub source: FeedSource,
+    pub permissions: SubscriptionPermissions,
+    pub expires_at: Option&lt;Timestamp&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="29-subscription-permissions"><a class="header" href="#29-subscription-permissions">29. Subscription Permissions</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct SubscriptionPermissions {
+    pub read: bool,
+    pub receive_notifications: bool,
+    pub fetch_archive: bool,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="30-public-source"><a class="header" href="#30-public-source">30. Public Source</a></h1>
+<p>May not require durable identity.</p>
+<hr />
+<h1 id="31-private-source"><a class="header" href="#31-private-source">31. Private Source</a></h1>
+<p>Requires capability/membership.</p>
+<hr />
+<h1 id="32-feed-item"><a class="header" href="#32-feed-item">32. Feed Item</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct FeedItem {
+    pub item_id: FeedItemId,
+    pub source: FeedSource,
+    pub content_ref: ContentRef,
+    pub published_order: FeedOrderKey,
+    pub visibility: FeedVisibility,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="33-feed-item-id"><a class="header" href="#33-feed-item-id">33. Feed Item ID</a></h1>
+<p>Random/opaque.</p>
+<hr />
+<h1 id="34-no-user-identity-encoding"><a class="header" href="#34-no-user-identity-encoding">34. No User Identity Encoding</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="35-feed-visibility"><a class="header" href="#35-feed-visibility">35. Feed Visibility</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum FeedVisibility {
+    Public,
+    Subscribers,
+    Members,
+    RelationshipScoped,
+    Managed,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="36-candidate-collection"><a class="header" href="#36-candidate-collection">36. Candidate Collection</a></h1>
+<p>Fetch eligible feed items.</p>
+<hr />
+<h1 id="37-candidate-sources"><a class="header" href="#37-candidate-sources">37. Candidate Sources</a></h1>
+<pre><code class="language-text">subscriptions
+contacts
+joined social spaces
+public discovery
+local saved sources
+</code></pre>
+<hr />
+<h1 id="38-no-global-candidate-graph"><a class="header" href="#38-no-global-candidate-graph">38. No Global Candidate Graph</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="39-timeline-state"><a class="header" href="#39-timeline-state">39. Timeline State</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct TimelineState {
+    pub cursor: TimelineCursor,
+    pub mode: FeedType,
+    pub filters: TimelineFilters,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="40-cursor"><a class="header" href="#40-cursor">40. Cursor</a></h1>
+<p>Opaque.</p>
+<hr />
+<h1 id="41-no-user-behavior-embedded-in-cursor"><a class="header" href="#41-no-user-behavior-embedded-in-cursor">41. No User Behavior Embedded In Cursor</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="42-timeline-ordering"><a class="header" href="#42-timeline-ordering">42. Timeline Ordering</a></h1>
+<p>Separate from source publication order.</p>
+<hr />
+<h1 id="43-chronological-ordering"><a class="header" href="#43-chronological-ordering">43. Chronological Ordering</a></h1>
+<p>Preferred default.</p>
+<hr />
+<h1 id="44-ranking-modes"><a class="header" href="#44-ranking-modes">44. Ranking Modes</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum RankingMode {
+    Chronological,
+    UserPinned,
+    LocalHeuristic,
+    Curated,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="45-no-opaque-server-ml-ranker-as-baseline"><a class="header" href="#45-no-opaque-server-ml-ranker-as-baseline">45. No Opaque Server ML Ranker As Baseline</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="46-chronological"><a class="header" href="#46-chronological">46. Chronological</a></h1>
+<p>Deterministic.</p>
+<hr />
+<h1 id="47-userpinned"><a class="header" href="#47-userpinned">47. UserPinned</a></h1>
+<p>User-defined priority.</p>
+<hr />
+<h1 id="48-localheuristic"><a class="header" href="#48-localheuristic">48. LocalHeuristic</a></h1>
+<p>On-device.</p>
+<hr />
+<h1 id="49-curated"><a class="header" href="#49-curated">49. Curated</a></h1>
+<p>Transparent source-defined list.</p>
+<hr />
+<h1 id="50-feed-ranking-principle"><a class="header" href="#50-feed-ranking-principle">50. Feed Ranking Principle</a></h1>
+<p>Ranking should be:</p>
+<pre><code class="language-text">explainable
+local where possible
+user-controllable
+reversible
+</code></pre>
+<hr />
+<h1 id="51-hard-rule"><a class="header" href="#51-hard-rule">51. Hard Rule</a></h1>
+<p>Server cannot silently personalize feed using hidden behavioral history.</p>
+<hr />
+<h1 id="52-local-ranking-inputs"><a class="header" href="#52-local-ranking-inputs">52. Local Ranking Inputs</a></h1>
+<p>Possible:</p>
+<pre><code class="language-text">explicit follows
+manual topic preference
+local recency
+user pin
+mute state
+</code></pre>
+<hr />
+<h1 id="53-avoid"><a class="header" href="#53-avoid">53. Avoid</a></h1>
+<pre><code class="language-text">dwell time
+scroll hesitation
+rage-clicks
+late-night behavior
+</code></pre>
+<p>as persistent cloud profile.</p>
+<hr />
+<h1 id="54-hard-rule"><a class="header" href="#54-hard-rule">54. Hard Rule</a></h1>
+<p>Behavioral telemetry is not required for feed ranking.</p>
+<hr />
+<h1 id="55-local-behavioral-signals"><a class="header" href="#55-local-behavioral-signals">55. Local Behavioral Signals</a></h1>
+<p>If used:</p>
+<pre><code class="language-text">stay on device
+expire quickly
+opt-in
+</code></pre>
+<hr />
+<h1 id="56-no-raw-behavioral-upload"><a class="header" href="#56-no-raw-behavioral-upload">56. No Raw Behavioral Upload</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="57-preference-based-ranking"><a class="header" href="#57-preference-based-ranking">57. Preference-Based Ranking</a></h1>
+<p>User explicitly chooses interests.</p>
+<hr />
+<h1 id="58-topic-preference"><a class="header" href="#58-topic-preference">58. Topic Preference</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct TopicPreference {
+    pub topic: TopicId,
+    pub weight: ExplicitPreferenceWeight,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="59-explicit-preference-weight"><a class="header" href="#59-explicit-preference-weight">59. Explicit Preference Weight</a></h1>
+<p>Small bounded range.</p>
+<hr />
+<h1 id="60-no-infinite-learned-score"><a class="header" href="#60-no-infinite-learned-score">60. No Infinite Learned Score</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="61-ranking-score"><a class="header" href="#61-ranking-score">61. Ranking Score</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct LocalRankingScore {
+    pub explicit_priority: i16,
+    pub recency_bucket: u8,
+    pub source_priority: u8,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="62-no-hidden-psychological-score"><a class="header" href="#62-no-hidden-psychological-score">62. No hidden psychological score.</a></h1>
+<hr />
+<h1 id="63-ranking-explanation"><a class="header" href="#63-ranking-explanation">63. Ranking Explanation</a></h1>
+<p>UI can say:</p>
+<pre><code class="language-text">Because you follow this channel
+Because you pinned this source
+Recent from subscribed community
+</code></pre>
+<hr />
+<h1 id="64-no-deceptive-recommended-for-you-without-explanation"><a class="header" href="#64-no-deceptive-recommended-for-you-without-explanation">64. No Deceptive "Recommended For You" Without Explanation</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="65-feed-algorithm-transparency"><a class="header" href="#65-feed-algorithm-transparency">65. Feed Algorithm Transparency</a></h1>
+<p>User can inspect active ranking mode.</p>
+<hr />
+<h1 id="66-user-can-switch-to-chronological"><a class="header" href="#66-user-can-switch-to-chronological">66. User Can Switch To Chronological</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="67-feed-candidate-deduplication"><a class="header" href="#67-feed-candidate-deduplication">67. Feed Candidate Deduplication</a></h1>
+<p>Deduplicate same content from multiple sources.</p>
+<hr />
+<h1 id="68-dedup-key"><a class="header" href="#68-dedup-key">68. Dedup Key</a></h1>
+<p>Content identity/digest where safe.</p>
+<hr />
+<h1 id="69-privacy-caveat"><a class="header" href="#69-privacy-caveat">69. Privacy Caveat</a></h1>
+<p>Cross-source dedup can reveal linkage.</p>
+<hr />
+<h1 id="70-strict-mode"><a class="header" href="#70-strict-mode">70. Strict Mode</a></h1>
+<p>Dedup only local.</p>
+<hr />
+<h1 id="71-no-server-wide-cross-user-dedup-graph"><a class="header" href="#71-no-server-wide-cross-user-dedup-graph">71. No Server-Wide Cross-User Dedup Graph</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="72-public-discovery"><a class="header" href="#72-public-discovery">72. Public Discovery</a></h1>
+<p>Lists public/listed content.</p>
+<hr />
+<h1 id="73-discovery-inputs"><a class="header" href="#73-discovery-inputs">73. Discovery Inputs</a></h1>
+<pre><code class="language-text">public channels
+listed communities
+public publishers
+public posts
+</code></pre>
+<hr />
+<h1 id="74-no-private-content-leakage"><a class="header" href="#74-no-private-content-leakage">74. No Private Content Leakage</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="75-discovery-query"><a class="header" href="#75-discovery-query">75. Discovery Query</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct DiscoveryQuery {
+    pub text: Option&lt;DiscoveryText&gt;,
+    pub topic: Option&lt;TopicId&gt;,
+    pub scope: DiscoveryScope,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="76-discovery-scope"><a class="header" href="#76-discovery-scope">76. Discovery Scope</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum DiscoveryScope {
+    Local,
+    Tenant,
+    Federation,
+    PublicNetwork,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="77-search-privacy"><a class="header" href="#77-search-privacy">77. Search Privacy</a></h1>
+<p>No account identity required for public search.</p>
+<hr />
+<h1 id="78-search-query-logging"><a class="header" href="#78-search-query-logging">78. Search Query Logging</a></h1>
+<p>Minimized.</p>
+<hr />
+<h1 id="79-no-long-term-search-profile"><a class="header" href="#79-no-long-term-search-profile">79. No Long-Term Search Profile</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="80-public-search-result"><a class="header" href="#80-public-search-result">80. Public Search Result</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct DiscoveryResult {
+    pub content_ref: ContentRef,
+    pub source: FeedSource,
+    pub title: Option&lt;ContentTitle&gt;,
+    pub summary: Option&lt;ContentSummary&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="81-no-subscriber-identity"><a class="header" href="#81-no-subscriber-identity">81. No Subscriber Identity.</a></h1>
+<hr />
+<h1 id="82-recommendation-sources"><a class="header" href="#82-recommendation-sources">82. Recommendation Sources</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum RecommendationSource {
+    ExplicitTopics,
+    FollowedSources,
+    LocalHistory,
+    PublicTrending,
+    CuratedList,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="83-explicittopics"><a class="header" href="#83-explicittopics">83. ExplicitTopics</a></h1>
+<p>Preferred.</p>
+<hr />
+<h1 id="84-followedsources"><a class="header" href="#84-followedsources">84. FollowedSources</a></h1>
+<p>Safe.</p>
+<hr />
+<h1 id="85-localhistory"><a class="header" href="#85-localhistory">85. LocalHistory</a></h1>
+<p>On-device only.</p>
+<hr />
+<h1 id="86-publictrending"><a class="header" href="#86-publictrending">86. PublicTrending</a></h1>
+<p>Aggregate public signal.</p>
+<hr />
+<h1 id="87-curatedlist"><a class="header" href="#87-curatedlist">87. CuratedList</a></h1>
+<p>Human/editorial.</p>
+<hr />
+<h1 id="88-no-cross-user-behavioral-collaborative-filtering-by-default"><a class="header" href="#88-no-cross-user-behavioral-collaborative-filtering-by-default">88. No Cross-User Behavioral Collaborative Filtering By Default</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="89-why"><a class="header" href="#89-why">89. Why</a></h1>
+<p>It requires graphing user behavior.</p>
+<hr />
+<h1 id="90-future-optional-private-recommendation"><a class="header" href="#90-future-optional-private-recommendation">90. Future Optional Private Recommendation</a></h1>
+<p>Could use privacy-preserving aggregation.</p>
+<hr />
+<h1 id="91-but"><a class="header" href="#91-but">91. But</a></h1>
+<p>Must be reviewed separately.</p>
+<hr />
+<h1 id="92-no-custom-federated-learning-crypto"><a class="header" href="#92-no-custom-federated-learning-crypto">92. No Custom Federated Learning Crypto</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="93-trending"><a class="header" href="#93-trending">93. Trending</a></h1>
+<p>Aggregate public signal.</p>
+<hr />
+<h1 id="94-trend-inputs"><a class="header" href="#94-trend-inputs">94. Trend Inputs</a></h1>
+<p>Possible:</p>
+<pre><code class="language-text">public views
+public reshares
+public reactions
+public subscriptions
+</code></pre>
+<hr />
+<h1 id="95-aggregate-only"><a class="header" href="#95-aggregate-only">95. Aggregate Only</a></h1>
+<hr />
+<h1 id="96-no-individual-viewer-tracking"><a class="header" href="#96-no-individual-viewer-tracking">96. No Individual Viewer Tracking</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="97-trend-window"><a class="header" href="#97-trend-window">97. Trend Window</a></h1>
+<p>Bounded.</p>
+<hr />
+<h1 id="98-example"><a class="header" href="#98-example">98. Example</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct TrendWindow {
+    pub duration: Duration,
+    pub minimum_count: u64,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="99-minimum-count"><a class="header" href="#99-minimum-count">99. Minimum Count</a></h1>
+<p>Protect privacy.</p>
+<hr />
+<h1 id="100-small-cohort"><a class="header" href="#100-small-cohort">100. Small cohort</a></h1>
+<p>Do not surface.</p>
+<hr />
+<h1 id="101-hard-rule"><a class="header" href="#101-hard-rule">101. Hard Rule</a></h1>
+<p>Trend output must satisfy minimum anonymity bucket.</p>
+<hr />
+<h1 id="102-exact-counts"><a class="header" href="#102-exact-counts">102. Exact Counts</a></h1>
+<p>May be hidden.</p>
+<hr />
+<h1 id="103-trend-score"><a class="header" href="#103-trend-score">103. Trend Score</a></h1>
+<p>Coarse.</p>
+<hr />
+<h1 id="104-trend-class"><a class="header" href="#104-trend-class">104. Trend Class</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum TrendClass {
+    Emerging,
+    Popular,
+    VeryPopular,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="105-no-real-time-per-user-trend-dashboard"><a class="header" href="#105-no-real-time-per-user-trend-dashboard">105. No Real-Time Per-User Trend Dashboard</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="106-trend-computation"><a class="header" href="#106-trend-computation">106. Trend Computation</a></h1>
+<p>Can be server aggregate.</p>
+<hr />
+<h1 id="107-input-events"><a class="header" href="#107-input-events">107. Input events</a></h1>
+<p>Stripped of user identity where possible.</p>
+<hr />
+<h1 id="108-no-global-user-identifier"><a class="header" href="#108-no-global-user-identifier">108. No Global User Identifier.</a></h1>
+<hr />
+<h1 id="109-abuse"><a class="header" href="#109-abuse">109. Abuse</a></h1>
+<p>Trend manipulation likely.</p>
+<hr />
+<h1 id="110-need-anti-spambot-weighting"><a class="header" href="#110-need-anti-spambot-weighting">110. Need anti-spam/bot weighting.</a></h1>
+<hr />
+<h1 id="111-but"><a class="header" href="#111-but">111. But</a></h1>
+<p>Do not require real-world identity.</p>
+<hr />
+<h1 id="112-anti-manipulation-inputs"><a class="header" href="#112-anti-manipulation-inputs">112. Anti-Manipulation Inputs</a></h1>
+<pre><code class="language-text">rate limits
+proof cost
+account age bucket
+source diversity
+</code></pre>
+<hr />
+<h1 id="113-privacy-safe"><a class="header" href="#113-privacy-safe">113. Privacy-safe.</a></h1>
+<hr />
+<h1 id="114-no-public-reputation-score"><a class="header" href="#114-no-public-reputation-score">114. No Public Reputation Score.</a></h1>
+<hr />
+<h1 id="115-hard-rule"><a class="header" href="#115-hard-rule">115. Hard rule.</a></h1>
+<hr />
+<h1 id="116-creator-privacy"><a class="header" href="#116-creator-privacy">116. Creator Privacy</a></h1>
+<p>Creators can publish through:</p>
+<pre><code class="language-text">public pseudonym
+space-scoped identity
+managed identity
+</code></pre>
+<hr />
+<h1 id="117-no-global-real-name-requirement"><a class="header" href="#117-no-global-real-name-requirement">117. No global real-name requirement.</a></h1>
+<hr />
+<h1 id="118-publisher-ref"><a class="header" href="#118-publisher-ref">118. Publisher Ref</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum PublisherRef {
+    Pseudonym(PublisherPseudonym),
+    SocialSpace(SocialSpaceId),
+    Managed(ManagedPublisherId),
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="119-public-publisher-pseudonym"><a class="header" href="#119-public-publisher-pseudonym">119. Public Publisher Pseudonym</a></h1>
+<p>Stable by choice.</p>
+<hr />
+<h1 id="120-can-rotate-with-migration-policy"><a class="header" href="#120-can-rotate-with-migration-policy">120. Can rotate with migration policy.</a></h1>
+<hr />
+<h1 id="121-subscriber-should-not-automatically-learn-accountlogin-identity"><a class="header" href="#121-subscriber-should-not-automatically-learn-accountlogin-identity">121. Subscriber should not automatically learn account/login identity.</a></h1>
+<hr />
+<h1 id="122-hard-rule"><a class="header" href="#122-hard-rule">122. Hard rule.</a></h1>
+<hr />
+<h1 id="123-feed-subscription-delivery"><a class="header" href="#123-feed-subscription-delivery">123. Feed Subscription Delivery</a></h1>
+<p>Possible:</p>
+<pre><code class="language-text">pull
+push hint
+mailbox fanout
+pub/sub
+</code></pre>
+<hr />
+<h1 id="124-pull"><a class="header" href="#124-pull">124. Pull</a></h1>
+<p>Privacy-friendly.</p>
+<hr />
+<h1 id="125-push-hint"><a class="header" href="#125-push-hint">125. Push Hint</a></h1>
+<p>Opaque wake hint.</p>
+<hr />
+<h1 id="126-mailbox-fanout"><a class="header" href="#126-mailbox-fanout">126. Mailbox Fanout</a></h1>
+<p>Encrypted.</p>
+<hr />
+<h1 id="127-pubsub"><a class="header" href="#127-pubsub">127. Pub/Sub</a></h1>
+<p>Public content.</p>
+<hr />
+<h1 id="128-no-push-payload-with-sensitive-feed-details-by-default"><a class="header" href="#128-no-push-payload-with-sensitive-feed-details-by-default">128. No Push Payload With Sensitive Feed Details By Default</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="129-timeline-synchronization"><a class="header" href="#129-timeline-synchronization">129. Timeline Synchronization</a></h1>
+<p>Across own devices.</p>
+<hr />
+<h1 id="130-sync-state"><a class="header" href="#130-sync-state">130. Sync state:</a></h1>
+<pre><code class="language-text">subscriptions
+mute state
+pinned sources
+read position optionally
+</code></pre>
+<hr />
+<h1 id="131-read-position"><a class="header" href="#131-read-position">131. Read Position</a></h1>
+<p>Privacy-sensitive.</p>
+<hr />
+<h1 id="132-default"><a class="header" href="#132-default">132. Default</a></h1>
+<p>DeviceLocal.</p>
+<hr />
+<h1 id="133-user-may-enable-encrypted-sync"><a class="header" href="#133-user-may-enable-encrypted-sync">133. User may enable encrypted sync.</a></h1>
+<hr />
+<h1 id="134-hard-rule"><a class="header" href="#134-hard-rule">134. Hard Rule</a></h1>
+<p>Read history is not cloud-synced by default.</p>
+<hr />
+<h1 id="135-feed-read-state"><a class="header" href="#135-feed-read-state">135. Feed Read State</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum FeedReadStateSync {
+    LocalOnly,
+    EncryptedAccountSync,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="136-creator-read-receipts"><a class="header" href="#136-creator-read-receipts">136. Creator Read Receipts</a></h1>
+<p>Disabled by default.</p>
+<hr />
+<h1 id="137-no-per-subscriber-view-receipts"><a class="header" href="#137-no-per-subscriber-view-receipts">137. No Per-Subscriber View Receipts</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="138-public-view-counts"><a class="header" href="#138-public-view-counts">138. Public View Counts</a></h1>
+<p>Aggregate.</p>
+<hr />
+<h1 id="139-minimum-threshold"><a class="header" href="#139-minimum-threshold">139. Minimum threshold.</a></h1>
+<hr />
+<h1 id="140-no-individual-viewer-list"><a class="header" href="#140-no-individual-viewer-list">140. No individual viewer list.</a></h1>
+<hr />
+<h1 id="141-reactions"><a class="header" href="#141-reactions">141. Reactions</a></h1>
+<p>Can be:</p>
+<pre><code class="language-text">private
+aggregate
+public
+</code></pre>
+<hr />
+<h1 id="142-public-reaction-identity"><a class="header" href="#142-public-reaction-identity">142. Public reaction identity</a></h1>
+<p>Explicit opt-in.</p>
+<hr />
+<h1 id="143-default-public-feed"><a class="header" href="#143-default-public-feed">143. Default public feed</a></h1>
+<p>Aggregate reactions.</p>
+<hr />
+<h1 id="144-no-list-of-reactors-by-default"><a class="header" href="#144-no-list-of-reactors-by-default">144. No list of reactors by default.</a></h1>
+<hr />
+<h1 id="145-hard-rule"><a class="header" href="#145-hard-rule">145. Hard rule.</a></h1>
+<hr />
+<h1 id="146-reshare"><a class="header" href="#146-reshare">146. Reshare</a></h1>
+<p>Explicit action.</p>
+<hr />
+<h1 id="147-reshare-graph"><a class="header" href="#147-reshare-graph">147. Reshare Graph</a></h1>
+<p>Potential social graph.</p>
+<hr />
+<h1 id="148-do-not-globally-expose-chain-by-default"><a class="header" href="#148-do-not-globally-expose-chain-by-default">148. Do not globally expose chain by default.</a></h1>
+<hr />
+<h1 id="149-hard-rule"><a class="header" href="#149-hard-rule">149. Hard rule.</a></h1>
+<hr />
+<h1 id="150-attribution"><a class="header" href="#150-attribution">150. Attribution</a></h1>
+<p>Can show original content source.</p>
+<hr />
+<h1 id="151-no-full-reshare-genealogy"><a class="header" href="#151-no-full-reshare-genealogy">151. No full reshare genealogy.</a></h1>
+<hr />
+<h1 id="152-feed-privacy-modes"><a class="header" href="#152-feed-privacy-modes">152. Feed Privacy Modes</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum FeedPrivacyMode {
+    Standard,
+    Private,
+    MaximumAnonymity,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="153-standard"><a class="header" href="#153-standard">153. Standard</a></h1>
+<p>Normal subscriptions, local ranking.</p>
+<hr />
+<h1 id="154-private"><a class="header" href="#154-private">154. Private</a></h1>
+<p>Minimal remote analytics.</p>
+<hr />
+<h1 id="155-maximumanonymity"><a class="header" href="#155-maximumanonymity">155. MaximumAnonymity</a></h1>
+<p>Chronological/local feeds only, delayed sync, no behavioral personalization.</p>
+<hr />
+<h1 id="156-hard-rule"><a class="header" href="#156-hard-rule">156. Hard Rule</a></h1>
+<p>Privacy mode never silently downgrades for better recommendations.</p>
+<hr />
+<h1 id="157-local-recommendation-engine"><a class="header" href="#157-local-recommendation-engine">157. Local Recommendation Engine</a></h1>
+<p>Optional.</p>
+<hr />
+<h1 id="158-inputs"><a class="header" href="#158-inputs">158. Inputs</a></h1>
+<pre><code class="language-text">explicit topics
+local subscriptions
+local saved items
+local interaction history
+</code></pre>
+<hr />
+<h1 id="159-outputs"><a class="header" href="#159-outputs">159. Outputs</a></h1>
+<p>Candidate ranking.</p>
+<hr />
+<h1 id="160-no-cloud-model-requirement"><a class="header" href="#160-no-cloud-model-requirement">160. No Cloud Model Requirement</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="161-on-device-model"><a class="header" href="#161-on-device-model">161. On-Device Model</a></h1>
+<p>Optional.</p>
+<hr />
+<h1 id="162-model-data"><a class="header" href="#162-model-data">162. Model Data</a></h1>
+<p>Local.</p>
+<hr />
+<h1 id="163-no-raw-promptcontent-telemetry"><a class="header" href="#163-no-raw-promptcontent-telemetry">163. No raw prompt/content telemetry.</a></h1>
+<hr />
+<h1 id="164-model-update"><a class="header" href="#164-model-update">164. Model Update</a></h1>
+<p>Signed artifact.</p>
+<hr />
+<h1 id="165-no-per-user-model-upload"><a class="header" href="#165-no-per-user-model-upload">165. No per-user model upload.</a></h1>
+<hr />
+<h1 id="166-hard-rule"><a class="header" href="#166-hard-rule">166. Hard rule.</a></h1>
+<hr />
+<h1 id="167-recommendation-store"><a class="header" href="#167-recommendation-store">167. Recommendation Store</a></h1>
+<p>Derived/rebuildable.</p>
+<hr />
+<h1 id="168-not-authoritative-user-state"><a class="header" href="#168-not-authoritative-user-state">168. Not authoritative user state.</a></h1>
+<hr />
+<h1 id="169-user-can-reset"><a class="header" href="#169-user-can-reset">169. User Can Reset</a></h1>
+<p>Required.</p>
+<hr />
+<h1 id="170-reset-deletes-local-recommendation-state"><a class="header" href="#170-reset-deletes-local-recommendation-state">170. Reset Deletes Local recommendation state.</a></h1>
+<hr />
+<h1 id="171-feed-filters"><a class="header" href="#171-feed-filters">171. Feed Filters</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct TimelineFilters {
+    pub topics: BTreeSet&lt;TopicId&gt;,
+    pub muted_sources: BTreeSet&lt;FeedSourceRef&gt;,
+    pub content_types: BTreeSet&lt;ContentType&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="172-filter-state"><a class="header" href="#172-filter-state">172. Filter State</a></h1>
+<p>Local or account-synced.</p>
+<hr />
+<h1 id="173-no-filter-telemetry"><a class="header" href="#173-no-filter-telemetry">173. No filter telemetry.</a></h1>
+<hr />
+<h1 id="174-feed-item-content-types"><a class="header" href="#174-feed-item-content-types">174. Feed Item Content Types</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum ContentType {
+    Text,
+    Image,
+    Video,
+    Audio,
+    Link,
+    Announcement,
+    Article,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="175-media-autoplay"><a class="header" href="#175-media-autoplay">175. Media Autoplay</a></h1>
+<p>DeviceLocal preference.</p>
+<hr />
+<h1 id="176-external-links"><a class="header" href="#176-external-links">176. External Links</a></h1>
+<p>Privacy-sensitive.</p>
+<hr />
+<h1 id="177-no-automatic-external-fetch-in-max-anonymity"><a class="header" href="#177-no-automatic-external-fetch-in-max-anonymity">177. No Automatic External Fetch In Max-Anonymity</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="178-link-preview"><a class="header" href="#178-link-preview">178. Link Preview</a></h1>
+<p>Use local/proxy according to Part 84 privacy setting.</p>
+<hr />
+<h1 id="179-feed-preloading"><a class="header" href="#179-feed-preloading">179. Feed Preloading</a></h1>
+<p>Performance vs privacy.</p>
+<hr />
+<h1 id="180-default"><a class="header" href="#180-default">180. Default</a></h1>
+<p>Bounded.</p>
+<hr />
+<h1 id="181-no-preload-hundreds-of-unseen-items"><a class="header" href="#181-no-preload-hundreds-of-unseen-items">181. No Preload Hundreds Of Unseen Items</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="182-why"><a class="header" href="#182-why">182. Why</a></h1>
+<p>Leaks interest and wastes bandwidth.</p>
+<hr />
+<h1 id="183-preload-policy"><a class="header" href="#183-preload-policy">183. Preload Policy</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct FeedPreloadPolicy {
+    pub max_items: u16,
+    pub media_prefetch: bool,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="184-strict-mode"><a class="header" href="#184-strict-mode">184. Strict Mode</a></h1>
+<p>No media prefetch by default.</p>
+<hr />
+<h1 id="185-offline-feed"><a class="header" href="#185-offline-feed">185. Offline Feed</a></h1>
+<p>Important.</p>
+<hr />
+<h1 id="186-cache-recent-subscribed-content"><a class="header" href="#186-cache-recent-subscribed-content">186. Cache recent subscribed content.</a></h1>
+<hr />
+<h1 id="187-cache-policy"><a class="header" href="#187-cache-policy">187. Cache policy</a></h1>
+<p>Bounded.</p>
+<hr />
+<h1 id="188-user-controls"><a class="header" href="#188-user-controls">188. User controls.</a></h1>
+<hr />
+<h1 id="189-public-discovery-cache"><a class="header" href="#189-public-discovery-cache">189. Public discovery cache</a></h1>
+<p>Separate.</p>
+<hr />
+<h1 id="190-no-infinite-feed-history"><a class="header" href="#190-no-infinite-feed-history">190. No infinite feed history.</a></h1>
+<hr />
+<h1 id="191-hard-rule"><a class="header" href="#191-hard-rule">191. Hard rule.</a></h1>
+<hr />
+<h1 id="192-feed-item-retention"><a class="header" href="#192-feed-item-retention">192. Feed Item Retention</a></h1>
+<p>Depends on source.</p>
+<hr />
+<h1 id="193-public-channel"><a class="header" href="#193-public-channel">193. Public channel</a></h1>
+<p>Can archive.</p>
+<hr />
+<h1 id="194-private-group"><a class="header" href="#194-private-group">194. Private group</a></h1>
+<p>Membership/history policy.</p>
+<hr />
+<h1 id="195-local-read-cache"><a class="header" href="#195-local-read-cache">195. Local read cache</a></h1>
+<p>Device-controlled.</p>
+<hr />
+<h1 id="196-deletion"><a class="header" href="#196-deletion">196. Deletion</a></h1>
+<p>Removed item tombstone if required.</p>
+<hr />
+<h1 id="197-no-resurrect-via-stale-cache"><a class="header" href="#197-no-resurrect-via-stale-cache">197. No resurrect via stale cache.</a></h1>
+<hr />
+<h1 id="198-hard-rule"><a class="header" href="#198-hard-rule">198. Hard rule.</a></h1>
+<hr />
+<h1 id="199-feed-item-lifecycle"><a class="header" href="#199-feed-item-lifecycle">199. Feed Item Lifecycle</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum FeedItemState {
+    Published,
+    Updated,
+    Retracted,
+    Deleted,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="200-retraction"><a class="header" href="#200-retraction">200. Retraction</a></h1>
+<p>Source indicates no longer active.</p>
+<hr />
+<h1 id="201-client-cache"><a class="header" href="#201-client-cache">201. Client cache</a></h1>
+<p>honors.</p>
+<hr />
+<h1 id="202-public-archive"><a class="header" href="#202-public-archive">202. Public Archive</a></h1>
+<p>May preserve if policy/legal says.</p>
+<hr />
+<h1 id="203-truthful-distinction"><a class="header" href="#203-truthful-distinction">203. Truthful distinction:</a></h1>
+<pre><code class="language-text">removed from feed
+vs
+globally erased
+</code></pre>
+<hr />
+<h1 id="204-hard-rule"><a class="header" href="#204-hard-rule">204. Hard rule.</a></h1>
+<hr />
+<h1 id="205-content-update"><a class="header" href="#205-content-update">205. Content Update</a></h1>
+<p>Versioned.</p>
+<hr />
+<h1 id="206-feed-content-version"><a class="header" href="#206-feed-content-version">206. Feed Content Version</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct FeedContentVersion(pub u64);
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="207-old-stale-update"><a class="header" href="#207-old-stale-update">207. Old stale update</a></h1>
+<p>Rejected.</p>
+<hr />
+<h1 id="208-no-rollback"><a class="header" href="#208-no-rollback">208. No rollback.</a></h1>
+<hr />
+<h1 id="209-hard-rule"><a class="header" href="#209-hard-rule">209. Hard rule.</a></h1>
+<hr />
+<h1 id="210-feed-cursor"><a class="header" href="#210-feed-cursor">210. Feed Cursor</a></h1>
+<p>Source-scoped.</p>
+<hr />
+<h1 id="211-no-global-timeline-clock-required"><a class="header" href="#211-no-global-timeline-clock-required">211. No global timeline clock required.</a></h1>
+<hr />
+<h1 id="212-chronological-merge"><a class="header" href="#212-chronological-merge">212. Chronological Merge</a></h1>
+<p>Merge multiple source cursors locally.</p>
+<hr />
+<h1 id="213-hard-rule"><a class="header" href="#213-hard-rule">213. Hard Rule</a></h1>
+<p>No centralized ordered log of every user's feed.</p>
+<hr />
+<h1 id="214-feed-merge-algorithm"><a class="header" href="#214-feed-merge-algorithm">214. Feed Merge Algorithm</a></h1>
+<p>K-way merge.</p>
+<hr />
+<h1 id="215-local"><a class="header" href="#215-local">215. Local.</a></h1>
+<hr />
+<h1 id="216-federation"><a class="header" href="#216-federation">216. Federation</a></h1>
+<p>Remote feeds.</p>
+<hr />
+<h1 id="217-federation-gateway-fetches-publicfederated-content"><a class="header" href="#217-federation-gateway-fetches-publicfederated-content">217. Federation gateway fetches public/federated content.</a></h1>
+<hr />
+<h1 id="218-no-global-feed-authority"><a class="header" href="#218-no-global-feed-authority">218. No global feed authority.</a></h1>
+<hr />
+<h1 id="219-hard-rule"><a class="header" href="#219-hard-rule">219. Hard rule.</a></h1>
+<hr />
+<h1 id="220-remote-publisher-identity"><a class="header" href="#220-remote-publisher-identity">220. Remote Publisher Identity</a></h1>
+<p>Domain scoped.</p>
+<hr />
+<h1 id="221-cross-domain-content-ref"><a class="header" href="#221-cross-domain-content-ref">221. Cross-Domain Content Ref</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct FederatedContentRef {
+    pub domain: FederationDomainId,
+    pub content: RemoteContentId,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="222-no-account-identity-merge"><a class="header" href="#222-no-account-identity-merge">222. No account identity merge.</a></h1>
+<hr />
+<h1 id="223-federated-subscription"><a class="header" href="#223-federated-subscription">223. Federated Subscription</a></h1>
+<p>Bilateral.</p>
+<hr />
+<h1 id="224-remote-domain-need-not-know-final-subscriber-identity-where-pull-model-used"><a class="header" href="#224-remote-domain-need-not-know-final-subscriber-identity-where-pull-model-used">224. Remote domain need not know final subscriber identity where pull model used.</a></h1>
+<hr />
+<h1 id="225-hard-rule"><a class="header" href="#225-hard-rule">225. Hard rule.</a></h1>
+<hr />
+<h1 id="226-federation-caching"><a class="header" href="#226-federation-caching">226. Federation Caching</a></h1>
+<p>Public content can be cached.</p>
+<hr />
+<h1 id="227-privatemember-content"><a class="header" href="#227-privatemember-content">227. Private/member content</a></h1>
+<p>capability-controlled.</p>
+<hr />
+<h1 id="228-no-federation-gateway-plaintext-for-e2ee-group-content"><a class="header" href="#228-no-federation-gateway-plaintext-for-e2ee-group-content">228. No federation gateway plaintext for E2EE group content.</a></h1>
+<hr />
+<h1 id="229-hard-rule"><a class="header" href="#229-hard-rule">229. Hard rule.</a></h1>
+<hr />
+<h1 id="230-federation-recommendation"><a class="header" href="#230-federation-recommendation">230. Federation Recommendation</a></h1>
+<p>Local only.</p>
+<hr />
+<h1 id="231-remote-domain-provides-metadata"><a class="header" href="#231-remote-domain-provides-metadata">231. Remote domain provides metadata.</a></h1>
+<hr />
+<h1 id="232-user-client-ranks"><a class="header" href="#232-user-client-ranks">232. User client ranks.</a></h1>
+<hr />
+<h1 id="233-no-centralized-cross-domain-behavioral-profile"><a class="header" href="#233-no-centralized-cross-domain-behavioral-profile">233. No centralized cross-domain behavioral profile.</a></h1>
+<hr />
+<h1 id="234-hard-rule"><a class="header" href="#234-hard-rule">234. Hard rule.</a></h1>
+<hr />
+<h1 id="235-tenantmanaged-feed"><a class="header" href="#235-tenantmanaged-feed">235. Tenant/Managed Feed</a></h1>
+<p>Managed organization can publish announcements.</p>
+<hr />
+<h1 id="236-managed-feed-appears-in-managed-profile"><a class="header" href="#236-managed-feed-appears-in-managed-profile">236. Managed feed appears in managed profile.</a></h1>
+<hr />
+<h1 id="237-personal-feed-remains-separate"><a class="header" href="#237-personal-feed-remains-separate">237. Personal feed remains separate.</a></h1>
+<hr />
+<h1 id="238-hard-rule"><a class="header" href="#238-hard-rule">238. Hard rule.</a></h1>
+<hr />
+<h1 id="239-tenant-cannot-inspect-unrelated-personal-subscriptions"><a class="header" href="#239-tenant-cannot-inspect-unrelated-personal-subscriptions">239. Tenant cannot inspect unrelated personal subscriptions.</a></h1>
+<hr />
+<h1 id="240-managed-ranking"><a class="header" href="#240-managed-ranking">240. Managed ranking</a></h1>
+<p>Org policy can pin critical announcements.</p>
+<hr />
+<h1 id="241-but"><a class="header" href="#241-but">241. But</a></h1>
+<p>Only within managed workspace/profile.</p>
+<hr />
+<h1 id="242-no-global-takeover-of-personal-feed"><a class="header" href="#242-no-global-takeover-of-personal-feed">242. No global takeover of personal feed.</a></h1>
+<hr />
+<h1 id="243-hard-rule"><a class="header" href="#243-hard-rule">243. Hard rule.</a></h1>
+<hr />
+<h1 id="244-critical-announcement"><a class="header" href="#244-critical-announcement">244. Critical Announcement</a></h1>
+<p>Higher priority.</p>
+<hr />
+<h1 id="245-emergency-broadcasts-part-4117-style"><a class="header" href="#245-emergency-broadcasts-part-4117-style">245. Emergency broadcasts Part 41/17 style.</a></h1>
+<hr />
+<h1 id="246-still-scoped"><a class="header" href="#246-still-scoped">246. Still scoped.</a></h1>
+<hr />
+<h1 id="247-content-moderation"><a class="header" href="#247-content-moderation">247. Content Moderation</a></h1>
+<p>Part 86.</p>
+<hr />
+<h1 id="248-removed-public-content-excluded-from-discovery"><a class="header" href="#248-removed-public-content-excluded-from-discovery">248. Removed public content excluded from discovery.</a></h1>
+<hr />
+<h1 id="249-private-content-moderation-remains-space-scoped"><a class="header" href="#249-private-content-moderation-remains-space-scoped">249. Private content moderation remains space-scoped.</a></h1>
+<hr />
+<h1 id="250-no-hidden-platform-wide-censorship-state-in-local-private-feeds-without-policy-authority"><a class="header" href="#250-no-hidden-platform-wide-censorship-state-in-local-private-feeds-without-policy-authority">250. No hidden platform-wide censorship state in local private feeds without policy authority.</a></h1>
+<hr />
+<h1 id="251-ranking--moderation-separation"><a class="header" href="#251-ranking--moderation-separation">251. Ranking &amp; Moderation Separation</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="252-ranking-should-not-silently-shadow-ban-content"><a class="header" href="#252-ranking-should-not-silently-shadow-ban-content">252. Ranking should not silently shadow-ban content.</a></h1>
+<hr />
+<h1 id="253-moderation-state-explicit"><a class="header" href="#253-moderation-state-explicit">253. Moderation state explicit.</a></h1>
+<hr />
+<h1 id="254-ranking-state-explicit"><a class="header" href="#254-ranking-state-explicit">254. Ranking state explicit.</a></h1>
+<hr />
+<h1 id="255-visibility-state"><a class="header" href="#255-visibility-state">255. Visibility State</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum FeedVisibilityDecision {
+    Eligible,
+    HiddenByUser,
+    HiddenByPolicy,
+    RemovedBySource,
+    RemovedByModeration,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="256-explainable"><a class="header" href="#256-explainable">256. Explainable.</a></h1>
+<hr />
+<h1 id="257-user-should-distinguish"><a class="header" href="#257-user-should-distinguish">257. User should distinguish:</a></h1>
+<pre><code class="language-text">muted
+moderated
+deleted
+unavailable
+</code></pre>
+<hr />
+<h1 id="258-hard-rule"><a class="header" href="#258-hard-rule">258. Hard rule.</a></h1>
+<hr />
+<h1 id="259-anti-manipulation"><a class="header" href="#259-anti-manipulation">259. Anti-Manipulation</a></h1>
+<p>Threats:</p>
+<pre><code class="language-text">bot farms
+fake engagement
+coordinated boosting
+spam publishers
+</code></pre>
+<hr />
+<h1 id="260-responses"><a class="header" href="#260-responses">260. Responses</a></h1>
+<pre><code class="language-text">rate limits
+minimum trend bucket
+source diversity
+proof cost
+manual curation
+</code></pre>
+<hr />
+<h1 id="261-no-invasive-device-fingerprinting-requirement"><a class="header" href="#261-no-invasive-device-fingerprinting-requirement">261. No invasive device fingerprinting requirement.</a></h1>
+<hr />
+<h1 id="262-hard-rule"><a class="header" href="#262-hard-rule">262. Hard rule.</a></h1>
+<hr />
+<h1 id="263-publisher-abuse"><a class="header" href="#263-publisher-abuse">263. Publisher Abuse</a></h1>
+<p>Can be blocked/muted locally.</p>
+<hr />
+<h1 id="264-source-block"><a class="header" href="#264-source-block">264. Source Block</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum FeedSourceState {
+    Active,
+    Muted,
+    Blocked,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="265-blocked"><a class="header" href="#265-blocked">265. Blocked</a></h1>
+<p>No feed candidates.</p>
+<hr />
+<h1 id="266-stale-sync-cannot-unblock"><a class="header" href="#266-stale-sync-cannot-unblock">266. Stale sync cannot unblock.</a></h1>
+<hr />
+<h1 id="267-hard-rule"><a class="header" href="#267-hard-rule">267. Hard rule.</a></h1>
+<hr />
+<h1 id="268-content-safety"><a class="header" href="#268-content-safety">268. Content Safety</a></h1>
+<p>External media/link fetch.</p>
+<hr />
+<h1 id="269-sandboxed-rendering"><a class="header" href="#269-sandboxed-rendering">269. Sandboxed rendering.</a></h1>
+<hr />
+<h1 id="270-no-active-htmljs-execution-in-feed"><a class="header" href="#270-no-active-htmljs-execution-in-feed">270. No active HTML/JS execution in feed.</a></h1>
+<hr />
+<h1 id="271-hard-rule"><a class="header" href="#271-hard-rule">271. Hard rule.</a></h1>
+<hr />
+<h1 id="272-markdownstructured-content"><a class="header" href="#272-markdownstructured-content">272. Markdown/structured content</a></h1>
+<p>Sanitize.</p>
+<hr />
+<h1 id="273-imagesvideo"><a class="header" href="#273-imagesvideo">273. Images/video</a></h1>
+<p>Decode safely.</p>
+<hr />
+<h1 id="274-link-preview"><a class="header" href="#274-link-preview">274. Link Preview</a></h1>
+<p>Privacy policy.</p>
+<hr />
+<h1 id="275-content-metadata"><a class="header" href="#275-content-metadata">275. Content Metadata</a></h1>
+<p>Bounded.</p>
+<hr />
+<h1 id="276-no-arbitrary-gigantic-metadata"><a class="header" href="#276-no-arbitrary-gigantic-metadata">276. No arbitrary gigantic metadata.</a></h1>
+<hr />
+<h1 id="277-feed-storage"><a class="header" href="#277-feed-storage">277. Feed Storage</a></h1>
+<p>Local:</p>
+<pre><code class="language-text">subscriptions
+timeline cache
+read state
+local recommendation state
+</code></pre>
+<hr />
+<h1 id="278-server"><a class="header" href="#278-server">278. Server:</a></h1>
+<pre><code class="language-text">public content index
+source metadata
+aggregate trend counters
+</code></pre>
+<hr />
+<h1 id="279-server-must-not-store"><a class="header" href="#279-server-must-not-store">279. Server Must Not Store</a></h1>
+<pre><code class="language-text">global per-user read timeline
+behavioral interest vector
+subscriber edge graph
+</code></pre>
+<hr />
+<h1 id="280-hard-rule"><a class="header" href="#280-hard-rule">280. Hard rule.</a></h1>
+<hr />
+<h1 id="281-search"><a class="header" href="#281-search">281. Search</a></h1>
+<p>Part 32 integration.</p>
+<hr />
+<h1 id="282-public-feed-search"><a class="header" href="#282-public-feed-search">282. Public feed search</a></h1>
+<p>server/public index allowed.</p>
+<hr />
+<h1 id="283-private-feed-search"><a class="header" href="#283-private-feed-search">283. Private feed search</a></h1>
+<p>local.</p>
+<hr />
+<h1 id="284-no-private-content-indexing-centrally"><a class="header" href="#284-no-private-content-indexing-centrally">284. No private content indexing centrally.</a></h1>
+<hr />
+<h1 id="285-hard-rule"><a class="header" href="#285-hard-rule">285. Hard rule.</a></h1>
+<hr />
+<h1 id="286-saved-items"><a class="header" href="#286-saved-items">286. Saved Items</a></h1>
+<p>Local/account encrypted.</p>
+<hr />
+<h1 id="287-save-action-not-public"><a class="header" href="#287-save-action-not-public">287. Save action not public.</a></h1>
+<hr />
+<h1 id="288-creator-not-notified"><a class="header" href="#288-creator-not-notified">288. Creator not notified.</a></h1>
+<hr />
+<h1 id="289-hard-rule"><a class="header" href="#289-hard-rule">289. Hard rule.</a></h1>
+<hr />
+<h1 id="290-read-later"><a class="header" href="#290-read-later">290. Read Later</a></h1>
+<p>Same.</p>
+<hr />
+<h1 id="291-bookmark-sync"><a class="header" href="#291-bookmark-sync">291. Bookmark Sync</a></h1>
+<p>Encrypted account state.</p>
+<hr />
+<h1 id="292-no-bookmark-analytics"><a class="header" href="#292-no-bookmark-analytics">292. No bookmark analytics.</a></h1>
+<hr />
+<h1 id="293-hard-rule"><a class="header" href="#293-hard-rule">293. Hard rule.</a></h1>
+<hr />
+<h1 id="294-feed-notification"><a class="header" href="#294-feed-notification">294. Feed Notification</a></h1>
+<p>Separate.</p>
+<hr />
+<h1 id="295-push-notification-uses-opaque-hint"><a class="header" href="#295-push-notification-uses-opaque-hint">295. Push notification uses opaque hint.</a></h1>
+<hr />
+<h1 id="296-content-fetched-after-wake"><a class="header" href="#296-content-fetched-after-wake">296. Content fetched after wake.</a></h1>
+<hr />
+<h1 id="297-no-full-sensitive-feed-item-in-push-payload"><a class="header" href="#297-no-full-sensitive-feed-item-in-push-payload">297. No full sensitive feed item in push payload.</a></h1>
+<hr />
+<h1 id="298-hard-rule"><a class="header" href="#298-hard-rule">298. Hard rule.</a></h1>
+<hr />
+<h1 id="299-feed-refresh"><a class="header" href="#299-feed-refresh">299. Feed Refresh</a></h1>
+<p>Pull-based.</p>
+<hr />
+<h1 id="300-refresh-interval"><a class="header" href="#300-refresh-interval">300. Refresh Interval</a></h1>
+<p>Battery/network aware.</p>
+<hr />
+<h1 id="301-no-high-frequency-polling-for-dormant-feeds"><a class="header" href="#301-no-high-frequency-polling-for-dormant-feeds">301. No high-frequency polling for dormant feeds.</a></h1>
+<hr />
+<h1 id="302-strict-mode"><a class="header" href="#302-strict-mode">302. Strict Mode</a></h1>
+<p>More batched.</p>
+<hr />
+<h1 id="303-timeline-pagination"><a class="header" href="#303-timeline-pagination">303. Timeline Pagination</a></h1>
+<p>Bounded page size.</p>
+<hr />
+<h1 id="304-no-unbounded-infinite-page-response"><a class="header" href="#304-no-unbounded-infinite-page-response">304. No unbounded infinite page response.</a></h1>
+<hr />
+<h1 id="305-hard-rule"><a class="header" href="#305-hard-rule">305. Hard rule.</a></h1>
+<hr />
+<h1 id="306-timeline-cursor-privacy"><a class="header" href="#306-timeline-cursor-privacy">306. Timeline Cursor Privacy</a></h1>
+<p>Opaque, non-user-identifying.</p>
+<hr />
+<h1 id="307-cursor-expiry"><a class="header" href="#307-cursor-expiry">307. Cursor expiry.</a></h1>
+<hr />
+<h1 id="308-no-permanent-cursor-correlation-token"><a class="header" href="#308-no-permanent-cursor-correlation-token">308. No permanent cursor correlation token.</a></h1>
+<hr />
+<h1 id="309-hard-rule"><a class="header" href="#309-hard-rule">309. Hard rule.</a></h1>
+<hr />
+<h1 id="310-feed-sync-across-devices"><a class="header" href="#310-feed-sync-across-devices">310. Feed Sync Across Devices</a></h1>
+<p>Sync:</p>
+<pre><code class="language-text">subscriptions
+mutes
+pins
+saved items
+optional read position
+</code></pre>
+<hr />
+<h1 id="311-not-sync"><a class="header" href="#311-not-sync">311. Not sync:</a></h1>
+<pre><code class="language-text">scroll velocity
+dwell time
+local ephemeral ranking history
+</code></pre>
+<hr />
+<h1 id="312-hard-rule"><a class="header" href="#312-hard-rule">312. Hard rule.</a></h1>
+<hr />
+<h1 id="313-feed-conflict-policy"><a class="header" href="#313-feed-conflict-policy">313. Feed Conflict Policy</a></h1>
+<p>Subscriptions:</p>
+<p>set union/removal tombstone.</p>
+<hr />
+<h1 id="314-blockmute"><a class="header" href="#314-blockmute">314. Block/mute:</a></h1>
+<p>restrictive wins where applicable.</p>
+<hr />
+<h1 id="315-pin-order"><a class="header" href="#315-pin-order">315. Pin order:</a></h1>
+<p>user merge/manual or deterministic.</p>
+<hr />
+<h1 id="316-read-state"><a class="header" href="#316-read-state">316. Read state:</a></h1>
+<p>device-local unless opted in.</p>
+<hr />
+<h1 id="317-no-server-lww-for-securityprivacy-block-state"><a class="header" href="#317-no-server-lww-for-securityprivacy-block-state">317. No server LWW for security/privacy block state.</a></h1>
+<hr />
+<h1 id="318-hard-rule"><a class="header" href="#318-hard-rule">318. Hard rule.</a></h1>
+<hr />
+<h1 id="319-timeline-repository"><a class="header" href="#319-timeline-repository">319. Timeline Repository</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait TimelineRepository {
+    fn page(
+        &amp;self,
+        state: &amp;TimelineState,
+        limit: usize,
+    ) -&gt; Result&lt;TimelinePage, FeedError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="320-subscription-repository"><a class="header" href="#320-subscription-repository">320. Subscription Repository</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait SubscriptionRepository {
+    fn subscribe(
+        &amp;self,
+        source: FeedSource,
+    ) -&gt; Result&lt;SubscriptionId, FeedError&gt;;
+
+    fn unsubscribe(
+        &amp;self,
+        id: SubscriptionId,
+    ) -&gt; Result&lt;(), FeedError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="321-candidate-provider"><a class="header" href="#321-candidate-provider">321. Candidate Provider</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait FeedCandidateProvider {
+    fn candidates(
+        &amp;self,
+        context: &amp;FeedContext,
+    ) -&gt; Result&lt;Vec&lt;FeedCandidate&gt;, FeedError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="322-ranker"><a class="header" href="#322-ranker">322. Ranker</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait FeedRanker {
+    fn rank(
+        &amp;self,
+        candidates: &amp;mut [FeedCandidate],
+        mode: RankingMode,
+    ) -&gt; Result&lt;(), FeedError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="323-public-discovery-service"><a class="header" href="#323-public-discovery-service">323. Public Discovery Service</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait PublicDiscoveryService {
+    fn search(
+        &amp;self,
+        query: DiscoveryQuery,
+    ) -&gt; Result&lt;Vec&lt;DiscoveryResult&gt;, FeedError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="324-trend-aggregator"><a class="header" href="#324-trend-aggregator">324. Trend Aggregator</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait TrendAggregator {
+    fn aggregate(
+        &amp;self,
+        window: TrendWindow,
+    ) -&gt; Result&lt;Vec&lt;TrendSignal&gt;, FeedError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="325-no-user-level-trend-api"><a class="header" href="#325-no-user-level-trend-api">325. No User-Level Trend API</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="326-ranking-policy"><a class="header" href="#326-ranking-policy">326. Ranking Policy</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct FeedRankingPolicy {
+    pub allowed_modes: BTreeSet&lt;RankingMode&gt;,
+    pub default_mode: RankingMode,
+    pub allow_behavioral_local: bool,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="327-server-cannot-override-users-chronological-choice"><a class="header" href="#327-server-cannot-override-users-chronological-choice">327. Server cannot override user's chronological choice.</a></h1>
+<hr />
+<h1 id="328-hard-rule"><a class="header" href="#328-hard-rule">328. Hard rule.</a></h1>
+<hr />
+<h1 id="329-recommendation-policy"><a class="header" href="#329-recommendation-policy">329. Recommendation Policy</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct RecommendationPolicy {
+    pub enabled: bool,
+    pub allowed_sources: BTreeSet&lt;RecommendationSource&gt;,
+    pub local_only_behavioral: bool,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="330-default"><a class="header" href="#330-default">330. Default</a></h1>
+<p>ExplicitTopics + FollowedSources + PublicTrending.</p>
+<hr />
+<h1 id="331-localhistory"><a class="header" href="#331-localhistory">331. LocalHistory</a></h1>
+<p>Opt-in.</p>
+<hr />
+<h1 id="332-no-cloud-behavioral-model"><a class="header" href="#332-no-cloud-behavioral-model">332. No Cloud Behavioral Model.</a></h1>
+<hr />
+<h1 id="333-hard-rule"><a class="header" href="#333-hard-rule">333. Hard rule.</a></h1>
+<hr />
+<h1 id="334-feed-explanation"><a class="header" href="#334-feed-explanation">334. Feed Explanation</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum RecommendationReason {
+    FollowedSource,
+    ExplicitTopic,
+    PublicTrending,
+    Curated,
+    LocalHistory,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="335-every-recommended-item-can-expose-one-reason"><a class="header" href="#335-every-recommended-item-can-expose-one-reason">335. Every recommended item can expose one reason.</a></h1>
+<hr />
+<h1 id="336-no-hidden-reason-category"><a class="header" href="#336-no-hidden-reason-category">336. No hidden reason category.</a></h1>
+<hr />
+<h1 id="337-feed-control-ux"><a class="header" href="#337-feed-control-ux">337. Feed Control UX</a></h1>
+<p>User should have:</p>
+<pre><code class="language-text">Chronological
+Subscriptions only
+Recommendations on/off
+Reset local personalization
+Mute/block source
+</code></pre>
+<hr />
+<h1 id="338-hard-rule"><a class="header" href="#338-hard-rule">338. Hard rule.</a></h1>
+<hr />
+<h1 id="339-no-dark-pattern-against-chronological-mode"><a class="header" href="#339-no-dark-pattern-against-chronological-mode">339. No Dark Pattern Against Chronological Mode</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="340-feed-quality"><a class="header" href="#340-feed-quality">340. Feed Quality</a></h1>
+<p>Optimize:</p>
+<pre><code class="language-text">relevance
+freshness
+source diversity
+user intent
+</code></pre>
+<hr />
+<h1 id="341-not-optimize-solely"><a class="header" href="#341-not-optimize-solely">341. Not optimize solely:</a></h1>
+<pre><code class="language-text">session length
+screen time
+compulsive engagement
+</code></pre>
+<hr />
+<h1 id="342-hard-rule"><a class="header" href="#342-hard-rule">342. Hard rule.</a></h1>
+<hr />
+<h1 id="343-source-diversity"><a class="header" href="#343-source-diversity">343. Source Diversity</a></h1>
+<p>Avoid one publisher dominating.</p>
+<hr />
+<h1 id="344-local-diversity-rule"><a class="header" href="#344-local-diversity-rule">344. Local diversity rule.</a></h1>
+<hr />
+<h1 id="345-example"><a class="header" href="#345-example">345. Example</a></h1>
+<p>max N consecutive items from same source.</p>
+<hr />
+<h1 id="346-no-hidden-politicalcontent-viewpoint-balancing-requirement"><a class="header" href="#346-no-hidden-politicalcontent-viewpoint-balancing-requirement">346. No hidden political/content viewpoint balancing requirement.</a></h1>
+<hr />
+<h1 id="347-just-source-diversity"><a class="header" href="#347-just-source-diversity">347. Just source diversity.</a></h1>
+<hr />
+<h1 id="348-discovery-safety"><a class="header" href="#348-discovery-safety">348. Discovery Safety</a></h1>
+<p>Public search can surface malicious content.</p>
+<hr />
+<h1 id="349-moderation-status"><a class="header" href="#349-moderation-status">349. Moderation status.</a></h1>
+<hr />
+<h1 id="350-user-filters"><a class="header" href="#350-user-filters">350. User filters.</a></h1>
+<hr />
+<h1 id="351-sensitive-content-labels-optional"><a class="header" href="#351-sensitive-content-labels-optional">351. Sensitive content labels optional.</a></h1>
+<hr />
+<h1 id="352-no-invasive-identity-inference"><a class="header" href="#352-no-invasive-identity-inference">352. No invasive identity inference.</a></h1>
+<hr />
+<h1 id="353-hard-rule"><a class="header" href="#353-hard-rule">353. Hard rule.</a></h1>
+<hr />
+<h1 id="354-content-classification"><a class="header" href="#354-content-classification">354. Content Classification</a></h1>
+<p>Can be publisher-declared/moderator-applied.</p>
+<hr />
+<h1 id="355-no-centralized-psychographic-classification-of-user"><a class="header" href="#355-no-centralized-psychographic-classification-of-user">355. No centralized psychographic classification of user.</a></h1>
+<hr />
+<h1 id="356-hard-rule"><a class="header" href="#356-hard-rule">356. Hard rule.</a></h1>
+<hr />
+<h1 id="357-creator-analytics"><a class="header" href="#357-creator-analytics">357. Creator Analytics</a></h1>
+<p>Privacy-sensitive.</p>
+<hr />
+<h1 id="358-allowed-aggregate-metrics"><a class="header" href="#358-allowed-aggregate-metrics">358. Allowed aggregate metrics:</a></h1>
+<pre><code class="language-text">public view bucket
+public reaction count
+subscriber count bucket
+</code></pre>
+<hr />
+<h1 id="359-not-allowed-by-default"><a class="header" href="#359-not-allowed-by-default">359. Not allowed by default:</a></h1>
+<pre><code class="language-text">viewer identity
+exact read timestamp
+viewer location
+contact overlap
+</code></pre>
+<hr />
+<h1 id="360-hard-rule"><a class="header" href="#360-hard-rule">360. Hard rule.</a></h1>
+<hr />
+<h1 id="361-creator-insights"><a class="header" href="#361-creator-insights">361. Creator Insights</a></h1>
+<p>Thresholded.</p>
+<hr />
+<h1 id="362-minimum-cohort"><a class="header" href="#362-minimum-cohort">362. Minimum cohort.</a></h1>
+<hr />
+<h1 id="363-no-small-audience-deanonymization"><a class="header" href="#363-no-small-audience-deanonymization">363. No small audience deanonymization.</a></h1>
+<hr />
+<h1 id="364-hard-rule"><a class="header" href="#364-hard-rule">364. Hard rule.</a></h1>
+<hr />
+<h1 id="365-public-metrics"><a class="header" href="#365-public-metrics">365. Public Metrics</a></h1>
+<p>Coarsened.</p>
+<hr />
+<h1 id="366-example-subscriber-count"><a class="header" href="#366-example-subscriber-count">366. Example subscriber count:</a></h1>
+<pre><code class="language-text">100+
+1K+
+10K+
+</code></pre>
+<hr />
+<h1 id="367-strict-mode-can-hide"><a class="header" href="#367-strict-mode-can-hide">367. Strict mode can hide.</a></h1>
+<hr />
+<h1 id="368-feed-telemetry"><a class="header" href="#368-feed-telemetry">368. Feed Telemetry</a></h1>
+<p>Safe:</p>
+<pre><code class="language-text">refresh success
+candidate fetch latency
+ranking latency
+trend pipeline health
+</code></pre>
+<hr />
+<h1 id="369-forbidden"><a class="header" href="#369-forbidden">369. Forbidden:</a></h1>
+<pre><code class="language-text">per-user read sequence
+dwell-time profile
+per-user interest vector
+</code></pre>
+<hr />
+<h1 id="370-hard-rule"><a class="header" href="#370-hard-rule">370. Hard rule.</a></h1>
+<hr />
+<h1 id="371-operational-logs"><a class="header" href="#371-operational-logs">371. Operational Logs</a></h1>
+<p>Source/service level.</p>
+<hr />
+<h1 id="372-no-user-content-interaction-history"><a class="header" href="#372-no-user-content-interaction-history">372. No user content interaction history.</a></h1>
+<hr />
+<h1 id="373-feed-slo"><a class="header" href="#373-feed-slo">373. Feed SLO</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">timeline load latency
+subscription update propagation
+public discovery availability
+</code></pre>
+<hr />
+<h1 id="374-privacy-slo"><a class="header" href="#374-privacy-slo">374. Privacy SLO</a></h1>
+<pre><code class="language-text">0 cloud behavioral profiles
+0 subscriber identity export
+0 viewer identity export
+</code></pre>
+<hr />
+<h1 id="375-security-slo"><a class="header" href="#375-security-slo">375. Security SLO</a></h1>
+<pre><code class="language-text">0 private content appearing in public discovery
+</code></pre>
+<hr />
+<h1 id="376-failure-modes"><a class="header" href="#376-failure-modes">376. Failure Modes</a></h1>
+<pre><code class="language-text">feed source outage
+directory outage
+trend service outage
+ranking model failure
+federation outage
+</code></pre>
+<hr />
+<h1 id="377-source-outage"><a class="header" href="#377-source-outage">377. Source Outage</a></h1>
+<p>Other sources continue.</p>
+<hr />
+<h1 id="378-directory-outage"><a class="header" href="#378-directory-outage">378. Directory Outage</a></h1>
+<p>Cached subscriptions continue.</p>
+<hr />
+<h1 id="379-trend-service-outage"><a class="header" href="#379-trend-service-outage">379. Trend Service Outage</a></h1>
+<p>Trending section disappears.</p>
+<hr />
+<h1 id="380-no-fallback-to-invasive-ranking"><a class="header" href="#380-no-fallback-to-invasive-ranking">380. No fallback to invasive ranking.</a></h1>
+<hr />
+<h1 id="381-hard-rule"><a class="header" href="#381-hard-rule">381. Hard rule.</a></h1>
+<hr />
+<h1 id="382-ranking-failure"><a class="header" href="#382-ranking-failure">382. Ranking Failure</a></h1>
+<p>Fallback:</p>
+<pre><code class="language-text">chronological
+</code></pre>
+<hr />
+<h1 id="383-hard-rule"><a class="header" href="#383-hard-rule">383. Hard rule.</a></h1>
+<hr />
+<h1 id="384-recommendation-engine-failure"><a class="header" href="#384-recommendation-engine-failure">384. Recommendation Engine Failure</a></h1>
+<p>Disable recommendations.</p>
+<hr />
+<h1 id="385-do-not-block-subscription-feed"><a class="header" href="#385-do-not-block-subscription-feed">385. Do not block subscription feed.</a></h1>
+<hr />
+<h1 id="386-hard-rule"><a class="header" href="#386-hard-rule">386. Hard rule.</a></h1>
+<hr />
+<h1 id="387-federation-outage"><a class="header" href="#387-federation-outage">387. Federation Outage</a></h1>
+<p>Local/federated cached feed continues within validity.</p>
+<hr />
+<h1 id="388-no-identity-leaking-direct-fallback"><a class="header" href="#388-no-identity-leaking-direct-fallback">388. No identity-leaking direct fallback.</a></h1>
+<hr />
+<h1 id="389-hard-rule"><a class="header" href="#389-hard-rule">389. Hard rule.</a></h1>
+<hr />
+<h1 id="390-account-lifecycle"><a class="header" href="#390-account-lifecycle">390. Account Lifecycle</a></h1>
+<p>Part 83.</p>
+<hr />
+<h1 id="391-deleteddeactivated-account-subscriptions-handled-per-policy"><a class="header" href="#391-deleteddeactivated-account-subscriptions-handled-per-policy">391. Deleted/deactivated account subscriptions handled per policy.</a></h1>
+<hr />
+<h1 id="392-deleted-account-cannot-continue-cloud-feed-sync"><a class="header" href="#392-deleted-account-cannot-continue-cloud-feed-sync">392. Deleted account cannot continue cloud feed sync.</a></h1>
+<hr />
+<h1 id="393-local-cached-public-content-may-remain-until-local-cleanup"><a class="header" href="#393-local-cached-public-content-may-remain-until-local-cleanup">393. Local cached public content may remain until local cleanup.</a></h1>
+<hr />
+<h1 id="394-profile-integration"><a class="header" href="#394-profile-integration">394. Profile Integration</a></h1>
+<p>Part 84.</p>
+<hr />
+<h1 id="395-explicit-topic-preferences-may-sync-encrypted"><a class="header" href="#395-explicit-topic-preferences-may-sync-encrypted">395. Explicit topic preferences may sync encrypted.</a></h1>
+<hr />
+<h1 id="396-local-behavioral-preference-remains-local"><a class="header" href="#396-local-behavioral-preference-remains-local">396. Local behavioral preference remains local.</a></h1>
+<hr />
+<h1 id="397-contact-integration"><a class="header" href="#397-contact-integration">397. Contact Integration</a></h1>
+<p>Part 85.</p>
+<hr />
+<h1 id="398-contacts-may-be-feed-sources"><a class="header" href="#398-contacts-may-be-feed-sources">398. Contacts may be feed sources.</a></h1>
+<hr />
+<h1 id="399-contact-relationship-does-not-imply-followsubscription"><a class="header" href="#399-contact-relationship-does-not-imply-followsubscription">399. Contact relationship does not imply follow/subscription.</a></h1>
+<hr />
+<h1 id="400-hard-rule"><a class="header" href="#400-hard-rule">400. Hard rule.</a></h1>
+<hr />
+<h1 id="401-social-space-integration"><a class="header" href="#401-social-space-integration">401. Social Space Integration</a></h1>
+<p>Part 86.</p>
+<hr />
+<h1 id="402-joined-space-can-auto-subscribe-only-if-space-policyuser-setting-says"><a class="header" href="#402-joined-space-can-auto-subscribe-only-if-space-policyuser-setting-says">402. Joined space can auto-subscribe only if space policy/user setting says.</a></h1>
+<hr />
+<h1 id="403-user-can-mute"><a class="header" href="#403-user-can-mute">403. User can mute.</a></h1>
+<hr />
+<h1 id="404-group-membership-and-feed-subscription-remain-separate"><a class="header" href="#404-group-membership-and-feed-subscription-remain-separate">404. Group membership and feed subscription remain separate.</a></h1>
+<hr />
+<h1 id="405-hard-rule"><a class="header" href="#405-hard-rule">405. Hard rule.</a></h1>
+<hr />
+<h1 id="406-authorization-integration"><a class="header" href="#406-authorization-integration">406. Authorization Integration</a></h1>
+<p>Part 81.</p>
+<hr />
+<h1 id="407-candidate-eligibility-checked-before-ranking"><a class="header" href="#407-candidate-eligibility-checked-before-ranking">407. Candidate eligibility checked before ranking.</a></h1>
+<hr />
+<h1 id="408-ranking-cannot-grant-access"><a class="header" href="#408-ranking-cannot-grant-access">408. Ranking cannot grant access.</a></h1>
+<hr />
+<h1 id="409-hard-rule"><a class="header" href="#409-hard-rule">409. Hard rule.</a></h1>
+<hr />
+<h1 id="410-authentication-integration"><a class="header" href="#410-authentication-integration">410. Authentication Integration</a></h1>
+<p>Part 82.</p>
+<hr />
+<h1 id="411-public-discovery-may-be-unauthenticated"><a class="header" href="#411-public-discovery-may-be-unauthenticated">411. Public discovery may be unauthenticated.</a></h1>
+<hr />
+<h1 id="412-managed-feed-requires-org-auth"><a class="header" href="#412-managed-feed-requires-org-auth">412. Managed feed requires org auth.</a></h1>
+<hr />
+<h1 id="413-feed-token-not-auth-token"><a class="header" href="#413-feed-token-not-auth-token">413. Feed token not auth token.</a></h1>
+<hr />
+<h1 id="414-hard-rule"><a class="header" href="#414-hard-rule">414. Hard rule.</a></h1>
+<hr />
+<h1 id="415-edge-integration"><a class="header" href="#415-edge-integration">415. Edge Integration</a></h1>
+<p>Part 78.</p>
+<hr />
+<h1 id="416-public-feed-apis-l7"><a class="header" href="#416-public-feed-apis-l7">416. Public feed APIs L7.</a></h1>
+<hr />
+<h1 id="417-private-content-remains-e2ee"><a class="header" href="#417-private-content-remains-e2ee">417. Private content remains E2EE.</a></h1>
+<hr />
+<h1 id="418-waf-does-not-inspect-encrypted-private-content"><a class="header" href="#418-waf-does-not-inspect-encrypted-private-content">418. WAF does not inspect encrypted private content.</a></h1>
+<hr />
+<h1 id="419-internal-service-integration"><a class="header" href="#419-internal-service-integration">419. Internal Service Integration</a></h1>
+<p>Part 79.</p>
+<hr />
+<h1 id="420-feed-services-use-workload-identitymtls"><a class="header" href="#420-feed-services-use-workload-identitymtls">420. Feed services use workload identity/mTLS.</a></h1>
+<hr />
+<h1 id="421-secrets-integration"><a class="header" href="#421-secrets-integration">421. Secrets Integration</a></h1>
+<p>Part 80.</p>
+<hr />
+<h1 id="422-publisher-signing-keys-scoped"><a class="header" href="#422-publisher-signing-keys-scoped">422. Publisher signing keys scoped.</a></h1>
+<hr />
+<h1 id="423-no-global-feed-signing-secret"><a class="header" href="#423-no-global-feed-signing-secret">423. No global feed signing secret.</a></h1>
+<hr />
+<h1 id="424-event-bus-integration"><a class="header" href="#424-event-bus-integration">424. Event Bus Integration</a></h1>
+<p>Part 75.</p>
+<hr />
+<h1 id="425-publication-events-may-feed-public-indextrend-aggregation"><a class="header" href="#425-publication-events-may-feed-public-indextrend-aggregation">425. Publication events may feed public index/trend aggregation.</a></h1>
+<hr />
+<h1 id="426-no-user-interaction-event-stream"><a class="header" href="#426-no-user-interaction-event-stream">426. No user interaction event stream.</a></h1>
+<hr />
+<h1 id="427-hard-rule"><a class="header" href="#427-hard-rule">427. Hard rule.</a></h1>
+<hr />
+<h1 id="428-database-integration"><a class="header" href="#428-database-integration">428. Database Integration</a></h1>
+<p>Part 74.</p>
+<hr />
+<h1 id="429-public-content-index-separate-from-private-subscription-state"><a class="header" href="#429-public-content-index-separate-from-private-subscription-state">429. Public content index separate from private subscription state.</a></h1>
+<hr />
+<h1 id="430-no-central-table"><a class="header" href="#430-no-central-table">430. No central table:</a></h1>
+<pre><code class="language-text">user_id, viewed_item_id, dwell_time
+</code></pre>
+<hr />
+<h1 id="431-hard-rule"><a class="header" href="#431-hard-rule">431. Hard rule.</a></h1>
+<hr />
+<h1 id="432-storage-model"><a class="header" href="#432-storage-model">432. Storage Model</a></h1>
+<p>Client:</p>
+<pre><code class="language-text">subscriptions
+timeline cache
+local ranking state
+saved items
+optional read state
+</code></pre>
+<p>Server:</p>
+<pre><code class="language-text">public content
+public discovery metadata
+aggregate trends
+</code></pre>
+<hr />
+<h1 id="433-no-global-behavioral-store"><a class="header" href="#433-no-global-behavioral-store">433. No Global Behavioral Store.</a></h1>
+<hr />
+<h1 id="434-search-integration"><a class="header" href="#434-search-integration">434. Search Integration</a></h1>
+<p>Part 32.</p>
+<hr />
+<h1 id="435-private-feed-search-local"><a class="header" href="#435-private-feed-search-local">435. Private feed search local.</a></h1>
+<hr />
+<h1 id="436-public-feed-search-public-index"><a class="header" href="#436-public-feed-search-public-index">436. Public feed search public index.</a></h1>
+<hr />
+<h1 id="437-no-private-index-upload"><a class="header" href="#437-no-private-index-upload">437. No private index upload.</a></h1>
+<hr />
+<h1 id="438-hard-rule"><a class="header" href="#438-hard-rule">438. Hard rule.</a></h1>
+<hr />
+<h1 id="439-content-portability"><a class="header" href="#439-content-portability">439. Content Portability</a></h1>
+<p>Export subscriptions/saved items.</p>
+<hr />
+<h1 id="440-exclude-behavioral-state-by-default"><a class="header" href="#440-exclude-behavioral-state-by-default">440. Exclude behavioral state by default.</a></h1>
+<hr />
+<h1 id="441-recommendation-model-state-optional-local-export"><a class="header" href="#441-recommendation-model-state-optional-local-export">441. Recommendation model state optional local export.</a></h1>
+<hr />
+<h1 id="442-no-hidden-cloud-profile-to-export"><a class="header" href="#442-no-hidden-cloud-profile-to-export">442. No hidden cloud profile to export.</a></h1>
+<hr />
+<h1 id="443-hard-rule"><a class="header" href="#443-hard-rule">443. Hard rule.</a></h1>
+<hr />
+<h1 id="444-backup"><a class="header" href="#444-backup">444. Backup</a></h1>
+<p>Subscriptions and explicit preferences can be backed up.</p>
+<hr />
+<h1 id="445-local-behavior-model-optionalrebuildable"><a class="header" href="#445-local-behavior-model-optionalrebuildable">445. Local behavior model optional/rebuildable.</a></h1>
+<hr />
+<h1 id="446-read-state-optional"><a class="header" href="#446-read-state-optional">446. Read state optional.</a></h1>
+<hr />
+<h1 id="447-no-server-restoring-revokeddeleted-source"><a class="header" href="#447-no-server-restoring-revokeddeleted-source">447. No server restoring revoked/deleted source.</a></h1>
+<hr />
+<h1 id="448-hard-rule"><a class="header" href="#448-hard-rule">448. Hard rule.</a></h1>
+<hr />
+<h1 id="449-deletion"><a class="header" href="#449-deletion">449. Deletion</a></h1>
+<p>Source delete/retract propagated.</p>
+<hr />
+<h1 id="450-cached-copies-may-persist-according-to-retentionpublic-archive"><a class="header" href="#450-cached-copies-may-persist-according-to-retentionpublic-archive">450. Cached copies may persist according to retention/public archive.</a></h1>
+<hr />
+<h1 id="451-no-claim-universal-erasure"><a class="header" href="#451-no-claim-universal-erasure">451. No claim universal erasure.</a></h1>
+<hr />
+<h1 id="452-hard-truth"><a class="header" href="#452-hard-truth">452. Hard truth.</a></h1>
+<hr />
+<h1 id="453-trend-privacy"><a class="header" href="#453-trend-privacy">453. Trend Privacy</a></h1>
+<p>Aggregate counters retention short.</p>
+<hr />
+<h1 id="454-no-indefinite-raw-trend-event-history"><a class="header" href="#454-no-indefinite-raw-trend-event-history">454. No indefinite raw trend event history.</a></h1>
+<hr />
+<h1 id="455-hard-rule"><a class="header" href="#455-hard-rule">455. Hard rule.</a></h1>
+<hr />
+<h1 id="456-trend-input-event"><a class="header" href="#456-trend-input-event">456. Trend Input Event</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct PublicTrendEvent {
+    pub content: PublicContentRef,
+    pub event_class: PublicTrendEventClass,
+    pub coarse_epoch: TrendEpoch,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="457-no-user-id"><a class="header" href="#457-no-user-id">457. No user ID.</a></h1>
+<hr />
+<h1 id="458-trend-event-class"><a class="header" href="#458-trend-event-class">458. Trend Event Class</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum PublicTrendEventClass {
+    View,
+    Reaction,
+    Reshare,
+    Subscribe,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="459-dedup-abuse"><a class="header" href="#459-dedup-abuse">459. Dedup Abuse</a></h1>
+<p>Need approximate anonymous controls.</p>
+<hr />
+<h1 id="460-could-use-scoped-rate-tokenephemeral-source-bucket"><a class="header" href="#460-could-use-scoped-rate-tokenephemeral-source-bucket">460. Could use scoped rate token/ephemeral source bucket.</a></h1>
+<hr />
+<h1 id="461-no-permanent-identity"><a class="header" href="#461-no-permanent-identity">461. No permanent identity.</a></h1>
+<hr />
+<h1 id="462-hard-rule"><a class="header" href="#462-hard-rule">462. Hard rule.</a></h1>
+<hr />
+<h1 id="463-trend-aggregation-windows"><a class="header" href="#463-trend-aggregation-windows">463. Trend Aggregation Windows</a></h1>
+<pre><code class="language-text">hourly
+daily
+weekly
+</code></pre>
+<hr />
+<h1 id="464-no-second-by-second-public-user-behavior"><a class="header" href="#464-no-second-by-second-public-user-behavior">464. No second-by-second public user behavior.</a></h1>
+<hr />
+<h1 id="465-hard-rule"><a class="header" href="#465-hard-rule">465. Hard rule.</a></h1>
+<hr />
+<h1 id="466-curated-lists"><a class="header" href="#466-curated-lists">466. Curated Lists</a></h1>
+<p>Human/admin curated.</p>
+<hr />
+<h1 id="467-curator-identity-scoped"><a class="header" href="#467-curator-identity-scoped">467. Curator identity scoped.</a></h1>
+<hr />
+<h1 id="468-transparency"><a class="header" href="#468-transparency">468. Transparency.</a></h1>
+<hr />
+<h1 id="469-no-hidden-sponsored-insertion-without-explicit-label-if-product-adds-monetization-later"><a class="header" href="#469-no-hidden-sponsored-insertion-without-explicit-label-if-product-adds-monetization-later">469. No hidden sponsored insertion without explicit label if product adds monetization later.</a></h1>
+<hr />
+<h1 id="470-feed-policy-separates-organiccurated"><a class="header" href="#470-feed-policy-separates-organiccurated">470. Feed Policy separates organic/curated.</a></h1>
+<hr />
+<h1 id="471-monetization-not-core"><a class="header" href="#471-monetization-not-core">471. Monetization Not Core</a></h1>
+<p>Part 54 economics separate.</p>
+<hr />
+<h1 id="472-crate-layout"><a class="header" href="#472-crate-layout">472. Crate Layout</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">crates/
+├── siar-feed-core/
+├── siar-subscription/
+├── siar-timeline/
+├── siar-feed-candidate/
+├── siar-feed-ranking/
+├── siar-feed-recommendation/
+├── siar-public-discovery/
+├── siar-trending/
+├── siar-feed-federation/
+├── siar-feed-observability/
+└── siar-feed-testkit/
+</code></pre>
+<hr />
+<h1 id="473-siar-feed-core"><a class="header" href="#473-siar-feed-core">473. <code>siar-feed-core</code></a></h1>
+<p>Owns:</p>
+<pre><code class="language-text">feed IDs
+modes
+errors
+</code></pre>
+<hr />
+<h1 id="474-siar-subscription"><a class="header" href="#474-siar-subscription">474. <code>siar-subscription</code></a></h1>
+<p>Subscription state/capabilities.</p>
+<hr />
+<h1 id="475-siar-timeline"><a class="header" href="#475-siar-timeline">475. <code>siar-timeline</code></a></h1>
+<p>Cursor/pagination/local merge.</p>
+<hr />
+<h1 id="476-siar-feed-candidate"><a class="header" href="#476-siar-feed-candidate">476. <code>siar-feed-candidate</code></a></h1>
+<p>Candidate eligibility.</p>
+<hr />
+<h1 id="477-siar-feed-ranking"><a class="header" href="#477-siar-feed-ranking">477. <code>siar-feed-ranking</code></a></h1>
+<p>Chronological/local/curated rankers.</p>
+<hr />
+<h1 id="478-siar-feed-recommendation"><a class="header" href="#478-siar-feed-recommendation">478. <code>siar-feed-recommendation</code></a></h1>
+<p>Local explicit-topic recommendation.</p>
+<hr />
+<h1 id="479-siar-public-discovery"><a class="header" href="#479-siar-public-discovery">479. <code>siar-public-discovery</code></a></h1>
+<p>Public search/listing.</p>
+<hr />
+<h1 id="480-siar-trending"><a class="header" href="#480-siar-trending">480. <code>siar-trending</code></a></h1>
+<p>Thresholded aggregate trend signals.</p>
+<hr />
+<h1 id="481-siar-feed-federation"><a class="header" href="#481-siar-feed-federation">481. <code>siar-feed-federation</code></a></h1>
+<p>Remote feed ingestion.</p>
+<hr />
+<h1 id="482-siar-feed-observability"><a class="header" href="#482-siar-feed-observability">482. <code>siar-feed-observability</code></a></h1>
+<p>Aggregate pipeline metrics only.</p>
+<hr />
+<h1 id="483-siar-feed-testkit"><a class="header" href="#483-siar-feed-testkit">483. <code>siar-feed-testkit</code></a></h1>
+<p>ranking/privacy/federation/trend tests.</p>
+<hr />
+<h1 id="484-error-taxonomy"><a class="header" href="#484-error-taxonomy">484. Error Taxonomy</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum FeedError {
+    SourceNotFound,
+    SubscriptionDenied,
+    ContentUnavailable,
+    ContentNotAuthorized,
+    CursorExpired,
+    RankingUnavailable,
+    RecommendationDisabled,
+    DiscoveryDenied,
+    FederationUnavailable,
+    SourceBlocked,
+    Internal,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="485-testing"><a class="header" href="#485-testing">485. Testing</a></h1>
+<p>Need feed/discovery testkit.</p>
+<hr />
+<h1 id="486-test-scenarios"><a class="header" href="#486-test-scenarios">486. Test Scenarios</a></h1>
+<pre><code class="language-text">chronological mode
+subscription mode
+local recommendation
+trend aggregation
+source block
+</code></pre>
+<hr />
+<h1 id="487-chronological-test"><a class="header" href="#487-chronological-test">487. Chronological Test</a></h1>
+<p>Order deterministic.</p>
+<hr />
+<h1 id="488-ranking-failure-test"><a class="header" href="#488-ranking-failure-test">488. Ranking Failure Test</a></h1>
+<p>Fallback chronological.</p>
+<hr />
+<h1 id="489-recommendation-disabled-test"><a class="header" href="#489-recommendation-disabled-test">489. Recommendation Disabled Test</a></h1>
+<p>No recommended candidates.</p>
+<hr />
+<h1 id="490-local-history-test"><a class="header" href="#490-local-history-test">490. Local History Test</a></h1>
+<p>Signal never leaves device.</p>
+<hr />
+<h1 id="491-subscription-privacy-test"><a class="header" href="#491-subscription-privacy-test">491. Subscription Privacy Test</a></h1>
+<p>Creator cannot enumerate subscribers.</p>
+<hr />
+<h1 id="492-read-state-test"><a class="header" href="#492-read-state-test">492. Read-State Test</a></h1>
+<p>Not synced unless opt-in.</p>
+<hr />
+<h1 id="493-viewer-privacy-test"><a class="header" href="#493-viewer-privacy-test">493. Viewer Privacy Test</a></h1>
+<p>No individual viewer list.</p>
+<hr />
+<h1 id="494-trending-test"><a class="header" href="#494-trending-test">494. Trending Test</a></h1>
+<p>Minimum bucket required.</p>
+<hr />
+<h1 id="495-manipulation-test"><a class="header" href="#495-manipulation-test">495. Manipulation Test</a></h1>
+<p>Rate limits/source diversity.</p>
+<hr />
+<h1 id="496-private-content-test"><a class="header" href="#496-private-content-test">496. Private Content Test</a></h1>
+<p>Never enters public discovery.</p>
+<hr />
+<h1 id="497-moderation-test"><a class="header" href="#497-moderation-test">497. Moderation Test</a></h1>
+<p>Removed content excluded but moderation != ranking.</p>
+<hr />
+<h1 id="498-contact-test"><a class="header" href="#498-contact-test">498. Contact Test</a></h1>
+<p>Contact relationship does not auto-follow.</p>
+<hr />
+<h1 id="499-group-test"><a class="header" href="#499-group-test">499. Group Test</a></h1>
+<p>Group membership and feed subscription separate.</p>
+<hr />
+<h1 id="500-federation-test"><a class="header" href="#500-federation-test">500. Federation Test</a></h1>
+<p>Remote domain receives no subscriber identity.</p>
+<hr />
+<h1 id="501-managed-feed-test"><a class="header" href="#501-managed-feed-test">501. Managed Feed Test</a></h1>
+<p>Org pin affects managed profile only.</p>
+<hr />
+<h1 id="502-deletion-test"><a class="header" href="#502-deletion-test">502. Deletion Test</a></h1>
+<p>Retracted/deleted source not resurrected by stale cache.</p>
+<hr />
+<h1 id="503-telemetry-test"><a class="header" href="#503-telemetry-test">503. Telemetry Test</a></h1>
+<p>No per-user interest vector/log.</p>
+<hr />
+<h1 id="504-fuzzing"><a class="header" href="#504-fuzzing">504. Fuzzing</a></h1>
+<p>Fuzz:</p>
+<pre><code class="language-text">feed cursor
+discovery result
+subscription envelope
+trend event
+federated feed envelope
+</code></pre>
+<hr />
+<h1 id="505-property-tests"><a class="header" href="#505-property-tests">505. Property Tests</a></h1>
+<p>Properties:</p>
+<pre><code class="language-text">unauthorized candidate can never enter ranked timeline
+chronological mode never invokes behavioral ranker
+disabled recommendation produces no recommendation items
+private content never appears in public discovery
+</code></pre>
+<hr />
+<h1 id="506-formal-verification-targets"><a class="header" href="#506-formal-verification-targets">506. Formal Verification Targets</a></h1>
+<p>Strong candidates:</p>
+<pre><code class="language-text">candidate eligibility before ranking
+subscription state
+trend threshold privacy
+federated content scope
+</code></pre>
+<hr />
+<h1 id="507-kani-candidate"><a class="header" href="#507-kani-candidate">507. Kani Candidate</a></h1>
+<p>ranking eligibility/filter order.</p>
+<hr />
+<h1 id="508-tla-candidate"><a class="header" href="#508-tla-candidate">508. TLA+ Candidate</a></h1>
+<p>publication/retraction/cache/federation propagation.</p>
+<hr />
+<h1 id="509-loom-candidate"><a class="header" href="#509-loom-candidate">509. Loom Candidate</a></h1>
+<p>concurrent subscription update + timeline refresh + source block.</p>
+<hr />
+<h1 id="510-performance"><a class="header" href="#510-performance">510. Performance</a></h1>
+<p>Timeline hot path.</p>
+<hr />
+<h1 id="511-candidate-set-bounded"><a class="header" href="#511-candidate-set-bounded">511. Candidate set bounded.</a></h1>
+<hr />
+<h1 id="512-ranking-localin-memory"><a class="header" href="#512-ranking-localin-memory">512. Ranking local/in-memory.</a></h1>
+<hr />
+<h1 id="513-no-remote-ml-inference"><a class="header" href="#513-no-remote-ml-inference">513. No remote ML inference.</a></h1>
+<hr />
+<h1 id="514-pagination"><a class="header" href="#514-pagination">514. Pagination.</a></h1>
+<hr />
+<h1 id="515-media-lazy-load"><a class="header" href="#515-media-lazy-load">515. Media lazy load.</a></h1>
+<hr />
+<h1 id="516-public-search-indexed"><a class="header" href="#516-public-search-indexed">516. Public search indexed.</a></h1>
+<hr />
+<h1 id="517-trend-aggregate-async"><a class="header" href="#517-trend-aggregate-async">517. Trend aggregate async.</a></h1>
+<hr />
+<h1 id="518-no-per-scroll-server-event"><a class="header" href="#518-no-per-scroll-server-event">518. No per-scroll server event.</a></h1>
+<hr />
+<h1 id="519-hard-rule"><a class="header" href="#519-hard-rule">519. Hard rule.</a></h1>
+<hr />
+<h1 id="520-timeline-cache"><a class="header" href="#520-timeline-cache">520. Timeline Cache</a></h1>
+<p>Bounded by:</p>
+<pre><code class="language-text">item count
+bytes
+age
+</code></pre>
+<hr />
+<h1 id="521-eviction-local"><a class="header" href="#521-eviction-local">521. Eviction local.</a></h1>
+<hr />
+<h1 id="522-no-infinite-scroll-storage"><a class="header" href="#522-no-infinite-scroll-storage">522. No infinite scroll storage.</a></h1>
+<hr />
+<h1 id="523-content-blobs-separate"><a class="header" href="#523-content-blobs-separate">523. Content blobs separate.</a></h1>
+<hr />
+<h1 id="524-previews-bounded"><a class="header" href="#524-previews-bounded">524. Previews bounded.</a></h1>
+<hr />
+<h1 id="525-source-fairness"><a class="header" href="#525-source-fairness">525. Source Fairness</a></h1>
+<p>One source cannot monopolize queue/cache.</p>
+<hr />
+<h1 id="526-local-scheduling"><a class="header" href="#526-local-scheduling">526. Local scheduling.</a></h1>
+<hr />
+<h1 id="527-no-server-per-user-fairness-profile"><a class="header" href="#527-no-server-per-user-fairness-profile">527. No server per-user fairness profile.</a></h1>
+<hr />
+<h1 id="528-security-privacy--correctness-invariants"><a class="header" href="#528-security-privacy--correctness-invariants">528. Security, Privacy &amp; Correctness Invariants</a></h1>
+<p>Mandatory:</p>
+<pre><code class="language-text">1. Chronological/subscription-only feed modes remain available and cannot be silently replaced by opaque behavioral ranking.
+2. Private/member-scoped content is filtered for authorization before ranking and can never appear in public discovery.
+3. User behavioral signals, read sequences, dwell time, scroll behavior, and local interest models remain local by default and are not uploaded as centralized behavioral profiles.
+4. Subscriptions do not expose subscriber identities to creators or public APIs by default.
+5. Public trending and creator analytics use thresholded aggregate signals without individual viewer/subscriber identities.
+6. Ranking decisions are explainable through explicit reasons such as follow, topic, curation, or public trend.
+7. Recommendation systems are optional, resettable, local-first, and never required for basic feed usability.
+8. Managed/enterprise feeds affect only managed profiles and cannot inspect or reorder unrelated personal feeds by default.
+9. Federation transports public/federated content and capabilities without creating a cross-domain user-interest or subscriber graph.
+10. Ranking state, moderation state, and authorization state remain separate; ranking cannot grant access or silently substitute for moderation.
+11. Feed telemetry contains pipeline/service metrics only and never becomes a per-user interest vector, view history, or engagement timeline.
+12. Deleted/retracted/blocked content and sources cannot be resurrected into active timelines by stale caches, backups, or federated replicas.
+</code></pre>
+<hr />
+<h1 id="529-initial-production-scope"><a class="header" href="#529-initial-production-scope">529. Initial Production Scope</a></h1>
+<p>Implement first:</p>
+<pre><code class="language-text">typed FeedSource/FeedItem/Subscription
+chronological feed
+subscription-only feed
+local merge/pagination
+mute/block/pin controls
+explicit topic preferences
+local heuristic ranking
+recommendations opt-in
+public discovery
+aggregate thresholded trending
+creator subscriber-count buckets
+local-only read state by default
+encrypted subscription sync
+federated public-feed ingestion
+managed feed isolation
+privacy-safe metrics
+feed testkit
+</code></pre>
+<p>Then add:</p>
+<pre><code class="language-text">on-device recommendation model
+privacy-preserving aggregate recommendation research
+cross-provider feed portability
+advanced public trend robustness
+local diversity-aware ranking
+formal feed/privacy verification
+</code></pre>
+<hr />
+<h1 id="530-definition-of-done"><a class="header" href="#530-definition-of-done">530. Definition of Done</a></h1>
+<p>Part 87 is complete when:</p>
+<ul>
+<li>subscription/chronological feeds work without recommendation infrastructure</li>
+<li>feed candidates are authorized before ranking</li>
+<li>ranking modes are explicit and user-controlled</li>
+<li>behavioral personalization stays local by default</li>
+<li>subscriptions do not reveal subscriber identities</li>
+<li>public analytics/trending use minimum aggregate thresholds</li>
+<li>creator insights do not expose viewer identities</li>
+<li>private/public feed search boundaries are explicit</li>
+<li>managed and personal feeds remain separate</li>
+<li>federation does not create cross-domain interest graphs</li>
+<li>stale caches cannot resurrect removed/deleted content</li>
+<li>telemetry excludes per-user engagement profiles</li>
+<li>ranking/privacy/trend/federation/fuzz/formal tests are specified</li>
+</ul>
+<hr />
+<h1 id="531-final-architecture"><a class="header" href="#531-final-architecture">531. Final Architecture</a></h1>
+<pre><code class="language-text">            SUBSCRIPTIONS / PUBLIC SOURCES
+                         │
+                         ▼
+                 CANDIDATE COLLECTION
+                         │
+                         ▼
+               AUTHORIZATION / PRIVACY
+                         │
+                         ▼
+            CHRONOLOGICAL / LOCAL RANKING
+                         │
+                         ▼
+                      TIMELINE
+                         │
+                ┌────────┼────────┐
+                │        │        │
+              SAVE      MUTE    SUBSCRIBE
+                │        │        │
+                └────────┼────────┘
+                         ▼
+                  LOCAL USER STATE
+</code></pre>
+<p>Feed safety model:</p>
+<pre><code class="language-text">explicit subscriptions
++
+authorization before ranking
++
+chronological fallback
++
+local personalization
++
+thresholded public trends
++
+subscriber/viewer privacy
++
+no behavioral cloud profile
+</code></pre>
+<p>not:</p>
+<pre><code class="language-text">record every interaction, build a hidden psychographic profile, and rank content to maximize time-on-screen
+</code></pre>
+<hr />
+<h1 id="532-final-principle"><a class="header" href="#532-final-principle">532. Final Principle</a></h1>
+<p>A feed should help users organize and discover content according to explicit intent without requiring the platform to know what keeps each person scrolling.</p>
+<p>The correct model is:</p>
+<pre><code class="language-text">follow explicitly
++
+rank locally
++
+recommend optionally
++
+aggregate publicly only when privacy-safe
++
+keep subscriber/viewer identities hidden
++
+separate moderation from ranking
++
+never centralize behavioral profiles
+</code></pre>
+<p>This architecture gives SIAR a privacy-preserving foundation for timelines, subscriptions, recommendations, trending, discovery, public channels, creators, federated feeds, and managed announcements while preserving the anonymity, local-first, least-authority, and social-graph privacy guarantees established across Parts 34–86.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="86-anonymous-network-group-directory-communities-channels-membership-discovery-moderation-boundaries-privacy-preserving-social-spaces-architecture.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="88-anonymous-network-content-publishing-posts-articles-media-drafts-revisions-distribution-creator-state-architecture.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="86-anonymous-network-group-directory-communities-channels-membership-discovery-moderation-boundaries-privacy-preserving-social-spaces-architecture.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="88-anonymous-network-content-publishing-posts-articles-media-drafts-revisions-distribution-creator-state-architecture.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

@@ -1,0 +1,2066 @@
+<!DOCTYPE HTML>
+<html lang="en" class="navy" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>39 — Mixnet Directory, Node Admission, Identity, Sybil Resistance &amp; Topology Governance Architecture - SIAR System Architecture &amp; Technical Wiki</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="Comprehensive system architecture, cryptographic protocols, DTN mesh networking, distributed storage, audio DSP pipelines, and UI/UX design specifications for SIAR.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="theme/custom.css">
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "navy";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('navy')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="Home.html">Architecture Portal & Reading Guide</a></li><li class="chapter-item expanded affix "><a href="design-rationale.html">System Architecture Design Rationale</a></li><li class="chapter-item expanded affix "><a href="system-capabilities-comparison.html">System Capabilities & Comparison Matrix</a></li><li class="chapter-item expanded affix "><a href="spec-order.html">Master Specification Execution Order</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part I: Protocol Foundation & Extension Platform</li><li class="chapter-item expanded "><a href="01-protocol-extension-system-architecture.html"><strong aria-hidden="true">1.</strong> 01 — Protocol Extension System Architecture</a></li><li class="chapter-item expanded "><a href="07-capability-negotiation-architecture.html"><strong aria-hidden="true">2.</strong> 07 — Capability Negotiation Architecture</a></li><li class="chapter-item expanded "><a href="21-third-party-protocol-extensions-architecture.html"><strong aria-hidden="true">3.</strong> 21 — Third-Party Protocol Extensions Architecture</a></li><li class="chapter-item expanded "><a href="22-wasm-compatible-components-architecture.html"><strong aria-hidden="true">4.</strong> 22 — WASM-Compatible Components Architecture</a></li><li class="chapter-item expanded "><a href="23-external-interoperability-suite-architecture.html"><strong aria-hidden="true">5.</strong> 23 — External Interoperability Suite Architecture</a></li><li class="chapter-item expanded "><a href="24-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">6.</strong> 24 — Plugin / Module Ecosystem Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part II: Identity, Trust & Cryptography</li><li class="chapter-item expanded "><a href="02-multi-device-identity-architecture.html"><strong aria-hidden="true">7.</strong> 02 — Multi-Device Identity Architecture</a></li><li class="chapter-item expanded "><a href="28-production-security-e2ee-key-management-privacy-architecture.html"><strong aria-hidden="true">8.</strong> 28 — Production Security, E2EE, Key Management, Abuse Resistance & Privacy Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part III: Mesh Networking, Transports & Hardware</li><li class="chapter-item expanded "><a href="03-transport-routing-policy-engine-architecture.html"><strong aria-hidden="true">9.</strong> 03 — Transport & Routing Policy Engine Architecture</a></li><li class="chapter-item expanded "><a href="11-relay-self-hosted-infrastructure-architecture.html"><strong aria-hidden="true">10.</strong> 11 — Relay & Self-Hosted Infrastructure Architecture</a></li><li class="chapter-item expanded "><a href="12-multipath-networking-architecture.html"><strong aria-hidden="true">11.</strong> 12 — Multipath Networking Architecture</a></li><li class="chapter-item expanded "><a href="13-battery-aware-scheduling-architecture.html"><strong aria-hidden="true">12.</strong> 13 — Battery-Aware Scheduling Architecture</a></li><li class="chapter-item expanded "><a href="14-proximity-abstraction-architecture.html"><strong aria-hidden="true">13.</strong> 14 — Proximity Abstraction Architecture</a></li><li class="chapter-item expanded "><a href="15-qr-nfc-bootstrap-pairing-architecture.html"><strong aria-hidden="true">14.</strong> 15 — QR / NFC Bootstrap & Secure Pairing Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IV: Delay-Tolerant Networking & Emergency Mesh</li><li class="chapter-item expanded "><a href="06-dtn-store-carry-forward-architecture.html"><strong aria-hidden="true">15.</strong> 06 — DTN / Store-Carry-Forward Architecture</a></li><li class="chapter-item expanded "><a href="17-emergency-priority-classes-architecture.html"><strong aria-hidden="true">16.</strong> 17 — Emergency Priority Classes Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part V: Storage, Outbox & Data Lifecycle</li><li class="chapter-item expanded "><a href="04-offline-event-log-architecture.html"><strong aria-hidden="true">17.</strong> 04 — Offline Event Log Architecture</a></li><li class="chapter-item expanded "><a href="05-robust-file-blob-subsystem-architecture.html"><strong aria-hidden="true">18.</strong> 05 — Robust File / Blob Subsystem Architecture</a></li><li class="chapter-item expanded "><a href="09-crash-recovery-architecture.html"><strong aria-hidden="true">19.</strong> 09 — Crash Recovery Architecture</a></li><li class="chapter-item expanded "><a href="32-search-indexing-local-knowledge-privacy-architecture.html"><strong aria-hidden="true">20.</strong> 32 — Search, Indexing, Local Knowledge Retrieval & Privacy-Preserving Discovery Architecture</a></li><li class="chapter-item expanded "><a href="33-backup-restore-export-import-archival-portability-architecture.html"><strong aria-hidden="true">21.</strong> 33 — Backup, Restore, Export/Import, Archival & Long-Term Data Portability Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VI: Realtime Media, Calling & Audio DSP</li><li class="chapter-item expanded "><a href="25-android-direct-hardware-surface-zero-copy-media-architecture.html"><strong aria-hidden="true">22.</strong> 25 — Android Direct Hardware Surface / Zero-Copy Media Pipeline Architecture</a></li><li class="chapter-item expanded "><a href="26-rust-first-audio-dsp-resampling-aec-ns-agc-architecture.html"><strong aria-hidden="true">23.</strong> 26 — Rust-First Audio DSP, Resampling, AEC/NS/AGC & Hardware-Aware Audio Pipeline Architecture</a></li><li class="chapter-item expanded "><a href="29-realtime-calls-media-session-protocol-architecture.html"><strong aria-hidden="true">24.</strong> 29 — Realtime Calls & Media Session Protocol Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VII: Ephemeral State, Presence & Notifications</li><li class="chapter-item expanded "><a href="30-presence-availability-typing-read-receipts-ephemeral-state-architecture.html"><strong aria-hidden="true">25.</strong> 30 — Presence, Availability, Typing, Read Receipts & Ephemeral Realtime State Architecture</a></li><li class="chapter-item expanded "><a href="31-notifications-push-background-delivery-lifecycle-architecture.html"><strong aria-hidden="true">26.</strong> 31 — Notifications, Push Wake, Background Delivery & OS Lifecycle Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VIII: Native Runtimes, Daemons & Embedded Linux</li><li class="chapter-item expanded "><a href="16-daemon-headless-runtime-architecture.html"><strong aria-hidden="true">27.</strong> 16 — Daemon & Headless Runtime Architecture</a></li><li class="chapter-item expanded "><a href="19-c-abi-ffi-architecture.html"><strong aria-hidden="true">28.</strong> 19 — C ABI / FFI Architecture</a></li><li class="chapter-item expanded "><a href="20-embedded-linux-node-architecture.html"><strong aria-hidden="true">29.</strong> 20 — Embedded Linux Node Architecture</a></li><li class="chapter-item expanded "><a href="27-rust-driven-android-native-build-packaging-automation.html"><strong aria-hidden="true">30.</strong> 27 — Rust-Driven Android Native Build & Packaging Automation Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IX: Reliability, Testing, Fuzzing & Diagnostics</li><li class="chapter-item expanded "><a href="08-resource-limits-backpressure-architecture.html"><strong aria-hidden="true">31.</strong> 08 — Resource Limits & Backpressure Architecture</a></li><li class="chapter-item expanded "><a href="10-fuzzing-protocol-test-suite-architecture.html"><strong aria-hidden="true">32.</strong> 10 — Fuzzing & Protocol Test Suite Architecture</a></li><li class="chapter-item expanded "><a href="18-network-diagnostics-path-visualization-architecture.html"><strong aria-hidden="true">33.</strong> 18 — Network Diagnostics & Path Visualization Architecture</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part X: UI/UX Client Architecture (Cross-Platform)</li><li class="chapter-item expanded "><a href="ui-ux-01-product-foundation-cross-platform-interaction-architecture.html"><strong aria-hidden="true">34.</strong> UI/UX 01 — Product UX Foundation & Cross-Platform Interaction Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-02-desktop-dioxus-app-shell-navigation-window-architecture.html"><strong aria-hidden="true">35.</strong> UI/UX 02 — Desktop Dioxus App Shell, Navigation & Window Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-03-android-jetpack-compose-app-shell-navigation-lifecycle-architecture.html"><strong aria-hidden="true">36.</strong> UI/UX 03 — Android Jetpack Compose App Shell, Navigation & Lifecycle Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-04-conversation-list-inbox-architecture.html"><strong aria-hidden="true">37.</strong> UI/UX 04 — Conversation List / Inbox UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-05-conversation-message-timeline-architecture.html"><strong aria-hidden="true">38.</strong> UI/UX 05 — Conversation / Message Timeline UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-06-message-composer-attachments-voice-notes-drafts-architecture.html"><strong aria-hidden="true">39.</strong> UI/UX 06 — Message Composer, Attachments, Voice Notes & Drafts UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-07-calls-realtime-media-architecture.html"><strong aria-hidden="true">40.</strong> UI/UX 07 — Calls & Realtime Media UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-08-contacts-requests-verification-identity-architecture.html"><strong aria-hidden="true">41.</strong> UI/UX 08 — Contacts, Requests, Verification & Identity UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-09-groups-membership-roles-architecture.html"><strong aria-hidden="true">42.</strong> UI/UX 09 — Groups, Membership & Roles UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-10-files-media-gallery-transfer-architecture.html"><strong aria-hidden="true">43.</strong> UI/UX 10 — Files, Media Gallery & Transfer UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-11-search-local-knowledge-retrieval-architecture.html"><strong aria-hidden="true">44.</strong> UI/UX 11 — Search & Local Knowledge Retrieval UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-12-nearby-qr-nfc-pairing-device-linking-architecture.html"><strong aria-hidden="true">45.</strong> UI/UX 12 — Nearby, QR/NFC Pairing & Device Linking UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-13-notifications-background-incoming-call-architecture.html"><strong aria-hidden="true">46.</strong> UI/UX 13 — Notifications, Background & Incoming Call UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-14-presence-typing-receipts-status-architecture.html"><strong aria-hidden="true">47.</strong> UI/UX 14 — Presence, Typing, Receipts & Status UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-15-security-center-devices-keys-recovery-architecture.html"><strong aria-hidden="true">48.</strong> UI/UX 15 — Security Center, Devices, Keys & Recovery UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-16-backup-restore-export-migration-architecture.html"><strong aria-hidden="true">49.</strong> UI/UX 16 — Backup, Restore, Export & Migration UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-17-emergency-sos-offline-mesh-architecture.html"><strong aria-hidden="true">50.</strong> UI/UX 17 — Emergency / SOS / Offline Mesh UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-18-settings-privacy-notifications-data-controls-architecture.html"><strong aria-hidden="true">51.</strong> UI/UX 18 — Settings, Privacy, Notifications & Data Controls UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-19-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">52.</strong> UI/UX 19 — Plugin / Module Ecosystem UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-20-diagnostics-network-paths-advanced-developer-architecture.html"><strong aria-hidden="true">53.</strong> UI/UX 20 — Diagnostics, Network Paths & Advanced Developer UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-21-accessibility-inclusive-interaction-architecture.html"><strong aria-hidden="true">54.</strong> UI/UX 21 — Accessibility & Inclusive Interaction Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-22-design-system-tokens-typography-icons-motion-architecture.html"><strong aria-hidden="true">55.</strong> UI/UX 22 — Design System, Tokens, Typography, Icons & Motion Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-23-responsive-adaptive-desktop-tablet-foldable-phone-layout-architecture.html"><strong aria-hidden="true">56.</strong> UI/UX 23 — Responsive / Adaptive Desktop, Tablet, Foldable & Phone Layout Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-24-error-loading-empty-offline-degraded-state-architecture.html"><strong aria-hidden="true">57.</strong> UI/UX 24 — Error, Loading, Empty, Offline & Degraded-State UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-25-onboarding-first-run-permission-education-architecture.html"><strong aria-hidden="true">58.</strong> UI/UX 25 — Onboarding, First Run & Permission Education UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-26-performance-virtualization-large-data-ui-architecture.html"><strong aria-hidden="true">59.</strong> UI/UX 26 — Performance, Virtualization & Large-Data UI Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-27-ui-testing-screenshot-interaction-release-quality-gates-architecture.html"><strong aria-hidden="true">60.</strong> UI/UX 27 — UI Testing, Screenshot/Interaction Tests & Release Quality Gates Architecture</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part XI: Anonymous Network — Core Mixnet Mechanics</li><li class="chapter-item expanded "><a href="34-mixnet-loopix-sphinx-nym-high-anonymity-transport-architecture.html"><strong aria-hidden="true">61.</strong> 34 — Mixnet, Loopix, Sphinx, Nym & High-Anonymity Transport Architecture</a></li><li class="chapter-item expanded "><a href="35-anonymous-mailbox-offline-receiving-reply-capability-architecture.html"><strong aria-hidden="true">62.</strong> 35 — Anonymous Mailbox, Offline Receiving & Reply Capability Architecture</a></li><li class="chapter-item expanded "><a href="36-sphinx-packet-cell-fragmentation-anonymous-message-framing-architecture.html"><strong aria-hidden="true">63.</strong> 36 — Sphinx Packet, Cell, Fragmentation & Anonymous Message Framing Architecture</a></li><li class="chapter-item expanded "><a href="37-cover-traffic-traffic-shaping-timing-obfuscation-loop-traffic-architecture.html"><strong aria-hidden="true">64.</strong> 37 — Cover Traffic, Traffic Shaping, Timing Obfuscation & Loop Traffic Architecture</a></li><li class="chapter-item expanded "><a href="38-native-loopix-inspired-mixnet-topology-mix-nodes-layering-packet-forwarding-architecture.html"><strong aria-hidden="true">65.</strong> 38 — Native Loopix-Inspired Mixnet Topology, Mix Nodes, Layering & Packet Forwarding Architecture</a></li><li class="chapter-item expanded "><a href="39-mixnet-directory-node-admission-identity-sybil-resistance-topology-governance-architecture.html" class="active"><strong aria-hidden="true">66.</strong> 39 — Mixnet Directory, Node Admission, Identity, Sybil Resistance & Topology Governance Architecture</a></li><li class="chapter-item expanded "><a href="40-anonymous-attachment-transfer-rendezvous-large-file-privacy-high-bandwidth-data-architecture.html"><strong aria-hidden="true">67.</strong> 40 — Anonymous Attachment Transfer, Rendezvous, Large-File Privacy & High-Bandwidth Anonymous Data Architecture</a></li><li class="chapter-item expanded "><a href="41-censorship-resistance-bridges-pluggable-transports-traffic-obfuscation-architecture.html"><strong aria-hidden="true">68.</strong> 41 — Censorship Resistance, Bridges, Pluggable Transports & Traffic Obfuscation Architecture</a></li><li class="chapter-item expanded "><a href="42-anonymity-threat-model-traffic-analysis-correlation-formal-privacy-verification-architecture.html"><strong aria-hidden="true">69.</strong> 42 — Anonymity Threat Model, Traffic Analysis, Correlation Attacks & Formal Privacy Verification Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part XII: Anonymous Network — Anonymous Application Primitives</li><li class="chapter-item expanded "><a href="43-anonymous-group-messaging-membership-privacy-sender-key-large-group-anonymity-architecture.html"><strong aria-hidden="true">70.</strong> 43 — Anonymous Group Messaging, Membership Privacy, Sender-Key Distribution & Large-Group Anonymity Architecture</a></li><li class="chapter-item expanded "><a href="44-anonymous-voice-video-call-signaling-relay-privacy-realtime-metadata-private-session-architecture.html"><strong aria-hidden="true">71.</strong> 44 — Anonymous Voice/Video Call Signaling, Relay Privacy, Realtime Metadata Protection & Private Realtime Session Architecture</a></li><li class="chapter-item expanded "><a href="45-anonymous-presence-discovery-contact-bootstrap-private-social-graph-architecture.html"><strong aria-hidden="true">72.</strong> 45 — Anonymous Presence, Discovery, Contact Bootstrap & Private Social Graph Architecture</a></li><li class="chapter-item expanded "><a href="46-anonymous-reputation-trust-signals-abuse-reporting-privacy-preserving-moderation-architecture.html"><strong aria-hidden="true">73.</strong> 46 — Anonymous Reputation, Trust Signals, Abuse Reporting & Privacy-Preserving Moderation Architecture</a></li><li class="chapter-item expanded "><a href="47-anonymous-payments-resource-credits-quotas-privacy-preserving-service-accounting-architecture.html"><strong aria-hidden="true">74.</strong> 47 — Anonymous Payments, Resource Credits, Quotas & Privacy-Preserving Service Accounting Architecture</a></li><li class="chapter-item expanded "><a href="48-anonymous-service-discovery-provider-selection-capability-advertisement-privacy-preserving-marketplace-architecture.html"><strong aria-hidden="true">75.</strong> 48 — Anonymous Service Discovery, Provider Selection, Capability Advertisement & Privacy-Preserving Marketplace Architecture</a></li><li class="chapter-item expanded "><a href="49-anonymous-resource-scheduling-capacity-markets-load-balancing-privacy-preserving-infrastructure-allocation-architecture.html"><strong aria-hidden="true">76.</strong> 49 — Anonymous Resource Scheduling, Capacity Markets, Load Balancing & Privacy-Preserving Infrastructure Allocation Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part XIII: Anonymous Network — Sovereign Protocol Policies & Governance</li><li class="chapter-item expanded "><a href="50-anonymous-network-reliability-disaster-recovery-partition-tolerance-multi-region-continuity-architecture.html"><strong aria-hidden="true">77.</strong> 50 — Anonymous Network Reliability, Disaster Recovery, Partition Tolerance & Multi-Region Continuity Architecture</a></li><li class="chapter-item expanded "><a href="51-anonymous-network-observability-slos-privacy-safe-telemetry-incident-detection-operations-architecture.html"><strong aria-hidden="true">78.</strong> 51 — Anonymous Network Observability, SLOs, Privacy-Safe Telemetry, Incident Detection & Operations Architecture</a></li><li class="chapter-item expanded "><a href="52-anonymous-network-upgrade-protocol-evolution-compatibility-migration-zero-downtime-rollout-architecture.html"><strong aria-hidden="true">79.</strong> 52 — Anonymous Network Upgrade, Protocol Evolution, Compatibility, Migration & Zero-Downtime Rollout Architecture</a></li><li class="chapter-item expanded "><a href="53-anonymous-network-governance-policy-distribution-trust-roots-multi-authority-emergency-decision-architecture.html"><strong aria-hidden="true">80.</strong> 53 — Anonymous Network Governance, Policy Distribution, Trust Roots, Multi-Authority Control & Emergency Decision Architecture</a></li><li class="chapter-item expanded "><a href="54-anonymous-network-economics-incentives-operator-sustainability-subsidies-privacy-preserving-compensation-architecture.html"><strong aria-hidden="true">81.</strong> 54 — Anonymous Network Economics, Incentives, Operator Sustainability, Subsidies & Privacy-Preserving Compensation Architecture</a></li><li class="chapter-item expanded "><a href="55-anonymous-network-legal-compliance-boundary-jurisdiction-isolation-data-minimization-lawful-operations-architecture.html"><strong aria-hidden="true">82.</strong> 55 — Anonymous Network Legal/Compliance Boundary, Jurisdiction Isolation, Data-Minimization & Lawful Operations Architecture</a></li><li class="chapter-item expanded "><a href="56-anonymous-network-privacy-policy-user-consent-transparency-data-rights-privacy-control-architecture.html"><strong aria-hidden="true">83.</strong> 56 — Anonymous Network Privacy Policy, User Consent, Transparency, Data Rights & Privacy-Control Architecture</a></li><li class="chapter-item expanded "><a href="57-anonymous-network-identity-recovery-account-portability-device-reprovisioning-privacy-preserving-continuity-architecture.html"><strong aria-hidden="true">84.</strong> 57 — Anonymous Network Identity Recovery, Account Portability, Device Re-Provisioning & Privacy-Preserving Continuity Architecture</a></li><li class="chapter-item expanded "><a href="58-anonymous-network-federation-inter-network-peering-cross-domain-trust-privacy-preserving-interoperability-architecture.html"><strong aria-hidden="true">85.</strong> 58 — Anonymous Network Federation, Inter-Network Peering, Cross-Domain Trust & Privacy-Preserving Interoperability Architecture</a></li><li class="chapter-item expanded "><a href="59-anonymous-network-naming-addressing-namespace-isolation-private-resolution-anti-enumeration-architecture.html"><strong aria-hidden="true">86.</strong> 59 — Anonymous Network Naming, Addressing, Namespace Isolation, Private Resolution & Anti-Enumeration Architecture</a></li><li class="chapter-item expanded "><a href="60-anonymous-network-time-clock-privacy-replay-windows-epoch-coordination-temporal-metadata-resistance-architecture.html"><strong aria-hidden="true">87.</strong> 60 — Anonymous Network Time, Clock Privacy, Replay Windows, Epoch Coordination & Temporal Metadata Resistance Architecture</a></li><li class="chapter-item expanded "><a href="61-anonymous-network-configuration-secrets-runtime-policy-remote-administration-secure-control-plane-management-architecture.html"><strong aria-hidden="true">88.</strong> 61 — Anonymous Network Configuration, Secrets, Runtime Policy, Remote Administration & Secure Control-Plane Management Architecture</a></li><li class="chapter-item expanded "><a href="62-anonymous-network-deployment-packaging-infrastructure-provisioning-bare-metal-vm-container-runtime-reproducible-operations-architecture.html"><strong aria-hidden="true">89.</strong> 62 — Anonymous Network Deployment, Packaging, Infrastructure Provisioning, Bare-Metal/VM/Container Runtime & Reproducible Operations Architecture</a></li><li class="chapter-item expanded "><a href="63-anonymous-network-performance-engineering-benchmarking-capacity-planning-resource-isolation-production-sizing-architecture.html"><strong aria-hidden="true">90.</strong> 63 — Anonymous Network Performance Engineering, Benchmarking, Capacity Planning, Resource Isolation & Production Sizing Architecture</a></li><li class="chapter-item expanded "><a href="64-anonymous-network-testing-verification-simulation-fault-injection-adversarial-validation-release-quality-architecture.html"><strong aria-hidden="true">91.</strong> 64 — Anonymous Network Testing, Verification, Simulation, Fault Injection, Adversarial Validation & Release Quality Architecture</a></li><li class="chapter-item expanded "><a href="65-anonymous-network-documentation-operator-runbooks-incident-playbooks-architecture-decision-records-production-knowledge-architecture.html"><strong aria-hidden="true">92.</strong> 65 — Anonymous Network Documentation, Operator Runbooks, Incident Playbooks, Architecture Decision Records & Production Knowledge Architecture</a></li><li class="chapter-item expanded "><a href="66-anonymous-network-cryptographic-agility-post-quantum-migration-key-lifecycle-long-term-security-architecture.html"><strong aria-hidden="true">93.</strong> 66 — Anonymous Network Cryptographic Agility, Post-Quantum Migration, Key Lifecycle & Long-Term Security Architecture</a></li><li class="chapter-item expanded "><a href="67-anonymous-network-data-lifecycle-storage-minimization-secure-deletion-retention-archival-cryptographic-erasure-architecture.html"><strong aria-hidden="true">94.</strong> 67 — Anonymous Network Data Lifecycle, Storage Minimization, Secure Deletion, Retention, Archival & Cryptographic Erasure Architecture</a></li><li class="chapter-item expanded "><a href="68-anonymous-network-api-sdk-extension-boundary-capability-security-third-party-integration-architecture.html"><strong aria-hidden="true">95.</strong> 68 — Anonymous Network API, SDK, Extension Boundary, Capability Security & Third-Party Integration Architecture</a></li><li class="chapter-item expanded "><a href="69-anonymous-network-multi-tenant-isolation-organizational-boundaries-delegated-administration-enterprise-policy-architecture.html"><strong aria-hidden="true">96.</strong> 69 — Anonymous Network Multi-Tenant Isolation, Organizational Boundaries, Delegated Administration & Enterprise Policy Architecture</a></li><li class="chapter-item expanded "><a href="70-anonymous-network-disaster-exercises-business-continuity-validation-crisis-coordination-operational-resilience-governance-architecture.html"><strong aria-hidden="true">97.</strong> 70 — Anonymous Network Disaster Exercises, Business Continuity Validation, Crisis Coordination & Operational Resilience Governance Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part XIV: Anonymous Network — Zero-Trust Infrastructure & Attestation</li><li class="chapter-item expanded "><a href="71-anonymous-network-trustworthy-boot-host-attestation-runtime-integrity-binary-measurement-compromise-detection-architecture.html"><strong aria-hidden="true">98.</strong> 71 — Anonymous Network Trustworthy Boot, Host Attestation, Runtime Integrity, Binary Measurement & Compromise Detection Architecture</a></li><li class="chapter-item expanded "><a href="72-anonymous-network-hardware-security-modules-secure-elements-key-custody-signing-ceremonies-high-assurance-cryptographic-operations-architecture.html"><strong aria-hidden="true">99.</strong> 72 — Anonymous Network Hardware Security Modules, Secure Elements, Key Custody, Signing Ceremonies & High-Assurance Cryptographic Operations Architecture</a></li><li class="chapter-item expanded "><a href="73-anonymous-network-supply-chain-transparency-dependency-provenance-reproducible-builds-sbom-artifact-trust-compromise-recovery-architecture.html"><strong aria-hidden="true">100.</strong> 73 — Anonymous Network Supply-Chain Transparency, Dependency Provenance, Reproducible Builds, SBOM, Artifact Trust & Compromise Recovery Architecture</a></li><li class="chapter-item expanded "><a href="74-anonymous-network-database-persistent-state-transaction-boundaries-schema-evolution-storage-engine-architecture.html"><strong aria-hidden="true">101.</strong> 74 — Anonymous Network Database, Persistent State, Transaction Boundaries, Schema Evolution & Storage-Engine Architecture</a></li><li class="chapter-item expanded "><a href="75-anonymous-network-event-streaming-message-bus-durable-queues-internal-pubsub-distributed-workflow-architecture.html"><strong aria-hidden="true">102.</strong> 75 — Anonymous Network Event Streaming, Message Bus, Durable Queues, Internal Pub/Sub & Distributed Workflow Architecture</a></li><li class="chapter-item expanded "><a href="76-anonymous-network-distributed-consensus-leader-election-membership-quorum-state-coordination-architecture.html"><strong aria-hidden="true">103.</strong> 76 — Anonymous Network Distributed Consensus, Leader Election, Membership, Quorum State & Coordination Architecture</a></li><li class="chapter-item expanded "><a href="77-anonymous-network-service-discovery-naming-endpoint-resolution-load-balancing-traffic-steering-architecture.html"><strong aria-hidden="true">104.</strong> 77 — Anonymous Network Service Discovery, Naming, Endpoint Resolution, Load Balancing & Traffic Steering Architecture</a></li><li class="chapter-item expanded "><a href="78-anonymous-network-edge-gateway-ingress-egress-reverse-proxy-api-gateway-waf-boundary-enforcement-architecture.html"><strong aria-hidden="true">105.</strong> 78 — Anonymous Network Edge Gateway, Ingress/Egress, Reverse Proxy, API Gateway, WAF & Boundary Enforcement Architecture</a></li><li class="chapter-item expanded "><a href="79-anonymous-network-internal-service-to-service-communication-zero-trust-networking-mtls-service-identity-east-west-security-architecture.html"><strong aria-hidden="true">106.</strong> 79 — Anonymous Network Internal Service-to-Service Communication, Zero-Trust Networking, mTLS, Service Identity & East-West Security Architecture</a></li><li class="chapter-item expanded "><a href="80-anonymous-network-secrets-distribution-dynamic-credentials-certificate-authority-workload-enrollment-secretless-runtime-architecture.html"><strong aria-hidden="true">107.</strong> 80 — Anonymous Network Secrets Distribution, Dynamic Credentials, Certificate Authority, Workload Enrollment & Secretless Runtime Architecture</a></li><li class="chapter-item expanded "><a href="81-anonymous-network-authorization-policy-decision-enforcement-capability-evaluation-abac-rbac-distributed-access-control-architecture.html"><strong aria-hidden="true">108.</strong> 81 — Anonymous Network Authorization, Policy Decision/Enforcement Points, Capability Evaluation, ABAC/RBAC & Distributed Access-Control Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part XV: Anonymous Network — Private Cloud Services & Anti-Surveillance</li><li class="chapter-item expanded "><a href="82-anonymous-network-identity-provider-authentication-mfa-passkeys-session-management-account-security-architecture.html"><strong aria-hidden="true">109.</strong> 82 — Anonymous Network Identity Provider, Authentication, MFA, Passkeys, Session Management & Account Security Architecture</a></li><li class="chapter-item expanded "><a href="83-anonymous-network-account-lifecycle-registration-enrollment-suspension-deactivation-deletion-identity-state-governance-architecture.html"><strong aria-hidden="true">110.</strong> 83 — Anonymous Network Account Lifecycle, Registration, Enrollment, Suspension, Deactivation, Deletion & Identity-State Governance Architecture</a></li><li class="chapter-item expanded "><a href="84-anonymous-network-profile-preferences-settings-personalization-synchronization-privacy-preserving-user-state-architecture.html"><strong aria-hidden="true">111.</strong> 84 — Anonymous Network Profile, Preferences, Settings, Personalization, Synchronization & Privacy-Preserving User-State Architecture</a></li><li class="chapter-item expanded "><a href="85-anonymous-network-contacts-address-book-relationship-graph-invitations-trust-state-privacy-preserving-social-connectivity-architecture.html"><strong aria-hidden="true">112.</strong> 85 — Anonymous Network Contacts, Address Book, Relationship Graph, Invitations, Trust State & Privacy-Preserving Social Connectivity Architecture</a></li><li class="chapter-item expanded "><a href="86-anonymous-network-group-directory-communities-channels-membership-discovery-moderation-boundaries-privacy-preserving-social-spaces-architecture.html"><strong aria-hidden="true">113.</strong> 86 — Anonymous Network Group Directory, Communities, Channels, Membership Discovery, Moderation Boundaries & Privacy-Preserving Social Spaces Architecture</a></li><li class="chapter-item expanded "><a href="87-anonymous-network-content-feed-timeline-subscription-recommendation-ranking-privacy-preserving-discovery-architecture.html"><strong aria-hidden="true">114.</strong> 87 — Anonymous Network Content Feed, Timeline, Subscription, Recommendation, Ranking & Privacy-Preserving Discovery Architecture</a></li><li class="chapter-item expanded "><a href="88-anonymous-network-content-publishing-posts-articles-media-drafts-revisions-distribution-creator-state-architecture.html"><strong aria-hidden="true">115.</strong> 88 — Anonymous Network Content Publishing, Posts, Articles, Media, Drafts, Revisions, Distribution & Creator-State Architecture</a></li><li class="chapter-item expanded "><a href="89-anonymous-network-comments-replies-threads-reactions-mentions-resharing-privacy-preserving-interaction-architecture.html"><strong aria-hidden="true">116.</strong> 89 — Anonymous Network Comments, Replies, Threads, Reactions, Mentions, Resharing & Privacy-Preserving Interaction Architecture</a></li><li class="chapter-item expanded "><a href="90-anonymous-network-notifications-activity-inbox-mentions-interaction-aggregation-digest-privacy-preserving-attention-architecture.html"><strong aria-hidden="true">117.</strong> 90 — Anonymous Network Notifications, Activity Inbox, Mentions, Interaction Aggregation, Digest & Privacy-Preserving Attention Architecture</a></li><li class="chapter-item expanded "><a href="91-anonymous-network-search-indexing-query-privacy-relevance-ranking-federated-search-private-information-retrieval-architecture.html"><strong aria-hidden="true">118.</strong> 91 — Anonymous Network Search, Indexing, Query Privacy, Relevance Ranking, Federated Search & Private Information Retrieval Architecture</a></li><li class="chapter-item expanded "><a href="92-anonymous-network-analytics-metrics-product-insights-privacy-preserving-aggregation-differential-privacy-anti-surveillance-data-architecture.html"><strong aria-hidden="true">119.</strong> 92 — Anonymous Network Analytics, Metrics, Product Insights, Privacy-Preserving Aggregation, Differential Privacy & Anti-Surveillance Data Architecture</a></li><li class="chapter-item expanded "><a href="93-anonymous-network-experimentation-feature-evaluation-ab-testing-rollouts-cohort-assignment-privacy-preserving-product-validation-architecture.html"><strong aria-hidden="true">120.</strong> 93 — Anonymous Network Experimentation, Feature Evaluation, A/B Testing, Rollouts, Cohort Assignment & Privacy-Preserving Product Validation Architecture</a></li><li class="chapter-item expanded "><a href="94-anonymous-network-audit-transparency-user-visible-security-history-verifiable-actions-privacy-preserving-accountability-architecture.html"><strong aria-hidden="true">121.</strong> 94 — Anonymous Network Audit, Transparency, User-Visible Security History, Verifiable Actions & Privacy-Preserving Accountability Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part XVI: Anonymous Network — Defense, SecOps & Vulnerability Management</li><li class="chapter-item expanded "><a href="95-anonymous-network-policy-compliance-engine-continuous-control-evaluation-security-posture-evidence-collection-privacy-preserving-assurance-architecture.html"><strong aria-hidden="true">122.</strong> 95 — Anonymous Network Policy Compliance Engine, Continuous Control Evaluation, Security Posture, Evidence Collection & Privacy-Preserving Assurance Architecture</a></li><li class="chapter-item expanded "><a href="96-anonymous-network-incident-response-detection-triage-containment-forensics-recovery-privacy-preserving-security-operations-architecture.html"><strong aria-hidden="true">123.</strong> 96 — Anonymous Network Incident Response, Detection, Triage, Containment, Forensics, Recovery & Privacy-Preserving Security Operations Architecture</a></li><li class="chapter-item expanded "><a href="97-anonymous-network-security-operations-center-threat-intelligence-indicators-of-compromise-detection-engineering-hunting-privacy-preserving-defensive-intelligence-architecture.html"><strong aria-hidden="true">124.</strong> 97 — Anonymous Network Security Operations Center, Threat Intelligence, Indicators of Compromise, Detection Engineering, Hunting & Privacy-Preserving Defensive Intelligence Architecture</a></li><li class="chapter-item expanded "><a href="98-anonymous-network-vulnerability-management-exposure-discovery-patch-prioritization-remediation-coordination-privacy-preserving-security-maintenance-architecture.html"><strong aria-hidden="true">125.</strong> 98 — Anonymous Network Vulnerability Management, Exposure Discovery, Patch Prioritization, Remediation Coordination & Privacy-Preserving Security Maintenance Architecture</a></li><li class="chapter-item expanded "><a href="99-anonymous-network-secure-update-patch-distribution-release-channels-client-upgrade-enforcement-rollback-protection-privacy-preserving-software-maintenance-architecture.html"><strong aria-hidden="true">126.</strong> 99 — Anonymous Network Secure Update, Patch Distribution, Release Channels, Client Upgrade Enforcement, Rollback Protection & Privacy-Preserving Software Maintenance Architecture</a></li><li class="chapter-item expanded "><a href="100-anonymous-network-disaster-recovery-backup-integrity-restore-orchestration-regional-failover-continuity-validation-privacy-preserving-resilience-architecture.html"><strong aria-hidden="true">127.</strong> 100 — Anonymous Network Disaster Recovery, Backup Integrity, Restore Orchestration, Regional Failover, Continuity Validation & Privacy-Preserving Resilience Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part XVII: Anonymous Network — SRE, Fleet Management & Physical Site Reliability</li><li class="chapter-item expanded "><a href="101-anonymous-network-capacity-management-load-shedding-admission-control-autoscaling-resource-fairness-privacy-preserving-availability-architecture.html"><strong aria-hidden="true">128.</strong> 101 — Anonymous Network Capacity Management, Load Shedding, Admission Control, Autoscaling, Resource Fairness & Privacy-Preserving Availability Architecture</a></li><li class="chapter-item expanded "><a href="102-anonymous-network-cost-governance-resource-accounting-budget-enforcement-capacity-economics-privacy-preserving-finops-architecture.html"><strong aria-hidden="true">129.</strong> 102 — Anonymous Network Cost Governance, Resource Accounting, Budget Enforcement, Capacity Economics & Privacy-Preserving FinOps Architecture</a></li><li class="chapter-item expanded "><a href="103-anonymous-network-data-residency-sovereignty-regional-placement-cross-border-transfer-jurisdiction-policy-privacy-preserving-geographic-governance-architecture.html"><strong aria-hidden="true">130.</strong> 103 — Anonymous Network Data Residency, Sovereignty, Regional Placement, Cross-Border Transfer, Jurisdiction Policy & Privacy-Preserving Geographic Governance Architecture</a></li><li class="chapter-item expanded "><a href="104-anonymous-network-service-ownership-operational-responsibility-escalation-on-call-change-authority-privacy-preserving-organizational-governance-architecture.html"><strong aria-hidden="true">131.</strong> 104 — Anonymous Network Service Ownership, Operational Responsibility, Escalation, On-Call, Change Authority & Privacy-Preserving Organizational Governance Architecture</a></li><li class="chapter-item expanded "><a href="105-anonymous-network-configuration-drift-desired-state-change-reconciliation-policy-convergence-privacy-preserving-infrastructure-state-governance-architecture.html"><strong aria-hidden="true">132.</strong> 105 — Anonymous Network Configuration Drift, Desired State, Change Reconciliation, Policy Convergence & Privacy-Preserving Infrastructure State Governance Architecture</a></li><li class="chapter-item expanded "><a href="106-anonymous-network-infrastructure-inventory-asset-graph-service-dependency-mapping-configuration-item-lifecycle-privacy-preserving-operational-topology-architecture.html"><strong aria-hidden="true">133.</strong> 106 — Anonymous Network Infrastructure Inventory, Asset Graph, Service Dependency Mapping, Configuration Item Lifecycle & Privacy-Preserving Operational Topology Architecture</a></li><li class="chapter-item expanded "><a href="107-anonymous-network-change-impact-analysis-dependency-aware-rollout-planning-pre-change-simulation-safe-execution-privacy-preserving-operational-decision-architecture.html"><strong aria-hidden="true">134.</strong> 107 — Anonymous Network Change Impact Analysis, Dependency-Aware Rollout Planning, Pre-Change Simulation, Safe Execution & Privacy-Preserving Operational Decision Architecture</a></li><li class="chapter-item expanded "><a href="108-anonymous-network-release-readiness-production-certification-go-no-go-decision-operational-acceptance-privacy-preserving-launch-governance-architecture.html"><strong aria-hidden="true">135.</strong> 108 — Anonymous Network Release Readiness, Production Certification, Go/No-Go Decision, Operational Acceptance & Privacy-Preserving Launch Governance Architecture</a></li><li class="chapter-item expanded "><a href="109-anonymous-network-service-level-objectives-error-budgets-reliability-policy-availability-governance-privacy-preserving-reliability-engineering-architecture.html"><strong aria-hidden="true">136.</strong> 109 — Anonymous Network Service Level Objectives, Error Budgets, Reliability Policy, Availability Governance & Privacy-Preserving Reliability Engineering Architecture</a></li><li class="chapter-item expanded "><a href="110-anonymous-network-availability-modeling-fault-domains-redundancy-planning-failure-correlation-reliability-simulation-privacy-preserving-resilience-engineering-architecture.html"><strong aria-hidden="true">137.</strong> 110 — Anonymous Network Availability Modeling, Fault Domains, Redundancy Planning, Failure Correlation, Reliability Simulation & Privacy-Preserving Resilience Engineering Architecture</a></li><li class="chapter-item expanded "><a href="111-anonymous-network-capacity-forecasting-demand-modeling-growth-planning-saturation-prediction-privacy-preserving-infrastructure-forecast-architecture.html"><strong aria-hidden="true">138.</strong> 111 — Anonymous Network Capacity Forecasting, Demand Modeling, Growth Planning, Saturation Prediction & Privacy-Preserving Infrastructure Forecast Architecture</a></li><li class="chapter-item expanded "><a href="112-anonymous-network-performance-budgeting-latency-decomposition-throughput-modeling-tail-latency-control-privacy-preserving-performance-engineering-architecture.html"><strong aria-hidden="true">139.</strong> 112 — Anonymous Network Performance Budgeting, Latency Decomposition, Throughput Modeling, Tail-Latency Control & Privacy-Preserving Performance Engineering Architecture</a></li><li class="chapter-item expanded "><a href="113-anonymous-network-resource-efficiency-work-consolidation-compute-memory-io-optimization-energy-awareness-privacy-preserving-efficiency-engineering-architecture.html"><strong aria-hidden="true">140.</strong> 113 — Anonymous Network Resource Efficiency, Work Consolidation, Compute/Memory/I/O Optimization, Energy Awareness & Privacy-Preserving Efficiency Engineering Architecture</a></li><li class="chapter-item expanded "><a href="114-anonymous-network-sustainability-carbon-aware-scheduling-hardware-lifecycle-resource-reuse-privacy-preserving-environmental-efficiency-architecture.html"><strong aria-hidden="true">141.</strong> 114 — Anonymous Network Sustainability, Carbon-Aware Scheduling, Hardware Lifecycle, Resource Reuse & Privacy-Preserving Environmental Efficiency Architecture</a></li><li class="chapter-item expanded "><a href="115-anonymous-network-hardware-fleet-management-firmware-lifecycle-secure-provisioning-maintenance-scheduling-privacy-preserving-physical-infrastructure-governance-architecture.html"><strong aria-hidden="true">142.</strong> 115 — Anonymous Network Hardware Fleet Management, Firmware Lifecycle, Secure Provisioning, Maintenance Scheduling & Privacy-Preserving Physical Infrastructure Governance Architecture</a></li><li class="chapter-item expanded "><a href="116-anonymous-network-data-center-edge-site-facility-power-cooling-environmental-monitoring-privacy-preserving-physical-site-reliability-architecture.html"><strong aria-hidden="true">143.</strong> 116 — Anonymous Network Data Center, Edge Site, Facility Power, Cooling, Environmental Monitoring & Privacy-Preserving Physical Site Reliability Architecture</a></li><li class="chapter-item expanded "><a href="117-anonymous-network-physical-security-tamper-detection-site-access-control-chain-of-custody-asset-protection-privacy-preserving-facility-security-architecture.html"><strong aria-hidden="true">144.</strong> 117 — Anonymous Network Physical Security, Tamper Detection, Site Access Control, Chain of Custody, Asset Protection & Privacy-Preserving Facility Security Architecture</a></li><li class="chapter-item expanded "><a href="118-anonymous-network-physical-disaster-preparedness-fire-flood-earthquake-response-site-evacuation-asset-salvage-emergency-logistics-privacy-preserving-facility-continuity-architecture.html"><strong aria-hidden="true">145.</strong> 118 — Anonymous Network Physical Disaster Preparedness, Fire/Flood/Earthquake Response, Site Evacuation, Asset Salvage, Emergency Logistics & Privacy-Preserving Facility Continuity Architecture</a></li><li class="chapter-item expanded "><a href="119-anonymous-network-crisis-command-emergency-decision-authority-multi-team-coordination-communications-situation-awareness-privacy-preserving-incident-command-architecture.html"><strong aria-hidden="true">146.</strong> 119 — Anonymous Network Crisis Command, Emergency Decision Authority, Multi-Team Coordination, Communications, Situation Awareness & Privacy-Preserving Incident Command Architecture</a></li><li class="chapter-item expanded "><a href="120-anonymous-network-post-incident-review-root-cause-analysis-corrective-actions-organizational-learning-recurrence-prevention-privacy-preserving-reliability-improvement-architecture.html"><strong aria-hidden="true">147.</strong> 120 — Anonymous Network Post-Incident Review, Root-Cause Analysis, Corrective Actions, Organizational Learning, Recurrence Prevention & Privacy-Preserving Reliability Improvement Architecture</a></li><li class="chapter-item expanded "><a href="121-anonymous-network-reliability-risk-register-technical-debt-governance-systemic-weakness-tracking-remediation-portfolio-privacy-preserving-engineering-risk-architecture.html"><strong aria-hidden="true">148.</strong> 121 — Anonymous Network Reliability Risk Register, Technical Debt Governance, Systemic Weakness Tracking, Remediation Portfolio & Privacy-Preserving Engineering Risk Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part XVIII: Anonymous Network — Governance, Traceability, SDK & Plugin Ecosystem</li><li class="chapter-item expanded "><a href="122-anonymous-network-architecture-governance-technical-standards-adr-lifecycle-design-review-exception-management-privacy-preserving-engineering-decision-architecture.html"><strong aria-hidden="true">149.</strong> 122 — Anonymous Network Architecture Governance, Technical Standards, ADR Lifecycle, Design Review, Exception Management & Privacy-Preserving Engineering Decision Architecture</a></li><li class="chapter-item expanded "><a href="123-anonymous-network-engineering-knowledge-graph-architecture-traceability-requirement-to-code-mapping-decision-provenance-privacy-preserving-technical-knowledge-architecture.html"><strong aria-hidden="true">150.</strong> 123 — Anonymous Network Engineering Knowledge Graph, Architecture Traceability, Requirement-to-Code Mapping, Decision Provenance & Privacy-Preserving Technical Knowledge Architecture</a></li><li class="chapter-item expanded "><a href="124-anonymous-network-requirements-engineering-specification-lifecycle-acceptance-criteria-verification-planning-change-traceability-privacy-preserving-product-technical-requirement-architecture.html"><strong aria-hidden="true">151.</strong> 124 — Anonymous Network Requirements Engineering, Specification Lifecycle, Acceptance Criteria, Verification Planning, Change Traceability & Privacy-Preserving Product/Technical Requirement Architecture</a></li><li class="chapter-item expanded "><a href="125-anonymous-network-test-strategy-governance-verification-matrix-coverage-traceability-qualification-evidence-release-confidence-privacy-preserving-engineering-assurance-architecture.html"><strong aria-hidden="true">152.</strong> 125 — Anonymous Network Test Strategy Governance, Verification Matrix, Coverage Traceability, Qualification Evidence, Release Confidence & Privacy-Preserving Engineering Assurance Architecture</a></li><li class="chapter-item expanded "><a href="126-anonymous-network-release-evidence-repository-certification-records-artifact-qualification-lineage-compliance-trace-packages-privacy-preserving-assurance-archive-architecture.html"><strong aria-hidden="true">153.</strong> 126 — Anonymous Network Release Evidence Repository, Certification Records, Artifact Qualification Lineage, Compliance Trace Packages & Privacy-Preserving Assurance Archive Architecture</a></li><li class="chapter-item expanded "><a href="127-anonymous-network-product-qualification-feature-maturity-levels-capability-readiness-general-availability-criteria-privacy-preserving-product-readiness-governance-architecture.html"><strong aria-hidden="true">154.</strong> 127 — Anonymous Network Product Qualification, Feature Maturity Levels, Capability Readiness, General Availability Criteria & Privacy-Preserving Product Readiness Governance Architecture</a></li><li class="chapter-item expanded "><a href="128-anonymous-network-product-lifecycle-governance-capability-evolution-backward-compatibility-migration-deprecation-sunset-privacy-preserving-end-of-life-architecture.html"><strong aria-hidden="true">155.</strong> 128 — Anonymous Network Product Lifecycle Governance, Capability Evolution, Backward Compatibility, Migration, Deprecation, Sunset & Privacy-Preserving End-of-Life Architecture</a></li><li class="chapter-item expanded "><a href="129-anonymous-network-api-protocol-compatibility-registry-version-negotiation-schema-evolution-interoperability-certification-privacy-preserving-compatibility-governance-architecture.html"><strong aria-hidden="true">156.</strong> 129 — Anonymous Network API & Protocol Compatibility Registry, Version Negotiation, Schema Evolution, Interoperability Certification & Privacy-Preserving Compatibility Governance Architecture</a></li><li class="chapter-item expanded "><a href="130-anonymous-network-sdk-client-library-generated-bindings-developer-compatibility-integration-certification-privacy-preserving-developer-platform-architecture.html"><strong aria-hidden="true">157.</strong> 130 — Anonymous Network SDK, Client Library, Generated Bindings, Developer Compatibility, Integration Certification & Privacy-Preserving Developer Platform Architecture</a></li><li class="chapter-item expanded "><a href="131-anonymous-network-developer-portal-api-documentation-sandbox-environments-credential-provisioning-integration-onboarding-support-privacy-preserving-developer-experience-architecture.html"><strong aria-hidden="true">158.</strong> 131 — Anonymous Network Developer Portal, API Documentation, Sandbox Environments, Credential Provisioning, Integration Onboarding, Support & Privacy-Preserving Developer Experience Architecture</a></li><li class="chapter-item expanded "><a href="132-anonymous-network-developer-cli-project-automation-local-integration-emulator-contract-testing-ci-integration-privacy-preserving-developer-toolchain-architecture.html"><strong aria-hidden="true">159.</strong> 132 — Anonymous Network Developer CLI, Project Automation, Local Integration Emulator, Contract Testing, CI Integration & Privacy-Preserving Developer Toolchain Architecture</a></li><li class="chapter-item expanded "><a href="133-anonymous-network-extension-marketplace-integration-distribution-package-discovery-trust-signals-review-revocation-privacy-preserving-developer-ecosystem-architecture.html"><strong aria-hidden="true">160.</strong> 133 — Anonymous Network Extension Marketplace, Integration Distribution, Package Discovery, Trust Signals, Review, Revocation & Privacy-Preserving Developer Ecosystem Architecture</a></li><li class="chapter-item expanded "><a href="134-anonymous-network-extension-runtime-plugin-sandboxing-capability-brokerage-resource-isolation-lifecycle-supervision-privacy-preserving-execution-architecture.html"><strong aria-hidden="true">161.</strong> 134 — Anonymous Network Extension Runtime, Plugin Sandboxing, Capability Brokerage, Resource Isolation, Lifecycle Supervision & Privacy-Preserving Execution Architecture</a></li><li class="chapter-item expanded "><a href="135-anonymous-network-extension-permission-model-consent-ux-delegated-authority-capability-attenuation-scope-review-privacy-preserving-authorization-architecture.html"><strong aria-hidden="true">162.</strong> 135 — Anonymous Network Extension Permission Model, Consent UX, Delegated Authority, Capability Attenuation, Scope Review & Privacy-Preserving Authorization Architecture</a></li><li class="chapter-item expanded "><a href="136-anonymous-network-extension-data-governance-data-access-mediation-information-flow-control-retention-deletion-export-privacy-preserving-extension-data-architecture.html"><strong aria-hidden="true">163.</strong> 136 — Anonymous Network Extension Data Governance, Data Access Mediation, Information-Flow Control, Retention, Deletion, Export & Privacy-Preserving Extension Data Architecture</a></li><li class="chapter-item expanded "><a href="137-anonymous-network-extension-inter-process-communication-event-bus-host-calls-shared-memory-streaming-backpressure-privacy-preserving-runtime-communication-architecture.html"><strong aria-hidden="true">164.</strong> 137 — Anonymous Network Extension Inter-Process Communication, Event Bus, Host Calls, Shared Memory, Streaming, Backpressure & Privacy-Preserving Runtime Communication Architecture</a></li><li class="chapter-item expanded "><a href="138-anonymous-network-extension-background-execution-durable-jobs-triggers-scheduling-wakeups-mobile-lifecycle-quotas-privacy-preserving-automation-runtime-architecture.html"><strong aria-hidden="true">165.</strong> 138 — Anonymous Network Extension Background Execution, Durable Jobs, Triggers, Scheduling, Wakeups, Mobile Lifecycle, Quotas & Privacy-Preserving Automation Runtime Architecture</a></li><li class="chapter-item expanded "><a href="140-anonymous-network-extension-ui-surface-embedded-panels-commands-menus-context-actions-theming-accessibility-privacy-preserving-host-ui-integration-architecture.html"><strong aria-hidden="true">166.</strong> 140 — Anonymous Network Extension UI Surface, Embedded Panels, Commands, Menus, Context Actions, Theming, Accessibility & Privacy-Preserving Host UI Integration Architecture</a></li><li class="chapter-item expanded "><a href="141-anonymous-network-extension-state-synchronization-cross-device-settings-ui-state-installation-state-capability-consistency-privacy-preserving-extension-state-convergence-architecture.html"><strong aria-hidden="true">167.</strong> 141 — Anonymous Network Extension State Synchronization, Cross-Device Settings, UI State, Installation State, Capability Consistency & Privacy-Preserving Extension State Convergence Architecture</a></li><li class="chapter-item expanded "><a href="142-anonymous-network-extension-dependency-management-package-resolution-version-constraints-lockfiles-dependency-isolation-supply-chain-policy-privacy-preserving-dependency-governance-architecture.html"><strong aria-hidden="true">168.</strong> 142 — Anonymous Network Extension Dependency Management, Package Resolution, Version Constraints, Lockfiles, Dependency Isolation, Supply-Chain Policy & Privacy-Preserving Dependency Governance Architecture</a></li><li class="chapter-item expanded "><a href="143-anonymous-network-extension-update-orchestration-dependency-aware-rollouts-state-migration-rollback-hot-upgrade-compatibility-gates-privacy-preserving-extension-evolution-architecture.html"><strong aria-hidden="true">169.</strong> 143 — Anonymous Network Extension Update Orchestration, Dependency-Aware Rollouts, State Migration, Rollback, Hot Upgrade, Compatibility Gates & Privacy-Preserving Extension Evolution Architecture</a></li><li class="chapter-item expanded "><a href="144-anonymous-network-extension-testing-certification-compatibility-matrix-sandbox-validation-fault-injection-security-privacy-qualification-release-evidence-architecture.html"><strong aria-hidden="true">170.</strong> 144 — Anonymous Network Extension Testing, Certification, Compatibility Matrix, Sandbox Validation, Fault Injection, Security/Privacy Qualification & Release Evidence Architecture</a></li><li class="chapter-item expanded "><a href="145-anonymous-network-extension-observability-runtime-health-crash-reporting-diagnostics-developer-telemetry-slos-privacy-preserving-extension-operations-architecture.html"><strong aria-hidden="true">171.</strong> 145 — Anonymous Network Extension Observability, Runtime Health, Crash Reporting, Diagnostics, Developer Telemetry, SLOs & Privacy-Preserving Extension Operations Architecture</a></li><li class="chapter-item expanded "><a href="146-anonymous-network-extension-incident-response-abuse-detection-quarantine-emergency-disable-forensics-recovery-privacy-preserving-extension-security-operations-architecture.html"><strong aria-hidden="true">172.</strong> 146 — Anonymous Network Extension Incident Response, Abuse Detection, Quarantine, Emergency Disable, Forensics, Recovery & Privacy-Preserving Extension Security Operations Architecture</a></li><li class="chapter-item expanded "><a href="147-anonymous-network-extension-governance-publisher-policy-ecosystem-rules-dispute-resolution-appeals-enforcement-consistency-privacy-preserving-marketplace-governance-architecture.html"><strong aria-hidden="true">173.</strong> 147 — Anonymous Network Extension Governance, Publisher Policy, Ecosystem Rules, Dispute Resolution, Appeals, Enforcement Consistency & Privacy-Preserving Marketplace Governance Architecture</a></li><li class="chapter-item expanded "><a href="148-anonymous-network-extension-business-model-pricing-revenue-sharing-paid-extensions-subscriptions-billing-integration-refunds-entitlements-privacy-preserving-marketplace-economics-architecture.html"><strong aria-hidden="true">174.</strong> 148 — Anonymous Network Extension Business Model, Pricing, Revenue Sharing, Paid Extensions, Subscriptions, Billing Integration, Refunds, Entitlements & Privacy-Preserving Marketplace Economics Architecture</a></li><li class="chapter-item expanded "><a href="149-anonymous-network-extension-licensing-open-source-commercial-license-enforcement-seat-activation-license-keys-offline-licensing-compliance-audit-privacy-preserving-software-license-architecture.html"><strong aria-hidden="true">175.</strong> 149 — Anonymous Network Extension Licensing, Open-Source/Commercial License Enforcement, Seat Activation, License Keys, Offline Licensing, Compliance, Audit & Privacy-Preserving Software License Architecture</a></li><li class="chapter-item expanded "><a href="150-anonymous-network-extension-developer-relations-publisher-support-documentation-governance-compatibility-communication-migration-guidance-ecosystem-education-privacy-preserving-developer-success-architecture.html"><strong aria-hidden="true">176.</strong> 150 — Anonymous Network Extension Developer Relations, Publisher Support, Documentation Governance, Compatibility Communication, Migration Guidance, Ecosystem Education & Privacy-Preserving Developer Success Architecture</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">SIAR System Architecture &amp; Technical Wiki</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar/edit/main/sys-arch/39-mixnet-directory-node-admission-identity-sybil-resistance-topology-governance-architecture.md" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="core-system-architecture-part-39--mixnet-directory-node-admission-identity-sybil-resistance--topology-governance-architecture"><a class="header" href="#core-system-architecture-part-39--mixnet-directory-node-admission-identity-sybil-resistance--topology-governance-architecture">Core System Architecture Part 39 — Mixnet Directory, Node Admission, Identity, Sybil Resistance &amp; Topology Governance Architecture</a></h1>
+<h2 id="siar--secure-local-first-multi-transport-communication-platform"><a class="header" href="#siar--secure-local-first-multi-transport-communication-platform">SIAR — Secure, Local-First, Multi-Transport Communication Platform</a></h2>
+<p><strong>Series:</strong> Core System Architecture<br />
+<strong>Part:</strong> 39<br />
+<strong>Status:</strong> Architecture specification<br />
+<strong>Primary language:</strong> Rust<br />
+<strong>Builds on:</strong></p>
+<ul>
+<li>Part 34 — Mixnet, Loopix, Sphinx, Nym &amp; High-Anonymity Transport Architecture</li>
+<li>Part 35 — Anonymous Mailbox, Offline Receiving &amp; Reply Capability Architecture</li>
+<li>Part 36 — Sphinx Packet, Cell, Fragmentation &amp; Anonymous Message Framing Architecture</li>
+<li>Part 37 — Cover Traffic, Traffic Shaping, Timing Obfuscation &amp; Loop Traffic Architecture</li>
+<li>Part 38 — Native Loopix-Inspired Mixnet Topology, Mix Nodes, Layering &amp; Packet Forwarding Architecture</li>
+</ul>
+<p><strong>Primary purpose:</strong> define the complete control-plane trust architecture for SIAR's native mixnet, including directory authorities, node and operator identity, node admission, Sybil resistance, topology eligibility, health evidence, layer assignment, concentration limits, epoch signing, emergency revocation, governance, auditability, decentralization, and Rust service boundaries.</p>
+<hr />
+<h1 id="1-purpose"><a class="header" href="#1-purpose">1. Purpose</a></h1>
+<p>A mixnet is only as strong as the topology it allows clients to use.</p>
+<p>If one adversary can cheaply create many nodes, that adversary may control:</p>
+<pre><code class="language-text">entry gateways
+multiple mix layers
+mailbox gateways
+directory views
+routing concentration
+</code></pre>
+<p>and significantly weaken anonymity.</p>
+<p>The governing principle is:</p>
+<blockquote>
+<p><strong>SIAR must make it difficult for one real-world operator to appear as many independent anonymity participants, while keeping admission auditable and avoiding unnecessary identity exposure.</strong></p>
+</blockquote>
+<hr />
+<h1 id="2-architectural-position"><a class="header" href="#2-architectural-position">2. Architectural Position</a></h1>
+<pre><code class="language-text">Node Operator
+    │
+    ▼
+Node Registration
+    │
+    ▼
+Identity / Admission Validation
+    │
+    ▼
+Sybil Resistance / Eligibility
+    │
+    ▼
+Directory Authorities
+    │
+    ▼
+Topology Builder
+    │
+    ▼
+Signed Epoch Snapshot
+    │
+    ▼
+Clients / Mix Nodes
+</code></pre>
+<hr />
+<h1 id="3-data-plane-vs-governance-plane"><a class="header" href="#3-data-plane-vs-governance-plane">3. Data Plane vs Governance Plane</a></h1>
+<p>Part 38 data plane:</p>
+<pre><code class="language-text">packet forwarding
+delay
+mixing
+mailbox delivery
+</code></pre>
+<p>Part 39 control/governance plane:</p>
+<pre><code class="language-text">who may participate
+which role they may serve
+which layer they occupy
+whether they are healthy
+whether they are revoked
+who signs topology state
+</code></pre>
+<p>These must remain separate.</p>
+<hr />
+<h1 id="4-core-threats"><a class="header" href="#4-core-threats">4. Core Threats</a></h1>
+<p>Part 39 addresses:</p>
+<pre><code class="language-text">Sybil attacks
+operator concentration
+fake node registration
+stolen node identity
+malicious directory authority
+biased topology construction
+health-report manipulation
+fake geographic/operator metadata
+revoked-node persistence
+control-plane split brain
+governance capture
+</code></pre>
+<hr />
+<h1 id="5-non-goals"><a class="header" href="#5-non-goals">5. Non-Goals</a></h1>
+<p>Part 39 does not fully define:</p>
+<pre><code class="language-text">economic tokenomics
+cryptocurrency
+anonymous payments
+bridges/censorship resistance
+formal anonymity proofs
+full public DAO governance
+</code></pre>
+<p>Those can be later layers.</p>
+<hr />
+<h1 id="6-identity-layers"><a class="header" href="#6-identity-layers">6. Identity Layers</a></h1>
+<p>Use distinct identity domains:</p>
+<pre><code class="language-text">Node Identity
+Operator Identity
+Directory Authority Identity
+Topology Signer Identity
+Administrative Identity
+</code></pre>
+<hr />
+<h1 id="7-node-identity"><a class="header" href="#7-node-identity">7. Node Identity</a></h1>
+<p>Each node has a cryptographic identity:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct MixNodeId(pub [u8; 32]);
+<span class="boring">}</span></code></pre></pre>
+<p>Derived from or bound to a node signing key.</p>
+<hr />
+<h1 id="8-node-identity-key"><a class="header" href="#8-node-identity-key">8. Node Identity Key</a></h1>
+<p>Used to sign:</p>
+<pre><code class="language-text">registration
+capability claims
+health reports
+key rotations
+leave requests
+</code></pre>
+<hr />
+<h1 id="9-operator-identity"><a class="header" href="#9-operator-identity">9. Operator Identity</a></h1>
+<p>A single operator may run multiple nodes.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct OperatorId(pub [u8; 32]);
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="10-why-operator-identity-matters"><a class="header" href="#10-why-operator-identity-matters">10. Why Operator Identity Matters</a></h1>
+<p>If:</p>
+<pre><code class="language-text">Node A
+Node B
+Node C
+</code></pre>
+<p>are all controlled by one organization, they must not be counted as three independent anonymity domains.</p>
+<hr />
+<h1 id="11-operator-identity-privacy"><a class="header" href="#11-operator-identity-privacy">11. Operator Identity Privacy</a></h1>
+<p>Operator identity is governance metadata.</p>
+<p>Do not require public exposure of private personal details.</p>
+<hr />
+<h1 id="12-operator-registration"><a class="header" href="#12-operator-registration">12. Operator Registration</a></h1>
+<p>Can bind:</p>
+<pre><code class="language-text">organization credential
+verified infrastructure domain
+legal entity where appropriate
+community attestation
+resource proof
+</code></pre>
+<p>depending deployment model.</p>
+<hr />
+<h1 id="13-directory-authority-identity"><a class="header" href="#13-directory-authority-identity">13. Directory Authority Identity</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct DirectoryAuthorityId(pub [u8; 32]);
+<span class="boring">}</span></code></pre></pre>
+<p>Authorities sign:</p>
+<pre><code class="language-text">node registry state
+revocation state
+topology epochs
+policy versions
+</code></pre>
+<hr />
+<h1 id="14-authority-separation"><a class="header" href="#14-authority-separation">14. Authority Separation</a></h1>
+<p>Directory authority should not itself forward user packets by default.</p>
+<p>This reduces trust concentration.</p>
+<hr />
+<h1 id="15-initial-trust-model"><a class="header" href="#15-initial-trust-model">15. Initial Trust Model</a></h1>
+<p>Practical early deployment:</p>
+<pre><code class="language-text">1 authoritative SIAR directory
++
+auditable signed snapshots
++
+separate topology builder
+</code></pre>
+<p>This is centralized but operationally simple.</p>
+<hr />
+<h1 id="16-target-trust-model"><a class="header" href="#16-target-trust-model">16. Target Trust Model</a></h1>
+<p>Long-term:</p>
+<pre><code class="language-text">multiple independent directory authorities
++
+threshold signatures
++
+auditable deterministic topology rules
+</code></pre>
+<hr />
+<h1 id="17-threshold-signatures"><a class="header" href="#17-threshold-signatures">17. Threshold Signatures</a></h1>
+<p>Conceptual:</p>
+<pre><code class="language-text">M of N authorities
+</code></pre>
+<p>must approve topology epoch.</p>
+<hr />
+<h1 id="18-why-threshold-signing"><a class="header" href="#18-why-threshold-signing">18. Why Threshold Signing</a></h1>
+<p>Reduces risk from:</p>
+<pre><code class="language-text">single compromised directory
+single malicious operator
+single administrative mistake
+</code></pre>
+<hr />
+<h1 id="19-directory-quorum"><a class="header" href="#19-directory-quorum">19. Directory Quorum</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct DirectoryQuorum {
+    pub threshold: u16,
+    pub total: u16,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="20-node-registration-lifecycle"><a class="header" href="#20-node-registration-lifecycle">20. Node Registration Lifecycle</a></h1>
+<pre><code class="language-text">Unregistered
+→ Pending
+→ Verified
+→ Eligible
+→ Active
+→ Draining
+→ Retired
+</code></pre>
+<hr />
+<h1 id="21-node-status"><a class="header" href="#21-node-status">21. Node Status</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum NodeAdmissionState {
+    Pending,
+    Verified,
+    Eligible,
+    Active,
+    Suspended,
+    Revoked,
+    Retired,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="22-registration-request"><a class="header" href="#22-registration-request">22. Registration Request</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct NodeRegistrationRequest {
+    pub node_id: MixNodeId,
+    pub operator_id: OperatorId,
+    pub requested_roles: Vec&lt;MixnetNodeRole&gt;,
+    pub endpoints: Vec&lt;NodeEndpoint&gt;,
+    pub public_keys: MixNodePublicKeys,
+    pub capabilities: MixNodeCapabilities,
+    pub metadata: NodeAdmissionMetadata,
+    pub proof: AdmissionProof,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="23-admission-metadata"><a class="header" href="#23-admission-metadata">23. Admission Metadata</a></h1>
+<p>Possible:</p>
+<pre><code class="language-text">ASN
+region
+hosting provider
+capacity class
+software version
+operator grouping
+</code></pre>
+<hr />
+<h1 id="24-metadata-minimization"><a class="header" href="#24-metadata-minimization">24. Metadata Minimization</a></h1>
+<p>Collect only metadata needed for:</p>
+<pre><code class="language-text">diversity
+security
+operations
+</code></pre>
+<hr />
+<h1 id="25-node-endpoint-validation"><a class="header" href="#25-node-endpoint-validation">25. Node Endpoint Validation</a></h1>
+<p>Verify node actually controls endpoint.</p>
+<p>Methods:</p>
+<pre><code class="language-text">challenge-response
+TLS/QUIC challenge
+signed nonce
+</code></pre>
+<hr />
+<h1 id="26-key-possession"><a class="header" href="#26-key-possession">26. Key Possession</a></h1>
+<p>Registration requires proof of possession of node private key.</p>
+<hr />
+<h1 id="27-operator-binding"><a class="header" href="#27-operator-binding">27. Operator Binding</a></h1>
+<p>Node must prove authorization from operator identity.</p>
+<hr />
+<h1 id="28-admission-proof-types"><a class="header" href="#28-admission-proof-types">28. Admission Proof Types</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum AdmissionProof {
+    OperatorSigned,
+    ResourceBonded,
+    AuthorityApproved,
+    CommunityAttested,
+    Hybrid,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="29-sybil-resistance-principle"><a class="header" href="#29-sybil-resistance-principle">29. Sybil Resistance Principle</a></h1>
+<p>No single mechanism is perfect.</p>
+<p>Use layered defenses.</p>
+<hr />
+<h1 id="30-sybil-resistance-layers"><a class="header" href="#30-sybil-resistance-layers">30. Sybil Resistance Layers</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">operator identity
+resource cost
+capacity proof
+infrastructure diversity
+admission review
+health history
+rate limits
+topology concentration caps
+</code></pre>
+<hr />
+<h1 id="31-resource-cost"><a class="header" href="#31-resource-cost">31. Resource Cost</a></h1>
+<p>Make node creation non-free.</p>
+<p>Could be:</p>
+<pre><code class="language-text">bond
+deposit
+proof of resource ownership
+operational history
+</code></pre>
+<hr />
+<h1 id="32-avoid-assuming-stake--independence"><a class="header" href="#32-avoid-assuming-stake--independence">32. Avoid Assuming Stake = Independence</a></h1>
+<p>A wealthy attacker may still control many nodes.</p>
+<p>Therefore stake/resource proof is only one factor.</p>
+<hr />
+<h1 id="33-operator-concentration-cap"><a class="header" href="#33-operator-concentration-cap">33. Operator Concentration Cap</a></h1>
+<p>Topology policy should enforce:</p>
+<pre><code class="language-text">maximum nodes/hops per operator
+</code></pre>
+<hr />
+<h1 id="34-per-route-rule"><a class="header" href="#34-per-route-rule">34. Per-Route Rule</a></h1>
+<p>Strict mode:</p>
+<pre><code class="language-text">one operator max per route
+</code></pre>
+<hr />
+<h1 id="35-per-layer-rule"><a class="header" href="#35-per-layer-rule">35. Per-Layer Rule</a></h1>
+<p>Limit operator share per layer.</p>
+<hr />
+<h1 id="36-network-wide-rule"><a class="header" href="#36-network-wide-rule">36. Network-Wide Rule</a></h1>
+<p>Limit operator share of total eligible capacity.</p>
+<hr />
+<h1 id="37-hosting-provider-concentration"><a class="header" href="#37-hosting-provider-concentration">37. Hosting Provider Concentration</a></h1>
+<p>Operator diversity alone is insufficient if all nodes run on one cloud.</p>
+<hr />
+<h1 id="38-cloudasn-concentration"><a class="header" href="#38-cloudasn-concentration">38. Cloud/ASN Concentration</a></h1>
+<p>Track:</p>
+<pre><code class="language-text">ASN
+hosting provider
+region
+</code></pre>
+<hr />
+<h1 id="39-independence-dimensions"><a class="header" href="#39-independence-dimensions">39. Independence Dimensions</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct DiversityDimensions {
+    pub operator: bool,
+    pub asn: bool,
+    pub provider: bool,
+    pub region: bool,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="40-sybil-risk-score"><a class="header" href="#40-sybil-risk-score">40. Sybil Risk Score</a></h1>
+<p>Optional internal control-plane score.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct SybilRiskScore(pub u16);
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="41-no-user-facing-anonymity-score"><a class="header" href="#41-no-user-facing-anonymity-score">41. No User-Facing "Anonymity Score"</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="42-risk-inputs"><a class="header" href="#42-risk-inputs">42. Risk Inputs</a></h1>
+<p>Possible:</p>
+<pre><code class="language-text">operator overlap
+shared ASN
+shared IP prefix
+shared certificate patterns
+shared infrastructure fingerprints
+registration timing
+ownership evidence
+</code></pre>
+<hr />
+<h1 id="43-risk-score-limit"><a class="header" href="#43-risk-score-limit">43. Risk Score Limit</a></h1>
+<p>Do not treat heuristic score as proof.</p>
+<hr />
+<h1 id="44-capacity-proof"><a class="header" href="#44-capacity-proof">44. Capacity Proof</a></h1>
+<p>Node should demonstrate claimed throughput.</p>
+<hr />
+<h1 id="45-benchmark-challenge"><a class="header" href="#45-benchmark-challenge">45. Benchmark Challenge</a></h1>
+<p>Directory may issue synthetic load challenge.</p>
+<hr />
+<h1 id="46-capacity-class"><a class="header" href="#46-capacity-class">46. Capacity Class</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum CapacityClass {
+    Small,
+    Medium,
+    Large,
+    VeryLarge,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="47-capacity-weighting"><a class="header" href="#47-capacity-weighting">47. Capacity Weighting</a></h1>
+<p>Route/topology selection may use capacity weighting.</p>
+<p>But weight is capped to prevent dominant nodes.</p>
+<hr />
+<h1 id="48-maximum-weight-fraction"><a class="header" href="#48-maximum-weight-fraction">48. Maximum Weight Fraction</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct CapacityWeightPolicy {
+    pub max_node_fraction: f32,
+    pub max_operator_fraction: f32,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="49-health-history"><a class="header" href="#49-health-history">49. Health History</a></h1>
+<p>Eligibility should consider sustained behavior.</p>
+<hr />
+<h1 id="50-health-evidence"><a class="header" href="#50-health-evidence">50. Health Evidence</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">uptime
+packet-forward success
+latency class
+queue health
+software freshness
+</code></pre>
+<hr />
+<h1 id="51-health-evidence-source"><a class="header" href="#51-health-evidence-source">51. Health Evidence Source</a></h1>
+<p>Prefer:</p>
+<pre><code class="language-text">independent probes
++
+node self-report
+</code></pre>
+<p>not self-report alone.</p>
+<hr />
+<h1 id="52-probe-network"><a class="header" href="#52-probe-network">52. Probe Network</a></h1>
+<p>Directory observers can run synthetic probes.</p>
+<hr />
+<h1 id="53-probe-privacy"><a class="header" href="#53-probe-privacy">53. Probe Privacy</a></h1>
+<p>Probe traffic must not reveal user routes.</p>
+<p>Use synthetic/test traffic.</p>
+<hr />
+<h1 id="54-probe-identity"><a class="header" href="#54-probe-identity">54. Probe Identity</a></h1>
+<p>Separate from normal clients.</p>
+<hr />
+<h1 id="55-eligibility-window"><a class="header" href="#55-eligibility-window">55. Eligibility Window</a></h1>
+<p>A new node may require probation before full selection weight.</p>
+<hr />
+<h1 id="56-probation-state"><a class="header" href="#56-probation-state">56. Probation State</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum EligibilityTier {
+    Probation,
+    Normal,
+    Preferred,
+    Restricted,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="57-probation-purpose"><a class="header" href="#57-probation-purpose">57. Probation Purpose</a></h1>
+<p>Detect unstable/malicious nodes before major routing share.</p>
+<hr />
+<h1 id="58-node-join-flow"><a class="header" href="#58-node-join-flow">58. Node Join Flow</a></h1>
+<pre><code class="language-text">generate keys
+→ register operator
+→ register node
+→ prove endpoint/key control
+→ validate metadata
+→ enter probation
+→ observe health
+→ become eligible
+→ assign next epoch
+</code></pre>
+<hr />
+<h1 id="59-node-role-eligibility"><a class="header" href="#59-node-role-eligibility">59. Node Role Eligibility</a></h1>
+<p>Not every node can serve every role.</p>
+<hr />
+<h1 id="60-gateway-requirements"><a class="header" href="#60-gateway-requirements">60. Gateway Requirements</a></h1>
+<p>May require:</p>
+<pre><code class="language-text">stable client connectivity
+DDoS protection
+high availability
+public ingress
+</code></pre>
+<hr />
+<h1 id="61-mix-node-requirements"><a class="header" href="#61-mix-node-requirements">61. Mix Node Requirements</a></h1>
+<p>May require:</p>
+<pre><code class="language-text">high throughput
+low packet loss
+strict delay behavior
+</code></pre>
+<hr />
+<h1 id="62-mailbox-requirements"><a class="header" href="#62-mailbox-requirements">62. Mailbox Requirements</a></h1>
+<p>May require:</p>
+<pre><code class="language-text">durable storage
+retention guarantees
+backup
+quota enforcement
+</code></pre>
+<hr />
+<h1 id="63-role-certification"><a class="header" href="#63-role-certification">63. Role Certification</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct RoleEligibility {
+    pub role: MixnetNodeRole,
+    pub eligible: bool,
+    pub reason: Option&lt;RoleIneligibilityReason&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="64-node-software-version"><a class="header" href="#64-node-software-version">64. Node Software Version</a></h1>
+<p>Directory may require minimum version.</p>
+<hr />
+<h1 id="65-version-policy"><a class="header" href="#65-version-policy">65. Version Policy</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct SoftwareVersionPolicy {
+    pub minimum: Version,
+    pub recommended: Version,
+    pub blocked: Vec&lt;VersionRange&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="66-vulnerable-version"><a class="header" href="#66-vulnerable-version">66. Vulnerable Version</a></h1>
+<p>Can be suspended/revoked.</p>
+<hr />
+<h1 id="67-attestation-options"><a class="header" href="#67-attestation-options">67. Attestation Options</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">signed software build
+reproducible build hash
+TPM attestation
+remote attestation
+</code></pre>
+<hr />
+<h1 id="68-remote-attestation-caution"><a class="header" href="#68-remote-attestation-caution">68. Remote Attestation Caution</a></h1>
+<p>Attestation can create:</p>
+<pre><code class="language-text">hardware centralization
+vendor dependence
+privacy concerns
+</code></pre>
+<p>Therefore optional/future.</p>
+<hr />
+<h1 id="69-preferred-initial-supply-chain-proof"><a class="header" href="#69-preferred-initial-supply-chain-proof">69. Preferred Initial Supply-Chain Proof</a></h1>
+<p>Use:</p>
+<pre><code class="language-text">signed release artifact
+reproducible build hash
+SBOM
+</code></pre>
+<hr />
+<h1 id="70-node-build-identity"><a class="header" href="#70-node-build-identity">70. Node Build Identity</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct NodeBuildIdentity {
+    pub version: Version,
+    pub build_hash: [u8; 32],
+    pub sbom_hash: [u8; 32],
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="71-admission-authority"><a class="header" href="#71-admission-authority">71. Admission Authority</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait NodeAdmissionAuthority {
+    async fn evaluate(
+        &amp;self,
+        request: NodeRegistrationRequest,
+    ) -&gt; Result&lt;NodeAdmissionDecision, AdmissionError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="72-admission-decision"><a class="header" href="#72-admission-decision">72. Admission Decision</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct NodeAdmissionDecision {
+    pub state: NodeAdmissionState,
+    pub eligible_roles: Vec&lt;RoleEligibility&gt;,
+    pub tier: EligibilityTier,
+    pub expires_at: Timestamp,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="73-decision-expiry"><a class="header" href="#73-decision-expiry">73. Decision Expiry</a></h1>
+<p>Admission should be periodically revalidated.</p>
+<hr />
+<h1 id="74-continuous-eligibility"><a class="header" href="#74-continuous-eligibility">74. Continuous Eligibility</a></h1>
+<p>Eligibility is not permanent.</p>
+<hr />
+<h1 id="75-revalidation-inputs"><a class="header" href="#75-revalidation-inputs">75. Revalidation Inputs</a></h1>
+<pre><code class="language-text">health
+version
+revocation
+operator concentration
+infrastructure metadata
+policy changes
+</code></pre>
+<hr />
+<h1 id="76-suspension"><a class="header" href="#76-suspension">76. Suspension</a></h1>
+<p>Temporary state.</p>
+<p>Examples:</p>
+<pre><code class="language-text">health degraded
+version outdated
+metadata unresolved
+</code></pre>
+<hr />
+<h1 id="77-revocation"><a class="header" href="#77-revocation">77. Revocation</a></h1>
+<p>Security-critical.</p>
+<p>Examples:</p>
+<pre><code class="language-text">private key compromise
+malicious behavior
+false registration proof
+critical software compromise
+</code></pre>
+<hr />
+<h1 id="78-revocation-object"><a class="header" href="#78-revocation-object">78. Revocation Object</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct NodeRevocation {
+    pub node_id: MixNodeId,
+    pub reason: RevocationReason,
+    pub effective_at: Timestamp,
+    pub signature: DirectorySignature,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="79-revocation-reason"><a class="header" href="#79-revocation-reason">79. Revocation Reason</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum RevocationReason {
+    KeyCompromise,
+    MaliciousBehavior,
+    PolicyViolation,
+    VulnerableSoftware,
+    OperatorRequest,
+    Administrative,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="80-emergency-revocation"><a class="header" href="#80-emergency-revocation">80. Emergency Revocation</a></h1>
+<p>Must propagate faster than epoch turnover.</p>
+<hr />
+<h1 id="81-revocation-feed"><a class="header" href="#81-revocation-feed">81. Revocation Feed</a></h1>
+<p>Separate signed stream.</p>
+<hr />
+<h1 id="82-client-behavior"><a class="header" href="#82-client-behavior">82. Client Behavior</a></h1>
+<p>Clients reject revoked nodes immediately.</p>
+<hr />
+<h1 id="83-node-self-revocation"><a class="header" href="#83-node-self-revocation">83. Node Self-Revocation</a></h1>
+<p>Operator can revoke lost/compromised node.</p>
+<hr />
+<h1 id="84-operator-revocation"><a class="header" href="#84-operator-revocation">84. Operator Revocation</a></h1>
+<p>If operator identity compromised:</p>
+<pre><code class="language-text">all bound nodes require suspension/revalidation
+</code></pre>
+<hr />
+<h1 id="85-directory-authority-revocation"><a class="header" href="#85-directory-authority-revocation">85. Directory Authority Revocation</a></h1>
+<p>More critical.</p>
+<p>Requires trust-anchor transition.</p>
+<hr />
+<h1 id="86-trust-root-rotation"><a class="header" href="#86-trust-root-rotation">86. Trust Root Rotation</a></h1>
+<p>Signed by old quorum where possible.</p>
+<hr />
+<h1 id="87-catastrophic-authority-compromise"><a class="header" href="#87-catastrophic-authority-compromise">87. Catastrophic Authority Compromise</a></h1>
+<p>Need emergency recovery procedure.</p>
+<hr />
+<h1 id="88-governance-policy-version"><a class="header" href="#88-governance-policy-version">88. Governance Policy Version</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct GovernancePolicyVersion(pub u64);
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="89-governance-policy"><a class="header" href="#89-governance-policy">89. Governance Policy</a></h1>
+<p>Defines:</p>
+<pre><code class="language-text">admission requirements
+diversity caps
+role requirements
+epoch rules
+revocation rules
+software requirements
+</code></pre>
+<hr />
+<h1 id="90-policy-snapshot"><a class="header" href="#90-policy-snapshot">90. Policy Snapshot</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct GovernancePolicy {
+    pub version: GovernancePolicyVersion,
+    pub admission: AdmissionPolicy,
+    pub diversity: DiversityPolicy,
+    pub topology: TopologyPolicy,
+    pub software: SoftwareVersionPolicy,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="91-signed-policy"><a class="header" href="#91-signed-policy">91. Signed Policy</a></h1>
+<p>All control-plane decisions reference signed policy version.</p>
+<hr />
+<h1 id="92-auditability"><a class="header" href="#92-auditability">92. Auditability</a></h1>
+<p>A client/operator should be able to verify:</p>
+<pre><code class="language-text">which policy version
+which topology epoch
+which authority signatures
+</code></pre>
+<hr />
+<h1 id="93-deterministic-topology-builder"><a class="header" href="#93-deterministic-topology-builder">93. Deterministic Topology Builder</a></h1>
+<p>Where practical, topology assignment should be deterministic from:</p>
+<pre><code class="language-text">eligible registry
+epoch randomness
+policy
+</code></pre>
+<hr />
+<h1 id="94-why-deterministic"><a class="header" href="#94-why-deterministic">94. Why Deterministic</a></h1>
+<p>Makes hidden bias harder.</p>
+<hr />
+<h1 id="95-topology-random-seed"><a class="header" href="#95-topology-random-seed">95. Topology Random Seed</a></h1>
+<p>Use verifiable/random beacon if decentralized.</p>
+<hr />
+<h1 id="96-initial-deployment-seed"><a class="header" href="#96-initial-deployment-seed">96. Initial Deployment Seed</a></h1>
+<p>Directory-generated signed randomness may be acceptable initially.</p>
+<hr />
+<h1 id="97-future-randomness"><a class="header" href="#97-future-randomness">97. Future Randomness</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">multi-authority commit/reveal
+VRF
+public randomness beacon
+</code></pre>
+<hr />
+<h1 id="98-layer-assignment"><a class="header" href="#98-layer-assignment">98. Layer Assignment</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait LayerAssigner {
+    fn assign(
+        &amp;self,
+        eligible: &amp;[EligibleNode],
+        randomness: EpochRandomness,
+        policy: &amp;TopologyPolicy,
+    ) -&gt; Result&lt;LayerAssignment, TopologyError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="99-layer-assignment-constraints"><a class="header" href="#99-layer-assignment-constraints">99. Layer Assignment Constraints</a></h1>
+<p>Must satisfy:</p>
+<pre><code class="language-text">role eligibility
+minimum node count
+operator caps
+capacity balance
+ASN/provider diversity
+</code></pre>
+<hr />
+<h1 id="100-assignment-fairness"><a class="header" href="#100-assignment-fairness">100. Assignment Fairness</a></h1>
+<p>No operator should receive structurally privileged position repeatedly.</p>
+<hr />
+<h1 id="101-layer-rotation"><a class="header" href="#101-layer-rotation">101. Layer Rotation</a></h1>
+<p>Nodes reshuffled across epochs.</p>
+<hr />
+<h1 id="102-gateway-pool"><a class="header" href="#102-gateway-pool">102. Gateway Pool</a></h1>
+<p>Separate from mix-layer assignment.</p>
+<hr />
+<h1 id="103-mailbox-pool"><a class="header" href="#103-mailbox-pool">103. Mailbox Pool</a></h1>
+<p>Separate role.</p>
+<hr />
+<h1 id="104-topology-builder"><a class="header" href="#104-topology-builder">104. Topology Builder</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait TopologyBuilder {
+    fn build(
+        &amp;self,
+        registry: &amp;EligibleRegistry,
+        randomness: EpochRandomness,
+        policy: &amp;GovernancePolicy,
+    ) -&gt; Result&lt;UnsignedTopologySnapshot, TopologyError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="105-topology-validation"><a class="header" href="#105-topology-validation">105. Topology Validation</a></h1>
+<p>Before signing:</p>
+<pre><code class="language-text">minimum nodes
+diversity
+version compatibility
+role eligibility
+capacity
+revocation exclusion
+</code></pre>
+<hr />
+<h1 id="106-topology-signing"><a class="header" href="#106-topology-signing">106. Topology Signing</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait TopologySigner {
+    fn sign(
+        &amp;self,
+        topology: &amp;UnsignedTopologySnapshot,
+    ) -&gt; Result&lt;TopologySignatureBundle, SigningError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="107-signature-bundle"><a class="header" href="#107-signature-bundle">107. Signature Bundle</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct TopologySignatureBundle {
+    pub signatures: Vec&lt;DirectoryAuthoritySignature&gt;,
+    pub quorum: DirectoryQuorum,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="108-client-verification"><a class="header" href="#108-client-verification">108. Client Verification</a></h1>
+<p>Client checks:</p>
+<pre><code class="language-text">quorum
+authority trust
+epoch
+policy version
+revocation state
+</code></pre>
+<hr />
+<h1 id="109-split-brain-topology"><a class="header" href="#109-split-brain-topology">109. Split-Brain Topology</a></h1>
+<p>Two valid-looking snapshots for same epoch is serious.</p>
+<hr />
+<h1 id="110-equivocation-detection"><a class="header" href="#110-equivocation-detection">110. Equivocation Detection</a></h1>
+<p>Authorities should detect:</p>
+<pre><code class="language-text">same epoch
+different topology hash
+same signer
+</code></pre>
+<hr />
+<h1 id="111-equivocation-evidence"><a class="header" href="#111-equivocation-evidence">111. Equivocation Evidence</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct DirectoryEquivocationProof {
+    pub epoch: TopologyEpoch,
+    pub first_hash: [u8; 32],
+    pub second_hash: [u8; 32],
+    pub signer: DirectoryAuthorityId,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="112-equivocation-response"><a class="header" href="#112-equivocation-response">112. Equivocation Response</a></h1>
+<p>Suspend signer and require governance review.</p>
+<hr />
+<h1 id="113-transparency-log"><a class="header" href="#113-transparency-log">113. Transparency Log</a></h1>
+<p>Recommended.</p>
+<p>Append-only log of:</p>
+<pre><code class="language-text">registrations
+admission decisions
+revocations
+policy updates
+topology hashes
+authority key changes
+</code></pre>
+<hr />
+<h1 id="114-transparency-log-purpose"><a class="header" href="#114-transparency-log-purpose">114. Transparency Log Purpose</a></h1>
+<p>Makes hidden control-plane changes auditable.</p>
+<hr />
+<h1 id="115-privacy-constraint"><a class="header" href="#115-privacy-constraint">115. Privacy Constraint</a></h1>
+<p>No user routing data enters transparency log.</p>
+<hr />
+<h1 id="116-transparency-entry"><a class="header" href="#116-transparency-entry">116. Transparency Entry</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct TransparencyEntry {
+    pub sequence: u64,
+    pub event: GovernanceEvent,
+    pub timestamp: Timestamp,
+    pub signature: DirectorySignature,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="117-merkle-log"><a class="header" href="#117-merkle-log">117. Merkle Log</a></h1>
+<p>Future/useful implementation.</p>
+<p>Allows:</p>
+<pre><code class="language-text">inclusion proofs
+consistency proofs
+</code></pre>
+<hr />
+<h1 id="118-governance-events"><a class="header" href="#118-governance-events">118. Governance Events</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum GovernanceEvent {
+    NodeRegistered,
+    NodeEligible,
+    NodeSuspended,
+    NodeRevoked,
+    OperatorRegistered,
+    PolicyUpdated,
+    TopologyPublished,
+    AuthorityRotated,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="119-operator-concentration-policy"><a class="header" href="#119-operator-concentration-policy">119. Operator Concentration Policy</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct ConcentrationPolicy {
+    pub max_nodes_per_operator: u32,
+    pub max_capacity_fraction_per_operator: f32,
+    pub max_nodes_per_asn_fraction: f32,
+    pub max_nodes_per_provider_fraction: f32,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="120-hard-vs-soft-caps"><a class="header" href="#120-hard-vs-soft-caps">120. Hard vs Soft Caps</a></h1>
+<p>Hard caps:</p>
+<pre><code class="language-text">must never violate
+</code></pre>
+<p>Soft caps:</p>
+<pre><code class="language-text">preferred, may degrade only under explicit policy
+</code></pre>
+<hr />
+<h1 id="121-strict-anonymity-mode"><a class="header" href="#121-strict-anonymity-mode">121. Strict Anonymity Mode</a></h1>
+<p>Uses hard caps.</p>
+<hr />
+<h1 id="122-network-bootstrap-problem"><a class="header" href="#122-network-bootstrap-problem">122. Network Bootstrap Problem</a></h1>
+<p>Small network may not satisfy strong diversity.</p>
+<hr />
+<h1 id="123-bootstrap-solution"><a class="header" href="#123-bootstrap-solution">123. Bootstrap Solution</a></h1>
+<p>Expose:</p>
+<pre><code class="language-text">Development
+Bootstrap
+Production
+</code></pre>
+<p>governance modes.</p>
+<hr />
+<h1 id="124-governance-mode"><a class="header" href="#124-governance-mode">124. Governance Mode</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum GovernanceMode {
+    Development,
+    Bootstrap,
+    Production,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="125-development"><a class="header" href="#125-development">125. Development</a></h1>
+<p>Minimal constraints, clearly non-production.</p>
+<hr />
+<h1 id="126-bootstrap"><a class="header" href="#126-bootstrap">126. Bootstrap</a></h1>
+<p>Some relaxed caps but explicit reduced-anonymity state.</p>
+<hr />
+<h1 id="127-production"><a class="header" href="#127-production">127. Production</a></h1>
+<p>Full constraints.</p>
+<hr />
+<h1 id="128-no-hidden-relaxation"><a class="header" href="#128-no-hidden-relaxation">128. No Hidden Relaxation</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="129-anonymity-set-health"><a class="header" href="#129-anonymity-set-health">129. Anonymity Set Health</a></h1>
+<p>Directory can publish coarse state:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum NetworkDiversityHealth {
+    Healthy,
+    Reduced,
+    Insufficient,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="130-health-calculation"><a class="header" href="#130-health-calculation">130. Health Calculation</a></h1>
+<p>Based on:</p>
+<pre><code class="language-text">eligible nodes
+operator diversity
+ASN diversity
+layer size
+capacity concentration
+</code></pre>
+<hr />
+<h1 id="131-client-response"><a class="header" href="#131-client-response">131. Client Response</a></h1>
+<p>Maximum Anonymity:</p>
+<pre><code class="language-text">Insufficient
+→ no new route
+</code></pre>
+<hr />
+<h1 id="132-standard-anonymous-mode"><a class="header" href="#132-standard-anonymous-mode">132. Standard Anonymous Mode</a></h1>
+<p>May allow Reduced with warning.</p>
+<hr />
+<h1 id="133-node-admission-rate-limit"><a class="header" href="#133-node-admission-rate-limit">133. Node Admission Rate Limit</a></h1>
+<p>Prevent registration flood.</p>
+<hr />
+<h1 id="134-operator-rate-limit"><a class="header" href="#134-operator-rate-limit">134. Operator Rate Limit</a></h1>
+<p>Bound:</p>
+<pre><code class="language-text">new nodes per epoch
+</code></pre>
+<hr />
+<h1 id="135-probation-capacity-cap"><a class="header" href="#135-probation-capacity-cap">135. Probation Capacity Cap</a></h1>
+<p>New nodes receive small routing weight.</p>
+<hr />
+<h1 id="136-gradual-promotion"><a class="header" href="#136-gradual-promotion">136. Gradual Promotion</a></h1>
+<pre><code class="language-text">Probation
+→ Normal
+→ Preferred
+</code></pre>
+<p>based on health history.</p>
+<hr />
+<h1 id="137-preferred-tier"><a class="header" href="#137-preferred-tier">137. Preferred Tier</a></h1>
+<p>Should not become permanent privilege.</p>
+<hr />
+<h1 id="138-tier-decayreevaluation"><a class="header" href="#138-tier-decayreevaluation">138. Tier Decay/Reevaluation</a></h1>
+<p>Regularly reassess.</p>
+<hr />
+<h1 id="139-reputation"><a class="header" href="#139-reputation">139. Reputation</a></h1>
+<p>Use cautiously.</p>
+<hr />
+<h1 id="140-reputation-inputs"><a class="header" href="#140-reputation-inputs">140. Reputation Inputs</a></h1>
+<p>Only operational:</p>
+<pre><code class="language-text">uptime
+correct forwarding
+availability
+</code></pre>
+<p>not social/user reputation.</p>
+<hr />
+<h1 id="141-reputation-privacy"><a class="header" href="#141-reputation-privacy">141. Reputation Privacy</a></h1>
+<p>No user interaction history.</p>
+<hr />
+<h1 id="142-reputation-manipulation"><a class="header" href="#142-reputation-manipulation">142. Reputation Manipulation</a></h1>
+<p>Avoid self-reported-only scoring.</p>
+<hr />
+<h1 id="143-independent-observers"><a class="header" href="#143-independent-observers">143. Independent Observers</a></h1>
+<p>Multiple observers can contribute health evidence.</p>
+<hr />
+<h1 id="144-observer-identity"><a class="header" href="#144-observer-identity">144. Observer Identity</a></h1>
+<p>Signed.</p>
+<hr />
+<h1 id="145-observer-quorum"><a class="header" href="#145-observer-quorum">145. Observer Quorum</a></h1>
+<p>Health status may require multiple corroborating reports for severe action.</p>
+<hr />
+<h1 id="146-immediate-local-revocation-exception"><a class="header" href="#146-immediate-local-revocation-exception">146. Immediate Local Revocation Exception</a></h1>
+<p>Cryptographic compromise can trigger immediate emergency action.</p>
+<hr />
+<h1 id="147-health-evidence-model"><a class="header" href="#147-health-evidence-model">147. Health Evidence Model</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct HealthEvidence {
+    pub node_id: MixNodeId,
+    pub observer: DirectoryAuthorityId,
+    pub interval: TimeRange,
+    pub availability: f32,
+    pub latency_class: HealthLatencyClass,
+    pub packet_success: f32,
+    pub signature: ObserverSignature,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="148-health-evidence-retention"><a class="header" href="#148-health-evidence-retention">148. Health Evidence Retention</a></h1>
+<p>Bounded and aggregated.</p>
+<hr />
+<h1 id="149-no-packet-level-evidence"><a class="header" href="#149-no-packet-level-evidence">149. No Packet-Level Evidence</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="150-fraud-detection"><a class="header" href="#150-fraud-detection">150. Fraud Detection</a></h1>
+<p>Detect:</p>
+<pre><code class="language-text">fake endpoint
+fake operator metadata
+impossible geography/ASN claims
+duplicate node fingerprints
+</code></pre>
+<hr />
+<h1 id="151-infrastructure-fingerprinting"><a class="header" href="#151-infrastructure-fingerprinting">151. Infrastructure Fingerprinting</a></h1>
+<p>Can be used carefully for Sybil detection.</p>
+<hr />
+<h1 id="152-fingerprint-privacy"><a class="header" href="#152-fingerprint-privacy">152. Fingerprint Privacy</a></h1>
+<p>Only node infrastructure, never user clients.</p>
+<hr />
+<h1 id="153-shared-ip-prefix"><a class="header" href="#153-shared-ip-prefix">153. Shared IP Prefix</a></h1>
+<p>Potential Sybil indicator.</p>
+<p>Not definitive due to hosting/NAT.</p>
+<hr />
+<h1 id="154-shared-tlscertificate-artifacts"><a class="header" href="#154-shared-tlscertificate-artifacts">154. Shared TLS/Certificate Artifacts</a></h1>
+<p>Potential indicator.</p>
+<hr />
+<h1 id="155-shared-deployment-fingerprints"><a class="header" href="#155-shared-deployment-fingerprints">155. Shared Deployment Fingerprints</a></h1>
+<p>Can indicate common operator.</p>
+<hr />
+<h1 id="156-manual-review"><a class="header" href="#156-manual-review">156. Manual Review</a></h1>
+<p>Some anomalies require manual governance review.</p>
+<hr />
+<h1 id="157-automated-decision-boundaries"><a class="header" href="#157-automated-decision-boundaries">157. Automated Decision Boundaries</a></h1>
+<p>Automation may:</p>
+<pre><code class="language-text">flag
+temporarily restrict
+</code></pre>
+<p>but high-impact revocation may require quorum.</p>
+<hr />
+<h1 id="158-governance-roles"><a class="header" href="#158-governance-roles">158. Governance Roles</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">Directory Authority
+Security Reviewer
+Operator
+Observer
+Release Signer
+</code></pre>
+<hr />
+<h1 id="159-separation-of-duties"><a class="header" href="#159-separation-of-duties">159. Separation of Duties</a></h1>
+<p>One person/service should not control:</p>
+<pre><code class="language-text">admission
+topology
+revocation
+release signing
+</code></pre>
+<p>alone where avoidable.</p>
+<hr />
+<h1 id="160-policy-change-workflow"><a class="header" href="#160-policy-change-workflow">160. Policy Change Workflow</a></h1>
+<pre><code class="language-text">proposal
+→ review
+→ quorum approval
+→ signed policy
+→ delayed activation
+</code></pre>
+<hr />
+<h1 id="161-emergency-policy-change"><a class="header" href="#161-emergency-policy-change">161. Emergency Policy Change</a></h1>
+<p>Possible for critical vulnerability.</p>
+<p>Requires explicit audit event.</p>
+<hr />
+<h1 id="162-delayed-activation"><a class="header" href="#162-delayed-activation">162. Delayed Activation</a></h1>
+<p>Helps operators/clients prepare.</p>
+<hr />
+<h1 id="163-policy-rollback"><a class="header" href="#163-policy-rollback">163. Policy Rollback</a></h1>
+<p>Signed rollback to known-good version.</p>
+<hr />
+<h1 id="164-client-policy-compatibility"><a class="header" href="#164-client-policy-compatibility">164. Client Policy Compatibility</a></h1>
+<p>Client knows minimum supported policy schema.</p>
+<hr />
+<h1 id="165-unknown-policy-version"><a class="header" href="#165-unknown-policy-version">165. Unknown Policy Version</a></h1>
+<p>Fail safely.</p>
+<hr />
+<h1 id="166-node-removal-appeal"><a class="header" href="#166-node-removal-appeal">166. Node Removal Appeal</a></h1>
+<p>Governance can support operator appeal.</p>
+<p>Not required in client protocol.</p>
+<hr />
+<h1 id="167-appeal-does-not-delay-security-revocation"><a class="header" href="#167-appeal-does-not-delay-security-revocation">167. Appeal Does Not Delay Security Revocation</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="168-public-vs-private-operator-metadata"><a class="header" href="#168-public-vs-private-operator-metadata">168. Public vs Private Operator Metadata</a></h1>
+<p>Public:</p>
+<pre><code class="language-text">operator pseudonymous ID
+node count
+capacity class
+ASN/provider category
+</code></pre>
+<p>Private to authorities if needed:</p>
+<pre><code class="language-text">legal/contact data
+</code></pre>
+<hr />
+<h1 id="169-privacy-preserving-operator-identity"><a class="header" href="#169-privacy-preserving-operator-identity">169. Privacy-Preserving Operator Identity</a></h1>
+<p>Possible pseudonymous operator identity with authority verification.</p>
+<hr />
+<h1 id="170-do-not-publish-personal-addresses"><a class="header" href="#170-do-not-publish-personal-addresses">170. Do Not Publish Personal Addresses</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="171-multi-operator-hosting-company"><a class="header" href="#171-multi-operator-hosting-company">171. Multi-Operator Hosting Company</a></h1>
+<p>One hosting company may host many independent operators.</p>
+<p>Therefore:</p>
+<pre><code class="language-text">operator diversity
++
+provider diversity
+</code></pre>
+<p>both matter.</p>
+<hr />
+<h1 id="172-cloud-provider-metadata"><a class="header" href="#172-cloud-provider-metadata">172. Cloud Provider Metadata</a></h1>
+<p>Canonicalized.</p>
+<hr />
+<h1 id="173-asn-metadata"><a class="header" href="#173-asn-metadata">173. ASN Metadata</a></h1>
+<p>Derived from endpoint IP.</p>
+<hr />
+<h1 id="174-region-metadata"><a class="header" href="#174-region-metadata">174. Region Metadata</a></h1>
+<p>Coarse only.</p>
+<hr />
+<h1 id="175-no-exact-geolocation-requirement"><a class="header" href="#175-no-exact-geolocation-requirement">175. No Exact Geolocation Requirement</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="176-node-admission-api"><a class="header" href="#176-node-admission-api">176. Node Admission API</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[async_trait]
+pub trait NodeRegistry {
+    async fn register(
+        &amp;self,
+        request: NodeRegistrationRequest,
+    ) -&gt; Result&lt;NodeRegistrationReceipt, RegistryError&gt;;
+
+    async fn status(
+        &amp;self,
+        node: MixNodeId,
+    ) -&gt; Result&lt;NodeAdmissionState, RegistryError&gt;;
+
+    async fn revoke(
+        &amp;self,
+        revocation: NodeRevocationRequest,
+    ) -&gt; Result&lt;(), RegistryError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="177-operator-registry-api"><a class="header" href="#177-operator-registry-api">177. Operator Registry API</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[async_trait]
+pub trait OperatorRegistry {
+    async fn register_operator(
+        &amp;self,
+        request: OperatorRegistrationRequest,
+    ) -&gt; Result&lt;OperatorId, RegistryError&gt;;
+
+    async fn bind_node(
+        &amp;self,
+        operator: OperatorId,
+        node: MixNodeId,
+    ) -&gt; Result&lt;(), RegistryError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="178-directory-authority-api"><a class="header" href="#178-directory-authority-api">178. Directory Authority API</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[async_trait]
+pub trait DirectoryAuthority {
+    async fn eligible_registry(
+        &amp;self,
+    ) -&gt; Result&lt;EligibleRegistry, DirectoryError&gt;;
+
+    async fn policy(
+        &amp;self,
+    ) -&gt; Result&lt;GovernancePolicy, DirectoryError&gt;;
+
+    async fn revocations(
+        &amp;self,
+    ) -&gt; Result&lt;RevocationSet, DirectoryError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="179-governance-store"><a class="header" href="#179-governance-store">179. Governance Store</a></h1>
+<p>Persistent control-plane database.</p>
+<hr />
+<h1 id="180-authoritative-tables"><a class="header" href="#180-authoritative-tables">180. Authoritative Tables</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">operators
+nodes
+node_keys
+admission_decisions
+health_evidence
+revocations
+policies
+topology_epochs
+authority_keys
+transparency_entries
+</code></pre>
+<hr />
+<h1 id="181-storage-backend"><a class="header" href="#181-storage-backend">181. Storage Backend</a></h1>
+<p>PostgreSQL reasonable for control plane.</p>
+<hr />
+<h1 id="182-why-not-mixnet-node-db"><a class="header" href="#182-why-not-mixnet-node-db">182. Why Not Mixnet Node DB</a></h1>
+<p>Keep directory data separate from forwarding nodes.</p>
+<hr />
+<h1 id="183-transactionality"><a class="header" href="#183-transactionality">183. Transactionality</a></h1>
+<p>Critical changes:</p>
+<pre><code class="language-text">revoke node
+publish revocation
+update registry
+</code></pre>
+<p>must be atomic or transactionally coordinated.</p>
+<hr />
+<h1 id="184-topology-publication-transaction"><a class="header" href="#184-topology-publication-transaction">184. Topology Publication Transaction</a></h1>
+<pre><code class="language-text">build
+→ validate
+→ sign
+→ persist
+→ publish
+</code></pre>
+<hr />
+<h1 id="185-publication-idempotency"><a class="header" href="#185-publication-idempotency">185. Publication Idempotency</a></h1>
+<p>Same epoch/hash can be republished safely.</p>
+<hr />
+<h1 id="186-conflicting-publication"><a class="header" href="#186-conflicting-publication">186. Conflicting Publication</a></h1>
+<p>Rejected and audited.</p>
+<hr />
+<h1 id="187-control-plane-ha"><a class="header" href="#187-control-plane-ha">187. Control-Plane HA</a></h1>
+<p>Directory authorities should be highly available.</p>
+<hr />
+<h1 id="188-ha-does-not-mean-shared-signing-key-everywhere"><a class="header" href="#188-ha-does-not-mean-shared-signing-key-everywhere">188. HA Does Not Mean Shared Signing Key Everywhere</a></h1>
+<p>Use secure signing architecture.</p>
+<hr />
+<h1 id="189-signing-key-storage"><a class="header" href="#189-signing-key-storage">189. Signing Key Storage</a></h1>
+<p>Prefer:</p>
+<pre><code class="language-text">HSM
+hardware-backed key
+offline/isolated signer
+</code></pre>
+<p>for high-value authority keys.</p>
+<hr />
+<h1 id="190-online-vs-offline-keys"><a class="header" href="#190-online-vs-offline-keys">190. Online vs Offline Keys</a></h1>
+<p>Online keys for routine short-lived signing.</p>
+<p>Offline root for trust-anchor recovery.</p>
+<hr />
+<h1 id="191-root-key"><a class="header" href="#191-root-key">191. Root Key</a></h1>
+<p>Rarely used.</p>
+<hr />
+<h1 id="192-epoch-signing-key"><a class="header" href="#192-epoch-signing-key">192. Epoch Signing Key</a></h1>
+<p>Rotatable.</p>
+<hr />
+<h1 id="193-key-hierarchy"><a class="header" href="#193-key-hierarchy">193. Key Hierarchy</a></h1>
+<pre><code class="language-text">Offline Root
+   ↓
+Directory Authority Key
+   ↓
+Epoch Signing Key
+</code></pre>
+<hr />
+<h1 id="194-key-rotation"><a class="header" href="#194-key-rotation">194. Key Rotation</a></h1>
+<p>Scheduled and auditable.</p>
+<hr />
+<h1 id="195-key-compromise"><a class="header" href="#195-key-compromise">195. Key Compromise</a></h1>
+<p>Emergency revoke/replace.</p>
+<hr />
+<h1 id="196-client-trust-bundle"><a class="header" href="#196-client-trust-bundle">196. Client Trust Bundle</a></h1>
+<p>Ships with:</p>
+<pre><code class="language-text">root trust anchors
+minimum quorum
+policy schema version
+</code></pre>
+<hr />
+<h1 id="197-trust-bundle-update"><a class="header" href="#197-trust-bundle-update">197. Trust Bundle Update</a></h1>
+<p>Secure software update or signed root transition.</p>
+<hr />
+<h1 id="198-anti-rollback"><a class="header" href="#198-anti-rollback">198. Anti-Rollback</a></h1>
+<p>Client rejects older trust bundle after secure update.</p>
+<hr />
+<h1 id="199-time-validation"><a class="header" href="#199-time-validation">199. Time Validation</a></h1>
+<p>Use bounded clock skew.</p>
+<hr />
+<h1 id="200-offline-client"><a class="header" href="#200-offline-client">200. Offline Client</a></h1>
+<p>May use cached valid topology until expiry.</p>
+<hr />
+<h1 id="201-topology-freshness-policy"><a class="header" href="#201-topology-freshness-policy">201. Topology Freshness Policy</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct TopologyFreshnessPolicy {
+    pub max_age: Duration,
+    pub emergency_revocation_max_age: Duration,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="202-revocation-freshness"><a class="header" href="#202-revocation-freshness">202. Revocation Freshness</a></h1>
+<p>Stricter than topology freshness.</p>
+<hr />
+<h1 id="203-offline-maximum-anonymity"><a class="header" href="#203-offline-maximum-anonymity">203. Offline Maximum Anonymity</a></h1>
+<p>If revocation state too stale:</p>
+<pre><code class="language-text">do not create new anonymous route
+</code></pre>
+<hr />
+<h1 id="204-directory-censorship"><a class="header" href="#204-directory-censorship">204. Directory Censorship</a></h1>
+<p>If directory blocked:</p>
+<pre><code class="language-text">cached topology
+multiple mirrors
+signed bundles
+</code></pre>
+<p>can help.</p>
+<p>Full censorship resistance later.</p>
+<hr />
+<h1 id="205-directory-mirror"><a class="header" href="#205-directory-mirror">205. Directory Mirror</a></h1>
+<p>Mirror can distribute signed artifacts without authority.</p>
+<hr />
+<h1 id="206-mirror-trust"><a class="header" href="#206-mirror-trust">206. Mirror Trust</a></h1>
+<p>Clients trust signatures, not mirror.</p>
+<hr />
+<h1 id="207-governance-transparency-ui"><a class="header" href="#207-governance-transparency-ui">207. Governance Transparency UI</a></h1>
+<p>Advanced/operator UI can show:</p>
+<pre><code class="language-text">current policy version
+epoch
+authority quorum
+network diversity health
+</code></pre>
+<hr />
+<h1 id="208-normal-user-ui"><a class="header" href="#208-normal-user-ui">208. Normal User UI</a></h1>
+<p>Only:</p>
+<pre><code class="language-text">Anonymous network healthy
+Reduced anonymity set
+Anonymous network unavailable
+</code></pre>
+<hr />
+<h1 id="209-no-node-list-in-normal-ui"><a class="header" href="#209-no-node-list-in-normal-ui">209. No Node List in Normal UI</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="210-operator-console"><a class="header" href="#210-operator-console">210. Operator Console</a></h1>
+<p>Shows:</p>
+<pre><code class="language-text">registration state
+role eligibility
+health
+software compliance
+upcoming epoch
+revocation status
+</code></pre>
+<hr />
+<h1 id="211-admission-failure-ux"><a class="header" href="#211-admission-failure-ux">211. Admission Failure UX</a></h1>
+<p>Operator gets clear reason:</p>
+<pre><code class="language-text">unsupported version
+endpoint unreachable
+operator cap exceeded
+probation incomplete
+</code></pre>
+<hr />
+<h1 id="212-security-sensitive-reason"><a class="header" href="#212-security-sensitive-reason">212. Security-Sensitive Reason</a></h1>
+<p>Do not expose anti-Sybil detection internals excessively.</p>
+<hr />
+<h1 id="213-observability"><a class="header" href="#213-observability">213. Observability</a></h1>
+<p>Control plane can measure:</p>
+<pre><code class="language-text">node count
+operator count
+ASN diversity
+provider diversity
+eligible capacity
+revocation latency
+policy freshness
+</code></pre>
+<hr />
+<h1 id="214-no-user-traffic-metrics"><a class="header" href="#214-no-user-traffic-metrics">214. No User Traffic Metrics</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="215-governance-audit-log"><a class="header" href="#215-governance-audit-log">215. Governance Audit Log</a></h1>
+<p>All privileged actions logged.</p>
+<hr />
+<h1 id="216-admin-action-record"><a class="header" href="#216-admin-action-record">216. Admin Action Record</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct GovernanceAuditRecord {
+    pub actor: GovernanceActorId,
+    pub action: GovernanceAction,
+    pub policy_version: GovernancePolicyVersion,
+    pub timestamp: Timestamp,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="217-admin-identity"><a class="header" href="#217-admin-identity">217. Admin Identity</a></h1>
+<p>Separate from directory authority signing identity.</p>
+<hr />
+<h1 id="218-two-person-rule"><a class="header" href="#218-two-person-rule">218. Two-Person Rule</a></h1>
+<p>Recommended for:</p>
+<pre><code class="language-text">root rotation
+authority addition/removal
+emergency policy change
+</code></pre>
+<hr />
+<h1 id="219-emergency-actions"><a class="header" href="#219-emergency-actions">219. Emergency Actions</a></h1>
+<p>Need fast but auditable workflow.</p>
+<hr />
+<h1 id="220-compromise-drill"><a class="header" href="#220-compromise-drill">220. Compromise Drill</a></h1>
+<p>Regularly test:</p>
+<pre><code class="language-text">node compromise
+operator compromise
+authority compromise
+directory outage
+split-brain
+</code></pre>
+<hr />
+<h1 id="221-simulator-integration"><a class="header" href="#221-simulator-integration">221. Simulator Integration</a></h1>
+<p>Part 38 simulator should consume governance/topology policy.</p>
+<hr />
+<h1 id="222-sybil-simulation"><a class="header" href="#222-sybil-simulation">222. Sybil Simulation</a></h1>
+<p>Inject attacker controlling:</p>
+<pre><code class="language-text">10%
+20%
+30%
+</code></pre>
+<p>of nominal nodes.</p>
+<p>Measure route compromise probability.</p>
+<hr />
+<h1 id="223-concentration-simulation"><a class="header" href="#223-concentration-simulation">223. Concentration Simulation</a></h1>
+<p>Test:</p>
+<pre><code class="language-text">one operator
+one ASN
+one cloud
+</code></pre>
+<p>dominance scenarios.</p>
+<hr />
+<h1 id="224-layer-assignment-simulation"><a class="header" href="#224-layer-assignment-simulation">224. Layer Assignment Simulation</a></h1>
+<p>Verify caps across many epochs.</p>
+<hr />
+<h1 id="225-epoch-randomness-tests"><a class="header" href="#225-epoch-randomness-tests">225. Epoch Randomness Tests</a></h1>
+<p>Check no deterministic bias.</p>
+<hr />
+<h1 id="226-equivocation-tests"><a class="header" href="#226-equivocation-tests">226. Equivocation Tests</a></h1>
+<p>Same signer signs conflicting epoch.</p>
+<p>Must be detected.</p>
+<hr />
+<h1 id="227-revocation-latency-tests"><a class="header" href="#227-revocation-latency-tests">227. Revocation Latency Tests</a></h1>
+<p>Measure:</p>
+<pre><code class="language-text">compromise event
+→ client rejects node
+</code></pre>
+<hr />
+<h1 id="228-registration-flood-tests"><a class="header" href="#228-registration-flood-tests">228. Registration Flood Tests</a></h1>
+<p>Thousands of fake node requests.</p>
+<hr />
+<h1 id="229-operator-flood-tests"><a class="header" href="#229-operator-flood-tests">229. Operator Flood Tests</a></h1>
+<p>Many pseudonymous operators from same infrastructure.</p>
+<hr />
+<h1 id="230-metadata-fraud-tests"><a class="header" href="#230-metadata-fraud-tests">230. Metadata Fraud Tests</a></h1>
+<p>False ASN/provider/region claims.</p>
+<hr />
+<h1 id="231-health-fraud-tests"><a class="header" href="#231-health-fraud-tests">231. Health Fraud Tests</a></h1>
+<p>Node self-reports healthy while independent probes fail.</p>
+<hr />
+<h1 id="232-version-enforcement-tests"><a class="header" href="#232-version-enforcement-tests">232. Version Enforcement Tests</a></h1>
+<p>Blocked build cannot enter topology.</p>
+<hr />
+<h1 id="233-key-rotation-tests"><a class="header" href="#233-key-rotation-tests">233. Key Rotation Tests</a></h1>
+<p>Node and authority key rotation.</p>
+<hr />
+<h1 id="234-trust-bundle-rollback-test"><a class="header" href="#234-trust-bundle-rollback-test">234. Trust Bundle Rollback Test</a></h1>
+<p>Old bundle rejected.</p>
+<hr />
+<h1 id="235-transparency-log-tests"><a class="header" href="#235-transparency-log-tests">235. Transparency Log Tests</a></h1>
+<p>Verify:</p>
+<pre><code class="language-text">append-only
+inclusion
+consistency
+</code></pre>
+<p>if Merkle log used.</p>
+<hr />
+<h1 id="236-policy-upgrade-tests"><a class="header" href="#236-policy-upgrade-tests">236. Policy Upgrade Tests</a></h1>
+<p>Old/new client compatibility.</p>
+<hr />
+<h1 id="237-governance-quorum-tests"><a class="header" href="#237-governance-quorum-tests">237. Governance Quorum Tests</a></h1>
+<p>Insufficient signatures rejected.</p>
+<hr />
+<h1 id="238-byzantine-authority-tests"><a class="header" href="#238-byzantine-authority-tests">238. Byzantine Authority Tests</a></h1>
+<p>One malicious signer cannot publish alone under threshold model.</p>
+<hr />
+<h1 id="239-availability-tradeoff"><a class="header" href="#239-availability-tradeoff">239. Availability Tradeoff</a></h1>
+<p>Higher quorum improves security but can reduce availability.</p>
+<hr />
+<h1 id="240-quorum-policy"><a class="header" href="#240-quorum-policy">240. Quorum Policy</a></h1>
+<p>Choose based on deployment.</p>
+<p>Example:</p>
+<pre><code class="language-text">3 of 5
+</code></pre>
+<p>future multi-authority network.</p>
+<hr />
+<h1 id="241-initial-single-authority"><a class="header" href="#241-initial-single-authority">241. Initial Single Authority</a></h1>
+<p>Explicitly marked transitional.</p>
+<hr />
+<h1 id="242-migration-to-multi-authority"><a class="header" href="#242-migration-to-multi-authority">242. Migration to Multi-Authority</a></h1>
+<pre><code class="language-text">single signer
+→ dual signature
+→ threshold quorum
+</code></pre>
+<hr />
+<h1 id="243-governance-decentralization-roadmap"><a class="header" href="#243-governance-decentralization-roadmap">243. Governance Decentralization Roadmap</a></h1>
+<p>Phase 1:</p>
+<pre><code class="language-text">SIAR-operated directory
+</code></pre>
+<p>Phase 2:</p>
+<pre><code class="language-text">independent observers
+</code></pre>
+<p>Phase 3:</p>
+<pre><code class="language-text">multiple directory authorities
+</code></pre>
+<p>Phase 4:</p>
+<pre><code class="language-text">threshold topology signing
+</code></pre>
+<hr />
+<h1 id="244-do-not-decentralize-prematurely"><a class="header" href="#244-do-not-decentralize-prematurely">244. Do Not Decentralize Prematurely</a></h1>
+<p>Complex governance can create more security bugs than it solves.</p>
+<hr />
+<h1 id="245-economic-sybil-defense"><a class="header" href="#245-economic-sybil-defense">245. Economic Sybil Defense</a></h1>
+<p>Optional later.</p>
+<p>Could include:</p>
+<pre><code class="language-text">bonding
+resource commitment
+slashing
+</code></pre>
+<p>but Part 39 does not require cryptocurrency.</p>
+<hr />
+<h1 id="246-non-crypto-sybil-defense"><a class="header" href="#246-non-crypto-sybil-defense">246. Non-Crypto Sybil Defense</a></h1>
+<p>Possible:</p>
+<pre><code class="language-text">verified operators
+capacity audits
+infrastructure diversity
+admission limits
+probation
+manual review
+</code></pre>
+<hr />
+<h1 id="247-hybrid-model"><a class="header" href="#247-hybrid-model">247. Hybrid Model</a></h1>
+<p>Recommended likely path:</p>
+<pre><code class="language-text">operator verification
++
+resource proof
++
+probation
++
+diversity caps
++
+health evidence
+</code></pre>
+<hr />
+<h1 id="248-public-permissionless-goal"><a class="header" href="#248-public-permissionless-goal">248. Public Permissionless Goal</a></h1>
+<p>If SIAR later wants permissionless node joining, stronger economic/cryptographic Sybil resistance becomes mandatory.</p>
+<hr />
+<h1 id="249-permissioned-early-network"><a class="header" href="#249-permissioned-early-network">249. Permissioned Early Network</a></h1>
+<p>Reasonable for early production.</p>
+<hr />
+<h1 id="250-permissioned-does-not-mean-centralized-routing"><a class="header" href="#250-permissioned-does-not-mean-centralized-routing">250. Permissioned Does Not Mean Centralized Routing</a></h1>
+<p>Clients still select routes from eligible topology.</p>
+<hr />
+<h1 id="251-governance-abuse-risk"><a class="header" href="#251-governance-abuse-risk">251. Governance Abuse Risk</a></h1>
+<p>Directory authorities could exclude honest operators.</p>
+<hr />
+<h1 id="252-mitigation"><a class="header" href="#252-mitigation">252. Mitigation</a></h1>
+<pre><code class="language-text">transparency log
+published policy
+appeal
+multi-authority quorum
+auditable topology
+</code></pre>
+<hr />
+<h1 id="253-censorship-risk"><a class="header" href="#253-censorship-risk">253. Censorship Risk</a></h1>
+<p>Authority could remove node/operators.</p>
+<p>Transparency makes it visible but does not eliminate power.</p>
+<hr />
+<h1 id="254-future-federation"><a class="header" href="#254-future-federation">254. Future Federation</a></h1>
+<p>Multiple governance domains may publish interoperable topologies.</p>
+<p>Separate future architecture.</p>
+<hr />
+<h1 id="255-security-invariants"><a class="header" href="#255-security-invariants">255. Security Invariants</a></h1>
+<p>Mandatory:</p>
+<pre><code class="language-text">1. Node identity, operator identity, and directory authority identity are separate key domains.
+2. One operator must not count as multiple independent route hops in strict mode.
+3. Node admission requires proof of node-key possession and operator authorization.
+4. Topology eligibility is continuously revalidated.
+5. Revoked nodes are excluded immediately from new routes.
+6. Policy changes and topology publications are signed and auditable.
+7. Directory mirrors are not trusted; signatures are.
+8. Topology assignment obeys diversity constraints before performance optimization.
+9. Same-epoch equivocation is detectable.
+10. Governance/control-plane logs never contain user traffic or route data.
+11. Production anonymity constraints are never silently relaxed during low-node conditions.
+12. Single-authority operation is treated as transitional, not equivalent to threshold-governed decentralization.
+</code></pre>
+<hr />
+<h1 id="256-recommended-crate-layout"><a class="header" href="#256-recommended-crate-layout">256. Recommended Crate Layout</a></h1>
+<pre><code class="language-text">crates/
+├── siar-directory-core/
+├── siar-directory-registry/
+├── siar-directory-admission/
+├── siar-directory-operator/
+├── siar-directory-sybil/
+├── siar-directory-health/
+├── siar-directory-topology/
+├── siar-directory-governance/
+├── siar-directory-transparency/
+├── siar-directory-signing/
+├── siar-directory-client/
+├── siar-directory-observer/
+└── siar-directory-testkit/
+</code></pre>
+<hr />
+<h1 id="257-siar-directory-core"><a class="header" href="#257-siar-directory-core">257. <code>siar-directory-core</code></a></h1>
+<p>Owns:</p>
+<pre><code class="language-text">IDs
+policy versions
+common types
+errors
+</code></pre>
+<hr />
+<h1 id="258-siar-directory-registry"><a class="header" href="#258-siar-directory-registry">258. <code>siar-directory-registry</code></a></h1>
+<p>Node registry persistence.</p>
+<hr />
+<h1 id="259-siar-directory-admission"><a class="header" href="#259-siar-directory-admission">259. <code>siar-directory-admission</code></a></h1>
+<p>Admission workflow.</p>
+<hr />
+<h1 id="260-siar-directory-operator"><a class="header" href="#260-siar-directory-operator">260. <code>siar-directory-operator</code></a></h1>
+<p>Operator registration/binding.</p>
+<hr />
+<h1 id="261-siar-directory-sybil"><a class="header" href="#261-siar-directory-sybil">261. <code>siar-directory-sybil</code></a></h1>
+<p>Risk signals/concentration checks.</p>
+<hr />
+<h1 id="262-siar-directory-health"><a class="header" href="#262-siar-directory-health">262. <code>siar-directory-health</code></a></h1>
+<p>Observer evidence and health aggregation.</p>
+<hr />
+<h1 id="263-siar-directory-topology"><a class="header" href="#263-siar-directory-topology">263. <code>siar-directory-topology</code></a></h1>
+<p>Eligibility/layer assignment/snapshot build.</p>
+<hr />
+<h1 id="264-siar-directory-governance"><a class="header" href="#264-siar-directory-governance">264. <code>siar-directory-governance</code></a></h1>
+<p>Policy lifecycle.</p>
+<hr />
+<h1 id="265-siar-directory-transparency"><a class="header" href="#265-siar-directory-transparency">265. <code>siar-directory-transparency</code></a></h1>
+<p>Append-only audit/transparency log.</p>
+<hr />
+<h1 id="266-siar-directory-signing"><a class="header" href="#266-siar-directory-signing">266. <code>siar-directory-signing</code></a></h1>
+<p>Authority/epoch signing.</p>
+<hr />
+<h1 id="267-siar-directory-client"><a class="header" href="#267-siar-directory-client">267. <code>siar-directory-client</code></a></h1>
+<p>Client snapshot/revocation validation.</p>
+<hr />
+<h1 id="268-siar-directory-observer"><a class="header" href="#268-siar-directory-observer">268. <code>siar-directory-observer</code></a></h1>
+<p>Synthetic health probes.</p>
+<hr />
+<h1 id="269-siar-directory-testkit"><a class="header" href="#269-siar-directory-testkit">269. <code>siar-directory-testkit</code></a></h1>
+<p>Fault/adversarial simulation.</p>
+<hr />
+<h1 id="270-error-taxonomy"><a class="header" href="#270-error-taxonomy">270. Error Taxonomy</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum DirectoryError {
+    InvalidRegistration,
+    OperatorUnauthorized,
+    EndpointUnverified,
+    Ineligible,
+    SybilRiskTooHigh,
+    OperatorCapExceeded,
+    UnsupportedVersion,
+    InsufficientQuorum,
+    InvalidSignature,
+    StalePolicy,
+    Revoked,
+    EquivocationDetected,
+    Internal,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="271-initial-production-scope"><a class="header" href="#271-initial-production-scope">271. Initial Production Scope</a></h1>
+<p>Implement first:</p>
+<pre><code class="language-text">operator identity
+node identity
+signed registration
+endpoint verification
+single SIAR directory authority
+probation
+health observers
+operator/ASN/provider diversity caps
+signed governance policy
+signed topology epoch
+emergency revocation feed
+transparency log
+client verification
+simulation/testkit
+</code></pre>
+<p>Then add:</p>
+<pre><code class="language-text">multi-authority directory
+threshold signatures
+verifiable epoch randomness
+Merkle transparency proofs
+resource bonding
+advanced Sybil heuristics
+public operator onboarding
+</code></pre>
+<hr />
+<h1 id="272-definition-of-done"><a class="header" href="#272-definition-of-done">272. Definition of Done</a></h1>
+<p>Part 39 is complete when:</p>
+<ul>
+<li>node, operator, directory authority, and admin identities are separate</li>
+<li>node admission lifecycle and probation are explicit</li>
+<li>endpoint/key/operator-control proofs are defined</li>
+<li>layered Sybil resistance combines identity, cost, health, rate limits, and concentration caps</li>
+<li>operator, ASN, hosting-provider, and region diversity are accounted for</li>
+<li>topology eligibility is continuously revalidated</li>
+<li>signed governance policy drives admission and topology</li>
+<li>layer assignment is auditable and preferably deterministic from signed inputs</li>
+<li>signed topology epochs and emergency revocation feeds are defined</li>
+<li>authority quorum and threshold-signing migration path are specified</li>
+<li>equivocation detection is defined</li>
+<li>transparency logging excludes user traffic</li>
+<li>governance roles, separation of duties, and root-key recovery are defined</li>
+<li>low-node bootstrap mode cannot silently masquerade as production anonymity</li>
+<li>operator console, user-facing coarse health, and privacy-safe control-plane metrics are defined</li>
+<li>Sybil, concentration, equivocation, registration flood, health fraud, key rotation, and quorum tests are specified</li>
+<li>initial centralized deployment has a clear path toward multi-authority governance</li>
+</ul>
+<hr />
+<h1 id="273-final-architecture"><a class="header" href="#273-final-architecture">273. Final Architecture</a></h1>
+<pre><code class="language-text">                         NODE OPERATOR
+                               │
+                               ▼
+                    Signed Node Registration
+                               │
+                               ▼
+                  Admission / Proof Validation
+                               │
+                               ▼
+                    Sybil / Diversity Checks
+                               │
+                               ▼
+                         Probation / Health
+                               │
+                               ▼
+                         Eligible Registry
+                               │
+                               ▼
+                       Topology Builder
+                               │
+                               ▼
+                    Directory Authority Quorum
+                               │
+                               ▼
+                      Signed Epoch Snapshot
+                               │
+                               ▼
+                         SIAR Clients
+</code></pre>
+<p>Governance trust path:</p>
+<pre><code class="language-text">Offline Root
+    ↓
+Directory Authorities
+    ↓
+Signed Governance Policy
+    ↓
+Eligible Node Registry
+    ↓
+Signed Topology Epoch
+    ↓
+Client Verification
+</code></pre>
+<hr />
+<h1 id="274-final-principle"><a class="header" href="#274-final-principle">274. Final Principle</a></h1>
+<p>A mixnet cannot treat "many node IDs" as equivalent to "many independent operators."</p>
+<p>The correct model is:</p>
+<pre><code class="language-text">cryptographic node identity
++
+operator binding
++
+admission cost
++
+probation
++
+independent health evidence
++
+operator/ASN/provider concentration limits
++
+signed auditable topology
++
+revocation
++
+governance transparency
+</code></pre>
+<p>not:</p>
+<pre><code class="language-text">anyone creates unlimited nodes
+→ directory lists them
+→ clients randomly pick
+</code></pre>
+<p>This architecture gives SIAR a realistic path from a tightly controlled early network to a more decentralized, multi-authority mixnet without sacrificing the topology integrity required for meaningful anonymity.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="38-native-loopix-inspired-mixnet-topology-mix-nodes-layering-packet-forwarding-architecture.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="40-anonymous-attachment-transfer-rendezvous-large-file-privacy-high-bandwidth-data-architecture.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="38-native-loopix-inspired-mixnet-topology-mix-nodes-layering-packet-forwarding-architecture.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="40-anonymous-attachment-transfer-rendezvous-large-file-privacy-high-bandwidth-data-architecture.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

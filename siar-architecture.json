@@ -1,0 +1,247 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "SIAR: Survivable Identity & Autonomous Routing",
+    "quality_profile": "showcase",
+    "views": [
+      {
+        "id": "e2ee-flow",
+        "label": "End-to-End Messaging",
+        "focus": ["clients", "messaging", "crypto", "storage", "routing"],
+        "note": "Follow user interaction through MLS ratchet encryption and local persistence."
+      },
+      {
+        "id": "dtn-mesh",
+        "label": "Off-Grid DTN Mesh",
+        "focus": ["routing", "dtn", "transports", "mesh_local", "relay"],
+        "note": "Inspect store-carry-forward bundle propagation across emergency repeaters."
+      },
+      {
+        "id": "multipath-wan",
+        "label": "Multipath Failover",
+        "focus": ["transports", "mesh_local", "iroh_p2p"],
+        "note": "Examine path selection between direct WAN QUIC and local proximity links."
+      }
+    ]
+  },
+  "components": [
+    {
+      "id": "clients",
+      "type": "frontend",
+      "label": "Client Apps",
+      "sublabel": "Desktop / Android / CLI",
+      "tag": "Dioxus / Compose",
+      "pos": [50, 260],
+      "size": [140, 60]
+    },
+    {
+      "id": "crypto",
+      "type": "security",
+      "label": "MLS & E2EE Engine",
+      "sublabel": "OpenMLS 1:1 & Groups",
+      "tag": "Ed25519 / Ratchet",
+      "pos": [270, 90],
+      "size": [140, 60]
+    },
+    {
+      "id": "messaging",
+      "type": "backend",
+      "label": "Messaging Service",
+      "sublabel": "Timeline & State Engine",
+      "tag": "siar-messaging",
+      "pos": [270, 260],
+      "size": [140, 60]
+    },
+    {
+      "id": "storage",
+      "type": "database",
+      "label": "Encrypted Storage",
+      "sublabel": "Stoolap SQL & Event Log",
+      "tag": "Zero-Knowledge",
+      "pos": [270, 430],
+      "size": [140, 60]
+    },
+    {
+      "id": "routing",
+      "type": "backend",
+      "label": "Autonomous Routing",
+      "sublabel": "Multipath Policy Engine",
+      "tag": "siar-routing",
+      "pos": [510, 260],
+      "size": [140, 60]
+    },
+    {
+      "id": "dtn",
+      "type": "messagebus",
+      "label": "DTN Subsystem",
+      "sublabel": "Store-Carry-Forward",
+      "tag": "siar-dtn",
+      "pos": [510, 430],
+      "size": [140, 60]
+    },
+    {
+      "id": "transports",
+      "type": "backend",
+      "label": "Transport Pool",
+      "sublabel": "Multi-Link Broker",
+      "tag": "siar-transport",
+      "pos": [750, 260],
+      "size": [140, 60]
+    },
+    {
+      "id": "iroh_p2p",
+      "type": "cloud",
+      "label": "Iroh QUIC P2P",
+      "sublabel": "Direct WAN / NAT Punch",
+      "tag": "Internet P2P",
+      "pos": [980, 90],
+      "size": [140, 60]
+    },
+    {
+      "id": "mesh_local",
+      "type": "external",
+      "label": "Proximity Mesh",
+      "sublabel": "BLE / Wi-Fi Direct / Aware",
+      "tag": "Off-Grid Direct",
+      "pos": [980, 260],
+      "size": [140, 60]
+    },
+    {
+      "id": "relay",
+      "type": "backend",
+      "label": "Emergency Relay",
+      "sublabel": "Headless Off-Grid Daemon",
+      "tag": "siar-emergency-node",
+      "pos": [980, 430],
+      "size": [140, 60]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "Local Application & Security State",
+      "wraps": ["clients", "crypto", "messaging", "storage"]
+    },
+    {
+      "kind": "region",
+      "label": "Autonomous Routing & Link Pool",
+      "wraps": ["routing", "dtn", "transports"]
+    },
+    {
+      "kind": "security-group",
+      "label": "Physical Mesh & Peer Fabric",
+      "wraps": ["iroh_p2p", "mesh_local", "relay"]
+    }
+  ],
+  "connections": [
+    {
+      "id": "client-to-msg",
+      "from": "clients",
+      "to": "messaging",
+      "label": "UI action",
+      "variant": "emphasis"
+    },
+    {
+      "id": "msg-to-crypto",
+      "from": "messaging",
+      "to": "crypto",
+      "label": "encrypt",
+      "variant": "security",
+      "fromSide": "top",
+      "toSide": "bottom"
+    },
+    {
+      "id": "msg-to-storage",
+      "from": "messaging",
+      "to": "storage",
+      "label": "persist",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "labelDy": 30
+    },
+    {
+      "id": "msg-to-routing",
+      "from": "messaging",
+      "to": "routing",
+      "label": "dispatch"
+    },
+    {
+      "id": "routing-to-dtn",
+      "from": "routing",
+      "to": "dtn",
+      "label": "offline buffer",
+      "variant": "dashed",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "labelDy": 30
+    },
+    {
+      "id": "routing-to-transports",
+      "from": "routing",
+      "to": "transports",
+      "label": "best link"
+    },
+    {
+      "id": "dtn-to-transports",
+      "from": "dtn",
+      "to": "transports",
+      "label": "re-transmit",
+      "variant": "dashed",
+      "fromSide": "right",
+      "toSide": "bottom"
+    },
+    {
+      "id": "transports-to-iroh",
+      "from": "transports",
+      "to": "iroh_p2p",
+      "label": "WAN route",
+      "fromSide": "top",
+      "toSide": "left"
+    },
+    {
+      "id": "transports-to-mesh",
+      "from": "transports",
+      "to": "mesh_local",
+      "label": "mesh route"
+    },
+    {
+      "id": "mesh-to-relay",
+      "from": "mesh_local",
+      "to": "relay",
+      "label": "hop relay",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "labelDy": 30
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Application & Trust",
+      "items": [
+        "Desktop (Dioxus), Mobile (Compose), and CLI runtimes",
+        "Continuous E2EE via OpenMLS ratchet and Ed25519 identity",
+        "Zero-knowledge encrypted local storage with Stoolap SQL"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Autonomous Routing & DTN",
+      "items": [
+        "Dynamic multipath scoring and link health evaluation",
+        "Store-Carry-Forward queue preserves bundles through outages",
+        "Automatic reconnection and anti-entropy synchronization"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Multi-Transport Layer",
+      "items": [
+        "Direct peer-to-peer over Iroh QUIC with NAT hole punching",
+        "Off-grid physical links via BLE and Wi-Fi Direct/Aware",
+        "Headless emergency repeaters bridge network partitions"
+      ]
+    }
+  ]
+}

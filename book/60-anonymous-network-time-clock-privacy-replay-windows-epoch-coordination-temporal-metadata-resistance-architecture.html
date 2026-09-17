@@ -1,0 +1,1857 @@
+<!DOCTYPE HTML>
+<html lang="en" class="navy" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>60 — Anonymous Network Time, Clock Privacy, Replay Windows, Epoch Coordination &amp; Temporal Metadata Resistance Architecture - SIAR System Architecture &amp; Technical Wiki</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="Comprehensive system architecture, cryptographic protocols, DTN mesh networking, distributed storage, audio DSP pipelines, and UI/UX design specifications for SIAR.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="theme/custom.css">
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "navy";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('navy')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="Home.html">Architecture Portal & Reading Guide</a></li><li class="chapter-item expanded affix "><a href="design-rationale.html">System Architecture Design Rationale</a></li><li class="chapter-item expanded affix "><a href="system-capabilities-comparison.html">System Capabilities & Comparison Matrix</a></li><li class="chapter-item expanded affix "><a href="spec-order.html">Master Specification Execution Order</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part I: Protocol Foundation & Extension Platform</li><li class="chapter-item expanded "><a href="01-protocol-extension-system-architecture.html"><strong aria-hidden="true">1.</strong> 01 — Protocol Extension System Architecture</a></li><li class="chapter-item expanded "><a href="07-capability-negotiation-architecture.html"><strong aria-hidden="true">2.</strong> 07 — Capability Negotiation Architecture</a></li><li class="chapter-item expanded "><a href="21-third-party-protocol-extensions-architecture.html"><strong aria-hidden="true">3.</strong> 21 — Third-Party Protocol Extensions Architecture</a></li><li class="chapter-item expanded "><a href="22-wasm-compatible-components-architecture.html"><strong aria-hidden="true">4.</strong> 22 — WASM-Compatible Components Architecture</a></li><li class="chapter-item expanded "><a href="23-external-interoperability-suite-architecture.html"><strong aria-hidden="true">5.</strong> 23 — External Interoperability Suite Architecture</a></li><li class="chapter-item expanded "><a href="24-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">6.</strong> 24 — Plugin / Module Ecosystem Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part II: Identity, Trust & Cryptography</li><li class="chapter-item expanded "><a href="02-multi-device-identity-architecture.html"><strong aria-hidden="true">7.</strong> 02 — Multi-Device Identity Architecture</a></li><li class="chapter-item expanded "><a href="28-production-security-e2ee-key-management-privacy-architecture.html"><strong aria-hidden="true">8.</strong> 28 — Production Security, E2EE, Key Management, Abuse Resistance & Privacy Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part III: Mesh Networking, Transports & Hardware</li><li class="chapter-item expanded "><a href="03-transport-routing-policy-engine-architecture.html"><strong aria-hidden="true">9.</strong> 03 — Transport & Routing Policy Engine Architecture</a></li><li class="chapter-item expanded "><a href="11-relay-self-hosted-infrastructure-architecture.html"><strong aria-hidden="true">10.</strong> 11 — Relay & Self-Hosted Infrastructure Architecture</a></li><li class="chapter-item expanded "><a href="12-multipath-networking-architecture.html"><strong aria-hidden="true">11.</strong> 12 — Multipath Networking Architecture</a></li><li class="chapter-item expanded "><a href="13-battery-aware-scheduling-architecture.html"><strong aria-hidden="true">12.</strong> 13 — Battery-Aware Scheduling Architecture</a></li><li class="chapter-item expanded "><a href="14-proximity-abstraction-architecture.html"><strong aria-hidden="true">13.</strong> 14 — Proximity Abstraction Architecture</a></li><li class="chapter-item expanded "><a href="15-qr-nfc-bootstrap-pairing-architecture.html"><strong aria-hidden="true">14.</strong> 15 — QR / NFC Bootstrap & Secure Pairing Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IV: Delay-Tolerant Networking & Emergency Mesh</li><li class="chapter-item expanded "><a href="06-dtn-store-carry-forward-architecture.html"><strong aria-hidden="true">15.</strong> 06 — DTN / Store-Carry-Forward Architecture</a></li><li class="chapter-item expanded "><a href="17-emergency-priority-classes-architecture.html"><strong aria-hidden="true">16.</strong> 17 — Emergency Priority Classes Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part V: Storage, Outbox & Data Lifecycle</li><li class="chapter-item expanded "><a href="04-offline-event-log-architecture.html"><strong aria-hidden="true">17.</strong> 04 — Offline Event Log Architecture</a></li><li class="chapter-item expanded "><a href="05-robust-file-blob-subsystem-architecture.html"><strong aria-hidden="true">18.</strong> 05 — Robust File / Blob Subsystem Architecture</a></li><li class="chapter-item expanded "><a href="09-crash-recovery-architecture.html"><strong aria-hidden="true">19.</strong> 09 — Crash Recovery Architecture</a></li><li class="chapter-item expanded "><a href="32-search-indexing-local-knowledge-privacy-architecture.html"><strong aria-hidden="true">20.</strong> 32 — Search, Indexing, Local Knowledge Retrieval & Privacy-Preserving Discovery Architecture</a></li><li class="chapter-item expanded "><a href="33-backup-restore-export-import-archival-portability-architecture.html"><strong aria-hidden="true">21.</strong> 33 — Backup, Restore, Export/Import, Archival & Long-Term Data Portability Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VI: Realtime Media, Calling & Audio DSP</li><li class="chapter-item expanded "><a href="25-android-direct-hardware-surface-zero-copy-media-architecture.html"><strong aria-hidden="true">22.</strong> 25 — Android Direct Hardware Surface / Zero-Copy Media Pipeline Architecture</a></li><li class="chapter-item expanded "><a href="26-rust-first-audio-dsp-resampling-aec-ns-agc-architecture.html"><strong aria-hidden="true">23.</strong> 26 — Rust-First Audio DSP, Resampling, AEC/NS/AGC & Hardware-Aware Audio Pipeline Architecture</a></li><li class="chapter-item expanded "><a href="29-realtime-calls-media-session-protocol-architecture.html"><strong aria-hidden="true">24.</strong> 29 — Realtime Calls & Media Session Protocol Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VII: Ephemeral State, Presence & Notifications</li><li class="chapter-item expanded "><a href="30-presence-availability-typing-read-receipts-ephemeral-state-architecture.html"><strong aria-hidden="true">25.</strong> 30 — Presence, Availability, Typing, Read Receipts & Ephemeral Realtime State Architecture</a></li><li class="chapter-item expanded "><a href="31-notifications-push-background-delivery-lifecycle-architecture.html"><strong aria-hidden="true">26.</strong> 31 — Notifications, Push Wake, Background Delivery & OS Lifecycle Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VIII: Native Runtimes, Daemons & Embedded Linux</li><li class="chapter-item expanded "><a href="16-daemon-headless-runtime-architecture.html"><strong aria-hidden="true">27.</strong> 16 — Daemon & Headless Runtime Architecture</a></li><li class="chapter-item expanded "><a href="19-c-abi-ffi-architecture.html"><strong aria-hidden="true">28.</strong> 19 — C ABI / FFI Architecture</a></li><li class="chapter-item expanded "><a href="20-embedded-linux-node-architecture.html"><strong aria-hidden="true">29.</strong> 20 — Embedded Linux Node Architecture</a></li><li class="chapter-item expanded "><a href="27-rust-driven-android-native-build-packaging-automation.html"><strong aria-hidden="true">30.</strong> 27 — Rust-Driven Android Native Build & Packaging Automation Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IX: Reliability, Testing, Fuzzing & Diagnostics</li><li class="chapter-item expanded "><a href="08-resource-limits-backpressure-architecture.html"><strong aria-hidden="true">31.</strong> 08 — Resource Limits & Backpressure Architecture</a></li><li class="chapter-item expanded "><a href="10-fuzzing-protocol-test-suite-architecture.html"><strong aria-hidden="true">32.</strong> 10 — Fuzzing & Protocol Test Suite Architecture</a></li><li class="chapter-item expanded "><a href="18-network-diagnostics-path-visualization-architecture.html"><strong aria-hidden="true">33.</strong> 18 — Network Diagnostics & Path Visualization Architecture</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part X: UI/UX Client Architecture (Cross-Platform)</li><li class="chapter-item expanded "><a href="ui-ux-01-product-foundation-cross-platform-interaction-architecture.html"><strong aria-hidden="true">34.</strong> UI/UX 01 — Product UX Foundation & Cross-Platform Interaction Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-02-desktop-dioxus-app-shell-navigation-window-architecture.html"><strong aria-hidden="true">35.</strong> UI/UX 02 — Desktop Dioxus App Shell, Navigation & Window Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-03-android-jetpack-compose-app-shell-navigation-lifecycle-architecture.html"><strong aria-hidden="true">36.</strong> UI/UX 03 — Android Jetpack Compose App Shell, Navigation & Lifecycle Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-04-conversation-list-inbox-architecture.html"><strong aria-hidden="true">37.</strong> UI/UX 04 — Conversation List / Inbox UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-05-conversation-message-timeline-architecture.html"><strong aria-hidden="true">38.</strong> UI/UX 05 — Conversation / Message Timeline UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-06-message-composer-attachments-voice-notes-drafts-architecture.html"><strong aria-hidden="true">39.</strong> UI/UX 06 — Message Composer, Attachments, Voice Notes & Drafts UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-07-calls-realtime-media-architecture.html"><strong aria-hidden="true">40.</strong> UI/UX 07 — Calls & Realtime Media UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-08-contacts-requests-verification-identity-architecture.html"><strong aria-hidden="true">41.</strong> UI/UX 08 — Contacts, Requests, Verification & Identity UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-09-groups-membership-roles-architecture.html"><strong aria-hidden="true">42.</strong> UI/UX 09 — Groups, Membership & Roles UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-10-files-media-gallery-transfer-architecture.html"><strong aria-hidden="true">43.</strong> UI/UX 10 — Files, Media Gallery & Transfer UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-11-search-local-knowledge-retrieval-architecture.html"><strong aria-hidden="true">44.</strong> UI/UX 11 — Search & Local Knowledge Retrieval UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-12-nearby-qr-nfc-pairing-device-linking-architecture.html"><strong aria-hidden="true">45.</strong> UI/UX 12 — Nearby, QR/NFC Pairing & Device Linking UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-13-notifications-background-incoming-call-architecture.html"><strong aria-hidden="true">46.</strong> UI/UX 13 — Notifications, Background & Incoming Call UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-14-presence-typing-receipts-status-architecture.html"><strong aria-hidden="true">47.</strong> UI/UX 14 — Presence, Typing, Receipts & Status UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-15-security-center-devices-keys-recovery-architecture.html"><strong aria-hidden="true">48.</strong> UI/UX 15 — Security Center, Devices, Keys & Recovery UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-16-backup-restore-export-migration-architecture.html"><strong aria-hidden="true">49.</strong> UI/UX 16 — Backup, Restore, Export & Migration UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-17-emergency-sos-offline-mesh-architecture.html"><strong aria-hidden="true">50.</strong> UI/UX 17 — Emergency / SOS / Offline Mesh UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-18-settings-privacy-notifications-data-controls-architecture.html"><strong aria-hidden="true">51.</strong> UI/UX 18 — Settings, Privacy, Notifications & Data Controls UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-19-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">52.</strong> UI/UX 19 — Plugin / Module Ecosystem UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-20-diagnostics-network-paths-advanced-developer-architecture.html"><strong aria-hidden="true">53.</strong> UI/UX 20 — Diagnostics, Network Paths & Advanced Developer UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-21-accessibility-inclusive-interaction-architecture.html"><strong aria-hidden="true">54.</strong> UI/UX 21 — Accessibility & Inclusive Interaction Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-22-design-system-tokens-typography-icons-motion-architecture.html"><strong aria-hidden="true">55.</strong> UI/UX 22 — Design System, Tokens, Typography, Icons & Motion Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-23-responsive-adaptive-desktop-tablet-foldable-phone-layout-architecture.html"><strong aria-hidden="true">56.</strong> UI/UX 23 — Responsive / Adaptive Desktop, Tablet, Foldable & Phone Layout Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-24-error-loading-empty-offline-degraded-state-architecture.html"><strong aria-hidden="true">57.</strong> UI/UX 24 — Error, Loading, Empty, Offline & Degraded-State UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-25-onboarding-first-run-permission-education-architecture.html"><strong aria-hidden="true">58.</strong> UI/UX 25 — Onboarding, First Run & Permission Education UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-26-performance-virtualization-large-data-ui-architecture.html"><strong aria-hidden="true">59.</strong> UI/UX 26 — Performance, Virtualization & Large-Data UI Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-27-ui-testing-screenshot-interaction-release-quality-gates-architecture.html"><strong aria-hidden="true">60.</strong> UI/UX 27 — UI Testing, Screenshot/Interaction Tests & Release Quality Gates Architecture</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part XI: Anonymous Network — Core Mixnet Mechanics</li><li class="chapter-item expanded "><a href="34-mixnet-loopix-sphinx-nym-high-anonymity-transport-architecture.html"><strong aria-hidden="true">61.</strong> 34 — Mixnet, Loopix, Sphinx, Nym & High-Anonymity Transport Architecture</a></li><li class="chapter-item expanded "><a href="35-anonymous-mailbox-offline-receiving-reply-capability-architecture.html"><strong aria-hidden="true">62.</strong> 35 — Anonymous Mailbox, Offline Receiving & Reply Capability Architecture</a></li><li class="chapter-item expanded "><a href="36-sphinx-packet-cell-fragmentation-anonymous-message-framing-architecture.html"><strong aria-hidden="true">63.</strong> 36 — Sphinx Packet, Cell, Fragmentation & Anonymous Message Framing Architecture</a></li><li class="chapter-item expanded "><a href="37-cover-traffic-traffic-shaping-timing-obfuscation-loop-traffic-architecture.html"><strong aria-hidden="true">64.</strong> 37 — Cover Traffic, Traffic Shaping, Timing Obfuscation & Loop Traffic Architecture</a></li><li class="chapter-item expanded "><a href="38-native-loopix-inspired-mixnet-topology-mix-nodes-layering-packet-forwarding-architecture.html"><strong aria-hidden="true">65.</strong> 38 — Native Loopix-Inspired Mixnet Topology, Mix Nodes, Layering & Packet Forwarding Architecture</a></li><li class="chapter-item expanded "><a href="39-mixnet-directory-node-admission-identity-sybil-resistance-topology-governance-architecture.html"><strong aria-hidden="true">66.</strong> 39 — Mixnet Directory, Node Admission, Identity, Sybil Resistance & Topology Governance Architecture</a></li><li class="chapter-item expanded "><a href="40-anonymous-attachment-transfer-rendezvous-large-file-privacy-high-bandwidth-data-architecture.html"><strong aria-hidden="true">67.</strong> 40 — Anonymous Attachment Transfer, Rendezvous, Large-File Privacy & High-Bandwidth Anonymous Data Architecture</a></li><li class="chapter-item expanded "><a href="41-censorship-resistance-bridges-pluggable-transports-traffic-obfuscation-architecture.html"><strong aria-hidden="true">68.</strong> 41 — Censorship Resistance, Bridges, Pluggable Transports & Traffic Obfuscation Architecture</a></li><li class="chapter-item expanded "><a href="42-anonymity-threat-model-traffic-analysis-correlation-formal-privacy-verification-architecture.html"><strong aria-hidden="true">69.</strong> 42 — Anonymity Threat Model, Traffic Analysis, Correlation Attacks & Formal Privacy Verification Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part XII: Anonymous Network — Anonymous Application Primitives</li><li class="chapter-item expanded "><a href="43-anonymous-group-messaging-membership-privacy-sender-key-large-group-anonymity-architecture.html"><strong aria-hidden="true">70.</strong> 43 — Anonymous Group Messaging, Membership Privacy, Sender-Key Distribution & Large-Group Anonymity Architecture</a></li><li class="chapter-item expanded "><a href="44-anonymous-voice-video-call-signaling-relay-privacy-realtime-metadata-private-session-architecture.html"><strong aria-hidden="true">71.</strong> 44 — Anonymous Voice/Video Call Signaling, Relay Privacy, Realtime Metadata Protection & Private Realtime Session Architecture</a></li><li class="chapter-item expanded "><a href="45-anonymous-presence-discovery-contact-bootstrap-private-social-graph-architecture.html"><strong aria-hidden="true">72.</strong> 45 — Anonymous Presence, Discovery, Contact Bootstrap & Private Social Graph Architecture</a></li><li class="chapter-item expanded "><a href="46-anonymous-reputation-trust-signals-abuse-reporting-privacy-preserving-moderation-architecture.html"><strong aria-hidden="true">73.</strong> 46 — Anonymous Reputation, Trust Signals, Abuse Reporting & Privacy-Preserving Moderation Architecture</a></li><li class="chapter-item expanded "><a href="47-anonymous-payments-resource-credits-quotas-privacy-preserving-service-accounting-architecture.html"><strong aria-hidden="true">74.</strong> 47 — Anonymous Payments, Resource Credits, Quotas & Privacy-Preserving Service Accounting Architecture</a></li><li class="chapter-item expanded "><a href="48-anonymous-service-discovery-provider-selection-capability-advertisement-privacy-preserving-marketplace-architecture.html"><strong aria-hidden="true">75.</strong> 48 — Anonymous Service Discovery, Provider Selection, Capability Advertisement & Privacy-Preserving Marketplace Architecture</a></li><li class="chapter-item expanded "><a href="49-anonymous-resource-scheduling-capacity-markets-load-balancing-privacy-preserving-infrastructure-allocation-architecture.html"><strong aria-hidden="true">76.</strong> 49 — Anonymous Resource Scheduling, Capacity Markets, Load Balancing & Privacy-Preserving Infrastructure Allocation Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part XIII: Anonymous Network — Sovereign Protocol Policies & Governance</li><li class="chapter-item expanded "><a href="50-anonymous-network-reliability-disaster-recovery-partition-tolerance-multi-region-continuity-architecture.html"><strong aria-hidden="true">77.</strong> 50 — Anonymous Network Reliability, Disaster Recovery, Partition Tolerance & Multi-Region Continuity Architecture</a></li><li class="chapter-item expanded "><a href="51-anonymous-network-observability-slos-privacy-safe-telemetry-incident-detection-operations-architecture.html"><strong aria-hidden="true">78.</strong> 51 — Anonymous Network Observability, SLOs, Privacy-Safe Telemetry, Incident Detection & Operations Architecture</a></li><li class="chapter-item expanded "><a href="52-anonymous-network-upgrade-protocol-evolution-compatibility-migration-zero-downtime-rollout-architecture.html"><strong aria-hidden="true">79.</strong> 52 — Anonymous Network Upgrade, Protocol Evolution, Compatibility, Migration & Zero-Downtime Rollout Architecture</a></li><li class="chapter-item expanded "><a href="53-anonymous-network-governance-policy-distribution-trust-roots-multi-authority-emergency-decision-architecture.html"><strong aria-hidden="true">80.</strong> 53 — Anonymous Network Governance, Policy Distribution, Trust Roots, Multi-Authority Control & Emergency Decision Architecture</a></li><li class="chapter-item expanded "><a href="54-anonymous-network-economics-incentives-operator-sustainability-subsidies-privacy-preserving-compensation-architecture.html"><strong aria-hidden="true">81.</strong> 54 — Anonymous Network Economics, Incentives, Operator Sustainability, Subsidies & Privacy-Preserving Compensation Architecture</a></li><li class="chapter-item expanded "><a href="55-anonymous-network-legal-compliance-boundary-jurisdiction-isolation-data-minimization-lawful-operations-architecture.html"><strong aria-hidden="true">82.</strong> 55 — Anonymous Network Legal/Compliance Boundary, Jurisdiction Isolation, Data-Minimization & Lawful Operations Architecture</a></li><li class="chapter-item expanded "><a href="56-anonymous-network-privacy-policy-user-consent-transparency-data-rights-privacy-control-architecture.html"><strong aria-hidden="true">83.</strong> 56 — Anonymous Network Privacy Policy, User Consent, Transparency, Data Rights & Privacy-Control Architecture</a></li><li class="chapter-item expanded "><a href="57-anonymous-network-identity-recovery-account-portability-device-reprovisioning-privacy-preserving-continuity-architecture.html"><strong aria-hidden="true">84.</strong> 57 — Anonymous Network Identity Recovery, Account Portability, Device Re-Provisioning & Privacy-Preserving Continuity Architecture</a></li><li class="chapter-item expanded "><a href="58-anonymous-network-federation-inter-network-peering-cross-domain-trust-privacy-preserving-interoperability-architecture.html"><strong aria-hidden="true">85.</strong> 58 — Anonymous Network Federation, Inter-Network Peering, Cross-Domain Trust & Privacy-Preserving Interoperability Architecture</a></li><li class="chapter-item expanded "><a href="59-anonymous-network-naming-addressing-namespace-isolation-private-resolution-anti-enumeration-architecture.html"><strong aria-hidden="true">86.</strong> 59 — Anonymous Network Naming, Addressing, Namespace Isolation, Private Resolution & Anti-Enumeration Architecture</a></li><li class="chapter-item expanded "><a href="60-anonymous-network-time-clock-privacy-replay-windows-epoch-coordination-temporal-metadata-resistance-architecture.html" class="active"><strong aria-hidden="true">87.</strong> 60 — Anonymous Network Time, Clock Privacy, Replay Windows, Epoch Coordination & Temporal Metadata Resistance Architecture</a></li><li class="chapter-item expanded "><a href="61-anonymous-network-configuration-secrets-runtime-policy-remote-administration-secure-control-plane-management-architecture.html"><strong aria-hidden="true">88.</strong> 61 — Anonymous Network Configuration, Secrets, Runtime Policy, Remote Administration & Secure Control-Plane Management Architecture</a></li><li class="chapter-item expanded "><a href="62-anonymous-network-deployment-packaging-infrastructure-provisioning-bare-metal-vm-container-runtime-reproducible-operations-architecture.html"><strong aria-hidden="true">89.</strong> 62 — Anonymous Network Deployment, Packaging, Infrastructure Provisioning, Bare-Metal/VM/Container Runtime & Reproducible Operations Architecture</a></li><li class="chapter-item expanded "><a href="63-anonymous-network-performance-engineering-benchmarking-capacity-planning-resource-isolation-production-sizing-architecture.html"><strong aria-hidden="true">90.</strong> 63 — Anonymous Network Performance Engineering, Benchmarking, Capacity Planning, Resource Isolation & Production Sizing Architecture</a></li><li class="chapter-item expanded "><a href="64-anonymous-network-testing-verification-simulation-fault-injection-adversarial-validation-release-quality-architecture.html"><strong aria-hidden="true">91.</strong> 64 — Anonymous Network Testing, Verification, Simulation, Fault Injection, Adversarial Validation & Release Quality Architecture</a></li><li class="chapter-item expanded "><a href="65-anonymous-network-documentation-operator-runbooks-incident-playbooks-architecture-decision-records-production-knowledge-architecture.html"><strong aria-hidden="true">92.</strong> 65 — Anonymous Network Documentation, Operator Runbooks, Incident Playbooks, Architecture Decision Records & Production Knowledge Architecture</a></li><li class="chapter-item expanded "><a href="66-anonymous-network-cryptographic-agility-post-quantum-migration-key-lifecycle-long-term-security-architecture.html"><strong aria-hidden="true">93.</strong> 66 — Anonymous Network Cryptographic Agility, Post-Quantum Migration, Key Lifecycle & Long-Term Security Architecture</a></li><li class="chapter-item expanded "><a href="67-anonymous-network-data-lifecycle-storage-minimization-secure-deletion-retention-archival-cryptographic-erasure-architecture.html"><strong aria-hidden="true">94.</strong> 67 — Anonymous Network Data Lifecycle, Storage Minimization, Secure Deletion, Retention, Archival & Cryptographic Erasure Architecture</a></li><li class="chapter-item expanded "><a href="68-anonymous-network-api-sdk-extension-boundary-capability-security-third-party-integration-architecture.html"><strong aria-hidden="true">95.</strong> 68 — Anonymous Network API, SDK, Extension Boundary, Capability Security & Third-Party Integration Architecture</a></li><li class="chapter-item expanded "><a href="69-anonymous-network-multi-tenant-isolation-organizational-boundaries-delegated-administration-enterprise-policy-architecture.html"><strong aria-hidden="true">96.</strong> 69 — Anonymous Network Multi-Tenant Isolation, Organizational Boundaries, Delegated Administration & Enterprise Policy Architecture</a></li><li class="chapter-item expanded "><a href="70-anonymous-network-disaster-exercises-business-continuity-validation-crisis-coordination-operational-resilience-governance-architecture.html"><strong aria-hidden="true">97.</strong> 70 — Anonymous Network Disaster Exercises, Business Continuity Validation, Crisis Coordination & Operational Resilience Governance Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part XIV: Anonymous Network — Zero-Trust Infrastructure & Attestation</li><li class="chapter-item expanded "><a href="71-anonymous-network-trustworthy-boot-host-attestation-runtime-integrity-binary-measurement-compromise-detection-architecture.html"><strong aria-hidden="true">98.</strong> 71 — Anonymous Network Trustworthy Boot, Host Attestation, Runtime Integrity, Binary Measurement & Compromise Detection Architecture</a></li><li class="chapter-item expanded "><a href="72-anonymous-network-hardware-security-modules-secure-elements-key-custody-signing-ceremonies-high-assurance-cryptographic-operations-architecture.html"><strong aria-hidden="true">99.</strong> 72 — Anonymous Network Hardware Security Modules, Secure Elements, Key Custody, Signing Ceremonies & High-Assurance Cryptographic Operations Architecture</a></li><li class="chapter-item expanded "><a href="73-anonymous-network-supply-chain-transparency-dependency-provenance-reproducible-builds-sbom-artifact-trust-compromise-recovery-architecture.html"><strong aria-hidden="true">100.</strong> 73 — Anonymous Network Supply-Chain Transparency, Dependency Provenance, Reproducible Builds, SBOM, Artifact Trust & Compromise Recovery Architecture</a></li><li class="chapter-item expanded "><a href="74-anonymous-network-database-persistent-state-transaction-boundaries-schema-evolution-storage-engine-architecture.html"><strong aria-hidden="true">101.</strong> 74 — Anonymous Network Database, Persistent State, Transaction Boundaries, Schema Evolution & Storage-Engine Architecture</a></li><li class="chapter-item expanded "><a href="75-anonymous-network-event-streaming-message-bus-durable-queues-internal-pubsub-distributed-workflow-architecture.html"><strong aria-hidden="true">102.</strong> 75 — Anonymous Network Event Streaming, Message Bus, Durable Queues, Internal Pub/Sub & Distributed Workflow Architecture</a></li><li class="chapter-item expanded "><a href="76-anonymous-network-distributed-consensus-leader-election-membership-quorum-state-coordination-architecture.html"><strong aria-hidden="true">103.</strong> 76 — Anonymous Network Distributed Consensus, Leader Election, Membership, Quorum State & Coordination Architecture</a></li><li class="chapter-item expanded "><a href="77-anonymous-network-service-discovery-naming-endpoint-resolution-load-balancing-traffic-steering-architecture.html"><strong aria-hidden="true">104.</strong> 77 — Anonymous Network Service Discovery, Naming, Endpoint Resolution, Load Balancing & Traffic Steering Architecture</a></li><li class="chapter-item expanded "><a href="78-anonymous-network-edge-gateway-ingress-egress-reverse-proxy-api-gateway-waf-boundary-enforcement-architecture.html"><strong aria-hidden="true">105.</strong> 78 — Anonymous Network Edge Gateway, Ingress/Egress, Reverse Proxy, API Gateway, WAF & Boundary Enforcement Architecture</a></li><li class="chapter-item expanded "><a href="79-anonymous-network-internal-service-to-service-communication-zero-trust-networking-mtls-service-identity-east-west-security-architecture.html"><strong aria-hidden="true">106.</strong> 79 — Anonymous Network Internal Service-to-Service Communication, Zero-Trust Networking, mTLS, Service Identity & East-West Security Architecture</a></li><li class="chapter-item expanded "><a href="80-anonymous-network-secrets-distribution-dynamic-credentials-certificate-authority-workload-enrollment-secretless-runtime-architecture.html"><strong aria-hidden="true">107.</strong> 80 — Anonymous Network Secrets Distribution, Dynamic Credentials, Certificate Authority, Workload Enrollment & Secretless Runtime Architecture</a></li><li class="chapter-item expanded "><a href="81-anonymous-network-authorization-policy-decision-enforcement-capability-evaluation-abac-rbac-distributed-access-control-architecture.html"><strong aria-hidden="true">108.</strong> 81 — Anonymous Network Authorization, Policy Decision/Enforcement Points, Capability Evaluation, ABAC/RBAC & Distributed Access-Control Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part XV: Anonymous Network — Private Cloud Services & Anti-Surveillance</li><li class="chapter-item expanded "><a href="82-anonymous-network-identity-provider-authentication-mfa-passkeys-session-management-account-security-architecture.html"><strong aria-hidden="true">109.</strong> 82 — Anonymous Network Identity Provider, Authentication, MFA, Passkeys, Session Management & Account Security Architecture</a></li><li class="chapter-item expanded "><a href="83-anonymous-network-account-lifecycle-registration-enrollment-suspension-deactivation-deletion-identity-state-governance-architecture.html"><strong aria-hidden="true">110.</strong> 83 — Anonymous Network Account Lifecycle, Registration, Enrollment, Suspension, Deactivation, Deletion & Identity-State Governance Architecture</a></li><li class="chapter-item expanded "><a href="84-anonymous-network-profile-preferences-settings-personalization-synchronization-privacy-preserving-user-state-architecture.html"><strong aria-hidden="true">111.</strong> 84 — Anonymous Network Profile, Preferences, Settings, Personalization, Synchronization & Privacy-Preserving User-State Architecture</a></li><li class="chapter-item expanded "><a href="85-anonymous-network-contacts-address-book-relationship-graph-invitations-trust-state-privacy-preserving-social-connectivity-architecture.html"><strong aria-hidden="true">112.</strong> 85 — Anonymous Network Contacts, Address Book, Relationship Graph, Invitations, Trust State & Privacy-Preserving Social Connectivity Architecture</a></li><li class="chapter-item expanded "><a href="86-anonymous-network-group-directory-communities-channels-membership-discovery-moderation-boundaries-privacy-preserving-social-spaces-architecture.html"><strong aria-hidden="true">113.</strong> 86 — Anonymous Network Group Directory, Communities, Channels, Membership Discovery, Moderation Boundaries & Privacy-Preserving Social Spaces Architecture</a></li><li class="chapter-item expanded "><a href="87-anonymous-network-content-feed-timeline-subscription-recommendation-ranking-privacy-preserving-discovery-architecture.html"><strong aria-hidden="true">114.</strong> 87 — Anonymous Network Content Feed, Timeline, Subscription, Recommendation, Ranking & Privacy-Preserving Discovery Architecture</a></li><li class="chapter-item expanded "><a href="88-anonymous-network-content-publishing-posts-articles-media-drafts-revisions-distribution-creator-state-architecture.html"><strong aria-hidden="true">115.</strong> 88 — Anonymous Network Content Publishing, Posts, Articles, Media, Drafts, Revisions, Distribution & Creator-State Architecture</a></li><li class="chapter-item expanded "><a href="89-anonymous-network-comments-replies-threads-reactions-mentions-resharing-privacy-preserving-interaction-architecture.html"><strong aria-hidden="true">116.</strong> 89 — Anonymous Network Comments, Replies, Threads, Reactions, Mentions, Resharing & Privacy-Preserving Interaction Architecture</a></li><li class="chapter-item expanded "><a href="90-anonymous-network-notifications-activity-inbox-mentions-interaction-aggregation-digest-privacy-preserving-attention-architecture.html"><strong aria-hidden="true">117.</strong> 90 — Anonymous Network Notifications, Activity Inbox, Mentions, Interaction Aggregation, Digest & Privacy-Preserving Attention Architecture</a></li><li class="chapter-item expanded "><a href="91-anonymous-network-search-indexing-query-privacy-relevance-ranking-federated-search-private-information-retrieval-architecture.html"><strong aria-hidden="true">118.</strong> 91 — Anonymous Network Search, Indexing, Query Privacy, Relevance Ranking, Federated Search & Private Information Retrieval Architecture</a></li><li class="chapter-item expanded "><a href="92-anonymous-network-analytics-metrics-product-insights-privacy-preserving-aggregation-differential-privacy-anti-surveillance-data-architecture.html"><strong aria-hidden="true">119.</strong> 92 — Anonymous Network Analytics, Metrics, Product Insights, Privacy-Preserving Aggregation, Differential Privacy & Anti-Surveillance Data Architecture</a></li><li class="chapter-item expanded "><a href="93-anonymous-network-experimentation-feature-evaluation-ab-testing-rollouts-cohort-assignment-privacy-preserving-product-validation-architecture.html"><strong aria-hidden="true">120.</strong> 93 — Anonymous Network Experimentation, Feature Evaluation, A/B Testing, Rollouts, Cohort Assignment & Privacy-Preserving Product Validation Architecture</a></li><li class="chapter-item expanded "><a href="94-anonymous-network-audit-transparency-user-visible-security-history-verifiable-actions-privacy-preserving-accountability-architecture.html"><strong aria-hidden="true">121.</strong> 94 — Anonymous Network Audit, Transparency, User-Visible Security History, Verifiable Actions & Privacy-Preserving Accountability Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part XVI: Anonymous Network — Defense, SecOps & Vulnerability Management</li><li class="chapter-item expanded "><a href="95-anonymous-network-policy-compliance-engine-continuous-control-evaluation-security-posture-evidence-collection-privacy-preserving-assurance-architecture.html"><strong aria-hidden="true">122.</strong> 95 — Anonymous Network Policy Compliance Engine, Continuous Control Evaluation, Security Posture, Evidence Collection & Privacy-Preserving Assurance Architecture</a></li><li class="chapter-item expanded "><a href="96-anonymous-network-incident-response-detection-triage-containment-forensics-recovery-privacy-preserving-security-operations-architecture.html"><strong aria-hidden="true">123.</strong> 96 — Anonymous Network Incident Response, Detection, Triage, Containment, Forensics, Recovery & Privacy-Preserving Security Operations Architecture</a></li><li class="chapter-item expanded "><a href="97-anonymous-network-security-operations-center-threat-intelligence-indicators-of-compromise-detection-engineering-hunting-privacy-preserving-defensive-intelligence-architecture.html"><strong aria-hidden="true">124.</strong> 97 — Anonymous Network Security Operations Center, Threat Intelligence, Indicators of Compromise, Detection Engineering, Hunting & Privacy-Preserving Defensive Intelligence Architecture</a></li><li class="chapter-item expanded "><a href="98-anonymous-network-vulnerability-management-exposure-discovery-patch-prioritization-remediation-coordination-privacy-preserving-security-maintenance-architecture.html"><strong aria-hidden="true">125.</strong> 98 — Anonymous Network Vulnerability Management, Exposure Discovery, Patch Prioritization, Remediation Coordination & Privacy-Preserving Security Maintenance Architecture</a></li><li class="chapter-item expanded "><a href="99-anonymous-network-secure-update-patch-distribution-release-channels-client-upgrade-enforcement-rollback-protection-privacy-preserving-software-maintenance-architecture.html"><strong aria-hidden="true">126.</strong> 99 — Anonymous Network Secure Update, Patch Distribution, Release Channels, Client Upgrade Enforcement, Rollback Protection & Privacy-Preserving Software Maintenance Architecture</a></li><li class="chapter-item expanded "><a href="100-anonymous-network-disaster-recovery-backup-integrity-restore-orchestration-regional-failover-continuity-validation-privacy-preserving-resilience-architecture.html"><strong aria-hidden="true">127.</strong> 100 — Anonymous Network Disaster Recovery, Backup Integrity, Restore Orchestration, Regional Failover, Continuity Validation & Privacy-Preserving Resilience Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part XVII: Anonymous Network — SRE, Fleet Management & Physical Site Reliability</li><li class="chapter-item expanded "><a href="101-anonymous-network-capacity-management-load-shedding-admission-control-autoscaling-resource-fairness-privacy-preserving-availability-architecture.html"><strong aria-hidden="true">128.</strong> 101 — Anonymous Network Capacity Management, Load Shedding, Admission Control, Autoscaling, Resource Fairness & Privacy-Preserving Availability Architecture</a></li><li class="chapter-item expanded "><a href="102-anonymous-network-cost-governance-resource-accounting-budget-enforcement-capacity-economics-privacy-preserving-finops-architecture.html"><strong aria-hidden="true">129.</strong> 102 — Anonymous Network Cost Governance, Resource Accounting, Budget Enforcement, Capacity Economics & Privacy-Preserving FinOps Architecture</a></li><li class="chapter-item expanded "><a href="103-anonymous-network-data-residency-sovereignty-regional-placement-cross-border-transfer-jurisdiction-policy-privacy-preserving-geographic-governance-architecture.html"><strong aria-hidden="true">130.</strong> 103 — Anonymous Network Data Residency, Sovereignty, Regional Placement, Cross-Border Transfer, Jurisdiction Policy & Privacy-Preserving Geographic Governance Architecture</a></li><li class="chapter-item expanded "><a href="104-anonymous-network-service-ownership-operational-responsibility-escalation-on-call-change-authority-privacy-preserving-organizational-governance-architecture.html"><strong aria-hidden="true">131.</strong> 104 — Anonymous Network Service Ownership, Operational Responsibility, Escalation, On-Call, Change Authority & Privacy-Preserving Organizational Governance Architecture</a></li><li class="chapter-item expanded "><a href="105-anonymous-network-configuration-drift-desired-state-change-reconciliation-policy-convergence-privacy-preserving-infrastructure-state-governance-architecture.html"><strong aria-hidden="true">132.</strong> 105 — Anonymous Network Configuration Drift, Desired State, Change Reconciliation, Policy Convergence & Privacy-Preserving Infrastructure State Governance Architecture</a></li><li class="chapter-item expanded "><a href="106-anonymous-network-infrastructure-inventory-asset-graph-service-dependency-mapping-configuration-item-lifecycle-privacy-preserving-operational-topology-architecture.html"><strong aria-hidden="true">133.</strong> 106 — Anonymous Network Infrastructure Inventory, Asset Graph, Service Dependency Mapping, Configuration Item Lifecycle & Privacy-Preserving Operational Topology Architecture</a></li><li class="chapter-item expanded "><a href="107-anonymous-network-change-impact-analysis-dependency-aware-rollout-planning-pre-change-simulation-safe-execution-privacy-preserving-operational-decision-architecture.html"><strong aria-hidden="true">134.</strong> 107 — Anonymous Network Change Impact Analysis, Dependency-Aware Rollout Planning, Pre-Change Simulation, Safe Execution & Privacy-Preserving Operational Decision Architecture</a></li><li class="chapter-item expanded "><a href="108-anonymous-network-release-readiness-production-certification-go-no-go-decision-operational-acceptance-privacy-preserving-launch-governance-architecture.html"><strong aria-hidden="true">135.</strong> 108 — Anonymous Network Release Readiness, Production Certification, Go/No-Go Decision, Operational Acceptance & Privacy-Preserving Launch Governance Architecture</a></li><li class="chapter-item expanded "><a href="109-anonymous-network-service-level-objectives-error-budgets-reliability-policy-availability-governance-privacy-preserving-reliability-engineering-architecture.html"><strong aria-hidden="true">136.</strong> 109 — Anonymous Network Service Level Objectives, Error Budgets, Reliability Policy, Availability Governance & Privacy-Preserving Reliability Engineering Architecture</a></li><li class="chapter-item expanded "><a href="110-anonymous-network-availability-modeling-fault-domains-redundancy-planning-failure-correlation-reliability-simulation-privacy-preserving-resilience-engineering-architecture.html"><strong aria-hidden="true">137.</strong> 110 — Anonymous Network Availability Modeling, Fault Domains, Redundancy Planning, Failure Correlation, Reliability Simulation & Privacy-Preserving Resilience Engineering Architecture</a></li><li class="chapter-item expanded "><a href="111-anonymous-network-capacity-forecasting-demand-modeling-growth-planning-saturation-prediction-privacy-preserving-infrastructure-forecast-architecture.html"><strong aria-hidden="true">138.</strong> 111 — Anonymous Network Capacity Forecasting, Demand Modeling, Growth Planning, Saturation Prediction & Privacy-Preserving Infrastructure Forecast Architecture</a></li><li class="chapter-item expanded "><a href="112-anonymous-network-performance-budgeting-latency-decomposition-throughput-modeling-tail-latency-control-privacy-preserving-performance-engineering-architecture.html"><strong aria-hidden="true">139.</strong> 112 — Anonymous Network Performance Budgeting, Latency Decomposition, Throughput Modeling, Tail-Latency Control & Privacy-Preserving Performance Engineering Architecture</a></li><li class="chapter-item expanded "><a href="113-anonymous-network-resource-efficiency-work-consolidation-compute-memory-io-optimization-energy-awareness-privacy-preserving-efficiency-engineering-architecture.html"><strong aria-hidden="true">140.</strong> 113 — Anonymous Network Resource Efficiency, Work Consolidation, Compute/Memory/I/O Optimization, Energy Awareness & Privacy-Preserving Efficiency Engineering Architecture</a></li><li class="chapter-item expanded "><a href="114-anonymous-network-sustainability-carbon-aware-scheduling-hardware-lifecycle-resource-reuse-privacy-preserving-environmental-efficiency-architecture.html"><strong aria-hidden="true">141.</strong> 114 — Anonymous Network Sustainability, Carbon-Aware Scheduling, Hardware Lifecycle, Resource Reuse & Privacy-Preserving Environmental Efficiency Architecture</a></li><li class="chapter-item expanded "><a href="115-anonymous-network-hardware-fleet-management-firmware-lifecycle-secure-provisioning-maintenance-scheduling-privacy-preserving-physical-infrastructure-governance-architecture.html"><strong aria-hidden="true">142.</strong> 115 — Anonymous Network Hardware Fleet Management, Firmware Lifecycle, Secure Provisioning, Maintenance Scheduling & Privacy-Preserving Physical Infrastructure Governance Architecture</a></li><li class="chapter-item expanded "><a href="116-anonymous-network-data-center-edge-site-facility-power-cooling-environmental-monitoring-privacy-preserving-physical-site-reliability-architecture.html"><strong aria-hidden="true">143.</strong> 116 — Anonymous Network Data Center, Edge Site, Facility Power, Cooling, Environmental Monitoring & Privacy-Preserving Physical Site Reliability Architecture</a></li><li class="chapter-item expanded "><a href="117-anonymous-network-physical-security-tamper-detection-site-access-control-chain-of-custody-asset-protection-privacy-preserving-facility-security-architecture.html"><strong aria-hidden="true">144.</strong> 117 — Anonymous Network Physical Security, Tamper Detection, Site Access Control, Chain of Custody, Asset Protection & Privacy-Preserving Facility Security Architecture</a></li><li class="chapter-item expanded "><a href="118-anonymous-network-physical-disaster-preparedness-fire-flood-earthquake-response-site-evacuation-asset-salvage-emergency-logistics-privacy-preserving-facility-continuity-architecture.html"><strong aria-hidden="true">145.</strong> 118 — Anonymous Network Physical Disaster Preparedness, Fire/Flood/Earthquake Response, Site Evacuation, Asset Salvage, Emergency Logistics & Privacy-Preserving Facility Continuity Architecture</a></li><li class="chapter-item expanded "><a href="119-anonymous-network-crisis-command-emergency-decision-authority-multi-team-coordination-communications-situation-awareness-privacy-preserving-incident-command-architecture.html"><strong aria-hidden="true">146.</strong> 119 — Anonymous Network Crisis Command, Emergency Decision Authority, Multi-Team Coordination, Communications, Situation Awareness & Privacy-Preserving Incident Command Architecture</a></li><li class="chapter-item expanded "><a href="120-anonymous-network-post-incident-review-root-cause-analysis-corrective-actions-organizational-learning-recurrence-prevention-privacy-preserving-reliability-improvement-architecture.html"><strong aria-hidden="true">147.</strong> 120 — Anonymous Network Post-Incident Review, Root-Cause Analysis, Corrective Actions, Organizational Learning, Recurrence Prevention & Privacy-Preserving Reliability Improvement Architecture</a></li><li class="chapter-item expanded "><a href="121-anonymous-network-reliability-risk-register-technical-debt-governance-systemic-weakness-tracking-remediation-portfolio-privacy-preserving-engineering-risk-architecture.html"><strong aria-hidden="true">148.</strong> 121 — Anonymous Network Reliability Risk Register, Technical Debt Governance, Systemic Weakness Tracking, Remediation Portfolio & Privacy-Preserving Engineering Risk Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part XVIII: Anonymous Network — Governance, Traceability, SDK & Plugin Ecosystem</li><li class="chapter-item expanded "><a href="122-anonymous-network-architecture-governance-technical-standards-adr-lifecycle-design-review-exception-management-privacy-preserving-engineering-decision-architecture.html"><strong aria-hidden="true">149.</strong> 122 — Anonymous Network Architecture Governance, Technical Standards, ADR Lifecycle, Design Review, Exception Management & Privacy-Preserving Engineering Decision Architecture</a></li><li class="chapter-item expanded "><a href="123-anonymous-network-engineering-knowledge-graph-architecture-traceability-requirement-to-code-mapping-decision-provenance-privacy-preserving-technical-knowledge-architecture.html"><strong aria-hidden="true">150.</strong> 123 — Anonymous Network Engineering Knowledge Graph, Architecture Traceability, Requirement-to-Code Mapping, Decision Provenance & Privacy-Preserving Technical Knowledge Architecture</a></li><li class="chapter-item expanded "><a href="124-anonymous-network-requirements-engineering-specification-lifecycle-acceptance-criteria-verification-planning-change-traceability-privacy-preserving-product-technical-requirement-architecture.html"><strong aria-hidden="true">151.</strong> 124 — Anonymous Network Requirements Engineering, Specification Lifecycle, Acceptance Criteria, Verification Planning, Change Traceability & Privacy-Preserving Product/Technical Requirement Architecture</a></li><li class="chapter-item expanded "><a href="125-anonymous-network-test-strategy-governance-verification-matrix-coverage-traceability-qualification-evidence-release-confidence-privacy-preserving-engineering-assurance-architecture.html"><strong aria-hidden="true">152.</strong> 125 — Anonymous Network Test Strategy Governance, Verification Matrix, Coverage Traceability, Qualification Evidence, Release Confidence & Privacy-Preserving Engineering Assurance Architecture</a></li><li class="chapter-item expanded "><a href="126-anonymous-network-release-evidence-repository-certification-records-artifact-qualification-lineage-compliance-trace-packages-privacy-preserving-assurance-archive-architecture.html"><strong aria-hidden="true">153.</strong> 126 — Anonymous Network Release Evidence Repository, Certification Records, Artifact Qualification Lineage, Compliance Trace Packages & Privacy-Preserving Assurance Archive Architecture</a></li><li class="chapter-item expanded "><a href="127-anonymous-network-product-qualification-feature-maturity-levels-capability-readiness-general-availability-criteria-privacy-preserving-product-readiness-governance-architecture.html"><strong aria-hidden="true">154.</strong> 127 — Anonymous Network Product Qualification, Feature Maturity Levels, Capability Readiness, General Availability Criteria & Privacy-Preserving Product Readiness Governance Architecture</a></li><li class="chapter-item expanded "><a href="128-anonymous-network-product-lifecycle-governance-capability-evolution-backward-compatibility-migration-deprecation-sunset-privacy-preserving-end-of-life-architecture.html"><strong aria-hidden="true">155.</strong> 128 — Anonymous Network Product Lifecycle Governance, Capability Evolution, Backward Compatibility, Migration, Deprecation, Sunset & Privacy-Preserving End-of-Life Architecture</a></li><li class="chapter-item expanded "><a href="129-anonymous-network-api-protocol-compatibility-registry-version-negotiation-schema-evolution-interoperability-certification-privacy-preserving-compatibility-governance-architecture.html"><strong aria-hidden="true">156.</strong> 129 — Anonymous Network API & Protocol Compatibility Registry, Version Negotiation, Schema Evolution, Interoperability Certification & Privacy-Preserving Compatibility Governance Architecture</a></li><li class="chapter-item expanded "><a href="130-anonymous-network-sdk-client-library-generated-bindings-developer-compatibility-integration-certification-privacy-preserving-developer-platform-architecture.html"><strong aria-hidden="true">157.</strong> 130 — Anonymous Network SDK, Client Library, Generated Bindings, Developer Compatibility, Integration Certification & Privacy-Preserving Developer Platform Architecture</a></li><li class="chapter-item expanded "><a href="131-anonymous-network-developer-portal-api-documentation-sandbox-environments-credential-provisioning-integration-onboarding-support-privacy-preserving-developer-experience-architecture.html"><strong aria-hidden="true">158.</strong> 131 — Anonymous Network Developer Portal, API Documentation, Sandbox Environments, Credential Provisioning, Integration Onboarding, Support & Privacy-Preserving Developer Experience Architecture</a></li><li class="chapter-item expanded "><a href="132-anonymous-network-developer-cli-project-automation-local-integration-emulator-contract-testing-ci-integration-privacy-preserving-developer-toolchain-architecture.html"><strong aria-hidden="true">159.</strong> 132 — Anonymous Network Developer CLI, Project Automation, Local Integration Emulator, Contract Testing, CI Integration & Privacy-Preserving Developer Toolchain Architecture</a></li><li class="chapter-item expanded "><a href="133-anonymous-network-extension-marketplace-integration-distribution-package-discovery-trust-signals-review-revocation-privacy-preserving-developer-ecosystem-architecture.html"><strong aria-hidden="true">160.</strong> 133 — Anonymous Network Extension Marketplace, Integration Distribution, Package Discovery, Trust Signals, Review, Revocation & Privacy-Preserving Developer Ecosystem Architecture</a></li><li class="chapter-item expanded "><a href="134-anonymous-network-extension-runtime-plugin-sandboxing-capability-brokerage-resource-isolation-lifecycle-supervision-privacy-preserving-execution-architecture.html"><strong aria-hidden="true">161.</strong> 134 — Anonymous Network Extension Runtime, Plugin Sandboxing, Capability Brokerage, Resource Isolation, Lifecycle Supervision & Privacy-Preserving Execution Architecture</a></li><li class="chapter-item expanded "><a href="135-anonymous-network-extension-permission-model-consent-ux-delegated-authority-capability-attenuation-scope-review-privacy-preserving-authorization-architecture.html"><strong aria-hidden="true">162.</strong> 135 — Anonymous Network Extension Permission Model, Consent UX, Delegated Authority, Capability Attenuation, Scope Review & Privacy-Preserving Authorization Architecture</a></li><li class="chapter-item expanded "><a href="136-anonymous-network-extension-data-governance-data-access-mediation-information-flow-control-retention-deletion-export-privacy-preserving-extension-data-architecture.html"><strong aria-hidden="true">163.</strong> 136 — Anonymous Network Extension Data Governance, Data Access Mediation, Information-Flow Control, Retention, Deletion, Export & Privacy-Preserving Extension Data Architecture</a></li><li class="chapter-item expanded "><a href="137-anonymous-network-extension-inter-process-communication-event-bus-host-calls-shared-memory-streaming-backpressure-privacy-preserving-runtime-communication-architecture.html"><strong aria-hidden="true">164.</strong> 137 — Anonymous Network Extension Inter-Process Communication, Event Bus, Host Calls, Shared Memory, Streaming, Backpressure & Privacy-Preserving Runtime Communication Architecture</a></li><li class="chapter-item expanded "><a href="138-anonymous-network-extension-background-execution-durable-jobs-triggers-scheduling-wakeups-mobile-lifecycle-quotas-privacy-preserving-automation-runtime-architecture.html"><strong aria-hidden="true">165.</strong> 138 — Anonymous Network Extension Background Execution, Durable Jobs, Triggers, Scheduling, Wakeups, Mobile Lifecycle, Quotas & Privacy-Preserving Automation Runtime Architecture</a></li><li class="chapter-item expanded "><a href="140-anonymous-network-extension-ui-surface-embedded-panels-commands-menus-context-actions-theming-accessibility-privacy-preserving-host-ui-integration-architecture.html"><strong aria-hidden="true">166.</strong> 140 — Anonymous Network Extension UI Surface, Embedded Panels, Commands, Menus, Context Actions, Theming, Accessibility & Privacy-Preserving Host UI Integration Architecture</a></li><li class="chapter-item expanded "><a href="141-anonymous-network-extension-state-synchronization-cross-device-settings-ui-state-installation-state-capability-consistency-privacy-preserving-extension-state-convergence-architecture.html"><strong aria-hidden="true">167.</strong> 141 — Anonymous Network Extension State Synchronization, Cross-Device Settings, UI State, Installation State, Capability Consistency & Privacy-Preserving Extension State Convergence Architecture</a></li><li class="chapter-item expanded "><a href="142-anonymous-network-extension-dependency-management-package-resolution-version-constraints-lockfiles-dependency-isolation-supply-chain-policy-privacy-preserving-dependency-governance-architecture.html"><strong aria-hidden="true">168.</strong> 142 — Anonymous Network Extension Dependency Management, Package Resolution, Version Constraints, Lockfiles, Dependency Isolation, Supply-Chain Policy & Privacy-Preserving Dependency Governance Architecture</a></li><li class="chapter-item expanded "><a href="143-anonymous-network-extension-update-orchestration-dependency-aware-rollouts-state-migration-rollback-hot-upgrade-compatibility-gates-privacy-preserving-extension-evolution-architecture.html"><strong aria-hidden="true">169.</strong> 143 — Anonymous Network Extension Update Orchestration, Dependency-Aware Rollouts, State Migration, Rollback, Hot Upgrade, Compatibility Gates & Privacy-Preserving Extension Evolution Architecture</a></li><li class="chapter-item expanded "><a href="144-anonymous-network-extension-testing-certification-compatibility-matrix-sandbox-validation-fault-injection-security-privacy-qualification-release-evidence-architecture.html"><strong aria-hidden="true">170.</strong> 144 — Anonymous Network Extension Testing, Certification, Compatibility Matrix, Sandbox Validation, Fault Injection, Security/Privacy Qualification & Release Evidence Architecture</a></li><li class="chapter-item expanded "><a href="145-anonymous-network-extension-observability-runtime-health-crash-reporting-diagnostics-developer-telemetry-slos-privacy-preserving-extension-operations-architecture.html"><strong aria-hidden="true">171.</strong> 145 — Anonymous Network Extension Observability, Runtime Health, Crash Reporting, Diagnostics, Developer Telemetry, SLOs & Privacy-Preserving Extension Operations Architecture</a></li><li class="chapter-item expanded "><a href="146-anonymous-network-extension-incident-response-abuse-detection-quarantine-emergency-disable-forensics-recovery-privacy-preserving-extension-security-operations-architecture.html"><strong aria-hidden="true">172.</strong> 146 — Anonymous Network Extension Incident Response, Abuse Detection, Quarantine, Emergency Disable, Forensics, Recovery & Privacy-Preserving Extension Security Operations Architecture</a></li><li class="chapter-item expanded "><a href="147-anonymous-network-extension-governance-publisher-policy-ecosystem-rules-dispute-resolution-appeals-enforcement-consistency-privacy-preserving-marketplace-governance-architecture.html"><strong aria-hidden="true">173.</strong> 147 — Anonymous Network Extension Governance, Publisher Policy, Ecosystem Rules, Dispute Resolution, Appeals, Enforcement Consistency & Privacy-Preserving Marketplace Governance Architecture</a></li><li class="chapter-item expanded "><a href="148-anonymous-network-extension-business-model-pricing-revenue-sharing-paid-extensions-subscriptions-billing-integration-refunds-entitlements-privacy-preserving-marketplace-economics-architecture.html"><strong aria-hidden="true">174.</strong> 148 — Anonymous Network Extension Business Model, Pricing, Revenue Sharing, Paid Extensions, Subscriptions, Billing Integration, Refunds, Entitlements & Privacy-Preserving Marketplace Economics Architecture</a></li><li class="chapter-item expanded "><a href="149-anonymous-network-extension-licensing-open-source-commercial-license-enforcement-seat-activation-license-keys-offline-licensing-compliance-audit-privacy-preserving-software-license-architecture.html"><strong aria-hidden="true">175.</strong> 149 — Anonymous Network Extension Licensing, Open-Source/Commercial License Enforcement, Seat Activation, License Keys, Offline Licensing, Compliance, Audit & Privacy-Preserving Software License Architecture</a></li><li class="chapter-item expanded "><a href="150-anonymous-network-extension-developer-relations-publisher-support-documentation-governance-compatibility-communication-migration-guidance-ecosystem-education-privacy-preserving-developer-success-architecture.html"><strong aria-hidden="true">176.</strong> 150 — Anonymous Network Extension Developer Relations, Publisher Support, Documentation Governance, Compatibility Communication, Migration Guidance, Ecosystem Education & Privacy-Preserving Developer Success Architecture</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">SIAR System Architecture &amp; Technical Wiki</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar/edit/main/sys-arch/60-anonymous-network-time-clock-privacy-replay-windows-epoch-coordination-temporal-metadata-resistance-architecture.md" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="core-system-architecture-part-60--anonymous-network-time-clock-privacy-replay-windows-epoch-coordination--temporal-metadata-resistance-architecture"><a class="header" href="#core-system-architecture-part-60--anonymous-network-time-clock-privacy-replay-windows-epoch-coordination--temporal-metadata-resistance-architecture">Core System Architecture Part 60 — Anonymous Network Time, Clock Privacy, Replay Windows, Epoch Coordination &amp; Temporal Metadata Resistance Architecture</a></h1>
+<h2 id="siar--secure-local-first-multi-transport-communication-platform"><a class="header" href="#siar--secure-local-first-multi-transport-communication-platform">SIAR — Secure, Local-First, Multi-Transport Communication Platform</a></h2>
+<p><strong>Series:</strong> Core System Architecture<br />
+<strong>Part:</strong> 60<br />
+<strong>Status:</strong> Architecture specification<br />
+<strong>Primary language:</strong> Rust<br />
+<strong>Builds on:</strong> Core System Architecture Parts 34–59</p>
+<p><strong>Primary purpose:</strong> define how SIAR handles time, monotonic clocks, wall-clock synchronization, replay protection, epoch coordination, timestamp privacy, expiration, delayed delivery, key rotation, federation time compatibility, and temporal metadata resistance without turning clocks into a cross-service correlation mechanism.</p>
+<hr />
+<h1 id="1-purpose"><a class="header" href="#1-purpose">1. Purpose</a></h1>
+<p>Time is necessary for:</p>
+<pre><code class="language-text">expiry
+replay protection
+key rotation
+directory epochs
+mailbox retention
+provider descriptors
+credit validity
+governance policy
+federation agreements
+</code></pre>
+<p>Time is also dangerous.</p>
+<p>Precise timestamps can reveal:</p>
+<pre><code class="language-text">when a user was active
+when two contacts communicated
+when a device came online
+when a mailbox was fetched
+when a message crossed domains
+</code></pre>
+<p>The governing principle is:</p>
+<blockquote>
+<p><strong>SIAR should use the least precise and least globally correlated notion of time required for correctness, while keeping security-critical freshness and replay protection explicit and bounded.</strong></p>
+</blockquote>
+<hr />
+<h1 id="2-architectural-position"><a class="header" href="#2-architectural-position">2. Architectural Position</a></h1>
+<pre><code class="language-text">Hardware / OS Clock
+        │
+        ├── Monotonic Clock
+        └── Wall Clock
+               │
+               ▼
+        Time Abstraction Layer
+               │
+               ├── epochs
+               ├── expiry
+               ├── replay windows
+               ├── coarse timestamps
+               └── privacy shaping
+               │
+               ▼
+        Protocols / Storage / Governance
+</code></pre>
+<hr />
+<h1 id="3-core-separation"><a class="header" href="#3-core-separation">3. Core Separation</a></h1>
+<p>Keep distinct:</p>
+<pre><code class="language-text">wall-clock time
+monotonic duration
+protocol epoch
+key epoch
+replay sequence
+user-visible timestamp
+provider retention deadline
+governance validity window
+</code></pre>
+<hr />
+<h1 id="4-non-goals"><a class="header" href="#4-non-goals">4. Non-Goals</a></h1>
+<p>Part 60 does not require:</p>
+<pre><code class="language-text">globally synchronized user clocks
+precise per-message server timestamps
+cross-service universal event IDs
+continuous NTP-style user tracking
+</code></pre>
+<hr />
+<h1 id="5-time-domains"><a class="header" href="#5-time-domains">5. Time Domains</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum TimeDomain {
+    MonotonicLocal,
+    WallClockLocal,
+    ProtocolEpoch,
+    SecurityEpoch,
+    GovernanceEpoch,
+    ProviderEpoch,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="6-monotonic-time"><a class="header" href="#6-monotonic-time">6. Monotonic Time</a></h1>
+<p>Use for:</p>
+<pre><code class="language-text">timeouts
+retry delays
+backoff
+queue residence
+session timers
+</code></pre>
+<hr />
+<h1 id="7-why-monotonic"><a class="header" href="#7-why-monotonic">7. Why Monotonic</a></h1>
+<p>Wall clock can:</p>
+<pre><code class="language-text">jump backward
+jump forward
+change with timezone
+change with user settings
+</code></pre>
+<hr />
+<h1 id="8-monotonic-instant-wrapper"><a class="header" href="#8-monotonic-instant-wrapper">8. Monotonic Instant Wrapper</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct MonoInstant(std::time::Instant);
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="9-wall-clock"><a class="header" href="#9-wall-clock">9. Wall Clock</a></h1>
+<p>Use only when real-world chronology is required.</p>
+<hr />
+<h1 id="10-examples"><a class="header" href="#10-examples">10. Examples</a></h1>
+<pre><code class="language-text">policy validity
+certificate expiry
+public transparency
+legal retention
+signed catalog validity
+</code></pre>
+<hr />
+<h1 id="11-wall-time-type"><a class="header" href="#11-wall-time-type">11. Wall Time Type</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct WallTimeUtc(pub i64);
+<span class="boring">}</span></code></pre></pre>
+<p>Represent:</p>
+<pre><code class="language-text">UTC-based protocol time
+</code></pre>
+<p>not local timezone.</p>
+<hr />
+<h1 id="12-user-local-time"><a class="header" href="#12-user-local-time">12. User Local Time</a></h1>
+<p>Presentation only.</p>
+<hr />
+<h1 id="13-timezone"><a class="header" href="#13-timezone">13. Timezone</a></h1>
+<p>Never part of security decision.</p>
+<hr />
+<h1 id="14-hard-rule"><a class="header" href="#14-hard-rule">14. Hard Rule</a></h1>
+<p>Do not use locale/timezone as protocol identity signal.</p>
+<hr />
+<h1 id="15-clock-trust-classes"><a class="header" href="#15-clock-trust-classes">15. Clock Trust Classes</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum ClockTrust {
+    TrustedEnough,
+    Skewed,
+    Unknown,
+    Untrusted,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="16-trustedenough"><a class="header" href="#16-trustedenough">16. TrustedEnough</a></h1>
+<p>Within allowed skew for operation.</p>
+<hr />
+<h1 id="17-skewed"><a class="header" href="#17-skewed">17. Skewed</a></h1>
+<p>Known deviation but bounded.</p>
+<hr />
+<h1 id="18-unknown"><a class="header" href="#18-unknown">18. Unknown</a></h1>
+<p>No reliable wall-time source.</p>
+<hr />
+<h1 id="19-untrusted"><a class="header" href="#19-untrusted">19. Untrusted</a></h1>
+<p>Detected rollback/manipulation.</p>
+<hr />
+<h1 id="20-clock-source"><a class="header" href="#20-clock-source">20. Clock Source</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">OS clock
+signed directory time
+signed governance time
+provider response time
+</code></pre>
+<hr />
+<h1 id="21-no-single-mandatory-time-server"><a class="header" href="#21-no-single-mandatory-time-server">21. No Single Mandatory Time Server</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="22-time-source-diversity"><a class="header" href="#22-time-source-diversity">22. Time Source Diversity</a></h1>
+<p>For critical freshness:</p>
+<pre><code class="language-text">multiple authenticated sources
+</code></pre>
+<p>can improve confidence.</p>
+<hr />
+<h1 id="23-time-observation"><a class="header" href="#23-time-observation">23. Time Observation</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct TimeObservation {
+    pub source: TimeSourceId,
+    pub wall_time: WallTimeUtc,
+    pub received_at: MonoInstant,
+    pub assurance: TimeAssurance,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="24-time-assurance"><a class="header" href="#24-time-assurance">24. Time Assurance</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum TimeAssurance {
+    LocalOnly,
+    AuthenticatedRemote,
+    QuorumObserved,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="25-time-quorum"><a class="header" href="#25-time-quorum">25. Time Quorum</a></h1>
+<p>Optional for high-security control plane.</p>
+<hr />
+<h1 id="26-client-recommendation"><a class="header" href="#26-client-recommendation">26. Client Recommendation</a></h1>
+<p>Do not require remote time quorum for ordinary messaging.</p>
+<hr />
+<h1 id="27-clock-skew-budget"><a class="header" href="#27-clock-skew-budget">27. Clock Skew Budget</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct ClockSkewBudget {
+    pub max_past: Duration,
+    pub max_future: Duration,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="28-different-protocols-need-different-budgets"><a class="header" href="#28-different-protocols-need-different-budgets">28. Different Protocols Need Different Budgets</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">call signaling: seconds/minutes
+directory snapshot: minutes/hours
+backup archive: hours/days
+</code></pre>
+<hr />
+<h1 id="29-no-universal-skew-constant"><a class="header" href="#29-no-universal-skew-constant">29. No Universal Skew Constant</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="30-protocol-time-policy"><a class="header" href="#30-protocol-time-policy">30. Protocol Time Policy</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct ProtocolTimePolicy {
+    pub skew: ClockSkewBudget,
+    pub replay_window: ReplayWindowPolicy,
+    pub expiry_mode: ExpiryMode,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="31-epochs"><a class="header" href="#31-epochs">31. Epochs</a></h1>
+<p>Epochs reduce reliance on precise timestamps.</p>
+<hr />
+<h1 id="32-epoch-type"><a class="header" href="#32-epoch-type">32. Epoch Type</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct Epoch(pub u64);
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="33-epoch-duration"><a class="header" href="#33-epoch-duration">33. Epoch Duration</a></h1>
+<p>Protocol-specific.</p>
+<hr />
+<h1 id="34-examples"><a class="header" href="#34-examples">34. Examples</a></h1>
+<pre><code class="language-text">mixnet topology epoch
+mailbox capability epoch
+presence epoch
+provider descriptor epoch
+</code></pre>
+<hr />
+<h1 id="35-epoch-boundary"><a class="header" href="#35-epoch-boundary">35. Epoch Boundary</a></h1>
+<p>Prefer coarse.</p>
+<hr />
+<h1 id="36-benefit"><a class="header" href="#36-benefit">36. Benefit</a></h1>
+<p>Users within same epoch are less distinguishable.</p>
+<hr />
+<h1 id="37-epoch-schedule"><a class="header" href="#37-epoch-schedule">37. Epoch Schedule</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct EpochSchedule {
+    pub duration: Duration,
+    pub grace_before: Duration,
+    pub grace_after: Duration,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="38-grace-window"><a class="header" href="#38-grace-window">38. Grace Window</a></h1>
+<p>Supports skew and rolling transition.</p>
+<hr />
+<h1 id="39-never-require-millisecond-epoch-alignment"><a class="header" href="#39-never-require-millisecond-epoch-alignment">39. Never Require Millisecond Epoch Alignment</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="40-overlap"><a class="header" href="#40-overlap">40. Overlap</a></h1>
+<p>Old + new epoch may both be accepted briefly.</p>
+<hr />
+<h1 id="41-epoch-transition"><a class="header" href="#41-epoch-transition">41. Epoch Transition</a></h1>
+<pre><code class="language-text">prepare next
+→ overlap
+→ prefer next
+→ retire previous
+</code></pre>
+<hr />
+<h1 id="42-security-epoch"><a class="header" href="#42-security-epoch">42. Security Epoch</a></h1>
+<p>Monotonic counter for:</p>
+<pre><code class="language-text">revocation
+key transition
+anti-rollback
+</code></pre>
+<hr />
+<h1 id="43-security-epoch-does-not-need-wall-clock"><a class="header" href="#43-security-epoch-does-not-need-wall-clock">43. Security Epoch Does Not Need Wall Clock</a></h1>
+<p>Hard rule where counter suffices.</p>
+<hr />
+<h1 id="44-sequence-number"><a class="header" href="#44-sequence-number">44. Sequence Number</a></h1>
+<p>Use when ordering is enough.</p>
+<hr />
+<h1 id="45-sequence-type"><a class="header" href="#45-sequence-type">45. Sequence Type</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct SequenceNumber(pub u64);
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="46-replay-protection"><a class="header" href="#46-replay-protection">46. Replay Protection</a></h1>
+<p>Prefer:</p>
+<pre><code class="language-text">nonce
+sequence
+epoch
+</code></pre>
+<p>over precise timestamp alone.</p>
+<hr />
+<h1 id="47-replay-key"><a class="header" href="#47-replay-key">47. Replay Key</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct ReplayKey {
+    pub scope: ReplayScope,
+    pub epoch: Epoch,
+    pub nonce: Nonce,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="48-replay-scope"><a class="header" href="#48-replay-scope">48. Replay Scope</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum ReplayScope {
+    Session,
+    Device,
+    Mailbox,
+    Provider,
+    FederationPeer,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="49-no-global-replay-database"><a class="header" href="#49-no-global-replay-database">49. No Global Replay Database</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="50-replay-cache"><a class="header" href="#50-replay-cache">50. Replay Cache</a></h1>
+<p>Service-scoped.</p>
+<hr />
+<h1 id="51-replay-window"><a class="header" href="#51-replay-window">51. Replay Window</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct ReplayWindowPolicy {
+    pub accepted_epochs: u8,
+    pub max_entries: usize,
+    pub ttl: Duration,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="52-replay-cache-bound"><a class="header" href="#52-replay-cache-bound">52. Replay Cache Bound</a></h1>
+<p>Mandatory.</p>
+<hr />
+<h1 id="53-replay-cache-privacy"><a class="header" href="#53-replay-cache-privacy">53. Replay Cache Privacy</a></h1>
+<p>Must not become:</p>
+<pre><code class="language-text">long-term packet history
+</code></pre>
+<hr />
+<h1 id="54-expire-aggressively"><a class="header" href="#54-expire-aggressively">54. Expire Aggressively</a></h1>
+<p>After security window.</p>
+<hr />
+<h1 id="55-packet-replay"><a class="header" href="#55-packet-replay">55. Packet Replay</a></h1>
+<p>Mixnet/Sphinx layer should use reviewed replay semantics.</p>
+<hr />
+<h1 id="56-no-custom-cryptographic-replay-primitive"><a class="header" href="#56-no-custom-cryptographic-replay-primitive">56. No Custom Cryptographic Replay Primitive</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="57-mailbox-replay"><a class="header" href="#57-mailbox-replay">57. Mailbox Replay</a></h1>
+<p>Duplicate encrypted object may reappear.</p>
+<hr />
+<h1 id="58-application-dedup"><a class="header" href="#58-application-dedup">58. Application Dedup</a></h1>
+<p>Use:</p>
+<pre><code class="language-text">MessageId
+mailbox item token
+</code></pre>
+<p>not wall-clock equality.</p>
+<hr />
+<h1 id="59-federation-replay"><a class="header" href="#59-federation-replay">59. Federation Replay</a></h1>
+<p>Per-peer short-lived nonce window.</p>
+<hr />
+<h1 id="60-payment-replay"><a class="header" href="#60-payment-replay">60. Payment Replay</a></h1>
+<p>Part 47 uses exact spend/double-spend semantics.</p>
+<hr />
+<h1 id="61-governance-replay"><a class="header" href="#61-governance-replay">61. Governance Replay</a></h1>
+<p>Part 53 uses monotonic policy version + trust epoch.</p>
+<hr />
+<h1 id="62-upgrade-replay"><a class="header" href="#62-upgrade-replay">62. Upgrade Replay</a></h1>
+<p>Part 52 uses release security epoch.</p>
+<hr />
+<h1 id="63-naming-replay"><a class="header" href="#63-naming-replay">63. Naming Replay</a></h1>
+<p>Part 59 uses record version/expiry.</p>
+<hr />
+<h1 id="64-expiry-semantics"><a class="header" href="#64-expiry-semantics">64. Expiry Semantics</a></h1>
+<p>Need explicit model.</p>
+<hr />
+<h1 id="65-expiry-modes"><a class="header" href="#65-expiry-modes">65. Expiry Modes</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum ExpiryMode {
+    MonotonicDuration,
+    WallClockDeadline,
+    EpochBound,
+    SequenceBound,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="66-monotonicduration"><a class="header" href="#66-monotonicduration">66. MonotonicDuration</a></h1>
+<p>Use for:</p>
+<pre><code class="language-text">session timeout
+temporary local auth
+</code></pre>
+<hr />
+<h1 id="67-wallclockdeadline"><a class="header" href="#67-wallclockdeadline">67. WallClockDeadline</a></h1>
+<p>Use for:</p>
+<pre><code class="language-text">policy expires at date
+</code></pre>
+<hr />
+<h1 id="68-epochbound"><a class="header" href="#68-epochbound">68. EpochBound</a></h1>
+<p>Use for:</p>
+<pre><code class="language-text">provider descriptor
+presence token
+</code></pre>
+<hr />
+<h1 id="69-sequencebound"><a class="header" href="#69-sequencebound">69. SequenceBound</a></h1>
+<p>Use for:</p>
+<pre><code class="language-text">revocation generation
+</code></pre>
+<hr />
+<h1 id="70-avoid-wall-clock-where-not-needed"><a class="header" href="#70-avoid-wall-clock-where-not-needed">70. Avoid Wall Clock Where Not Needed</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="71-timestamp-privacy"><a class="header" href="#71-timestamp-privacy">71. Timestamp Privacy</a></h1>
+<p>User-visible timestamps can reveal behavior.</p>
+<hr />
+<h1 id="72-local-message-time"><a class="header" href="#72-local-message-time">72. Local Message Time</a></h1>
+<p>Store locally.</p>
+<hr />
+<h1 id="73-server-timestamp"><a class="header" href="#73-server-timestamp">73. Server Timestamp</a></h1>
+<p>Avoid if client time is sufficient.</p>
+<hr />
+<h1 id="74-delivery-time"><a class="header" href="#74-delivery-time">74. Delivery Time</a></h1>
+<p>Use coarse status.</p>
+<hr />
+<h1 id="75-example"><a class="header" href="#75-example">75. Example</a></h1>
+<p>Instead of:</p>
+<pre><code class="language-text">delivered at 13:04:12.318
+</code></pre>
+<p>remote protocol may use:</p>
+<pre><code class="language-text">delivered within epoch E
+</code></pre>
+<hr />
+<h1 id="76-ui-can-render-local-precision"><a class="header" href="#76-ui-can-render-local-precision">76. UI Can Render Local Precision</a></h1>
+<p>Only from local event data.</p>
+<hr />
+<h1 id="77-remote-precision"><a class="header" href="#77-remote-precision">77. Remote Precision</a></h1>
+<p>Should be minimized.</p>
+<hr />
+<h1 id="78-timestamp-classes"><a class="header" href="#78-timestamp-classes">78. Timestamp Classes</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum TimestampPrecision {
+    Exact,
+    Second,
+    Minute,
+    FiveMinute,
+    Hour,
+    Day,
+    Epoch,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="79-privacy-mode-policy"><a class="header" href="#79-privacy-mode-policy">79. Privacy Mode Policy</a></h1>
+<p>Maximum Anonymity should prefer coarser remote precision.</p>
+<hr />
+<h1 id="80-precision-reduction"><a class="header" href="#80-precision-reduction">80. Precision Reduction</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub fn coarsen_time(
+    t: WallTimeUtc,
+    precision: TimestampPrecision,
+) -&gt; WallTimeUtc;
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="81-no-hidden-exact-timestamp-alongside-coarse-field"><a class="header" href="#81-no-hidden-exact-timestamp-alongside-coarse-field">81. No Hidden Exact Timestamp Alongside Coarse Field</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="82-metadata-layer"><a class="header" href="#82-metadata-layer">82. Metadata Layer</a></h1>
+<p>If exact timestamp not needed:</p>
+<pre><code class="language-text">do not transmit it
+</code></pre>
+<hr />
+<h1 id="83-timing-correlation"><a class="header" href="#83-timing-correlation">83. Timing Correlation</a></h1>
+<p>Even without explicit timestamps, packet timing leaks.</p>
+<hr />
+<h1 id="84-mitigations"><a class="header" href="#84-mitigations">84. Mitigations</a></h1>
+<p>Part 37:</p>
+<pre><code class="language-text">cover traffic
+delay
+batching
+scheduled slots
+</code></pre>
+<hr />
+<h1 id="85-temporal-metadata-budget"><a class="header" href="#85-temporal-metadata-budget">85. Temporal Metadata Budget</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct TemporalMetadataBudget {
+    pub max_precision: TimestampPrecision,
+    pub max_event_rate_visibility: EventRateClass,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="86-event-rate-class"><a class="header" href="#86-event-rate-class">86. Event Rate Class</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum EventRateClass {
+    Hidden,
+    Coarse,
+    Visible,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="87-strict-mode"><a class="header" href="#87-strict-mode">87. Strict Mode</a></h1>
+<p>Prefer:</p>
+<pre><code class="language-text">Hidden/Coarse
+</code></pre>
+<hr />
+<h1 id="88-user-activity-timestamp"><a class="header" href="#88-user-activity-timestamp">88. User Activity Timestamp</a></h1>
+<p>Do not expose exact:</p>
+<pre><code class="language-text">last seen
+last online
+last active
+</code></pre>
+<p>by default.</p>
+<hr />
+<h1 id="89-presence"><a class="header" href="#89-presence">89. Presence</a></h1>
+<p>Part 45/30 use:</p>
+<pre><code class="language-text">Available
+Away
+Unknown
+</code></pre>
+<p>rather than exact last-active time.</p>
+<hr />
+<h1 id="90-typing"><a class="header" href="#90-typing">90. Typing</a></h1>
+<p>Ephemeral.</p>
+<hr />
+<h1 id="91-typing-event-ttl"><a class="header" href="#91-typing-event-ttl">91. Typing Event TTL</a></h1>
+<p>Monotonic/local short TTL.</p>
+<hr />
+<h1 id="92-read-receipts"><a class="header" href="#92-read-receipts">92. Read Receipts</a></h1>
+<p>Prefer sequence-based.</p>
+<hr />
+<h1 id="93-why"><a class="header" href="#93-why">93. Why</a></h1>
+<p>Exact read time leaks activity.</p>
+<hr />
+<h1 id="94-read-receipt"><a class="header" href="#94-read-receipt">94. Read Receipt</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct ReadReceipt {
+    pub through_sequence: MessageSequence,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="95-optional-timestamp"><a class="header" href="#95-optional-timestamp">95. Optional Timestamp</a></h1>
+<p>If product offers, local policy controlled.</p>
+<hr />
+<h1 id="96-maximum-anonymity"><a class="header" href="#96-maximum-anonymity">96. Maximum Anonymity</a></h1>
+<p>No read timestamp.</p>
+<hr />
+<h1 id="97-message-ordering"><a class="header" href="#97-message-ordering">97. Message Ordering</a></h1>
+<p>Use logical ordering.</p>
+<hr />
+<h1 id="98-message-sequence"><a class="header" href="#98-message-sequence">98. Message Sequence</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct MessageSequence(pub u64);
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="99-device-ordering"><a class="header" href="#99-device-ordering">99. Device Ordering</a></h1>
+<p>Per conversation/device.</p>
+<hr />
+<h1 id="100-distributed-ordering"><a class="header" href="#100-distributed-ordering">100. Distributed Ordering</a></h1>
+<p>Do not pretend global total order.</p>
+<hr />
+<h1 id="101-lamporthlc"><a class="header" href="#101-lamporthlc">101. Lamport/HLC</a></h1>
+<p>Could help local-first merge.</p>
+<hr />
+<h1 id="102-hybrid-logical-clock"><a class="header" href="#102-hybrid-logical-clock">102. Hybrid Logical Clock</a></h1>
+<p>Potential for sync.</p>
+<hr />
+<h1 id="103-privacy-risk"><a class="header" href="#103-privacy-risk">103. Privacy Risk</a></h1>
+<p>HLC physical component can expose time.</p>
+<hr />
+<h1 id="104-recommendation"><a class="header" href="#104-recommendation">104. Recommendation</a></h1>
+<p>Keep HLC local/storage-level where possible.</p>
+<hr />
+<h1 id="105-wire-exposure"><a class="header" href="#105-wire-exposure">105. Wire Exposure</a></h1>
+<p>Coarsen/strip physical time if not required.</p>
+<hr />
+<h1 id="106-hlc-type"><a class="header" href="#106-hlc-type">106. HLC Type</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct HybridLogicalTime {
+    pub physical_bucket: u64,
+    pub logical: u32,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="107-bucket-physical-component"><a class="header" href="#107-bucket-physical-component">107. Bucket Physical Component</a></h1>
+<p>Avoid exact milliseconds.</p>
+<hr />
+<h1 id="108-local-first-merge"><a class="header" href="#108-local-first-merge">108. Local-First Merge</a></h1>
+<p>Can use logical causality.</p>
+<hr />
+<h1 id="109-vector-clocks"><a class="header" href="#109-vector-clocks">109. Vector Clocks</a></h1>
+<p>Potential for some multi-device state.</p>
+<hr />
+<h1 id="110-cost"><a class="header" href="#110-cost">110. Cost</a></h1>
+<p>Can grow with device count.</p>
+<hr />
+<h1 id="111-use-sparingly"><a class="header" href="#111-use-sparingly">111. Use Sparingly</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="112-causal-timestamp"><a class="header" href="#112-causal-timestamp">112. Causal Timestamp</a></h1>
+<p>Per scoped state only.</p>
+<hr />
+<h1 id="113-no-global-causal-clock"><a class="header" href="#113-no-global-causal-clock">113. No Global Causal Clock</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="114-device-clock-privacy"><a class="header" href="#114-device-clock-privacy">114. Device Clock Privacy</a></h1>
+<p>Do not send raw boot time.</p>
+<hr />
+<h1 id="115-device-uptime"><a class="header" href="#115-device-uptime">115. Device Uptime</a></h1>
+<p>Infrastructure node may expose bucketed uptime.</p>
+<hr />
+<h1 id="116-client-uptime"><a class="header" href="#116-client-uptime">116. Client Uptime</a></h1>
+<p>Local only.</p>
+<hr />
+<h1 id="117-clock-fingerprinting"><a class="header" href="#117-clock-fingerprinting">117. Clock Fingerprinting</a></h1>
+<p>Differences in clock skew can identify devices.</p>
+<hr />
+<h1 id="118-threat"><a class="header" href="#118-threat">118. Threat</a></h1>
+<p>Adversary observes:</p>
+<pre><code class="language-text">consistent timestamp offset
+drift pattern
+</code></pre>
+<hr />
+<h1 id="119-mitigation"><a class="header" href="#119-mitigation">119. Mitigation</a></h1>
+<p>Do not transmit raw device clock.</p>
+<hr />
+<h1 id="120-normalize-protocol-time"><a class="header" href="#120-normalize-protocol-time">120. Normalize Protocol Time</a></h1>
+<p>Use:</p>
+<pre><code class="language-text">epoch
+coarse UTC
+server-issued nonce
+</code></pre>
+<hr />
+<h1 id="121-no-raw-clock-drift-telemetry"><a class="header" href="#121-no-raw-clock-drift-telemetry">121. No Raw Clock Drift Telemetry</a></h1>
+<p>Hard rule for clients.</p>
+<hr />
+<h1 id="122-timezone-fingerprinting"><a class="header" href="#122-timezone-fingerprinting">122. Timezone Fingerprinting</a></h1>
+<p>Do not expose timezone to providers.</p>
+<hr />
+<h1 id="123-locale"><a class="header" href="#123-locale">123. Locale</a></h1>
+<p>Separate from protocol.</p>
+<hr />
+<h1 id="124-scheduled-operations"><a class="header" href="#124-scheduled-operations">124. Scheduled Operations</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">delayed message
+scheduled deletion
+scheduled backup
+</code></pre>
+<hr />
+<h1 id="125-local-scheduler"><a class="header" href="#125-local-scheduler">125. Local Scheduler</a></h1>
+<p>Prefer local.</p>
+<hr />
+<h1 id="126-remote-scheduled-delivery"><a class="header" href="#126-remote-scheduled-delivery">126. Remote Scheduled Delivery</a></h1>
+<p>Requires service.</p>
+<hr />
+<h1 id="127-privacy-risk"><a class="header" href="#127-privacy-risk">127. Privacy Risk</a></h1>
+<p>Server learns scheduled time.</p>
+<hr />
+<h1 id="128-strict-mode"><a class="header" href="#128-strict-mode">128. Strict Mode</a></h1>
+<p>Prefer:</p>
+<pre><code class="language-text">local send-at-time
+</code></pre>
+<p>when device availability allows.</p>
+<hr />
+<h1 id="129-remote-schedule"><a class="header" href="#129-remote-schedule">129. Remote Schedule</a></h1>
+<p>If required, use coarse slot.</p>
+<hr />
+<h1 id="130-scheduled-slot"><a class="header" href="#130-scheduled-slot">130. Scheduled Slot</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct ScheduledSlot {
+    pub epoch: Epoch,
+    pub slot: u16,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="131-delayed-message"><a class="header" href="#131-delayed-message">131. Delayed Message</a></h1>
+<p>Encrypt before scheduling.</p>
+<hr />
+<h1 id="132-provider-sees"><a class="header" href="#132-provider-sees">132. Provider Sees</a></h1>
+<p>At most:</p>
+<pre><code class="language-text">coarse execution window
+</code></pre>
+<hr />
+<h1 id="133-self-destruct--expiring-messages"><a class="header" href="#133-self-destruct--expiring-messages">133. Self-Destruct / Expiring Messages</a></h1>
+<p>Complex in distributed systems.</p>
+<hr />
+<h1 id="134-hard-truth"><a class="header" href="#134-hard-truth">134. Hard Truth</a></h1>
+<p>Cannot guarantee deletion from recipient-controlled devices.</p>
+<hr />
+<h1 id="135-expiry-semantics"><a class="header" href="#135-expiry-semantics">135. Expiry Semantics</a></h1>
+<p>Means:</p>
+<pre><code class="language-text">client should hide/delete after deadline
+</code></pre>
+<p>not magical remote erasure.</p>
+<hr />
+<h1 id="136-user-notice"><a class="header" href="#136-user-notice">136. User Notice</a></h1>
+<p>Must be honest.</p>
+<hr />
+<h1 id="137-expiring-message"><a class="header" href="#137-expiring-message">137. Expiring Message</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct MessageExpiryPolicy {
+    pub mode: ExpiryMode,
+    pub expiry: ExpiryValue,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="138-offline-recipient"><a class="header" href="#138-offline-recipient">138. Offline Recipient</a></h1>
+<p>If expiry passes before receive:</p>
+<p>policy decides:</p>
+<pre><code class="language-text">drop
+or
+deliver with expired marker
+</code></pre>
+<hr />
+<h1 id="139-strict-privacy"><a class="header" href="#139-strict-privacy">139. Strict Privacy</a></h1>
+<p>Often drop.</p>
+<hr />
+<h1 id="140-mailbox-ttl"><a class="header" href="#140-mailbox-ttl">140. Mailbox TTL</a></h1>
+<p>Provider can delete ciphertext after TTL.</p>
+<hr />
+<h1 id="141-ttl-precision"><a class="header" href="#141-ttl-precision">141. TTL Precision</a></h1>
+<p>Coarse.</p>
+<hr />
+<h1 id="142-retention-timing"><a class="header" href="#142-retention-timing">142. Retention Timing</a></h1>
+<p>Part 55 legal retention may require wall-clock deadlines.</p>
+<hr />
+<h1 id="143-separate-legal-time-from-messaging-time"><a class="header" href="#143-separate-legal-time-from-messaging-time">143. Separate Legal Time From Messaging Time</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="144-clock-rollback"><a class="header" href="#144-clock-rollback">144. Clock Rollback</a></h1>
+<p>Device clock moves backward.</p>
+<hr />
+<h1 id="145-detection"><a class="header" href="#145-detection">145. Detection</a></h1>
+<p>Compare:</p>
+<pre><code class="language-text">stored last-seen wall clock
+monotonic elapsed
+signed remote observations
+</code></pre>
+<hr />
+<h1 id="146-rollback-response"><a class="header" href="#146-rollback-response">146. Rollback Response</a></h1>
+<p>Security-sensitive operations may pause.</p>
+<hr />
+<h1 id="147-never-auto-extend-expired-credential-due-to-clock-rollback"><a class="header" href="#147-never-auto-extend-expired-credential-due-to-clock-rollback">147. Never Auto-Extend Expired Credential Due To Clock Rollback</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="148-clock-jump-forward"><a class="header" href="#148-clock-jump-forward">148. Clock Jump Forward</a></h1>
+<p>Could falsely expire credentials.</p>
+<hr />
+<h1 id="149-grace-policy"><a class="header" href="#149-grace-policy">149. Grace Policy</a></h1>
+<p>Can re-check authenticated time.</p>
+<hr />
+<h1 id="150-clock-state"><a class="header" href="#150-clock-state">150. Clock State</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct ClockState {
+    pub trust: ClockTrust,
+    pub estimated_skew: Option&lt;Duration&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="151-clock-repair"><a class="header" href="#151-clock-repair">151. Clock Repair</a></h1>
+<p>User/system can resynchronize.</p>
+<hr />
+<h1 id="152-no-need-to-expose-exact-remote-time"><a class="header" href="#152-no-need-to-expose-exact-remote-time">152. No Need To Expose Exact Remote Time</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="153-time-authority"><a class="header" href="#153-time-authority">153. Time Authority</a></h1>
+<p>Avoid central global dependency.</p>
+<hr />
+<h1 id="154-signed-time-beacon"><a class="header" href="#154-signed-time-beacon">154. Signed Time Beacon</a></h1>
+<p>Optional.</p>
+<hr />
+<h1 id="155-time-beacon"><a class="header" href="#155-time-beacon">155. Time Beacon</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct SignedTimeBeacon {
+    pub domain: TimeAuthorityDomain,
+    pub coarse_time: WallTimeUtc,
+    pub epoch: Epoch,
+    pub valid_for: Duration,
+    pub signature: TimeAuthoritySignature,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="156-beacon-precision"><a class="header" href="#156-beacon-precision">156. Beacon Precision</a></h1>
+<p>Coarse.</p>
+<hr />
+<h1 id="157-multiple-sources"><a class="header" href="#157-multiple-sources">157. Multiple Sources</a></h1>
+<p>Recommended for critical control plane.</p>
+<hr />
+<h1 id="158-beacon-privacy"><a class="header" href="#158-beacon-privacy">158. Beacon Privacy</a></h1>
+<p>Fetching beacon should be cacheable/mirrored.</p>
+<hr />
+<h1 id="159-no-per-user-time-query"><a class="header" href="#159-no-per-user-time-query">159. No Per-User Time Query</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="160-directory-epoch-coordination"><a class="header" href="#160-directory-epoch-coordination">160. Directory Epoch Coordination</a></h1>
+<p>Part 39.</p>
+<hr />
+<h1 id="161-epoch-publication"><a class="header" href="#161-epoch-publication">161. Epoch Publication</a></h1>
+<p>Before activation.</p>
+<hr />
+<h1 id="162-client-preload"><a class="header" href="#162-client-preload">162. Client Preload</a></h1>
+<p>Can fetch next epoch early.</p>
+<hr />
+<h1 id="163-avoid-synchronized-stampede"><a class="header" href="#163-avoid-synchronized-stampede">163. Avoid Synchronized Stampede</a></h1>
+<p>Use jitter.</p>
+<hr />
+<h1 id="164-topology-epoch-transition"><a class="header" href="#164-topology-epoch-transition">164. Topology Epoch Transition</a></h1>
+<pre><code class="language-text">publish next
+→ warm cache
+→ activate
+→ overlap
+→ retire old
+</code></pre>
+<hr />
+<h1 id="165-mixnet-epoch"><a class="header" href="#165-mixnet-epoch">165. Mixnet Epoch</a></h1>
+<p>Route uses one topology epoch.</p>
+<hr />
+<h1 id="166-mid-route-epoch-change"><a class="header" href="#166-mid-route-epoch-change">166. Mid-Route Epoch Change</a></h1>
+<p>Existing packet remains valid under original bounded rules.</p>
+<hr />
+<h1 id="167-no-forced-immediate-re-route"><a class="header" href="#167-no-forced-immediate-re-route">167. No Forced Immediate Re-route</a></h1>
+<p>Hard rule unless revoked node/security emergency.</p>
+<hr />
+<h1 id="168-cover-traffic-epoch"><a class="header" href="#168-cover-traffic-epoch">168. Cover Traffic Epoch</a></h1>
+<p>Part 37 schedules may use local randomized phase.</p>
+<hr />
+<h1 id="169-avoid-global-tick-alignment"><a class="header" href="#169-avoid-global-tick-alignment">169. Avoid Global Tick Alignment</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="170-why"><a class="header" href="#170-why">170. Why</a></h1>
+<p>Global synchronized emission creates fingerprintable boundaries.</p>
+<hr />
+<h1 id="171-randomized-phase-offset"><a class="header" href="#171-randomized-phase-offset">171. Randomized Phase Offset</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct SchedulePhaseOffset(pub Duration);
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="172-per-client"><a class="header" href="#172-per-client">172. Per-Client</a></h1>
+<p>Random.</p>
+<hr />
+<h1 id="173-persist"><a class="header" href="#173-persist">173. Persist?</a></h1>
+<p>Could rotate periodically.</p>
+<hr />
+<h1 id="174-avoid-stable-long-term-phase-fingerprint"><a class="header" href="#174-avoid-stable-long-term-phase-fingerprint">174. Avoid Stable Long-Term Phase Fingerprint</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="175-mailbox-polling"><a class="header" href="#175-mailbox-polling">175. Mailbox Polling</a></h1>
+<p>Periodic exact polling leaks pattern.</p>
+<hr />
+<h1 id="176-better"><a class="header" href="#176-better">176. Better</a></h1>
+<pre><code class="language-text">push wake
+jittered polling
+batched fetch
+</code></pre>
+<hr />
+<h1 id="177-maximum-anonymity"><a class="header" href="#177-maximum-anonymity">177. Maximum Anonymity</a></h1>
+<p>Use cover/batch policy where possible.</p>
+<hr />
+<h1 id="178-poll-schedule"><a class="header" href="#178-poll-schedule">178. Poll Schedule</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct PollSchedule {
+    pub base: Duration,
+    pub jitter: Duration,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="179-dozemobile-reality"><a class="header" href="#179-dozemobile-reality">179. Doze/Mobile Reality</a></h1>
+<p>Android may delay wakeups.</p>
+<hr />
+<h1 id="180-do-not-claim-constant-timing-cover-on-mobile"><a class="header" href="#180-do-not-claim-constant-timing-cover-on-mobile">180. Do Not Claim Constant Timing Cover On Mobile</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="181-provider-fetch-timing"><a class="header" href="#181-provider-fetch-timing">181. Provider Fetch Timing</a></h1>
+<p>Can leak activity.</p>
+<hr />
+<h1 id="182-mitigation"><a class="header" href="#182-mitigation">182. Mitigation</a></h1>
+<p>Use:</p>
+<pre><code class="language-text">fetch batching
+cover fetch
+push-less periodic windows
+</code></pre>
+<p>depending mode.</p>
+<hr />
+<h1 id="183-realtime-calls"><a class="header" href="#183-realtime-calls">183. Realtime Calls</a></h1>
+<p>Timing is inherently visible to relays.</p>
+<hr />
+<h1 id="184-cannot-hide-fully"><a class="header" href="#184-cannot-hide-fully">184. Cannot Hide Fully</a></h1>
+<p>Hard truth.</p>
+<hr />
+<h1 id="185-mitigation"><a class="header" href="#185-mitigation">185. Mitigation</a></h1>
+<p>Can pad:</p>
+<pre><code class="language-text">bitrate
+short silence
+</code></pre>
+<p>but call duration remains difficult.</p>
+<hr />
+<h1 id="186-call-start-time"><a class="header" href="#186-call-start-time">186. Call Start Time</a></h1>
+<p>Do not log per-user remotely.</p>
+<hr />
+<h1 id="187-relay-slo-metrics"><a class="header" href="#187-relay-slo-metrics">187. Relay SLO Metrics</a></h1>
+<p>Aggregate only.</p>
+<hr />
+<h1 id="188-bulk-transfers"><a class="header" href="#188-bulk-transfers">188. Bulk Transfers</a></h1>
+<p>Large files reveal duration/volume.</p>
+<hr />
+<h1 id="189-timing-mitigation"><a class="header" href="#189-timing-mitigation">189. Timing Mitigation</a></h1>
+<p>Chunk pacing/batching can reduce correlation.</p>
+<hr />
+<h1 id="190-cost"><a class="header" href="#190-cost">190. Cost</a></h1>
+<p>Latency + bandwidth.</p>
+<hr />
+<h1 id="191-policy-controlled"><a class="header" href="#191-policy-controlled">191. Policy Controlled</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="192-creditspayments"><a class="header" href="#192-creditspayments">192. Credits/Payments</a></h1>
+<p>Time can link:</p>
+<pre><code class="language-text">funding
+→ immediate spend
+</code></pre>
+<hr />
+<h1 id="193-mitigation"><a class="header" href="#193-mitigation">193. Mitigation</a></h1>
+<p>Part 47:</p>
+<pre><code class="language-text">prepay
+delay use
+batch settlement
+</code></pre>
+<hr />
+<h1 id="194-credit-expiry"><a class="header" href="#194-credit-expiry">194. Credit Expiry</a></h1>
+<p>Prefer coarse epoch/day.</p>
+<hr />
+<h1 id="195-no-per-packet-spend-timestamp"><a class="header" href="#195-no-per-packet-spend-timestamp">195. No Per-Packet Spend Timestamp</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="196-provider-pricing-epoch"><a class="header" href="#196-provider-pricing-epoch">196. Provider Pricing Epoch</a></h1>
+<p>Part 48/54.</p>
+<hr />
+<h1 id="197-price-changes"><a class="header" href="#197-price-changes">197. Price Changes</a></h1>
+<p>Coarse epochs.</p>
+<hr />
+<h1 id="198-no-high-frequency-personalized-pricing"><a class="header" href="#198-no-high-frequency-personalized-pricing">198. No High-Frequency Personalized Pricing</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="199-governance-time"><a class="header" href="#199-governance-time">199. Governance Time</a></h1>
+<p>Policy effective_at and expiry.</p>
+<hr />
+<h1 id="200-activation-delay"><a class="header" href="#200-activation-delay">200. Activation Delay</a></h1>
+<p>Allows propagation.</p>
+<hr />
+<h1 id="201-emergency-policy"><a class="header" href="#201-emergency-policy">201. Emergency Policy</a></h1>
+<p>Can activate immediately.</p>
+<hr />
+<h1 id="202-still-versioned"><a class="header" href="#202-still-versioned">202. Still Versioned</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="203-federation-time"><a class="header" href="#203-federation-time">203. Federation Time</a></h1>
+<p>Domains may have skew.</p>
+<hr />
+<h1 id="204-federation-agreement"><a class="header" href="#204-federation-agreement">204. Federation Agreement</a></h1>
+<p>Uses validity window + grace.</p>
+<hr />
+<h1 id="205-foreign-clock-not-trusted-directly"><a class="header" href="#205-foreign-clock-not-trusted-directly">205. Foreign Clock Not Trusted Directly</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="206-peering-negotiation"><a class="header" href="#206-peering-negotiation">206. Peering Negotiation</a></h1>
+<p>Use local validated clock policy.</p>
+<hr />
+<h1 id="207-federation-epoch-mapping"><a class="header" href="#207-federation-epoch-mapping">207. Federation Epoch Mapping</a></h1>
+<p>Domains may use different epoch lengths.</p>
+<hr />
+<h1 id="208-no-requirement-for-shared-global-epoch"><a class="header" href="#208-no-requirement-for-shared-global-epoch">208. No Requirement For Shared Global Epoch</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="209-cross-domain-message"><a class="header" href="#209-cross-domain-message">209. Cross-Domain Message</a></h1>
+<p>Carries:</p>
+<pre><code class="language-text">local domain epoch context
+</code></pre>
+<p>only if required.</p>
+<hr />
+<h1 id="210-translate-at-boundary"><a class="header" href="#210-translate-at-boundary">210. Translate At Boundary</a></h1>
+<p>Federation gateway maps validity to local policy.</p>
+<hr />
+<h1 id="211-no-raw-client-timestamp-crossing-domains"><a class="header" href="#211-no-raw-client-timestamp-crossing-domains">211. No Raw Client Timestamp Crossing Domains</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="212-federated-replay-window"><a class="header" href="#212-federated-replay-window">212. Federated Replay Window</a></h1>
+<p>Per domain pair.</p>
+<hr />
+<h1 id="213-federation-time-policy"><a class="header" href="#213-federation-time-policy">213. Federation Time Policy</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct FederationTimePolicy {
+    pub max_skew: Duration,
+    pub replay_ttl: Duration,
+    pub agreement_grace: Duration,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="214-disaster--partition"><a class="header" href="#214-disaster--partition">214. Disaster / Partition</a></h1>
+<p>Clock sources may disappear.</p>
+<hr />
+<h1 id="215-part-50-integration"><a class="header" href="#215-part-50-integration">215. Part 50 Integration</a></h1>
+<p>Use cached signed epochs/policies within freshness window.</p>
+<hr />
+<h1 id="216-if-freshness-expires"><a class="header" href="#216-if-freshness-expires">216. If Freshness Expires</a></h1>
+<p>Strict mode may stop new sessions.</p>
+<hr />
+<h1 id="217-existing-local-sessions"><a class="header" href="#217-existing-local-sessions">217. Existing Local Sessions</a></h1>
+<p>Can continue if monotonic conditions remain valid.</p>
+<hr />
+<h1 id="218-no-fabricated-time"><a class="header" href="#218-no-fabricated-time">218. No Fabricated Time</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="219-offline-local-mesh"><a class="header" href="#219-offline-local-mesh">219. Offline Local Mesh</a></h1>
+<p>Can use:</p>
+<pre><code class="language-text">monotonic duration
+local sequence
+relative expiry
+</code></pre>
+<hr />
+<h1 id="220-rejoin-internet"><a class="header" href="#220-rejoin-internet">220. Rejoin Internet</a></h1>
+<p>Reconcile with signed wall-time/epoch.</p>
+<hr />
+<h1 id="221-offline-message-timestamp"><a class="header" href="#221-offline-message-timestamp">221. Offline Message Timestamp</a></h1>
+<p>Can be user-device local.</p>
+<hr />
+<h1 id="222-trust-label"><a class="header" href="#222-trust-label">222. Trust Label</a></h1>
+<p>UI may distinguish:</p>
+<pre><code class="language-text">device time
+network-confirmed time
+</code></pre>
+<p>if needed.</p>
+<hr />
+<h1 id="223-no-false-precision"><a class="header" href="#223-no-false-precision">223. No False Precision</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="224-temporal-privacy-policy"><a class="header" href="#224-temporal-privacy-policy">224. Temporal Privacy Policy</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct TemporalPrivacyPolicy {
+    pub remote_precision: TimestampPrecision,
+    pub allow_read_time: bool,
+    pub allow_last_seen: bool,
+    pub timing_shaping: TimingShapingMode,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="225-timing-shaping-modes"><a class="header" href="#225-timing-shaping-modes">225. Timing Shaping Modes</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum TimingShapingMode {
+    None,
+    Adaptive,
+    Standard,
+    Maximum,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="226-part-37-integration"><a class="header" href="#226-part-37-integration">226. Part 37 Integration</a></h1>
+<p>Implementation delegated there.</p>
+<hr />
+<h1 id="227-temporal-metadata-classification"><a class="header" href="#227-temporal-metadata-classification">227. Temporal Metadata Classification</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum TemporalMetadataClass {
+    LocalOnly,
+    CoarseRemote,
+    SecurityCritical,
+    ForbiddenRemote,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="228-localonly"><a class="header" href="#228-localonly">228. LocalOnly</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">exact local message receipt time
+</code></pre>
+<hr />
+<h1 id="229-coarseremote"><a class="header" href="#229-coarseremote">229. CoarseRemote</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">provider descriptor valid-until
+</code></pre>
+<hr />
+<h1 id="230-securitycritical"><a class="header" href="#230-securitycritical">230. SecurityCritical</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">policy expiry
+revocation freshness
+</code></pre>
+<hr />
+<h1 id="231-forbiddenremote"><a class="header" href="#231-forbiddenremote">231. ForbiddenRemote</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">exact user last-active timestamp
+</code></pre>
+<p>in strict mode.</p>
+<hr />
+<h1 id="232-time-api"><a class="header" href="#232-time-api">232. Time API</a></h1>
+<p>Use typed wrappers.</p>
+<hr />
+<h1 id="233-no-generic-systemtime-everywhere"><a class="header" href="#233-no-generic-systemtime-everywhere">233. No Generic <code>SystemTime</code> Everywhere</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="234-time-provider-trait"><a class="header" href="#234-time-provider-trait">234. Time Provider Trait</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait TimeProvider: Send + Sync {
+    fn monotonic_now(&amp;self) -&gt; MonoInstant;
+    fn wall_now(&amp;self) -&gt; Result&lt;WallTimeUtc, ClockError&gt;;
+    fn clock_state(&amp;self) -&gt; ClockState;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="235-epoch-service"><a class="header" href="#235-epoch-service">235. Epoch Service</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait EpochService {
+    fn current(
+        &amp;self,
+        schedule: &amp;EpochSchedule,
+    ) -&gt; Result&lt;Epoch, ClockError&gt;;
+
+    fn accepts(
+        &amp;self,
+        epoch: Epoch,
+        schedule: &amp;EpochSchedule,
+    ) -&gt; bool;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="236-replay-guard"><a class="header" href="#236-replay-guard">236. Replay Guard</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait ReplayGuard {
+    fn check_and_record(
+        &amp;self,
+        key: ReplayKey,
+    ) -&gt; Result&lt;ReplayDecision, ReplayError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="237-replay-decision"><a class="header" href="#237-replay-decision">237. Replay Decision</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum ReplayDecision {
+    Fresh,
+    Duplicate,
+    Expired,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="238-temporal-privacy-gate"><a class="header" href="#238-temporal-privacy-gate">238. Temporal Privacy Gate</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait TemporalPrivacyGate {
+    fn sanitize(
+        &amp;self,
+        event: TemporalEvent,
+        policy: &amp;TemporalPrivacyPolicy,
+    ) -&gt; SanitizedTemporalEvent;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="239-expiry-evaluator"><a class="header" href="#239-expiry-evaluator">239. Expiry Evaluator</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait ExpiryEvaluator {
+    fn evaluate(
+        &amp;self,
+        expiry: &amp;ExpiryValue,
+        context: &amp;TimeContext,
+    ) -&gt; Result&lt;ExpiryStatus, ClockError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="240-expiry-status"><a class="header" href="#240-expiry-status">240. Expiry Status</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum ExpiryStatus {
+    Valid,
+    Grace,
+    Expired,
+    Unknown,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="241-unknown"><a class="header" href="#241-unknown">241. Unknown</a></h1>
+<p>Should fail closed for security-critical credential.</p>
+<hr />
+<h1 id="242-user-content-expiry"><a class="header" href="#242-user-content-expiry">242. User Content Expiry</a></h1>
+<p>May degrade gracefully.</p>
+<hr />
+<h1 id="243-different-fail-behavior"><a class="header" href="#243-different-fail-behavior">243. Different Fail Behavior</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="244-security-credential"><a class="header" href="#244-security-credential">244. Security Credential</a></h1>
+<p>Unknown time -&gt; do not accept.</p>
+<hr />
+<h1 id="245-local-draft"><a class="header" href="#245-local-draft">245. Local Draft</a></h1>
+<p>Unknown time -&gt; no problem.</p>
+<hr />
+<h1 id="246-replay-persistence"><a class="header" href="#246-replay-persistence">246. Replay Persistence</a></h1>
+<p>Some replay state survives restart.</p>
+<hr />
+<h1 id="247-security-critical-replay-cache"><a class="header" href="#247-security-critical-replay-cache">247. Security-Critical Replay Cache</a></h1>
+<p>Persist bounded summary if needed.</p>
+<hr />
+<h1 id="248-mix-packet-replay"><a class="header" href="#248-mix-packet-replay">248. Mix Packet Replay</a></h1>
+<p>Follow underlying protocol requirements.</p>
+<hr />
+<h1 id="249-bloom-filter"><a class="header" href="#249-bloom-filter">249. Bloom Filter</a></h1>
+<p>Potential for bounded replay memory.</p>
+<hr />
+<h1 id="250-false-positives"><a class="header" href="#250-false-positives">250. False Positives</a></h1>
+<p>Must be understood.</p>
+<hr />
+<h1 id="251-cuckoo-filter"><a class="header" href="#251-cuckoo-filter">251. Cuckoo Filter</a></h1>
+<p>Potential alternative.</p>
+<hr />
+<h1 id="252-use-reviewed-strategy"><a class="header" href="#252-use-reviewed-strategy">252. Use Reviewed Strategy</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="253-replay-cache-rotation"><a class="header" href="#253-replay-cache-rotation">253. Replay Cache Rotation</a></h1>
+<p>Per epoch.</p>
+<hr />
+<h1 id="254-destroy-old-cache"><a class="header" href="#254-destroy-old-cache">254. Destroy Old Cache</a></h1>
+<p>After grace.</p>
+<hr />
+<h1 id="255-no-long-term-replay-archive"><a class="header" href="#255-no-long-term-replay-archive">255. No Long-Term Replay Archive</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="256-temporal-observability"><a class="header" href="#256-temporal-observability">256. Temporal Observability</a></h1>
+<p>Safe:</p>
+<pre><code class="language-text">clock skew bucket
+epoch transition success
+replay reject count
+policy freshness bucket
+</code></pre>
+<hr />
+<h1 id="257-forbidden-telemetry"><a class="header" href="#257-forbidden-telemetry">257. Forbidden Telemetry</a></h1>
+<p>No:</p>
+<pre><code class="language-text">raw client timestamp
+clock drift fingerprint
+exact user activity time
+</code></pre>
+<hr />
+<h1 id="258-clock-skew-metric"><a class="header" href="#258-clock-skew-metric">258. Clock Skew Metric</a></h1>
+<p>Infrastructure nodes only or coarse opt-in client.</p>
+<hr />
+<h1 id="259-maximum-anonymity"><a class="header" href="#259-maximum-anonymity">259. Maximum Anonymity</a></h1>
+<p>No remote client clock skew telemetry.</p>
+<hr />
+<h1 id="260-time-incident-types"><a class="header" href="#260-time-incident-types">260. Time Incident Types</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum TimeIncident {
+    ClockRollback,
+    ClockJump,
+    EpochDivergence,
+    ReplayFlood,
+    TimeSourceUnavailable,
+    StalePolicyTime,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="261-replay-flood"><a class="header" href="#261-replay-flood">261. Replay Flood</a></h1>
+<p>Security incident.</p>
+<hr />
+<h1 id="262-epoch-divergence"><a class="header" href="#262-epoch-divergence">262. Epoch Divergence</a></h1>
+<p>Could indicate:</p>
+<pre><code class="language-text">partition
+bad rollout
+malicious source
+</code></pre>
+<hr />
+<h1 id="263-time-source-compromise"><a class="header" href="#263-time-source-compromise">263. Time Source Compromise</a></h1>
+<p>Remove source.</p>
+<hr />
+<h1 id="264-no-clock-source-automatically-gains-trust"><a class="header" href="#264-no-clock-source-automatically-gains-trust">264. No Clock Source Automatically Gains Trust</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="265-clock-privacy-tests"><a class="header" href="#265-clock-privacy-tests">265. Clock Privacy Tests</a></h1>
+<p>Need dedicated simulator.</p>
+<hr />
+<h1 id="266-scenarios"><a class="header" href="#266-scenarios">266. Scenarios</a></h1>
+<pre><code class="language-text">clock rollback
+clock jump forward
+timezone change
+DST
+offline device
+partition
+stale epoch
+replay flood
+federation skew
+</code></pre>
+<hr />
+<h1 id="267-timezone-test"><a class="header" href="#267-timezone-test">267. Timezone Test</a></h1>
+<p>No protocol change.</p>
+<hr />
+<h1 id="268-dst-test"><a class="header" href="#268-dst-test">268. DST Test</a></h1>
+<p>No protocol change.</p>
+<hr />
+<h1 id="269-clock-rollback-test"><a class="header" href="#269-clock-rollback-test">269. Clock Rollback Test</a></h1>
+<p>Expired credential does not become valid.</p>
+<hr />
+<h1 id="270-clock-forward-test"><a class="header" href="#270-clock-forward-test">270. Clock Forward Test</a></h1>
+<p>Re-authenticated time can recover if safe.</p>
+<hr />
+<h1 id="271-epoch-overlap-test"><a class="header" href="#271-epoch-overlap-test">271. Epoch Overlap Test</a></h1>
+<p>Old/new accepted only within grace.</p>
+<hr />
+<h1 id="272-replay-test"><a class="header" href="#272-replay-test">272. Replay Test</a></h1>
+<p>Duplicate rejected.</p>
+<hr />
+<h1 id="273-replay-cache-bound-test"><a class="header" href="#273-replay-cache-bound-test">273. Replay Cache Bound Test</a></h1>
+<p>Memory bounded.</p>
+<hr />
+<h1 id="274-cache-rotation-test"><a class="header" href="#274-cache-rotation-test">274. Cache Rotation Test</a></h1>
+<p>Old replay state removed after safe window.</p>
+<hr />
+<h1 id="275-timestamp-coarsening-test"><a class="header" href="#275-timestamp-coarsening-test">275. Timestamp Coarsening Test</a></h1>
+<p>No hidden exact field remains.</p>
+<hr />
+<h1 id="276-read-receipt-test"><a class="header" href="#276-read-receipt-test">276. Read Receipt Test</a></h1>
+<p>Sequence-only strict mode.</p>
+<hr />
+<h1 id="277-presence-test"><a class="header" href="#277-presence-test">277. Presence Test</a></h1>
+<p>No exact last-seen.</p>
+<hr />
+<h1 id="278-federation-skew-test"><a class="header" href="#278-federation-skew-test">278. Federation Skew Test</a></h1>
+<p>Valid peer accepted within policy.</p>
+<hr />
+<h1 id="279-federation-excess-skew-test"><a class="header" href="#279-federation-excess-skew-test">279. Federation Excess Skew Test</a></h1>
+<p>Rejected/degraded safely.</p>
+<hr />
+<h1 id="280-partition-test"><a class="header" href="#280-partition-test">280. Partition Test</a></h1>
+<p>Cached policy works only within freshness bound.</p>
+<hr />
+<h1 id="281-offline-mesh-test"><a class="header" href="#281-offline-mesh-test">281. Offline Mesh Test</a></h1>
+<p>Relative/monotonic timers work without wall clock.</p>
+<hr />
+<h1 id="282-scheduled-message-test"><a class="header" href="#282-scheduled-message-test">282. Scheduled Message Test</a></h1>
+<p>Remote provider sees only configured coarse slot.</p>
+<hr />
+<h1 id="283-fuzzing"><a class="header" href="#283-fuzzing">283. Fuzzing</a></h1>
+<p>Fuzz:</p>
+<pre><code class="language-text">epoch arithmetic
+expiry parser
+replay key
+time beacon
+federation time policy
+</code></pre>
+<hr />
+<h1 id="284-property-tests"><a class="header" href="#284-property-tests">284. Property Tests</a></h1>
+<p>Properties:</p>
+<pre><code class="language-text">security epoch never decreases
+expired credential never becomes valid due to wall-clock rollback
+replay cache accepts a fresh nonce at most once per scope/window
+coarsened timestamp contains no finer precision than policy allows
+</code></pre>
+<hr />
+<h1 id="285-formal-verification-targets"><a class="header" href="#285-formal-verification-targets">285. Formal Verification Targets</a></h1>
+<p>Strong candidates:</p>
+<pre><code class="language-text">epoch transition
+replay-window state
+clock rollback handling
+policy-expiry/grace logic
+</code></pre>
+<hr />
+<h1 id="286-tla-candidate"><a class="header" href="#286-tla-candidate">286. TLA+ Candidate</a></h1>
+<p>Multi-node epoch coordination with skew/partition.</p>
+<hr />
+<h1 id="287-kani-candidate"><a class="header" href="#287-kani-candidate">287. Kani Candidate</a></h1>
+<p>Epoch arithmetic and overflow.</p>
+<hr />
+<h1 id="288-loom-candidate"><a class="header" href="#288-loom-candidate">288. Loom Candidate</a></h1>
+<p>Concurrent replay-cache check/insert.</p>
+<hr />
+<h1 id="289-performance-tests"><a class="header" href="#289-performance-tests">289. Performance Tests</a></h1>
+<p>Measure:</p>
+<pre><code class="language-text">replay lookup
+epoch lookup
+timestamp coarsening
+time policy evaluation
+</code></pre>
+<hr />
+<h1 id="290-hot-path-constraint"><a class="header" href="#290-hot-path-constraint">290. Hot Path Constraint</a></h1>
+<p>Replay protection may be hot.</p>
+<hr />
+<h1 id="291-avoid-blocking-clock-fetch"><a class="header" href="#291-avoid-blocking-clock-fetch">291. Avoid Blocking Clock Fetch</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="292-cache-time-state"><a class="header" href="#292-cache-time-state">292. Cache Time State</a></h1>
+<p>Locally.</p>
+<hr />
+<h1 id="293-async-refresh"><a class="header" href="#293-async-refresh">293. Async Refresh</a></h1>
+<p>For authenticated remote observations.</p>
+<hr />
+<h1 id="294-clock-failure"><a class="header" href="#294-clock-failure">294. Clock Failure</a></h1>
+<p>Do not crash network.</p>
+<hr />
+<h1 id="295-degraded-mode"><a class="header" href="#295-degraded-mode">295. Degraded Mode</a></h1>
+<p>Use:</p>
+<pre><code class="language-text">monotonic/local state
+cached signed time
+</code></pre>
+<p>within bounds.</p>
+<hr />
+<h1 id="296-crate-layout"><a class="header" href="#296-crate-layout">296. Crate Layout</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">crates/
+├── siar-time-core/
+├── siar-clock/
+├── siar-epoch/
+├── siar-replay/
+├── siar-expiry/
+├── siar-temporal-privacy/
+├── siar-time-beacon/
+├── siar-federation-time/
+├── siar-time-observability/
+└── siar-time-testkit/
+</code></pre>
+<hr />
+<h1 id="297-siar-time-core"><a class="header" href="#297-siar-time-core">297. <code>siar-time-core</code></a></h1>
+<p>Owns:</p>
+<pre><code class="language-text">typed time
+clock trust
+time errors
+</code></pre>
+<hr />
+<h1 id="298-siar-clock"><a class="header" href="#298-siar-clock">298. <code>siar-clock</code></a></h1>
+<p>Wall/monotonic abstraction.</p>
+<hr />
+<h1 id="299-siar-epoch"><a class="header" href="#299-siar-epoch">299. <code>siar-epoch</code></a></h1>
+<p>Epoch schedule/grace/transition.</p>
+<hr />
+<h1 id="300-siar-replay"><a class="header" href="#300-siar-replay">300. <code>siar-replay</code></a></h1>
+<p>Scoped replay protection.</p>
+<hr />
+<h1 id="301-siar-expiry"><a class="header" href="#301-siar-expiry">301. <code>siar-expiry</code></a></h1>
+<p>Expiry semantics.</p>
+<hr />
+<h1 id="302-siar-temporal-privacy"><a class="header" href="#302-siar-temporal-privacy">302. <code>siar-temporal-privacy</code></a></h1>
+<p>Timestamp coarsening/metadata budgets.</p>
+<hr />
+<h1 id="303-siar-time-beacon"><a class="header" href="#303-siar-time-beacon">303. <code>siar-time-beacon</code></a></h1>
+<p>Authenticated coarse time sources.</p>
+<hr />
+<h1 id="304-siar-federation-time"><a class="header" href="#304-siar-federation-time">304. <code>siar-federation-time</code></a></h1>
+<p>Cross-domain skew/window policy.</p>
+<hr />
+<h1 id="305-siar-time-observability"><a class="header" href="#305-siar-time-observability">305. <code>siar-time-observability</code></a></h1>
+<p>Privacy-safe clock/epoch metrics.</p>
+<hr />
+<h1 id="306-siar-time-testkit"><a class="header" href="#306-siar-time-testkit">306. <code>siar-time-testkit</code></a></h1>
+<p>Skew/replay/partition/time-jump simulator.</p>
+<hr />
+<h1 id="307-error-taxonomy"><a class="header" href="#307-error-taxonomy">307. Error Taxonomy</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum ClockError {
+    WallClockUnavailable,
+    ClockRollbackDetected,
+    ClockSkewExceeded,
+    TimeSourceUntrusted,
+    EpochInvalid,
+    ExpiryUnknown,
+    Overflow,
+    Internal,
+}
+
+pub enum ReplayError {
+    Duplicate,
+    Expired,
+    CapacityExceeded,
+    StoreUnavailable,
+    Internal,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="308-security--privacy-invariants"><a class="header" href="#308-security--privacy-invariants">308. Security &amp; Privacy Invariants</a></h1>
+<p>Mandatory:</p>
+<pre><code class="language-text">1. Wall-clock time is never used where monotonic duration or sequence/epoch semantics are sufficient.
+2. Security-critical replay protection never relies solely on sender-provided timestamps.
+3. Security epochs, policy versions, and revocation sequences never decrease.
+4. Clock rollback cannot make expired credentials valid again.
+5. Replay caches are scoped, bounded, short-lived, and never become packet-history archives.
+6. Exact client clocks, timezone, drift, and last-active timestamps are not exposed remotely in strict modes.
+7. User-visible local timestamps are separate from remote protocol timing metadata.
+8. Epoch transitions include bounded grace rather than requiring perfect synchronization.
+9. No global epoch is required across independent federation domains.
+10. Temporal metadata is coarsened according to privacy policy and no hidden higher-precision copy is transmitted.
+11. Timing shaping uses randomized phases/jitter to avoid synchronized fingerprinting.
+12. Clock/time failures reduce availability where necessary but never disable replay or freshness protections.
+</code></pre>
+<hr />
+<h1 id="309-initial-production-scope"><a class="header" href="#309-initial-production-scope">309. Initial Production Scope</a></h1>
+<p>Implement first:</p>
+<pre><code class="language-text">typed wall vs monotonic time
+protocol-specific skew budgets
+coarse protocol epochs
+bounded epoch overlap
+scoped replay caches
+sequence/nonces for replay protection
+timestamp precision policy
+sequence-based read receipts
+no exact last-seen
+jittered mailbox polling
+anti-rollback clock state
+signed coarse time observations for control plane
+federation skew policy
+time/replay fault simulator
+</code></pre>
+<p>Then add:</p>
+<pre><code class="language-text">multi-source authenticated time quorum
+advanced HLC causality layer
+privacy-preserving remote scheduling
+formal epoch coordination verification
+stronger temporal traffic-analysis simulation
+</code></pre>
+<hr />
+<h1 id="310-definition-of-done"><a class="header" href="#310-definition-of-done">310. Definition of Done</a></h1>
+<p>Part 60 is complete when:</p>
+<ul>
+<li>wall-clock and monotonic time are separate typed concepts</li>
+<li>protocol epochs and security epochs are distinct</li>
+<li>each time-sensitive protocol defines its own skew and expiry policy</li>
+<li>replay protection is scoped and not timestamp-only</li>
+<li>replay state is bounded and expires</li>
+<li>epoch overlap/grace semantics are explicit</li>
+<li>remote timestamp precision is privacy-policy controlled</li>
+<li>exact user last-active/read/presence times are not required</li>
+<li>timezones and raw clock drift never become protocol identifiers</li>
+<li>mailbox polling and cover schedules use jitter/randomized phase</li>
+<li>clock rollback/forward-jump handling is explicit</li>
+<li>offline/local mesh can operate with monotonic/relative time</li>
+<li>federation domains do not require one global clock/epoch</li>
+<li>observability excludes raw user clock fingerprints</li>
+<li>replay, skew, partition, rollback, expiry, fuzz, and formal tests are specified</li>
+</ul>
+<hr />
+<h1 id="311-final-architecture"><a class="header" href="#311-final-architecture">311. Final Architecture</a></h1>
+<pre><code class="language-text">                    OS / HARDWARE CLOCKS
+                     ┌───────┴───────┐
+                     │               │
+                Monotonic         Wall Clock
+                     │               │
+                     └───────┬───────┘
+                             ▼
+                     TIME ABSTRACTION
+                             │
+          ┌──────────────────┼──────────────────┐
+          │                  │                  │
+       Epochs             Replay             Expiry
+          │                  │                  │
+          └──────────────────┼──────────────────┘
+                             ▼
+                   TEMPORAL PRIVACY GATE
+                             │
+                             ▼
+                 PROTOCOL / STORAGE / UI
+</code></pre>
+<p>Temporal safety model:</p>
+<pre><code class="language-text">monotonic timers
++
+coarse epochs
++
+nonce/sequence replay protection
++
+bounded skew
++
+timestamp coarsening
++
+timing shaping
+</code></pre>
+<p>not:</p>
+<pre><code class="language-text">precise global timestamps attached to every event
+</code></pre>
+<hr />
+<h1 id="312-final-principle"><a class="header" href="#312-final-principle">312. Final Principle</a></h1>
+<p>Time should support correctness without becoming a universal correlation channel.</p>
+<p>The correct model is:</p>
+<pre><code class="language-text">relative time where possible
++
+coarse authenticated wall time where necessary
++
+explicit epochs
++
+bounded replay windows
++
+privacy-aware timestamp precision
++
+timing-shaping integration
+</code></pre>
+<p>This architecture gives SIAR reliable freshness, expiry, replay resistance, epoch coordination, and cross-domain time compatibility while minimizing the temporal metadata available to providers, relays, federated networks, and passive observers.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="59-anonymous-network-naming-addressing-namespace-isolation-private-resolution-anti-enumeration-architecture.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="61-anonymous-network-configuration-secrets-runtime-policy-remote-administration-secure-control-plane-management-architecture.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="59-anonymous-network-naming-addressing-namespace-isolation-private-resolution-anti-enumeration-architecture.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="61-anonymous-network-configuration-secrets-runtime-policy-remote-administration-secure-control-plane-management-architecture.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

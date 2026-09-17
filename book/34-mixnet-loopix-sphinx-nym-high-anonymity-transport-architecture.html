@@ -1,0 +1,2547 @@
+<!DOCTYPE HTML>
+<html lang="en" class="navy" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>34 — Mixnet, Loopix, Sphinx, Nym &amp; High-Anonymity Transport Architecture - SIAR System Architecture &amp; Technical Wiki</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="Comprehensive system architecture, cryptographic protocols, DTN mesh networking, distributed storage, audio DSP pipelines, and UI/UX design specifications for SIAR.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="theme/custom.css">
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "navy";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('navy')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="Home.html">Architecture Portal & Reading Guide</a></li><li class="chapter-item expanded affix "><a href="design-rationale.html">System Architecture Design Rationale</a></li><li class="chapter-item expanded affix "><a href="system-capabilities-comparison.html">System Capabilities & Comparison Matrix</a></li><li class="chapter-item expanded affix "><a href="spec-order.html">Master Specification Execution Order</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part I: Protocol Foundation & Extension Platform</li><li class="chapter-item expanded "><a href="01-protocol-extension-system-architecture.html"><strong aria-hidden="true">1.</strong> 01 — Protocol Extension System Architecture</a></li><li class="chapter-item expanded "><a href="07-capability-negotiation-architecture.html"><strong aria-hidden="true">2.</strong> 07 — Capability Negotiation Architecture</a></li><li class="chapter-item expanded "><a href="21-third-party-protocol-extensions-architecture.html"><strong aria-hidden="true">3.</strong> 21 — Third-Party Protocol Extensions Architecture</a></li><li class="chapter-item expanded "><a href="22-wasm-compatible-components-architecture.html"><strong aria-hidden="true">4.</strong> 22 — WASM-Compatible Components Architecture</a></li><li class="chapter-item expanded "><a href="23-external-interoperability-suite-architecture.html"><strong aria-hidden="true">5.</strong> 23 — External Interoperability Suite Architecture</a></li><li class="chapter-item expanded "><a href="24-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">6.</strong> 24 — Plugin / Module Ecosystem Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part II: Identity, Trust & Cryptography</li><li class="chapter-item expanded "><a href="02-multi-device-identity-architecture.html"><strong aria-hidden="true">7.</strong> 02 — Multi-Device Identity Architecture</a></li><li class="chapter-item expanded "><a href="28-production-security-e2ee-key-management-privacy-architecture.html"><strong aria-hidden="true">8.</strong> 28 — Production Security, E2EE, Key Management, Abuse Resistance & Privacy Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part III: Mesh Networking, Transports & Hardware</li><li class="chapter-item expanded "><a href="03-transport-routing-policy-engine-architecture.html"><strong aria-hidden="true">9.</strong> 03 — Transport & Routing Policy Engine Architecture</a></li><li class="chapter-item expanded "><a href="11-relay-self-hosted-infrastructure-architecture.html"><strong aria-hidden="true">10.</strong> 11 — Relay & Self-Hosted Infrastructure Architecture</a></li><li class="chapter-item expanded "><a href="12-multipath-networking-architecture.html"><strong aria-hidden="true">11.</strong> 12 — Multipath Networking Architecture</a></li><li class="chapter-item expanded "><a href="13-battery-aware-scheduling-architecture.html"><strong aria-hidden="true">12.</strong> 13 — Battery-Aware Scheduling Architecture</a></li><li class="chapter-item expanded "><a href="14-proximity-abstraction-architecture.html"><strong aria-hidden="true">13.</strong> 14 — Proximity Abstraction Architecture</a></li><li class="chapter-item expanded "><a href="15-qr-nfc-bootstrap-pairing-architecture.html"><strong aria-hidden="true">14.</strong> 15 — QR / NFC Bootstrap & Secure Pairing Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IV: Delay-Tolerant Networking & Emergency Mesh</li><li class="chapter-item expanded "><a href="06-dtn-store-carry-forward-architecture.html"><strong aria-hidden="true">15.</strong> 06 — DTN / Store-Carry-Forward Architecture</a></li><li class="chapter-item expanded "><a href="17-emergency-priority-classes-architecture.html"><strong aria-hidden="true">16.</strong> 17 — Emergency Priority Classes Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part V: Storage, Outbox & Data Lifecycle</li><li class="chapter-item expanded "><a href="04-offline-event-log-architecture.html"><strong aria-hidden="true">17.</strong> 04 — Offline Event Log Architecture</a></li><li class="chapter-item expanded "><a href="05-robust-file-blob-subsystem-architecture.html"><strong aria-hidden="true">18.</strong> 05 — Robust File / Blob Subsystem Architecture</a></li><li class="chapter-item expanded "><a href="09-crash-recovery-architecture.html"><strong aria-hidden="true">19.</strong> 09 — Crash Recovery Architecture</a></li><li class="chapter-item expanded "><a href="32-search-indexing-local-knowledge-privacy-architecture.html"><strong aria-hidden="true">20.</strong> 32 — Search, Indexing, Local Knowledge Retrieval & Privacy-Preserving Discovery Architecture</a></li><li class="chapter-item expanded "><a href="33-backup-restore-export-import-archival-portability-architecture.html"><strong aria-hidden="true">21.</strong> 33 — Backup, Restore, Export/Import, Archival & Long-Term Data Portability Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VI: Realtime Media, Calling & Audio DSP</li><li class="chapter-item expanded "><a href="25-android-direct-hardware-surface-zero-copy-media-architecture.html"><strong aria-hidden="true">22.</strong> 25 — Android Direct Hardware Surface / Zero-Copy Media Pipeline Architecture</a></li><li class="chapter-item expanded "><a href="26-rust-first-audio-dsp-resampling-aec-ns-agc-architecture.html"><strong aria-hidden="true">23.</strong> 26 — Rust-First Audio DSP, Resampling, AEC/NS/AGC & Hardware-Aware Audio Pipeline Architecture</a></li><li class="chapter-item expanded "><a href="29-realtime-calls-media-session-protocol-architecture.html"><strong aria-hidden="true">24.</strong> 29 — Realtime Calls & Media Session Protocol Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VII: Ephemeral State, Presence & Notifications</li><li class="chapter-item expanded "><a href="30-presence-availability-typing-read-receipts-ephemeral-state-architecture.html"><strong aria-hidden="true">25.</strong> 30 — Presence, Availability, Typing, Read Receipts & Ephemeral Realtime State Architecture</a></li><li class="chapter-item expanded "><a href="31-notifications-push-background-delivery-lifecycle-architecture.html"><strong aria-hidden="true">26.</strong> 31 — Notifications, Push Wake, Background Delivery & OS Lifecycle Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VIII: Native Runtimes, Daemons & Embedded Linux</li><li class="chapter-item expanded "><a href="16-daemon-headless-runtime-architecture.html"><strong aria-hidden="true">27.</strong> 16 — Daemon & Headless Runtime Architecture</a></li><li class="chapter-item expanded "><a href="19-c-abi-ffi-architecture.html"><strong aria-hidden="true">28.</strong> 19 — C ABI / FFI Architecture</a></li><li class="chapter-item expanded "><a href="20-embedded-linux-node-architecture.html"><strong aria-hidden="true">29.</strong> 20 — Embedded Linux Node Architecture</a></li><li class="chapter-item expanded "><a href="27-rust-driven-android-native-build-packaging-automation.html"><strong aria-hidden="true">30.</strong> 27 — Rust-Driven Android Native Build & Packaging Automation Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IX: Reliability, Testing, Fuzzing & Diagnostics</li><li class="chapter-item expanded "><a href="08-resource-limits-backpressure-architecture.html"><strong aria-hidden="true">31.</strong> 08 — Resource Limits & Backpressure Architecture</a></li><li class="chapter-item expanded "><a href="10-fuzzing-protocol-test-suite-architecture.html"><strong aria-hidden="true">32.</strong> 10 — Fuzzing & Protocol Test Suite Architecture</a></li><li class="chapter-item expanded "><a href="18-network-diagnostics-path-visualization-architecture.html"><strong aria-hidden="true">33.</strong> 18 — Network Diagnostics & Path Visualization Architecture</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part X: UI/UX Client Architecture (Cross-Platform)</li><li class="chapter-item expanded "><a href="ui-ux-01-product-foundation-cross-platform-interaction-architecture.html"><strong aria-hidden="true">34.</strong> UI/UX 01 — Product UX Foundation & Cross-Platform Interaction Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-02-desktop-dioxus-app-shell-navigation-window-architecture.html"><strong aria-hidden="true">35.</strong> UI/UX 02 — Desktop Dioxus App Shell, Navigation & Window Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-03-android-jetpack-compose-app-shell-navigation-lifecycle-architecture.html"><strong aria-hidden="true">36.</strong> UI/UX 03 — Android Jetpack Compose App Shell, Navigation & Lifecycle Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-04-conversation-list-inbox-architecture.html"><strong aria-hidden="true">37.</strong> UI/UX 04 — Conversation List / Inbox UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-05-conversation-message-timeline-architecture.html"><strong aria-hidden="true">38.</strong> UI/UX 05 — Conversation / Message Timeline UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-06-message-composer-attachments-voice-notes-drafts-architecture.html"><strong aria-hidden="true">39.</strong> UI/UX 06 — Message Composer, Attachments, Voice Notes & Drafts UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-07-calls-realtime-media-architecture.html"><strong aria-hidden="true">40.</strong> UI/UX 07 — Calls & Realtime Media UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-08-contacts-requests-verification-identity-architecture.html"><strong aria-hidden="true">41.</strong> UI/UX 08 — Contacts, Requests, Verification & Identity UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-09-groups-membership-roles-architecture.html"><strong aria-hidden="true">42.</strong> UI/UX 09 — Groups, Membership & Roles UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-10-files-media-gallery-transfer-architecture.html"><strong aria-hidden="true">43.</strong> UI/UX 10 — Files, Media Gallery & Transfer UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-11-search-local-knowledge-retrieval-architecture.html"><strong aria-hidden="true">44.</strong> UI/UX 11 — Search & Local Knowledge Retrieval UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-12-nearby-qr-nfc-pairing-device-linking-architecture.html"><strong aria-hidden="true">45.</strong> UI/UX 12 — Nearby, QR/NFC Pairing & Device Linking UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-13-notifications-background-incoming-call-architecture.html"><strong aria-hidden="true">46.</strong> UI/UX 13 — Notifications, Background & Incoming Call UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-14-presence-typing-receipts-status-architecture.html"><strong aria-hidden="true">47.</strong> UI/UX 14 — Presence, Typing, Receipts & Status UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-15-security-center-devices-keys-recovery-architecture.html"><strong aria-hidden="true">48.</strong> UI/UX 15 — Security Center, Devices, Keys & Recovery UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-16-backup-restore-export-migration-architecture.html"><strong aria-hidden="true">49.</strong> UI/UX 16 — Backup, Restore, Export & Migration UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-17-emergency-sos-offline-mesh-architecture.html"><strong aria-hidden="true">50.</strong> UI/UX 17 — Emergency / SOS / Offline Mesh UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-18-settings-privacy-notifications-data-controls-architecture.html"><strong aria-hidden="true">51.</strong> UI/UX 18 — Settings, Privacy, Notifications & Data Controls UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-19-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">52.</strong> UI/UX 19 — Plugin / Module Ecosystem UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-20-diagnostics-network-paths-advanced-developer-architecture.html"><strong aria-hidden="true">53.</strong> UI/UX 20 — Diagnostics, Network Paths & Advanced Developer UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-21-accessibility-inclusive-interaction-architecture.html"><strong aria-hidden="true">54.</strong> UI/UX 21 — Accessibility & Inclusive Interaction Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-22-design-system-tokens-typography-icons-motion-architecture.html"><strong aria-hidden="true">55.</strong> UI/UX 22 — Design System, Tokens, Typography, Icons & Motion Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-23-responsive-adaptive-desktop-tablet-foldable-phone-layout-architecture.html"><strong aria-hidden="true">56.</strong> UI/UX 23 — Responsive / Adaptive Desktop, Tablet, Foldable & Phone Layout Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-24-error-loading-empty-offline-degraded-state-architecture.html"><strong aria-hidden="true">57.</strong> UI/UX 24 — Error, Loading, Empty, Offline & Degraded-State UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-25-onboarding-first-run-permission-education-architecture.html"><strong aria-hidden="true">58.</strong> UI/UX 25 — Onboarding, First Run & Permission Education UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-26-performance-virtualization-large-data-ui-architecture.html"><strong aria-hidden="true">59.</strong> UI/UX 26 — Performance, Virtualization & Large-Data UI Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-27-ui-testing-screenshot-interaction-release-quality-gates-architecture.html"><strong aria-hidden="true">60.</strong> UI/UX 27 — UI Testing, Screenshot/Interaction Tests & Release Quality Gates Architecture</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part XI: Anonymous Network — Core Mixnet Mechanics</li><li class="chapter-item expanded "><a href="34-mixnet-loopix-sphinx-nym-high-anonymity-transport-architecture.html" class="active"><strong aria-hidden="true">61.</strong> 34 — Mixnet, Loopix, Sphinx, Nym & High-Anonymity Transport Architecture</a></li><li class="chapter-item expanded "><a href="35-anonymous-mailbox-offline-receiving-reply-capability-architecture.html"><strong aria-hidden="true">62.</strong> 35 — Anonymous Mailbox, Offline Receiving & Reply Capability Architecture</a></li><li class="chapter-item expanded "><a href="36-sphinx-packet-cell-fragmentation-anonymous-message-framing-architecture.html"><strong aria-hidden="true">63.</strong> 36 — Sphinx Packet, Cell, Fragmentation & Anonymous Message Framing Architecture</a></li><li class="chapter-item expanded "><a href="37-cover-traffic-traffic-shaping-timing-obfuscation-loop-traffic-architecture.html"><strong aria-hidden="true">64.</strong> 37 — Cover Traffic, Traffic Shaping, Timing Obfuscation & Loop Traffic Architecture</a></li><li class="chapter-item expanded "><a href="38-native-loopix-inspired-mixnet-topology-mix-nodes-layering-packet-forwarding-architecture.html"><strong aria-hidden="true">65.</strong> 38 — Native Loopix-Inspired Mixnet Topology, Mix Nodes, Layering & Packet Forwarding Architecture</a></li><li class="chapter-item expanded "><a href="39-mixnet-directory-node-admission-identity-sybil-resistance-topology-governance-architecture.html"><strong aria-hidden="true">66.</strong> 39 — Mixnet Directory, Node Admission, Identity, Sybil Resistance & Topology Governance Architecture</a></li><li class="chapter-item expanded "><a href="40-anonymous-attachment-transfer-rendezvous-large-file-privacy-high-bandwidth-data-architecture.html"><strong aria-hidden="true">67.</strong> 40 — Anonymous Attachment Transfer, Rendezvous, Large-File Privacy & High-Bandwidth Anonymous Data Architecture</a></li><li class="chapter-item expanded "><a href="41-censorship-resistance-bridges-pluggable-transports-traffic-obfuscation-architecture.html"><strong aria-hidden="true">68.</strong> 41 — Censorship Resistance, Bridges, Pluggable Transports & Traffic Obfuscation Architecture</a></li><li class="chapter-item expanded "><a href="42-anonymity-threat-model-traffic-analysis-correlation-formal-privacy-verification-architecture.html"><strong aria-hidden="true">69.</strong> 42 — Anonymity Threat Model, Traffic Analysis, Correlation Attacks & Formal Privacy Verification Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part XII: Anonymous Network — Anonymous Application Primitives</li><li class="chapter-item expanded "><a href="43-anonymous-group-messaging-membership-privacy-sender-key-large-group-anonymity-architecture.html"><strong aria-hidden="true">70.</strong> 43 — Anonymous Group Messaging, Membership Privacy, Sender-Key Distribution & Large-Group Anonymity Architecture</a></li><li class="chapter-item expanded "><a href="44-anonymous-voice-video-call-signaling-relay-privacy-realtime-metadata-private-session-architecture.html"><strong aria-hidden="true">71.</strong> 44 — Anonymous Voice/Video Call Signaling, Relay Privacy, Realtime Metadata Protection & Private Realtime Session Architecture</a></li><li class="chapter-item expanded "><a href="45-anonymous-presence-discovery-contact-bootstrap-private-social-graph-architecture.html"><strong aria-hidden="true">72.</strong> 45 — Anonymous Presence, Discovery, Contact Bootstrap & Private Social Graph Architecture</a></li><li class="chapter-item expanded "><a href="46-anonymous-reputation-trust-signals-abuse-reporting-privacy-preserving-moderation-architecture.html"><strong aria-hidden="true">73.</strong> 46 — Anonymous Reputation, Trust Signals, Abuse Reporting & Privacy-Preserving Moderation Architecture</a></li><li class="chapter-item expanded "><a href="47-anonymous-payments-resource-credits-quotas-privacy-preserving-service-accounting-architecture.html"><strong aria-hidden="true">74.</strong> 47 — Anonymous Payments, Resource Credits, Quotas & Privacy-Preserving Service Accounting Architecture</a></li><li class="chapter-item expanded "><a href="48-anonymous-service-discovery-provider-selection-capability-advertisement-privacy-preserving-marketplace-architecture.html"><strong aria-hidden="true">75.</strong> 48 — Anonymous Service Discovery, Provider Selection, Capability Advertisement & Privacy-Preserving Marketplace Architecture</a></li><li class="chapter-item expanded "><a href="49-anonymous-resource-scheduling-capacity-markets-load-balancing-privacy-preserving-infrastructure-allocation-architecture.html"><strong aria-hidden="true">76.</strong> 49 — Anonymous Resource Scheduling, Capacity Markets, Load Balancing & Privacy-Preserving Infrastructure Allocation Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part XIII: Anonymous Network — Sovereign Protocol Policies & Governance</li><li class="chapter-item expanded "><a href="50-anonymous-network-reliability-disaster-recovery-partition-tolerance-multi-region-continuity-architecture.html"><strong aria-hidden="true">77.</strong> 50 — Anonymous Network Reliability, Disaster Recovery, Partition Tolerance & Multi-Region Continuity Architecture</a></li><li class="chapter-item expanded "><a href="51-anonymous-network-observability-slos-privacy-safe-telemetry-incident-detection-operations-architecture.html"><strong aria-hidden="true">78.</strong> 51 — Anonymous Network Observability, SLOs, Privacy-Safe Telemetry, Incident Detection & Operations Architecture</a></li><li class="chapter-item expanded "><a href="52-anonymous-network-upgrade-protocol-evolution-compatibility-migration-zero-downtime-rollout-architecture.html"><strong aria-hidden="true">79.</strong> 52 — Anonymous Network Upgrade, Protocol Evolution, Compatibility, Migration & Zero-Downtime Rollout Architecture</a></li><li class="chapter-item expanded "><a href="53-anonymous-network-governance-policy-distribution-trust-roots-multi-authority-emergency-decision-architecture.html"><strong aria-hidden="true">80.</strong> 53 — Anonymous Network Governance, Policy Distribution, Trust Roots, Multi-Authority Control & Emergency Decision Architecture</a></li><li class="chapter-item expanded "><a href="54-anonymous-network-economics-incentives-operator-sustainability-subsidies-privacy-preserving-compensation-architecture.html"><strong aria-hidden="true">81.</strong> 54 — Anonymous Network Economics, Incentives, Operator Sustainability, Subsidies & Privacy-Preserving Compensation Architecture</a></li><li class="chapter-item expanded "><a href="55-anonymous-network-legal-compliance-boundary-jurisdiction-isolation-data-minimization-lawful-operations-architecture.html"><strong aria-hidden="true">82.</strong> 55 — Anonymous Network Legal/Compliance Boundary, Jurisdiction Isolation, Data-Minimization & Lawful Operations Architecture</a></li><li class="chapter-item expanded "><a href="56-anonymous-network-privacy-policy-user-consent-transparency-data-rights-privacy-control-architecture.html"><strong aria-hidden="true">83.</strong> 56 — Anonymous Network Privacy Policy, User Consent, Transparency, Data Rights & Privacy-Control Architecture</a></li><li class="chapter-item expanded "><a href="57-anonymous-network-identity-recovery-account-portability-device-reprovisioning-privacy-preserving-continuity-architecture.html"><strong aria-hidden="true">84.</strong> 57 — Anonymous Network Identity Recovery, Account Portability, Device Re-Provisioning & Privacy-Preserving Continuity Architecture</a></li><li class="chapter-item expanded "><a href="58-anonymous-network-federation-inter-network-peering-cross-domain-trust-privacy-preserving-interoperability-architecture.html"><strong aria-hidden="true">85.</strong> 58 — Anonymous Network Federation, Inter-Network Peering, Cross-Domain Trust & Privacy-Preserving Interoperability Architecture</a></li><li class="chapter-item expanded "><a href="59-anonymous-network-naming-addressing-namespace-isolation-private-resolution-anti-enumeration-architecture.html"><strong aria-hidden="true">86.</strong> 59 — Anonymous Network Naming, Addressing, Namespace Isolation, Private Resolution & Anti-Enumeration Architecture</a></li><li class="chapter-item expanded "><a href="60-anonymous-network-time-clock-privacy-replay-windows-epoch-coordination-temporal-metadata-resistance-architecture.html"><strong aria-hidden="true">87.</strong> 60 — Anonymous Network Time, Clock Privacy, Replay Windows, Epoch Coordination & Temporal Metadata Resistance Architecture</a></li><li class="chapter-item expanded "><a href="61-anonymous-network-configuration-secrets-runtime-policy-remote-administration-secure-control-plane-management-architecture.html"><strong aria-hidden="true">88.</strong> 61 — Anonymous Network Configuration, Secrets, Runtime Policy, Remote Administration & Secure Control-Plane Management Architecture</a></li><li class="chapter-item expanded "><a href="62-anonymous-network-deployment-packaging-infrastructure-provisioning-bare-metal-vm-container-runtime-reproducible-operations-architecture.html"><strong aria-hidden="true">89.</strong> 62 — Anonymous Network Deployment, Packaging, Infrastructure Provisioning, Bare-Metal/VM/Container Runtime & Reproducible Operations Architecture</a></li><li class="chapter-item expanded "><a href="63-anonymous-network-performance-engineering-benchmarking-capacity-planning-resource-isolation-production-sizing-architecture.html"><strong aria-hidden="true">90.</strong> 63 — Anonymous Network Performance Engineering, Benchmarking, Capacity Planning, Resource Isolation & Production Sizing Architecture</a></li><li class="chapter-item expanded "><a href="64-anonymous-network-testing-verification-simulation-fault-injection-adversarial-validation-release-quality-architecture.html"><strong aria-hidden="true">91.</strong> 64 — Anonymous Network Testing, Verification, Simulation, Fault Injection, Adversarial Validation & Release Quality Architecture</a></li><li class="chapter-item expanded "><a href="65-anonymous-network-documentation-operator-runbooks-incident-playbooks-architecture-decision-records-production-knowledge-architecture.html"><strong aria-hidden="true">92.</strong> 65 — Anonymous Network Documentation, Operator Runbooks, Incident Playbooks, Architecture Decision Records & Production Knowledge Architecture</a></li><li class="chapter-item expanded "><a href="66-anonymous-network-cryptographic-agility-post-quantum-migration-key-lifecycle-long-term-security-architecture.html"><strong aria-hidden="true">93.</strong> 66 — Anonymous Network Cryptographic Agility, Post-Quantum Migration, Key Lifecycle & Long-Term Security Architecture</a></li><li class="chapter-item expanded "><a href="67-anonymous-network-data-lifecycle-storage-minimization-secure-deletion-retention-archival-cryptographic-erasure-architecture.html"><strong aria-hidden="true">94.</strong> 67 — Anonymous Network Data Lifecycle, Storage Minimization, Secure Deletion, Retention, Archival & Cryptographic Erasure Architecture</a></li><li class="chapter-item expanded "><a href="68-anonymous-network-api-sdk-extension-boundary-capability-security-third-party-integration-architecture.html"><strong aria-hidden="true">95.</strong> 68 — Anonymous Network API, SDK, Extension Boundary, Capability Security & Third-Party Integration Architecture</a></li><li class="chapter-item expanded "><a href="69-anonymous-network-multi-tenant-isolation-organizational-boundaries-delegated-administration-enterprise-policy-architecture.html"><strong aria-hidden="true">96.</strong> 69 — Anonymous Network Multi-Tenant Isolation, Organizational Boundaries, Delegated Administration & Enterprise Policy Architecture</a></li><li class="chapter-item expanded "><a href="70-anonymous-network-disaster-exercises-business-continuity-validation-crisis-coordination-operational-resilience-governance-architecture.html"><strong aria-hidden="true">97.</strong> 70 — Anonymous Network Disaster Exercises, Business Continuity Validation, Crisis Coordination & Operational Resilience Governance Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part XIV: Anonymous Network — Zero-Trust Infrastructure & Attestation</li><li class="chapter-item expanded "><a href="71-anonymous-network-trustworthy-boot-host-attestation-runtime-integrity-binary-measurement-compromise-detection-architecture.html"><strong aria-hidden="true">98.</strong> 71 — Anonymous Network Trustworthy Boot, Host Attestation, Runtime Integrity, Binary Measurement & Compromise Detection Architecture</a></li><li class="chapter-item expanded "><a href="72-anonymous-network-hardware-security-modules-secure-elements-key-custody-signing-ceremonies-high-assurance-cryptographic-operations-architecture.html"><strong aria-hidden="true">99.</strong> 72 — Anonymous Network Hardware Security Modules, Secure Elements, Key Custody, Signing Ceremonies & High-Assurance Cryptographic Operations Architecture</a></li><li class="chapter-item expanded "><a href="73-anonymous-network-supply-chain-transparency-dependency-provenance-reproducible-builds-sbom-artifact-trust-compromise-recovery-architecture.html"><strong aria-hidden="true">100.</strong> 73 — Anonymous Network Supply-Chain Transparency, Dependency Provenance, Reproducible Builds, SBOM, Artifact Trust & Compromise Recovery Architecture</a></li><li class="chapter-item expanded "><a href="74-anonymous-network-database-persistent-state-transaction-boundaries-schema-evolution-storage-engine-architecture.html"><strong aria-hidden="true">101.</strong> 74 — Anonymous Network Database, Persistent State, Transaction Boundaries, Schema Evolution & Storage-Engine Architecture</a></li><li class="chapter-item expanded "><a href="75-anonymous-network-event-streaming-message-bus-durable-queues-internal-pubsub-distributed-workflow-architecture.html"><strong aria-hidden="true">102.</strong> 75 — Anonymous Network Event Streaming, Message Bus, Durable Queues, Internal Pub/Sub & Distributed Workflow Architecture</a></li><li class="chapter-item expanded "><a href="76-anonymous-network-distributed-consensus-leader-election-membership-quorum-state-coordination-architecture.html"><strong aria-hidden="true">103.</strong> 76 — Anonymous Network Distributed Consensus, Leader Election, Membership, Quorum State & Coordination Architecture</a></li><li class="chapter-item expanded "><a href="77-anonymous-network-service-discovery-naming-endpoint-resolution-load-balancing-traffic-steering-architecture.html"><strong aria-hidden="true">104.</strong> 77 — Anonymous Network Service Discovery, Naming, Endpoint Resolution, Load Balancing & Traffic Steering Architecture</a></li><li class="chapter-item expanded "><a href="78-anonymous-network-edge-gateway-ingress-egress-reverse-proxy-api-gateway-waf-boundary-enforcement-architecture.html"><strong aria-hidden="true">105.</strong> 78 — Anonymous Network Edge Gateway, Ingress/Egress, Reverse Proxy, API Gateway, WAF & Boundary Enforcement Architecture</a></li><li class="chapter-item expanded "><a href="79-anonymous-network-internal-service-to-service-communication-zero-trust-networking-mtls-service-identity-east-west-security-architecture.html"><strong aria-hidden="true">106.</strong> 79 — Anonymous Network Internal Service-to-Service Communication, Zero-Trust Networking, mTLS, Service Identity & East-West Security Architecture</a></li><li class="chapter-item expanded "><a href="80-anonymous-network-secrets-distribution-dynamic-credentials-certificate-authority-workload-enrollment-secretless-runtime-architecture.html"><strong aria-hidden="true">107.</strong> 80 — Anonymous Network Secrets Distribution, Dynamic Credentials, Certificate Authority, Workload Enrollment & Secretless Runtime Architecture</a></li><li class="chapter-item expanded "><a href="81-anonymous-network-authorization-policy-decision-enforcement-capability-evaluation-abac-rbac-distributed-access-control-architecture.html"><strong aria-hidden="true">108.</strong> 81 — Anonymous Network Authorization, Policy Decision/Enforcement Points, Capability Evaluation, ABAC/RBAC & Distributed Access-Control Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part XV: Anonymous Network — Private Cloud Services & Anti-Surveillance</li><li class="chapter-item expanded "><a href="82-anonymous-network-identity-provider-authentication-mfa-passkeys-session-management-account-security-architecture.html"><strong aria-hidden="true">109.</strong> 82 — Anonymous Network Identity Provider, Authentication, MFA, Passkeys, Session Management & Account Security Architecture</a></li><li class="chapter-item expanded "><a href="83-anonymous-network-account-lifecycle-registration-enrollment-suspension-deactivation-deletion-identity-state-governance-architecture.html"><strong aria-hidden="true">110.</strong> 83 — Anonymous Network Account Lifecycle, Registration, Enrollment, Suspension, Deactivation, Deletion & Identity-State Governance Architecture</a></li><li class="chapter-item expanded "><a href="84-anonymous-network-profile-preferences-settings-personalization-synchronization-privacy-preserving-user-state-architecture.html"><strong aria-hidden="true">111.</strong> 84 — Anonymous Network Profile, Preferences, Settings, Personalization, Synchronization & Privacy-Preserving User-State Architecture</a></li><li class="chapter-item expanded "><a href="85-anonymous-network-contacts-address-book-relationship-graph-invitations-trust-state-privacy-preserving-social-connectivity-architecture.html"><strong aria-hidden="true">112.</strong> 85 — Anonymous Network Contacts, Address Book, Relationship Graph, Invitations, Trust State & Privacy-Preserving Social Connectivity Architecture</a></li><li class="chapter-item expanded "><a href="86-anonymous-network-group-directory-communities-channels-membership-discovery-moderation-boundaries-privacy-preserving-social-spaces-architecture.html"><strong aria-hidden="true">113.</strong> 86 — Anonymous Network Group Directory, Communities, Channels, Membership Discovery, Moderation Boundaries & Privacy-Preserving Social Spaces Architecture</a></li><li class="chapter-item expanded "><a href="87-anonymous-network-content-feed-timeline-subscription-recommendation-ranking-privacy-preserving-discovery-architecture.html"><strong aria-hidden="true">114.</strong> 87 — Anonymous Network Content Feed, Timeline, Subscription, Recommendation, Ranking & Privacy-Preserving Discovery Architecture</a></li><li class="chapter-item expanded "><a href="88-anonymous-network-content-publishing-posts-articles-media-drafts-revisions-distribution-creator-state-architecture.html"><strong aria-hidden="true">115.</strong> 88 — Anonymous Network Content Publishing, Posts, Articles, Media, Drafts, Revisions, Distribution & Creator-State Architecture</a></li><li class="chapter-item expanded "><a href="89-anonymous-network-comments-replies-threads-reactions-mentions-resharing-privacy-preserving-interaction-architecture.html"><strong aria-hidden="true">116.</strong> 89 — Anonymous Network Comments, Replies, Threads, Reactions, Mentions, Resharing & Privacy-Preserving Interaction Architecture</a></li><li class="chapter-item expanded "><a href="90-anonymous-network-notifications-activity-inbox-mentions-interaction-aggregation-digest-privacy-preserving-attention-architecture.html"><strong aria-hidden="true">117.</strong> 90 — Anonymous Network Notifications, Activity Inbox, Mentions, Interaction Aggregation, Digest & Privacy-Preserving Attention Architecture</a></li><li class="chapter-item expanded "><a href="91-anonymous-network-search-indexing-query-privacy-relevance-ranking-federated-search-private-information-retrieval-architecture.html"><strong aria-hidden="true">118.</strong> 91 — Anonymous Network Search, Indexing, Query Privacy, Relevance Ranking, Federated Search & Private Information Retrieval Architecture</a></li><li class="chapter-item expanded "><a href="92-anonymous-network-analytics-metrics-product-insights-privacy-preserving-aggregation-differential-privacy-anti-surveillance-data-architecture.html"><strong aria-hidden="true">119.</strong> 92 — Anonymous Network Analytics, Metrics, Product Insights, Privacy-Preserving Aggregation, Differential Privacy & Anti-Surveillance Data Architecture</a></li><li class="chapter-item expanded "><a href="93-anonymous-network-experimentation-feature-evaluation-ab-testing-rollouts-cohort-assignment-privacy-preserving-product-validation-architecture.html"><strong aria-hidden="true">120.</strong> 93 — Anonymous Network Experimentation, Feature Evaluation, A/B Testing, Rollouts, Cohort Assignment & Privacy-Preserving Product Validation Architecture</a></li><li class="chapter-item expanded "><a href="94-anonymous-network-audit-transparency-user-visible-security-history-verifiable-actions-privacy-preserving-accountability-architecture.html"><strong aria-hidden="true">121.</strong> 94 — Anonymous Network Audit, Transparency, User-Visible Security History, Verifiable Actions & Privacy-Preserving Accountability Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part XVI: Anonymous Network — Defense, SecOps & Vulnerability Management</li><li class="chapter-item expanded "><a href="95-anonymous-network-policy-compliance-engine-continuous-control-evaluation-security-posture-evidence-collection-privacy-preserving-assurance-architecture.html"><strong aria-hidden="true">122.</strong> 95 — Anonymous Network Policy Compliance Engine, Continuous Control Evaluation, Security Posture, Evidence Collection & Privacy-Preserving Assurance Architecture</a></li><li class="chapter-item expanded "><a href="96-anonymous-network-incident-response-detection-triage-containment-forensics-recovery-privacy-preserving-security-operations-architecture.html"><strong aria-hidden="true">123.</strong> 96 — Anonymous Network Incident Response, Detection, Triage, Containment, Forensics, Recovery & Privacy-Preserving Security Operations Architecture</a></li><li class="chapter-item expanded "><a href="97-anonymous-network-security-operations-center-threat-intelligence-indicators-of-compromise-detection-engineering-hunting-privacy-preserving-defensive-intelligence-architecture.html"><strong aria-hidden="true">124.</strong> 97 — Anonymous Network Security Operations Center, Threat Intelligence, Indicators of Compromise, Detection Engineering, Hunting & Privacy-Preserving Defensive Intelligence Architecture</a></li><li class="chapter-item expanded "><a href="98-anonymous-network-vulnerability-management-exposure-discovery-patch-prioritization-remediation-coordination-privacy-preserving-security-maintenance-architecture.html"><strong aria-hidden="true">125.</strong> 98 — Anonymous Network Vulnerability Management, Exposure Discovery, Patch Prioritization, Remediation Coordination & Privacy-Preserving Security Maintenance Architecture</a></li><li class="chapter-item expanded "><a href="99-anonymous-network-secure-update-patch-distribution-release-channels-client-upgrade-enforcement-rollback-protection-privacy-preserving-software-maintenance-architecture.html"><strong aria-hidden="true">126.</strong> 99 — Anonymous Network Secure Update, Patch Distribution, Release Channels, Client Upgrade Enforcement, Rollback Protection & Privacy-Preserving Software Maintenance Architecture</a></li><li class="chapter-item expanded "><a href="100-anonymous-network-disaster-recovery-backup-integrity-restore-orchestration-regional-failover-continuity-validation-privacy-preserving-resilience-architecture.html"><strong aria-hidden="true">127.</strong> 100 — Anonymous Network Disaster Recovery, Backup Integrity, Restore Orchestration, Regional Failover, Continuity Validation & Privacy-Preserving Resilience Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part XVII: Anonymous Network — SRE, Fleet Management & Physical Site Reliability</li><li class="chapter-item expanded "><a href="101-anonymous-network-capacity-management-load-shedding-admission-control-autoscaling-resource-fairness-privacy-preserving-availability-architecture.html"><strong aria-hidden="true">128.</strong> 101 — Anonymous Network Capacity Management, Load Shedding, Admission Control, Autoscaling, Resource Fairness & Privacy-Preserving Availability Architecture</a></li><li class="chapter-item expanded "><a href="102-anonymous-network-cost-governance-resource-accounting-budget-enforcement-capacity-economics-privacy-preserving-finops-architecture.html"><strong aria-hidden="true">129.</strong> 102 — Anonymous Network Cost Governance, Resource Accounting, Budget Enforcement, Capacity Economics & Privacy-Preserving FinOps Architecture</a></li><li class="chapter-item expanded "><a href="103-anonymous-network-data-residency-sovereignty-regional-placement-cross-border-transfer-jurisdiction-policy-privacy-preserving-geographic-governance-architecture.html"><strong aria-hidden="true">130.</strong> 103 — Anonymous Network Data Residency, Sovereignty, Regional Placement, Cross-Border Transfer, Jurisdiction Policy & Privacy-Preserving Geographic Governance Architecture</a></li><li class="chapter-item expanded "><a href="104-anonymous-network-service-ownership-operational-responsibility-escalation-on-call-change-authority-privacy-preserving-organizational-governance-architecture.html"><strong aria-hidden="true">131.</strong> 104 — Anonymous Network Service Ownership, Operational Responsibility, Escalation, On-Call, Change Authority & Privacy-Preserving Organizational Governance Architecture</a></li><li class="chapter-item expanded "><a href="105-anonymous-network-configuration-drift-desired-state-change-reconciliation-policy-convergence-privacy-preserving-infrastructure-state-governance-architecture.html"><strong aria-hidden="true">132.</strong> 105 — Anonymous Network Configuration Drift, Desired State, Change Reconciliation, Policy Convergence & Privacy-Preserving Infrastructure State Governance Architecture</a></li><li class="chapter-item expanded "><a href="106-anonymous-network-infrastructure-inventory-asset-graph-service-dependency-mapping-configuration-item-lifecycle-privacy-preserving-operational-topology-architecture.html"><strong aria-hidden="true">133.</strong> 106 — Anonymous Network Infrastructure Inventory, Asset Graph, Service Dependency Mapping, Configuration Item Lifecycle & Privacy-Preserving Operational Topology Architecture</a></li><li class="chapter-item expanded "><a href="107-anonymous-network-change-impact-analysis-dependency-aware-rollout-planning-pre-change-simulation-safe-execution-privacy-preserving-operational-decision-architecture.html"><strong aria-hidden="true">134.</strong> 107 — Anonymous Network Change Impact Analysis, Dependency-Aware Rollout Planning, Pre-Change Simulation, Safe Execution & Privacy-Preserving Operational Decision Architecture</a></li><li class="chapter-item expanded "><a href="108-anonymous-network-release-readiness-production-certification-go-no-go-decision-operational-acceptance-privacy-preserving-launch-governance-architecture.html"><strong aria-hidden="true">135.</strong> 108 — Anonymous Network Release Readiness, Production Certification, Go/No-Go Decision, Operational Acceptance & Privacy-Preserving Launch Governance Architecture</a></li><li class="chapter-item expanded "><a href="109-anonymous-network-service-level-objectives-error-budgets-reliability-policy-availability-governance-privacy-preserving-reliability-engineering-architecture.html"><strong aria-hidden="true">136.</strong> 109 — Anonymous Network Service Level Objectives, Error Budgets, Reliability Policy, Availability Governance & Privacy-Preserving Reliability Engineering Architecture</a></li><li class="chapter-item expanded "><a href="110-anonymous-network-availability-modeling-fault-domains-redundancy-planning-failure-correlation-reliability-simulation-privacy-preserving-resilience-engineering-architecture.html"><strong aria-hidden="true">137.</strong> 110 — Anonymous Network Availability Modeling, Fault Domains, Redundancy Planning, Failure Correlation, Reliability Simulation & Privacy-Preserving Resilience Engineering Architecture</a></li><li class="chapter-item expanded "><a href="111-anonymous-network-capacity-forecasting-demand-modeling-growth-planning-saturation-prediction-privacy-preserving-infrastructure-forecast-architecture.html"><strong aria-hidden="true">138.</strong> 111 — Anonymous Network Capacity Forecasting, Demand Modeling, Growth Planning, Saturation Prediction & Privacy-Preserving Infrastructure Forecast Architecture</a></li><li class="chapter-item expanded "><a href="112-anonymous-network-performance-budgeting-latency-decomposition-throughput-modeling-tail-latency-control-privacy-preserving-performance-engineering-architecture.html"><strong aria-hidden="true">139.</strong> 112 — Anonymous Network Performance Budgeting, Latency Decomposition, Throughput Modeling, Tail-Latency Control & Privacy-Preserving Performance Engineering Architecture</a></li><li class="chapter-item expanded "><a href="113-anonymous-network-resource-efficiency-work-consolidation-compute-memory-io-optimization-energy-awareness-privacy-preserving-efficiency-engineering-architecture.html"><strong aria-hidden="true">140.</strong> 113 — Anonymous Network Resource Efficiency, Work Consolidation, Compute/Memory/I/O Optimization, Energy Awareness & Privacy-Preserving Efficiency Engineering Architecture</a></li><li class="chapter-item expanded "><a href="114-anonymous-network-sustainability-carbon-aware-scheduling-hardware-lifecycle-resource-reuse-privacy-preserving-environmental-efficiency-architecture.html"><strong aria-hidden="true">141.</strong> 114 — Anonymous Network Sustainability, Carbon-Aware Scheduling, Hardware Lifecycle, Resource Reuse & Privacy-Preserving Environmental Efficiency Architecture</a></li><li class="chapter-item expanded "><a href="115-anonymous-network-hardware-fleet-management-firmware-lifecycle-secure-provisioning-maintenance-scheduling-privacy-preserving-physical-infrastructure-governance-architecture.html"><strong aria-hidden="true">142.</strong> 115 — Anonymous Network Hardware Fleet Management, Firmware Lifecycle, Secure Provisioning, Maintenance Scheduling & Privacy-Preserving Physical Infrastructure Governance Architecture</a></li><li class="chapter-item expanded "><a href="116-anonymous-network-data-center-edge-site-facility-power-cooling-environmental-monitoring-privacy-preserving-physical-site-reliability-architecture.html"><strong aria-hidden="true">143.</strong> 116 — Anonymous Network Data Center, Edge Site, Facility Power, Cooling, Environmental Monitoring & Privacy-Preserving Physical Site Reliability Architecture</a></li><li class="chapter-item expanded "><a href="117-anonymous-network-physical-security-tamper-detection-site-access-control-chain-of-custody-asset-protection-privacy-preserving-facility-security-architecture.html"><strong aria-hidden="true">144.</strong> 117 — Anonymous Network Physical Security, Tamper Detection, Site Access Control, Chain of Custody, Asset Protection & Privacy-Preserving Facility Security Architecture</a></li><li class="chapter-item expanded "><a href="118-anonymous-network-physical-disaster-preparedness-fire-flood-earthquake-response-site-evacuation-asset-salvage-emergency-logistics-privacy-preserving-facility-continuity-architecture.html"><strong aria-hidden="true">145.</strong> 118 — Anonymous Network Physical Disaster Preparedness, Fire/Flood/Earthquake Response, Site Evacuation, Asset Salvage, Emergency Logistics & Privacy-Preserving Facility Continuity Architecture</a></li><li class="chapter-item expanded "><a href="119-anonymous-network-crisis-command-emergency-decision-authority-multi-team-coordination-communications-situation-awareness-privacy-preserving-incident-command-architecture.html"><strong aria-hidden="true">146.</strong> 119 — Anonymous Network Crisis Command, Emergency Decision Authority, Multi-Team Coordination, Communications, Situation Awareness & Privacy-Preserving Incident Command Architecture</a></li><li class="chapter-item expanded "><a href="120-anonymous-network-post-incident-review-root-cause-analysis-corrective-actions-organizational-learning-recurrence-prevention-privacy-preserving-reliability-improvement-architecture.html"><strong aria-hidden="true">147.</strong> 120 — Anonymous Network Post-Incident Review, Root-Cause Analysis, Corrective Actions, Organizational Learning, Recurrence Prevention & Privacy-Preserving Reliability Improvement Architecture</a></li><li class="chapter-item expanded "><a href="121-anonymous-network-reliability-risk-register-technical-debt-governance-systemic-weakness-tracking-remediation-portfolio-privacy-preserving-engineering-risk-architecture.html"><strong aria-hidden="true">148.</strong> 121 — Anonymous Network Reliability Risk Register, Technical Debt Governance, Systemic Weakness Tracking, Remediation Portfolio & Privacy-Preserving Engineering Risk Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part XVIII: Anonymous Network — Governance, Traceability, SDK & Plugin Ecosystem</li><li class="chapter-item expanded "><a href="122-anonymous-network-architecture-governance-technical-standards-adr-lifecycle-design-review-exception-management-privacy-preserving-engineering-decision-architecture.html"><strong aria-hidden="true">149.</strong> 122 — Anonymous Network Architecture Governance, Technical Standards, ADR Lifecycle, Design Review, Exception Management & Privacy-Preserving Engineering Decision Architecture</a></li><li class="chapter-item expanded "><a href="123-anonymous-network-engineering-knowledge-graph-architecture-traceability-requirement-to-code-mapping-decision-provenance-privacy-preserving-technical-knowledge-architecture.html"><strong aria-hidden="true">150.</strong> 123 — Anonymous Network Engineering Knowledge Graph, Architecture Traceability, Requirement-to-Code Mapping, Decision Provenance & Privacy-Preserving Technical Knowledge Architecture</a></li><li class="chapter-item expanded "><a href="124-anonymous-network-requirements-engineering-specification-lifecycle-acceptance-criteria-verification-planning-change-traceability-privacy-preserving-product-technical-requirement-architecture.html"><strong aria-hidden="true">151.</strong> 124 — Anonymous Network Requirements Engineering, Specification Lifecycle, Acceptance Criteria, Verification Planning, Change Traceability & Privacy-Preserving Product/Technical Requirement Architecture</a></li><li class="chapter-item expanded "><a href="125-anonymous-network-test-strategy-governance-verification-matrix-coverage-traceability-qualification-evidence-release-confidence-privacy-preserving-engineering-assurance-architecture.html"><strong aria-hidden="true">152.</strong> 125 — Anonymous Network Test Strategy Governance, Verification Matrix, Coverage Traceability, Qualification Evidence, Release Confidence & Privacy-Preserving Engineering Assurance Architecture</a></li><li class="chapter-item expanded "><a href="126-anonymous-network-release-evidence-repository-certification-records-artifact-qualification-lineage-compliance-trace-packages-privacy-preserving-assurance-archive-architecture.html"><strong aria-hidden="true">153.</strong> 126 — Anonymous Network Release Evidence Repository, Certification Records, Artifact Qualification Lineage, Compliance Trace Packages & Privacy-Preserving Assurance Archive Architecture</a></li><li class="chapter-item expanded "><a href="127-anonymous-network-product-qualification-feature-maturity-levels-capability-readiness-general-availability-criteria-privacy-preserving-product-readiness-governance-architecture.html"><strong aria-hidden="true">154.</strong> 127 — Anonymous Network Product Qualification, Feature Maturity Levels, Capability Readiness, General Availability Criteria & Privacy-Preserving Product Readiness Governance Architecture</a></li><li class="chapter-item expanded "><a href="128-anonymous-network-product-lifecycle-governance-capability-evolution-backward-compatibility-migration-deprecation-sunset-privacy-preserving-end-of-life-architecture.html"><strong aria-hidden="true">155.</strong> 128 — Anonymous Network Product Lifecycle Governance, Capability Evolution, Backward Compatibility, Migration, Deprecation, Sunset & Privacy-Preserving End-of-Life Architecture</a></li><li class="chapter-item expanded "><a href="129-anonymous-network-api-protocol-compatibility-registry-version-negotiation-schema-evolution-interoperability-certification-privacy-preserving-compatibility-governance-architecture.html"><strong aria-hidden="true">156.</strong> 129 — Anonymous Network API & Protocol Compatibility Registry, Version Negotiation, Schema Evolution, Interoperability Certification & Privacy-Preserving Compatibility Governance Architecture</a></li><li class="chapter-item expanded "><a href="130-anonymous-network-sdk-client-library-generated-bindings-developer-compatibility-integration-certification-privacy-preserving-developer-platform-architecture.html"><strong aria-hidden="true">157.</strong> 130 — Anonymous Network SDK, Client Library, Generated Bindings, Developer Compatibility, Integration Certification & Privacy-Preserving Developer Platform Architecture</a></li><li class="chapter-item expanded "><a href="131-anonymous-network-developer-portal-api-documentation-sandbox-environments-credential-provisioning-integration-onboarding-support-privacy-preserving-developer-experience-architecture.html"><strong aria-hidden="true">158.</strong> 131 — Anonymous Network Developer Portal, API Documentation, Sandbox Environments, Credential Provisioning, Integration Onboarding, Support & Privacy-Preserving Developer Experience Architecture</a></li><li class="chapter-item expanded "><a href="132-anonymous-network-developer-cli-project-automation-local-integration-emulator-contract-testing-ci-integration-privacy-preserving-developer-toolchain-architecture.html"><strong aria-hidden="true">159.</strong> 132 — Anonymous Network Developer CLI, Project Automation, Local Integration Emulator, Contract Testing, CI Integration & Privacy-Preserving Developer Toolchain Architecture</a></li><li class="chapter-item expanded "><a href="133-anonymous-network-extension-marketplace-integration-distribution-package-discovery-trust-signals-review-revocation-privacy-preserving-developer-ecosystem-architecture.html"><strong aria-hidden="true">160.</strong> 133 — Anonymous Network Extension Marketplace, Integration Distribution, Package Discovery, Trust Signals, Review, Revocation & Privacy-Preserving Developer Ecosystem Architecture</a></li><li class="chapter-item expanded "><a href="134-anonymous-network-extension-runtime-plugin-sandboxing-capability-brokerage-resource-isolation-lifecycle-supervision-privacy-preserving-execution-architecture.html"><strong aria-hidden="true">161.</strong> 134 — Anonymous Network Extension Runtime, Plugin Sandboxing, Capability Brokerage, Resource Isolation, Lifecycle Supervision & Privacy-Preserving Execution Architecture</a></li><li class="chapter-item expanded "><a href="135-anonymous-network-extension-permission-model-consent-ux-delegated-authority-capability-attenuation-scope-review-privacy-preserving-authorization-architecture.html"><strong aria-hidden="true">162.</strong> 135 — Anonymous Network Extension Permission Model, Consent UX, Delegated Authority, Capability Attenuation, Scope Review & Privacy-Preserving Authorization Architecture</a></li><li class="chapter-item expanded "><a href="136-anonymous-network-extension-data-governance-data-access-mediation-information-flow-control-retention-deletion-export-privacy-preserving-extension-data-architecture.html"><strong aria-hidden="true">163.</strong> 136 — Anonymous Network Extension Data Governance, Data Access Mediation, Information-Flow Control, Retention, Deletion, Export & Privacy-Preserving Extension Data Architecture</a></li><li class="chapter-item expanded "><a href="137-anonymous-network-extension-inter-process-communication-event-bus-host-calls-shared-memory-streaming-backpressure-privacy-preserving-runtime-communication-architecture.html"><strong aria-hidden="true">164.</strong> 137 — Anonymous Network Extension Inter-Process Communication, Event Bus, Host Calls, Shared Memory, Streaming, Backpressure & Privacy-Preserving Runtime Communication Architecture</a></li><li class="chapter-item expanded "><a href="138-anonymous-network-extension-background-execution-durable-jobs-triggers-scheduling-wakeups-mobile-lifecycle-quotas-privacy-preserving-automation-runtime-architecture.html"><strong aria-hidden="true">165.</strong> 138 — Anonymous Network Extension Background Execution, Durable Jobs, Triggers, Scheduling, Wakeups, Mobile Lifecycle, Quotas & Privacy-Preserving Automation Runtime Architecture</a></li><li class="chapter-item expanded "><a href="140-anonymous-network-extension-ui-surface-embedded-panels-commands-menus-context-actions-theming-accessibility-privacy-preserving-host-ui-integration-architecture.html"><strong aria-hidden="true">166.</strong> 140 — Anonymous Network Extension UI Surface, Embedded Panels, Commands, Menus, Context Actions, Theming, Accessibility & Privacy-Preserving Host UI Integration Architecture</a></li><li class="chapter-item expanded "><a href="141-anonymous-network-extension-state-synchronization-cross-device-settings-ui-state-installation-state-capability-consistency-privacy-preserving-extension-state-convergence-architecture.html"><strong aria-hidden="true">167.</strong> 141 — Anonymous Network Extension State Synchronization, Cross-Device Settings, UI State, Installation State, Capability Consistency & Privacy-Preserving Extension State Convergence Architecture</a></li><li class="chapter-item expanded "><a href="142-anonymous-network-extension-dependency-management-package-resolution-version-constraints-lockfiles-dependency-isolation-supply-chain-policy-privacy-preserving-dependency-governance-architecture.html"><strong aria-hidden="true">168.</strong> 142 — Anonymous Network Extension Dependency Management, Package Resolution, Version Constraints, Lockfiles, Dependency Isolation, Supply-Chain Policy & Privacy-Preserving Dependency Governance Architecture</a></li><li class="chapter-item expanded "><a href="143-anonymous-network-extension-update-orchestration-dependency-aware-rollouts-state-migration-rollback-hot-upgrade-compatibility-gates-privacy-preserving-extension-evolution-architecture.html"><strong aria-hidden="true">169.</strong> 143 — Anonymous Network Extension Update Orchestration, Dependency-Aware Rollouts, State Migration, Rollback, Hot Upgrade, Compatibility Gates & Privacy-Preserving Extension Evolution Architecture</a></li><li class="chapter-item expanded "><a href="144-anonymous-network-extension-testing-certification-compatibility-matrix-sandbox-validation-fault-injection-security-privacy-qualification-release-evidence-architecture.html"><strong aria-hidden="true">170.</strong> 144 — Anonymous Network Extension Testing, Certification, Compatibility Matrix, Sandbox Validation, Fault Injection, Security/Privacy Qualification & Release Evidence Architecture</a></li><li class="chapter-item expanded "><a href="145-anonymous-network-extension-observability-runtime-health-crash-reporting-diagnostics-developer-telemetry-slos-privacy-preserving-extension-operations-architecture.html"><strong aria-hidden="true">171.</strong> 145 — Anonymous Network Extension Observability, Runtime Health, Crash Reporting, Diagnostics, Developer Telemetry, SLOs & Privacy-Preserving Extension Operations Architecture</a></li><li class="chapter-item expanded "><a href="146-anonymous-network-extension-incident-response-abuse-detection-quarantine-emergency-disable-forensics-recovery-privacy-preserving-extension-security-operations-architecture.html"><strong aria-hidden="true">172.</strong> 146 — Anonymous Network Extension Incident Response, Abuse Detection, Quarantine, Emergency Disable, Forensics, Recovery & Privacy-Preserving Extension Security Operations Architecture</a></li><li class="chapter-item expanded "><a href="147-anonymous-network-extension-governance-publisher-policy-ecosystem-rules-dispute-resolution-appeals-enforcement-consistency-privacy-preserving-marketplace-governance-architecture.html"><strong aria-hidden="true">173.</strong> 147 — Anonymous Network Extension Governance, Publisher Policy, Ecosystem Rules, Dispute Resolution, Appeals, Enforcement Consistency & Privacy-Preserving Marketplace Governance Architecture</a></li><li class="chapter-item expanded "><a href="148-anonymous-network-extension-business-model-pricing-revenue-sharing-paid-extensions-subscriptions-billing-integration-refunds-entitlements-privacy-preserving-marketplace-economics-architecture.html"><strong aria-hidden="true">174.</strong> 148 — Anonymous Network Extension Business Model, Pricing, Revenue Sharing, Paid Extensions, Subscriptions, Billing Integration, Refunds, Entitlements & Privacy-Preserving Marketplace Economics Architecture</a></li><li class="chapter-item expanded "><a href="149-anonymous-network-extension-licensing-open-source-commercial-license-enforcement-seat-activation-license-keys-offline-licensing-compliance-audit-privacy-preserving-software-license-architecture.html"><strong aria-hidden="true">175.</strong> 149 — Anonymous Network Extension Licensing, Open-Source/Commercial License Enforcement, Seat Activation, License Keys, Offline Licensing, Compliance, Audit & Privacy-Preserving Software License Architecture</a></li><li class="chapter-item expanded "><a href="150-anonymous-network-extension-developer-relations-publisher-support-documentation-governance-compatibility-communication-migration-guidance-ecosystem-education-privacy-preserving-developer-success-architecture.html"><strong aria-hidden="true">176.</strong> 150 — Anonymous Network Extension Developer Relations, Publisher Support, Documentation Governance, Compatibility Communication, Migration Guidance, Ecosystem Education & Privacy-Preserving Developer Success Architecture</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">SIAR System Architecture &amp; Technical Wiki</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar/edit/main/sys-arch/34-mixnet-loopix-sphinx-nym-high-anonymity-transport-architecture.md" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="core-system-architecture-part-34--mixnet-loopix-sphinx-nym--high-anonymity-transport-architecture"><a class="header" href="#core-system-architecture-part-34--mixnet-loopix-sphinx-nym--high-anonymity-transport-architecture">Core System Architecture Part 34 — Mixnet, Loopix, Sphinx, Nym &amp; High-Anonymity Transport Architecture</a></h1>
+<h2 id="siar--secure-local-first-multi-transport-communication-platform"><a class="header" href="#siar--secure-local-first-multi-transport-communication-platform">SIAR — Secure, Local-First, Multi-Transport Communication Platform</a></h2>
+<p><strong>Series:</strong> Core System Architecture<br />
+<strong>Part:</strong> 34<br />
+<strong>Status:</strong> Architecture specification<br />
+<strong>Primary language:</strong> Rust<br />
+<strong>Scope:</strong> high/full anonymity transport integration alongside SIAR's existing direct, relay, LAN, Wi-Fi, Bluetooth, mesh, and DTN transport systems<br />
+<strong>Design intent:</strong> add strong network-metadata privacy without replacing or weakening SIAR's existing transport, E2EE, local-first, emergency, realtime, or offline capabilities</p>
+<hr />
+<h1 id="1-purpose"><a class="header" href="#1-purpose">1. Purpose</a></h1>
+<p>SIAR already has multiple transport classes intended for different operating environments:</p>
+<pre><code class="language-text">Direct Internet
+QUIC / Iroh
+Relay
+LAN
+Wi-Fi Direct / Wi-Fi Aware
+Bluetooth
+Local mesh
+DTN / store-carry-forward
+</code></pre>
+<p>These transports optimize primarily for:</p>
+<pre><code class="language-text">reachability
+latency
+bandwidth
+reliability
+offline operation
+local communication
+emergency communication
+</code></pre>
+<p>They do <strong>not</strong>, by themselves, provide strong resistance against network metadata analysis.</p>
+<p>A network observer may still infer information such as:</p>
+<pre><code class="language-text">which device is communicating
+when communication occurs
+how often communication occurs
+traffic volume
+likely sender/receiver relationships
+route endpoints
+session timing
+</code></pre>
+<p>even when message contents are protected by end-to-end encryption.</p>
+<p>Part 34 introduces an independent <strong>High-Anonymity Transport Plane</strong> based on mix-network principles and compatible providers such as Nym.</p>
+<p>The governing principle is:</p>
+<blockquote>
+<p><strong>SIAR must treat anonymity as an explicit routing/security property, not as a side effect of encryption or relaying.</strong></p>
+</blockquote>
+<hr />
+<h1 id="2-design-goals"><a class="header" href="#2-design-goals">2. Design Goals</a></h1>
+<p>The subsystem MUST support:</p>
+<pre><code class="language-text">strong metadata protection
+sender/receiver relationship hiding
+mixnet routing
+Sphinx-style packet encapsulation
+cover traffic
+randomized delays
+store-and-forward reception
+anonymous replies
+strict downgrade prevention
+battery/bandwidth-aware policy
+integration with SIAR E2EE
+integration with SIAR multipath routing
+integration with SIAR DTN
+provider abstraction
+Nym integration
+future SIAR-native mixnet
+privacy-safe diagnostics
+testability
+</code></pre>
+<hr />
+<h1 id="3-non-goals"><a class="header" href="#3-non-goals">3. Non-Goals</a></h1>
+<p>Part 34 does not attempt to:</p>
+<pre><code class="language-text">replace SIAR E2EE
+replace Iroh/QUIC
+replace LAN/Bluetooth/mesh
+route realtime video through a high-latency mixnet by default
+claim perfect anonymity
+invent new cryptography
+expose mixnet protocol complexity directly to ordinary users
+</code></pre>
+<hr />
+<h1 id="4-core-architectural-principle"><a class="header" href="#4-core-architectural-principle">4. Core Architectural Principle</a></h1>
+<p>The high-anonymity system is an additional transport plane:</p>
+<pre><code class="language-text">SIAR Application
+      │
+      ▼
+Application E2EE
+      │
+      ▼
+Routing Policy Engine
+      │
+      ├── Performance Transport Plane
+      │     ├── Iroh / QUIC
+      │     ├── Relay
+      │     ├── LAN
+      │     ├── Wi-Fi Direct
+      │     └── Bluetooth
+      │
+      ├── Delay-Tolerant Plane
+      │     └── DTN / Store-Carry-Forward
+      │
+      └── High-Anonymity Plane
+            ├── Nym Provider
+            └── SIAR Native Mixnet [future]
+</code></pre>
+<hr />
+<h1 id="5-encryption-is-not-anonymity"><a class="header" href="#5-encryption-is-not-anonymity">5. Encryption Is Not Anonymity</a></h1>
+<p>The architecture must preserve a strict distinction:</p>
+<pre><code class="language-text">Application E2EE
+    protects message content
+
+Transport encryption
+    protects transport sessions
+
+Mixnet anonymity
+    protects communication metadata and linkage
+</code></pre>
+<p>Therefore:</p>
+<pre><code class="language-text">E2EE ≠ anonymity
+anonymity ≠ E2EE
+</code></pre>
+<p>SIAR should normally use:</p>
+<pre><code class="language-text">E2EE + anonymous transport
+</code></pre>
+<p>for anonymous messaging.</p>
+<hr />
+<h1 id="6-mixnet-concept"><a class="header" href="#6-mixnet-concept">6. Mixnet Concept</a></h1>
+<p>A mixnet routes messages through multiple intermediate mix nodes.</p>
+<p>Each mix node:</p>
+<pre><code class="language-text">receives packets
+cryptographically transforms packets
+delays packets
+reorders packets
+forwards packets
+</code></pre>
+<p>The purpose is to make it difficult for an observer to correlate:</p>
+<pre><code class="language-text">input packet
+↔
+output packet
+</code></pre>
+<hr />
+<h1 id="7-loopix-role"><a class="header" href="#7-loopix-role">7. Loopix Role</a></h1>
+<p>Loopix provides a useful architectural model for low-latency anonymous messaging.</p>
+<p>Important ideas include:</p>
+<pre><code class="language-text">stratified mix topology
+Poisson-distributed delays
+cover traffic
+loop traffic
+provider/mailbox nodes
+offline recipient support
+fixed-size packetization
+</code></pre>
+<p>SIAR should adopt the <strong>design concepts</strong>, not blindly copy every protocol detail.</p>
+<hr />
+<h1 id="8-sphinx-role"><a class="header" href="#8-sphinx-role">8. Sphinx Role</a></h1>
+<p>Sphinx is not itself a complete anonymity network.</p>
+<p>Within this architecture it represents the packet construction/routing layer that can provide:</p>
+<pre><code class="language-text">layered routing encryption
+per-hop transformation
+hidden route information
+fixed-size or normalized packet structure
+integrity protection
+unlinkability between hops
+</code></pre>
+<p>Mixing, delays, topology, cover traffic, and route policies are still required.</p>
+<hr />
+<h1 id="9-nym-role"><a class="header" href="#9-nym-role">9. Nym Role</a></h1>
+<p>Nym should be SIAR's first external high-anonymity provider.</p>
+<p>Reason:</p>
+<pre><code class="language-text">deployed mixnet
+Loopix-derived architecture
+Sphinx packet design
+existing node infrastructure
+existing client/runtime ecosystem
+practical route to production experimentation
+</code></pre>
+<p>SIAR must integrate Nym through an abstraction rather than embedding Nym assumptions throughout the codebase.</p>
+<hr />
+<h1 id="10-high-level-architecture"><a class="header" href="#10-high-level-architecture">10. High-Level Architecture</a></h1>
+<pre><code class="language-text">┌─────────────────────────────────────────────────────────┐
+│                    SIAR APPLICATION                     │
+├─────────────────────────────────────────────────────────┤
+│ Identity │ Messaging │ Files │ Groups │ Sync │ Plugins │
+├─────────────────────────────────────────────────────────┤
+│                  Application E2EE                       │
+├─────────────────────────────────────────────────────────┤
+│              Routing / Privacy Policy Engine            │
+├───────────────┬───────────────────┬─────────────────────┤
+│ Realtime      │ Delay-Tolerant    │ High-Anonymity      │
+│ Transport     │ Transport         │ Transport           │
+├───────────────┼───────────────────┼─────────────────────┤
+│ Iroh / QUIC   │ DTN               │ AnonymousTransport  │
+│ Relay         │ Store/Forward     │   ├─ NymAdapter     │
+│ LAN           │ Opportunistic     │   └─ NativeMixnet   │
+│ Wi-Fi Direct  │ Mesh              │      [future]       │
+│ Bluetooth     │                   │                     │
+└───────────────┴───────────────────┴─────────────────────┘
+</code></pre>
+<hr />
+<h1 id="11-privacy-routing-modes"><a class="header" href="#11-privacy-routing-modes">11. Privacy Routing Modes</a></h1>
+<p>Ordinary users should select <strong>intent</strong>, not protocols.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum PrivacyRoutingMode {
+    Standard,
+    Private,
+    Anonymous,
+    MaximumAnonymity,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="12-standard-mode"><a class="header" href="#12-standard-mode">12. Standard Mode</a></h1>
+<p>Intent:</p>
+<pre><code class="language-text">lowest practical latency
+normal SIAR security
+normal transport fallback
+</code></pre>
+<p>Allowed paths:</p>
+<pre><code class="language-text">direct
+relay
+LAN
+Wi-Fi Direct
+Bluetooth
+DTN
+</code></pre>
+<hr />
+<h1 id="13-private-mode"><a class="header" href="#13-private-mode">13. Private Mode</a></h1>
+<p>Intent:</p>
+<pre><code class="language-text">reduce direct endpoint exposure
+</code></pre>
+<p>Possible rules:</p>
+<pre><code class="language-text">prefer relay
+avoid direct peer-IP exposure
+restrict opportunistic paths
+retain reasonable latency
+</code></pre>
+<p>This is <strong>not</strong> full anonymity.</p>
+<hr />
+<h1 id="14-anonymous-mode"><a class="header" href="#14-anonymous-mode">14. Anonymous Mode</a></h1>
+<p>Intent:</p>
+<pre><code class="language-text">strong network metadata protection
+</code></pre>
+<p>Preferred route:</p>
+<pre><code class="language-text">approved mixnet provider
+</code></pre>
+<p>Fallback policy must be explicit.</p>
+<hr />
+<h1 id="15-maximum-anonymity-mode"><a class="header" href="#15-maximum-anonymity-mode">15. Maximum Anonymity Mode</a></h1>
+<p>Intent:</p>
+<pre><code class="language-text">strict anonymity over availability/latency
+</code></pre>
+<p>Required policies may include:</p>
+<pre><code class="language-text">mixnet-only routing
+no direct fallback
+no ordinary relay fallback
+mandatory packet normalization
+cover traffic
+metadata-minimizing application behavior
+privacy-safe logs
+restricted plugins
+reduced presence
+reduced receipts
+no external preview fetch
+</code></pre>
+<hr />
+<h1 id="16-downgrade-prevention"><a class="header" href="#16-downgrade-prevention">16. Downgrade Prevention</a></h1>
+<p>This is a critical security boundary.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum AnonymityFallbackPolicy {
+    NeverFallback,
+    AnonymousPathsOnly,
+    AskBeforeDowngrade,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Maximum-anonymity default:</p>
+<pre><code class="language-text">NeverFallback
+</code></pre>
+<hr />
+<h1 id="17-forbidden-silent-downgrade"><a class="header" href="#17-forbidden-silent-downgrade">17. Forbidden Silent Downgrade</a></h1>
+<p>Never:</p>
+<pre><code class="language-text">Nym unavailable
+→ silently use direct QUIC
+</code></pre>
+<p>because doing so can reveal metadata the user explicitly asked to protect.</p>
+<hr />
+<h1 id="18-route-failure-ux-semantics"><a class="header" href="#18-route-failure-ux-semantics">18. Route Failure UX Semantics</a></h1>
+<p>Correct:</p>
+<pre><code class="language-text">Anonymous route unavailable.
+Message remains queued.
+</code></pre>
+<p>Incorrect:</p>
+<pre><code class="language-text">Connection restored through direct route.
+</code></pre>
+<p>without explicit user approval.</p>
+<hr />
+<h1 id="19-route-requirements"><a class="header" href="#19-route-requirements">19. Route Requirements</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct RouteRequirements {
+    pub anonymity: AnonymityRequirement,
+    pub latency: LatencyRequirement,
+    pub bandwidth: BandwidthRequirement,
+    pub reliability: ReliabilityRequirement,
+    pub power: PowerRequirement,
+    pub offline: OfflineRequirement,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="20-anonymity-requirement"><a class="header" href="#20-anonymity-requirement">20. Anonymity Requirement</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum AnonymityRequirement {
+    None,
+    HidePeerAddress,
+    MixnetPreferred,
+    MixnetRequired,
+    Maximum,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="21-transport-capability-model"><a class="header" href="#21-transport-capability-model">21. Transport Capability Model</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct TransportCapabilities {
+    pub supports_realtime: bool,
+    pub supports_offline_delivery: bool,
+    pub supports_anonymous_reply: bool,
+    pub hides_sender_network_identity: bool,
+    pub hides_receiver_network_identity: bool,
+    pub provides_cover_traffic: bool,
+    pub fixed_size_packets: bool,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="22-anonymous-transport-interface"><a class="header" href="#22-anonymous-transport-interface">22. Anonymous Transport Interface</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[async_trait]
+pub trait AnonymousTransport: Send + Sync {
+    async fn start(
+        &amp;self,
+        config: AnonymousTransportConfig,
+    ) -&gt; Result&lt;(), AnonymousTransportError&gt;;
+
+    async fn stop(
+        &amp;self,
+    ) -&gt; Result&lt;(), AnonymousTransportError&gt;;
+
+    async fn send(
+        &amp;self,
+        request: AnonymousSendRequest,
+    ) -&gt; Result&lt;AnonymousDeliveryId, AnonymousTransportError&gt;;
+
+    async fn receive(
+        &amp;self,
+    ) -&gt; Result&lt;AnonymousEnvelope, AnonymousTransportError&gt;;
+
+    async fn status(
+        &amp;self,
+    ) -&gt; AnonymousTransportStatus;
+
+    fn capabilities(
+        &amp;self,
+    ) -&gt; AnonymousCapabilities;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="23-provider-implementations"><a class="header" href="#23-provider-implementations">23. Provider Implementations</a></h1>
+<p>Initial:</p>
+<pre><code class="language-text">NymAnonymousTransport
+TestAnonymousTransport
+</code></pre>
+<p>Future:</p>
+<pre><code class="language-text">SiarNativeMixnetTransport
+</code></pre>
+<hr />
+<h1 id="24-provider-registry"><a class="header" href="#24-provider-registry">24. Provider Registry</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait AnonymousTransportRegistry {
+    fn available(
+        &amp;self,
+    ) -&gt; Vec&lt;AnonymousProviderDescriptor&gt;;
+
+    fn resolve(
+        &amp;self,
+        provider: AnonymousProviderId,
+    ) -&gt; Option&lt;Arc&lt;dyn AnonymousTransport&gt;&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="25-provider-independence"><a class="header" href="#25-provider-independence">25. Provider Independence</a></h1>
+<p>Core messaging code must never depend directly on:</p>
+<pre><code class="language-text">Nym SDK types
+Nym addresses
+Nym packet types
+Nym node-list internals
+</code></pre>
+<p>These belong inside:</p>
+<pre><code class="language-text">nym-adapter
+</code></pre>
+<hr />
+<h1 id="26-workspace-proposal"><a class="header" href="#26-workspace-proposal">26. Workspace Proposal</a></h1>
+<pre><code class="language-text">crates/
+├── siar-anonymity-core/
+├── siar-anonymity-policy/
+├── siar-anonymity-routing/
+├── siar-anonymity-mailbox/
+├── siar-anonymity-cover/
+├── siar-anonymity-packet/
+├── siar-anonymity-observability/
+├── siar-anonymity-testkit/
+├── siar-anonymity-nym/
+└── siar-anonymity-native/        # future
+</code></pre>
+<hr />
+<h1 id="27-layer-boundaries"><a class="header" href="#27-layer-boundaries">27. Layer Boundaries</a></h1>
+<pre><code class="language-text">siar-anonymity-core
+    provider-neutral types
+
+siar-anonymity-policy
+    anonymity/routing rules
+
+siar-anonymity-routing
+    route orchestration
+
+siar-anonymity-mailbox
+    anonymous asynchronous receiving
+
+siar-anonymity-cover
+    cover-traffic policy
+
+siar-anonymity-packet
+    packet framing/normalization abstractions
+
+siar-anonymity-observability
+    privacy-safe metrics
+
+siar-anonymity-nym
+    Nym-specific implementation
+
+siar-anonymity-testkit
+    deterministic tests
+</code></pre>
+<hr />
+<h1 id="28-envelope-layering"><a class="header" href="#28-envelope-layering">28. Envelope Layering</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">SIAR Message
+     │
+     ▼
+Application E2EE Envelope
+     │
+     ▼
+Anonymous Transport Envelope
+     │
+     ▼
+Mixnet Packetization
+     │
+     ▼
+Sphinx/Provider Packet
+</code></pre>
+<hr />
+<h1 id="29-application-e2ee-remains-authoritative"><a class="header" href="#29-application-e2ee-remains-authoritative">29. Application E2EE Remains Authoritative</a></h1>
+<p>The mixnet provider must never become responsible for SIAR's end-to-end identity/session security.</p>
+<hr />
+<h1 id="30-anonymous-envelope"><a class="header" href="#30-anonymous-envelope">30. Anonymous Envelope</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct AnonymousEnvelope {
+    pub version: AnonymousEnvelopeVersion,
+    pub message_class: AnonymousMessageClass,
+    pub payload: Bytes,
+    pub expiry: Timestamp,
+    pub reply: Option&lt;AnonymousReplyDescriptor&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="31-message-classes"><a class="header" href="#31-message-classes">31. Message Classes</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum AnonymousMessageClass {
+    Control,
+    Text,
+    AttachmentChunk,
+    Receipt,
+    Bootstrap,
+    MailboxControl,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="32-packet-size-normalization"><a class="header" href="#32-packet-size-normalization">32. Packet Size Normalization</a></h1>
+<p>Anonymous messages should be converted into normalized cells/packets.</p>
+<p>Purpose:</p>
+<pre><code class="language-text">reduce traffic fingerprinting
+hide payload-length variation
+make cover traffic less distinguishable
+</code></pre>
+<hr />
+<h1 id="33-fragmentation"><a class="header" href="#33-fragmentation">33. Fragmentation</a></h1>
+<p>Large application payload:</p>
+<pre><code class="language-text">payload
+→ anonymous chunks
+→ fixed/normalized packet cells
+</code></pre>
+<hr />
+<h1 id="34-reassembly"><a class="header" href="#34-reassembly">34. Reassembly</a></h1>
+<p>Recipient:</p>
+<pre><code class="language-text">cells
+→ authenticated reassembly
+→ E2EE envelope
+</code></pre>
+<hr />
+<h1 id="35-fragment-metadata"><a class="header" href="#35-fragment-metadata">35. Fragment Metadata</a></h1>
+<p>Must avoid globally linkable identifiers where possible.</p>
+<hr />
+<h1 id="36-reassembly-id"><a class="header" href="#36-reassembly-id">36. Reassembly ID</a></h1>
+<p>Use cryptographically random scoped identifier.</p>
+<hr />
+<h1 id="37-fragment-limits"><a class="header" href="#37-fragment-limits">37. Fragment Limits</a></h1>
+<p>Bound:</p>
+<pre><code class="language-text">max fragments
+max total message bytes
+max lifetime
+max incomplete assemblies
+</code></pre>
+<hr />
+<h1 id="38-cover-traffic"><a class="header" href="#38-cover-traffic">38. Cover Traffic</a></h1>
+<p>High-anonymity modes may require cover traffic.</p>
+<p>Cover traffic makes traffic patterns less directly correlated with real communication.</p>
+<hr />
+<h1 id="39-cover-traffic-policy"><a class="header" href="#39-cover-traffic-policy">39. Cover Traffic Policy</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum CoverTrafficPolicy {
+    Disabled,
+    Adaptive,
+    Standard,
+    Maximum,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="40-cover-traffic-constraints"><a class="header" href="#40-cover-traffic-constraints">40. Cover Traffic Constraints</a></h1>
+<p>Cover traffic consumes:</p>
+<pre><code class="language-text">bandwidth
+battery
+relay/mix capacity
+</code></pre>
+<p>Therefore policy must be explicit and resource-aware.</p>
+<hr />
+<h1 id="41-adaptive-cover-traffic"><a class="header" href="#41-adaptive-cover-traffic">41. Adaptive Cover Traffic</a></h1>
+<p>Could consider:</p>
+<pre><code class="language-text">device power state
+metered network
+battery level
+foreground/background
+anonymity mode
+</code></pre>
+<p>without leaking per-message intent.</p>
+<hr />
+<h1 id="42-maximum-anonymity"><a class="header" href="#42-maximum-anonymity">42. Maximum Anonymity</a></h1>
+<p>May override battery/network optimization if user explicitly chooses it.</p>
+<p>The user should be informed.</p>
+<hr />
+<h1 id="43-delay-distribution"><a class="header" href="#43-delay-distribution">43. Delay Distribution</a></h1>
+<p>A Loopix-inspired provider may use randomized delay.</p>
+<p>Conceptually:</p>
+<pre><code class="language-text">packet
+→ delay sampled from configured distribution
+→ next mix hop
+</code></pre>
+<hr />
+<h1 id="44-delay-must-be-provider-owned"><a class="header" href="#44-delay-must-be-provider-owned">44. Delay Must Be Provider-Owned</a></h1>
+<p>Core SIAR should express:</p>
+<pre><code class="language-text">privacy/latency requirement
+</code></pre>
+<p>not manually implement provider-specific Poisson parameters.</p>
+<hr />
+<h1 id="45-delay-policy"><a class="header" href="#45-delay-policy">45. Delay Policy</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum AnonymousLatencyClass {
+    InteractiveMessaging,
+    Balanced,
+    MaximumPrivacy,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="46-no-false-realtime-promise"><a class="header" href="#46-no-false-realtime-promise">46. No False Realtime Promise</a></h1>
+<p>High-anonymity message delivery can take seconds or longer.</p>
+<p>UI must communicate this honestly.</p>
+<hr />
+<h1 id="47-mailbox--store-and-forward"><a class="header" href="#47-mailbox--store-and-forward">47. Mailbox / Store-and-Forward</a></h1>
+<p>Anonymous communication must support offline recipients.</p>
+<p>Architecture:</p>
+<pre><code class="language-text">Sender
+  │
+  ▼
+Mixnet
+  │
+  ▼
+Anonymous Mailbox / Provider
+  │
+  ▼
+Recipient later retrieves
+</code></pre>
+<hr />
+<h1 id="48-mailbox-goals"><a class="header" href="#48-mailbox-goals">48. Mailbox Goals</a></h1>
+<pre><code class="language-text">recipient can be offline
+provider cannot read payload
+mailbox identifier minimizes linkability
+bounded retention
+authenticated retrieval
+</code></pre>
+<hr />
+<h1 id="49-mailbox-abstraction"><a class="header" href="#49-mailbox-abstraction">49. Mailbox Abstraction</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait AnonymousMailbox {
+    async fn deposit(
+        &amp;self,
+        envelope: AnonymousMailboxEnvelope,
+    ) -&gt; Result&lt;MailboxDepositReceipt, MailboxError&gt;;
+
+    async fn fetch(
+        &amp;self,
+        cursor: Option&lt;MailboxCursor&gt;,
+    ) -&gt; Result&lt;MailboxBatch, MailboxError&gt;;
+
+    async fn acknowledge(
+        &amp;self,
+        ids: &amp;[MailboxItemId],
+    ) -&gt; Result&lt;(), MailboxError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="50-mailbox-identity"><a class="header" href="#50-mailbox-identity">50. Mailbox Identity</a></h1>
+<p>Do not reuse publicly visible:</p>
+<pre><code class="language-text">AccountId
+DeviceId
+</code></pre>
+<p>as mailbox address.</p>
+<p>Use anonymity-specific addressing.</p>
+<hr />
+<h1 id="51-mailbox-rotation"><a class="header" href="#51-mailbox-rotation">51. Mailbox Rotation</a></h1>
+<p>Support rotating mailbox/routing identifiers.</p>
+<hr />
+<h1 id="52-multi-device-mailboxes"><a class="header" href="#52-multi-device-mailboxes">52. Multi-Device Mailboxes</a></h1>
+<p>Each SIAR device may have separate anonymous receiving identity.</p>
+<p>Benefits:</p>
+<pre><code class="language-text">reduced correlation
+independent revocation
+device-local capability
+</code></pre>
+<hr />
+<h1 id="53-account-level-anonymous-fanout"><a class="header" href="#53-account-level-anonymous-fanout">53. Account-Level Anonymous Fanout</a></h1>
+<p>Application layer can fan out encrypted payloads to:</p>
+<pre><code class="language-text">device mailbox A
+device mailbox B
+device mailbox C
+</code></pre>
+<hr />
+<h1 id="54-anonymous-replies"><a class="header" href="#54-anonymous-replies">54. Anonymous Replies</a></h1>
+<p>A sender may need a reply path without exposing a stable receiver address.</p>
+<p>Use provider-compatible anonymous reply mechanisms such as:</p>
+<pre><code class="language-text">reply blocks / SURB-like tokens
+</code></pre>
+<hr />
+<h1 id="55-reply-descriptor"><a class="header" href="#55-reply-descriptor">55. Reply Descriptor</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct AnonymousReplyDescriptor {
+    pub kind: AnonymousReplyKind,
+    pub token: SecretBytes,
+    pub expires_at: Timestamp,
+    pub max_uses: u32,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="56-reply-token-security"><a class="header" href="#56-reply-token-security">56. Reply Token Security</a></h1>
+<p>Reply tokens are sensitive.</p>
+<p>Do not:</p>
+<pre><code class="language-text">log
+sync unnecessarily
+expose to plugins
+include in diagnostics
+</code></pre>
+<hr />
+<h1 id="57-single-use-preferred"><a class="header" href="#57-single-use-preferred">57. Single-Use Preferred</a></h1>
+<p>Where provider permits:</p>
+<pre><code class="language-text">single-use anonymous reply token
+</code></pre>
+<p>reduces correlation/replay risk.</p>
+<hr />
+<h1 id="58-reply-pool"><a class="header" href="#58-reply-pool">58. Reply Pool</a></h1>
+<p>Clients may maintain a bounded pool of reply blocks for asynchronous responses.</p>
+<hr />
+<h1 id="59-reply-pool-replenishment"><a class="header" href="#59-reply-pool-replenishment">59. Reply Pool Replenishment</a></h1>
+<p>Must occur independently enough that it does not trivially correlate with a specific incoming message.</p>
+<hr />
+<h1 id="60-anonymous-contact-bootstrap"><a class="header" href="#60-anonymous-contact-bootstrap">60. Anonymous Contact Bootstrap</a></h1>
+<p>SIAR can support anonymous introduction flows.</p>
+<p>Potential:</p>
+<pre><code class="language-text">Invitation
+→ temporary anonymous address
+→ mixnet exchange
+→ E2EE identity negotiation
+→ optional persistent relationship
+</code></pre>
+<hr />
+<h1 id="61-bootstrap-privacy"><a class="header" href="#61-bootstrap-privacy">61. Bootstrap Privacy</a></h1>
+<p>Do not expose:</p>
+<pre><code class="language-text">normal direct endpoint
+relay endpoint
+device IP
+</code></pre>
+<p>during strict anonymous bootstrap.</p>
+<hr />
+<h1 id="62-identity-vs-anonymity"><a class="header" href="#62-identity-vs-anonymity">62. Identity vs Anonymity</a></h1>
+<p>Users may communicate anonymously while still cryptographically authenticating to each other.</p>
+<p>These are separate properties.</p>
+<hr />
+<h1 id="63-pseudonymous-mode"><a class="header" href="#63-pseudonymous-mode">63. Pseudonymous Mode</a></h1>
+<p>Future SIAR may support:</p>
+<pre><code class="language-text">stable pseudonymous application identity
++
+anonymous network transport
+</code></pre>
+<hr />
+<h1 id="64-anonymous-mode"><a class="header" href="#64-anonymous-mode">64. Anonymous Mode</a></h1>
+<p>Could instead support:</p>
+<pre><code class="language-text">ephemeral application identity
++
+anonymous network transport
+</code></pre>
+<p>depending product feature.</p>
+<hr />
+<h1 id="65-route-policy-engine-integration"><a class="header" href="#65-route-policy-engine-integration">65. Route Policy Engine Integration</a></h1>
+<p>Existing multipath engine should become privacy-aware.</p>
+<p>Concept:</p>
+<pre><code class="language-text">Route Candidate
++
+Route Capabilities
++
+Privacy Constraints
++
+Performance Constraints
+→ Valid Candidate Set
+</code></pre>
+<hr />
+<h1 id="66-route-filtering"><a class="header" href="#66-route-filtering">66. Route Filtering</a></h1>
+<p>First:</p>
+<pre><code class="language-text">eliminate routes violating hard requirements
+</code></pre>
+<p>Then:</p>
+<pre><code class="language-text">rank remaining routes
+</code></pre>
+<hr />
+<h1 id="67-hard-constraint-example"><a class="header" href="#67-hard-constraint-example">67. Hard Constraint Example</a></h1>
+<pre><code class="language-text">MaximumAnonymity
+</code></pre>
+<p>rejects:</p>
+<pre><code class="language-text">DirectInternet
+Relay
+LAN
+Bluetooth
+</code></pre>
+<p>unless they are part of an explicitly approved anonymous overlay.</p>
+<hr />
+<h1 id="68-preference-example"><a class="header" href="#68-preference-example">68. Preference Example</a></h1>
+<pre><code class="language-text">Anonymous
+</code></pre>
+<p>may:</p>
+<pre><code class="language-text">prefer Nym
+allow approved alternate anonymous provider
+</code></pre>
+<hr />
+<h1 id="69-path-scoring"><a class="header" href="#69-path-scoring">69. Path Scoring</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct RouteScore {
+    pub privacy: f32,
+    pub latency: f32,
+    pub reliability: f32,
+    pub bandwidth: f32,
+    pub power: f32,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Hard constraints always precede scoring.</p>
+<hr />
+<h1 id="70-never-average-away-security-requirement"><a class="header" href="#70-never-average-away-security-requirement">70. Never Average Away Security Requirement</a></h1>
+<p>A very fast direct path must never beat a mandatory mixnet requirement.</p>
+<hr />
+<h1 id="71-multipath-interaction"><a class="header" href="#71-multipath-interaction">71. Multipath Interaction</a></h1>
+<p>For ordinary mode:</p>
+<pre><code class="language-text">parallel candidate paths possible
+</code></pre>
+<p>For strict anonymity:</p>
+<pre><code class="language-text">only anonymity-compatible paths participate
+</code></pre>
+<hr />
+<h1 id="72-route-migration"><a class="header" href="#72-route-migration">72. Route Migration</a></h1>
+<p>If anonymous route changes between mix providers:</p>
+<pre><code class="language-text">new provider session
+</code></pre>
+<p>must preserve application delivery semantics without exposing identity linkage unnecessarily.</p>
+<hr />
+<h1 id="73-failover"><a class="header" href="#73-failover">73. Failover</a></h1>
+<p>Allowed:</p>
+<pre><code class="language-text">Nym Provider A
+→ Nym Provider B
+</code></pre>
+<p>if anonymity policy accepts both.</p>
+<hr />
+<h1 id="74-cross-class-failover"><a class="header" href="#74-cross-class-failover">74. Cross-Class Failover</a></h1>
+<p>Not allowed without policy:</p>
+<pre><code class="language-text">Mixnet
+→ ordinary relay
+</code></pre>
+<hr />
+<h1 id="75-dtn-integration"><a class="header" href="#75-dtn-integration">75. DTN Integration</a></h1>
+<p>DTN and anonymity are complementary.</p>
+<p>Potential:</p>
+<pre><code class="language-text">E2EE message
+→ anonymous envelope
+→ mixnet
+</code></pre>
+<p>or:</p>
+<pre><code class="language-text">E2EE message
+→ anonymous-capable DTN carrier
+</code></pre>
+<p>But ordinary DTN relays may leak proximity or route metadata.</p>
+<hr />
+<h1 id="76-anonymous-dtn-classification"><a class="header" href="#76-anonymous-dtn-classification">76. Anonymous DTN Classification</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum DtnPrivacyClass {
+    Ordinary,
+    MetadataMinimized,
+    AnonymousCompatible,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="77-maximum-anonymity--dtn"><a class="header" href="#77-maximum-anonymity--dtn">77. Maximum Anonymity + DTN</a></h1>
+<p>Only use DTN routes explicitly certified as compatible with anonymity guarantees.</p>
+<hr />
+<h1 id="78-bluetoothlan-interaction"><a class="header" href="#78-bluetoothlan-interaction">78. Bluetooth/LAN Interaction</a></h1>
+<p>These can reveal:</p>
+<pre><code class="language-text">physical proximity
+local network membership
+device radio identifiers
+</code></pre>
+<p>Therefore they should normally be disabled in Maximum Anonymity mode.</p>
+<hr />
+<h1 id="79-nearby-discovery"><a class="header" href="#79-nearby-discovery">79. Nearby Discovery</a></h1>
+<p>Strict anonymity profile should disable:</p>
+<pre><code class="language-text">automatic local discovery
+</code></pre>
+<p>unless the user explicitly activates a local-proximity feature.</p>
+<hr />
+<h1 id="80-presence-integration"><a class="header" href="#80-presence-integration">80. Presence Integration</a></h1>
+<p>Presence leaks communication metadata.</p>
+<p>Anonymity profile may set:</p>
+<pre><code class="language-text">presence = disabled / coarse
+</code></pre>
+<hr />
+<h1 id="81-typing-indicators"><a class="header" href="#81-typing-indicators">81. Typing Indicators</a></h1>
+<p>Maximum anonymity default:</p>
+<pre><code class="language-text">off
+</code></pre>
+<hr />
+<h1 id="82-read-receipts"><a class="header" href="#82-read-receipts">82. Read Receipts</a></h1>
+<p>Maximum anonymity default:</p>
+<pre><code class="language-text">off
+</code></pre>
+<p>or:</p>
+<pre><code class="language-text">delayed/batched
+</code></pre>
+<hr />
+<h1 id="83-delivery-receipts"><a class="header" href="#83-delivery-receipts">83. Delivery Receipts</a></h1>
+<p>Transport reliability may still require internal ACKs.</p>
+<p>They should not automatically become user-visible read receipts.</p>
+<hr />
+<h1 id="84-timestamp-precision"><a class="header" href="#84-timestamp-precision">84. Timestamp Precision</a></h1>
+<p>High-anonymity mode may reduce exposed timestamp precision.</p>
+<hr />
+<h1 id="85-link-preview-privacy"><a class="header" href="#85-link-preview-privacy">85. Link Preview Privacy</a></h1>
+<p>Disable external automatic URL fetches in strict anonymity mode.</p>
+<hr />
+<h1 id="86-avatar-privacy"><a class="header" href="#86-avatar-privacy">86. Avatar Privacy</a></h1>
+<p>Do not fetch avatars from external origins directly.</p>
+<p>Use:</p>
+<pre><code class="language-text">SIAR-encrypted/local data
+</code></pre>
+<hr />
+<h1 id="87-plugin-restrictions"><a class="header" href="#87-plugin-restrictions">87. Plugin Restrictions</a></h1>
+<p>Plugins with:</p>
+<pre><code class="language-text">NetworkAccess
+ReadMessages
+ReadContacts
+</code></pre>
+<p>can undermine anonymity.</p>
+<hr />
+<h1 id="88-maximum-anonymity-plugin-policy"><a class="header" href="#88-maximum-anonymity-plugin-policy">88. Maximum Anonymity Plugin Policy</a></h1>
+<p>Possible:</p>
+<pre><code class="language-text">network-capable plugins suspended
+message-reading plugins restricted
+external integrations disabled
+</code></pre>
+<hr />
+<h1 id="89-plugin-capability-gate"><a class="header" href="#89-plugin-capability-gate">89. Plugin Capability Gate</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum AnonymityPluginPolicy {
+    Normal,
+    RestrictNetworkPlugins,
+    DisableSensitivePlugins,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="90-telemetry"><a class="header" href="#90-telemetry">90. Telemetry</a></h1>
+<p>Maximum-anonymity mode:</p>
+<pre><code class="language-text">no identifying telemetry
+</code></pre>
+<p>Prefer local-only diagnostics.</p>
+<hr />
+<h1 id="91-logging"><a class="header" href="#91-logging">91. Logging</a></h1>
+<p>Never log:</p>
+<pre><code class="language-text">mix route
+full anonymous address
+reply block
+mailbox secret
+packet payload
+direct-peer identity correlation
+</code></pre>
+<hr />
+<h1 id="92-privacy-safe-metrics"><a class="header" href="#92-privacy-safe-metrics">92. Privacy-Safe Metrics</a></h1>
+<p>Possible:</p>
+<pre><code class="language-text">anonymous send success
+anonymous send latency bucket
+provider availability
+queue depth
+cover traffic bytes
+</code></pre>
+<p>without peer identities.</p>
+<hr />
+<h1 id="93-diagnostics"><a class="header" href="#93-diagnostics">93. Diagnostics</a></h1>
+<p>Normal UX:</p>
+<pre><code class="language-text">Anonymous route connected
+Anonymous route unavailable
+Messages waiting for anonymous route
+</code></pre>
+<hr />
+<h1 id="94-developer-diagnostics"><a class="header" href="#94-developer-diagnostics">94. Developer Diagnostics</a></h1>
+<p>Could expose:</p>
+<pre><code class="language-text">provider name
+connection state
+latency class
+cover traffic state
+packet queue size
+</code></pre>
+<p>but not route secrets.</p>
+<hr />
+<h1 id="95-do-not-expose-mix-route"><a class="header" href="#95-do-not-expose-mix-route">95. Do Not Expose Mix Route</a></h1>
+<p>Showing every mix hop can undermine operational privacy and is generally unnecessary.</p>
+<hr />
+<h1 id="96-anonymous-transport-status"><a class="header" href="#96-anonymous-transport-status">96. Anonymous Transport Status</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum AnonymousTransportStatus {
+    Disabled,
+    Starting,
+    Ready,
+    Degraded,
+    Unavailable,
+    Suspended,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="97-anonymous-delivery-state"><a class="header" href="#97-anonymous-delivery-state">97. Anonymous Delivery State</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum AnonymousDeliveryState {
+    Queued,
+    Packetizing,
+    Submitted,
+    Mixing,
+    MailboxDeposited,
+    Delivered,
+    Failed,
+    Expired,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="98-user-facing-simplification"><a class="header" href="#98-user-facing-simplification">98. User-Facing Simplification</a></h1>
+<p>Display:</p>
+<pre><code class="language-text">Queued
+Sending anonymously
+Delivered
+Waiting for anonymous route
+</code></pre>
+<p>not every internal state.</p>
+<hr />
+<h1 id="99-large-attachments"><a class="header" href="#99-large-attachments">99. Large Attachments</a></h1>
+<p>Mixnets are inefficient for large files.</p>
+<p>Recommended architecture:</p>
+<pre><code class="language-text">small attachment
+→ mixnet chunks
+
+large attachment
+→ privacy-preserving rendezvous/token
+→ separate approved private transport
+</code></pre>
+<p>only if anonymity guarantees are preserved.</p>
+<hr />
+<h1 id="100-large-file-policy"><a class="header" href="#100-large-file-policy">100. Large File Policy</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum AnonymousAttachmentPolicy {
+    MixnetOnly,
+    AnonymousRendezvous,
+    AskUser,
+    DisallowLargeTransfer,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="101-no-silent-large-file-downgrade"><a class="header" href="#101-no-silent-large-file-downgrade">101. No Silent Large-File Downgrade</a></h1>
+<p>Never:</p>
+<pre><code class="language-text">mixnet too slow
+→ direct file transfer
+</code></pre>
+<p>without explicit policy/user approval.</p>
+<hr />
+<h1 id="102-attachment-threshold"><a class="header" href="#102-attachment-threshold">102. Attachment Threshold</a></h1>
+<p>Configured by:</p>
+<pre><code class="language-text">provider capabilities
+network cost
+battery
+latency
+</code></pre>
+<p>not one hardcoded global value.</p>
+<hr />
+<h1 id="103-realtime-calls"><a class="header" href="#103-realtime-calls">103. Realtime Calls</a></h1>
+<p>Mixnets are generally not appropriate as the media plane for interactive voice/video.</p>
+<hr />
+<h1 id="104-anonymous-call-signaling"><a class="header" href="#104-anonymous-call-signaling">104. Anonymous Call Signaling</a></h1>
+<p>Possible:</p>
+<pre><code class="language-text">call invitation/signaling through mixnet
+</code></pre>
+<p>but media may reveal endpoints unless separately protected.</p>
+<hr />
+<h1 id="105-call-privacy-classes"><a class="header" href="#105-call-privacy-classes">105. Call Privacy Classes</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum CallPrivacyMode {
+    Standard,
+    RelayPrivate,
+    AnonymousSignaling,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Do not call the media session "fully anonymous" unless the media path actually satisfies that property.</p>
+<hr />
+<h1 id="106-emergency-mode-interaction"><a class="header" href="#106-emergency-mode-interaction">106. Emergency Mode Interaction</a></h1>
+<p>Emergency routing prioritizes:</p>
+<pre><code class="language-text">reachability
+latency
+survivability
+</code></pre>
+<p>Maximum anonymity may conflict.</p>
+<hr />
+<h1 id="107-emergency-policy"><a class="header" href="#107-emergency-policy">107. Emergency Policy</a></h1>
+<p>The user should explicitly choose between:</p>
+<pre><code class="language-text">Emergency Reachability
+Maximum Anonymity
+</code></pre>
+<p>where these goals conflict.</p>
+<hr />
+<h1 id="108-never-silently-disable-emergency-reachability"><a class="header" href="#108-never-silently-disable-emergency-reachability">108. Never Silently Disable Emergency Reachability</a></h1>
+<p>If Maximum Anonymity prevents local/Bluetooth routes, explain clearly.</p>
+<hr />
+<h1 id="109-power-management"><a class="header" href="#109-power-management">109. Power Management</a></h1>
+<p>Mixnets consume extra resources because of:</p>
+<pre><code class="language-text">persistent connectivity
+cover traffic
+packet processing
+mailbox polling
+</code></pre>
+<hr />
+<h1 id="110-battery-policy"><a class="header" href="#110-battery-policy">110. Battery Policy</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum AnonymousPowerPolicy {
+    Adaptive,
+    PreserveBattery,
+    MaintainAnonymity,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="111-maintain-anonymity"><a class="header" href="#111-maintain-anonymity">111. Maintain Anonymity</a></h1>
+<p>Can keep cover traffic despite battery cost if explicitly selected.</p>
+<hr />
+<h1 id="112-battery-saver"><a class="header" href="#112-battery-saver">112. Battery Saver</a></h1>
+<p>If OS battery saver limits background activity:</p>
+<pre><code class="language-text">anonymity transport may degrade
+</code></pre>
+<p>Never silently switch to direct transport.</p>
+<hr />
+<h1 id="113-android-background-constraints"><a class="header" href="#113-android-background-constraints">113. Android Background Constraints</a></h1>
+<p>Nym/mixnet runtime must integrate with:</p>
+<pre><code class="language-text">foreground service where justified
+background restrictions
+Doze
+network changes
+battery saver
+</code></pre>
+<hr />
+<h1 id="114-android-process-death"><a class="header" href="#114-android-process-death">114. Android Process Death</a></h1>
+<p>Durable anonymous outbound queue remains in Rust storage.</p>
+<hr />
+<h1 id="115-desktop-runtime"><a class="header" href="#115-desktop-runtime">115. Desktop Runtime</a></h1>
+<p>Can run anonymity transport in:</p>
+<pre><code class="language-text">daemon
+</code></pre>
+<p>independently of UI.</p>
+<hr />
+<h1 id="116-queue-durability"><a class="header" href="#116-queue-durability">116. Queue Durability</a></h1>
+<p>Anonymous outgoing messages must be persisted before attempting delivery.</p>
+<hr />
+<h1 id="117-queue-record"><a class="header" href="#117-queue-record">117. Queue Record</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct AnonymousOutboxRecord {
+    pub delivery_id: AnonymousDeliveryId,
+    pub envelope_ref: EncryptedPayloadRef,
+    pub provider: AnonymousProviderId,
+    pub policy: AnonymousDeliveryPolicy,
+    pub state: AnonymousDeliveryState,
+    pub created_at: Timestamp,
+    pub expires_at: Timestamp,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="118-payload-storage"><a class="header" href="#118-payload-storage">118. Payload Storage</a></h1>
+<p>Encrypted at rest.</p>
+<hr />
+<h1 id="119-retry"><a class="header" href="#119-retry">119. Retry</a></h1>
+<p>Mixnet retry semantics must avoid:</p>
+<pre><code class="language-text">duplicate user-visible messages
+replay amplification
+</code></pre>
+<hr />
+<h1 id="120-application-message-id"><a class="header" href="#120-application-message-id">120. Application Message ID</a></h1>
+<p>Deduplication remains application-level.</p>
+<hr />
+<h1 id="121-anonymous-delivery-id"><a class="header" href="#121-anonymous-delivery-id">121. Anonymous Delivery ID</a></h1>
+<p>Transport-specific.</p>
+<p>Do not equate it with:</p>
+<pre><code class="language-text">MessageId
+</code></pre>
+<hr />
+<h1 id="122-replay-protection"><a class="header" href="#122-replay-protection">122. Replay Protection</a></h1>
+<p>Use:</p>
+<pre><code class="language-text">authenticated envelope IDs
+expiry
+dedup store
+reply-token use limits
+</code></pre>
+<hr />
+<h1 id="123-expiry"><a class="header" href="#123-expiry">123. Expiry</a></h1>
+<p>Anonymous packets/messages need bounded lifetime.</p>
+<hr />
+<h1 id="124-expired-message"><a class="header" href="#124-expired-message">124. Expired Message</a></h1>
+<p>User-facing:</p>
+<pre><code class="language-text">Message expired before an anonymous route became available.
+</code></pre>
+<hr />
+<h1 id="125-clock-considerations"><a class="header" href="#125-clock-considerations">125. Clock Considerations</a></h1>
+<p>Do not rely solely on exact wall-clock synchronization for security-critical replay prevention.</p>
+<hr />
+<h1 id="126-key-material"><a class="header" href="#126-key-material">126. Key Material</a></h1>
+<p>Mixnet/provider keys must be separated from:</p>
+<pre><code class="language-text">SIAR identity keys
+E2EE ratchet keys
+device trust keys
+backup keys
+</code></pre>
+<hr />
+<h1 id="127-key-domains"><a class="header" href="#127-key-domains">127. Key Domains</a></h1>
+<pre><code class="language-text">identity key
+device key
+session E2EE key
+anonymous provider key
+mailbox key
+reply-token secret
+</code></pre>
+<p>all separate.</p>
+<hr />
+<h1 id="128-key-storage"><a class="header" href="#128-key-storage">128. Key Storage</a></h1>
+<p>Use existing secure key-store architecture.</p>
+<hr />
+<h1 id="129-key-rotation"><a class="header" href="#129-key-rotation">129. Key Rotation</a></h1>
+<p>Support:</p>
+<pre><code class="language-text">provider identity rotation
+mailbox rotation
+reply-token rotation
+</code></pre>
+<hr />
+<h1 id="130-provider-compromise"><a class="header" href="#130-provider-compromise">130. Provider Compromise</a></h1>
+<p>A compromised provider should not expose SIAR plaintext or primary identity private keys.</p>
+<hr />
+<h1 id="131-node-discovery"><a class="header" href="#131-node-discovery">131. Node Discovery</a></h1>
+<p>Provider adapter obtains mixnet topology through provider-approved mechanism.</p>
+<hr />
+<h1 id="132-core-siar-does-not-interpret-nym-blockchain-internals"><a class="header" href="#132-core-siar-does-not-interpret-nym-blockchain-internals">132. Core SIAR Does Not Interpret Nym Blockchain Internals</a></h1>
+<p>Keep adapter boundary.</p>
+<hr />
+<h1 id="133-topology-cache"><a class="header" href="#133-topology-cache">133. Topology Cache</a></h1>
+<p>Provider may keep:</p>
+<pre><code class="language-text">signed/validated topology snapshot
+</code></pre>
+<p>according to provider requirements.</p>
+<hr />
+<h1 id="134-stale-topology"><a class="header" href="#134-stale-topology">134. Stale Topology</a></h1>
+<p>May degrade route availability.</p>
+<p>Do not silently use untrusted topology.</p>
+<hr />
+<h1 id="135-censorship--blocking"><a class="header" href="#135-censorship--blocking">135. Censorship / Blocking</a></h1>
+<p>High-anonymity provider connectivity may be blocked.</p>
+<p>Architecture should support:</p>
+<pre><code class="language-text">provider transport adapters
+bridges/obfuscation if provider supports
+multiple entry mechanisms
+</code></pre>
+<p>without compromising security.</p>
+<hr />
+<h1 id="136-censorship-mode"><a class="header" href="#136-censorship-mode">136. Censorship Mode</a></h1>
+<p>Future:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum AnonymousAccessMode {
+    Normal,
+    RestrictedNetwork,
+    Bridge,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="137-sybil-resistance"><a class="header" href="#137-sybil-resistance">137. Sybil Resistance</a></h1>
+<p>If SIAR later builds a native mixnet, node admission and Sybil resistance become major separate architecture topics.</p>
+<p>Do not improvise them inside Part 34.</p>
+<hr />
+<h1 id="138-native-mixnet-future"><a class="header" href="#138-native-mixnet-future">138. Native Mixnet Future</a></h1>
+<p>Potential future SIAR-native architecture:</p>
+<pre><code class="language-text">Client
+  │
+Gateway
+  │
+Layer 1 Mixes
+  │
+Layer 2 Mixes
+  │
+Layer 3 Mixes
+  │
+Mailbox/Gateway
+  │
+Recipient
+</code></pre>
+<hr />
+<h1 id="139-native-mixnet-components"><a class="header" href="#139-native-mixnet-components">139. Native Mixnet Components</a></h1>
+<p>Would require:</p>
+<pre><code class="language-text">directory/topology
+node identity
+node selection
+mix packet format
+delays
+cover traffic
+loop traffic
+mailboxes
+reply blocks
+abuse resistance
+node incentives/governance
+Sybil resistance
+measurement
+upgrade protocol
+</code></pre>
+<p>Each deserves its own later specification.</p>
+<hr />
+<h1 id="140-do-not-implement-new-cryptography"><a class="header" href="#140-do-not-implement-new-cryptography">140. Do Not Implement New Cryptography</a></h1>
+<p>Use:</p>
+<pre><code class="language-text">well-reviewed established constructions
+audited crates
+provider libraries
+</code></pre>
+<p>where possible.</p>
+<hr />
+<h1 id="141-rust-safety-boundary"><a class="header" href="#141-rust-safety-boundary">141. Rust Safety Boundary</a></h1>
+<p>Prefer safe Rust.</p>
+<p>Any FFI/native code must be isolated behind narrow wrappers.</p>
+<hr />
+<h1 id="142-dependency-policy"><a class="header" href="#142-dependency-policy">142. Dependency Policy</a></h1>
+<p>Anonymous transport dependencies need stricter review because compromise can undermine anonymity.</p>
+<hr />
+<h1 id="143-supply-chain"><a class="header" href="#143-supply-chain">143. Supply Chain</a></h1>
+<p>Require:</p>
+<pre><code class="language-text">pinned dependencies
+cargo-deny
+SBOM
+audit
+signed releases where available
+reproducible-build effort
+</code></pre>
+<hr />
+<h1 id="144-threat-model"><a class="header" href="#144-threat-model">144. Threat Model</a></h1>
+<p>Adversaries may include:</p>
+<pre><code class="language-text">local network observer
+ISP
+relay observer
+mix node operator
+malicious mix node
+colluding mix nodes
+global passive observer
+active packet injector
+malicious recipient
+malicious sender
+compromised plugin
+compromised provider
+</code></pre>
+<hr />
+<h1 id="145-global-passive-observer"><a class="header" href="#145-global-passive-observer">145. Global Passive Observer</a></h1>
+<p>Maximum-anonymity architecture should be designed with this adversary in mind, while being honest that implementation and operational weaknesses can still leak information.</p>
+<hr />
+<h1 id="146-active-attacker"><a class="header" href="#146-active-attacker">146. Active Attacker</a></h1>
+<p>Must consider:</p>
+<pre><code class="language-text">packet tagging
+delay manipulation
+replay
+dropping
+traffic shaping
+selective denial
+</code></pre>
+<hr />
+<h1 id="147-intersection-attacks"><a class="header" href="#147-intersection-attacks">147. Intersection Attacks</a></h1>
+<p>Long-term user activity patterns can still reveal information.</p>
+<p>Mitigations include:</p>
+<pre><code class="language-text">cover traffic
+persistent receive behavior
+batching
+timing normalization
+</code></pre>
+<p>but cannot guarantee perfect protection.</p>
+<hr />
+<h1 id="148-endpoint-compromise"><a class="header" href="#148-endpoint-compromise">148. Endpoint Compromise</a></h1>
+<p>A mixnet cannot protect anonymity if:</p>
+<pre><code class="language-text">device malware
+plugin leakage
+OS compromise
+</code></pre>
+<p>reveals user activity.</p>
+<hr />
+<h1 id="149-contact-correlation"><a class="header" href="#149-contact-correlation">149. Contact Correlation</a></h1>
+<p>Application features themselves can create linkability.</p>
+<p>Maximum-anonymity profile must minimize these.</p>
+<hr />
+<h1 id="150-abuse-resistance"><a class="header" href="#150-abuse-resistance">150. Abuse Resistance</a></h1>
+<p>Anonymous systems can be abused.</p>
+<p>Architecture should support provider/core mechanisms for:</p>
+<pre><code class="language-text">rate limits
+resource quotas
+mailbox quotas
+spam control
+invitation capabilities
+</code></pre>
+<p>without requiring global identity exposure.</p>
+<hr />
+<h1 id="151-anonymous-rate-limiting"><a class="header" href="#151-anonymous-rate-limiting">151. Anonymous Rate Limiting</a></h1>
+<p>Prefer:</p>
+<pre><code class="language-text">privacy-preserving tokens
+capability tokens
+local quotas
+</code></pre>
+<p>rather than identity-based tracking where possible.</p>
+<hr />
+<h1 id="152-spam"><a class="header" href="#152-spam">152. Spam</a></h1>
+<p>Unknown anonymous inbound messages should default to:</p>
+<pre><code class="language-text">requests/quarantine
+</code></pre>
+<hr />
+<h1 id="153-attachment-spam"><a class="header" href="#153-attachment-spam">153. Attachment Spam</a></h1>
+<p>Do not auto-download anonymous attachments from unknown senders.</p>
+<hr />
+<h1 id="154-malware-safety"><a class="header" href="#154-malware-safety">154. Malware Safety</a></h1>
+<p>Anonymous transport does not imply trusted content.</p>
+<p>Existing file validation/sandbox rules remain.</p>
+<hr />
+<h1 id="155-metadata-budget"><a class="header" href="#155-metadata-budget">155. Metadata Budget</a></h1>
+<p>Every feature in anonymous mode should declare what metadata it emits.</p>
+<hr />
+<h1 id="156-metadata-classification"><a class="header" href="#156-metadata-classification">156. Metadata Classification</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum MetadataExposure {
+    NoneExpected,
+    LocalOnly,
+    ProviderVisible,
+    NetworkVisible,
+    PeerVisible,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="157-privacy-review"><a class="header" href="#157-privacy-review">157. Privacy Review</a></h1>
+<p>Any new feature that runs under Maximum Anonymity must be reviewed for:</p>
+<pre><code class="language-text">network fetches
+timing
+identifiers
+telemetry
+plugins
+background traffic
+</code></pre>
+<hr />
+<h1 id="158-configuration"><a class="header" href="#158-configuration">158. Configuration</a></h1>
+<p>Human-readable RON:</p>
+<pre><code class="language-ron">(
+    mode: MaximumAnonymity,
+    provider: "nym",
+    fallback: NeverFallback,
+    cover_traffic: Maximum,
+    power_policy: MaintainAnonymity,
+)
+</code></pre>
+<hr />
+<h1 id="159-secrets-not-in-ron"><a class="header" href="#159-secrets-not-in-ron">159. Secrets Not in RON</a></h1>
+<p>Never store:</p>
+<pre><code class="language-text">private keys
+mailbox secrets
+reply tokens
+</code></pre>
+<p>in plaintext configuration.</p>
+<hr />
+<h1 id="160-runtime-config"><a class="header" href="#160-runtime-config">160. Runtime Config</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct AnonymousTransportConfig {
+    pub provider: AnonymousProviderId,
+    pub fallback: AnonymityFallbackPolicy,
+    pub cover: CoverTrafficPolicy,
+    pub power: AnonymousPowerPolicy,
+    pub latency: AnonymousLatencyClass,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="161-policy-resolution"><a class="header" href="#161-policy-resolution">161. Policy Resolution</a></h1>
+<pre><code class="language-text">User Privacy Mode
++
+Conversation Policy
++
+Enterprise Policy
++
+Platform Capability
++
+Provider Availability
+→ Effective Anonymity Policy
+</code></pre>
+<hr />
+<h1 id="162-conversation-override"><a class="header" href="#162-conversation-override">162. Conversation Override</a></h1>
+<p>User may choose:</p>
+<pre><code class="language-text">Always use anonymous routing for this conversation
+</code></pre>
+<hr />
+<h1 id="163-conversation-policy"><a class="header" href="#163-conversation-policy">163. Conversation Policy</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct ConversationPrivacyPolicy {
+    pub routing_mode: PrivacyRoutingMode,
+    pub fallback: AnonymityFallbackPolicy,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="164-enterprisemanaged-policy"><a class="header" href="#164-enterprisemanaged-policy">164. Enterprise/Managed Policy</a></h1>
+<p>Organization may:</p>
+<pre><code class="language-text">require anonymity
+forbid external mixnet providers
+restrict provider list
+</code></pre>
+<hr />
+<h1 id="165-policy-conflict"><a class="header" href="#165-policy-conflict">165. Policy Conflict</a></h1>
+<p>Security/privacy strongest mandatory constraint wins unless policy explicitly defines otherwise.</p>
+<hr />
+<h1 id="166-ui-integration"><a class="header" href="#166-ui-integration">166. UI Integration</a></h1>
+<p>Settings:</p>
+<pre><code class="language-text">Privacy Routing
+    Standard
+    Private
+    Anonymous
+    Maximum Anonymity
+</code></pre>
+<hr />
+<h1 id="167-user-education"><a class="header" href="#167-user-education">167. User Education</a></h1>
+<p>Maximum Anonymity explanation:</p>
+<pre><code class="language-text">Routes messages through an anonymity network and may increase delay,
+battery use, and bandwidth. SIAR will not fall back to less-private
+routes without your permission.
+</code></pre>
+<hr />
+<h1 id="168-per-conversation-indicator"><a class="header" href="#168-per-conversation-indicator">168. Per-Conversation Indicator</a></h1>
+<p>Subtle:</p>
+<pre><code class="language-text">Anonymous routing
+</code></pre>
+<p>Do not clutter every message.</p>
+<hr />
+<h1 id="169-route-failure-banner"><a class="header" href="#169-route-failure-banner">169. Route Failure Banner</a></h1>
+<pre><code class="language-text">Anonymous route unavailable
+Messages are waiting rather than using a less-private connection.
+</code></pre>
+<hr />
+<h1 id="170-status-semantics"><a class="header" href="#170-status-semantics">170. Status Semantics</a></h1>
+<p>Never say:</p>
+<pre><code class="language-text">Fully anonymous
+</code></pre>
+<p>as an absolute guarantee.</p>
+<p>Prefer:</p>
+<pre><code class="language-text">Maximum Anonymity mode
+</code></pre>
+<p>or:</p>
+<pre><code class="language-text">Anonymous routing enabled
+</code></pre>
+<hr />
+<h1 id="171-diagnostics-integration"><a class="header" href="#171-diagnostics-integration">171. Diagnostics Integration</a></h1>
+<p>Network diagnostics should add:</p>
+<pre><code class="language-text">Anonymous Transport
+Provider
+Status
+Queued anonymous messages
+Cover traffic state
+</code></pre>
+<hr />
+<h1 id="172-support-bundle-redaction"><a class="header" href="#172-support-bundle-redaction">172. Support Bundle Redaction</a></h1>
+<p>Exclude:</p>
+<pre><code class="language-text">mailbox address
+reply tokens
+route hops
+provider private keys
+peer correlation
+</code></pre>
+<hr />
+<h1 id="173-search-integration"><a class="header" href="#173-search-integration">173. Search Integration</a></h1>
+<p>Local search is safe.</p>
+<p>External semantic search/AI integrations should be disabled or separately authorized in Maximum Anonymity mode.</p>
+<hr />
+<h1 id="174-backup-integration"><a class="header" href="#174-backup-integration">174. Backup Integration</a></h1>
+<p>Backup may include:</p>
+<pre><code class="language-text">anonymous settings
+provider-neutral mailbox metadata
+</code></pre>
+<p>but should generally not restore stale live anonymous session state blindly.</p>
+<hr />
+<h1 id="175-new-device-restore"><a class="header" href="#175-new-device-restore">175. New Device Restore</a></h1>
+<p>Create fresh:</p>
+<pre><code class="language-text">anonymous provider identity
+mailbox credentials
+reply-token pool
+</code></pre>
+<p>where security requires.</p>
+<hr />
+<h1 id="176-device-revocation"><a class="header" href="#176-device-revocation">176. Device Revocation</a></h1>
+<p>Revoking device should also invalidate/rotate its anonymous receiving capabilities when possible.</p>
+<hr />
+<h1 id="177-multi-device-sync"><a class="header" href="#177-multi-device-sync">177. Multi-Device Sync</a></h1>
+<p>Do not synchronize live reply tokens between devices unless protocol explicitly requires it.</p>
+<hr />
+<h1 id="178-provider-migration"><a class="header" href="#178-provider-migration">178. Provider Migration</a></h1>
+<p>Architecture must support:</p>
+<pre><code class="language-text">Nym
+→ future provider
+</code></pre>
+<p>without changing core MessageId/E2EE state.</p>
+<hr />
+<h1 id="179-migration-state"><a class="header" href="#179-migration-state">179. Migration State</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum AnonymousProviderMigrationState {
+    Idle,
+    Preparing,
+    DualReceive,
+    Switching,
+    RetiringOld,
+    Complete,
+    Failed,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="180-dual-receive"><a class="header" href="#180-dual-receive">180. Dual Receive</a></h1>
+<p>Temporary overlap may be required to avoid lost messages.</p>
+<p>Must be bounded to reduce correlation.</p>
+<hr />
+<h1 id="181-provider-health"><a class="header" href="#181-provider-health">181. Provider Health</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct AnonymousProviderHealth {
+    pub status: AnonymousTransportStatus,
+    pub last_success: Option&lt;Timestamp&gt;,
+    pub queue_depth: u32,
+    pub estimated_latency_class: AnonymousLatencyClass,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="182-no-peer-specific-provider-metrics"><a class="header" href="#182-no-peer-specific-provider-metrics">182. No Peer-Specific Provider Metrics</a></h1>
+<p>Avoid telemetry that correlates provider timing with specific contacts.</p>
+<hr />
+<h1 id="183-testing-strategy"><a class="header" href="#183-testing-strategy">183. Testing Strategy</a></h1>
+<p>Part 34 requires dedicated:</p>
+<pre><code class="language-text">unit
+property
+integration
+simulation
+adversarial
+performance
+privacy
+fault-injection
+</code></pre>
+<p>tests.</p>
+<hr />
+<h1 id="184-unit-tests"><a class="header" href="#184-unit-tests">184. Unit Tests</a></h1>
+<p>Test:</p>
+<pre><code class="language-text">policy resolution
+fallback rejection
+queue lifecycle
+expiry
+fragment bounds
+</code></pre>
+<hr />
+<h1 id="185-property-tests"><a class="header" href="#185-property-tests">185. Property Tests</a></h1>
+<p>Properties:</p>
+<pre><code class="language-text">MaximumAnonymity never selects direct path
+duplicate anonymous packet never duplicates user message
+invalid reply token rejected
+fragment reassembly bounded
+</code></pre>
+<hr />
+<h1 id="186-downgrade-test"><a class="header" href="#186-downgrade-test">186. Downgrade Test</a></h1>
+<p>Mandatory invariant:</p>
+<pre><code class="language-text">anonymous provider unavailable
++
+NeverFallback
+→
+message remains queued
+</code></pre>
+<hr />
+<h1 id="187-route-selection-tests"><a class="header" href="#187-route-selection-tests">187. Route Selection Tests</a></h1>
+<p>Matrix:</p>
+<pre><code class="language-text">Standard + Direct
+Private + Relay
+Anonymous + Nym
+Maximum + Nym
+Maximum + Nym unavailable
+</code></pre>
+<hr />
+<h1 id="188-network-fault-tests"><a class="header" href="#188-network-fault-tests">188. Network Fault Tests</a></h1>
+<p>Simulate:</p>
+<pre><code class="language-text">provider unreachable
+topology stale
+mix path drops
+mailbox unavailable
+high latency
+packet duplication
+packet reordering
+</code></pre>
+<hr />
+<h1 id="189-offline-tests"><a class="header" href="#189-offline-tests">189. Offline Tests</a></h1>
+<p>Recipient offline:</p>
+<pre><code class="language-text">sender submits
+mailbox stores
+recipient later retrieves
+dedup applies
+</code></pre>
+<hr />
+<h1 id="190-reply-tests"><a class="header" href="#190-reply-tests">190. Reply Tests</a></h1>
+<pre><code class="language-text">single-use reply
+expired reply
+replayed reply
+pool depletion
+</code></pre>
+<hr />
+<h1 id="191-cover-traffic-tests"><a class="header" href="#191-cover-traffic-tests">191. Cover Traffic Tests</a></h1>
+<p>Verify:</p>
+<pre><code class="language-text">policy active
+rate bounded
+battery policy applied
+real/cover path indistinguishable at application boundary
+</code></pre>
+<p>without claiming cryptographic proof from UI tests.</p>
+<hr />
+<h1 id="192-metadata-leak-tests"><a class="header" href="#192-metadata-leak-tests">192. Metadata Leak Tests</a></h1>
+<p>Use canary values to ensure:</p>
+<pre><code class="language-text">AccountId
+DeviceId
+peer address
+MessageId
+</code></pre>
+<p>do not appear in provider-facing fields unless explicitly required.</p>
+<hr />
+<h1 id="193-logging-leak-tests"><a class="header" href="#193-logging-leak-tests">193. Logging Leak Tests</a></h1>
+<p>Canary secrets must never appear in:</p>
+<pre><code class="language-text">logs
+support bundles
+crash reports
+diagnostics
+</code></pre>
+<hr />
+<h1 id="194-plugin-leak-tests"><a class="header" href="#194-plugin-leak-tests">194. Plugin Leak Tests</a></h1>
+<p>Maximum anonymity:</p>
+<pre><code class="language-text">network plugin blocked/restricted
+</code></pre>
+<p>as policy defines.</p>
+<hr />
+<h1 id="195-link-preview-tests"><a class="header" href="#195-link-preview-tests">195. Link Preview Tests</a></h1>
+<p>External fetch suppressed.</p>
+<hr />
+<h1 id="196-presence-tests"><a class="header" href="#196-presence-tests">196. Presence Tests</a></h1>
+<p>Maximum mode prevents normal high-frequency presence traffic if configured.</p>
+<hr />
+<h1 id="197-performance-tests"><a class="header" href="#197-performance-tests">197. Performance Tests</a></h1>
+<p>Measure:</p>
+<pre><code class="language-text">send latency
+queue throughput
+packetization cost
+mailbox retrieval
+memory
+CPU
+cover traffic bandwidth
+battery impact
+</code></pre>
+<hr />
+<h1 id="198-android-tests"><a class="header" href="#198-android-tests">198. Android Tests</a></h1>
+<p>Measure:</p>
+<pre><code class="language-text">Doze
+battery saver
+background restriction
+process death
+network switching
+</code></pre>
+<hr />
+<h1 id="199-desktop-tests"><a class="header" href="#199-desktop-tests">199. Desktop Tests</a></h1>
+<p>Measure:</p>
+<pre><code class="language-text">daemon restart
+sleep/resume
+network switching
+</code></pre>
+<hr />
+<h1 id="200-provider-adapter-contract-tests"><a class="header" href="#200-provider-adapter-contract-tests">200. Provider Adapter Contract Tests</a></h1>
+<p>Nym implementation must satisfy provider-neutral test suite.</p>
+<hr />
+<h1 id="201-fake-mixnet"><a class="header" href="#201-fake-mixnet">201. Fake Mixnet</a></h1>
+<p><code>siar-anonymity-testkit</code> should include deterministic simulated mixnet.</p>
+<hr />
+<h1 id="202-simulated-mixnet-features"><a class="header" href="#202-simulated-mixnet-features">202. Simulated Mixnet Features</a></h1>
+<pre><code class="language-text">configurable layers
+latency
+drops
+duplicates
+mailbox
+reply token
+route failure
+</code></pre>
+<hr />
+<h1 id="203-no-real-network-required-for-most-tests"><a class="header" href="#203-no-real-network-required-for-most-tests">203. No Real Network Required for Most Tests</a></h1>
+<p>Real Nym integration tests should be separate.</p>
+<hr />
+<h1 id="204-integration-test-tiers"><a class="header" href="#204-integration-test-tiers">204. Integration Test Tiers</a></h1>
+<pre><code class="language-text">Fake Mixnet PR tests
+Nym test environment nightly
+Production-like release validation
+</code></pre>
+<hr />
+<h1 id="205-fuzzing"><a class="header" href="#205-fuzzing">205. Fuzzing</a></h1>
+<p>Fuzz:</p>
+<pre><code class="language-text">anonymous envelope parser
+fragment parser
+reply descriptor parser
+provider adapter input
+</code></pre>
+<hr />
+<h1 id="206-resource-exhaustion"><a class="header" href="#206-resource-exhaustion">206. Resource Exhaustion</a></h1>
+<p>Test:</p>
+<pre><code class="language-text">fragment flood
+mailbox flood
+reply-token flood
+queue flood
+</code></pre>
+<hr />
+<h1 id="207-backpressure"><a class="header" href="#207-backpressure">207. Backpressure</a></h1>
+<p>Anonymous queue must have quotas.</p>
+<hr />
+<h1 id="208-quota-model"><a class="header" href="#208-quota-model">208. Quota Model</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct AnonymousQueueLimits {
+    pub max_messages: u32,
+    pub max_bytes: u64,
+    pub max_incomplete_fragments: u32,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="209-queue-full"><a class="header" href="#209-queue-full">209. Queue Full</a></h1>
+<p>User-facing:</p>
+<pre><code class="language-text">Anonymous send queue is full.
+</code></pre>
+<p>Offer safe management.</p>
+<hr />
+<h1 id="210-do-not-downgrade-because-queue-is-full"><a class="header" href="#210-do-not-downgrade-because-queue-is-full">210. Do Not Downgrade Because Queue Is Full</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="211-monitoring"><a class="header" href="#211-monitoring">211. Monitoring</a></h1>
+<p>Local observability:</p>
+<pre><code class="language-text">provider availability
+queue depth
+cover bytes
+success/failure count
+latency buckets
+</code></pre>
+<hr />
+<h1 id="212-slos"><a class="header" href="#212-slos">212. SLOs</a></h1>
+<p>Anonymous transport needs separate SLOs from realtime transport.</p>
+<p>Examples:</p>
+<pre><code class="language-text">availability
+submission success
+mailbox retrieval
+bounded queue persistence
+</code></pre>
+<hr />
+<h1 id="213-no-realtime-sla"><a class="header" href="#213-no-realtime-sla">213. No Realtime SLA</a></h1>
+<p>Do not evaluate mixnet against voice-call latency standards.</p>
+<hr />
+<h1 id="214-failure-semantics"><a class="header" href="#214-failure-semantics">214. Failure Semantics</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum AnonymousTransportError {
+    ProviderUnavailable,
+    PolicyViolation,
+    QueueFull,
+    PacketizationFailed,
+    MailboxUnavailable,
+    ReplyTokenInvalid,
+    ReplyTokenExpired,
+    TopologyUnavailable,
+    Unsupported,
+    Internal,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="215-policyviolation"><a class="header" href="#215-policyviolation">215. PolicyViolation</a></h1>
+<p>Used when operation would require privacy downgrade.</p>
+<hr />
+<h1 id="216-security-critical-errors"><a class="header" href="#216-security-critical-errors">216. Security-Critical Errors</a></h1>
+<p>Must fail closed:</p>
+<pre><code class="language-text">invalid topology/authentication
+reply token integrity failure
+packet authentication failure
+policy mismatch
+</code></pre>
+<hr />
+<h1 id="217-unsupported-feature"><a class="header" href="#217-unsupported-feature">217. Unsupported Feature</a></h1>
+<p>Example:</p>
+<pre><code class="language-text">live video unavailable in Maximum Anonymity mode
+</code></pre>
+<p>should be explicit.</p>
+<hr />
+<h1 id="218-feature-capability-query"><a class="header" href="#218-feature-capability-query">218. Feature Capability Query</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait PrivacyCapabilityResolver {
+    fn evaluate(
+        &amp;self,
+        feature: FeatureKind,
+        mode: PrivacyRoutingMode,
+    ) -&gt; FeaturePrivacyCompatibility;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="219-compatibility-states"><a class="header" href="#219-compatibility-states">219. Compatibility States</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum FeaturePrivacyCompatibility {
+    Supported,
+    SupportedWithDegradation,
+    RequiresDowngrade,
+    Unsupported,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="220-user-controlled-downgrade"><a class="header" href="#220-user-controlled-downgrade">220. User-Controlled Downgrade</a></h1>
+<p>If action requires weaker privacy:</p>
+<pre><code class="language-text">This call cannot use Maximum Anonymity.
+Switch to Relay-Private for this call?
+</code></pre>
+<p>Explicit choice only.</p>
+<hr />
+<h1 id="221-temporary-downgrade"><a class="header" href="#221-temporary-downgrade">221. Temporary Downgrade</a></h1>
+<p>Should be scoped:</p>
+<pre><code class="language-text">this action
+this call
+this conversation
+</code></pre>
+<p>not global unless user chooses.</p>
+<hr />
+<h1 id="222-policy-audit-event"><a class="header" href="#222-policy-audit-event">222. Policy Audit Event</a></h1>
+<p>Record locally:</p>
+<pre><code class="language-text">privacy mode changed
+downgrade approved
+provider changed
+</code></pre>
+<p>without sensitive peer metadata where possible.</p>
+<hr />
+<h1 id="223-privacy-event"><a class="header" href="#223-privacy-event">223. Privacy Event</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum PrivacyRoutingEvent {
+    ModeChanged,
+    ProviderChanged,
+    DowngradeRequested,
+    DowngradeApproved,
+    DowngradeRejected,
+    AnonymousRouteLost,
+    AnonymousRouteRestored,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="224-security-center-integration"><a class="header" href="#224-security-center-integration">224. Security Center Integration</a></h1>
+<p>Could show:</p>
+<pre><code class="language-text">Privacy routing: Maximum Anonymity
+Anonymous provider: Ready
+Direct fallback: Disabled
+</code></pre>
+<hr />
+<h1 id="225-first-run-integration"><a class="header" href="#225-first-run-integration">225. First-Run Integration</a></h1>
+<p>Do not force mixnet setup on every user.</p>
+<p>Offer under:</p>
+<pre><code class="language-text">Privacy
+Advanced Privacy
+</code></pre>
+<hr />
+<h1 id="226-recommended-rollout"><a class="header" href="#226-recommended-rollout">226. Recommended Rollout</a></h1>
+<p>Phase 1:</p>
+<pre><code class="language-text">provider abstraction
+Nym adapter
+anonymous text/control messages
+no downgrade
+durable queue
+basic diagnostics
+</code></pre>
+<hr />
+<h1 id="227-phase-2"><a class="header" href="#227-phase-2">227. Phase 2</a></h1>
+<pre><code class="language-text">anonymous mailbox
+reply tokens/SURBs
+multi-device receive
+attachment chunking
+</code></pre>
+<hr />
+<h1 id="228-phase-3"><a class="header" href="#228-phase-3">228. Phase 3</a></h1>
+<pre><code class="language-text">cover traffic controls
+strict anonymity profile
+plugin/presence suppression
+provider migration
+</code></pre>
+<hr />
+<h1 id="229-phase-4"><a class="header" href="#229-phase-4">229. Phase 4</a></h1>
+<pre><code class="language-text">native SIAR mixnet research
+</code></pre>
+<hr />
+<h1 id="230-do-not-start-with-native-mixnet"><a class="header" href="#230-do-not-start-with-native-mixnet">230. Do Not Start With Native Mixnet</a></h1>
+<p>Building:</p>
+<pre><code class="language-text">mix-node network
+directory
+Sybil resistance
+node selection
+incentives
+measurements
+</code></pre>
+<p>is a major standalone project.</p>
+<p>Use a provider adapter first.</p>
+<hr />
+<h1 id="231-production-readiness-checklist"><a class="header" href="#231-production-readiness-checklist">231. Production Readiness Checklist</a></h1>
+<p>Before enabling Anonymous mode:</p>
+<pre><code class="language-text">provider adapter audited
+downgrade invariants tested
+queue crash-safe
+logs redacted
+mailbox secrets secure
+multi-device semantics defined
+battery impact measured
+provider failure UX complete
+</code></pre>
+<hr />
+<h1 id="232-maximum-anonymity-readiness"><a class="header" href="#232-maximum-anonymity-readiness">232. Maximum Anonymity Readiness</a></h1>
+<p>Stricter:</p>
+<pre><code class="language-text">no direct fallback
+metadata features suppressed
+plugins restricted
+external fetch disabled
+support bundle redacted
+cover traffic configured
+reply/mailbox handling tested
+</code></pre>
+<hr />
+<h1 id="233-security-review-questions"><a class="header" href="#233-security-review-questions">233. Security Review Questions</a></h1>
+<p>For every anonymous feature ask:</p>
+<pre><code class="language-text">Can this reveal sender IP?
+Can this reveal recipient IP?
+Can this correlate AccountId to mailbox?
+Can this create timing correlation?
+Can this leak through plugins?
+Can this fetch external resources directly?
+Can this silently downgrade?
+Can logs expose route secrets?
+</code></pre>
+<hr />
+<h1 id="234-architectural-invariants"><a class="header" href="#234-architectural-invariants">234. Architectural Invariants</a></h1>
+<p>The following are mandatory:</p>
+<pre><code class="language-text">1. E2EE always remains independent of mixnet.
+2. MaximumAnonymity never silently selects non-anonymous paths.
+3. Provider-specific types never leak into core messaging.
+4. Anonymous addresses are separate from AccountId/DeviceId.
+5. Reply tokens are secret and never logged.
+6. Mixnet failures do not corrupt application message state.
+7. Application MessageId provides user-level deduplication.
+8. Anonymous queue is durable before send.
+9. Large transfers never silently downgrade.
+10. Realtime media is never described as anonymous unless its entire path satisfies the claim.
+11. Plugins cannot bypass anonymity policy.
+12. Diagnostics never reveal full anonymous route secrets.
+</code></pre>
+<hr />
+<h1 id="235-recommended-crate-api-boundary"><a class="header" href="#235-recommended-crate-api-boundary">235. Recommended Crate API Boundary</a></h1>
+<pre><code class="language-text">siar-messaging
+    │
+    ▼
+siar-routing
+    │
+    ▼
+siar-anonymity-core
+    │
+    ├── siar-anonymity-policy
+    ├── siar-anonymity-mailbox
+    ├── siar-anonymity-cover
+    └── provider
+          └── siar-anonymity-nym
+</code></pre>
+<hr />
+<h1 id="236-dependency-direction"><a class="header" href="#236-dependency-direction">236. Dependency Direction</a></h1>
+<p>Never:</p>
+<pre><code class="language-text">siar-messaging
+→ nym-sdk
+</code></pre>
+<p>Instead:</p>
+<pre><code class="language-text">siar-messaging
+→ anonymous transport trait
+→ nym adapter
+</code></pre>
+<hr />
+<h1 id="237-example-send-flow"><a class="header" href="#237-example-send-flow">237. Example Send Flow</a></h1>
+<pre><code class="language-text">User sends message
+      │
+      ▼
+Messaging validates
+      │
+      ▼
+E2EE envelope created
+      │
+      ▼
+Route policy:
+MaximumAnonymity
+      │
+      ▼
+Select AnonymousTransport
+      │
+      ▼
+Persist anonymous outbox
+      │
+      ▼
+Packetize / normalize
+      │
+      ▼
+Nym adapter
+      │
+      ▼
+Mixnet
+      │
+      ▼
+Anonymous mailbox / recipient
+      │
+      ▼
+Recipient unwraps transport
+      │
+      ▼
+E2EE decrypt
+      │
+      ▼
+Message committed
+</code></pre>
+<hr />
+<h1 id="238-example-provider-failure"><a class="header" href="#238-example-provider-failure">238. Example Provider Failure</a></h1>
+<pre><code class="language-text">Message persisted
+      │
+      ▼
+Nym unavailable
+      │
+      ▼
+Policy = NeverFallback
+      │
+      ▼
+Remain queued
+      │
+      ▼
+UI: "Waiting for anonymous route"
+</code></pre>
+<p>No direct route is attempted.</p>
+<hr />
+<h1 id="239-example-anonymous-reply"><a class="header" href="#239-example-anonymous-reply">239. Example Anonymous Reply</a></h1>
+<pre><code class="language-text">Alice
+  │
+  ├─ sends encrypted message
+  └─ includes reply capability
+          │
+          ▼
+        Mixnet
+          │
+          ▼
+Bob receives
+  │
+  └─ uses reply capability
+          │
+          ▼
+        Mixnet
+          │
+          ▼
+Alice
+</code></pre>
+<p>Bob need not learn Alice's network location.</p>
+<hr />
+<h1 id="240-example-strict-metadata-profile"><a class="header" href="#240-example-strict-metadata-profile">240. Example Strict Metadata Profile</a></h1>
+<pre><code class="language-text">Maximum Anonymity
+├── Mixnet required
+├── Never fallback
+├── Cover traffic enabled
+├── Presence off
+├── Typing off
+├── Read receipts off/delayed
+├── External previews off
+├── Network plugins restricted
+├── Local diagnostics only
+└── Anonymous mailbox enabled
+</code></pre>
+<hr />
+<h1 id="241-configuration-migration"><a class="header" href="#241-configuration-migration">241. Configuration Migration</a></h1>
+<p>Existing users default:</p>
+<pre><code class="language-text">Standard
+</code></pre>
+<p>Do not silently move current traffic to expensive anonymity mode.</p>
+<hr />
+<h1 id="242-user-opt-in"><a class="header" href="#242-user-opt-in">242. User Opt-In</a></h1>
+<p>Anonymous modes should be explicit because they change:</p>
+<pre><code class="language-text">latency
+battery
+bandwidth
+feature compatibility
+</code></pre>
+<hr />
+<h1 id="243-enterprise-defaults"><a class="header" href="#243-enterprise-defaults">243. Enterprise Defaults</a></h1>
+<p>Managed deployments may choose stricter default.</p>
+<hr />
+<h1 id="244-documentation"><a class="header" href="#244-documentation">244. Documentation</a></h1>
+<p>User documentation must explain:</p>
+<pre><code class="language-text">what anonymity protects
+what it does not protect
+latency tradeoffs
+battery/bandwidth tradeoffs
+feature limitations
+</code></pre>
+<hr />
+<h1 id="245-no-absolute-claims"><a class="header" href="#245-no-absolute-claims">245. No Absolute Claims</a></h1>
+<p>Avoid:</p>
+<pre><code class="language-text">impossible to trace
+100% anonymous
+untraceable
+</code></pre>
+<p>Use:</p>
+<pre><code class="language-text">designed to reduce metadata linkage
+stronger anonymity protection
+mixnet routing
+</code></pre>
+<hr />
+<h1 id="246-future-extensions"><a class="header" href="#246-future-extensions">246. Future Extensions</a></h1>
+<p>Potential later architecture parts:</p>
+<pre><code class="language-text">Anonymous Mailbox &amp; Reply Capability Architecture
+Native Loopix-Inspired Mixnet Architecture
+Sphinx Packet &amp; Cell Architecture
+Cover Traffic &amp; Traffic-Shaping Architecture
+Mixnet Directory / Node Selection / Sybil Resistance
+Anonymous Attachment &amp; Rendezvous Architecture
+Anonymity Threat Model &amp; Formal Privacy Verification
+Censorship Resistance / Bridges / Obfuscation
+</code></pre>
+<p>These should build on Part 34 rather than duplicate it.</p>
+<hr />
+<h1 id="247-initial-production-scope"><a class="header" href="#247-initial-production-scope">247. Initial Production Scope</a></h1>
+<p>Implement first:</p>
+<pre><code class="language-text">AnonymousTransport trait
+Nym provider adapter
+PrivacyRoutingMode
+AnonymityFallbackPolicy
+strict route filtering
+durable anonymous outbox
+small text/control messaging
+provider-neutral status
+basic packet-size normalization
+privacy-safe diagnostics
+no-downgrade tests
+</code></pre>
+<p>Then add:</p>
+<pre><code class="language-text">mailbox
+SURB/reply capability integration
+multi-device anonymous receiving
+cover traffic controls
+anonymous attachments
+strict metadata profile
+</code></pre>
+<hr />
+<h1 id="248-definition-of-done"><a class="header" href="#248-definition-of-done">248. Definition of Done</a></h1>
+<p>Part 34 is complete when:</p>
+<ul>
+<li>high-anonymity transport exists as a separate transport plane</li>
+<li>Mixnet, Loopix, Sphinx, and Nym roles are clearly distinguished</li>
+<li>provider-neutral <code>AnonymousTransport</code> abstraction is defined</li>
+<li>Nym is integrated only through an adapter</li>
+<li>Standard/Private/Anonymous/MaximumAnonymity routing modes exist</li>
+<li><code>NeverFallback</code> prevents privacy downgrade</li>
+<li>anonymous routes integrate with the multipath policy engine</li>
+<li>E2EE remains independent and mandatory for protected message contents</li>
+<li>normalized/fixed-size packetization concepts are defined</li>
+<li>durable anonymous queue semantics are defined</li>
+<li>anonymous mailboxes/offline receiving are accounted for</li>
+<li>anonymous reply/SURB-style capabilities are accounted for</li>
+<li>metadata-sensitive presence/typing/receipts/previews/plugins are handled by anonymity profile</li>
+<li>Bluetooth/LAN/DTN interactions are explicitly constrained by privacy mode</li>
+<li>large attachment behavior cannot silently downgrade</li>
+<li>realtime media limitations are explicit</li>
+<li>Android battery/background and desktop daemon behavior are defined</li>
+<li>privacy-safe observability and diagnostics are defined</li>
+<li>threat model covers passive, active, colluding, provider, plugin, and endpoint adversaries</li>
+<li>no-new-cryptography rule is explicit</li>
+<li>testkit, provider contract tests, downgrade invariants, leak tests, fuzzing, and fault injection are defined</li>
+<li>production rollout can begin with Nym without forcing SIAR to build its own mixnet</li>
+</ul>
+<hr />
+<h1 id="249-final-architecture"><a class="header" href="#249-final-architecture">249. Final Architecture</a></h1>
+<pre><code class="language-text">                         SIAR APPLICATION
+                               │
+                               ▼
+                         Application E2EE
+                               │
+                               ▼
+                      Privacy Routing Policy
+                               │
+      ┌────────────────────────┼────────────────────────┐
+      │                        │                        │
+Standard Paths             DTN Paths           Anonymous Paths
+      │                        │                        │
+Iroh / QUIC              Store/Forward        AnonymousTransport
+Relay                    Opportunistic               │
+LAN                      Mesh                        ├── Nym
+Wi-Fi Direct                                         │
+Bluetooth                                            └── Native Mixnet
+                                                         [future]
+</code></pre>
+<p>Strict anonymity path:</p>
+<pre><code class="language-text">Application Message
+      ↓
+E2EE
+      ↓
+Anonymous Envelope
+      ↓
+Normalized Cells
+      ↓
+Sphinx / Provider Packetization
+      ↓
+Mix Layers
+      ↓
+Anonymous Mailbox / Reply Path
+      ↓
+Recipient
+      ↓
+E2EE Decryption
+</code></pre>
+<p>Security invariant:</p>
+<pre><code class="language-text">Maximum Anonymity
++
+anonymous provider unavailable
+=
+WAIT
+
+not
+
+FALL BACK TO DIRECT
+</code></pre>
+<hr />
+<h1 id="250-final-principle"><a class="header" href="#250-final-principle">250. Final Principle</a></h1>
+<p>The high-anonymity architecture should not make every SIAR transport anonymous.</p>
+<p>Instead, SIAR should become <strong>privacy-policy driven</strong>:</p>
+<pre><code class="language-text">realtime when realtime matters
+local when local matters
+DTN when disconnected
+mixnet when anonymity matters
+</code></pre>
+<p>while preserving strict boundaries so that choosing stronger anonymity never silently degrades into an easier but metadata-leaking route.</p>
+<p>This creates a practical path from SIAR's existing multi-transport architecture to strong mixnet-based anonymity today through Nym, while leaving room for a future native Loopix/Sphinx-inspired anonymity network without coupling the rest of the platform to any one provider.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="ui-ux-27-ui-testing-screenshot-interaction-release-quality-gates-architecture.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="35-anonymous-mailbox-offline-receiving-reply-capability-architecture.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="ui-ux-27-ui-testing-screenshot-interaction-release-quality-gates-architecture.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="35-anonymous-mailbox-offline-receiving-reply-capability-architecture.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

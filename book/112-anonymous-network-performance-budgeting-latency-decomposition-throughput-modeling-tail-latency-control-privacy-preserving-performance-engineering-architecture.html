@@ -1,0 +1,2193 @@
+<!DOCTYPE HTML>
+<html lang="en" class="navy" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>112 — Anonymous Network Performance Budgeting, Latency Decomposition, Throughput Modeling, Tail-Latency Control &amp; Privacy-Preserving Performance Engineering Architecture - SIAR System Architecture &amp; Technical Wiki</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="Comprehensive system architecture, cryptographic protocols, DTN mesh networking, distributed storage, audio DSP pipelines, and UI/UX design specifications for SIAR.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="theme/custom.css">
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "navy";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('navy')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="Home.html">Architecture Portal & Reading Guide</a></li><li class="chapter-item expanded affix "><a href="design-rationale.html">System Architecture Design Rationale</a></li><li class="chapter-item expanded affix "><a href="system-capabilities-comparison.html">System Capabilities & Comparison Matrix</a></li><li class="chapter-item expanded affix "><a href="spec-order.html">Master Specification Execution Order</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part I: Protocol Foundation & Extension Platform</li><li class="chapter-item expanded "><a href="01-protocol-extension-system-architecture.html"><strong aria-hidden="true">1.</strong> 01 — Protocol Extension System Architecture</a></li><li class="chapter-item expanded "><a href="07-capability-negotiation-architecture.html"><strong aria-hidden="true">2.</strong> 07 — Capability Negotiation Architecture</a></li><li class="chapter-item expanded "><a href="21-third-party-protocol-extensions-architecture.html"><strong aria-hidden="true">3.</strong> 21 — Third-Party Protocol Extensions Architecture</a></li><li class="chapter-item expanded "><a href="22-wasm-compatible-components-architecture.html"><strong aria-hidden="true">4.</strong> 22 — WASM-Compatible Components Architecture</a></li><li class="chapter-item expanded "><a href="23-external-interoperability-suite-architecture.html"><strong aria-hidden="true">5.</strong> 23 — External Interoperability Suite Architecture</a></li><li class="chapter-item expanded "><a href="24-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">6.</strong> 24 — Plugin / Module Ecosystem Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part II: Identity, Trust & Cryptography</li><li class="chapter-item expanded "><a href="02-multi-device-identity-architecture.html"><strong aria-hidden="true">7.</strong> 02 — Multi-Device Identity Architecture</a></li><li class="chapter-item expanded "><a href="28-production-security-e2ee-key-management-privacy-architecture.html"><strong aria-hidden="true">8.</strong> 28 — Production Security, E2EE, Key Management, Abuse Resistance & Privacy Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part III: Mesh Networking, Transports & Hardware</li><li class="chapter-item expanded "><a href="03-transport-routing-policy-engine-architecture.html"><strong aria-hidden="true">9.</strong> 03 — Transport & Routing Policy Engine Architecture</a></li><li class="chapter-item expanded "><a href="11-relay-self-hosted-infrastructure-architecture.html"><strong aria-hidden="true">10.</strong> 11 — Relay & Self-Hosted Infrastructure Architecture</a></li><li class="chapter-item expanded "><a href="12-multipath-networking-architecture.html"><strong aria-hidden="true">11.</strong> 12 — Multipath Networking Architecture</a></li><li class="chapter-item expanded "><a href="13-battery-aware-scheduling-architecture.html"><strong aria-hidden="true">12.</strong> 13 — Battery-Aware Scheduling Architecture</a></li><li class="chapter-item expanded "><a href="14-proximity-abstraction-architecture.html"><strong aria-hidden="true">13.</strong> 14 — Proximity Abstraction Architecture</a></li><li class="chapter-item expanded "><a href="15-qr-nfc-bootstrap-pairing-architecture.html"><strong aria-hidden="true">14.</strong> 15 — QR / NFC Bootstrap & Secure Pairing Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IV: Delay-Tolerant Networking & Emergency Mesh</li><li class="chapter-item expanded "><a href="06-dtn-store-carry-forward-architecture.html"><strong aria-hidden="true">15.</strong> 06 — DTN / Store-Carry-Forward Architecture</a></li><li class="chapter-item expanded "><a href="17-emergency-priority-classes-architecture.html"><strong aria-hidden="true">16.</strong> 17 — Emergency Priority Classes Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part V: Storage, Outbox & Data Lifecycle</li><li class="chapter-item expanded "><a href="04-offline-event-log-architecture.html"><strong aria-hidden="true">17.</strong> 04 — Offline Event Log Architecture</a></li><li class="chapter-item expanded "><a href="05-robust-file-blob-subsystem-architecture.html"><strong aria-hidden="true">18.</strong> 05 — Robust File / Blob Subsystem Architecture</a></li><li class="chapter-item expanded "><a href="09-crash-recovery-architecture.html"><strong aria-hidden="true">19.</strong> 09 — Crash Recovery Architecture</a></li><li class="chapter-item expanded "><a href="32-search-indexing-local-knowledge-privacy-architecture.html"><strong aria-hidden="true">20.</strong> 32 — Search, Indexing, Local Knowledge Retrieval & Privacy-Preserving Discovery Architecture</a></li><li class="chapter-item expanded "><a href="33-backup-restore-export-import-archival-portability-architecture.html"><strong aria-hidden="true">21.</strong> 33 — Backup, Restore, Export/Import, Archival & Long-Term Data Portability Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VI: Realtime Media, Calling & Audio DSP</li><li class="chapter-item expanded "><a href="25-android-direct-hardware-surface-zero-copy-media-architecture.html"><strong aria-hidden="true">22.</strong> 25 — Android Direct Hardware Surface / Zero-Copy Media Pipeline Architecture</a></li><li class="chapter-item expanded "><a href="26-rust-first-audio-dsp-resampling-aec-ns-agc-architecture.html"><strong aria-hidden="true">23.</strong> 26 — Rust-First Audio DSP, Resampling, AEC/NS/AGC & Hardware-Aware Audio Pipeline Architecture</a></li><li class="chapter-item expanded "><a href="29-realtime-calls-media-session-protocol-architecture.html"><strong aria-hidden="true">24.</strong> 29 — Realtime Calls & Media Session Protocol Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VII: Ephemeral State, Presence & Notifications</li><li class="chapter-item expanded "><a href="30-presence-availability-typing-read-receipts-ephemeral-state-architecture.html"><strong aria-hidden="true">25.</strong> 30 — Presence, Availability, Typing, Read Receipts & Ephemeral Realtime State Architecture</a></li><li class="chapter-item expanded "><a href="31-notifications-push-background-delivery-lifecycle-architecture.html"><strong aria-hidden="true">26.</strong> 31 — Notifications, Push Wake, Background Delivery & OS Lifecycle Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VIII: Native Runtimes, Daemons & Embedded Linux</li><li class="chapter-item expanded "><a href="16-daemon-headless-runtime-architecture.html"><strong aria-hidden="true">27.</strong> 16 — Daemon & Headless Runtime Architecture</a></li><li class="chapter-item expanded "><a href="19-c-abi-ffi-architecture.html"><strong aria-hidden="true">28.</strong> 19 — C ABI / FFI Architecture</a></li><li class="chapter-item expanded "><a href="20-embedded-linux-node-architecture.html"><strong aria-hidden="true">29.</strong> 20 — Embedded Linux Node Architecture</a></li><li class="chapter-item expanded "><a href="27-rust-driven-android-native-build-packaging-automation.html"><strong aria-hidden="true">30.</strong> 27 — Rust-Driven Android Native Build & Packaging Automation Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IX: Reliability, Testing, Fuzzing & Diagnostics</li><li class="chapter-item expanded "><a href="08-resource-limits-backpressure-architecture.html"><strong aria-hidden="true">31.</strong> 08 — Resource Limits & Backpressure Architecture</a></li><li class="chapter-item expanded "><a href="10-fuzzing-protocol-test-suite-architecture.html"><strong aria-hidden="true">32.</strong> 10 — Fuzzing & Protocol Test Suite Architecture</a></li><li class="chapter-item expanded "><a href="18-network-diagnostics-path-visualization-architecture.html"><strong aria-hidden="true">33.</strong> 18 — Network Diagnostics & Path Visualization Architecture</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part X: UI/UX Client Architecture (Cross-Platform)</li><li class="chapter-item expanded "><a href="ui-ux-01-product-foundation-cross-platform-interaction-architecture.html"><strong aria-hidden="true">34.</strong> UI/UX 01 — Product UX Foundation & Cross-Platform Interaction Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-02-desktop-dioxus-app-shell-navigation-window-architecture.html"><strong aria-hidden="true">35.</strong> UI/UX 02 — Desktop Dioxus App Shell, Navigation & Window Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-03-android-jetpack-compose-app-shell-navigation-lifecycle-architecture.html"><strong aria-hidden="true">36.</strong> UI/UX 03 — Android Jetpack Compose App Shell, Navigation & Lifecycle Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-04-conversation-list-inbox-architecture.html"><strong aria-hidden="true">37.</strong> UI/UX 04 — Conversation List / Inbox UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-05-conversation-message-timeline-architecture.html"><strong aria-hidden="true">38.</strong> UI/UX 05 — Conversation / Message Timeline UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-06-message-composer-attachments-voice-notes-drafts-architecture.html"><strong aria-hidden="true">39.</strong> UI/UX 06 — Message Composer, Attachments, Voice Notes & Drafts UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-07-calls-realtime-media-architecture.html"><strong aria-hidden="true">40.</strong> UI/UX 07 — Calls & Realtime Media UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-08-contacts-requests-verification-identity-architecture.html"><strong aria-hidden="true">41.</strong> UI/UX 08 — Contacts, Requests, Verification & Identity UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-09-groups-membership-roles-architecture.html"><strong aria-hidden="true">42.</strong> UI/UX 09 — Groups, Membership & Roles UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-10-files-media-gallery-transfer-architecture.html"><strong aria-hidden="true">43.</strong> UI/UX 10 — Files, Media Gallery & Transfer UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-11-search-local-knowledge-retrieval-architecture.html"><strong aria-hidden="true">44.</strong> UI/UX 11 — Search & Local Knowledge Retrieval UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-12-nearby-qr-nfc-pairing-device-linking-architecture.html"><strong aria-hidden="true">45.</strong> UI/UX 12 — Nearby, QR/NFC Pairing & Device Linking UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-13-notifications-background-incoming-call-architecture.html"><strong aria-hidden="true">46.</strong> UI/UX 13 — Notifications, Background & Incoming Call UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-14-presence-typing-receipts-status-architecture.html"><strong aria-hidden="true">47.</strong> UI/UX 14 — Presence, Typing, Receipts & Status UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-15-security-center-devices-keys-recovery-architecture.html"><strong aria-hidden="true">48.</strong> UI/UX 15 — Security Center, Devices, Keys & Recovery UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-16-backup-restore-export-migration-architecture.html"><strong aria-hidden="true">49.</strong> UI/UX 16 — Backup, Restore, Export & Migration UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-17-emergency-sos-offline-mesh-architecture.html"><strong aria-hidden="true">50.</strong> UI/UX 17 — Emergency / SOS / Offline Mesh UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-18-settings-privacy-notifications-data-controls-architecture.html"><strong aria-hidden="true">51.</strong> UI/UX 18 — Settings, Privacy, Notifications & Data Controls UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-19-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">52.</strong> UI/UX 19 — Plugin / Module Ecosystem UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-20-diagnostics-network-paths-advanced-developer-architecture.html"><strong aria-hidden="true">53.</strong> UI/UX 20 — Diagnostics, Network Paths & Advanced Developer UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-21-accessibility-inclusive-interaction-architecture.html"><strong aria-hidden="true">54.</strong> UI/UX 21 — Accessibility & Inclusive Interaction Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-22-design-system-tokens-typography-icons-motion-architecture.html"><strong aria-hidden="true">55.</strong> UI/UX 22 — Design System, Tokens, Typography, Icons & Motion Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-23-responsive-adaptive-desktop-tablet-foldable-phone-layout-architecture.html"><strong aria-hidden="true">56.</strong> UI/UX 23 — Responsive / Adaptive Desktop, Tablet, Foldable & Phone Layout Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-24-error-loading-empty-offline-degraded-state-architecture.html"><strong aria-hidden="true">57.</strong> UI/UX 24 — Error, Loading, Empty, Offline & Degraded-State UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-25-onboarding-first-run-permission-education-architecture.html"><strong aria-hidden="true">58.</strong> UI/UX 25 — Onboarding, First Run & Permission Education UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-26-performance-virtualization-large-data-ui-architecture.html"><strong aria-hidden="true">59.</strong> UI/UX 26 — Performance, Virtualization & Large-Data UI Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-27-ui-testing-screenshot-interaction-release-quality-gates-architecture.html"><strong aria-hidden="true">60.</strong> UI/UX 27 — UI Testing, Screenshot/Interaction Tests & Release Quality Gates Architecture</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part XI: Anonymous Network — Core Mixnet Mechanics</li><li class="chapter-item expanded "><a href="34-mixnet-loopix-sphinx-nym-high-anonymity-transport-architecture.html"><strong aria-hidden="true">61.</strong> 34 — Mixnet, Loopix, Sphinx, Nym & High-Anonymity Transport Architecture</a></li><li class="chapter-item expanded "><a href="35-anonymous-mailbox-offline-receiving-reply-capability-architecture.html"><strong aria-hidden="true">62.</strong> 35 — Anonymous Mailbox, Offline Receiving & Reply Capability Architecture</a></li><li class="chapter-item expanded "><a href="36-sphinx-packet-cell-fragmentation-anonymous-message-framing-architecture.html"><strong aria-hidden="true">63.</strong> 36 — Sphinx Packet, Cell, Fragmentation & Anonymous Message Framing Architecture</a></li><li class="chapter-item expanded "><a href="37-cover-traffic-traffic-shaping-timing-obfuscation-loop-traffic-architecture.html"><strong aria-hidden="true">64.</strong> 37 — Cover Traffic, Traffic Shaping, Timing Obfuscation & Loop Traffic Architecture</a></li><li class="chapter-item expanded "><a href="38-native-loopix-inspired-mixnet-topology-mix-nodes-layering-packet-forwarding-architecture.html"><strong aria-hidden="true">65.</strong> 38 — Native Loopix-Inspired Mixnet Topology, Mix Nodes, Layering & Packet Forwarding Architecture</a></li><li class="chapter-item expanded "><a href="39-mixnet-directory-node-admission-identity-sybil-resistance-topology-governance-architecture.html"><strong aria-hidden="true">66.</strong> 39 — Mixnet Directory, Node Admission, Identity, Sybil Resistance & Topology Governance Architecture</a></li><li class="chapter-item expanded "><a href="40-anonymous-attachment-transfer-rendezvous-large-file-privacy-high-bandwidth-data-architecture.html"><strong aria-hidden="true">67.</strong> 40 — Anonymous Attachment Transfer, Rendezvous, Large-File Privacy & High-Bandwidth Anonymous Data Architecture</a></li><li class="chapter-item expanded "><a href="41-censorship-resistance-bridges-pluggable-transports-traffic-obfuscation-architecture.html"><strong aria-hidden="true">68.</strong> 41 — Censorship Resistance, Bridges, Pluggable Transports & Traffic Obfuscation Architecture</a></li><li class="chapter-item expanded "><a href="42-anonymity-threat-model-traffic-analysis-correlation-formal-privacy-verification-architecture.html"><strong aria-hidden="true">69.</strong> 42 — Anonymity Threat Model, Traffic Analysis, Correlation Attacks & Formal Privacy Verification Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part XII: Anonymous Network — Anonymous Application Primitives</li><li class="chapter-item expanded "><a href="43-anonymous-group-messaging-membership-privacy-sender-key-large-group-anonymity-architecture.html"><strong aria-hidden="true">70.</strong> 43 — Anonymous Group Messaging, Membership Privacy, Sender-Key Distribution & Large-Group Anonymity Architecture</a></li><li class="chapter-item expanded "><a href="44-anonymous-voice-video-call-signaling-relay-privacy-realtime-metadata-private-session-architecture.html"><strong aria-hidden="true">71.</strong> 44 — Anonymous Voice/Video Call Signaling, Relay Privacy, Realtime Metadata Protection & Private Realtime Session Architecture</a></li><li class="chapter-item expanded "><a href="45-anonymous-presence-discovery-contact-bootstrap-private-social-graph-architecture.html"><strong aria-hidden="true">72.</strong> 45 — Anonymous Presence, Discovery, Contact Bootstrap & Private Social Graph Architecture</a></li><li class="chapter-item expanded "><a href="46-anonymous-reputation-trust-signals-abuse-reporting-privacy-preserving-moderation-architecture.html"><strong aria-hidden="true">73.</strong> 46 — Anonymous Reputation, Trust Signals, Abuse Reporting & Privacy-Preserving Moderation Architecture</a></li><li class="chapter-item expanded "><a href="47-anonymous-payments-resource-credits-quotas-privacy-preserving-service-accounting-architecture.html"><strong aria-hidden="true">74.</strong> 47 — Anonymous Payments, Resource Credits, Quotas & Privacy-Preserving Service Accounting Architecture</a></li><li class="chapter-item expanded "><a href="48-anonymous-service-discovery-provider-selection-capability-advertisement-privacy-preserving-marketplace-architecture.html"><strong aria-hidden="true">75.</strong> 48 — Anonymous Service Discovery, Provider Selection, Capability Advertisement & Privacy-Preserving Marketplace Architecture</a></li><li class="chapter-item expanded "><a href="49-anonymous-resource-scheduling-capacity-markets-load-balancing-privacy-preserving-infrastructure-allocation-architecture.html"><strong aria-hidden="true">76.</strong> 49 — Anonymous Resource Scheduling, Capacity Markets, Load Balancing & Privacy-Preserving Infrastructure Allocation Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part XIII: Anonymous Network — Sovereign Protocol Policies & Governance</li><li class="chapter-item expanded "><a href="50-anonymous-network-reliability-disaster-recovery-partition-tolerance-multi-region-continuity-architecture.html"><strong aria-hidden="true">77.</strong> 50 — Anonymous Network Reliability, Disaster Recovery, Partition Tolerance & Multi-Region Continuity Architecture</a></li><li class="chapter-item expanded "><a href="51-anonymous-network-observability-slos-privacy-safe-telemetry-incident-detection-operations-architecture.html"><strong aria-hidden="true">78.</strong> 51 — Anonymous Network Observability, SLOs, Privacy-Safe Telemetry, Incident Detection & Operations Architecture</a></li><li class="chapter-item expanded "><a href="52-anonymous-network-upgrade-protocol-evolution-compatibility-migration-zero-downtime-rollout-architecture.html"><strong aria-hidden="true">79.</strong> 52 — Anonymous Network Upgrade, Protocol Evolution, Compatibility, Migration & Zero-Downtime Rollout Architecture</a></li><li class="chapter-item expanded "><a href="53-anonymous-network-governance-policy-distribution-trust-roots-multi-authority-emergency-decision-architecture.html"><strong aria-hidden="true">80.</strong> 53 — Anonymous Network Governance, Policy Distribution, Trust Roots, Multi-Authority Control & Emergency Decision Architecture</a></li><li class="chapter-item expanded "><a href="54-anonymous-network-economics-incentives-operator-sustainability-subsidies-privacy-preserving-compensation-architecture.html"><strong aria-hidden="true">81.</strong> 54 — Anonymous Network Economics, Incentives, Operator Sustainability, Subsidies & Privacy-Preserving Compensation Architecture</a></li><li class="chapter-item expanded "><a href="55-anonymous-network-legal-compliance-boundary-jurisdiction-isolation-data-minimization-lawful-operations-architecture.html"><strong aria-hidden="true">82.</strong> 55 — Anonymous Network Legal/Compliance Boundary, Jurisdiction Isolation, Data-Minimization & Lawful Operations Architecture</a></li><li class="chapter-item expanded "><a href="56-anonymous-network-privacy-policy-user-consent-transparency-data-rights-privacy-control-architecture.html"><strong aria-hidden="true">83.</strong> 56 — Anonymous Network Privacy Policy, User Consent, Transparency, Data Rights & Privacy-Control Architecture</a></li><li class="chapter-item expanded "><a href="57-anonymous-network-identity-recovery-account-portability-device-reprovisioning-privacy-preserving-continuity-architecture.html"><strong aria-hidden="true">84.</strong> 57 — Anonymous Network Identity Recovery, Account Portability, Device Re-Provisioning & Privacy-Preserving Continuity Architecture</a></li><li class="chapter-item expanded "><a href="58-anonymous-network-federation-inter-network-peering-cross-domain-trust-privacy-preserving-interoperability-architecture.html"><strong aria-hidden="true">85.</strong> 58 — Anonymous Network Federation, Inter-Network Peering, Cross-Domain Trust & Privacy-Preserving Interoperability Architecture</a></li><li class="chapter-item expanded "><a href="59-anonymous-network-naming-addressing-namespace-isolation-private-resolution-anti-enumeration-architecture.html"><strong aria-hidden="true">86.</strong> 59 — Anonymous Network Naming, Addressing, Namespace Isolation, Private Resolution & Anti-Enumeration Architecture</a></li><li class="chapter-item expanded "><a href="60-anonymous-network-time-clock-privacy-replay-windows-epoch-coordination-temporal-metadata-resistance-architecture.html"><strong aria-hidden="true">87.</strong> 60 — Anonymous Network Time, Clock Privacy, Replay Windows, Epoch Coordination & Temporal Metadata Resistance Architecture</a></li><li class="chapter-item expanded "><a href="61-anonymous-network-configuration-secrets-runtime-policy-remote-administration-secure-control-plane-management-architecture.html"><strong aria-hidden="true">88.</strong> 61 — Anonymous Network Configuration, Secrets, Runtime Policy, Remote Administration & Secure Control-Plane Management Architecture</a></li><li class="chapter-item expanded "><a href="62-anonymous-network-deployment-packaging-infrastructure-provisioning-bare-metal-vm-container-runtime-reproducible-operations-architecture.html"><strong aria-hidden="true">89.</strong> 62 — Anonymous Network Deployment, Packaging, Infrastructure Provisioning, Bare-Metal/VM/Container Runtime & Reproducible Operations Architecture</a></li><li class="chapter-item expanded "><a href="63-anonymous-network-performance-engineering-benchmarking-capacity-planning-resource-isolation-production-sizing-architecture.html"><strong aria-hidden="true">90.</strong> 63 — Anonymous Network Performance Engineering, Benchmarking, Capacity Planning, Resource Isolation & Production Sizing Architecture</a></li><li class="chapter-item expanded "><a href="64-anonymous-network-testing-verification-simulation-fault-injection-adversarial-validation-release-quality-architecture.html"><strong aria-hidden="true">91.</strong> 64 — Anonymous Network Testing, Verification, Simulation, Fault Injection, Adversarial Validation & Release Quality Architecture</a></li><li class="chapter-item expanded "><a href="65-anonymous-network-documentation-operator-runbooks-incident-playbooks-architecture-decision-records-production-knowledge-architecture.html"><strong aria-hidden="true">92.</strong> 65 — Anonymous Network Documentation, Operator Runbooks, Incident Playbooks, Architecture Decision Records & Production Knowledge Architecture</a></li><li class="chapter-item expanded "><a href="66-anonymous-network-cryptographic-agility-post-quantum-migration-key-lifecycle-long-term-security-architecture.html"><strong aria-hidden="true">93.</strong> 66 — Anonymous Network Cryptographic Agility, Post-Quantum Migration, Key Lifecycle & Long-Term Security Architecture</a></li><li class="chapter-item expanded "><a href="67-anonymous-network-data-lifecycle-storage-minimization-secure-deletion-retention-archival-cryptographic-erasure-architecture.html"><strong aria-hidden="true">94.</strong> 67 — Anonymous Network Data Lifecycle, Storage Minimization, Secure Deletion, Retention, Archival & Cryptographic Erasure Architecture</a></li><li class="chapter-item expanded "><a href="68-anonymous-network-api-sdk-extension-boundary-capability-security-third-party-integration-architecture.html"><strong aria-hidden="true">95.</strong> 68 — Anonymous Network API, SDK, Extension Boundary, Capability Security & Third-Party Integration Architecture</a></li><li class="chapter-item expanded "><a href="69-anonymous-network-multi-tenant-isolation-organizational-boundaries-delegated-administration-enterprise-policy-architecture.html"><strong aria-hidden="true">96.</strong> 69 — Anonymous Network Multi-Tenant Isolation, Organizational Boundaries, Delegated Administration & Enterprise Policy Architecture</a></li><li class="chapter-item expanded "><a href="70-anonymous-network-disaster-exercises-business-continuity-validation-crisis-coordination-operational-resilience-governance-architecture.html"><strong aria-hidden="true">97.</strong> 70 — Anonymous Network Disaster Exercises, Business Continuity Validation, Crisis Coordination & Operational Resilience Governance Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part XIV: Anonymous Network — Zero-Trust Infrastructure & Attestation</li><li class="chapter-item expanded "><a href="71-anonymous-network-trustworthy-boot-host-attestation-runtime-integrity-binary-measurement-compromise-detection-architecture.html"><strong aria-hidden="true">98.</strong> 71 — Anonymous Network Trustworthy Boot, Host Attestation, Runtime Integrity, Binary Measurement & Compromise Detection Architecture</a></li><li class="chapter-item expanded "><a href="72-anonymous-network-hardware-security-modules-secure-elements-key-custody-signing-ceremonies-high-assurance-cryptographic-operations-architecture.html"><strong aria-hidden="true">99.</strong> 72 — Anonymous Network Hardware Security Modules, Secure Elements, Key Custody, Signing Ceremonies & High-Assurance Cryptographic Operations Architecture</a></li><li class="chapter-item expanded "><a href="73-anonymous-network-supply-chain-transparency-dependency-provenance-reproducible-builds-sbom-artifact-trust-compromise-recovery-architecture.html"><strong aria-hidden="true">100.</strong> 73 — Anonymous Network Supply-Chain Transparency, Dependency Provenance, Reproducible Builds, SBOM, Artifact Trust & Compromise Recovery Architecture</a></li><li class="chapter-item expanded "><a href="74-anonymous-network-database-persistent-state-transaction-boundaries-schema-evolution-storage-engine-architecture.html"><strong aria-hidden="true">101.</strong> 74 — Anonymous Network Database, Persistent State, Transaction Boundaries, Schema Evolution & Storage-Engine Architecture</a></li><li class="chapter-item expanded "><a href="75-anonymous-network-event-streaming-message-bus-durable-queues-internal-pubsub-distributed-workflow-architecture.html"><strong aria-hidden="true">102.</strong> 75 — Anonymous Network Event Streaming, Message Bus, Durable Queues, Internal Pub/Sub & Distributed Workflow Architecture</a></li><li class="chapter-item expanded "><a href="76-anonymous-network-distributed-consensus-leader-election-membership-quorum-state-coordination-architecture.html"><strong aria-hidden="true">103.</strong> 76 — Anonymous Network Distributed Consensus, Leader Election, Membership, Quorum State & Coordination Architecture</a></li><li class="chapter-item expanded "><a href="77-anonymous-network-service-discovery-naming-endpoint-resolution-load-balancing-traffic-steering-architecture.html"><strong aria-hidden="true">104.</strong> 77 — Anonymous Network Service Discovery, Naming, Endpoint Resolution, Load Balancing & Traffic Steering Architecture</a></li><li class="chapter-item expanded "><a href="78-anonymous-network-edge-gateway-ingress-egress-reverse-proxy-api-gateway-waf-boundary-enforcement-architecture.html"><strong aria-hidden="true">105.</strong> 78 — Anonymous Network Edge Gateway, Ingress/Egress, Reverse Proxy, API Gateway, WAF & Boundary Enforcement Architecture</a></li><li class="chapter-item expanded "><a href="79-anonymous-network-internal-service-to-service-communication-zero-trust-networking-mtls-service-identity-east-west-security-architecture.html"><strong aria-hidden="true">106.</strong> 79 — Anonymous Network Internal Service-to-Service Communication, Zero-Trust Networking, mTLS, Service Identity & East-West Security Architecture</a></li><li class="chapter-item expanded "><a href="80-anonymous-network-secrets-distribution-dynamic-credentials-certificate-authority-workload-enrollment-secretless-runtime-architecture.html"><strong aria-hidden="true">107.</strong> 80 — Anonymous Network Secrets Distribution, Dynamic Credentials, Certificate Authority, Workload Enrollment & Secretless Runtime Architecture</a></li><li class="chapter-item expanded "><a href="81-anonymous-network-authorization-policy-decision-enforcement-capability-evaluation-abac-rbac-distributed-access-control-architecture.html"><strong aria-hidden="true">108.</strong> 81 — Anonymous Network Authorization, Policy Decision/Enforcement Points, Capability Evaluation, ABAC/RBAC & Distributed Access-Control Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part XV: Anonymous Network — Private Cloud Services & Anti-Surveillance</li><li class="chapter-item expanded "><a href="82-anonymous-network-identity-provider-authentication-mfa-passkeys-session-management-account-security-architecture.html"><strong aria-hidden="true">109.</strong> 82 — Anonymous Network Identity Provider, Authentication, MFA, Passkeys, Session Management & Account Security Architecture</a></li><li class="chapter-item expanded "><a href="83-anonymous-network-account-lifecycle-registration-enrollment-suspension-deactivation-deletion-identity-state-governance-architecture.html"><strong aria-hidden="true">110.</strong> 83 — Anonymous Network Account Lifecycle, Registration, Enrollment, Suspension, Deactivation, Deletion & Identity-State Governance Architecture</a></li><li class="chapter-item expanded "><a href="84-anonymous-network-profile-preferences-settings-personalization-synchronization-privacy-preserving-user-state-architecture.html"><strong aria-hidden="true">111.</strong> 84 — Anonymous Network Profile, Preferences, Settings, Personalization, Synchronization & Privacy-Preserving User-State Architecture</a></li><li class="chapter-item expanded "><a href="85-anonymous-network-contacts-address-book-relationship-graph-invitations-trust-state-privacy-preserving-social-connectivity-architecture.html"><strong aria-hidden="true">112.</strong> 85 — Anonymous Network Contacts, Address Book, Relationship Graph, Invitations, Trust State & Privacy-Preserving Social Connectivity Architecture</a></li><li class="chapter-item expanded "><a href="86-anonymous-network-group-directory-communities-channels-membership-discovery-moderation-boundaries-privacy-preserving-social-spaces-architecture.html"><strong aria-hidden="true">113.</strong> 86 — Anonymous Network Group Directory, Communities, Channels, Membership Discovery, Moderation Boundaries & Privacy-Preserving Social Spaces Architecture</a></li><li class="chapter-item expanded "><a href="87-anonymous-network-content-feed-timeline-subscription-recommendation-ranking-privacy-preserving-discovery-architecture.html"><strong aria-hidden="true">114.</strong> 87 — Anonymous Network Content Feed, Timeline, Subscription, Recommendation, Ranking & Privacy-Preserving Discovery Architecture</a></li><li class="chapter-item expanded "><a href="88-anonymous-network-content-publishing-posts-articles-media-drafts-revisions-distribution-creator-state-architecture.html"><strong aria-hidden="true">115.</strong> 88 — Anonymous Network Content Publishing, Posts, Articles, Media, Drafts, Revisions, Distribution & Creator-State Architecture</a></li><li class="chapter-item expanded "><a href="89-anonymous-network-comments-replies-threads-reactions-mentions-resharing-privacy-preserving-interaction-architecture.html"><strong aria-hidden="true">116.</strong> 89 — Anonymous Network Comments, Replies, Threads, Reactions, Mentions, Resharing & Privacy-Preserving Interaction Architecture</a></li><li class="chapter-item expanded "><a href="90-anonymous-network-notifications-activity-inbox-mentions-interaction-aggregation-digest-privacy-preserving-attention-architecture.html"><strong aria-hidden="true">117.</strong> 90 — Anonymous Network Notifications, Activity Inbox, Mentions, Interaction Aggregation, Digest & Privacy-Preserving Attention Architecture</a></li><li class="chapter-item expanded "><a href="91-anonymous-network-search-indexing-query-privacy-relevance-ranking-federated-search-private-information-retrieval-architecture.html"><strong aria-hidden="true">118.</strong> 91 — Anonymous Network Search, Indexing, Query Privacy, Relevance Ranking, Federated Search & Private Information Retrieval Architecture</a></li><li class="chapter-item expanded "><a href="92-anonymous-network-analytics-metrics-product-insights-privacy-preserving-aggregation-differential-privacy-anti-surveillance-data-architecture.html"><strong aria-hidden="true">119.</strong> 92 — Anonymous Network Analytics, Metrics, Product Insights, Privacy-Preserving Aggregation, Differential Privacy & Anti-Surveillance Data Architecture</a></li><li class="chapter-item expanded "><a href="93-anonymous-network-experimentation-feature-evaluation-ab-testing-rollouts-cohort-assignment-privacy-preserving-product-validation-architecture.html"><strong aria-hidden="true">120.</strong> 93 — Anonymous Network Experimentation, Feature Evaluation, A/B Testing, Rollouts, Cohort Assignment & Privacy-Preserving Product Validation Architecture</a></li><li class="chapter-item expanded "><a href="94-anonymous-network-audit-transparency-user-visible-security-history-verifiable-actions-privacy-preserving-accountability-architecture.html"><strong aria-hidden="true">121.</strong> 94 — Anonymous Network Audit, Transparency, User-Visible Security History, Verifiable Actions & Privacy-Preserving Accountability Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part XVI: Anonymous Network — Defense, SecOps & Vulnerability Management</li><li class="chapter-item expanded "><a href="95-anonymous-network-policy-compliance-engine-continuous-control-evaluation-security-posture-evidence-collection-privacy-preserving-assurance-architecture.html"><strong aria-hidden="true">122.</strong> 95 — Anonymous Network Policy Compliance Engine, Continuous Control Evaluation, Security Posture, Evidence Collection & Privacy-Preserving Assurance Architecture</a></li><li class="chapter-item expanded "><a href="96-anonymous-network-incident-response-detection-triage-containment-forensics-recovery-privacy-preserving-security-operations-architecture.html"><strong aria-hidden="true">123.</strong> 96 — Anonymous Network Incident Response, Detection, Triage, Containment, Forensics, Recovery & Privacy-Preserving Security Operations Architecture</a></li><li class="chapter-item expanded "><a href="97-anonymous-network-security-operations-center-threat-intelligence-indicators-of-compromise-detection-engineering-hunting-privacy-preserving-defensive-intelligence-architecture.html"><strong aria-hidden="true">124.</strong> 97 — Anonymous Network Security Operations Center, Threat Intelligence, Indicators of Compromise, Detection Engineering, Hunting & Privacy-Preserving Defensive Intelligence Architecture</a></li><li class="chapter-item expanded "><a href="98-anonymous-network-vulnerability-management-exposure-discovery-patch-prioritization-remediation-coordination-privacy-preserving-security-maintenance-architecture.html"><strong aria-hidden="true">125.</strong> 98 — Anonymous Network Vulnerability Management, Exposure Discovery, Patch Prioritization, Remediation Coordination & Privacy-Preserving Security Maintenance Architecture</a></li><li class="chapter-item expanded "><a href="99-anonymous-network-secure-update-patch-distribution-release-channels-client-upgrade-enforcement-rollback-protection-privacy-preserving-software-maintenance-architecture.html"><strong aria-hidden="true">126.</strong> 99 — Anonymous Network Secure Update, Patch Distribution, Release Channels, Client Upgrade Enforcement, Rollback Protection & Privacy-Preserving Software Maintenance Architecture</a></li><li class="chapter-item expanded "><a href="100-anonymous-network-disaster-recovery-backup-integrity-restore-orchestration-regional-failover-continuity-validation-privacy-preserving-resilience-architecture.html"><strong aria-hidden="true">127.</strong> 100 — Anonymous Network Disaster Recovery, Backup Integrity, Restore Orchestration, Regional Failover, Continuity Validation & Privacy-Preserving Resilience Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part XVII: Anonymous Network — SRE, Fleet Management & Physical Site Reliability</li><li class="chapter-item expanded "><a href="101-anonymous-network-capacity-management-load-shedding-admission-control-autoscaling-resource-fairness-privacy-preserving-availability-architecture.html"><strong aria-hidden="true">128.</strong> 101 — Anonymous Network Capacity Management, Load Shedding, Admission Control, Autoscaling, Resource Fairness & Privacy-Preserving Availability Architecture</a></li><li class="chapter-item expanded "><a href="102-anonymous-network-cost-governance-resource-accounting-budget-enforcement-capacity-economics-privacy-preserving-finops-architecture.html"><strong aria-hidden="true">129.</strong> 102 — Anonymous Network Cost Governance, Resource Accounting, Budget Enforcement, Capacity Economics & Privacy-Preserving FinOps Architecture</a></li><li class="chapter-item expanded "><a href="103-anonymous-network-data-residency-sovereignty-regional-placement-cross-border-transfer-jurisdiction-policy-privacy-preserving-geographic-governance-architecture.html"><strong aria-hidden="true">130.</strong> 103 — Anonymous Network Data Residency, Sovereignty, Regional Placement, Cross-Border Transfer, Jurisdiction Policy & Privacy-Preserving Geographic Governance Architecture</a></li><li class="chapter-item expanded "><a href="104-anonymous-network-service-ownership-operational-responsibility-escalation-on-call-change-authority-privacy-preserving-organizational-governance-architecture.html"><strong aria-hidden="true">131.</strong> 104 — Anonymous Network Service Ownership, Operational Responsibility, Escalation, On-Call, Change Authority & Privacy-Preserving Organizational Governance Architecture</a></li><li class="chapter-item expanded "><a href="105-anonymous-network-configuration-drift-desired-state-change-reconciliation-policy-convergence-privacy-preserving-infrastructure-state-governance-architecture.html"><strong aria-hidden="true">132.</strong> 105 — Anonymous Network Configuration Drift, Desired State, Change Reconciliation, Policy Convergence & Privacy-Preserving Infrastructure State Governance Architecture</a></li><li class="chapter-item expanded "><a href="106-anonymous-network-infrastructure-inventory-asset-graph-service-dependency-mapping-configuration-item-lifecycle-privacy-preserving-operational-topology-architecture.html"><strong aria-hidden="true">133.</strong> 106 — Anonymous Network Infrastructure Inventory, Asset Graph, Service Dependency Mapping, Configuration Item Lifecycle & Privacy-Preserving Operational Topology Architecture</a></li><li class="chapter-item expanded "><a href="107-anonymous-network-change-impact-analysis-dependency-aware-rollout-planning-pre-change-simulation-safe-execution-privacy-preserving-operational-decision-architecture.html"><strong aria-hidden="true">134.</strong> 107 — Anonymous Network Change Impact Analysis, Dependency-Aware Rollout Planning, Pre-Change Simulation, Safe Execution & Privacy-Preserving Operational Decision Architecture</a></li><li class="chapter-item expanded "><a href="108-anonymous-network-release-readiness-production-certification-go-no-go-decision-operational-acceptance-privacy-preserving-launch-governance-architecture.html"><strong aria-hidden="true">135.</strong> 108 — Anonymous Network Release Readiness, Production Certification, Go/No-Go Decision, Operational Acceptance & Privacy-Preserving Launch Governance Architecture</a></li><li class="chapter-item expanded "><a href="109-anonymous-network-service-level-objectives-error-budgets-reliability-policy-availability-governance-privacy-preserving-reliability-engineering-architecture.html"><strong aria-hidden="true">136.</strong> 109 — Anonymous Network Service Level Objectives, Error Budgets, Reliability Policy, Availability Governance & Privacy-Preserving Reliability Engineering Architecture</a></li><li class="chapter-item expanded "><a href="110-anonymous-network-availability-modeling-fault-domains-redundancy-planning-failure-correlation-reliability-simulation-privacy-preserving-resilience-engineering-architecture.html"><strong aria-hidden="true">137.</strong> 110 — Anonymous Network Availability Modeling, Fault Domains, Redundancy Planning, Failure Correlation, Reliability Simulation & Privacy-Preserving Resilience Engineering Architecture</a></li><li class="chapter-item expanded "><a href="111-anonymous-network-capacity-forecasting-demand-modeling-growth-planning-saturation-prediction-privacy-preserving-infrastructure-forecast-architecture.html"><strong aria-hidden="true">138.</strong> 111 — Anonymous Network Capacity Forecasting, Demand Modeling, Growth Planning, Saturation Prediction & Privacy-Preserving Infrastructure Forecast Architecture</a></li><li class="chapter-item expanded "><a href="112-anonymous-network-performance-budgeting-latency-decomposition-throughput-modeling-tail-latency-control-privacy-preserving-performance-engineering-architecture.html" class="active"><strong aria-hidden="true">139.</strong> 112 — Anonymous Network Performance Budgeting, Latency Decomposition, Throughput Modeling, Tail-Latency Control & Privacy-Preserving Performance Engineering Architecture</a></li><li class="chapter-item expanded "><a href="113-anonymous-network-resource-efficiency-work-consolidation-compute-memory-io-optimization-energy-awareness-privacy-preserving-efficiency-engineering-architecture.html"><strong aria-hidden="true">140.</strong> 113 — Anonymous Network Resource Efficiency, Work Consolidation, Compute/Memory/I/O Optimization, Energy Awareness & Privacy-Preserving Efficiency Engineering Architecture</a></li><li class="chapter-item expanded "><a href="114-anonymous-network-sustainability-carbon-aware-scheduling-hardware-lifecycle-resource-reuse-privacy-preserving-environmental-efficiency-architecture.html"><strong aria-hidden="true">141.</strong> 114 — Anonymous Network Sustainability, Carbon-Aware Scheduling, Hardware Lifecycle, Resource Reuse & Privacy-Preserving Environmental Efficiency Architecture</a></li><li class="chapter-item expanded "><a href="115-anonymous-network-hardware-fleet-management-firmware-lifecycle-secure-provisioning-maintenance-scheduling-privacy-preserving-physical-infrastructure-governance-architecture.html"><strong aria-hidden="true">142.</strong> 115 — Anonymous Network Hardware Fleet Management, Firmware Lifecycle, Secure Provisioning, Maintenance Scheduling & Privacy-Preserving Physical Infrastructure Governance Architecture</a></li><li class="chapter-item expanded "><a href="116-anonymous-network-data-center-edge-site-facility-power-cooling-environmental-monitoring-privacy-preserving-physical-site-reliability-architecture.html"><strong aria-hidden="true">143.</strong> 116 — Anonymous Network Data Center, Edge Site, Facility Power, Cooling, Environmental Monitoring & Privacy-Preserving Physical Site Reliability Architecture</a></li><li class="chapter-item expanded "><a href="117-anonymous-network-physical-security-tamper-detection-site-access-control-chain-of-custody-asset-protection-privacy-preserving-facility-security-architecture.html"><strong aria-hidden="true">144.</strong> 117 — Anonymous Network Physical Security, Tamper Detection, Site Access Control, Chain of Custody, Asset Protection & Privacy-Preserving Facility Security Architecture</a></li><li class="chapter-item expanded "><a href="118-anonymous-network-physical-disaster-preparedness-fire-flood-earthquake-response-site-evacuation-asset-salvage-emergency-logistics-privacy-preserving-facility-continuity-architecture.html"><strong aria-hidden="true">145.</strong> 118 — Anonymous Network Physical Disaster Preparedness, Fire/Flood/Earthquake Response, Site Evacuation, Asset Salvage, Emergency Logistics & Privacy-Preserving Facility Continuity Architecture</a></li><li class="chapter-item expanded "><a href="119-anonymous-network-crisis-command-emergency-decision-authority-multi-team-coordination-communications-situation-awareness-privacy-preserving-incident-command-architecture.html"><strong aria-hidden="true">146.</strong> 119 — Anonymous Network Crisis Command, Emergency Decision Authority, Multi-Team Coordination, Communications, Situation Awareness & Privacy-Preserving Incident Command Architecture</a></li><li class="chapter-item expanded "><a href="120-anonymous-network-post-incident-review-root-cause-analysis-corrective-actions-organizational-learning-recurrence-prevention-privacy-preserving-reliability-improvement-architecture.html"><strong aria-hidden="true">147.</strong> 120 — Anonymous Network Post-Incident Review, Root-Cause Analysis, Corrective Actions, Organizational Learning, Recurrence Prevention & Privacy-Preserving Reliability Improvement Architecture</a></li><li class="chapter-item expanded "><a href="121-anonymous-network-reliability-risk-register-technical-debt-governance-systemic-weakness-tracking-remediation-portfolio-privacy-preserving-engineering-risk-architecture.html"><strong aria-hidden="true">148.</strong> 121 — Anonymous Network Reliability Risk Register, Technical Debt Governance, Systemic Weakness Tracking, Remediation Portfolio & Privacy-Preserving Engineering Risk Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part XVIII: Anonymous Network — Governance, Traceability, SDK & Plugin Ecosystem</li><li class="chapter-item expanded "><a href="122-anonymous-network-architecture-governance-technical-standards-adr-lifecycle-design-review-exception-management-privacy-preserving-engineering-decision-architecture.html"><strong aria-hidden="true">149.</strong> 122 — Anonymous Network Architecture Governance, Technical Standards, ADR Lifecycle, Design Review, Exception Management & Privacy-Preserving Engineering Decision Architecture</a></li><li class="chapter-item expanded "><a href="123-anonymous-network-engineering-knowledge-graph-architecture-traceability-requirement-to-code-mapping-decision-provenance-privacy-preserving-technical-knowledge-architecture.html"><strong aria-hidden="true">150.</strong> 123 — Anonymous Network Engineering Knowledge Graph, Architecture Traceability, Requirement-to-Code Mapping, Decision Provenance & Privacy-Preserving Technical Knowledge Architecture</a></li><li class="chapter-item expanded "><a href="124-anonymous-network-requirements-engineering-specification-lifecycle-acceptance-criteria-verification-planning-change-traceability-privacy-preserving-product-technical-requirement-architecture.html"><strong aria-hidden="true">151.</strong> 124 — Anonymous Network Requirements Engineering, Specification Lifecycle, Acceptance Criteria, Verification Planning, Change Traceability & Privacy-Preserving Product/Technical Requirement Architecture</a></li><li class="chapter-item expanded "><a href="125-anonymous-network-test-strategy-governance-verification-matrix-coverage-traceability-qualification-evidence-release-confidence-privacy-preserving-engineering-assurance-architecture.html"><strong aria-hidden="true">152.</strong> 125 — Anonymous Network Test Strategy Governance, Verification Matrix, Coverage Traceability, Qualification Evidence, Release Confidence & Privacy-Preserving Engineering Assurance Architecture</a></li><li class="chapter-item expanded "><a href="126-anonymous-network-release-evidence-repository-certification-records-artifact-qualification-lineage-compliance-trace-packages-privacy-preserving-assurance-archive-architecture.html"><strong aria-hidden="true">153.</strong> 126 — Anonymous Network Release Evidence Repository, Certification Records, Artifact Qualification Lineage, Compliance Trace Packages & Privacy-Preserving Assurance Archive Architecture</a></li><li class="chapter-item expanded "><a href="127-anonymous-network-product-qualification-feature-maturity-levels-capability-readiness-general-availability-criteria-privacy-preserving-product-readiness-governance-architecture.html"><strong aria-hidden="true">154.</strong> 127 — Anonymous Network Product Qualification, Feature Maturity Levels, Capability Readiness, General Availability Criteria & Privacy-Preserving Product Readiness Governance Architecture</a></li><li class="chapter-item expanded "><a href="128-anonymous-network-product-lifecycle-governance-capability-evolution-backward-compatibility-migration-deprecation-sunset-privacy-preserving-end-of-life-architecture.html"><strong aria-hidden="true">155.</strong> 128 — Anonymous Network Product Lifecycle Governance, Capability Evolution, Backward Compatibility, Migration, Deprecation, Sunset & Privacy-Preserving End-of-Life Architecture</a></li><li class="chapter-item expanded "><a href="129-anonymous-network-api-protocol-compatibility-registry-version-negotiation-schema-evolution-interoperability-certification-privacy-preserving-compatibility-governance-architecture.html"><strong aria-hidden="true">156.</strong> 129 — Anonymous Network API & Protocol Compatibility Registry, Version Negotiation, Schema Evolution, Interoperability Certification & Privacy-Preserving Compatibility Governance Architecture</a></li><li class="chapter-item expanded "><a href="130-anonymous-network-sdk-client-library-generated-bindings-developer-compatibility-integration-certification-privacy-preserving-developer-platform-architecture.html"><strong aria-hidden="true">157.</strong> 130 — Anonymous Network SDK, Client Library, Generated Bindings, Developer Compatibility, Integration Certification & Privacy-Preserving Developer Platform Architecture</a></li><li class="chapter-item expanded "><a href="131-anonymous-network-developer-portal-api-documentation-sandbox-environments-credential-provisioning-integration-onboarding-support-privacy-preserving-developer-experience-architecture.html"><strong aria-hidden="true">158.</strong> 131 — Anonymous Network Developer Portal, API Documentation, Sandbox Environments, Credential Provisioning, Integration Onboarding, Support & Privacy-Preserving Developer Experience Architecture</a></li><li class="chapter-item expanded "><a href="132-anonymous-network-developer-cli-project-automation-local-integration-emulator-contract-testing-ci-integration-privacy-preserving-developer-toolchain-architecture.html"><strong aria-hidden="true">159.</strong> 132 — Anonymous Network Developer CLI, Project Automation, Local Integration Emulator, Contract Testing, CI Integration & Privacy-Preserving Developer Toolchain Architecture</a></li><li class="chapter-item expanded "><a href="133-anonymous-network-extension-marketplace-integration-distribution-package-discovery-trust-signals-review-revocation-privacy-preserving-developer-ecosystem-architecture.html"><strong aria-hidden="true">160.</strong> 133 — Anonymous Network Extension Marketplace, Integration Distribution, Package Discovery, Trust Signals, Review, Revocation & Privacy-Preserving Developer Ecosystem Architecture</a></li><li class="chapter-item expanded "><a href="134-anonymous-network-extension-runtime-plugin-sandboxing-capability-brokerage-resource-isolation-lifecycle-supervision-privacy-preserving-execution-architecture.html"><strong aria-hidden="true">161.</strong> 134 — Anonymous Network Extension Runtime, Plugin Sandboxing, Capability Brokerage, Resource Isolation, Lifecycle Supervision & Privacy-Preserving Execution Architecture</a></li><li class="chapter-item expanded "><a href="135-anonymous-network-extension-permission-model-consent-ux-delegated-authority-capability-attenuation-scope-review-privacy-preserving-authorization-architecture.html"><strong aria-hidden="true">162.</strong> 135 — Anonymous Network Extension Permission Model, Consent UX, Delegated Authority, Capability Attenuation, Scope Review & Privacy-Preserving Authorization Architecture</a></li><li class="chapter-item expanded "><a href="136-anonymous-network-extension-data-governance-data-access-mediation-information-flow-control-retention-deletion-export-privacy-preserving-extension-data-architecture.html"><strong aria-hidden="true">163.</strong> 136 — Anonymous Network Extension Data Governance, Data Access Mediation, Information-Flow Control, Retention, Deletion, Export & Privacy-Preserving Extension Data Architecture</a></li><li class="chapter-item expanded "><a href="137-anonymous-network-extension-inter-process-communication-event-bus-host-calls-shared-memory-streaming-backpressure-privacy-preserving-runtime-communication-architecture.html"><strong aria-hidden="true">164.</strong> 137 — Anonymous Network Extension Inter-Process Communication, Event Bus, Host Calls, Shared Memory, Streaming, Backpressure & Privacy-Preserving Runtime Communication Architecture</a></li><li class="chapter-item expanded "><a href="138-anonymous-network-extension-background-execution-durable-jobs-triggers-scheduling-wakeups-mobile-lifecycle-quotas-privacy-preserving-automation-runtime-architecture.html"><strong aria-hidden="true">165.</strong> 138 — Anonymous Network Extension Background Execution, Durable Jobs, Triggers, Scheduling, Wakeups, Mobile Lifecycle, Quotas & Privacy-Preserving Automation Runtime Architecture</a></li><li class="chapter-item expanded "><a href="140-anonymous-network-extension-ui-surface-embedded-panels-commands-menus-context-actions-theming-accessibility-privacy-preserving-host-ui-integration-architecture.html"><strong aria-hidden="true">166.</strong> 140 — Anonymous Network Extension UI Surface, Embedded Panels, Commands, Menus, Context Actions, Theming, Accessibility & Privacy-Preserving Host UI Integration Architecture</a></li><li class="chapter-item expanded "><a href="141-anonymous-network-extension-state-synchronization-cross-device-settings-ui-state-installation-state-capability-consistency-privacy-preserving-extension-state-convergence-architecture.html"><strong aria-hidden="true">167.</strong> 141 — Anonymous Network Extension State Synchronization, Cross-Device Settings, UI State, Installation State, Capability Consistency & Privacy-Preserving Extension State Convergence Architecture</a></li><li class="chapter-item expanded "><a href="142-anonymous-network-extension-dependency-management-package-resolution-version-constraints-lockfiles-dependency-isolation-supply-chain-policy-privacy-preserving-dependency-governance-architecture.html"><strong aria-hidden="true">168.</strong> 142 — Anonymous Network Extension Dependency Management, Package Resolution, Version Constraints, Lockfiles, Dependency Isolation, Supply-Chain Policy & Privacy-Preserving Dependency Governance Architecture</a></li><li class="chapter-item expanded "><a href="143-anonymous-network-extension-update-orchestration-dependency-aware-rollouts-state-migration-rollback-hot-upgrade-compatibility-gates-privacy-preserving-extension-evolution-architecture.html"><strong aria-hidden="true">169.</strong> 143 — Anonymous Network Extension Update Orchestration, Dependency-Aware Rollouts, State Migration, Rollback, Hot Upgrade, Compatibility Gates & Privacy-Preserving Extension Evolution Architecture</a></li><li class="chapter-item expanded "><a href="144-anonymous-network-extension-testing-certification-compatibility-matrix-sandbox-validation-fault-injection-security-privacy-qualification-release-evidence-architecture.html"><strong aria-hidden="true">170.</strong> 144 — Anonymous Network Extension Testing, Certification, Compatibility Matrix, Sandbox Validation, Fault Injection, Security/Privacy Qualification & Release Evidence Architecture</a></li><li class="chapter-item expanded "><a href="145-anonymous-network-extension-observability-runtime-health-crash-reporting-diagnostics-developer-telemetry-slos-privacy-preserving-extension-operations-architecture.html"><strong aria-hidden="true">171.</strong> 145 — Anonymous Network Extension Observability, Runtime Health, Crash Reporting, Diagnostics, Developer Telemetry, SLOs & Privacy-Preserving Extension Operations Architecture</a></li><li class="chapter-item expanded "><a href="146-anonymous-network-extension-incident-response-abuse-detection-quarantine-emergency-disable-forensics-recovery-privacy-preserving-extension-security-operations-architecture.html"><strong aria-hidden="true">172.</strong> 146 — Anonymous Network Extension Incident Response, Abuse Detection, Quarantine, Emergency Disable, Forensics, Recovery & Privacy-Preserving Extension Security Operations Architecture</a></li><li class="chapter-item expanded "><a href="147-anonymous-network-extension-governance-publisher-policy-ecosystem-rules-dispute-resolution-appeals-enforcement-consistency-privacy-preserving-marketplace-governance-architecture.html"><strong aria-hidden="true">173.</strong> 147 — Anonymous Network Extension Governance, Publisher Policy, Ecosystem Rules, Dispute Resolution, Appeals, Enforcement Consistency & Privacy-Preserving Marketplace Governance Architecture</a></li><li class="chapter-item expanded "><a href="148-anonymous-network-extension-business-model-pricing-revenue-sharing-paid-extensions-subscriptions-billing-integration-refunds-entitlements-privacy-preserving-marketplace-economics-architecture.html"><strong aria-hidden="true">174.</strong> 148 — Anonymous Network Extension Business Model, Pricing, Revenue Sharing, Paid Extensions, Subscriptions, Billing Integration, Refunds, Entitlements & Privacy-Preserving Marketplace Economics Architecture</a></li><li class="chapter-item expanded "><a href="149-anonymous-network-extension-licensing-open-source-commercial-license-enforcement-seat-activation-license-keys-offline-licensing-compliance-audit-privacy-preserving-software-license-architecture.html"><strong aria-hidden="true">175.</strong> 149 — Anonymous Network Extension Licensing, Open-Source/Commercial License Enforcement, Seat Activation, License Keys, Offline Licensing, Compliance, Audit & Privacy-Preserving Software License Architecture</a></li><li class="chapter-item expanded "><a href="150-anonymous-network-extension-developer-relations-publisher-support-documentation-governance-compatibility-communication-migration-guidance-ecosystem-education-privacy-preserving-developer-success-architecture.html"><strong aria-hidden="true">176.</strong> 150 — Anonymous Network Extension Developer Relations, Publisher Support, Documentation Governance, Compatibility Communication, Migration Guidance, Ecosystem Education & Privacy-Preserving Developer Success Architecture</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">SIAR System Architecture &amp; Technical Wiki</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar/edit/main/sys-arch/112-anonymous-network-performance-budgeting-latency-decomposition-throughput-modeling-tail-latency-control-privacy-preserving-performance-engineering-architecture.md" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="core-system-architecture-part-112--anonymous-network-performance-budgeting-latency-decomposition-throughput-modeling-tail-latency-control--privacy-preserving-performance-engineering-architecture"><a class="header" href="#core-system-architecture-part-112--anonymous-network-performance-budgeting-latency-decomposition-throughput-modeling-tail-latency-control--privacy-preserving-performance-engineering-architecture">Core System Architecture Part 112 — Anonymous Network Performance Budgeting, Latency Decomposition, Throughput Modeling, Tail-Latency Control &amp; Privacy-Preserving Performance Engineering Architecture</a></h1>
+<h2 id="siar--secure-local-first-multi-transport-communication-platform"><a class="header" href="#siar--secure-local-first-multi-transport-communication-platform">SIAR — Secure, Local-First, Multi-Transport Communication Platform</a></h2>
+<p><strong>Series:</strong> Core System Architecture<br />
+<strong>Part:</strong> 112<br />
+<strong>Status:</strong> Architecture specification<br />
+<strong>Primary language:</strong> Rust<br />
+<strong>Builds on:</strong> Core System Architecture Parts 8, 12–13, 17, 29, 37, 40, 50–52, 63, 75, 101, 107–111</p>
+<p><strong>Primary purpose:</strong> define SIAR's performance-engineering architecture for end-to-end performance budgets, latency decomposition, throughput modeling, queueing behavior, tail-latency control, concurrency, backpressure, benchmarking, performance-regression gates, anonymous-route overhead, client/server/platform budgets, and privacy-preserving optimization.</p>
+<hr />
+<h1 id="1-purpose"><a class="header" href="#1-purpose">1. Purpose</a></h1>
+<p>Performance must be engineered as a budget, not discovered after deployment.</p>
+<p>The system should be able to answer:</p>
+<pre><code class="language-text">Where is latency spent?
+Which stage dominates p99?
+What is the safe throughput ceiling?
+What queueing delay appears near saturation?
+Which dependency controls end-to-end performance?
+How much anonymity overhead is expected?
+Which optimizations preserve security and privacy?
+</code></pre>
+<p>The governing principle is:</p>
+<blockquote>
+<p><strong>SIAR performance should be managed through explicit end-to-end budgets, typed stage decomposition, bounded concurrency, measured throughput ceilings, and tail-aware control—without using private user behavior as an optimization signal or weakening security/privacy guarantees.</strong></p>
+</blockquote>
+<hr />
+<h1 id="2-architectural-position"><a class="header" href="#2-architectural-position">2. Architectural Position</a></h1>
+<pre><code class="language-text">User/Service Operation
+        │
+        ▼
+ End-to-End Budget
+        │
+        ▼
+ Stage Decomposition
+        │
+ ┌──────┼────────┐
+ │      │        │
+CPU   Queue   Network
+ │      │        │
+ └──────┼────────┘
+        ▼
+ Critical Path Model
+        │
+        ▼
+ Throughput / Saturation
+        │
+        ▼
+ Tail-Latency Control
+        │
+        ▼
+ Regression / Release Gates
+</code></pre>
+<hr />
+<h1 id="3-core-separation"><a class="header" href="#3-core-separation">3. Core Separation</a></h1>
+<p>Keep distinct:</p>
+<pre><code class="language-text">latency
+service time
+queue time
+throughput
+concurrency
+utilization
+capacity
+tail latency
+user-perceived delay
+</code></pre>
+<hr />
+<h1 id="4-non-goals"><a class="header" href="#4-non-goals">4. Non-Goals</a></h1>
+<p>Part 112 does not create:</p>
+<pre><code class="language-text">behavioral performance profiling
+per-user priority prediction
+latency optimization by privacy downgrade
+one opaque "performance score"
+unbounded concurrency to improve average throughput
+</code></pre>
+<hr />
+<h1 id="5-performance-scope"><a class="header" href="#5-performance-scope">5. Performance Scope</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum PerformanceScope {
+    Service(ServiceId),
+    Capability(CapabilityId),
+    Region(RegionId),
+    WorkClass(WorkClass),
+    Transport(TransportClass),
+    Platform(PlatformClass),
+    FederationPeer(FederationDomainId),
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="6-no-global-user-scope"><a class="header" href="#6-no-global-user-scope">6. No Global User Scope</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="7-performance-class"><a class="header" href="#7-performance-class">7. Performance Class</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum PerformanceClass {
+    RealtimeCritical,
+    Interactive,
+    DurableMessaging,
+    Background,
+    Bulk,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="8-realtimecritical"><a class="header" href="#8-realtimecritical">8. RealtimeCritical</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">call media
+call signaling
+emergency interaction
+</code></pre>
+<hr />
+<h1 id="9-interactive"><a class="header" href="#9-interactive">9. Interactive</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">conversation open
+search
+settings
+</code></pre>
+<hr />
+<h1 id="10-durablemessaging"><a class="header" href="#10-durablemessaging">10. DurableMessaging</a></h1>
+<p>Message send/receive.</p>
+<hr />
+<h1 id="11-background"><a class="header" href="#11-background">11. Background</a></h1>
+<p>Sync/index/maintenance.</p>
+<hr />
+<h1 id="12-bulk"><a class="header" href="#12-bulk">12. Bulk</a></h1>
+<p>Attachments/backups.</p>
+<hr />
+<h1 id="13-hard-rule"><a class="header" href="#13-hard-rule">13. Hard Rule</a></h1>
+<p>Performance class comes from operation semantics, not user importance.</p>
+<hr />
+<h1 id="14-end-to-end-performance-budget"><a class="header" href="#14-end-to-end-performance-budget">14. End-to-End Performance Budget</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct EndToEndPerformanceBudget {
+    pub scope: PerformanceScope,
+    pub class: PerformanceClass,
+    pub latency_target: LatencyTarget,
+    pub throughput_target: Option&lt;ThroughputTarget&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="15-latency-target"><a class="header" href="#15-latency-target">15. Latency Target</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct LatencyTarget {
+    pub p50: Option&lt;Duration&gt;,
+    pub p95: Option&lt;Duration&gt;,
+    pub p99: Option&lt;Duration&gt;,
+    pub hard_deadline: Option&lt;Duration&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="16-no-average-only-target"><a class="header" href="#16-no-average-only-target">16. No Average-Only Target</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="17-tail-percentiles"><a class="header" href="#17-tail-percentiles">17. Tail Percentiles</a></h1>
+<p>p95/p99 first-class.</p>
+<hr />
+<h1 id="18-hard-rule"><a class="header" href="#18-hard-rule">18. Hard rule.</a></h1>
+<hr />
+<h1 id="19-hard-deadline"><a class="header" href="#19-hard-deadline">19. Hard Deadline</a></h1>
+<p>For realtime/protocol timeout classes.</p>
+<hr />
+<h1 id="20-not-every-operation-needs-one"><a class="header" href="#20-not-every-operation-needs-one">20. Not every operation needs one.</a></h1>
+<hr />
+<h1 id="21-hard-rule"><a class="header" href="#21-hard-rule">21. Hard rule.</a></h1>
+<hr />
+<h1 id="22-throughput-target"><a class="header" href="#22-throughput-target">22. Throughput Target</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct ThroughputTarget {
+    pub sustained_per_second: FixedPoint,
+    pub burst_per_second: FixedPoint,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="23-sustained-vs-burst"><a class="header" href="#23-sustained-vs-burst">23. Sustained vs Burst</a></h1>
+<p>Separate.</p>
+<hr />
+<h1 id="24-hard-rule"><a class="header" href="#24-hard-rule">24. Hard rule.</a></h1>
+<hr />
+<h1 id="25-latency-decomposition"><a class="header" href="#25-latency-decomposition">25. Latency Decomposition</a></h1>
+<p>End-to-end latency is composed of typed stages.</p>
+<hr />
+<h1 id="26-performance-stage"><a class="header" href="#26-performance-stage">26. Performance Stage</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum PerformanceStage {
+    UiDispatch,
+    Serialization,
+    LocalDatabase,
+    SchedulerQueue,
+    Crypto,
+    TransportSetup,
+    NetworkTransit,
+    RelayProcessing,
+    MixDelay,
+    ServerQueue,
+    ApplicationProcessing,
+    Database,
+    ObjectStorage,
+    FederationTransit,
+    DeliveryCommit,
+    UiRender,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="27-stage-budget"><a class="header" href="#27-stage-budget">27. Stage Budget</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct StageBudget {
+    pub stage: PerformanceStage,
+    pub target: LatencyTarget,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="28-budget-sum-is-not-always-simple-addition"><a class="header" href="#28-budget-sum-is-not-always-simple-addition">28. Budget Sum Is Not Always Simple Addition</a></h1>
+<p>Some stages overlap.</p>
+<hr />
+<h1 id="29-hard-rule"><a class="header" href="#29-hard-rule">29. Hard rule.</a></h1>
+<hr />
+<h1 id="30-sequential-vs-parallel-stages"><a class="header" href="#30-sequential-vs-parallel-stages">30. Sequential vs Parallel Stages</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum StageComposition {
+    Sequential,
+    ParallelMax,
+    Conditional,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="31-sequential"><a class="header" href="#31-sequential">31. Sequential</a></h1>
+<p>Times add.</p>
+<hr />
+<h1 id="32-parallelmax"><a class="header" href="#32-parallelmax">32. ParallelMax</a></h1>
+<p>Critical path dominated by slowest branch.</p>
+<hr />
+<h1 id="33-conditional"><a class="header" href="#33-conditional">33. Conditional</a></h1>
+<p>Only some requests use stage.</p>
+<hr />
+<h1 id="34-hard-rule"><a class="header" href="#34-hard-rule">34. Hard rule.</a></h1>
+<hr />
+<h1 id="35-performance-path"><a class="header" href="#35-performance-path">35. Performance Path</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct PerformancePath {
+    pub path_id: PerformancePathId,
+    pub stages: Vec&lt;PerformancePathNode&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="36-performance-path-node"><a class="header" href="#36-performance-path-node">36. Performance Path Node</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct PerformancePathNode {
+    pub stage: PerformanceStage,
+    pub composition: StageComposition,
+    pub budget: StageBudget,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="37-critical-path"><a class="header" href="#37-critical-path">37. Critical Path</a></h1>
+<p>The stages controlling completion.</p>
+<hr />
+<h1 id="38-hard-rule"><a class="header" href="#38-hard-rule">38. Hard rule.</a></h1>
+<hr />
+<h1 id="39-example-message-send"><a class="header" href="#39-example-message-send">39. Example: Message Send</a></h1>
+<pre><code class="language-text">composer action
+→ local persist/outbox
+→ encrypt
+→ transport queue
+→ network
+→ server/mailbox commit
+→ delivery ACK
+</code></pre>
+<hr />
+<h1 id="40-persist-before-send-requirement"><a class="header" href="#40-persist-before-send-requirement">40. Persist-Before-Send Requirement</a></h1>
+<p>Performance optimization cannot bypass durability semantics.</p>
+<hr />
+<h1 id="41-hard-rule"><a class="header" href="#41-hard-rule">41. Hard rule.</a></h1>
+<hr />
+<h1 id="42-example-local-message-open"><a class="header" href="#42-example-local-message-open">42. Example: Local Message Open</a></h1>
+<pre><code class="language-text">SQLite query
+→ decrypt
+→ model conversion
+→ Dioxus/Compose render
+</code></pre>
+<hr />
+<h1 id="43-local-first-path-should-remain-fast-without-network"><a class="header" href="#43-local-first-path-should-remain-fast-without-network">43. Local-first path should remain fast without network.</a></h1>
+<hr />
+<h1 id="44-hard-rule"><a class="header" href="#44-hard-rule">44. Hard rule.</a></h1>
+<hr />
+<h1 id="45-example-anonymous-send"><a class="header" href="#45-example-anonymous-send">45. Example: Anonymous Send</a></h1>
+<pre><code class="language-text">local persist
+→ E2EE
+→ framing
+→ mix queue
+→ Sphinx processing
+→ mix delays
+→ mailbox/provider
+</code></pre>
+<hr />
+<h1 id="46-mix-delay-is-intentional"><a class="header" href="#46-mix-delay-is-intentional">46. Mix Delay Is Intentional</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="47-do-not-optimize-away-anonymity-delay"><a class="header" href="#47-do-not-optimize-away-anonymity-delay">47. Do Not Optimize Away Anonymity Delay</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="48-user-visible-performance-modes"><a class="header" href="#48-user-visible-performance-modes">48. User-Visible Performance Modes</a></h1>
+<p>May expose:</p>
+<pre><code class="language-text">Standard
+Private
+Anonymous
+MaximumAnonymity
+</code></pre>
+<hr />
+<h1 id="49-different-latency-expectations"><a class="header" href="#49-different-latency-expectations">49. Different latency expectations.</a></h1>
+<hr />
+<h1 id="50-hard-rule"><a class="header" href="#50-hard-rule">50. Hard rule.</a></h1>
+<hr />
+<h1 id="51-privacy-routing-performance-budget"><a class="header" href="#51-privacy-routing-performance-budget">51. Privacy Routing Performance Budget</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct PrivacyModePerformanceBudget {
+    pub mode: PrivacyRoutingMode,
+    pub expected_latency_class: LatencyClass,
+    pub throughput_class: ThroughputClass,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="52-no-silent-route-downgrade-for-speed"><a class="header" href="#52-no-silent-route-downgrade-for-speed">52. No silent route downgrade for speed.</a></h1>
+<hr />
+<h1 id="53-hard-rule"><a class="header" href="#53-hard-rule">53. Hard rule.</a></h1>
+<hr />
+<h1 id="54-service-time"><a class="header" href="#54-service-time">54. Service Time</a></h1>
+<p>Actual processing time excluding queue delay.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct ServiceTimeSample {
+    pub stage: PerformanceStage,
+    pub duration: Duration,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="55-queue-time"><a class="header" href="#55-queue-time">55. Queue Time</a></h1>
+<p>Waiting before execution.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct QueueTimeSample {
+    pub queue: QueueClass,
+    pub duration: Duration,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="56-separate-service-time-from-queue-time"><a class="header" href="#56-separate-service-time-from-queue-time">56. Separate Service Time From Queue Time</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="57-why"><a class="header" href="#57-why">57. Why</a></h1>
+<p>Optimization differs:</p>
+<pre><code class="language-text">high service time → optimize work
+high queue time → capacity/admission/scheduling
+</code></pre>
+<hr />
+<h1 id="58-good"><a class="header" href="#58-good">58. Good.</a></h1>
+<hr />
+<h1 id="59-queueing-model"><a class="header" href="#59-queueing-model">59. Queueing Model</a></h1>
+<p>Near saturation, queue latency rises nonlinearly.</p>
+<hr />
+<h1 id="60-hard-rule"><a class="header" href="#60-hard-rule">60. Hard rule.</a></h1>
+<hr />
+<h1 id="61-queue-metrics"><a class="header" href="#61-queue-metrics">61. Queue Metrics</a></h1>
+<p>Track:</p>
+<pre><code class="language-text">arrival rate
+service rate
+depth
+age
+</code></pre>
+<hr />
+<h1 id="62-queue-observation"><a class="header" href="#62-queue-observation">62. Queue Observation</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct PerformanceQueueObservation {
+    pub arrival_rate: FixedPoint,
+    pub service_rate: FixedPoint,
+    pub depth: usize,
+    pub oldest_age: Duration,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="63-no-user-queue-dimension"><a class="header" href="#63-no-user-queue-dimension">63. No User Queue Dimension</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="64-queue-utilization"><a class="header" href="#64-queue-utilization">64. Queue Utilization</a></h1>
+<pre><code class="language-text">arrival/service relationship
+</code></pre>
+<hr />
+<h1 id="65-if-arrival--service-for-sustained-period"><a class="header" href="#65-if-arrival--service-for-sustained-period">65. If arrival &gt;= service for sustained period:</a></h1>
+<pre><code class="language-text">backlog grows
+</code></pre>
+<hr />
+<h1 id="66-hard-rule"><a class="header" href="#66-hard-rule">66. Hard rule.</a></h1>
+<hr />
+<h1 id="67-queue-age-slo"><a class="header" href="#67-queue-age-slo">67. Queue Age SLO</a></h1>
+<p>Often more useful than depth alone.</p>
+<hr />
+<h1 id="68-good"><a class="header" href="#68-good">68. Good.</a></h1>
+<hr />
+<h1 id="69-throughput-modeling"><a class="header" href="#69-throughput-modeling">69. Throughput Modeling</a></h1>
+<p>Throughput is limited by bottleneck resource.</p>
+<hr />
+<h1 id="70-throughput-resource"><a class="header" href="#70-throughput-resource">70. Throughput Resource</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum ThroughputResource {
+    Cpu,
+    MemoryBandwidth,
+    DiskIo,
+    Network,
+    DatabaseConnections,
+    QueueWorkers,
+    CryptoWorkers,
+    HsmOperations,
+    RelayBandwidth,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="71-throughput-ceiling"><a class="header" href="#71-throughput-ceiling">71. Throughput Ceiling</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct ThroughputCeiling {
+    pub resource: ThroughputResource,
+    pub sustained: FixedPoint,
+    pub burst: FixedPoint,
+    pub confidence: BenchmarkConfidence,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="72-benchmark-confidence"><a class="header" href="#72-benchmark-confidence">72. Benchmark Confidence</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum BenchmarkConfidence {
+    Synthetic,
+    Representative,
+    ProductionValidated,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="73-synthetic--productionvalidated"><a class="header" href="#73-synthetic--productionvalidated">73. Synthetic ≠ ProductionValidated</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="74-bottleneck-identification"><a class="header" href="#74-bottleneck-identification">74. Bottleneck Identification</a></h1>
+<p>Compare resource ceilings.</p>
+<hr />
+<h1 id="75-first-limiting-resource-defines-current-ceiling"><a class="header" href="#75-first-limiting-resource-defines-current-ceiling">75. First limiting resource defines current ceiling.</a></h1>
+<hr />
+<h1 id="76-hard-rule"><a class="header" href="#76-hard-rule">76. Hard rule.</a></h1>
+<hr />
+<h1 id="77-throughput-under-failure"><a class="header" href="#77-throughput-under-failure">77. Throughput Under Failure</a></h1>
+<p>Part 110.</p>
+<hr />
+<h1 id="78-need-post-failure-throughput-ceiling"><a class="header" href="#78-need-post-failure-throughput-ceiling">78. Need post-failure throughput ceiling.</a></h1>
+<hr />
+<h1 id="79-hard-rule"><a class="header" href="#79-hard-rule">79. Hard rule.</a></h1>
+<hr />
+<h1 id="80-concurrency"><a class="header" href="#80-concurrency">80. Concurrency</a></h1>
+<p>More concurrency can increase throughput until contention dominates.</p>
+<hr />
+<h1 id="81-concurrency-budget"><a class="header" href="#81-concurrency-budget">81. Concurrency Budget</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct ConcurrencyBudget {
+    pub stage: PerformanceStage,
+    pub minimum: u32,
+    pub target: u32,
+    pub maximum: u32,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="82-hard-maximum"><a class="header" href="#82-hard-maximum">82. Hard Maximum</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="83-no-unbounded-tokio-spawn"><a class="header" href="#83-no-unbounded-tokio-spawn">83. No Unbounded Tokio Spawn</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="84-worker-pools"><a class="header" href="#84-worker-pools">84. Worker Pools</a></h1>
+<p>Bounded per class.</p>
+<hr />
+<h1 id="85-separate-pools-for"><a class="header" href="#85-separate-pools-for">85. Separate pools for:</a></h1>
+<pre><code class="language-text">realtime
+control
+message
+bulk
+background
+</code></pre>
+<hr />
+<h1 id="86-part-101-integration"><a class="header" href="#86-part-101-integration">86. Part 101 integration.</a></h1>
+<hr />
+<h1 id="87-hard-rule"><a class="header" href="#87-hard-rule">87. Hard rule.</a></h1>
+<hr />
+<h1 id="88-async-vs-blocking"><a class="header" href="#88-async-vs-blocking">88. Async vs Blocking</a></h1>
+<p>Blocking workloads use bounded blocking pool.</p>
+<hr />
+<h1 id="89-hard-rule"><a class="header" href="#89-hard-rule">89. Hard rule.</a></h1>
+<hr />
+<h1 id="90-lock-contention"><a class="header" href="#90-lock-contention">90. Lock Contention</a></h1>
+<p>Measure.</p>
+<hr />
+<h1 id="91-rust-design-preference"><a class="header" href="#91-rust-design-preference">91. Rust design preference:</a></h1>
+<pre><code class="language-text">ownership
+message passing
+small critical sections
+sharded locks
+</code></pre>
+<hr />
+<h1 id="92-hard-rule"><a class="header" href="#92-hard-rule">92. Hard rule.</a></h1>
+<hr />
+<h1 id="93-lock-wait-time"><a class="header" href="#93-lock-wait-time">93. Lock Wait Time</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct LockWaitSample {
+    pub lock_class: LockClass,
+    pub wait: Duration,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="94-no-per-user-lock-key-telemetry"><a class="header" href="#94-no-per-user-lock-key-telemetry">94. No per-user lock key telemetry.</a></h1>
+<hr />
+<h1 id="95-hard-rule"><a class="header" href="#95-hard-rule">95. Hard rule.</a></h1>
+<hr />
+<h1 id="96-database-performance-budget"><a class="header" href="#96-database-performance-budget">96. Database Performance Budget</a></h1>
+<p>Stages:</p>
+<pre><code class="language-text">pool wait
+query
+commit
+fsync
+</code></pre>
+<hr />
+<h1 id="97-separate"><a class="header" href="#97-separate">97. Separate.</a></h1>
+<hr />
+<h1 id="98-hard-rule"><a class="header" href="#98-hard-rule">98. Hard rule.</a></h1>
+<hr />
+<h1 id="99-database-pool-wait"><a class="header" href="#99-database-pool-wait">99. Database Pool Wait</a></h1>
+<p>Often tail latency source.</p>
+<hr />
+<h1 id="100-track-p95p99"><a class="header" href="#100-track-p95p99">100. Track p95/p99.</a></h1>
+<hr />
+<h1 id="101-hard-rule"><a class="header" href="#101-hard-rule">101. Hard rule.</a></h1>
+<hr />
+<h1 id="102-query-budget"><a class="header" href="#102-query-budget">102. Query Budget</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct QueryPerformanceBudget {
+    pub class: QueryClass,
+    pub latency: LatencyTarget,
+    pub max_rows: Option&lt;u64&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="103-no-arbitrary-unbounded-query-in-request-path"><a class="header" href="#103-no-arbitrary-unbounded-query-in-request-path">103. No arbitrary unbounded query in request path.</a></h1>
+<hr />
+<h1 id="104-hard-rule"><a class="header" href="#104-hard-rule">104. Hard rule.</a></h1>
+<hr />
+<h1 id="105-database-transaction-duration"><a class="header" href="#105-database-transaction-duration">105. Database Transaction Duration</a></h1>
+<p>Bound.</p>
+<hr />
+<h1 id="106-avoid-long-lived-transactions"><a class="header" href="#106-avoid-long-lived-transactions">106. Avoid long-lived transactions.</a></h1>
+<hr />
+<h1 id="107-hard-rule"><a class="header" href="#107-hard-rule">107. Hard rule.</a></h1>
+<hr />
+<h1 id="108-local-sqlite-performance"><a class="header" href="#108-local-sqlite-performance">108. Local SQLite Performance</a></h1>
+<p>Client authoritative local metadata/history.</p>
+<hr />
+<h1 id="109-use"><a class="header" href="#109-use">109. Use:</a></h1>
+<pre><code class="language-text">prepared statements
+WAL
+indexes
+bounded transactions
+pagination
+</code></pre>
+<hr />
+<h1 id="110-hard-rule"><a class="header" href="#110-hard-rule">110. Hard rule.</a></h1>
+<hr />
+<h1 id="111-search-performance"><a class="header" href="#111-search-performance">111. Search Performance</a></h1>
+<p>Local search:</p>
+<pre><code class="language-text">FTS index
+bounded result set
+virtualized UI
+</code></pre>
+<hr />
+<h1 id="112-remote-private-query-fanout-not-baseline"><a class="header" href="#112-remote-private-query-fanout-not-baseline">112. Remote private query fanout not baseline.</a></h1>
+<hr />
+<h1 id="113-hard-rule"><a class="header" href="#113-hard-rule">113. Hard rule.</a></h1>
+<hr />
+<h1 id="114-object-storage-performance"><a class="header" href="#114-object-storage-performance">114. Object Storage Performance</a></h1>
+<p>Stages:</p>
+<pre><code class="language-text">encrypt
+chunk
+upload
+store
+download
+verify
+decrypt
+</code></pre>
+<hr />
+<h1 id="115-chunking-enables-parallelism"><a class="header" href="#115-chunking-enables-parallelism">115. Chunking Enables Parallelism</a></h1>
+<p>Bounded.</p>
+<hr />
+<h1 id="116-hard-rule"><a class="header" href="#116-hard-rule">116. Hard rule.</a></h1>
+<hr />
+<h1 id="117-attachment-throughput"><a class="header" href="#117-attachment-throughput">117. Attachment Throughput</a></h1>
+<p>Low priority relative messages.</p>
+<hr />
+<h1 id="118-no-attachment-transfer-saturating-realtimecontrol"><a class="header" href="#118-no-attachment-transfer-saturating-realtimecontrol">118. No attachment transfer saturating realtime/control.</a></h1>
+<hr />
+<h1 id="119-hard-rule"><a class="header" href="#119-hard-rule">119. Hard rule.</a></h1>
+<hr />
+<h1 id="120-crypto-performance"><a class="header" href="#120-crypto-performance">120. Crypto Performance</a></h1>
+<p>Measure by primitive class.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum CryptoOperationClass {
+    Hash,
+    SignatureVerify,
+    SignatureCreate,
+    Kdf,
+    AeadEncrypt,
+    AeadDecrypt,
+    KeyExchange,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="121-crypto-must-not-be-disabled-for-speed"><a class="header" href="#121-crypto-must-not-be-disabled-for-speed">121. Crypto Must Not Be Disabled For Speed</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="122-crypto-pool"><a class="header" href="#122-crypto-pool">122. Crypto Pool</a></h1>
+<p>Bounded.</p>
+<hr />
+<h1 id="123-security-reserve"><a class="header" href="#123-security-reserve">123. Security reserve.</a></h1>
+<hr />
+<h1 id="124-hard-rule"><a class="header" href="#124-hard-rule">124. Hard rule.</a></h1>
+<hr />
+<h1 id="125-hsm-performance"><a class="header" href="#125-hsm-performance">125. HSM Performance</a></h1>
+<p>Measure queue + operation separately.</p>
+<hr />
+<h1 id="126-no-software-key-fallback-under-hsm-latency"><a class="header" href="#126-no-software-key-fallback-under-hsm-latency">126. No software-key fallback under HSM latency.</a></h1>
+<hr />
+<h1 id="127-hard-rule"><a class="header" href="#127-hard-rule">127. Hard rule.</a></h1>
+<hr />
+<h1 id="128-network-latency-decomposition"><a class="header" href="#128-network-latency-decomposition">128. Network Latency Decomposition</a></h1>
+<p>Separate:</p>
+<pre><code class="language-text">DNS/service resolution
+connection setup
+TLS/QUIC
+relay traversal
+network RTT
+application ACK
+</code></pre>
+<hr />
+<h1 id="129-hard-rule"><a class="header" href="#129-hard-rule">129. Hard rule.</a></h1>
+<hr />
+<h1 id="130-quic-connection-reuse"><a class="header" href="#130-quic-connection-reuse">130. QUIC Connection Reuse</a></h1>
+<p>Preferred.</p>
+<hr />
+<h1 id="131-avoid-repeated-handshake-overhead"><a class="header" href="#131-avoid-repeated-handshake-overhead">131. Avoid repeated handshake overhead.</a></h1>
+<hr />
+<h1 id="132-hard-rule"><a class="header" href="#132-hard-rule">132. Hard rule.</a></h1>
+<hr />
+<h1 id="133-multipath-performance"><a class="header" href="#133-multipath-performance">133. Multipath Performance</a></h1>
+<p>Part 12.</p>
+<hr />
+<h1 id="134-measure-per-path-class-not-per-user"><a class="header" href="#134-measure-per-path-class-not-per-user">134. Measure per path class, not per user.</a></h1>
+<hr />
+<h1 id="135-hard-rule"><a class="header" href="#135-hard-rule">135. Hard rule.</a></h1>
+<hr />
+<h1 id="136-relay-performance"><a class="header" href="#136-relay-performance">136. Relay Performance</a></h1>
+<p>Metrics:</p>
+<pre><code class="language-text">connection setup
+queue
+packet processing
+bandwidth
+</code></pre>
+<hr />
+<h1 id="137-no-flow-history-retention"><a class="header" href="#137-no-flow-history-retention">137. No flow history retention.</a></h1>
+<hr />
+<h1 id="138-hard-rule"><a class="header" href="#138-hard-rule">138. Hard rule.</a></h1>
+<hr />
+<h1 id="139-mixnet-performance"><a class="header" href="#139-mixnet-performance">139. Mixnet Performance</a></h1>
+<p>Latency includes intentional stochastic delay.</p>
+<hr />
+<h1 id="140-measure-distributions-not-source-destination-paths"><a class="header" href="#140-measure-distributions-not-source-destination-paths">140. Measure distributions, not source-destination paths.</a></h1>
+<hr />
+<h1 id="141-hard-rule"><a class="header" href="#141-hard-rule">141. Hard rule.</a></h1>
+<hr />
+<h1 id="142-mixnet-latency-metric"><a class="header" href="#142-mixnet-latency-metric">142. Mixnet Latency Metric</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct MixLatencyAggregate {
+    pub layer_count: u8,
+    pub latency_histogram: BoundedHistogram,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="143-no-end-to-end-correlated-trace-id"><a class="header" href="#143-no-end-to-end-correlated-trace-id">143. No end-to-end correlated trace ID.</a></h1>
+<hr />
+<h1 id="144-hard-rule"><a class="header" href="#144-hard-rule">144. Hard rule.</a></h1>
+<hr />
+<h1 id="145-cover-traffic-performance"><a class="header" href="#145-cover-traffic-performance">145. Cover Traffic Performance</a></h1>
+<p>Consumes capacity.</p>
+<hr />
+<h1 id="146-it-is-privacy-overhead-not-waste"><a class="header" href="#146-it-is-privacy-overhead-not-waste">146. It is privacy overhead, not waste.</a></h1>
+<hr />
+<h1 id="147-hard-rule"><a class="header" href="#147-hard-rule">147. Hard rule.</a></h1>
+<hr />
+<h1 id="148-anonymous-mailbox-performance"><a class="header" href="#148-anonymous-mailbox-performance">148. Anonymous Mailbox Performance</a></h1>
+<p>Metrics:</p>
+<pre><code class="language-text">store latency
+fetch latency
+queue age
+</code></pre>
+<hr />
+<h1 id="149-no-stable-mailbox-owner-label"><a class="header" href="#149-no-stable-mailbox-owner-label">149. No stable mailbox-owner label.</a></h1>
+<hr />
+<h1 id="150-hard-rule"><a class="header" href="#150-hard-rule">150. Hard rule.</a></h1>
+<hr />
+<h1 id="151-realtime-call-performance"><a class="header" href="#151-realtime-call-performance">151. Realtime Call Performance</a></h1>
+<p>Budgets:</p>
+<pre><code class="language-text">signaling
+call setup
+jitter
+packet loss
+audio pipeline
+video pipeline
+</code></pre>
+<hr />
+<h1 id="152-hard-rule"><a class="header" href="#152-hard-rule">152. Hard rule.</a></h1>
+<hr />
+<h1 id="153-call-setup-budget"><a class="header" href="#153-call-setup-budget">153. Call Setup Budget</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct CallSetupBudget {
+    pub signaling: Duration,
+    pub relay_setup: Duration,
+    pub media_start: Duration,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="154-no-direct-route-fallback-if-privacy-policy-forbids"><a class="header" href="#154-no-direct-route-fallback-if-privacy-policy-forbids">154. No direct-route fallback if privacy policy forbids.</a></h1>
+<hr />
+<h1 id="155-hard-rule"><a class="header" href="#155-hard-rule">155. Hard rule.</a></h1>
+<hr />
+<h1 id="156-audio-pipeline-budget"><a class="header" href="#156-audio-pipeline-budget">156. Audio Pipeline Budget</a></h1>
+<p>Stages:</p>
+<pre><code class="language-text">capture
+AEC/NS/AGC
+encode
+transport
+jitter buffer
+decode
+render
+</code></pre>
+<hr />
+<h1 id="157-tail-jitter-matters"><a class="header" href="#157-tail-jitter-matters">157. Tail jitter matters.</a></h1>
+<hr />
+<h1 id="158-hard-rule"><a class="header" href="#158-hard-rule">158. Hard rule.</a></h1>
+<hr />
+<h1 id="159-video-pipeline-budget"><a class="header" href="#159-video-pipeline-budget">159. Video Pipeline Budget</a></h1>
+<p>Stages:</p>
+<pre><code class="language-text">capture
+encode
+network
+decode
+render
+</code></pre>
+<hr />
+<h1 id="160-hardware-acceleration-where-available"><a class="header" href="#160-hardware-acceleration-where-available">160. Hardware acceleration where available.</a></h1>
+<hr />
+<h1 id="161-no-privacy-compromise"><a class="header" href="#161-no-privacy-compromise">161. No privacy compromise.</a></h1>
+<hr />
+<h1 id="162-hard-rule"><a class="header" href="#162-hard-rule">162. Hard rule.</a></h1>
+<hr />
+<h1 id="163-ui-performance"><a class="header" href="#163-ui-performance">163. UI Performance</a></h1>
+<p>Desktop/mobile.</p>
+<hr />
+<h1 id="164-budgets"><a class="header" href="#164-budgets">164. Budgets:</a></h1>
+<pre><code class="language-text">input-to-feedback
+list scroll frame time
+conversation open
+search results
+</code></pre>
+<hr />
+<h1 id="165-no-network-dependency-for-local-data-path"><a class="header" href="#165-no-network-dependency-for-local-data-path">165. No network dependency for local data path.</a></h1>
+<hr />
+<h1 id="166-hard-rule"><a class="header" href="#166-hard-rule">166. Hard rule.</a></h1>
+<hr />
+<h1 id="167-frame-budget"><a class="header" href="#167-frame-budget">167. Frame Budget</a></h1>
+<p>Platform-specific.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct FrameBudget {
+    pub target_frame_time: Duration,
+    pub max_main_thread_block: Duration,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="168-avoid-giant-ui-state-updates"><a class="header" href="#168-avoid-giant-ui-state-updates">168. Avoid giant UI state updates.</a></h1>
+<hr />
+<h1 id="169-hard-rule"><a class="header" href="#169-hard-rule">169. Hard rule.</a></h1>
+<hr />
+<h1 id="170-virtualization"><a class="header" href="#170-virtualization">170. Virtualization</a></h1>
+<p>Large histories/files must virtualize.</p>
+<hr />
+<h1 id="171-part-uiux-26-integration-conceptually"><a class="header" href="#171-part-uiux-26-integration-conceptually">171. Part UI/UX 26 integration conceptually.</a></h1>
+<hr />
+<h1 id="172-hard-rule"><a class="header" href="#172-hard-rule">172. Hard rule.</a></h1>
+<hr />
+<h1 id="173-jniffi-performance"><a class="header" href="#173-jniffi-performance">173. JNI/FFI Performance</a></h1>
+<p>Android path:</p>
+<pre><code class="language-text">Compose
+→ ViewModel
+→ Rust bridge
+</code></pre>
+<hr />
+<h1 id="174-avoid-giant-copied-byte-arrays"><a class="header" href="#174-avoid-giant-copied-byte-arrays">174. Avoid giant copied byte arrays.</a></h1>
+<hr />
+<h1 id="175-use-handlesfdschunks"><a class="header" href="#175-use-handlesfdschunks">175. Use handles/FDs/chunks.</a></h1>
+<hr />
+<h1 id="176-hard-rule"><a class="header" href="#176-hard-rule">176. Hard rule.</a></h1>
+<hr />
+<h1 id="177-desktop-dioxus-performance"><a class="header" href="#177-desktop-dioxus-performance">177. Desktop Dioxus Performance</a></h1>
+<p>Rust-native presenter/core path.</p>
+<hr />
+<h1 id="178-avoid-serializing-large-in-memory-models-unnecessarily"><a class="header" href="#178-avoid-serializing-large-in-memory-models-unnecessarily">178. Avoid serializing large in-memory models unnecessarily.</a></h1>
+<hr />
+<h1 id="179-hard-rule"><a class="header" href="#179-hard-rule">179. Hard rule.</a></h1>
+<hr />
+<h1 id="180-serialization-budget"><a class="header" href="#180-serialization-budget">180. Serialization Budget</a></h1>
+<p>Postcard preferred internal binary.</p>
+<hr />
+<h1 id="181-ron-human-config"><a class="header" href="#181-ron-human-config">181. RON human config.</a></h1>
+<hr />
+<h1 id="182-json-external-only"><a class="header" href="#182-json-external-only">182. JSON external only.</a></h1>
+<hr />
+<h1 id="183-hard-rule"><a class="header" href="#183-hard-rule">183. Hard rule.</a></h1>
+<hr />
+<h1 id="184-serialization-metric"><a class="header" href="#184-serialization-metric">184. Serialization Metric</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct SerializationBudget {
+    pub max_payload: usize,
+    pub p99_encode: Duration,
+    pub p99_decode: Duration,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="185-bounded-payloads"><a class="header" href="#185-bounded-payloads">185. Bounded payloads.</a></h1>
+<hr />
+<h1 id="186-hard-rule"><a class="header" href="#186-hard-rule">186. Hard rule.</a></h1>
+<hr />
+<h1 id="187-compression"><a class="header" href="#187-compression">187. Compression</a></h1>
+<p>Can improve network throughput.</p>
+<hr />
+<h1 id="188-but-adds-cpulatency"><a class="header" href="#188-but-adds-cpulatency">188. But adds CPU/latency.</a></h1>
+<hr />
+<h1 id="189-use-by-payload-class"><a class="header" href="#189-use-by-payload-class">189. Use by payload class.</a></h1>
+<hr />
+<h1 id="190-hard-rule"><a class="header" href="#190-hard-rule">190. Hard rule.</a></h1>
+<hr />
+<h1 id="191-compression-bomb-protection"><a class="header" href="#191-compression-bomb-protection">191. Compression Bomb Protection</a></h1>
+<p>Bound decompression ratio/output size.</p>
+<hr />
+<h1 id="192-part-security-integration"><a class="header" href="#192-part-security-integration">192. Part security integration.</a></h1>
+<hr />
+<h1 id="193-hard-rule"><a class="header" href="#193-hard-rule">193. Hard rule.</a></h1>
+<hr />
+<h1 id="194-tail-latency"><a class="header" href="#194-tail-latency">194. Tail Latency</a></h1>
+<p>Tail often dominates user experience and SLOs.</p>
+<hr />
+<h1 id="195-tail-sources"><a class="header" href="#195-tail-sources">195. Tail Sources</a></h1>
+<pre><code class="language-text">queueing
+lock contention
+GC-like allocator pressure
+slow dependency
+retry
+cold cache
+connection setup
+disk fsync
+</code></pre>
+<hr />
+<h1 id="196-rust-avoids-gc-but-not-allocatorcontention-stalls"><a class="header" href="#196-rust-avoids-gc-but-not-allocatorcontention-stalls">196. Rust avoids GC but not allocator/contention stalls.</a></h1>
+<hr />
+<h1 id="197-hard-rule"><a class="header" href="#197-hard-rule">197. Hard rule.</a></h1>
+<hr />
+<h1 id="198-tail-latency-policy"><a class="header" href="#198-tail-latency-policy">198. Tail-Latency Policy</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct TailLatencyPolicy {
+    pub p95_limit: Duration,
+    pub p99_limit: Duration,
+    pub max_outlier_rate: FixedPoint,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="199-outlier-rate"><a class="header" href="#199-outlier-rate">199. Outlier Rate</a></h1>
+<p>Explicit.</p>
+<hr />
+<h1 id="200-hard-rule"><a class="header" href="#200-hard-rule">200. Hard rule.</a></h1>
+<hr />
+<h1 id="201-tail-control-techniques"><a class="header" href="#201-tail-control-techniques">201. Tail Control Techniques</a></h1>
+<p>Use:</p>
+<pre><code class="language-text">bounded queues
+admission control
+hedging only where safe
+timeouts
+cancellation
+bulkheads
+connection reuse
+cache
+</code></pre>
+<hr />
+<h1 id="202-no-indiscriminate-retries"><a class="header" href="#202-no-indiscriminate-retries">202. No indiscriminate retries.</a></h1>
+<hr />
+<h1 id="203-hard-rule"><a class="header" href="#203-hard-rule">203. Hard rule.</a></h1>
+<hr />
+<h1 id="204-hedged-requests"><a class="header" href="#204-hedged-requests">204. Hedged Requests</a></h1>
+<p>Potential tail reduction.</p>
+<hr />
+<h1 id="205-only-for"><a class="header" href="#205-only-for">205. Only for:</a></h1>
+<pre><code class="language-text">idempotent safe reads
+</code></pre>
+<hr />
+<h1 id="206-hard-rule"><a class="header" href="#206-hard-rule">206. Hard rule.</a></h1>
+<hr />
+<h1 id="207-no-hedging-for"><a class="header" href="#207-no-hedging-for">207. No Hedging For</a></h1>
+<pre><code class="language-text">non-idempotent writes
+financial mutations
+message sends without idempotency
+</code></pre>
+<hr />
+<h1 id="208-hard-rule"><a class="header" href="#208-hard-rule">208. Hard rule.</a></h1>
+<hr />
+<h1 id="209-hedging-budget"><a class="header" href="#209-hedging-budget">209. Hedging Budget</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct HedgingPolicy {
+    pub delay: Duration,
+    pub max_extra_requests: u8,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="210-bounded"><a class="header" href="#210-bounded">210. Bounded.</a></h1>
+<hr />
+<h1 id="211-hard-rule"><a class="header" href="#211-hard-rule">211. Hard rule.</a></h1>
+<hr />
+<h1 id="212-timeout-architecture"><a class="header" href="#212-timeout-architecture">212. Timeout Architecture</a></h1>
+<p>Timeouts typed by stage.</p>
+<hr />
+<h1 id="213-deadline-propagation"><a class="header" href="#213-deadline-propagation">213. Deadline Propagation</a></h1>
+<p>Overall deadline passed downstream.</p>
+<hr />
+<h1 id="214-hard-rule"><a class="header" href="#214-hard-rule">214. Hard rule.</a></h1>
+<hr />
+<h1 id="215-deadline-budget"><a class="header" href="#215-deadline-budget">215. Deadline Budget</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct DeadlineBudget {
+    pub total: Duration,
+    pub stages: BTreeMap&lt;PerformanceStage, Duration&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="216-no-child-timeout--remaining-parent-budget"><a class="header" href="#216-no-child-timeout--remaining-parent-budget">216. No child timeout &gt; remaining parent budget.</a></h1>
+<hr />
+<h1 id="217-hard-rule"><a class="header" href="#217-hard-rule">217. Hard rule.</a></h1>
+<hr />
+<h1 id="218-cancellation"><a class="header" href="#218-cancellation">218. Cancellation</a></h1>
+<p>Expensive work should be cancellable.</p>
+<hr />
+<h1 id="219-cancel-releases-capacity"><a class="header" href="#219-cancel-releases-capacity">219. Cancel releases capacity.</a></h1>
+<hr />
+<h1 id="220-hard-rule"><a class="header" href="#220-hard-rule">220. Hard rule.</a></h1>
+<hr />
+<h1 id="221-retry-budget"><a class="header" href="#221-retry-budget">221. Retry Budget</a></h1>
+<p>Part 101.</p>
+<hr />
+<h1 id="222-retry-adds-latency-and-load"><a class="header" href="#222-retry-adds-latency-and-load">222. Retry adds latency and load.</a></h1>
+<hr />
+<h1 id="223-hard-rule"><a class="header" href="#223-hard-rule">223. Hard rule.</a></h1>
+<hr />
+<h1 id="224-retry-aware-latency"><a class="header" href="#224-retry-aware-latency">224. Retry-Aware Latency</a></h1>
+<p>Performance model includes retries.</p>
+<hr />
+<h1 id="225-no-single-attempt-benchmark-only"><a class="header" href="#225-no-single-attempt-benchmark-only">225. No "single-attempt" benchmark only.</a></h1>
+<hr />
+<h1 id="226-hard-rule"><a class="header" href="#226-hard-rule">226. Hard rule.</a></h1>
+<hr />
+<h1 id="227-backpressure"><a class="header" href="#227-backpressure">227. Backpressure</a></h1>
+<p>Prefer controlled latency/defer over collapse.</p>
+<hr />
+<h1 id="228-hard-rule"><a class="header" href="#228-hard-rule">228. Hard rule.</a></h1>
+<hr />
+<h1 id="229-brownout-performance"><a class="header" href="#229-brownout-performance">229. Brownout Performance</a></h1>
+<p>Optional features disabled to protect core latency.</p>
+<hr />
+<h1 id="230-hard-rule"><a class="header" href="#230-hard-rule">230. Hard rule.</a></h1>
+<hr />
+<h1 id="231-load-shedding"><a class="header" href="#231-load-shedding">231. Load Shedding</a></h1>
+<p>Under overload:</p>
+<pre><code class="language-text">preserve security/control/messages
+defer bulk/background
+</code></pre>
+<hr />
+<h1 id="232-hard-rule"><a class="header" href="#232-hard-rule">232. Hard rule.</a></h1>
+<hr />
+<h1 id="233-cache-performance"><a class="header" href="#233-cache-performance">233. Cache Performance</a></h1>
+<p>Cache is optimization, not authority.</p>
+<hr />
+<h1 id="234-cache-hitmiss-separated"><a class="header" href="#234-cache-hitmiss-separated">234. Cache hit/miss separated.</a></h1>
+<hr />
+<h1 id="235-hard-rule"><a class="header" href="#235-hard-rule">235. Hard rule.</a></h1>
+<hr />
+<h1 id="236-cache-latency-budget"><a class="header" href="#236-cache-latency-budget">236. Cache Latency Budget</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct CacheBudget {
+    pub p99_hit: Duration,
+    pub miss_fallback: Duration,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="237-stale-cache-semantics-explicit"><a class="header" href="#237-stale-cache-semantics-explicit">237. Stale cache semantics explicit.</a></h1>
+<hr />
+<h1 id="238-hard-rule"><a class="header" href="#238-hard-rule">238. Hard rule.</a></h1>
+<hr />
+<h1 id="239-cache-stampede"><a class="header" href="#239-cache-stampede">239. Cache Stampede</a></h1>
+<p>Use request coalescing/bounded refresh.</p>
+<hr />
+<h1 id="240-hard-rule"><a class="header" href="#240-hard-rule">240. Hard rule.</a></h1>
+<hr />
+<h1 id="241-cold-start"><a class="header" href="#241-cold-start">241. Cold Start</a></h1>
+<p>Measure:</p>
+<pre><code class="language-text">process startup
+JIT? none
+DB open
+index warmup
+connection establish
+</code></pre>
+<hr />
+<h1 id="242-rust-binaries-no-runtime-jit-baseline"><a class="header" href="#242-rust-binaries-no-runtime-jit-baseline">242. Rust binaries no runtime JIT baseline.</a></h1>
+<hr />
+<h1 id="243-good"><a class="header" href="#243-good">243. Good.</a></h1>
+<hr />
+<h1 id="244-startup-budget"><a class="header" href="#244-startup-budget">244. Startup Budget</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct StartupPerformanceBudget {
+    pub daemon_ready: Duration,
+    pub ui_interactive: Duration,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="245-staged-startup"><a class="header" href="#245-staged-startup">245. Staged startup.</a></h1>
+<hr />
+<h1 id="246-hard-rule"><a class="header" href="#246-hard-rule">246. Hard rule.</a></h1>
+<hr />
+<h1 id="247-idle-performance"><a class="header" href="#247-idle-performance">247. Idle Performance</a></h1>
+<p>Mobile/desktop idle CPU near zero.</p>
+<hr />
+<h1 id="248-hard-rule"><a class="header" href="#248-hard-rule">248. Hard rule.</a></h1>
+<hr />
+<h1 id="249-idle-budget"><a class="header" href="#249-idle-budget">249. Idle Budget</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct IdleBudget {
+    pub average_cpu_percent: FixedPoint,
+    pub wakeups_per_minute: u32,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="250-important-for-battery"><a class="header" href="#250-important-for-battery">250. Important for battery.</a></h1>
+<hr />
+<h1 id="251-hard-rule"><a class="header" href="#251-hard-rule">251. Hard rule.</a></h1>
+<hr />
+<h1 id="252-battery-aware-performance"><a class="header" href="#252-battery-aware-performance">252. Battery-Aware Performance</a></h1>
+<p>Part 13.</p>
+<hr />
+<h1 id="253-background-work-slowerdeferred-on-battery-constraints"><a class="header" href="#253-background-work-slowerdeferred-on-battery-constraints">253. Background work slower/deferred on battery constraints.</a></h1>
+<hr />
+<h1 id="254-no-correctnesssecurity-downgrade"><a class="header" href="#254-no-correctnesssecurity-downgrade">254. No correctness/security downgrade.</a></h1>
+<hr />
+<h1 id="255-hard-rule"><a class="header" href="#255-hard-rule">255. Hard rule.</a></h1>
+<hr />
+<h1 id="256-memory-performance"><a class="header" href="#256-memory-performance">256. Memory Performance</a></h1>
+<p>Bound memory by active working set, not history size.</p>
+<hr />
+<h1 id="257-hard-rule"><a class="header" href="#257-hard-rule">257. Hard rule.</a></h1>
+<hr />
+<h1 id="258-memory-budget"><a class="header" href="#258-memory-budget">258. Memory Budget</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct MemoryBudget {
+    pub steady_state_bytes: u64,
+    pub peak_bytes: u64,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="259-per-platformservice-class"><a class="header" href="#259-per-platformservice-class">259. Per platform/service class.</a></h1>
+<hr />
+<h1 id="260-hard-rule"><a class="header" href="#260-hard-rule">260. Hard rule.</a></h1>
+<hr />
+<h1 id="261-allocation-pressure"><a class="header" href="#261-allocation-pressure">261. Allocation Pressure</a></h1>
+<p>Measure large allocation rate.</p>
+<hr />
+<h1 id="262-avoid-cloning-giant-payloads"><a class="header" href="#262-avoid-cloning-giant-payloads">262. Avoid cloning giant payloads.</a></h1>
+<hr />
+<h1 id="263-hard-rule"><a class="header" href="#263-hard-rule">263. Hard rule.</a></h1>
+<hr />
+<h1 id="264-zero-copy"><a class="header" href="#264-zero-copy">264. Zero-Copy</a></h1>
+<p>Use where it materially helps and preserves safety.</p>
+<hr />
+<h1 id="265-no-unsafe-complexity-solely-for-microbenchmark"><a class="header" href="#265-no-unsafe-complexity-solely-for-microbenchmark">265. No unsafe complexity solely for microbenchmark.</a></h1>
+<hr />
+<h1 id="266-hard-rule"><a class="header" href="#266-hard-rule">266. Hard rule.</a></h1>
+<hr />
+<h1 id="267-io-performance"><a class="header" href="#267-io-performance">267. I/O Performance</a></h1>
+<p>Batch where safe.</p>
+<hr />
+<h1 id="268-avoid-giant-batch-causing-tail-spikes"><a class="header" href="#268-avoid-giant-batch-causing-tail-spikes">268. Avoid giant batch causing tail spikes.</a></h1>
+<hr />
+<h1 id="269-hard-rule"><a class="header" href="#269-hard-rule">269. Hard rule.</a></h1>
+<hr />
+<h1 id="270-fsync-semantics"><a class="header" href="#270-fsync-semantics">270. Fsync Semantics</a></h1>
+<p>Durability-critical path may require fsync.</p>
+<hr />
+<h1 id="271-do-not-remove-durability-for-latency-benchmark"><a class="header" href="#271-do-not-remove-durability-for-latency-benchmark">271. Do not remove durability for latency benchmark.</a></h1>
+<hr />
+<h1 id="272-hard-rule"><a class="header" href="#272-hard-rule">272. Hard rule.</a></h1>
+<hr />
+<h1 id="273-benchmark-architecture"><a class="header" href="#273-benchmark-architecture">273. Benchmark Architecture</a></h1>
+<p>Benchmark at multiple levels:</p>
+<pre><code class="language-text">micro
+component
+service
+end-to-end
+failure-mode
+</code></pre>
+<hr />
+<h1 id="274-hard-rule"><a class="header" href="#274-hard-rule">274. Hard rule.</a></h1>
+<hr />
+<h1 id="275-benchmark-class"><a class="header" href="#275-benchmark-class">275. Benchmark Class</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum BenchmarkClass {
+    Micro,
+    Component,
+    Service,
+    EndToEnd,
+    FailureMode,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="276-microbenchmark"><a class="header" href="#276-microbenchmark">276. Microbenchmark</a></h1>
+<p>Useful for primitives.</p>
+<hr />
+<h1 id="277-cannot-prove-system-performance"><a class="header" href="#277-cannot-prove-system-performance">277. Cannot prove system performance.</a></h1>
+<hr />
+<h1 id="278-hard-rule"><a class="header" href="#278-hard-rule">278. Hard rule.</a></h1>
+<hr />
+<h1 id="279-representative-workload"><a class="header" href="#279-representative-workload">279. Representative Workload</a></h1>
+<p>Define workload mix.</p>
+<hr />
+<h1 id="280-example"><a class="header" href="#280-example">280. Example:</a></h1>
+<pre><code class="language-text">80% text messages
+15% small media metadata
+5% attachments
+</code></pre>
+<hr />
+<h1 id="281-must-be-labeled-scenario-not-user-profiling"><a class="header" href="#281-must-be-labeled-scenario-not-user-profiling">281. Must be labeled scenario, not user profiling.</a></h1>
+<hr />
+<h1 id="282-hard-rule"><a class="header" href="#282-hard-rule">282. Hard rule.</a></h1>
+<hr />
+<h1 id="283-workload-model"><a class="header" href="#283-workload-model">283. Workload Model</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct PerformanceWorkloadModel {
+    pub classes: Vec&lt;WorkloadClassWeight&gt;,
+    pub concurrency: u32,
+    pub duration: Duration,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="284-syntheticaggregate"><a class="header" href="#284-syntheticaggregate">284. Synthetic/aggregate.</a></h1>
+<hr />
+<h1 id="285-hard-rule"><a class="header" href="#285-hard-rule">285. Hard rule.</a></h1>
+<hr />
+<h1 id="286-benchmark-environment"><a class="header" href="#286-benchmark-environment">286. Benchmark Environment</a></h1>
+<p>Record:</p>
+<pre><code class="language-text">hardware
+OS
+kernel
+artifact
+config
+database version
+network class
+</code></pre>
+<hr />
+<h1 id="287-hard-rule"><a class="header" href="#287-hard-rule">287. Hard rule.</a></h1>
+<hr />
+<h1 id="288-benchmark-reproducibility"><a class="header" href="#288-benchmark-reproducibility">288. Benchmark Reproducibility</a></h1>
+<p>Use exact artifact/config.</p>
+<hr />
+<h1 id="289-part-7399"><a class="header" href="#289-part-7399">289. Part 73/99.</a></h1>
+<hr />
+<h1 id="290-hard-rule"><a class="header" href="#290-hard-rule">290. Hard rule.</a></h1>
+<hr />
+<h1 id="291-warm-vs-cold"><a class="header" href="#291-warm-vs-cold">291. Warm vs Cold</a></h1>
+<p>Measure both where relevant.</p>
+<hr />
+<h1 id="292-hard-rule"><a class="header" href="#292-hard-rule">292. Hard rule.</a></h1>
+<hr />
+<h1 id="293-benchmark-noise"><a class="header" href="#293-benchmark-noise">293. Benchmark Noise</a></h1>
+<p>Repeat runs.</p>
+<hr />
+<h1 id="294-report-varianceconfidence"><a class="header" href="#294-report-varianceconfidence">294. Report variance/confidence.</a></h1>
+<hr />
+<h1 id="295-hard-rule"><a class="header" href="#295-hard-rule">295. Hard rule.</a></h1>
+<hr />
+<h1 id="296-performance-regression"><a class="header" href="#296-performance-regression">296. Performance Regression</a></h1>
+<p>Compare candidate vs baseline.</p>
+<hr />
+<h1 id="297-regression-rule"><a class="header" href="#297-regression-rule">297. Regression Rule</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct PerformanceRegressionRule {
+    pub metric: PerformanceMetricId,
+    pub max_regression: FixedPoint,
+    pub severity: RegressionSeverity,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="298-regression-severity"><a class="header" href="#298-regression-severity">298. Regression Severity</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum RegressionSeverity {
+    Warning,
+    Blocking,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="299-release-gate"><a class="header" href="#299-release-gate">299. Release Gate</a></h1>
+<p>Part 108.</p>
+<hr />
+<h1 id="300-blocking-regression-prevents-certification-unless-approved-exception"><a class="header" href="#300-blocking-regression-prevents-certification-unless-approved-exception">300. Blocking regression prevents certification unless approved exception.</a></h1>
+<hr />
+<h1 id="301-hard-rule"><a class="header" href="#301-hard-rule">301. Hard rule.</a></h1>
+<hr />
+<h1 id="302-no-single-number-regression"><a class="header" href="#302-no-single-number-regression">302. No Single Number Regression</a></h1>
+<p>Evaluate:</p>
+<pre><code class="language-text">p50
+p95
+p99
+throughput
+memory
+CPU
+</code></pre>
+<hr />
+<h1 id="303-hard-rule"><a class="header" href="#303-hard-rule">303. Hard rule.</a></h1>
+<hr />
+<h1 id="304-performance-baseline"><a class="header" href="#304-performance-baseline">304. Performance Baseline</a></h1>
+<p>Versioned.</p>
+<hr />
+<h1 id="305-historical-baseline-tied-to-release"><a class="header" href="#305-historical-baseline-tied-to-release">305. Historical baseline tied to release.</a></h1>
+<hr />
+<h1 id="306-hard-rule"><a class="header" href="#306-hard-rule">306. Hard rule.</a></h1>
+<hr />
+<h1 id="307-performance-budget-drift"><a class="header" href="#307-performance-budget-drift">307. Performance Budget Drift</a></h1>
+<p>Budget itself changes only by governed policy.</p>
+<hr />
+<h1 id="308-no-loosen-target-after-regression-silently"><a class="header" href="#308-no-loosen-target-after-regression-silently">308. No loosen target after regression silently.</a></h1>
+<hr />
+<h1 id="309-hard-rule"><a class="header" href="#309-hard-rule">309. Hard rule.</a></h1>
+<hr />
+<h1 id="310-performance-change-impact"><a class="header" href="#310-performance-change-impact">310. Performance Change Impact</a></h1>
+<p>Part 107.</p>
+<hr />
+<h1 id="311-large-regression-included-in-change-impact"><a class="header" href="#311-large-regression-included-in-change-impact">311. Large regression included in change impact.</a></h1>
+<hr />
+<h1 id="312-hard-rule"><a class="header" href="#312-hard-rule">312. Hard rule.</a></h1>
+<hr />
+<h1 id="313-capacity-forecast-integration"><a class="header" href="#313-capacity-forecast-integration">313. Capacity Forecast Integration</a></h1>
+<p>Part 111.</p>
+<hr />
+<h1 id="314-per-operation-resource-cost-informs-capacity-model"><a class="header" href="#314-per-operation-resource-cost-informs-capacity-model">314. Per-operation resource cost informs capacity model.</a></h1>
+<hr />
+<h1 id="315-hard-rule"><a class="header" href="#315-hard-rule">315. Hard rule.</a></h1>
+<hr />
+<h1 id="316-slo-integration"><a class="header" href="#316-slo-integration">316. SLO Integration</a></h1>
+<p>Part 109.</p>
+<hr />
+<h1 id="317-performance-budgets-should-support-latency-slos"><a class="header" href="#317-performance-budgets-should-support-latency-slos">317. Performance budgets should support latency SLOs.</a></h1>
+<hr />
+<h1 id="318-hard-rule"><a class="header" href="#318-hard-rule">318. Hard rule.</a></h1>
+<hr />
+<h1 id="319-resilience-integration"><a class="header" href="#319-resilience-integration">319. Resilience Integration</a></h1>
+<p>Part 110.</p>
+<hr />
+<h1 id="320-benchmark-performance-under-degradedfailure-state"><a class="header" href="#320-benchmark-performance-under-degradedfailure-state">320. Benchmark performance under degraded/failure state.</a></h1>
+<hr />
+<h1 id="321-hard-rule"><a class="header" href="#321-hard-rule">321. Hard rule.</a></h1>
+<hr />
+<h1 id="322-dr-performance"><a class="header" href="#322-dr-performance">322. DR Performance</a></h1>
+<p>Recovery capacity must handle target load.</p>
+<hr />
+<h1 id="323-hard-rule"><a class="header" href="#323-hard-rule">323. Hard rule.</a></h1>
+<hr />
+<h1 id="324-regional-performance"><a class="header" href="#324-regional-performance">324. Regional Performance</a></h1>
+<p>Measure by infrastructure region.</p>
+<hr />
+<h1 id="325-no-precise-user-geolocation"><a class="header" href="#325-no-precise-user-geolocation">325. No precise user geolocation.</a></h1>
+<hr />
+<h1 id="326-hard-rule"><a class="header" href="#326-hard-rule">326. Hard rule.</a></h1>
+<hr />
+<h1 id="327-residency-constraints"><a class="header" href="#327-residency-constraints">327. Residency Constraints</a></h1>
+<p>Cannot move workload to faster forbidden region.</p>
+<hr />
+<h1 id="328-hard-rule"><a class="header" href="#328-hard-rule">328. Hard rule.</a></h1>
+<hr />
+<h1 id="329-federation-performance"><a class="header" href="#329-federation-performance">329. Federation Performance</a></h1>
+<p>Peer-level aggregate latency/throughput.</p>
+<hr />
+<h1 id="330-no-remote-user-labels"><a class="header" href="#330-no-remote-user-labels">330. No remote user labels.</a></h1>
+<hr />
+<h1 id="331-hard-rule"><a class="header" href="#331-hard-rule">331. Hard rule.</a></h1>
+<hr />
+<h1 id="332-finops-integration"><a class="header" href="#332-finops-integration">332. FinOps Integration</a></h1>
+<p>Part 102.</p>
+<hr />
+<h1 id="333-costperformance-tradeoff-allowed-within-hard-constraints"><a class="header" href="#333-costperformance-tradeoff-allowed-within-hard-constraints">333. Cost/performance tradeoff allowed within hard constraints.</a></h1>
+<hr />
+<h1 id="334-hard-rule"><a class="header" href="#334-hard-rule">334. Hard rule.</a></h1>
+<hr />
+<h1 id="335-performance-efficiency"><a class="header" href="#335-performance-efficiency">335. Performance Efficiency</a></h1>
+<p>Useful ratios:</p>
+<pre><code class="language-text">requests per CPU-second
+bytes per CPU-second
+messages per DB transaction
+</code></pre>
+<hr />
+<h1 id="336-aggregate"><a class="header" href="#336-aggregate">336. Aggregate.</a></h1>
+<hr />
+<h1 id="337-hard-rule"><a class="header" href="#337-hard-rule">337. Hard rule.</a></h1>
+<hr />
+<h1 id="338-efficiency-metric"><a class="header" href="#338-efficiency-metric">338. Efficiency Metric</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct EfficiencyMetric {
+    pub numerator: PerformanceQuantity,
+    pub denominator: ResourceQuantity,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="339-no-user-value-metric"><a class="header" href="#339-no-user-value-metric">339. No user value metric.</a></h1>
+<hr />
+<h1 id="340-hard-rule"><a class="header" href="#340-hard-rule">340. Hard rule.</a></h1>
+<hr />
+<h1 id="341-privacy-performance-cost"><a class="header" href="#341-privacy-performance-cost">341. Privacy Performance Cost</a></h1>
+<p>Model overhead of:</p>
+<pre><code class="language-text">E2EE
+mixnet
+cover traffic
+relay-only media
+</code></pre>
+<hr />
+<h1 id="342-do-not-classify-as-removable-waste"><a class="header" href="#342-do-not-classify-as-removable-waste">342. Do not classify as removable waste.</a></h1>
+<hr />
+<h1 id="343-hard-rule"><a class="header" href="#343-hard-rule">343. Hard rule.</a></h1>
+<hr />
+<h1 id="344-security-performance-cost"><a class="header" href="#344-security-performance-cost">344. Security Performance Cost</a></h1>
+<p>Model:</p>
+<pre><code class="language-text">signature verification
+attestation
+authorization
+HSM
+</code></pre>
+<hr />
+<h1 id="345-security-operations-remain-mandatory"><a class="header" href="#345-security-operations-remain-mandatory">345. Security operations remain mandatory.</a></h1>
+<hr />
+<h1 id="346-hard-rule"><a class="header" href="#346-hard-rule">346. Hard rule.</a></h1>
+<hr />
+<h1 id="347-privacysecurity-optimization"><a class="header" href="#347-privacysecurity-optimization">347. Privacy/Security Optimization</a></h1>
+<p>Optimize implementation, not guarantee.</p>
+<hr />
+<h1 id="348-hard-rule"><a class="header" href="#348-hard-rule">348. Hard rule.</a></h1>
+<hr />
+<h1 id="349-performance-telemetry"><a class="header" href="#349-performance-telemetry">349. Performance Telemetry</a></h1>
+<p>Safe dimensions:</p>
+<pre><code class="language-text">service
+region
+stage
+work class
+transport class
+platform class
+</code></pre>
+<hr />
+<h1 id="350-forbidden"><a class="header" href="#350-forbidden">350. Forbidden:</a></h1>
+<pre><code class="language-text">stable user ID
+contact
+message content
+social graph
+</code></pre>
+<hr />
+<h1 id="351-hard-rule"><a class="header" href="#351-hard-rule">351. Hard rule.</a></h1>
+<hr />
+<h1 id="352-performance-span"><a class="header" href="#352-performance-span">352. Performance Span</a></h1>
+<p>Distributed tracing can be privacy-sensitive.</p>
+<hr />
+<h1 id="353-use-stage-local-correlation"><a class="header" href="#353-use-stage-local-correlation">353. Use stage-local correlation.</a></h1>
+<hr />
+<h1 id="354-avoid-universal-end-to-end-trace-id-across-anonymity-boundaries"><a class="header" href="#354-avoid-universal-end-to-end-trace-id-across-anonymity-boundaries">354. Avoid universal end-to-end trace ID across anonymity boundaries.</a></h1>
+<hr />
+<h1 id="355-hard-rule"><a class="header" href="#355-hard-rule">355. Hard rule.</a></h1>
+<hr />
+<h1 id="356-trace-boundary"><a class="header" href="#356-trace-boundary">356. Trace Boundary</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum TraceBoundary {
+    LocalService,
+    TrustedServiceDomain,
+    AnonymousBoundary,
+    FederationBoundary,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="357-crossing-anonymousboundary-breaks-trace-continuity"><a class="header" href="#357-crossing-anonymousboundary-breaks-trace-continuity">357. Crossing AnonymousBoundary breaks trace continuity.</a></h1>
+<hr />
+<h1 id="358-hard-rule"><a class="header" href="#358-hard-rule">358. Hard rule.</a></h1>
+<hr />
+<h1 id="359-histograms"><a class="header" href="#359-histograms">359. Histograms</a></h1>
+<p>Bounded latency histograms.</p>
+<hr />
+<h1 id="360-avoid-raw-request-log-retention"><a class="header" href="#360-avoid-raw-request-log-retention">360. Avoid raw request log retention.</a></h1>
+<hr />
+<h1 id="361-hard-rule"><a class="header" href="#361-hard-rule">361. Hard rule.</a></h1>
+<hr />
+<h1 id="362-metric-cardinality"><a class="header" href="#362-metric-cardinality">362. Metric Cardinality</a></h1>
+<p>Strict limits.</p>
+<hr />
+<h1 id="363-no-pathuser-generated-labels"><a class="header" href="#363-no-pathuser-generated-labels">363. No path/user-generated labels.</a></h1>
+<hr />
+<h1 id="364-hard-rule"><a class="header" href="#364-hard-rule">364. Hard rule.</a></h1>
+<hr />
+<h1 id="365-sampling"><a class="header" href="#365-sampling">365. Sampling</a></h1>
+<p>Performance traces may be sampled.</p>
+<hr />
+<h1 id="366-securityprivacy-events-separate"><a class="header" href="#366-securityprivacy-events-separate">366. Security/privacy events separate.</a></h1>
+<hr />
+<h1 id="367-hard-rule"><a class="header" href="#367-hard-rule">367. Hard rule.</a></h1>
+<hr />
+<h1 id="368-client-performance-telemetry"><a class="header" href="#368-client-performance-telemetry">368. Client Performance Telemetry</a></h1>
+<p>Prefer local diagnostics.</p>
+<hr />
+<h1 id="369-optional-aggregate-upload"><a class="header" href="#369-optional-aggregate-upload">369. Optional aggregate upload.</a></h1>
+<hr />
+<h1 id="370-no-device-fingerprint"><a class="header" href="#370-no-device-fingerprint">370. No device fingerprint.</a></h1>
+<hr />
+<h1 id="371-hard-rule"><a class="header" href="#371-hard-rule">371. Hard rule.</a></h1>
+<hr />
+<h1 id="372-performance-decision-service"><a class="header" href="#372-performance-decision-service">372. Performance Decision Service</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait PerformanceBudgetService {
+    fn budget(
+        &amp;self,
+        scope: PerformanceScope,
+    ) -&gt; Result&lt;EndToEndPerformanceBudget, PerformanceError&gt;;
+
+    fn evaluate(
+        &amp;self,
+        scope: PerformanceScope,
+    ) -&gt; Result&lt;PerformanceEvaluation, PerformanceError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="373-performance-evaluation"><a class="header" href="#373-performance-evaluation">373. Performance Evaluation</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct PerformanceEvaluation {
+    pub scope: PerformanceScope,
+    pub latency: LatencyEvaluation,
+    pub throughput: ThroughputEvaluation,
+    pub regressions: Vec&lt;PerformanceRegression&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="374-stage-analyzer"><a class="header" href="#374-stage-analyzer">374. Stage Analyzer</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait LatencyDecompositionService {
+    fn decompose(
+        &amp;self,
+        path: PerformancePathId,
+    ) -&gt; Result&lt;Vec&lt;StageLatencySummary&gt;, PerformanceError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="375-throughput-model-service"><a class="header" href="#375-throughput-model-service">375. Throughput Model Service</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait ThroughputModelService {
+    fn ceiling(
+        &amp;self,
+        scope: PerformanceScope,
+    ) -&gt; Result&lt;Vec&lt;ThroughputCeiling&gt;, PerformanceError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="376-regression-gate"><a class="header" href="#376-regression-gate">376. Regression Gate</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait PerformanceRegressionGate {
+    fn evaluate_release(
+        &amp;self,
+        release: ReleaseId,
+    ) -&gt; Result&lt;GateResult, PerformanceError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="377-no-user-behavior-input"><a class="header" href="#377-no-user-behavior-input">377. No User Behavior Input</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="378-performance-error-taxonomy"><a class="header" href="#378-performance-error-taxonomy">378. Performance Error Taxonomy</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum PerformanceError {
+    BudgetMissing,
+    TelemetryMissing,
+    BenchmarkInvalid,
+    PathUnknown,
+    ThroughputUnknown,
+    RegressionDetected,
+    ScopeViolation,
+    Unauthorized,
+    Internal,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="379-observability"><a class="header" href="#379-observability">379. Observability</a></h1>
+<p>Safe metrics:</p>
+<pre><code class="language-text">p50/p95/p99 latency
+queue delay
+service time
+throughput
+concurrency
+CPU/memory efficiency
+</code></pre>
+<hr />
+<h1 id="380-no-user-level-history"><a class="header" href="#380-no-user-level-history">380. No user-level history.</a></h1>
+<hr />
+<h1 id="381-hard-rule"><a class="header" href="#381-hard-rule">381. Hard rule.</a></h1>
+<hr />
+<h1 id="382-performance-slos"><a class="header" href="#382-performance-slos">382. Performance SLOs</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">message local persist p99
+message submission p99
+call setup p95
+search local p95
+</code></pre>
+<hr />
+<h1 id="383-reliability-integration"><a class="header" href="#383-reliability-integration">383. Reliability integration.</a></h1>
+<hr />
+<h1 id="384-hard-rule"><a class="header" href="#384-hard-rule">384. Hard rule.</a></h1>
+<hr />
+<h1 id="385-performance-governance-slo"><a class="header" href="#385-performance-governance-slo">385. Performance Governance SLO</a></h1>
+<p>Meta:</p>
+<pre><code class="language-text">benchmark freshness
+regression-gate availability
+latency histogram freshness
+</code></pre>
+<hr />
+<h1 id="386-hard-rule"><a class="header" href="#386-hard-rule">386. Hard rule.</a></h1>
+<hr />
+<h1 id="387-failure-modes"><a class="header" href="#387-failure-modes">387. Failure Modes</a></h1>
+<pre><code class="language-text">benchmark environment drift
+telemetry loss
+load-generator mismatch
+hidden bottleneck
+performance cliff
+</code></pre>
+<hr />
+<h1 id="388-environment-drift"><a class="header" href="#388-environment-drift">388. Environment Drift</a></h1>
+<p>Benchmark incomparable.</p>
+<hr />
+<h1 id="389-mark-invalid"><a class="header" href="#389-mark-invalid">389. Mark invalid.</a></h1>
+<hr />
+<h1 id="390-hard-rule"><a class="header" href="#390-hard-rule">390. Hard rule.</a></h1>
+<hr />
+<h1 id="391-telemetry-loss"><a class="header" href="#391-telemetry-loss">391. Telemetry Loss</a></h1>
+<p>Evaluation Unknown.</p>
+<hr />
+<h1 id="392-no-green-default"><a class="header" href="#392-no-green-default">392. No green default.</a></h1>
+<hr />
+<h1 id="393-hard-rule"><a class="header" href="#393-hard-rule">393. Hard rule.</a></h1>
+<hr />
+<h1 id="394-workload-mismatch"><a class="header" href="#394-workload-mismatch">394. Workload Mismatch</a></h1>
+<p>Benchmark not representative.</p>
+<hr />
+<h1 id="395-confidence-reduced"><a class="header" href="#395-confidence-reduced">395. Confidence reduced.</a></h1>
+<hr />
+<h1 id="396-hard-rule"><a class="header" href="#396-hard-rule">396. Hard rule.</a></h1>
+<hr />
+<h1 id="397-hidden-bottleneck"><a class="header" href="#397-hidden-bottleneck">397. Hidden Bottleneck</a></h1>
+<p>Stage decomposition/instrumentation update.</p>
+<hr />
+<h1 id="398-hard-rule"><a class="header" href="#398-hard-rule">398. Hard rule.</a></h1>
+<hr />
+<h1 id="399-performance-cliff"><a class="header" href="#399-performance-cliff">399. Performance Cliff</a></h1>
+<p>Nonlinear collapse near saturation.</p>
+<hr />
+<h1 id="400-capacity-policy-should-stay-away-from-cliff"><a class="header" href="#400-capacity-policy-should-stay-away-from-cliff">400. Capacity policy should stay away from cliff.</a></h1>
+<hr />
+<h1 id="401-hard-rule"><a class="header" href="#401-hard-rule">401. Hard rule.</a></h1>
+<hr />
+<h1 id="402-testing"><a class="header" href="#402-testing">402. Testing</a></h1>
+<p>Need performance-engineering testkit.</p>
+<hr />
+<h1 id="403-test-scenarios"><a class="header" href="#403-test-scenarios">403. Test Scenarios</a></h1>
+<pre><code class="language-text">low load
+target load
+burst
+near saturation
+failure mode
+</code></pre>
+<hr />
+<h1 id="404-latency-decomposition-test"><a class="header" href="#404-latency-decomposition-test">404. Latency Decomposition Test</a></h1>
+<p>Stage totals/path semantics correct.</p>
+<hr />
+<h1 id="405-queue-test"><a class="header" href="#405-queue-test">405. Queue Test</a></h1>
+<p>Queue delay separated from service time.</p>
+<hr />
+<h1 id="406-tail-test"><a class="header" href="#406-tail-test">406. Tail Test</a></h1>
+<p>p99 regression detected even if average improves.</p>
+<hr />
+<h1 id="407-throughput-test"><a class="header" href="#407-throughput-test">407. Throughput Test</a></h1>
+<p>Bottleneck resource identified.</p>
+<hr />
+<h1 id="408-concurrency-test"><a class="header" href="#408-concurrency-test">408. Concurrency Test</a></h1>
+<p>Beyond maximum cannot create unbounded work.</p>
+<hr />
+<h1 id="409-deadline-test"><a class="header" href="#409-deadline-test">409. Deadline Test</a></h1>
+<p>Child timeout never exceeds parent remaining budget.</p>
+<hr />
+<h1 id="410-retry-test"><a class="header" href="#410-retry-test">410. Retry Test</a></h1>
+<p>Retries included in end-to-end latency.</p>
+<hr />
+<h1 id="411-hedging-test"><a class="header" href="#411-hedging-test">411. Hedging Test</a></h1>
+<p>Non-idempotent writes never hedge.</p>
+<hr />
+<h1 id="412-mixnet-test"><a class="header" href="#412-mixnet-test">412. Mixnet Test</a></h1>
+<p>No trace continuity across anonymous boundary.</p>
+<hr />
+<h1 id="413-privacy-test"><a class="header" href="#413-privacy-test">413. Privacy Test</a></h1>
+<p>No user ID in performance labels.</p>
+<hr />
+<h1 id="414-region-test"><a class="header" href="#414-region-test">414. Region Test</a></h1>
+<p>Faster forbidden region never selected.</p>
+<hr />
+<h1 id="415-security-test"><a class="header" href="#415-security-test">415. Security Test</a></h1>
+<p>Crypto/HSM not bypassed for performance.</p>
+<hr />
+<h1 id="416-release-test"><a class="header" href="#416-release-test">416. Release Test</a></h1>
+<p>Blocking regression stops certification.</p>
+<hr />
+<h1 id="417-failure-test"><a class="header" href="#417-failure-test">417. Failure Test</a></h1>
+<p>Performance measured after N-1 capacity loss.</p>
+<hr />
+<h1 id="418-ui-test"><a class="header" href="#418-ui-test">418. UI Test</a></h1>
+<p>Large history remains virtualized.</p>
+<hr />
+<h1 id="419-memory-test"><a class="header" href="#419-memory-test">419. Memory Test</a></h1>
+<p>History size does not linearly grow active UI memory.</p>
+<hr />
+<h1 id="420-serialization-test"><a class="header" href="#420-serialization-test">420. Serialization Test</a></h1>
+<p>Payload bounds enforced.</p>
+<hr />
+<h1 id="421-fuzzing"><a class="header" href="#421-fuzzing">421. Fuzzing</a></h1>
+<p>Fuzz:</p>
+<pre><code class="language-text">performance budget
+deadline budget
+regression rules
+throughput model
+trace boundary
+</code></pre>
+<hr />
+<h1 id="422-property-tests"><a class="header" href="#422-property-tests">422. Property Tests</a></h1>
+<p>Properties:</p>
+<pre><code class="language-text">anonymous-boundary traces can never preserve a universal end-to-end trace identifier
+non-idempotent operation can never use hedged execution
+performance optimization can never disable mandatory crypto/privacy controls
+bounded-concurrency policies can never admit more than configured hard maximum
+</code></pre>
+<hr />
+<h1 id="423-formal-verification-targets"><a class="header" href="#423-formal-verification-targets">423. Formal Verification Targets</a></h1>
+<p>Strong candidates:</p>
+<pre><code class="language-text">deadline propagation
+bounded concurrency
+queue admission
+regression gate semantics
+</code></pre>
+<hr />
+<h1 id="424-kani-candidate"><a class="header" href="#424-kani-candidate">424. Kani Candidate</a></h1>
+<p>deadline/concurrency/budget invariants.</p>
+<hr />
+<h1 id="425-tla-candidate"><a class="header" href="#425-tla-candidate">425. TLA+ Candidate</a></h1>
+<p>arrival → queue → execute → backpressure → recover under saturation.</p>
+<hr />
+<h1 id="426-loom-candidate"><a class="header" href="#426-loom-candidate">426. Loom Candidate</a></h1>
+<p>concurrent cancellation + worker completion + capacity lease release.</p>
+<hr />
+<h1 id="427-performance"><a class="header" href="#427-performance">427. Performance</a></h1>
+<p>Performance subsystem itself must be cheap.</p>
+<hr />
+<h1 id="428-prefer-histogramscounters"><a class="header" href="#428-prefer-histogramscounters">428. Prefer histograms/counters.</a></h1>
+<hr />
+<h1 id="429-avoid-per-request-persistence"><a class="header" href="#429-avoid-per-request-persistence">429. Avoid per-request persistence.</a></h1>
+<hr />
+<h1 id="430-hard-rule"><a class="header" href="#430-hard-rule">430. Hard rule.</a></h1>
+<hr />
+<h1 id="431-benchmark-pipeline"><a class="header" href="#431-benchmark-pipeline">431. Benchmark Pipeline</a></h1>
+<p>Runs outside request path.</p>
+<hr />
+<h1 id="432-hard-rule"><a class="header" href="#432-hard-rule">432. Hard rule.</a></h1>
+<hr />
+<h1 id="433-stage-instrumentation"><a class="header" href="#433-stage-instrumentation">433. Stage Instrumentation</a></h1>
+<p>Compile-time feature / lightweight runtime.</p>
+<hr />
+<h1 id="434-no-high-cardinality-labels"><a class="header" href="#434-no-high-cardinality-labels">434. No high-cardinality labels.</a></h1>
+<hr />
+<h1 id="435-hard-rule"><a class="header" href="#435-hard-rule">435. Hard rule.</a></h1>
+<hr />
+<h1 id="436-storage"><a class="header" href="#436-storage">436. Storage</a></h1>
+<p>Separate:</p>
+<pre><code class="language-text">performance budgets
+benchmark results
+regression baselines
+aggregate latency histograms
+throughput ceilings
+</code></pre>
+<hr />
+<h1 id="437-no-raw-user-request-archive"><a class="header" href="#437-no-raw-user-request-archive">437. No raw user request archive.</a></h1>
+<hr />
+<h1 id="438-hard-rule"><a class="header" href="#438-hard-rule">438. Hard rule.</a></h1>
+<hr />
+<h1 id="439-partitioning"><a class="header" href="#439-partitioning">439. Partitioning</a></h1>
+<p>By:</p>
+<pre><code class="language-text">service
+capability
+region
+work class
+transport
+platform
+federation peer
+</code></pre>
+<hr />
+<h1 id="440-no-user-partition"><a class="header" href="#440-no-user-partition">440. No user partition.</a></h1>
+<hr />
+<h1 id="441-hard-rule"><a class="header" href="#441-hard-rule">441. Hard rule.</a></h1>
+<hr />
+<h1 id="442-crate-layout"><a class="header" href="#442-crate-layout">442. Crate Layout</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">crates/
+├── siar-performance-core/
+├── siar-performance-budget/
+├── siar-latency-decomposition/
+├── siar-queue-performance/
+├── siar-throughput-model/
+├── siar-tail-latency/
+├── siar-performance-benchmark/
+├── siar-performance-regression/
+├── siar-performance-telemetry/
+├── siar-performance-governance/
+└── siar-performance-testkit/
+</code></pre>
+<hr />
+<h1 id="443-siar-performance-core"><a class="header" href="#443-siar-performance-core">443. <code>siar-performance-core</code></a></h1>
+<p>Owns:</p>
+<pre><code class="language-text">PerformanceScope
+PerformanceClass
+PerformanceStage
+errors
+</code></pre>
+<hr />
+<h1 id="444-siar-performance-budget"><a class="header" href="#444-siar-performance-budget">444. <code>siar-performance-budget</code></a></h1>
+<p>End-to-end/stage budgets/deadlines.</p>
+<hr />
+<h1 id="445-siar-latency-decomposition"><a class="header" href="#445-siar-latency-decomposition">445. <code>siar-latency-decomposition</code></a></h1>
+<p>Critical path/stage summaries.</p>
+<hr />
+<h1 id="446-siar-queue-performance"><a class="header" href="#446-siar-queue-performance">446. <code>siar-queue-performance</code></a></h1>
+<p>arrival/service/depth/age modeling.</p>
+<hr />
+<h1 id="447-siar-throughput-model"><a class="header" href="#447-siar-throughput-model">447. <code>siar-throughput-model</code></a></h1>
+<p>resource bottleneck/ceilings.</p>
+<hr />
+<h1 id="448-siar-tail-latency"><a class="header" href="#448-siar-tail-latency">448. <code>siar-tail-latency</code></a></h1>
+<p>tail policies/timeouts/cancellation/hedging.</p>
+<hr />
+<h1 id="449-siar-performance-benchmark"><a class="header" href="#449-siar-performance-benchmark">449. <code>siar-performance-benchmark</code></a></h1>
+<p>micro/component/service/E2E/failure benchmarks.</p>
+<hr />
+<h1 id="450-siar-performance-regression"><a class="header" href="#450-siar-performance-regression">450. <code>siar-performance-regression</code></a></h1>
+<p>release baseline/regression gates.</p>
+<hr />
+<h1 id="451-siar-performance-telemetry"><a class="header" href="#451-siar-performance-telemetry">451. <code>siar-performance-telemetry</code></a></h1>
+<p>bounded aggregate histograms/counters.</p>
+<hr />
+<h1 id="452-siar-performance-governance"><a class="header" href="#452-siar-performance-governance">452. <code>siar-performance-governance</code></a></h1>
+<p>budget versioning/policy/change integration.</p>
+<hr />
+<h1 id="453-siar-performance-testkit"><a class="header" href="#453-siar-performance-testkit">453. <code>siar-performance-testkit</code></a></h1>
+<p>latency/throughput/privacy/concurrency tests.</p>
+<hr />
+<h1 id="454-security-privacy--correctness-invariants"><a class="header" href="#454-security-privacy--correctness-invariants">454. Security, Privacy &amp; Correctness Invariants</a></h1>
+<p>Mandatory:</p>
+<pre><code class="language-text">1. Performance engineering uses service, capability, region, work-class, transport, platform, and federation-level technical signals—not stable user identities, private content, social graphs, or behavioral profiles.
+2. End-to-end latency is decomposed into explicit stages with queue time, service time, network time, storage time, crypto time, and intentional anonymity delay kept semantically distinct.
+3. Performance targets use tail distributions such as p95/p99 and cannot be represented solely by averages that hide queueing or outlier collapse.
+4. Every queue, worker pool, blocking pool, crypto pool, concurrency limiter, retry path, and hedging mechanism remains explicitly bounded; throughput optimization cannot rely on unbounded parallelism.
+5. Performance optimization can never disable or weaken durability, authorization, encryption, anonymity, tenant isolation, residency, HSM use, or other hard security/privacy guarantees.
+6. Anonymous/mixnet performance measurements preserve anonymity boundaries and never introduce universal end-to-end trace IDs, source-destination correlation, or stable mailbox/user identifiers.
+7. Throughput models identify the limiting technical resource and include post-failure capacity where required; nominal peak benchmark numbers cannot substitute for sustained safe throughput.
+8. Tail-latency controls such as retries, hedging, timeouts, cancellation, caching, and load shedding are operation-aware; unsafe duplication of non-idempotent work is forbidden.
+9. Performance regressions are evaluated against exact artifact/config/environment baselines and cannot be hidden by improved averages if p95/p99, memory, CPU, or correctness-relevant metrics degrade materially.
+10. Performance telemetry is bounded-cardinality and aggregate, with no raw request archive or user/device behavioral history used as a performance optimization substrate.
+11. Cost or latency pressure cannot cause routing into forbidden regions, direct-path privacy downgrade, software-key fallback, or bypass of security controls.
+12. Performance engineering integrates with SLOs, capacity forecasting, resilience, DR, change impact, release certification, desired state, inventory, FinOps, residency, and security/privacy governance without creating an alternate path around hard invariants.
+</code></pre>
+<hr />
+<h1 id="455-initial-production-scope"><a class="header" href="#455-initial-production-scope">455. Initial Production Scope</a></h1>
+<p>Implement first:</p>
+<pre><code class="language-text">typed PerformanceScope/PerformanceClass/PerformanceStage
+end-to-end latency budgets
+p50/p95/p99 targets
+stage decomposition
+queue vs service-time measurement
+bounded latency histograms
+throughput ceilings
+concurrency budgets
+deadline propagation
+timeouts/cancellation
+retry-aware latency
+database pool/query budgets
+serialization budgets
+local UI startup/frame/interaction budgets
+mixnet latency aggregates without trace correlation
+realtime call setup/audio/video budgets
+micro/component/service/E2E benchmarks
+exact environment recording
+performance baselines/regression gates
+failure-mode benchmarks
+privacy-safe performance dashboards
+performance testkit
+</code></pre>
+<p>Then add:</p>
+<pre><code class="language-text">automated critical-path extraction
+advanced queueing simulation
+hardware-counter profiling
+cross-platform performance laboratory
+adaptive concurrency controllers
+formal deadline/concurrency verification
+privacy-safe continuous performance regression detection
+</code></pre>
+<hr />
+<h1 id="456-definition-of-done"><a class="header" href="#456-definition-of-done">456. Definition of Done</a></h1>
+<p>Part 112 is complete when:</p>
+<ul>
+<li>end-to-end and per-stage performance budgets exist</li>
+<li>p95/p99 are first-class</li>
+<li>queue and service time are separated</li>
+<li>sustained/burst throughput ceilings are measured</li>
+<li>concurrency and worker pools are bounded</li>
+<li>deadlines propagate correctly</li>
+<li>retries/hedging are operation-safe</li>
+<li>mixnet/anonymous boundaries break universal tracing</li>
+<li>performance optimizations cannot weaken security/privacy/durability</li>
+<li>benchmarks use exact artifact/config/environment</li>
+<li>blocking regressions gate releases</li>
+<li>failure-mode performance is measured</li>
+<li>UI/local-first paths have explicit budgets</li>
+<li>telemetry contains no user behavioral dimensions</li>
+<li>latency/throughput/privacy/fuzz/formal tests are specified</li>
+</ul>
+<hr />
+<h1 id="457-final-architecture"><a class="header" href="#457-final-architecture">457. Final Architecture</a></h1>
+<pre><code class="language-text">                OPERATION / CAPABILITY
+                         │
+                         ▼
+               END-TO-END PERFORMANCE BUDGET
+                         │
+                         ▼
+                  STAGE DECOMPOSITION
+                         │
+          ┌──────────────┼──────────────┐
+          │              │              │
+        QUEUE          SERVICE       NETWORK
+          │              │              │
+          └──────────────┼──────────────┘
+                         ▼
+                  CRITICAL PATH
+                         │
+                         ▼
+               THROUGHPUT / SATURATION
+                         │
+                         ▼
+                 TAIL-LATENCY CONTROL
+                         │
+                         ▼
+               BENCHMARK / REGRESSION GATE
+</code></pre>
+<p>Performance-engineering safety model:</p>
+<pre><code class="language-text">explicit budgets
++
+stage decomposition
++
+tail-aware targets
++
+bounded concurrency
++
+throughput ceilings
++
+deadline/cancellation discipline
++
+privacy-safe telemetry
++
+release regression gates
+</code></pre>
+<p>not:</p>
+<pre><code class="language-text">optimize average latency, spawn more work, trace every user end-to-end, and remove security/privacy overhead when benchmarks look slow
+</code></pre>
+<hr />
+<h1 id="458-final-principle"><a class="header" href="#458-final-principle">458. Final Principle</a></h1>
+<p>Performance is the disciplined allocation of latency, throughput, concurrency, memory, and I/O budgets across a critical path—not the pursuit of the smallest benchmark number at any cost.</p>
+<p>The correct model is:</p>
+<pre><code class="language-text">budget the whole path
++
+measure every meaningful stage
++
+separate queueing from work
++
+control concurrency
++
+protect the tail
++
+benchmark realistically
++
+gate regressions
++
+preserve privacy/security even when they cost performance
+</code></pre>
+<p>This architecture gives SIAR a privacy-preserving performance-engineering foundation for latency budgets, throughput ceilings, queueing control, tail-latency management, benchmarking, release regression gates, local-first responsiveness, realtime media, and anonymity-aware performance while preserving the anonymity, local-first, least-authority, and anti-surveillance guarantees established across Parts 34–111.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="111-anonymous-network-capacity-forecasting-demand-modeling-growth-planning-saturation-prediction-privacy-preserving-infrastructure-forecast-architecture.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="113-anonymous-network-resource-efficiency-work-consolidation-compute-memory-io-optimization-energy-awareness-privacy-preserving-efficiency-engineering-architecture.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="111-anonymous-network-capacity-forecasting-demand-modeling-growth-planning-saturation-prediction-privacy-preserving-infrastructure-forecast-architecture.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="113-anonymous-network-resource-efficiency-work-consolidation-compute-memory-io-optimization-energy-awareness-privacy-preserving-efficiency-engineering-architecture.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

@@ -1,0 +1,2064 @@
+<!DOCTYPE HTML>
+<html lang="en" class="navy" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>43 — Anonymous Group Messaging, Membership Privacy, Sender-Key Distribution &amp; Large-Group Anonymity Architecture - SIAR System Architecture &amp; Technical Wiki</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="Comprehensive system architecture, cryptographic protocols, DTN mesh networking, distributed storage, audio DSP pipelines, and UI/UX design specifications for SIAR.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="theme/custom.css">
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "navy";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('navy')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="Home.html">Architecture Portal & Reading Guide</a></li><li class="chapter-item expanded affix "><a href="design-rationale.html">System Architecture Design Rationale</a></li><li class="chapter-item expanded affix "><a href="system-capabilities-comparison.html">System Capabilities & Comparison Matrix</a></li><li class="chapter-item expanded affix "><a href="spec-order.html">Master Specification Execution Order</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part I: Protocol Foundation & Extension Platform</li><li class="chapter-item expanded "><a href="01-protocol-extension-system-architecture.html"><strong aria-hidden="true">1.</strong> 01 — Protocol Extension System Architecture</a></li><li class="chapter-item expanded "><a href="07-capability-negotiation-architecture.html"><strong aria-hidden="true">2.</strong> 07 — Capability Negotiation Architecture</a></li><li class="chapter-item expanded "><a href="21-third-party-protocol-extensions-architecture.html"><strong aria-hidden="true">3.</strong> 21 — Third-Party Protocol Extensions Architecture</a></li><li class="chapter-item expanded "><a href="22-wasm-compatible-components-architecture.html"><strong aria-hidden="true">4.</strong> 22 — WASM-Compatible Components Architecture</a></li><li class="chapter-item expanded "><a href="23-external-interoperability-suite-architecture.html"><strong aria-hidden="true">5.</strong> 23 — External Interoperability Suite Architecture</a></li><li class="chapter-item expanded "><a href="24-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">6.</strong> 24 — Plugin / Module Ecosystem Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part II: Identity, Trust & Cryptography</li><li class="chapter-item expanded "><a href="02-multi-device-identity-architecture.html"><strong aria-hidden="true">7.</strong> 02 — Multi-Device Identity Architecture</a></li><li class="chapter-item expanded "><a href="28-production-security-e2ee-key-management-privacy-architecture.html"><strong aria-hidden="true">8.</strong> 28 — Production Security, E2EE, Key Management, Abuse Resistance & Privacy Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part III: Mesh Networking, Transports & Hardware</li><li class="chapter-item expanded "><a href="03-transport-routing-policy-engine-architecture.html"><strong aria-hidden="true">9.</strong> 03 — Transport & Routing Policy Engine Architecture</a></li><li class="chapter-item expanded "><a href="11-relay-self-hosted-infrastructure-architecture.html"><strong aria-hidden="true">10.</strong> 11 — Relay & Self-Hosted Infrastructure Architecture</a></li><li class="chapter-item expanded "><a href="12-multipath-networking-architecture.html"><strong aria-hidden="true">11.</strong> 12 — Multipath Networking Architecture</a></li><li class="chapter-item expanded "><a href="13-battery-aware-scheduling-architecture.html"><strong aria-hidden="true">12.</strong> 13 — Battery-Aware Scheduling Architecture</a></li><li class="chapter-item expanded "><a href="14-proximity-abstraction-architecture.html"><strong aria-hidden="true">13.</strong> 14 — Proximity Abstraction Architecture</a></li><li class="chapter-item expanded "><a href="15-qr-nfc-bootstrap-pairing-architecture.html"><strong aria-hidden="true">14.</strong> 15 — QR / NFC Bootstrap & Secure Pairing Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IV: Delay-Tolerant Networking & Emergency Mesh</li><li class="chapter-item expanded "><a href="06-dtn-store-carry-forward-architecture.html"><strong aria-hidden="true">15.</strong> 06 — DTN / Store-Carry-Forward Architecture</a></li><li class="chapter-item expanded "><a href="17-emergency-priority-classes-architecture.html"><strong aria-hidden="true">16.</strong> 17 — Emergency Priority Classes Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part V: Storage, Outbox & Data Lifecycle</li><li class="chapter-item expanded "><a href="04-offline-event-log-architecture.html"><strong aria-hidden="true">17.</strong> 04 — Offline Event Log Architecture</a></li><li class="chapter-item expanded "><a href="05-robust-file-blob-subsystem-architecture.html"><strong aria-hidden="true">18.</strong> 05 — Robust File / Blob Subsystem Architecture</a></li><li class="chapter-item expanded "><a href="09-crash-recovery-architecture.html"><strong aria-hidden="true">19.</strong> 09 — Crash Recovery Architecture</a></li><li class="chapter-item expanded "><a href="32-search-indexing-local-knowledge-privacy-architecture.html"><strong aria-hidden="true">20.</strong> 32 — Search, Indexing, Local Knowledge Retrieval & Privacy-Preserving Discovery Architecture</a></li><li class="chapter-item expanded "><a href="33-backup-restore-export-import-archival-portability-architecture.html"><strong aria-hidden="true">21.</strong> 33 — Backup, Restore, Export/Import, Archival & Long-Term Data Portability Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VI: Realtime Media, Calling & Audio DSP</li><li class="chapter-item expanded "><a href="25-android-direct-hardware-surface-zero-copy-media-architecture.html"><strong aria-hidden="true">22.</strong> 25 — Android Direct Hardware Surface / Zero-Copy Media Pipeline Architecture</a></li><li class="chapter-item expanded "><a href="26-rust-first-audio-dsp-resampling-aec-ns-agc-architecture.html"><strong aria-hidden="true">23.</strong> 26 — Rust-First Audio DSP, Resampling, AEC/NS/AGC & Hardware-Aware Audio Pipeline Architecture</a></li><li class="chapter-item expanded "><a href="29-realtime-calls-media-session-protocol-architecture.html"><strong aria-hidden="true">24.</strong> 29 — Realtime Calls & Media Session Protocol Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VII: Ephemeral State, Presence & Notifications</li><li class="chapter-item expanded "><a href="30-presence-availability-typing-read-receipts-ephemeral-state-architecture.html"><strong aria-hidden="true">25.</strong> 30 — Presence, Availability, Typing, Read Receipts & Ephemeral Realtime State Architecture</a></li><li class="chapter-item expanded "><a href="31-notifications-push-background-delivery-lifecycle-architecture.html"><strong aria-hidden="true">26.</strong> 31 — Notifications, Push Wake, Background Delivery & OS Lifecycle Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VIII: Native Runtimes, Daemons & Embedded Linux</li><li class="chapter-item expanded "><a href="16-daemon-headless-runtime-architecture.html"><strong aria-hidden="true">27.</strong> 16 — Daemon & Headless Runtime Architecture</a></li><li class="chapter-item expanded "><a href="19-c-abi-ffi-architecture.html"><strong aria-hidden="true">28.</strong> 19 — C ABI / FFI Architecture</a></li><li class="chapter-item expanded "><a href="20-embedded-linux-node-architecture.html"><strong aria-hidden="true">29.</strong> 20 — Embedded Linux Node Architecture</a></li><li class="chapter-item expanded "><a href="27-rust-driven-android-native-build-packaging-automation.html"><strong aria-hidden="true">30.</strong> 27 — Rust-Driven Android Native Build & Packaging Automation Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IX: Reliability, Testing, Fuzzing & Diagnostics</li><li class="chapter-item expanded "><a href="08-resource-limits-backpressure-architecture.html"><strong aria-hidden="true">31.</strong> 08 — Resource Limits & Backpressure Architecture</a></li><li class="chapter-item expanded "><a href="10-fuzzing-protocol-test-suite-architecture.html"><strong aria-hidden="true">32.</strong> 10 — Fuzzing & Protocol Test Suite Architecture</a></li><li class="chapter-item expanded "><a href="18-network-diagnostics-path-visualization-architecture.html"><strong aria-hidden="true">33.</strong> 18 — Network Diagnostics & Path Visualization Architecture</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part X: UI/UX Client Architecture (Cross-Platform)</li><li class="chapter-item expanded "><a href="ui-ux-01-product-foundation-cross-platform-interaction-architecture.html"><strong aria-hidden="true">34.</strong> UI/UX 01 — Product UX Foundation & Cross-Platform Interaction Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-02-desktop-dioxus-app-shell-navigation-window-architecture.html"><strong aria-hidden="true">35.</strong> UI/UX 02 — Desktop Dioxus App Shell, Navigation & Window Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-03-android-jetpack-compose-app-shell-navigation-lifecycle-architecture.html"><strong aria-hidden="true">36.</strong> UI/UX 03 — Android Jetpack Compose App Shell, Navigation & Lifecycle Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-04-conversation-list-inbox-architecture.html"><strong aria-hidden="true">37.</strong> UI/UX 04 — Conversation List / Inbox UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-05-conversation-message-timeline-architecture.html"><strong aria-hidden="true">38.</strong> UI/UX 05 — Conversation / Message Timeline UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-06-message-composer-attachments-voice-notes-drafts-architecture.html"><strong aria-hidden="true">39.</strong> UI/UX 06 — Message Composer, Attachments, Voice Notes & Drafts UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-07-calls-realtime-media-architecture.html"><strong aria-hidden="true">40.</strong> UI/UX 07 — Calls & Realtime Media UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-08-contacts-requests-verification-identity-architecture.html"><strong aria-hidden="true">41.</strong> UI/UX 08 — Contacts, Requests, Verification & Identity UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-09-groups-membership-roles-architecture.html"><strong aria-hidden="true">42.</strong> UI/UX 09 — Groups, Membership & Roles UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-10-files-media-gallery-transfer-architecture.html"><strong aria-hidden="true">43.</strong> UI/UX 10 — Files, Media Gallery & Transfer UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-11-search-local-knowledge-retrieval-architecture.html"><strong aria-hidden="true">44.</strong> UI/UX 11 — Search & Local Knowledge Retrieval UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-12-nearby-qr-nfc-pairing-device-linking-architecture.html"><strong aria-hidden="true">45.</strong> UI/UX 12 — Nearby, QR/NFC Pairing & Device Linking UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-13-notifications-background-incoming-call-architecture.html"><strong aria-hidden="true">46.</strong> UI/UX 13 — Notifications, Background & Incoming Call UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-14-presence-typing-receipts-status-architecture.html"><strong aria-hidden="true">47.</strong> UI/UX 14 — Presence, Typing, Receipts & Status UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-15-security-center-devices-keys-recovery-architecture.html"><strong aria-hidden="true">48.</strong> UI/UX 15 — Security Center, Devices, Keys & Recovery UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-16-backup-restore-export-migration-architecture.html"><strong aria-hidden="true">49.</strong> UI/UX 16 — Backup, Restore, Export & Migration UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-17-emergency-sos-offline-mesh-architecture.html"><strong aria-hidden="true">50.</strong> UI/UX 17 — Emergency / SOS / Offline Mesh UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-18-settings-privacy-notifications-data-controls-architecture.html"><strong aria-hidden="true">51.</strong> UI/UX 18 — Settings, Privacy, Notifications & Data Controls UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-19-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">52.</strong> UI/UX 19 — Plugin / Module Ecosystem UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-20-diagnostics-network-paths-advanced-developer-architecture.html"><strong aria-hidden="true">53.</strong> UI/UX 20 — Diagnostics, Network Paths & Advanced Developer UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-21-accessibility-inclusive-interaction-architecture.html"><strong aria-hidden="true">54.</strong> UI/UX 21 — Accessibility & Inclusive Interaction Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-22-design-system-tokens-typography-icons-motion-architecture.html"><strong aria-hidden="true">55.</strong> UI/UX 22 — Design System, Tokens, Typography, Icons & Motion Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-23-responsive-adaptive-desktop-tablet-foldable-phone-layout-architecture.html"><strong aria-hidden="true">56.</strong> UI/UX 23 — Responsive / Adaptive Desktop, Tablet, Foldable & Phone Layout Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-24-error-loading-empty-offline-degraded-state-architecture.html"><strong aria-hidden="true">57.</strong> UI/UX 24 — Error, Loading, Empty, Offline & Degraded-State UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-25-onboarding-first-run-permission-education-architecture.html"><strong aria-hidden="true">58.</strong> UI/UX 25 — Onboarding, First Run & Permission Education UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-26-performance-virtualization-large-data-ui-architecture.html"><strong aria-hidden="true">59.</strong> UI/UX 26 — Performance, Virtualization & Large-Data UI Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-27-ui-testing-screenshot-interaction-release-quality-gates-architecture.html"><strong aria-hidden="true">60.</strong> UI/UX 27 — UI Testing, Screenshot/Interaction Tests & Release Quality Gates Architecture</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part XI: Anonymous Network — Core Mixnet Mechanics</li><li class="chapter-item expanded "><a href="34-mixnet-loopix-sphinx-nym-high-anonymity-transport-architecture.html"><strong aria-hidden="true">61.</strong> 34 — Mixnet, Loopix, Sphinx, Nym & High-Anonymity Transport Architecture</a></li><li class="chapter-item expanded "><a href="35-anonymous-mailbox-offline-receiving-reply-capability-architecture.html"><strong aria-hidden="true">62.</strong> 35 — Anonymous Mailbox, Offline Receiving & Reply Capability Architecture</a></li><li class="chapter-item expanded "><a href="36-sphinx-packet-cell-fragmentation-anonymous-message-framing-architecture.html"><strong aria-hidden="true">63.</strong> 36 — Sphinx Packet, Cell, Fragmentation & Anonymous Message Framing Architecture</a></li><li class="chapter-item expanded "><a href="37-cover-traffic-traffic-shaping-timing-obfuscation-loop-traffic-architecture.html"><strong aria-hidden="true">64.</strong> 37 — Cover Traffic, Traffic Shaping, Timing Obfuscation & Loop Traffic Architecture</a></li><li class="chapter-item expanded "><a href="38-native-loopix-inspired-mixnet-topology-mix-nodes-layering-packet-forwarding-architecture.html"><strong aria-hidden="true">65.</strong> 38 — Native Loopix-Inspired Mixnet Topology, Mix Nodes, Layering & Packet Forwarding Architecture</a></li><li class="chapter-item expanded "><a href="39-mixnet-directory-node-admission-identity-sybil-resistance-topology-governance-architecture.html"><strong aria-hidden="true">66.</strong> 39 — Mixnet Directory, Node Admission, Identity, Sybil Resistance & Topology Governance Architecture</a></li><li class="chapter-item expanded "><a href="40-anonymous-attachment-transfer-rendezvous-large-file-privacy-high-bandwidth-data-architecture.html"><strong aria-hidden="true">67.</strong> 40 — Anonymous Attachment Transfer, Rendezvous, Large-File Privacy & High-Bandwidth Anonymous Data Architecture</a></li><li class="chapter-item expanded "><a href="41-censorship-resistance-bridges-pluggable-transports-traffic-obfuscation-architecture.html"><strong aria-hidden="true">68.</strong> 41 — Censorship Resistance, Bridges, Pluggable Transports & Traffic Obfuscation Architecture</a></li><li class="chapter-item expanded "><a href="42-anonymity-threat-model-traffic-analysis-correlation-formal-privacy-verification-architecture.html"><strong aria-hidden="true">69.</strong> 42 — Anonymity Threat Model, Traffic Analysis, Correlation Attacks & Formal Privacy Verification Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part XII: Anonymous Network — Anonymous Application Primitives</li><li class="chapter-item expanded "><a href="43-anonymous-group-messaging-membership-privacy-sender-key-large-group-anonymity-architecture.html" class="active"><strong aria-hidden="true">70.</strong> 43 — Anonymous Group Messaging, Membership Privacy, Sender-Key Distribution & Large-Group Anonymity Architecture</a></li><li class="chapter-item expanded "><a href="44-anonymous-voice-video-call-signaling-relay-privacy-realtime-metadata-private-session-architecture.html"><strong aria-hidden="true">71.</strong> 44 — Anonymous Voice/Video Call Signaling, Relay Privacy, Realtime Metadata Protection & Private Realtime Session Architecture</a></li><li class="chapter-item expanded "><a href="45-anonymous-presence-discovery-contact-bootstrap-private-social-graph-architecture.html"><strong aria-hidden="true">72.</strong> 45 — Anonymous Presence, Discovery, Contact Bootstrap & Private Social Graph Architecture</a></li><li class="chapter-item expanded "><a href="46-anonymous-reputation-trust-signals-abuse-reporting-privacy-preserving-moderation-architecture.html"><strong aria-hidden="true">73.</strong> 46 — Anonymous Reputation, Trust Signals, Abuse Reporting & Privacy-Preserving Moderation Architecture</a></li><li class="chapter-item expanded "><a href="47-anonymous-payments-resource-credits-quotas-privacy-preserving-service-accounting-architecture.html"><strong aria-hidden="true">74.</strong> 47 — Anonymous Payments, Resource Credits, Quotas & Privacy-Preserving Service Accounting Architecture</a></li><li class="chapter-item expanded "><a href="48-anonymous-service-discovery-provider-selection-capability-advertisement-privacy-preserving-marketplace-architecture.html"><strong aria-hidden="true">75.</strong> 48 — Anonymous Service Discovery, Provider Selection, Capability Advertisement & Privacy-Preserving Marketplace Architecture</a></li><li class="chapter-item expanded "><a href="49-anonymous-resource-scheduling-capacity-markets-load-balancing-privacy-preserving-infrastructure-allocation-architecture.html"><strong aria-hidden="true">76.</strong> 49 — Anonymous Resource Scheduling, Capacity Markets, Load Balancing & Privacy-Preserving Infrastructure Allocation Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part XIII: Anonymous Network — Sovereign Protocol Policies & Governance</li><li class="chapter-item expanded "><a href="50-anonymous-network-reliability-disaster-recovery-partition-tolerance-multi-region-continuity-architecture.html"><strong aria-hidden="true">77.</strong> 50 — Anonymous Network Reliability, Disaster Recovery, Partition Tolerance & Multi-Region Continuity Architecture</a></li><li class="chapter-item expanded "><a href="51-anonymous-network-observability-slos-privacy-safe-telemetry-incident-detection-operations-architecture.html"><strong aria-hidden="true">78.</strong> 51 — Anonymous Network Observability, SLOs, Privacy-Safe Telemetry, Incident Detection & Operations Architecture</a></li><li class="chapter-item expanded "><a href="52-anonymous-network-upgrade-protocol-evolution-compatibility-migration-zero-downtime-rollout-architecture.html"><strong aria-hidden="true">79.</strong> 52 — Anonymous Network Upgrade, Protocol Evolution, Compatibility, Migration & Zero-Downtime Rollout Architecture</a></li><li class="chapter-item expanded "><a href="53-anonymous-network-governance-policy-distribution-trust-roots-multi-authority-emergency-decision-architecture.html"><strong aria-hidden="true">80.</strong> 53 — Anonymous Network Governance, Policy Distribution, Trust Roots, Multi-Authority Control & Emergency Decision Architecture</a></li><li class="chapter-item expanded "><a href="54-anonymous-network-economics-incentives-operator-sustainability-subsidies-privacy-preserving-compensation-architecture.html"><strong aria-hidden="true">81.</strong> 54 — Anonymous Network Economics, Incentives, Operator Sustainability, Subsidies & Privacy-Preserving Compensation Architecture</a></li><li class="chapter-item expanded "><a href="55-anonymous-network-legal-compliance-boundary-jurisdiction-isolation-data-minimization-lawful-operations-architecture.html"><strong aria-hidden="true">82.</strong> 55 — Anonymous Network Legal/Compliance Boundary, Jurisdiction Isolation, Data-Minimization & Lawful Operations Architecture</a></li><li class="chapter-item expanded "><a href="56-anonymous-network-privacy-policy-user-consent-transparency-data-rights-privacy-control-architecture.html"><strong aria-hidden="true">83.</strong> 56 — Anonymous Network Privacy Policy, User Consent, Transparency, Data Rights & Privacy-Control Architecture</a></li><li class="chapter-item expanded "><a href="57-anonymous-network-identity-recovery-account-portability-device-reprovisioning-privacy-preserving-continuity-architecture.html"><strong aria-hidden="true">84.</strong> 57 — Anonymous Network Identity Recovery, Account Portability, Device Re-Provisioning & Privacy-Preserving Continuity Architecture</a></li><li class="chapter-item expanded "><a href="58-anonymous-network-federation-inter-network-peering-cross-domain-trust-privacy-preserving-interoperability-architecture.html"><strong aria-hidden="true">85.</strong> 58 — Anonymous Network Federation, Inter-Network Peering, Cross-Domain Trust & Privacy-Preserving Interoperability Architecture</a></li><li class="chapter-item expanded "><a href="59-anonymous-network-naming-addressing-namespace-isolation-private-resolution-anti-enumeration-architecture.html"><strong aria-hidden="true">86.</strong> 59 — Anonymous Network Naming, Addressing, Namespace Isolation, Private Resolution & Anti-Enumeration Architecture</a></li><li class="chapter-item expanded "><a href="60-anonymous-network-time-clock-privacy-replay-windows-epoch-coordination-temporal-metadata-resistance-architecture.html"><strong aria-hidden="true">87.</strong> 60 — Anonymous Network Time, Clock Privacy, Replay Windows, Epoch Coordination & Temporal Metadata Resistance Architecture</a></li><li class="chapter-item expanded "><a href="61-anonymous-network-configuration-secrets-runtime-policy-remote-administration-secure-control-plane-management-architecture.html"><strong aria-hidden="true">88.</strong> 61 — Anonymous Network Configuration, Secrets, Runtime Policy, Remote Administration & Secure Control-Plane Management Architecture</a></li><li class="chapter-item expanded "><a href="62-anonymous-network-deployment-packaging-infrastructure-provisioning-bare-metal-vm-container-runtime-reproducible-operations-architecture.html"><strong aria-hidden="true">89.</strong> 62 — Anonymous Network Deployment, Packaging, Infrastructure Provisioning, Bare-Metal/VM/Container Runtime & Reproducible Operations Architecture</a></li><li class="chapter-item expanded "><a href="63-anonymous-network-performance-engineering-benchmarking-capacity-planning-resource-isolation-production-sizing-architecture.html"><strong aria-hidden="true">90.</strong> 63 — Anonymous Network Performance Engineering, Benchmarking, Capacity Planning, Resource Isolation & Production Sizing Architecture</a></li><li class="chapter-item expanded "><a href="64-anonymous-network-testing-verification-simulation-fault-injection-adversarial-validation-release-quality-architecture.html"><strong aria-hidden="true">91.</strong> 64 — Anonymous Network Testing, Verification, Simulation, Fault Injection, Adversarial Validation & Release Quality Architecture</a></li><li class="chapter-item expanded "><a href="65-anonymous-network-documentation-operator-runbooks-incident-playbooks-architecture-decision-records-production-knowledge-architecture.html"><strong aria-hidden="true">92.</strong> 65 — Anonymous Network Documentation, Operator Runbooks, Incident Playbooks, Architecture Decision Records & Production Knowledge Architecture</a></li><li class="chapter-item expanded "><a href="66-anonymous-network-cryptographic-agility-post-quantum-migration-key-lifecycle-long-term-security-architecture.html"><strong aria-hidden="true">93.</strong> 66 — Anonymous Network Cryptographic Agility, Post-Quantum Migration, Key Lifecycle & Long-Term Security Architecture</a></li><li class="chapter-item expanded "><a href="67-anonymous-network-data-lifecycle-storage-minimization-secure-deletion-retention-archival-cryptographic-erasure-architecture.html"><strong aria-hidden="true">94.</strong> 67 — Anonymous Network Data Lifecycle, Storage Minimization, Secure Deletion, Retention, Archival & Cryptographic Erasure Architecture</a></li><li class="chapter-item expanded "><a href="68-anonymous-network-api-sdk-extension-boundary-capability-security-third-party-integration-architecture.html"><strong aria-hidden="true">95.</strong> 68 — Anonymous Network API, SDK, Extension Boundary, Capability Security & Third-Party Integration Architecture</a></li><li class="chapter-item expanded "><a href="69-anonymous-network-multi-tenant-isolation-organizational-boundaries-delegated-administration-enterprise-policy-architecture.html"><strong aria-hidden="true">96.</strong> 69 — Anonymous Network Multi-Tenant Isolation, Organizational Boundaries, Delegated Administration & Enterprise Policy Architecture</a></li><li class="chapter-item expanded "><a href="70-anonymous-network-disaster-exercises-business-continuity-validation-crisis-coordination-operational-resilience-governance-architecture.html"><strong aria-hidden="true">97.</strong> 70 — Anonymous Network Disaster Exercises, Business Continuity Validation, Crisis Coordination & Operational Resilience Governance Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part XIV: Anonymous Network — Zero-Trust Infrastructure & Attestation</li><li class="chapter-item expanded "><a href="71-anonymous-network-trustworthy-boot-host-attestation-runtime-integrity-binary-measurement-compromise-detection-architecture.html"><strong aria-hidden="true">98.</strong> 71 — Anonymous Network Trustworthy Boot, Host Attestation, Runtime Integrity, Binary Measurement & Compromise Detection Architecture</a></li><li class="chapter-item expanded "><a href="72-anonymous-network-hardware-security-modules-secure-elements-key-custody-signing-ceremonies-high-assurance-cryptographic-operations-architecture.html"><strong aria-hidden="true">99.</strong> 72 — Anonymous Network Hardware Security Modules, Secure Elements, Key Custody, Signing Ceremonies & High-Assurance Cryptographic Operations Architecture</a></li><li class="chapter-item expanded "><a href="73-anonymous-network-supply-chain-transparency-dependency-provenance-reproducible-builds-sbom-artifact-trust-compromise-recovery-architecture.html"><strong aria-hidden="true">100.</strong> 73 — Anonymous Network Supply-Chain Transparency, Dependency Provenance, Reproducible Builds, SBOM, Artifact Trust & Compromise Recovery Architecture</a></li><li class="chapter-item expanded "><a href="74-anonymous-network-database-persistent-state-transaction-boundaries-schema-evolution-storage-engine-architecture.html"><strong aria-hidden="true">101.</strong> 74 — Anonymous Network Database, Persistent State, Transaction Boundaries, Schema Evolution & Storage-Engine Architecture</a></li><li class="chapter-item expanded "><a href="75-anonymous-network-event-streaming-message-bus-durable-queues-internal-pubsub-distributed-workflow-architecture.html"><strong aria-hidden="true">102.</strong> 75 — Anonymous Network Event Streaming, Message Bus, Durable Queues, Internal Pub/Sub & Distributed Workflow Architecture</a></li><li class="chapter-item expanded "><a href="76-anonymous-network-distributed-consensus-leader-election-membership-quorum-state-coordination-architecture.html"><strong aria-hidden="true">103.</strong> 76 — Anonymous Network Distributed Consensus, Leader Election, Membership, Quorum State & Coordination Architecture</a></li><li class="chapter-item expanded "><a href="77-anonymous-network-service-discovery-naming-endpoint-resolution-load-balancing-traffic-steering-architecture.html"><strong aria-hidden="true">104.</strong> 77 — Anonymous Network Service Discovery, Naming, Endpoint Resolution, Load Balancing & Traffic Steering Architecture</a></li><li class="chapter-item expanded "><a href="78-anonymous-network-edge-gateway-ingress-egress-reverse-proxy-api-gateway-waf-boundary-enforcement-architecture.html"><strong aria-hidden="true">105.</strong> 78 — Anonymous Network Edge Gateway, Ingress/Egress, Reverse Proxy, API Gateway, WAF & Boundary Enforcement Architecture</a></li><li class="chapter-item expanded "><a href="79-anonymous-network-internal-service-to-service-communication-zero-trust-networking-mtls-service-identity-east-west-security-architecture.html"><strong aria-hidden="true">106.</strong> 79 — Anonymous Network Internal Service-to-Service Communication, Zero-Trust Networking, mTLS, Service Identity & East-West Security Architecture</a></li><li class="chapter-item expanded "><a href="80-anonymous-network-secrets-distribution-dynamic-credentials-certificate-authority-workload-enrollment-secretless-runtime-architecture.html"><strong aria-hidden="true">107.</strong> 80 — Anonymous Network Secrets Distribution, Dynamic Credentials, Certificate Authority, Workload Enrollment & Secretless Runtime Architecture</a></li><li class="chapter-item expanded "><a href="81-anonymous-network-authorization-policy-decision-enforcement-capability-evaluation-abac-rbac-distributed-access-control-architecture.html"><strong aria-hidden="true">108.</strong> 81 — Anonymous Network Authorization, Policy Decision/Enforcement Points, Capability Evaluation, ABAC/RBAC & Distributed Access-Control Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part XV: Anonymous Network — Private Cloud Services & Anti-Surveillance</li><li class="chapter-item expanded "><a href="82-anonymous-network-identity-provider-authentication-mfa-passkeys-session-management-account-security-architecture.html"><strong aria-hidden="true">109.</strong> 82 — Anonymous Network Identity Provider, Authentication, MFA, Passkeys, Session Management & Account Security Architecture</a></li><li class="chapter-item expanded "><a href="83-anonymous-network-account-lifecycle-registration-enrollment-suspension-deactivation-deletion-identity-state-governance-architecture.html"><strong aria-hidden="true">110.</strong> 83 — Anonymous Network Account Lifecycle, Registration, Enrollment, Suspension, Deactivation, Deletion & Identity-State Governance Architecture</a></li><li class="chapter-item expanded "><a href="84-anonymous-network-profile-preferences-settings-personalization-synchronization-privacy-preserving-user-state-architecture.html"><strong aria-hidden="true">111.</strong> 84 — Anonymous Network Profile, Preferences, Settings, Personalization, Synchronization & Privacy-Preserving User-State Architecture</a></li><li class="chapter-item expanded "><a href="85-anonymous-network-contacts-address-book-relationship-graph-invitations-trust-state-privacy-preserving-social-connectivity-architecture.html"><strong aria-hidden="true">112.</strong> 85 — Anonymous Network Contacts, Address Book, Relationship Graph, Invitations, Trust State & Privacy-Preserving Social Connectivity Architecture</a></li><li class="chapter-item expanded "><a href="86-anonymous-network-group-directory-communities-channels-membership-discovery-moderation-boundaries-privacy-preserving-social-spaces-architecture.html"><strong aria-hidden="true">113.</strong> 86 — Anonymous Network Group Directory, Communities, Channels, Membership Discovery, Moderation Boundaries & Privacy-Preserving Social Spaces Architecture</a></li><li class="chapter-item expanded "><a href="87-anonymous-network-content-feed-timeline-subscription-recommendation-ranking-privacy-preserving-discovery-architecture.html"><strong aria-hidden="true">114.</strong> 87 — Anonymous Network Content Feed, Timeline, Subscription, Recommendation, Ranking & Privacy-Preserving Discovery Architecture</a></li><li class="chapter-item expanded "><a href="88-anonymous-network-content-publishing-posts-articles-media-drafts-revisions-distribution-creator-state-architecture.html"><strong aria-hidden="true">115.</strong> 88 — Anonymous Network Content Publishing, Posts, Articles, Media, Drafts, Revisions, Distribution & Creator-State Architecture</a></li><li class="chapter-item expanded "><a href="89-anonymous-network-comments-replies-threads-reactions-mentions-resharing-privacy-preserving-interaction-architecture.html"><strong aria-hidden="true">116.</strong> 89 — Anonymous Network Comments, Replies, Threads, Reactions, Mentions, Resharing & Privacy-Preserving Interaction Architecture</a></li><li class="chapter-item expanded "><a href="90-anonymous-network-notifications-activity-inbox-mentions-interaction-aggregation-digest-privacy-preserving-attention-architecture.html"><strong aria-hidden="true">117.</strong> 90 — Anonymous Network Notifications, Activity Inbox, Mentions, Interaction Aggregation, Digest & Privacy-Preserving Attention Architecture</a></li><li class="chapter-item expanded "><a href="91-anonymous-network-search-indexing-query-privacy-relevance-ranking-federated-search-private-information-retrieval-architecture.html"><strong aria-hidden="true">118.</strong> 91 — Anonymous Network Search, Indexing, Query Privacy, Relevance Ranking, Federated Search & Private Information Retrieval Architecture</a></li><li class="chapter-item expanded "><a href="92-anonymous-network-analytics-metrics-product-insights-privacy-preserving-aggregation-differential-privacy-anti-surveillance-data-architecture.html"><strong aria-hidden="true">119.</strong> 92 — Anonymous Network Analytics, Metrics, Product Insights, Privacy-Preserving Aggregation, Differential Privacy & Anti-Surveillance Data Architecture</a></li><li class="chapter-item expanded "><a href="93-anonymous-network-experimentation-feature-evaluation-ab-testing-rollouts-cohort-assignment-privacy-preserving-product-validation-architecture.html"><strong aria-hidden="true">120.</strong> 93 — Anonymous Network Experimentation, Feature Evaluation, A/B Testing, Rollouts, Cohort Assignment & Privacy-Preserving Product Validation Architecture</a></li><li class="chapter-item expanded "><a href="94-anonymous-network-audit-transparency-user-visible-security-history-verifiable-actions-privacy-preserving-accountability-architecture.html"><strong aria-hidden="true">121.</strong> 94 — Anonymous Network Audit, Transparency, User-Visible Security History, Verifiable Actions & Privacy-Preserving Accountability Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part XVI: Anonymous Network — Defense, SecOps & Vulnerability Management</li><li class="chapter-item expanded "><a href="95-anonymous-network-policy-compliance-engine-continuous-control-evaluation-security-posture-evidence-collection-privacy-preserving-assurance-architecture.html"><strong aria-hidden="true">122.</strong> 95 — Anonymous Network Policy Compliance Engine, Continuous Control Evaluation, Security Posture, Evidence Collection & Privacy-Preserving Assurance Architecture</a></li><li class="chapter-item expanded "><a href="96-anonymous-network-incident-response-detection-triage-containment-forensics-recovery-privacy-preserving-security-operations-architecture.html"><strong aria-hidden="true">123.</strong> 96 — Anonymous Network Incident Response, Detection, Triage, Containment, Forensics, Recovery & Privacy-Preserving Security Operations Architecture</a></li><li class="chapter-item expanded "><a href="97-anonymous-network-security-operations-center-threat-intelligence-indicators-of-compromise-detection-engineering-hunting-privacy-preserving-defensive-intelligence-architecture.html"><strong aria-hidden="true">124.</strong> 97 — Anonymous Network Security Operations Center, Threat Intelligence, Indicators of Compromise, Detection Engineering, Hunting & Privacy-Preserving Defensive Intelligence Architecture</a></li><li class="chapter-item expanded "><a href="98-anonymous-network-vulnerability-management-exposure-discovery-patch-prioritization-remediation-coordination-privacy-preserving-security-maintenance-architecture.html"><strong aria-hidden="true">125.</strong> 98 — Anonymous Network Vulnerability Management, Exposure Discovery, Patch Prioritization, Remediation Coordination & Privacy-Preserving Security Maintenance Architecture</a></li><li class="chapter-item expanded "><a href="99-anonymous-network-secure-update-patch-distribution-release-channels-client-upgrade-enforcement-rollback-protection-privacy-preserving-software-maintenance-architecture.html"><strong aria-hidden="true">126.</strong> 99 — Anonymous Network Secure Update, Patch Distribution, Release Channels, Client Upgrade Enforcement, Rollback Protection & Privacy-Preserving Software Maintenance Architecture</a></li><li class="chapter-item expanded "><a href="100-anonymous-network-disaster-recovery-backup-integrity-restore-orchestration-regional-failover-continuity-validation-privacy-preserving-resilience-architecture.html"><strong aria-hidden="true">127.</strong> 100 — Anonymous Network Disaster Recovery, Backup Integrity, Restore Orchestration, Regional Failover, Continuity Validation & Privacy-Preserving Resilience Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part XVII: Anonymous Network — SRE, Fleet Management & Physical Site Reliability</li><li class="chapter-item expanded "><a href="101-anonymous-network-capacity-management-load-shedding-admission-control-autoscaling-resource-fairness-privacy-preserving-availability-architecture.html"><strong aria-hidden="true">128.</strong> 101 — Anonymous Network Capacity Management, Load Shedding, Admission Control, Autoscaling, Resource Fairness & Privacy-Preserving Availability Architecture</a></li><li class="chapter-item expanded "><a href="102-anonymous-network-cost-governance-resource-accounting-budget-enforcement-capacity-economics-privacy-preserving-finops-architecture.html"><strong aria-hidden="true">129.</strong> 102 — Anonymous Network Cost Governance, Resource Accounting, Budget Enforcement, Capacity Economics & Privacy-Preserving FinOps Architecture</a></li><li class="chapter-item expanded "><a href="103-anonymous-network-data-residency-sovereignty-regional-placement-cross-border-transfer-jurisdiction-policy-privacy-preserving-geographic-governance-architecture.html"><strong aria-hidden="true">130.</strong> 103 — Anonymous Network Data Residency, Sovereignty, Regional Placement, Cross-Border Transfer, Jurisdiction Policy & Privacy-Preserving Geographic Governance Architecture</a></li><li class="chapter-item expanded "><a href="104-anonymous-network-service-ownership-operational-responsibility-escalation-on-call-change-authority-privacy-preserving-organizational-governance-architecture.html"><strong aria-hidden="true">131.</strong> 104 — Anonymous Network Service Ownership, Operational Responsibility, Escalation, On-Call, Change Authority & Privacy-Preserving Organizational Governance Architecture</a></li><li class="chapter-item expanded "><a href="105-anonymous-network-configuration-drift-desired-state-change-reconciliation-policy-convergence-privacy-preserving-infrastructure-state-governance-architecture.html"><strong aria-hidden="true">132.</strong> 105 — Anonymous Network Configuration Drift, Desired State, Change Reconciliation, Policy Convergence & Privacy-Preserving Infrastructure State Governance Architecture</a></li><li class="chapter-item expanded "><a href="106-anonymous-network-infrastructure-inventory-asset-graph-service-dependency-mapping-configuration-item-lifecycle-privacy-preserving-operational-topology-architecture.html"><strong aria-hidden="true">133.</strong> 106 — Anonymous Network Infrastructure Inventory, Asset Graph, Service Dependency Mapping, Configuration Item Lifecycle & Privacy-Preserving Operational Topology Architecture</a></li><li class="chapter-item expanded "><a href="107-anonymous-network-change-impact-analysis-dependency-aware-rollout-planning-pre-change-simulation-safe-execution-privacy-preserving-operational-decision-architecture.html"><strong aria-hidden="true">134.</strong> 107 — Anonymous Network Change Impact Analysis, Dependency-Aware Rollout Planning, Pre-Change Simulation, Safe Execution & Privacy-Preserving Operational Decision Architecture</a></li><li class="chapter-item expanded "><a href="108-anonymous-network-release-readiness-production-certification-go-no-go-decision-operational-acceptance-privacy-preserving-launch-governance-architecture.html"><strong aria-hidden="true">135.</strong> 108 — Anonymous Network Release Readiness, Production Certification, Go/No-Go Decision, Operational Acceptance & Privacy-Preserving Launch Governance Architecture</a></li><li class="chapter-item expanded "><a href="109-anonymous-network-service-level-objectives-error-budgets-reliability-policy-availability-governance-privacy-preserving-reliability-engineering-architecture.html"><strong aria-hidden="true">136.</strong> 109 — Anonymous Network Service Level Objectives, Error Budgets, Reliability Policy, Availability Governance & Privacy-Preserving Reliability Engineering Architecture</a></li><li class="chapter-item expanded "><a href="110-anonymous-network-availability-modeling-fault-domains-redundancy-planning-failure-correlation-reliability-simulation-privacy-preserving-resilience-engineering-architecture.html"><strong aria-hidden="true">137.</strong> 110 — Anonymous Network Availability Modeling, Fault Domains, Redundancy Planning, Failure Correlation, Reliability Simulation & Privacy-Preserving Resilience Engineering Architecture</a></li><li class="chapter-item expanded "><a href="111-anonymous-network-capacity-forecasting-demand-modeling-growth-planning-saturation-prediction-privacy-preserving-infrastructure-forecast-architecture.html"><strong aria-hidden="true">138.</strong> 111 — Anonymous Network Capacity Forecasting, Demand Modeling, Growth Planning, Saturation Prediction & Privacy-Preserving Infrastructure Forecast Architecture</a></li><li class="chapter-item expanded "><a href="112-anonymous-network-performance-budgeting-latency-decomposition-throughput-modeling-tail-latency-control-privacy-preserving-performance-engineering-architecture.html"><strong aria-hidden="true">139.</strong> 112 — Anonymous Network Performance Budgeting, Latency Decomposition, Throughput Modeling, Tail-Latency Control & Privacy-Preserving Performance Engineering Architecture</a></li><li class="chapter-item expanded "><a href="113-anonymous-network-resource-efficiency-work-consolidation-compute-memory-io-optimization-energy-awareness-privacy-preserving-efficiency-engineering-architecture.html"><strong aria-hidden="true">140.</strong> 113 — Anonymous Network Resource Efficiency, Work Consolidation, Compute/Memory/I/O Optimization, Energy Awareness & Privacy-Preserving Efficiency Engineering Architecture</a></li><li class="chapter-item expanded "><a href="114-anonymous-network-sustainability-carbon-aware-scheduling-hardware-lifecycle-resource-reuse-privacy-preserving-environmental-efficiency-architecture.html"><strong aria-hidden="true">141.</strong> 114 — Anonymous Network Sustainability, Carbon-Aware Scheduling, Hardware Lifecycle, Resource Reuse & Privacy-Preserving Environmental Efficiency Architecture</a></li><li class="chapter-item expanded "><a href="115-anonymous-network-hardware-fleet-management-firmware-lifecycle-secure-provisioning-maintenance-scheduling-privacy-preserving-physical-infrastructure-governance-architecture.html"><strong aria-hidden="true">142.</strong> 115 — Anonymous Network Hardware Fleet Management, Firmware Lifecycle, Secure Provisioning, Maintenance Scheduling & Privacy-Preserving Physical Infrastructure Governance Architecture</a></li><li class="chapter-item expanded "><a href="116-anonymous-network-data-center-edge-site-facility-power-cooling-environmental-monitoring-privacy-preserving-physical-site-reliability-architecture.html"><strong aria-hidden="true">143.</strong> 116 — Anonymous Network Data Center, Edge Site, Facility Power, Cooling, Environmental Monitoring & Privacy-Preserving Physical Site Reliability Architecture</a></li><li class="chapter-item expanded "><a href="117-anonymous-network-physical-security-tamper-detection-site-access-control-chain-of-custody-asset-protection-privacy-preserving-facility-security-architecture.html"><strong aria-hidden="true">144.</strong> 117 — Anonymous Network Physical Security, Tamper Detection, Site Access Control, Chain of Custody, Asset Protection & Privacy-Preserving Facility Security Architecture</a></li><li class="chapter-item expanded "><a href="118-anonymous-network-physical-disaster-preparedness-fire-flood-earthquake-response-site-evacuation-asset-salvage-emergency-logistics-privacy-preserving-facility-continuity-architecture.html"><strong aria-hidden="true">145.</strong> 118 — Anonymous Network Physical Disaster Preparedness, Fire/Flood/Earthquake Response, Site Evacuation, Asset Salvage, Emergency Logistics & Privacy-Preserving Facility Continuity Architecture</a></li><li class="chapter-item expanded "><a href="119-anonymous-network-crisis-command-emergency-decision-authority-multi-team-coordination-communications-situation-awareness-privacy-preserving-incident-command-architecture.html"><strong aria-hidden="true">146.</strong> 119 — Anonymous Network Crisis Command, Emergency Decision Authority, Multi-Team Coordination, Communications, Situation Awareness & Privacy-Preserving Incident Command Architecture</a></li><li class="chapter-item expanded "><a href="120-anonymous-network-post-incident-review-root-cause-analysis-corrective-actions-organizational-learning-recurrence-prevention-privacy-preserving-reliability-improvement-architecture.html"><strong aria-hidden="true">147.</strong> 120 — Anonymous Network Post-Incident Review, Root-Cause Analysis, Corrective Actions, Organizational Learning, Recurrence Prevention & Privacy-Preserving Reliability Improvement Architecture</a></li><li class="chapter-item expanded "><a href="121-anonymous-network-reliability-risk-register-technical-debt-governance-systemic-weakness-tracking-remediation-portfolio-privacy-preserving-engineering-risk-architecture.html"><strong aria-hidden="true">148.</strong> 121 — Anonymous Network Reliability Risk Register, Technical Debt Governance, Systemic Weakness Tracking, Remediation Portfolio & Privacy-Preserving Engineering Risk Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part XVIII: Anonymous Network — Governance, Traceability, SDK & Plugin Ecosystem</li><li class="chapter-item expanded "><a href="122-anonymous-network-architecture-governance-technical-standards-adr-lifecycle-design-review-exception-management-privacy-preserving-engineering-decision-architecture.html"><strong aria-hidden="true">149.</strong> 122 — Anonymous Network Architecture Governance, Technical Standards, ADR Lifecycle, Design Review, Exception Management & Privacy-Preserving Engineering Decision Architecture</a></li><li class="chapter-item expanded "><a href="123-anonymous-network-engineering-knowledge-graph-architecture-traceability-requirement-to-code-mapping-decision-provenance-privacy-preserving-technical-knowledge-architecture.html"><strong aria-hidden="true">150.</strong> 123 — Anonymous Network Engineering Knowledge Graph, Architecture Traceability, Requirement-to-Code Mapping, Decision Provenance & Privacy-Preserving Technical Knowledge Architecture</a></li><li class="chapter-item expanded "><a href="124-anonymous-network-requirements-engineering-specification-lifecycle-acceptance-criteria-verification-planning-change-traceability-privacy-preserving-product-technical-requirement-architecture.html"><strong aria-hidden="true">151.</strong> 124 — Anonymous Network Requirements Engineering, Specification Lifecycle, Acceptance Criteria, Verification Planning, Change Traceability & Privacy-Preserving Product/Technical Requirement Architecture</a></li><li class="chapter-item expanded "><a href="125-anonymous-network-test-strategy-governance-verification-matrix-coverage-traceability-qualification-evidence-release-confidence-privacy-preserving-engineering-assurance-architecture.html"><strong aria-hidden="true">152.</strong> 125 — Anonymous Network Test Strategy Governance, Verification Matrix, Coverage Traceability, Qualification Evidence, Release Confidence & Privacy-Preserving Engineering Assurance Architecture</a></li><li class="chapter-item expanded "><a href="126-anonymous-network-release-evidence-repository-certification-records-artifact-qualification-lineage-compliance-trace-packages-privacy-preserving-assurance-archive-architecture.html"><strong aria-hidden="true">153.</strong> 126 — Anonymous Network Release Evidence Repository, Certification Records, Artifact Qualification Lineage, Compliance Trace Packages & Privacy-Preserving Assurance Archive Architecture</a></li><li class="chapter-item expanded "><a href="127-anonymous-network-product-qualification-feature-maturity-levels-capability-readiness-general-availability-criteria-privacy-preserving-product-readiness-governance-architecture.html"><strong aria-hidden="true">154.</strong> 127 — Anonymous Network Product Qualification, Feature Maturity Levels, Capability Readiness, General Availability Criteria & Privacy-Preserving Product Readiness Governance Architecture</a></li><li class="chapter-item expanded "><a href="128-anonymous-network-product-lifecycle-governance-capability-evolution-backward-compatibility-migration-deprecation-sunset-privacy-preserving-end-of-life-architecture.html"><strong aria-hidden="true">155.</strong> 128 — Anonymous Network Product Lifecycle Governance, Capability Evolution, Backward Compatibility, Migration, Deprecation, Sunset & Privacy-Preserving End-of-Life Architecture</a></li><li class="chapter-item expanded "><a href="129-anonymous-network-api-protocol-compatibility-registry-version-negotiation-schema-evolution-interoperability-certification-privacy-preserving-compatibility-governance-architecture.html"><strong aria-hidden="true">156.</strong> 129 — Anonymous Network API & Protocol Compatibility Registry, Version Negotiation, Schema Evolution, Interoperability Certification & Privacy-Preserving Compatibility Governance Architecture</a></li><li class="chapter-item expanded "><a href="130-anonymous-network-sdk-client-library-generated-bindings-developer-compatibility-integration-certification-privacy-preserving-developer-platform-architecture.html"><strong aria-hidden="true">157.</strong> 130 — Anonymous Network SDK, Client Library, Generated Bindings, Developer Compatibility, Integration Certification & Privacy-Preserving Developer Platform Architecture</a></li><li class="chapter-item expanded "><a href="131-anonymous-network-developer-portal-api-documentation-sandbox-environments-credential-provisioning-integration-onboarding-support-privacy-preserving-developer-experience-architecture.html"><strong aria-hidden="true">158.</strong> 131 — Anonymous Network Developer Portal, API Documentation, Sandbox Environments, Credential Provisioning, Integration Onboarding, Support & Privacy-Preserving Developer Experience Architecture</a></li><li class="chapter-item expanded "><a href="132-anonymous-network-developer-cli-project-automation-local-integration-emulator-contract-testing-ci-integration-privacy-preserving-developer-toolchain-architecture.html"><strong aria-hidden="true">159.</strong> 132 — Anonymous Network Developer CLI, Project Automation, Local Integration Emulator, Contract Testing, CI Integration & Privacy-Preserving Developer Toolchain Architecture</a></li><li class="chapter-item expanded "><a href="133-anonymous-network-extension-marketplace-integration-distribution-package-discovery-trust-signals-review-revocation-privacy-preserving-developer-ecosystem-architecture.html"><strong aria-hidden="true">160.</strong> 133 — Anonymous Network Extension Marketplace, Integration Distribution, Package Discovery, Trust Signals, Review, Revocation & Privacy-Preserving Developer Ecosystem Architecture</a></li><li class="chapter-item expanded "><a href="134-anonymous-network-extension-runtime-plugin-sandboxing-capability-brokerage-resource-isolation-lifecycle-supervision-privacy-preserving-execution-architecture.html"><strong aria-hidden="true">161.</strong> 134 — Anonymous Network Extension Runtime, Plugin Sandboxing, Capability Brokerage, Resource Isolation, Lifecycle Supervision & Privacy-Preserving Execution Architecture</a></li><li class="chapter-item expanded "><a href="135-anonymous-network-extension-permission-model-consent-ux-delegated-authority-capability-attenuation-scope-review-privacy-preserving-authorization-architecture.html"><strong aria-hidden="true">162.</strong> 135 — Anonymous Network Extension Permission Model, Consent UX, Delegated Authority, Capability Attenuation, Scope Review & Privacy-Preserving Authorization Architecture</a></li><li class="chapter-item expanded "><a href="136-anonymous-network-extension-data-governance-data-access-mediation-information-flow-control-retention-deletion-export-privacy-preserving-extension-data-architecture.html"><strong aria-hidden="true">163.</strong> 136 — Anonymous Network Extension Data Governance, Data Access Mediation, Information-Flow Control, Retention, Deletion, Export & Privacy-Preserving Extension Data Architecture</a></li><li class="chapter-item expanded "><a href="137-anonymous-network-extension-inter-process-communication-event-bus-host-calls-shared-memory-streaming-backpressure-privacy-preserving-runtime-communication-architecture.html"><strong aria-hidden="true">164.</strong> 137 — Anonymous Network Extension Inter-Process Communication, Event Bus, Host Calls, Shared Memory, Streaming, Backpressure & Privacy-Preserving Runtime Communication Architecture</a></li><li class="chapter-item expanded "><a href="138-anonymous-network-extension-background-execution-durable-jobs-triggers-scheduling-wakeups-mobile-lifecycle-quotas-privacy-preserving-automation-runtime-architecture.html"><strong aria-hidden="true">165.</strong> 138 — Anonymous Network Extension Background Execution, Durable Jobs, Triggers, Scheduling, Wakeups, Mobile Lifecycle, Quotas & Privacy-Preserving Automation Runtime Architecture</a></li><li class="chapter-item expanded "><a href="140-anonymous-network-extension-ui-surface-embedded-panels-commands-menus-context-actions-theming-accessibility-privacy-preserving-host-ui-integration-architecture.html"><strong aria-hidden="true">166.</strong> 140 — Anonymous Network Extension UI Surface, Embedded Panels, Commands, Menus, Context Actions, Theming, Accessibility & Privacy-Preserving Host UI Integration Architecture</a></li><li class="chapter-item expanded "><a href="141-anonymous-network-extension-state-synchronization-cross-device-settings-ui-state-installation-state-capability-consistency-privacy-preserving-extension-state-convergence-architecture.html"><strong aria-hidden="true">167.</strong> 141 — Anonymous Network Extension State Synchronization, Cross-Device Settings, UI State, Installation State, Capability Consistency & Privacy-Preserving Extension State Convergence Architecture</a></li><li class="chapter-item expanded "><a href="142-anonymous-network-extension-dependency-management-package-resolution-version-constraints-lockfiles-dependency-isolation-supply-chain-policy-privacy-preserving-dependency-governance-architecture.html"><strong aria-hidden="true">168.</strong> 142 — Anonymous Network Extension Dependency Management, Package Resolution, Version Constraints, Lockfiles, Dependency Isolation, Supply-Chain Policy & Privacy-Preserving Dependency Governance Architecture</a></li><li class="chapter-item expanded "><a href="143-anonymous-network-extension-update-orchestration-dependency-aware-rollouts-state-migration-rollback-hot-upgrade-compatibility-gates-privacy-preserving-extension-evolution-architecture.html"><strong aria-hidden="true">169.</strong> 143 — Anonymous Network Extension Update Orchestration, Dependency-Aware Rollouts, State Migration, Rollback, Hot Upgrade, Compatibility Gates & Privacy-Preserving Extension Evolution Architecture</a></li><li class="chapter-item expanded "><a href="144-anonymous-network-extension-testing-certification-compatibility-matrix-sandbox-validation-fault-injection-security-privacy-qualification-release-evidence-architecture.html"><strong aria-hidden="true">170.</strong> 144 — Anonymous Network Extension Testing, Certification, Compatibility Matrix, Sandbox Validation, Fault Injection, Security/Privacy Qualification & Release Evidence Architecture</a></li><li class="chapter-item expanded "><a href="145-anonymous-network-extension-observability-runtime-health-crash-reporting-diagnostics-developer-telemetry-slos-privacy-preserving-extension-operations-architecture.html"><strong aria-hidden="true">171.</strong> 145 — Anonymous Network Extension Observability, Runtime Health, Crash Reporting, Diagnostics, Developer Telemetry, SLOs & Privacy-Preserving Extension Operations Architecture</a></li><li class="chapter-item expanded "><a href="146-anonymous-network-extension-incident-response-abuse-detection-quarantine-emergency-disable-forensics-recovery-privacy-preserving-extension-security-operations-architecture.html"><strong aria-hidden="true">172.</strong> 146 — Anonymous Network Extension Incident Response, Abuse Detection, Quarantine, Emergency Disable, Forensics, Recovery & Privacy-Preserving Extension Security Operations Architecture</a></li><li class="chapter-item expanded "><a href="147-anonymous-network-extension-governance-publisher-policy-ecosystem-rules-dispute-resolution-appeals-enforcement-consistency-privacy-preserving-marketplace-governance-architecture.html"><strong aria-hidden="true">173.</strong> 147 — Anonymous Network Extension Governance, Publisher Policy, Ecosystem Rules, Dispute Resolution, Appeals, Enforcement Consistency & Privacy-Preserving Marketplace Governance Architecture</a></li><li class="chapter-item expanded "><a href="148-anonymous-network-extension-business-model-pricing-revenue-sharing-paid-extensions-subscriptions-billing-integration-refunds-entitlements-privacy-preserving-marketplace-economics-architecture.html"><strong aria-hidden="true">174.</strong> 148 — Anonymous Network Extension Business Model, Pricing, Revenue Sharing, Paid Extensions, Subscriptions, Billing Integration, Refunds, Entitlements & Privacy-Preserving Marketplace Economics Architecture</a></li><li class="chapter-item expanded "><a href="149-anonymous-network-extension-licensing-open-source-commercial-license-enforcement-seat-activation-license-keys-offline-licensing-compliance-audit-privacy-preserving-software-license-architecture.html"><strong aria-hidden="true">175.</strong> 149 — Anonymous Network Extension Licensing, Open-Source/Commercial License Enforcement, Seat Activation, License Keys, Offline Licensing, Compliance, Audit & Privacy-Preserving Software License Architecture</a></li><li class="chapter-item expanded "><a href="150-anonymous-network-extension-developer-relations-publisher-support-documentation-governance-compatibility-communication-migration-guidance-ecosystem-education-privacy-preserving-developer-success-architecture.html"><strong aria-hidden="true">176.</strong> 150 — Anonymous Network Extension Developer Relations, Publisher Support, Documentation Governance, Compatibility Communication, Migration Guidance, Ecosystem Education & Privacy-Preserving Developer Success Architecture</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">SIAR System Architecture &amp; Technical Wiki</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar/edit/main/sys-arch/43-anonymous-group-messaging-membership-privacy-sender-key-large-group-anonymity-architecture.md" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="core-system-architecture-part-43--anonymous-group-messaging-membership-privacy-sender-key-distribution--large-group-anonymity-architecture"><a class="header" href="#core-system-architecture-part-43--anonymous-group-messaging-membership-privacy-sender-key-distribution--large-group-anonymity-architecture">Core System Architecture Part 43 — Anonymous Group Messaging, Membership Privacy, Sender-Key Distribution &amp; Large-Group Anonymity Architecture</a></h1>
+<h2 id="siar--secure-local-first-multi-transport-communication-platform"><a class="header" href="#siar--secure-local-first-multi-transport-communication-platform">SIAR — Secure, Local-First, Multi-Transport Communication Platform</a></h2>
+<p><strong>Series:</strong> Core System Architecture<br />
+<strong>Part:</strong> 43<br />
+<strong>Status:</strong> Architecture specification<br />
+<strong>Primary language:</strong> Rust<br />
+<strong>Builds on:</strong> Core System Architecture Parts 34–42<br />
+<strong>Primary purpose:</strong> define the complete anonymous-group architecture for SIAR, including hidden membership, anonymous fanout, sender-key distribution, group-key evolution, role privacy, join/leave/rekey semantics, large-group scaling, traffic-analysis resistance, abuse controls, recovery, and provider-neutral Rust interfaces.</p>
+<hr />
+<h1 id="1-purpose"><a class="header" href="#1-purpose">1. Purpose</a></h1>
+<p>One-to-one anonymous messaging is significantly simpler than anonymous groups.</p>
+<p>A group introduces:</p>
+<pre><code class="language-text">many senders
+many receivers
+membership state
+roles
+join/leave events
+group metadata
+fanout
+moderation
+large traffic volume
+</code></pre>
+<p>Each of these can leak the social graph.</p>
+<p>The governing principle is:</p>
+<blockquote>
+<p><strong>An anonymous group must protect not only message contents, but also membership, role relationships, sender linkage, group activity, and group-wide traffic patterns as far as the selected privacy profile requires.</strong></p>
+</blockquote>
+<hr />
+<h1 id="2-architectural-position"><a class="header" href="#2-architectural-position">2. Architectural Position</a></h1>
+<pre><code class="language-text">Group Application Layer
+        │
+        ▼
+Group Security / Sender Keys
+        │
+        ▼
+Anonymous Group Distribution Layer
+        │
+        ├── fanout
+        ├── membership-hiding delivery
+        ├── rekey
+        ├── role privacy
+        └── large-group scaling
+        │
+        ▼
+Anonymous Transport / Mixnet / Mailboxes
+</code></pre>
+<hr />
+<h1 id="3-core-design-goals"><a class="header" href="#3-core-design-goals">3. Core Design Goals</a></h1>
+<p>The anonymous-group subsystem MUST support:</p>
+<pre><code class="language-text">E2EE group messaging
+sender-key distribution
+membership privacy
+role privacy
+join/leave rekey
+multi-device members
+anonymous delivery
+bounded metadata leakage
+small and large groups
+moderation
+abuse resistance
+recovery
+traffic-analysis resistance
+</code></pre>
+<hr />
+<h1 id="4-non-goals"><a class="header" href="#4-non-goals">4. Non-Goals</a></h1>
+<p>Part 43 does not require:</p>
+<pre><code class="language-text">public broadcast channels
+fully permissionless anonymous forums
+cryptocurrency incentives
+global anonymous social discovery
+</code></pre>
+<p>Those are separate systems.</p>
+<hr />
+<h1 id="5-group-privacy-modes"><a class="header" href="#5-group-privacy-modes">5. Group Privacy Modes</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum GroupPrivacyMode {
+    Standard,
+    PrivateMembership,
+    AnonymousMembers,
+    MaximumAnonymity,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="6-standard"><a class="header" href="#6-standard">6. Standard</a></h1>
+<p>Normal SIAR E2EE group.</p>
+<p>Membership may be visible to members.</p>
+<hr />
+<h1 id="7-private-membership"><a class="header" href="#7-private-membership">7. Private Membership</a></h1>
+<p>Group members know only the membership information necessary for operation.</p>
+<hr />
+<h1 id="8-anonymous-members"><a class="header" href="#8-anonymous-members">8. Anonymous Members</a></h1>
+<p>Members may be represented through pseudonymous/anonymous group-local identities.</p>
+<hr />
+<h1 id="9-maximum-anonymity"><a class="header" href="#9-maximum-anonymity">9. Maximum Anonymity</a></h1>
+<p>Stricter:</p>
+<pre><code class="language-text">membership minimized
+roles hidden where possible
+sender linkage reduced
+no direct fanout
+mixnet-only delivery
+traffic shaping
+</code></pre>
+<hr />
+<h1 id="10-group-identifier"><a class="header" href="#10-group-identifier">10. Group Identifier</a></h1>
+<p>Application-level:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct GroupId(pub [u8; 32]);
+<span class="boring">}</span></code></pre></pre>
+<p>Do not expose raw <code>GroupId</code> to provider-facing transport.</p>
+<hr />
+<h1 id="11-anonymous-group-transport-id"><a class="header" href="#11-anonymous-group-transport-id">11. Anonymous Group Transport ID</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct AnonymousGroupTransportId(pub [u8; 32]);
+<span class="boring">}</span></code></pre></pre>
+<p>Random and unlinkable to application GroupId.</p>
+<hr />
+<h1 id="12-group-local-member-identity"><a class="header" href="#12-group-local-member-identity">12. Group-Local Member Identity</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct GroupMemberPseudonym(pub [u8; 32]);
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="13-why-group-local-identity"><a class="header" href="#13-why-group-local-identity">13. Why Group-Local Identity</a></h1>
+<p>Avoid reusing:</p>
+<pre><code class="language-text">AccountId
+DeviceId
+global username
+</code></pre>
+<p>inside anonymous group protocols.</p>
+<hr />
+<h1 id="14-member-pseudonym-scope"><a class="header" href="#14-member-pseudonym-scope">14. Member Pseudonym Scope</a></h1>
+<p>Can be:</p>
+<pre><code class="language-text">per group
+per epoch
+per session
+</code></pre>
+<hr />
+<h1 id="15-recommended-initial-scope"><a class="header" href="#15-recommended-initial-scope">15. Recommended Initial Scope</a></h1>
+<pre><code class="language-text">per group
+</code></pre>
+<p>with epoch rotation in Maximum Anonymity.</p>
+<hr />
+<h1 id="16-membership-privacy"><a class="header" href="#16-membership-privacy">16. Membership Privacy</a></h1>
+<p>Membership information itself is sensitive.</p>
+<p>Potential adversary wants to learn:</p>
+<pre><code class="language-text">who is in the group
+when they joined
+when they left
+who is admin
+who talks most
+</code></pre>
+<hr />
+<h1 id="17-membership-visibility-model"><a class="header" href="#17-membership-visibility-model">17. Membership Visibility Model</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum MembershipVisibility {
+    FullToMembers,
+    RoleScoped,
+    Pseudonymous,
+    Hidden,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="18-fulltomembers"><a class="header" href="#18-fulltomembers">18. FullToMembers</a></h1>
+<p>All members see all member identities.</p>
+<hr />
+<h1 id="19-rolescoped"><a class="header" href="#19-rolescoped">19. RoleScoped</a></h1>
+<p>Moderators/admins may see more than ordinary members.</p>
+<hr />
+<h1 id="20-pseudonymous"><a class="header" href="#20-pseudonymous">20. Pseudonymous</a></h1>
+<p>Members see group-local pseudonyms.</p>
+<hr />
+<h1 id="21-hidden"><a class="header" href="#21-hidden">21. Hidden</a></h1>
+<p>Members may not receive a full membership list.</p>
+<hr />
+<h1 id="22-hidden-membership-tradeoff"><a class="header" href="#22-hidden-membership-tradeoff">22. Hidden Membership Tradeoff</a></h1>
+<p>Makes features harder:</p>
+<pre><code class="language-text">mentions
+member list
+role management
+read receipts
+moderation
+</code></pre>
+<hr />
+<h1 id="23-group-security-model"><a class="header" href="#23-group-security-model">23. Group Security Model</a></h1>
+<p>Use established group cryptographic patterns where possible.</p>
+<p>Potential approaches:</p>
+<pre><code class="language-text">sender keys
+MLS-like group key schedule
+hybrid sender-key + control epoch
+</code></pre>
+<hr />
+<h1 id="24-initial-recommendation"><a class="header" href="#24-initial-recommendation">24. Initial Recommendation</a></h1>
+<p>Use a hybrid:</p>
+<pre><code class="language-text">group-control epoch
++
+per-sender sender keys
+</code></pre>
+<p>for scalability.</p>
+<hr />
+<h1 id="25-group-epoch"><a class="header" href="#25-group-epoch">25. Group Epoch</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct GroupEpoch(pub u64);
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="26-epoch-changes"><a class="header" href="#26-epoch-changes">26. Epoch Changes</a></h1>
+<p>Triggered by:</p>
+<pre><code class="language-text">join
+leave
+ban
+device revocation
+role-sensitive key change
+security event
+</code></pre>
+<hr />
+<h1 id="27-sender-key"><a class="header" href="#27-sender-key">27. Sender Key</a></h1>
+<p>Each sender owns:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct SenderKeyId(pub [u8; 16]);
+<span class="boring">}</span></code></pre></pre>
+<p>and associated sender-key material.</p>
+<hr />
+<h1 id="28-sender-key-purpose"><a class="header" href="#28-sender-key-purpose">28. Sender-Key Purpose</a></h1>
+<p>Avoid encrypting separately for every member for every message.</p>
+<hr />
+<h1 id="29-sender-key-distribution"><a class="header" href="#29-sender-key-distribution">29. Sender-Key Distribution</a></h1>
+<p>Sender key is distributed to authorized group members through:</p>
+<pre><code class="language-text">group control channel
++
+anonymous transport
+</code></pre>
+<hr />
+<h1 id="30-sender-key-envelope"><a class="header" href="#30-sender-key-envelope">30. Sender-Key Envelope</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct SenderKeyEnvelope {
+    pub group_epoch: GroupEpoch,
+    pub sender_pseudonym: GroupMemberPseudonym,
+    pub sender_key_id: SenderKeyId,
+    pub encrypted_key_material: Bytes,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="31-sender-key-rotation"><a class="header" href="#31-sender-key-rotation">31. Sender Key Rotation</a></h1>
+<p>Rotate on:</p>
+<pre><code class="language-text">epoch change
+suspected compromise
+periodic policy
+device removal
+</code></pre>
+<hr />
+<h1 id="32-forward-secrecy"><a class="header" href="#32-forward-secrecy">32. Forward Secrecy</a></h1>
+<p>Key evolution should limit compromise impact.</p>
+<hr />
+<h1 id="33-post-compromise-security"><a class="header" href="#33-post-compromise-security">33. Post-Compromise Security</a></h1>
+<p>Group key architecture should support recovery from compromised member/device where practical.</p>
+<hr />
+<h1 id="34-join-flow"><a class="header" href="#34-join-flow">34. Join Flow</a></h1>
+<p>Conceptual:</p>
+<pre><code class="language-text">invite accepted
+→ membership authorization
+→ new epoch
+→ new control secret
+→ distribute current sender keys
+→ begin delivery
+</code></pre>
+<hr />
+<h1 id="35-leave-flow"><a class="header" href="#35-leave-flow">35. Leave Flow</a></h1>
+<pre><code class="language-text">member removed/leaves
+→ new epoch
+→ old member excluded
+→ rotate affected keys
+</code></pre>
+<hr />
+<h1 id="36-rekey-requirement"><a class="header" href="#36-rekey-requirement">36. Rekey Requirement</a></h1>
+<p>A removed member must not decrypt future messages.</p>
+<hr />
+<h1 id="37-backward-secrecy"><a class="header" href="#37-backward-secrecy">37. Backward Secrecy</a></h1>
+<p>New member should not automatically decrypt old history unless explicitly shared.</p>
+<hr />
+<h1 id="38-history-sharing-policy"><a class="header" href="#38-history-sharing-policy">38. History Sharing Policy</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum GroupHistoryPolicy {
+    None,
+    SinceJoin,
+    ExplicitShare,
+    FullHistory,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="39-anonymous-group-join"><a class="header" href="#39-anonymous-group-join">39. Anonymous Group Join</a></h1>
+<p>Invite should not reveal full membership.</p>
+<hr />
+<h1 id="40-anonymous-invitation"><a class="header" href="#40-anonymous-invitation">40. Anonymous Invitation</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct AnonymousGroupInvite {
+    pub invite_id: [u8; 16],
+    pub group_transport_hint: Bytes,
+    pub authorization_capability: SecretBytes,
+    pub expires_at: Timestamp,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="41-invite-security"><a class="header" href="#41-invite-security">41. Invite Security</a></h1>
+<p>Capability:</p>
+<pre><code class="language-text">unguessable
+short-lived
+scoped
+single-use or bounded
+</code></pre>
+<hr />
+<h1 id="42-join-request-privacy"><a class="header" href="#42-join-request-privacy">42. Join Request Privacy</a></h1>
+<p>Join request should not expose global identity unless group policy requires.</p>
+<hr />
+<h1 id="43-admission-modes"><a class="header" href="#43-admission-modes">43. Admission Modes</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum AnonymousGroupAdmission {
+    InviteOnly,
+    CapabilityOnly,
+    ModeratorApproved,
+    Managed,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="44-inviteonly"><a class="header" href="#44-inviteonly">44. InviteOnly</a></h1>
+<p>Requires explicit invitation.</p>
+<hr />
+<h1 id="45-capabilityonly"><a class="header" href="#45-capabilityonly">45. CapabilityOnly</a></h1>
+<p>Possession of valid invite capability grants admission.</p>
+<hr />
+<h1 id="46-moderatorapproved"><a class="header" href="#46-moderatorapproved">46. ModeratorApproved</a></h1>
+<p>Moderators approve request.</p>
+<hr />
+<h1 id="47-managed"><a class="header" href="#47-managed">47. Managed</a></h1>
+<p>Organization policy.</p>
+<hr />
+<h1 id="48-role-model"><a class="header" href="#48-role-model">48. Role Model</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum GroupRole {
+    Owner,
+    Admin,
+    Moderator,
+    Member,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="49-role-privacy"><a class="header" href="#49-role-privacy">49. Role Privacy</a></h1>
+<p>Role may itself be sensitive.</p>
+<hr />
+<h1 id="50-role-visibility"><a class="header" href="#50-role-visibility">50. Role Visibility</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum RoleVisibility {
+    PublicToGroup,
+    VisibleToPrivilegedMembers,
+    Hidden,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="51-hidden-moderator-identity"><a class="header" href="#51-hidden-moderator-identity">51. Hidden Moderator Identity</a></h1>
+<p>Possible in advanced group mode.</p>
+<hr />
+<h1 id="52-moderation-capability"><a class="header" href="#52-moderation-capability">52. Moderation Capability</a></h1>
+<p>Instead of revealing moderator identity, use cryptographic moderation capability.</p>
+<hr />
+<h1 id="53-moderation-token"><a class="header" href="#53-moderation-token">53. Moderation Token</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct ModerationCapability(SecretBytes);
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="54-moderation-action"><a class="header" href="#54-moderation-action">54. Moderation Action</a></h1>
+<p>Could be authenticated as:</p>
+<pre><code class="language-text">authorized moderator action
+</code></pre>
+<p>without exposing which moderator performed it to ordinary members.</p>
+<hr />
+<h1 id="55-governance-audit"><a class="header" href="#55-governance-audit">55. Governance Audit</a></h1>
+<p>Privileged audit may retain accountability separately.</p>
+<hr />
+<h1 id="56-anonymous-sender-identity"><a class="header" href="#56-anonymous-sender-identity">56. Anonymous Sender Identity</a></h1>
+<p>Sender may appear as:</p>
+<pre><code class="language-text">group-local pseudonym
+</code></pre>
+<hr />
+<h1 id="57-fully-anonymous-sender"><a class="header" href="#57-fully-anonymous-sender">57. Fully Anonymous Sender</a></h1>
+<p>Potential advanced mode:</p>
+<pre><code class="language-text">message authenticated as valid group member
+without persistent sender pseudonym
+</code></pre>
+<p>Requires more advanced cryptography.</p>
+<hr />
+<h1 id="58-initial-recommendation"><a class="header" href="#58-initial-recommendation">58. Initial Recommendation</a></h1>
+<p>Use stable group-local pseudonym.</p>
+<hr />
+<h1 id="59-sender-linkability"><a class="header" href="#59-sender-linkability">59. Sender Linkability</a></h1>
+<p>Within group:</p>
+<pre><code class="language-text">messages from same pseudonym are linkable
+</code></pre>
+<p>unless rotating pseudonym mode used.</p>
+<hr />
+<h1 id="60-pseudonym-rotation"><a class="header" href="#60-pseudonym-rotation">60. Pseudonym Rotation</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">per epoch
+</code></pre>
+<hr />
+<h1 id="61-tradeoff"><a class="header" href="#61-tradeoff">61. Tradeoff</a></h1>
+<p>Rotation improves privacy but makes conversation continuity harder.</p>
+<hr />
+<h1 id="62-group-fanout"><a class="header" href="#62-group-fanout">62. Group Fanout</a></h1>
+<p>Naive approach:</p>
+<pre><code class="language-text">sender
+→ N recipient mailboxes
+</code></pre>
+<hr />
+<h1 id="63-fanout-cost"><a class="header" href="#63-fanout-cost">63. Fanout Cost</a></h1>
+<p>For group of N users with D devices:</p>
+<pre><code class="language-text">O(N × D)
+</code></pre>
+<hr />
+<h1 id="64-small-group-strategy"><a class="header" href="#64-small-group-strategy">64. Small Group Strategy</a></h1>
+<p>Direct anonymous fanout is acceptable for:</p>
+<pre><code class="language-text">small groups
+</code></pre>
+<hr />
+<h1 id="65-medium-group-strategy"><a class="header" href="#65-medium-group-strategy">65. Medium Group Strategy</a></h1>
+<p>Use:</p>
+<pre><code class="language-text">group mailbox distribution
+</code></pre>
+<hr />
+<h1 id="66-large-group-strategy"><a class="header" href="#66-large-group-strategy">66. Large Group Strategy</a></h1>
+<p>Need scalable distribution substrate.</p>
+<hr />
+<h1 id="67-group-mailbox"><a class="header" href="#67-group-mailbox">67. Group Mailbox</a></h1>
+<p>A shared anonymous mailbox can hold encrypted group messages.</p>
+<hr />
+<h1 id="68-shared-mailbox-privacy-risk"><a class="header" href="#68-shared-mailbox-privacy-risk">68. Shared Mailbox Privacy Risk</a></h1>
+<p>All members access same mailbox.</p>
+<p>Provider may learn:</p>
+<pre><code class="language-text">group activity
+fetch timing
+</code></pre>
+<hr />
+<h1 id="69-per-member-retrieval-capability"><a class="header" href="#69-per-member-retrieval-capability">69. Per-Member Retrieval Capability</a></h1>
+<p>Better:</p>
+<pre><code class="language-text">shared encrypted object
++
+member-specific access capability
+</code></pre>
+<hr />
+<h1 id="70-group-distribution-modes"><a class="header" href="#70-group-distribution-modes">70. Group Distribution Modes</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum GroupDistributionMode {
+    PerDeviceFanout,
+    SharedMailbox,
+    TreeFanout,
+    AnonymousPublishSubscribe,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="71-perdevicefanout"><a class="header" href="#71-perdevicefanout">71. PerDeviceFanout</a></h1>
+<p>Strong separation, expensive.</p>
+<hr />
+<h1 id="72-sharedmailbox"><a class="header" href="#72-sharedmailbox">72. SharedMailbox</a></h1>
+<p>Efficient, more observable group activity.</p>
+<hr />
+<h1 id="73-treefanout"><a class="header" href="#73-treefanout">73. TreeFanout</a></h1>
+<p>Intermediate nodes relay group data.</p>
+<p>Privacy analysis required.</p>
+<hr />
+<h1 id="74-anonymouspublishsubscribe"><a class="header" href="#74-anonymouspublishsubscribe">74. AnonymousPublishSubscribe</a></h1>
+<p>Provider-neutral future model.</p>
+<hr />
+<h1 id="75-initial-recommendation-by-size"><a class="header" href="#75-initial-recommendation-by-size">75. Initial Recommendation by Size</a></h1>
+<pre><code class="language-text">Small:
+    PerDeviceFanout
+
+Medium:
+    SharedMailbox + per-member capability
+
+Large:
+    AnonymousPublishSubscribe / tree fanout
+</code></pre>
+<hr />
+<h1 id="76-group-size-classes"><a class="header" href="#76-group-size-classes">76. Group Size Classes</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum GroupSizeClass {
+    Small,
+    Medium,
+    Large,
+    VeryLarge,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="77-group-size-leakage"><a class="header" href="#77-group-size-leakage">77. Group Size Leakage</a></h1>
+<p>Provider may infer size from traffic volume.</p>
+<hr />
+<h1 id="78-mitigation"><a class="header" href="#78-mitigation">78. Mitigation</a></h1>
+<pre><code class="language-text">batching
+cover traffic
+shared mailbox
+padding
+coarse size classes
+</code></pre>
+<hr />
+<h1 id="79-group-message-envelope"><a class="header" href="#79-group-message-envelope">79. Group Message Envelope</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct AnonymousGroupMessage {
+    pub group_epoch: GroupEpoch,
+    pub message_id: GroupMessageId,
+    pub sender_key_id: SenderKeyId,
+    pub ciphertext: Bytes,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="80-message-id"><a class="header" href="#80-message-id">80. Message ID</a></h1>
+<p>Transport-safe random identifier.</p>
+<hr />
+<h1 id="81-application-message-id"><a class="header" href="#81-application-message-id">81. Application Message ID</a></h1>
+<p>Separate.</p>
+<hr />
+<h1 id="82-control-messages"><a class="header" href="#82-control-messages">82. Control Messages</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">join
+leave
+role change
+rekey
+sender-key update
+ban
+epoch advance
+</code></pre>
+<hr />
+<h1 id="83-control-plane-separation"><a class="header" href="#83-control-plane-separation">83. Control Plane Separation</a></h1>
+<p>Group control messages should use higher integrity/ordering guarantees.</p>
+<hr />
+<h1 id="84-control-channel"><a class="header" href="#84-control-channel">84. Control Channel</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum GroupControlMessage {
+    EpochAdvance,
+    SenderKeyUpdate,
+    MembershipChange,
+    RoleChange,
+    DeviceChange,
+    PolicyChange,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="85-ordering"><a class="header" href="#85-ordering">85. Ordering</a></h1>
+<p>Control messages require:</p>
+<pre><code class="language-text">monotonic epoch
+causal consistency
+</code></pre>
+<hr />
+<h1 id="86-message-ordering"><a class="header" href="#86-message-ordering">86. Message Ordering</a></h1>
+<p>User messages can tolerate looser ordering.</p>
+<hr />
+<h1 id="87-group-epoch-state"><a class="header" href="#87-group-epoch-state">87. Group Epoch State</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct GroupEpochState {
+    pub epoch: GroupEpoch,
+    pub members_digest: MembershipDigest,
+    pub control_key_ref: SecretRef,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="88-membership-digest"><a class="header" href="#88-membership-digest">88. Membership Digest</a></h1>
+<p>Compact authenticated representation.</p>
+<hr />
+<h1 id="89-hidden-membership"><a class="header" href="#89-hidden-membership">89. Hidden Membership</a></h1>
+<p>Digest does not reveal full membership list to ordinary clients.</p>
+<hr />
+<h1 id="90-membership-proofs"><a class="header" href="#90-membership-proofs">90. Membership Proofs</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">member proves inclusion
+without revealing all members
+</code></pre>
+<hr />
+<h1 id="91-merkle-membership"><a class="header" href="#91-merkle-membership">91. Merkle Membership</a></h1>
+<p>One possible technique.</p>
+<hr />
+<h1 id="92-zero-knowledge-membership"><a class="header" href="#92-zero-knowledge-membership">92. Zero-Knowledge Membership</a></h1>
+<p>Possible future advanced mode.</p>
+<hr />
+<h1 id="93-initial-recommendation"><a class="header" href="#93-initial-recommendation">93. Initial Recommendation</a></h1>
+<p>Use:</p>
+<pre><code class="language-text">authenticated membership tree
+</code></pre>
+<p>without introducing custom ZK initially.</p>
+<hr />
+<h1 id="94-member-inclusion-proof"><a class="header" href="#94-member-inclusion-proof">94. Member Inclusion Proof</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct MembershipProof {
+    pub epoch: GroupEpoch,
+    pub proof: Bytes,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="95-membership-proof-privacy"><a class="header" href="#95-membership-proof-privacy">95. Membership Proof Privacy</a></h1>
+<p>Should reveal only:</p>
+<pre><code class="language-text">membership validity
+</code></pre>
+<p>not full roster.</p>
+<hr />
+<h1 id="96-group-control-authority"><a class="header" href="#96-group-control-authority">96. Group Control Authority</a></h1>
+<p>Owner/admin authority signs membership updates.</p>
+<hr />
+<h1 id="97-multi-admin-control"><a class="header" href="#97-multi-admin-control">97. Multi-Admin Control</a></h1>
+<p>Potential threshold approval for high-risk changes.</p>
+<hr />
+<h1 id="98-threshold-admin-policy"><a class="header" href="#98-threshold-admin-policy">98. Threshold Admin Policy</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct GroupAdminQuorum {
+    pub required: u16,
+    pub total: u16,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="99-use-cases"><a class="header" href="#99-use-cases">99. Use Cases</a></h1>
+<pre><code class="language-text">owner transfer
+large-group policy change
+mass removal
+</code></pre>
+<hr />
+<h1 id="100-large-group-governance"><a class="header" href="#100-large-group-governance">100. Large Group Governance</a></h1>
+<p>Central owner becomes operational bottleneck.</p>
+<hr />
+<h1 id="101-role-delegation"><a class="header" href="#101-role-delegation">101. Role Delegation</a></h1>
+<p>Use scoped capabilities.</p>
+<hr />
+<h1 id="102-moderation-without-full-roster"><a class="header" href="#102-moderation-without-full-roster">102. Moderation Without Full Roster</a></h1>
+<p>Moderator can act on:</p>
+<pre><code class="language-text">message pseudonym
+member capability
+</code></pre>
+<p>without seeing real identity.</p>
+<hr />
+<h1 id="103-ban-semantics"><a class="header" href="#103-ban-semantics">103. Ban Semantics</a></h1>
+<p>Ban should invalidate:</p>
+<pre><code class="language-text">membership capability
+sender key access
+future epoch access
+</code></pre>
+<hr />
+<h1 id="104-ban-privacy"><a class="header" href="#104-ban-privacy">104. Ban Privacy</a></h1>
+<p>Ordinary members need not learn banned member's real identity.</p>
+<hr />
+<h1 id="105-spam-protection"><a class="header" href="#105-spam-protection">105. Spam Protection</a></h1>
+<p>Anonymous groups are vulnerable to spam.</p>
+<hr />
+<h1 id="106-posting-capability"><a class="header" href="#106-posting-capability">106. Posting Capability</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct GroupPostCapability(SecretBytes);
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="107-capability-quota"><a class="header" href="#107-capability-quota">107. Capability Quota</a></h1>
+<p>Can limit:</p>
+<pre><code class="language-text">messages per time window
+attachment bytes
+</code></pre>
+<hr />
+<h1 id="108-rate-limits"><a class="header" href="#108-rate-limits">108. Rate Limits</a></h1>
+<p>Should be group-local, not global identity-based.</p>
+<hr />
+<h1 id="109-proof-of-work"><a class="header" href="#109-proof-of-work">109. Proof-of-Work</a></h1>
+<p>Optional for open anonymous groups.</p>
+<hr />
+<h1 id="110-caution"><a class="header" href="#110-caution">110. Caution</a></h1>
+<p>Heavy PoW hurts mobile devices.</p>
+<hr />
+<h1 id="111-token-bucket"><a class="header" href="#111-token-bucket">111. Token Bucket</a></h1>
+<p>Preferred for authorized members.</p>
+<hr />
+<h1 id="112-membership-capability"><a class="header" href="#112-membership-capability">112. Membership Capability</a></h1>
+<p>Each member gets scoped posting/read capability.</p>
+<hr />
+<h1 id="113-read-capability"><a class="header" href="#113-read-capability">113. Read Capability</a></h1>
+<p>Controls access to:</p>
+<pre><code class="language-text">group mailbox
+history
+</code></pre>
+<hr />
+<h1 id="114-write-capability"><a class="header" href="#114-write-capability">114. Write Capability</a></h1>
+<p>Controls message posting.</p>
+<hr />
+<h1 id="115-moderator-capability"><a class="header" href="#115-moderator-capability">115. Moderator Capability</a></h1>
+<p>Controls moderation actions.</p>
+<hr />
+<h1 id="116-capability-separation"><a class="header" href="#116-capability-separation">116. Capability Separation</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="117-multi-device-member"><a class="header" href="#117-multi-device-member">117. Multi-Device Member</a></h1>
+<p>Each device should have:</p>
+<pre><code class="language-text">device-specific receiving capability
+</code></pre>
+<hr />
+<h1 id="118-sender-key-across-devices"><a class="header" href="#118-sender-key-across-devices">118. Sender Key Across Devices</a></h1>
+<p>Options:</p>
+<pre><code class="language-text">shared member sender identity
+or
+device-specific sender key
+</code></pre>
+<hr />
+<h1 id="119-recommended"><a class="header" href="#119-recommended">119. Recommended</a></h1>
+<p>Use device-specific sender keys.</p>
+<hr />
+<h1 id="120-why"><a class="header" href="#120-why">120. Why</a></h1>
+<p>Improves:</p>
+<pre><code class="language-text">revocation
+compromise isolation
+multi-device attribution
+</code></pre>
+<hr />
+<h1 id="121-group-member-pseudonym-vs-device-pseudonym"><a class="header" href="#121-group-member-pseudonym-vs-device-pseudonym">121. Group Member Pseudonym vs Device Pseudonym</a></h1>
+<pre><code class="language-text">member pseudonym
+    ├── device A sender key
+    ├── device B sender key
+</code></pre>
+<hr />
+<h1 id="122-device-revocation"><a class="header" href="#122-device-revocation">122. Device Revocation</a></h1>
+<p>Rotate/remove only compromised device sender key.</p>
+<hr />
+<h1 id="123-member-revocation"><a class="header" href="#123-member-revocation">123. Member Revocation</a></h1>
+<p>Remove all device keys.</p>
+<hr />
+<h1 id="124-group-state-sync"><a class="header" href="#124-group-state-sync">124. Group State Sync</a></h1>
+<p>Group state must sync across user's trusted devices.</p>
+<hr />
+<h1 id="125-sync-privacy"><a class="header" href="#125-sync-privacy">125. Sync Privacy</a></h1>
+<p>Do not expose:</p>
+<pre><code class="language-text">group membership
+</code></pre>
+<p>to non-participating providers.</p>
+<hr />
+<h1 id="126-device-join"><a class="header" href="#126-device-join">126. Device Join</a></h1>
+<p>Existing trusted device authorizes new device access.</p>
+<hr />
+<h1 id="127-new-device-history"><a class="header" href="#127-new-device-history">127. New Device History</a></h1>
+<p>Controlled by history policy.</p>
+<hr />
+<h1 id="128-recovery"><a class="header" href="#128-recovery">128. Recovery</a></h1>
+<p>Account recovery should not automatically restore group membership if security policy requires reauthorization.</p>
+<hr />
+<h1 id="129-group-recovery-policy"><a class="header" href="#129-group-recovery-policy">129. Group Recovery Policy</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum GroupRecoveryPolicy {
+    RestoreIfDeviceTrusted,
+    Reauthorize,
+    NeverAutoRestore,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="130-maximum-anonymity"><a class="header" href="#130-maximum-anonymity">130. Maximum Anonymity</a></h1>
+<p>Prefer:</p>
+<pre><code class="language-text">Reauthorize
+</code></pre>
+<p>for sensitive groups.</p>
+<hr />
+<h1 id="131-backup"><a class="header" href="#131-backup">131. Backup</a></h1>
+<p>Do not blindly back up live sender keys.</p>
+<hr />
+<h1 id="132-backup-safe-group-state"><a class="header" href="#132-backup-safe-group-state">132. Backup-Safe Group State</a></h1>
+<p>Can include:</p>
+<pre><code class="language-text">group metadata
+non-secret policy
+history if encrypted
+</code></pre>
+<hr />
+<h1 id="133-fresh-sender-keys-after-restore"><a class="header" href="#133-fresh-sender-keys-after-restore">133. Fresh Sender Keys After Restore</a></h1>
+<p>Recommended.</p>
+<hr />
+<h1 id="134-group-key-compromise"><a class="header" href="#134-group-key-compromise">134. Group Key Compromise</a></h1>
+<p>Security response:</p>
+<pre><code class="language-text">advance epoch
+rotate control key
+rotate sender keys
+</code></pre>
+<hr />
+<h1 id="135-compromise-notification"><a class="header" href="#135-compromise-notification">135. Compromise Notification</a></h1>
+<p>Members may receive:</p>
+<pre><code class="language-text">group security state changed
+</code></pre>
+<p>without exposing compromised member identity unnecessarily.</p>
+<hr />
+<h1 id="136-sender-authentication"><a class="header" href="#136-sender-authentication">136. Sender Authentication</a></h1>
+<p>Recipient verifies:</p>
+<pre><code class="language-text">valid sender key
+valid epoch
+membership authorization
+</code></pre>
+<hr />
+<h1 id="137-unknown-sender-key"><a class="header" href="#137-unknown-sender-key">137. Unknown Sender Key</a></h1>
+<p>Hold/reject until control update arrives.</p>
+<hr />
+<h1 id="138-out-of-order-control"><a class="header" href="#138-out-of-order-control">138. Out-of-Order Control</a></h1>
+<p>Buffer bounded.</p>
+<hr />
+<h1 id="139-epoch-gap"><a class="header" href="#139-epoch-gap">139. Epoch Gap</a></h1>
+<p>Request/resync group state anonymously.</p>
+<hr />
+<h1 id="140-resync-privacy"><a class="header" href="#140-resync-privacy">140. Resync Privacy</a></h1>
+<p>Do not expose exact missing history to provider.</p>
+<hr />
+<h1 id="141-large-group-delivery"><a class="header" href="#141-large-group-delivery">141. Large Group Delivery</a></h1>
+<p>Large group needs scalable dissemination.</p>
+<hr />
+<h1 id="142-anonymous-publishsubscribe"><a class="header" href="#142-anonymous-publishsubscribe">142. Anonymous Publish/Subscribe</a></h1>
+<p>Concept:</p>
+<pre><code class="language-text">publisher posts encrypted group object
+subscribers fetch anonymously
+</code></pre>
+<hr />
+<h1 id="143-topic-id"><a class="header" href="#143-topic-id">143. Topic ID</a></h1>
+<p>Provider-facing topic must not expose GroupId.</p>
+<hr />
+<h1 id="144-topic-token"><a class="header" href="#144-topic-token">144. Topic Token</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct AnonymousTopicId(pub [u8; 32]);
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="145-topic-rotation"><a class="header" href="#145-topic-rotation">145. Topic Rotation</a></h1>
+<p>Rotate per epoch.</p>
+<hr />
+<h1 id="146-subscriber-capability"><a class="header" href="#146-subscriber-capability">146. Subscriber Capability</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct GroupSubscriptionCapability(SecretBytes);
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="147-publisher-capability"><a class="header" href="#147-publisher-capability">147. Publisher Capability</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct GroupPublishCapability(SecretBytes);
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="148-provider-view"><a class="header" href="#148-provider-view">148. Provider View</a></h1>
+<p>Should see:</p>
+<pre><code class="language-text">opaque topic
+traffic
+</code></pre>
+<p>not:</p>
+<pre><code class="language-text">group membership
+real identities
+</code></pre>
+<hr />
+<h1 id="149-shared-topic-correlation"><a class="header" href="#149-shared-topic-correlation">149. Shared Topic Correlation</a></h1>
+<p>Provider can see everyone fetching same topic if access not anonymized.</p>
+<hr />
+<h1 id="150-therefore"><a class="header" href="#150-therefore">150. Therefore</a></h1>
+<p>All topic access must go through:</p>
+<pre><code class="language-text">mixnet/anonymous transport
+</code></pre>
+<p>in strict modes.</p>
+<hr />
+<h1 id="151-pull-model"><a class="header" href="#151-pull-model">151. Pull Model</a></h1>
+<p>Subscribers periodically fetch topic.</p>
+<hr />
+<h1 id="152-push-model"><a class="header" href="#152-push-model">152. Push Model</a></h1>
+<p>Push can leak membership/timing.</p>
+<hr />
+<h1 id="153-strict-mode"><a class="header" href="#153-strict-mode">153. Strict Mode</a></h1>
+<p>Prefer pull/cover-aware fetch.</p>
+<hr />
+<h1 id="154-fetch-scheduling"><a class="header" href="#154-fetch-scheduling">154. Fetch Scheduling</a></h1>
+<p>Integrate with Part 37.</p>
+<hr />
+<h1 id="155-group-cover-traffic"><a class="header" href="#155-group-cover-traffic">155. Group Cover Traffic</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">periodic fetch
+dummy fetch
+cover post
+</code></pre>
+<hr />
+<h1 id="156-cost"><a class="header" href="#156-cost">156. Cost</a></h1>
+<p>Large groups can make cover traffic expensive.</p>
+<hr />
+<h1 id="157-group-cover-policy"><a class="header" href="#157-group-cover-policy">157. Group Cover Policy</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum GroupCoverPolicy {
+    None,
+    Adaptive,
+    Standard,
+    Maximum,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="158-large-group-tradeoff"><a class="header" href="#158-large-group-tradeoff">158. Large Group Tradeoff</a></h1>
+<p>Maximum cover may be impractical for very large groups.</p>
+<p>Document honestly.</p>
+<hr />
+<h1 id="159-group-traffic-shaping"><a class="header" href="#159-group-traffic-shaping">159. Group Traffic Shaping</a></h1>
+<p>Batch:</p>
+<pre><code class="language-text">messages
+receipts
+control updates
+</code></pre>
+<hr />
+<h1 id="160-no-per-message-immediate-fetch"><a class="header" href="#160-no-per-message-immediate-fetch">160. No Per-Message Immediate Fetch</a></h1>
+<p>Strict mode.</p>
+<hr />
+<h1 id="161-read-receipts"><a class="header" href="#161-read-receipts">161. Read Receipts</a></h1>
+<p>Large anonymous groups:</p>
+<pre><code class="language-text">off by default
+</code></pre>
+<hr />
+<h1 id="162-delivery-receipts"><a class="header" href="#162-delivery-receipts">162. Delivery Receipts</a></h1>
+<p>Aggregate only if needed.</p>
+<hr />
+<h1 id="163-typing-indicators"><a class="header" href="#163-typing-indicators">163. Typing Indicators</a></h1>
+<p>Disabled in strict anonymous groups.</p>
+<hr />
+<h1 id="164-presence"><a class="header" href="#164-presence">164. Presence</a></h1>
+<p>Disabled or coarse.</p>
+<hr />
+<h1 id="165-reactions"><a class="header" href="#165-reactions">165. Reactions</a></h1>
+<p>Can leak activity.</p>
+<p>May be delayed/batched.</p>
+<hr />
+<h1 id="166-mentions"><a class="header" href="#166-mentions">166. Mentions</a></h1>
+<p>Pseudonym-based.</p>
+<hr />
+<h1 id="167-member-directory"><a class="header" href="#167-member-directory">167. Member Directory</a></h1>
+<p>Could be absent in hidden-membership mode.</p>
+<hr />
+<h1 id="168-search"><a class="header" href="#168-search">168. Search</a></h1>
+<p>Local only.</p>
+<hr />
+<h1 id="169-group-metadata"><a class="header" href="#169-group-metadata">169. Group Metadata</a></h1>
+<p>Sensitive:</p>
+<pre><code class="language-text">name
+description
+avatar
+member count
+</code></pre>
+<hr />
+<h1 id="170-metadata-encryption"><a class="header" href="#170-metadata-encryption">170. Metadata Encryption</a></h1>
+<p>Group metadata distributed inside E2EE group state.</p>
+<hr />
+<h1 id="171-member-count"><a class="header" href="#171-member-count">171. Member Count</a></h1>
+<p>Could be bucketed:</p>
+<pre><code class="language-text">&lt;10
+10–50
+50–200
+200+
+</code></pre>
+<p>if UI does not need exact count.</p>
+<hr />
+<h1 id="172-group-avatar"><a class="header" href="#172-group-avatar">172. Group Avatar</a></h1>
+<p>Encrypted.</p>
+<hr />
+<h1 id="173-external-avatar-fetch"><a class="header" href="#173-external-avatar-fetch">173. External Avatar Fetch</a></h1>
+<p>Forbidden in strict mode.</p>
+<hr />
+<h1 id="174-link-previews"><a class="header" href="#174-link-previews">174. Link Previews</a></h1>
+<p>Same.</p>
+<hr />
+<h1 id="175-attachments"><a class="header" href="#175-attachments">175. Attachments</a></h1>
+<p>Use Part 40 anonymous attachment architecture.</p>
+<hr />
+<h1 id="176-group-attachment-capability"><a class="header" href="#176-group-attachment-capability">176. Group Attachment Capability</a></h1>
+<p>Can be:</p>
+<pre><code class="language-text">per member
+or
+group capability
+</code></pre>
+<hr />
+<h1 id="177-strict-mode"><a class="header" href="#177-strict-mode">177. Strict Mode</a></h1>
+<p>Prefer per-member or epoch-scoped capability where feasible.</p>
+<hr />
+<h1 id="178-attachment-revocation"><a class="header" href="#178-attachment-revocation">178. Attachment Revocation</a></h1>
+<p>On member removal, old capability may still exist.</p>
+<p>Use short TTL + epoch rotation.</p>
+<hr />
+<h1 id="179-moderation-of-attachments"><a class="header" href="#179-moderation-of-attachments">179. Moderation of Attachments</a></h1>
+<p>Moderators can revoke group-visible reference.</p>
+<hr />
+<h1 id="180-content-deletion"><a class="header" href="#180-content-deletion">180. Content Deletion</a></h1>
+<p>Cannot guarantee remote erase from member devices.</p>
+<hr />
+<h1 id="181-group-delete-semantics"><a class="header" href="#181-group-delete-semantics">181. Group Delete Semantics</a></h1>
+<pre><code class="language-text">remove from future group state
+</code></pre>
+<p>not:</p>
+<pre><code class="language-text">erase all copies everywhere
+</code></pre>
+<hr />
+<h1 id="182-message-deletion"><a class="header" href="#182-message-deletion">182. Message Deletion</a></h1>
+<p>Same honesty.</p>
+<hr />
+<h1 id="183-anonymous-admin-action"><a class="header" href="#183-anonymous-admin-action">183. Anonymous Admin Action</a></h1>
+<p>Action can be authorized without revealing admin identity.</p>
+<hr />
+<h1 id="184-audit-trail"><a class="header" href="#184-audit-trail">184. Audit Trail</a></h1>
+<p>Privileged local audit may record:</p>
+<pre><code class="language-text">capability action ID
+</code></pre>
+<hr />
+<h1 id="185-no-public-moderator-mapping"><a class="header" href="#185-no-public-moderator-mapping">185. No Public Moderator Mapping</a></h1>
+<p>Unless policy requires.</p>
+<hr />
+<h1 id="186-group-abuse-reports"><a class="header" href="#186-group-abuse-reports">186. Group Abuse Reports</a></h1>
+<p>Member may report message.</p>
+<hr />
+<h1 id="187-report-privacy"><a class="header" href="#187-report-privacy">187. Report Privacy</a></h1>
+<p>Report should not automatically reveal reporter identity to group.</p>
+<hr />
+<h1 id="188-moderator-report-inbox"><a class="header" href="#188-moderator-report-inbox">188. Moderator Report Inbox</a></h1>
+<p>Could use anonymous report capability.</p>
+<hr />
+<h1 id="189-report-evidence"><a class="header" href="#189-report-evidence">189. Report Evidence</a></h1>
+<p>Includes:</p>
+<pre><code class="language-text">message ciphertext/plaintext as user chooses
+sender pseudonym
+epoch
+</code></pre>
+<hr />
+<h1 id="190-abuse-reporting-tradeoff"><a class="header" href="#190-abuse-reporting-tradeoff">190. Abuse Reporting Tradeoff</a></h1>
+<p>Evidence can reveal content to moderators.</p>
+<p>Must be explicit.</p>
+<hr />
+<h1 id="191-open-anonymous-groups"><a class="header" href="#191-open-anonymous-groups">191. Open Anonymous Groups</a></h1>
+<p>Higher abuse risk.</p>
+<hr />
+<h1 id="192-admission-control"><a class="header" href="#192-admission-control">192. Admission Control</a></h1>
+<p>Use:</p>
+<pre><code class="language-text">invite
+capability
+proof-of-work
+rate limits
+</code></pre>
+<hr />
+<h1 id="193-closed-anonymous-groups"><a class="header" href="#193-closed-anonymous-groups">193. Closed Anonymous Groups</a></h1>
+<p>Easier to secure.</p>
+<hr />
+<h1 id="194-recommended-initial-scope"><a class="header" href="#194-recommended-initial-scope">194. Recommended Initial Scope</a></h1>
+<p>Start with:</p>
+<pre><code class="language-text">closed invite-only anonymous groups
+</code></pre>
+<hr />
+<h1 id="195-large-public-anonymous-groups"><a class="header" href="#195-large-public-anonymous-groups">195. Large Public Anonymous Groups</a></h1>
+<p>Defer until abuse/moderation architecture matures.</p>
+<hr />
+<h1 id="196-group-distribution-service"><a class="header" href="#196-group-distribution-service">196. Group Distribution Service</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[async_trait]
+pub trait AnonymousGroupDistribution: Send + Sync {
+    async fn publish(
+        &amp;self,
+        group: AnonymousGroupTransportId,
+        message: AnonymousGroupMessage,
+    ) -&gt; Result&lt;GroupDeliveryId, GroupDistributionError&gt;;
+
+    async fn fetch(
+        &amp;self,
+        subscription: &amp;GroupSubscriptionCapability,
+        cursor: Option&lt;GroupCursor&gt;,
+    ) -&gt; Result&lt;GroupBatch, GroupDistributionError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="197-group-key-service"><a class="header" href="#197-group-key-service">197. Group Key Service</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait GroupKeyService {
+    fn current_epoch(
+        &amp;self,
+        group: GroupId,
+    ) -&gt; Result&lt;GroupEpochState, GroupKeyError&gt;;
+
+    fn rotate_epoch(
+        &amp;self,
+        group: GroupId,
+        reason: EpochRotationReason,
+    ) -&gt; Result&lt;GroupEpochState, GroupKeyError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="198-sender-key-service"><a class="header" href="#198-sender-key-service">198. Sender Key Service</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait SenderKeyService {
+    fn create_sender_key(
+        &amp;self,
+        group: GroupId,
+        device: DeviceId,
+    ) -&gt; Result&lt;SenderKeyId, GroupKeyError&gt;;
+
+    fn rotate_sender_key(
+        &amp;self,
+        sender: SenderKeyId,
+    ) -&gt; Result&lt;SenderKeyId, GroupKeyError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="199-membership-service"><a class="header" href="#199-membership-service">199. Membership Service</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait AnonymousMembershipService {
+    fn prove_membership(
+        &amp;self,
+        group: GroupId,
+        member: GroupMemberPseudonym,
+    ) -&gt; Result&lt;MembershipProof, MembershipError&gt;;
+
+    fn apply_change(
+        &amp;self,
+        change: MembershipChange,
+    ) -&gt; Result&lt;GroupEpoch, MembershipError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="200-capability-service"><a class="header" href="#200-capability-service">200. Capability Service</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait GroupCapabilityService {
+    fn issue_post_capability(
+        &amp;self,
+        member: GroupMemberPseudonym,
+    ) -&gt; Result&lt;GroupPostCapability, CapabilityError&gt;;
+
+    fn revoke_member_capabilities(
+        &amp;self,
+        member: GroupMemberPseudonym,
+    ) -&gt; Result&lt;(), CapabilityError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="201-group-state-database"><a class="header" href="#201-group-state-database">201. Group State Database</a></h1>
+<p>Potential tables:</p>
+<pre><code class="language-text">anonymous_groups
+group_epochs
+group_membership_tree
+group_member_pseudonyms
+group_sender_keys
+group_capabilities
+group_distribution_state
+group_control_log
+</code></pre>
+<hr />
+<h1 id="202-anonymous_groups"><a class="header" href="#202-anonymous_groups">202. <code>anonymous_groups</code></a></h1>
+<p>Stores:</p>
+<pre><code class="language-text">GroupId
+transport ID
+privacy mode
+size class
+distribution mode
+</code></pre>
+<hr />
+<h1 id="203-group_epochs"><a class="header" href="#203-group_epochs">203. <code>group_epochs</code></a></h1>
+<p>Stores:</p>
+<pre><code class="language-text">epoch
+control key ref
+membership digest
+created_at
+</code></pre>
+<hr />
+<h1 id="204-group_sender_keys"><a class="header" href="#204-group_sender_keys">204. <code>group_sender_keys</code></a></h1>
+<p>Secret refs only.</p>
+<hr />
+<h1 id="205-group_capabilities"><a class="header" href="#205-group_capabilities">205. <code>group_capabilities</code></a></h1>
+<p>Secret refs, scope, expiry, state.</p>
+<hr />
+<h1 id="206-secret-storage"><a class="header" href="#206-secret-storage">206. Secret Storage</a></h1>
+<p>Use secure store.</p>
+<hr />
+<h1 id="207-crash-safety"><a class="header" href="#207-crash-safety">207. Crash Safety</a></h1>
+<p>Control updates durable before use.</p>
+<hr />
+<h1 id="208-epoch-transition-transaction"><a class="header" href="#208-epoch-transition-transaction">208. Epoch Transition Transaction</a></h1>
+<pre><code class="language-text">persist new membership
+persist new epoch
+persist key refs
+activate epoch
+</code></pre>
+<p>atomically.</p>
+<hr />
+<h1 id="209-partially-applied-epoch"><a class="header" href="#209-partially-applied-epoch">209. Partially Applied Epoch</a></h1>
+<p>Forbidden.</p>
+<hr />
+<h1 id="210-control-log"><a class="header" href="#210-control-log">210. Control Log</a></h1>
+<p>Append-only local group control history.</p>
+<hr />
+<h1 id="211-control-log-privacy"><a class="header" href="#211-control-log-privacy">211. Control Log Privacy</a></h1>
+<p>Encrypted at rest.</p>
+<hr />
+<h1 id="212-conflict-resolution"><a class="header" href="#212-conflict-resolution">212. Conflict Resolution</a></h1>
+<p>Concurrent admin changes require deterministic resolution.</p>
+<hr />
+<h1 id="213-control-sequence"><a class="header" href="#213-control-sequence">213. Control Sequence</a></h1>
+<p>Use:</p>
+<pre><code class="language-text">epoch
++
+monotonic control sequence
+</code></pre>
+<hr />
+<h1 id="214-split-brain-group-state"><a class="header" href="#214-split-brain-group-state">214. Split-Brain Group State</a></h1>
+<p>Must detect.</p>
+<hr />
+<h1 id="215-admin-concurrency"><a class="header" href="#215-admin-concurrency">215. Admin Concurrency</a></h1>
+<p>Threshold/quorum can help for high-risk changes.</p>
+<hr />
+<h1 id="216-multi-admin-conflict"><a class="header" href="#216-multi-admin-conflict">216. Multi-Admin Conflict</a></h1>
+<p>Define canonical ordering.</p>
+<hr />
+<h1 id="217-group-state-hash"><a class="header" href="#217-group-state-hash">217. Group State Hash</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct GroupStateDigest(pub [u8; 32]);
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="218-state-validation"><a class="header" href="#218-state-validation">218. State Validation</a></h1>
+<p>Each control event references previous digest.</p>
+<hr />
+<h1 id="219-tamper-detection"><a class="header" href="#219-tamper-detection">219. Tamper Detection</a></h1>
+<p>Broken chain -&gt; reject/resync.</p>
+<hr />
+<h1 id="220-anonymous-group-search"><a class="header" href="#220-anonymous-group-search">220. Anonymous Group Search</a></h1>
+<p>Local only.</p>
+<hr />
+<h1 id="221-discovery"><a class="header" href="#221-discovery">221. Discovery</a></h1>
+<p>Strict anonymous groups should not be globally discoverable initially.</p>
+<hr />
+<h1 id="222-invite-distribution"><a class="header" href="#222-invite-distribution">222. Invite Distribution</a></h1>
+<p>Through:</p>
+<pre><code class="language-text">existing E2EE
+QR
+NFC
+anonymous bootstrap
+</code></pre>
+<hr />
+<h1 id="223-group-qr"><a class="header" href="#223-group-qr">223. Group QR</a></h1>
+<p>Must not expose full membership or stable transport secret unnecessarily.</p>
+<hr />
+<h1 id="224-invite-revocation"><a class="header" href="#224-invite-revocation">224. Invite Revocation</a></h1>
+<p>Possible until consumed/expired.</p>
+<hr />
+<h1 id="225-one-time-invite"><a class="header" href="#225-one-time-invite">225. One-Time Invite</a></h1>
+<p>Preferred for sensitive groups.</p>
+<hr />
+<h1 id="226-batch-invite"><a class="header" href="#226-batch-invite">226. Batch Invite</a></h1>
+<p>Can issue bounded multiple-use capability.</p>
+<hr />
+<h1 id="227-invite-leak"><a class="header" href="#227-invite-leak">227. Invite Leak</a></h1>
+<p>Rotate/revoke.</p>
+<hr />
+<h1 id="228-group-traffic-analysis"><a class="header" href="#228-group-traffic-analysis">228. Group Traffic Analysis</a></h1>
+<p>Adversary may infer:</p>
+<pre><code class="language-text">group active now
+group size
+top talkers
+join/leave timing
+</code></pre>
+<hr />
+<h1 id="229-mitigations"><a class="header" href="#229-mitigations">229. Mitigations</a></h1>
+<pre><code class="language-text">shared mailbox
+cover fetch
+batching
+topic rotation
+pseudonyms
+coarse count
+</code></pre>
+<hr />
+<h1 id="230-joinleave-hiding"><a class="header" href="#230-joinleave-hiding">230. Join/Leave Hiding</a></h1>
+<p>Can batch membership changes.</p>
+<hr />
+<h1 id="231-delayed-epoch-publication"><a class="header" href="#231-delayed-epoch-publication">231. Delayed Epoch Publication</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">membership changes applied in batch
+</code></pre>
+<p>to reduce exact timing leakage.</p>
+<hr />
+<h1 id="232-security-tradeoff"><a class="header" href="#232-security-tradeoff">232. Security Tradeoff</a></h1>
+<p>Removed member should lose access quickly.</p>
+<hr />
+<h1 id="233-therefore"><a class="header" href="#233-therefore">233. Therefore</a></h1>
+<p>Security-critical removals:</p>
+<pre><code class="language-text">immediate epoch advance
+</code></pre>
+<p>Privacy batching only for non-critical joins where policy permits.</p>
+<hr />
+<h1 id="234-large-group-scaling"><a class="header" href="#234-large-group-scaling">234. Large Group Scaling</a></h1>
+<p>Need bounded client state.</p>
+<hr />
+<h1 id="235-membership-tree"><a class="header" href="#235-membership-tree">235. Membership Tree</a></h1>
+<p>Prefer:</p>
+<pre><code class="language-text">Merkle tree / tree-based membership structure
+</code></pre>
+<p>for large groups.</p>
+<hr />
+<h1 id="236-on-full-roster"><a class="header" href="#236-on-full-roster">236. O(N) Full Roster</a></h1>
+<p>Avoid for hidden-membership client.</p>
+<hr />
+<h1 id="237-proof-size"><a class="header" href="#237-proof-size">237. Proof Size</a></h1>
+<p>Logarithmic where possible.</p>
+<hr />
+<h1 id="238-group-rekey-complexity"><a class="header" href="#238-group-rekey-complexity">238. Group Rekey Complexity</a></h1>
+<p>Naive:</p>
+<pre><code class="language-text">O(N)
+</code></pre>
+<p>per membership change.</p>
+<hr />
+<h1 id="239-tree-based-rekey"><a class="header" href="#239-tree-based-rekey">239. Tree-Based Rekey</a></h1>
+<p>Future improvement.</p>
+<hr />
+<h1 id="240-mls-inspired-tree"><a class="header" href="#240-mls-inspired-tree">240. MLS-Inspired Tree</a></h1>
+<p>Could reduce rekey cost.</p>
+<hr />
+<h1 id="241-caution"><a class="header" href="#241-caution">241. Caution</a></h1>
+<p>Do not implement custom MLS variant without deep review.</p>
+<hr />
+<h1 id="242-initial-production-scope"><a class="header" href="#242-initial-production-scope">242. Initial Production Scope</a></h1>
+<p>Small/medium groups can accept simpler O(N) control fanout.</p>
+<hr />
+<h1 id="243-large-group-future"><a class="header" href="#243-large-group-future">243. Large Group Future</a></h1>
+<p>Tree-based key schedule.</p>
+<hr />
+<h1 id="244-membership-privacy-with-mls"><a class="header" href="#244-membership-privacy-with-mls">244. Membership Privacy With MLS</a></h1>
+<p>MLS membership visibility assumptions may differ.</p>
+<p>Need separate adaptation/privacy review.</p>
+<hr />
+<h1 id="245-pseudonymous-credentials"><a class="header" href="#245-pseudonymous-credentials">245. Pseudonymous Credentials</a></h1>
+<p>Future:</p>
+<pre><code class="language-text">anonymous credentials
+</code></pre>
+<p>for hidden-membership proof.</p>
+<hr />
+<h1 id="246-zero-knowledge-membership"><a class="header" href="#246-zero-knowledge-membership">246. Zero-Knowledge Membership</a></h1>
+<p>Future only.</p>
+<hr />
+<h1 id="247-group-broadcast-authenticity"><a class="header" href="#247-group-broadcast-authenticity">247. Group Broadcast Authenticity</a></h1>
+<p>Message must prove:</p>
+<pre><code class="language-text">valid current sender
+</code></pre>
+<p>without revealing global identity.</p>
+<hr />
+<h1 id="248-sender-signature"><a class="header" href="#248-sender-signature">248. Sender Signature</a></h1>
+<p>Use group-local signing key or sender-key authentication.</p>
+<hr />
+<h1 id="249-signature-linkability"><a class="header" href="#249-signature-linkability">249. Signature Linkability</a></h1>
+<p>Persistent signature key creates pseudonym linkability.</p>
+<hr />
+<h1 id="250-epoch-rotated-signature-key"><a class="header" href="#250-epoch-rotated-signature-key">250. Epoch-Rotated Signature Key</a></h1>
+<p>Optional.</p>
+<hr />
+<h1 id="251-large-group-read-scaling"><a class="header" href="#251-large-group-read-scaling">251. Large Group Read Scaling</a></h1>
+<p>Avoid per-message ACK from every member.</p>
+<hr />
+<h1 id="252-delivery-aggregates"><a class="header" href="#252-delivery-aggregates">252. Delivery Aggregates</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">delivered to some
+delivery unknown
+</code></pre>
+<hr />
+<h1 id="253-exact-recipient-receipts"><a class="header" href="#253-exact-recipient-receipts">253. Exact Recipient Receipts</a></h1>
+<p>Disabled in anonymous large groups.</p>
+<hr />
+<h1 id="254-read-receipts"><a class="header" href="#254-read-receipts">254. Read Receipts</a></h1>
+<p>Off.</p>
+<hr />
+<h1 id="255-presence"><a class="header" href="#255-presence">255. Presence</a></h1>
+<p>Off.</p>
+<hr />
+<h1 id="256-typing"><a class="header" href="#256-typing">256. Typing</a></h1>
+<p>Off.</p>
+<hr />
+<h1 id="257-group-calls"><a class="header" href="#257-group-calls">257. Group Calls</a></h1>
+<p>Outside current part.</p>
+<p>Would need separate anonymous group realtime architecture.</p>
+<hr />
+<h1 id="258-group-voice-notes"><a class="header" href="#258-group-voice-notes">258. Group Voice Notes</a></h1>
+<p>Treated as attachments/messages.</p>
+<hr />
+<h1 id="259-group-files"><a class="header" href="#259-group-files">259. Group Files</a></h1>
+<p>Use Part 40.</p>
+<hr />
+<h1 id="260-message-expiry"><a class="header" href="#260-message-expiry">260. Message Expiry</a></h1>
+<p>Can be group policy.</p>
+<hr />
+<h1 id="261-ephemeral-group"><a class="header" href="#261-ephemeral-group">261. Ephemeral Group</a></h1>
+<p>Possible:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum GroupLifetime {
+    Persistent,
+    Expiring,
+    SessionOnly,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="262-expiring-group"><a class="header" href="#262-expiring-group">262. Expiring Group</a></h1>
+<p>Useful for sensitive temporary collaboration.</p>
+<hr />
+<h1 id="263-expiry"><a class="header" href="#263-expiry">263. Expiry</a></h1>
+<p>Rotate/destroy:</p>
+<pre><code class="language-text">transport topic
+capabilities
+keys
+</code></pre>
+<hr />
+<h1 id="264-local-copies"><a class="header" href="#264-local-copies">264. Local Copies</a></h1>
+<p>Cannot guarantee deletion if members retained data.</p>
+<hr />
+<h1 id="265-group-archive"><a class="header" href="#265-group-archive">265. Group Archive</a></h1>
+<p>Strict groups may disable server-side archive entirely.</p>
+<hr />
+<h1 id="266-local-archive"><a class="header" href="#266-local-archive">266. Local Archive</a></h1>
+<p>User-controlled.</p>
+<hr />
+<h1 id="267-backup-interaction"><a class="header" href="#267-backup-interaction">267. Backup Interaction</a></h1>
+<p>Group policy may forbid backup of secrets/history.</p>
+<hr />
+<h1 id="268-policy"><a class="header" href="#268-policy">268. Policy</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct AnonymousGroupDataPolicy {
+    pub allow_backup: bool,
+    pub allow_export: bool,
+    pub history_policy: GroupHistoryPolicy,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="269-export"><a class="header" href="#269-export">269. Export</a></h1>
+<p>Can leak membership/content.</p>
+<p>Warn explicitly.</p>
+<hr />
+<h1 id="270-plugins"><a class="header" href="#270-plugins">270. Plugins</a></h1>
+<p>Maximum anonymity group should restrict:</p>
+<pre><code class="language-text">network plugins
+message-reading plugins
+external AI
+</code></pre>
+<hr />
+<h1 id="271-plugin-capability"><a class="header" href="#271-plugin-capability">271. Plugin Capability</a></h1>
+<p>Group-specific permission required.</p>
+<hr />
+<h1 id="272-moderation-plugin"><a class="header" href="#272-moderation-plugin">272. Moderation Plugin</a></h1>
+<p>Cannot receive full roster unless explicitly authorized.</p>
+<hr />
+<h1 id="273-diagnostics"><a class="header" href="#273-diagnostics">273. Diagnostics</a></h1>
+<p>Normal:</p>
+<pre><code class="language-text">Anonymous group: Active
+Group privacy: Maximum
+</code></pre>
+<hr />
+<h1 id="274-advanced-diagnostics"><a class="header" href="#274-advanced-diagnostics">274. Advanced Diagnostics</a></h1>
+<p>Can show:</p>
+<pre><code class="language-text">epoch
+distribution mode
+sender-key health
+control sync state
+</code></pre>
+<hr />
+<h1 id="275-forbidden-diagnostics"><a class="header" href="#275-forbidden-diagnostics">275. Forbidden Diagnostics</a></h1>
+<p>No:</p>
+<pre><code class="language-text">membership roster
+capability tokens
+sender keys
+transport topic secret
+</code></pre>
+<hr />
+<h1 id="276-telemetry"><a class="header" href="#276-telemetry">276. Telemetry</a></h1>
+<p>Aggregate only:</p>
+<pre><code class="language-text">group size class
+delivery success
+rekey failures
+</code></pre>
+<hr />
+<h1 id="277-no-group-id-labels"><a class="header" href="#277-no-group-id-labels">277. No Group ID Labels</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="278-testkit"><a class="header" href="#278-testkit">278. Testkit</a></h1>
+<p>Need synthetic anonymous group simulator.</p>
+<hr />
+<h1 id="279-synthetic-group-sizes"><a class="header" href="#279-synthetic-group-sizes">279. Synthetic Group Sizes</a></h1>
+<pre><code class="language-text">5
+20
+100
+1,000
+10,000
+</code></pre>
+<p>for architecture tests.</p>
+<hr />
+<h1 id="280-unit-tests"><a class="header" href="#280-unit-tests">280. Unit Tests</a></h1>
+<p>Test:</p>
+<pre><code class="language-text">join
+leave
+ban
+rekey
+sender key rotation
+history policy
+</code></pre>
+<hr />
+<h1 id="281-hidden-membership-tests"><a class="header" href="#281-hidden-membership-tests">281. Hidden Membership Tests</a></h1>
+<p>Ordinary member cannot enumerate roster.</p>
+<hr />
+<h1 id="282-role-privacy-tests"><a class="header" href="#282-role-privacy-tests">282. Role Privacy Tests</a></h1>
+<p>Ordinary member cannot identify hidden moderator.</p>
+<hr />
+<h1 id="283-capability-tests"><a class="header" href="#283-capability-tests">283. Capability Tests</a></h1>
+<p>Posting without valid capability rejected.</p>
+<hr />
+<h1 id="284-revocation-tests"><a class="header" href="#284-revocation-tests">284. Revocation Tests</a></h1>
+<p>Removed member cannot decrypt future epoch.</p>
+<hr />
+<h1 id="285-backward-secrecy-tests"><a class="header" href="#285-backward-secrecy-tests">285. Backward Secrecy Tests</a></h1>
+<p>New member cannot decrypt old history unless policy allows.</p>
+<hr />
+<h1 id="286-device-revocation-tests"><a class="header" href="#286-device-revocation-tests">286. Device Revocation Tests</a></h1>
+<p>One device removed, member's other devices continue.</p>
+<hr />
+<h1 id="287-multi-device-tests"><a class="header" href="#287-multi-device-tests">287. Multi-Device Tests</a></h1>
+<p>Independent sender keys.</p>
+<hr />
+<h1 id="288-epoch-gap-tests"><a class="header" href="#288-epoch-gap-tests">288. Epoch Gap Tests</a></h1>
+<p>Resync works.</p>
+<hr />
+<h1 id="289-control-conflict-tests"><a class="header" href="#289-control-conflict-tests">289. Control Conflict Tests</a></h1>
+<p>Concurrent admin changes converge deterministically.</p>
+<hr />
+<h1 id="290-split-brain-tests"><a class="header" href="#290-split-brain-tests">290. Split-Brain Tests</a></h1>
+<p>Invalid state chain detected.</p>
+<hr />
+<h1 id="291-distribution-tests"><a class="header" href="#291-distribution-tests">291. Distribution Tests</a></h1>
+<p>Per-device vs shared mailbox vs pub/sub.</p>
+<hr />
+<h1 id="292-traffic-analysis-tests"><a class="header" href="#292-traffic-analysis-tests">292. Traffic Analysis Tests</a></h1>
+<p>Measure:</p>
+<pre><code class="language-text">group size inference
+top-talker inference
+join timing
+</code></pre>
+<hr />
+<h1 id="293-cover-traffic-tests"><a class="header" href="#293-cover-traffic-tests">293. Cover Traffic Tests</a></h1>
+<p>Strict mode hides immediate fetch/send where configured.</p>
+<hr />
+<h1 id="294-large-group-tests"><a class="header" href="#294-large-group-tests">294. Large Group Tests</a></h1>
+<p>Bound:</p>
+<pre><code class="language-text">memory
+CPU
+membership proof size
+control update cost
+</code></pre>
+<hr />
+<h1 id="295-abuse-tests"><a class="header" href="#295-abuse-tests">295. Abuse Tests</a></h1>
+<pre><code class="language-text">spam
+capability theft
+invite flood
+moderation abuse
+</code></pre>
+<hr />
+<h1 id="296-fuzzing"><a class="header" href="#296-fuzzing">296. Fuzzing</a></h1>
+<p>Fuzz:</p>
+<pre><code class="language-text">group control message
+membership proof
+sender-key envelope
+capability parser
+</code></pre>
+<hr />
+<h1 id="297-property-tests"><a class="header" href="#297-property-tests">297. Property Tests</a></h1>
+<p>Properties:</p>
+<pre><code class="language-text">removed member never decrypts new epoch
+new member cannot decrypt old epoch by default
+invalid capability cannot publish
+epoch monotonicity always holds
+</code></pre>
+<hr />
+<h1 id="298-formal-verification-targets"><a class="header" href="#298-formal-verification-targets">298. Formal Verification Targets</a></h1>
+<p>Good candidates:</p>
+<pre><code class="language-text">epoch transitions
+membership state
+capability revocation
+sender-key lifecycle
+</code></pre>
+<hr />
+<h1 id="299-tla-candidate"><a class="header" href="#299-tla-candidate">299. TLA+ Candidate</a></h1>
+<p>Group membership/epoch state machine.</p>
+<hr />
+<h1 id="300-loom-candidate"><a class="header" href="#300-loom-candidate">300. Loom Candidate</a></h1>
+<p>Concurrent sender-key rotation.</p>
+<hr />
+<h1 id="301-kani-candidate"><a class="header" href="#301-kani-candidate">301. Kani Candidate</a></h1>
+<p>Capability scope/epoch checks.</p>
+<hr />
+<h1 id="302-performance-tests"><a class="header" href="#302-performance-tests">302. Performance Tests</a></h1>
+<p>Measure:</p>
+<pre><code class="language-text">rekey time
+fanout cost
+fetch cost
+sender-key distribution
+memory
+</code></pre>
+<hr />
+<h1 id="303-privacy-tests"><a class="header" href="#303-privacy-tests">303. Privacy Tests</a></h1>
+<p>Use Part 42 privacy lab.</p>
+<hr />
+<h1 id="304-group-correlation-attack"><a class="header" href="#304-group-correlation-attack">304. Group Correlation Attack</a></h1>
+<p>Adversary observes:</p>
+<pre><code class="language-text">same set of clients fetching around same times
+</code></pre>
+<hr />
+<h1 id="305-mitigation-evaluation"><a class="header" href="#305-mitigation-evaluation">305. Mitigation Evaluation</a></h1>
+<p>Compare:</p>
+<pre><code class="language-text">no cover
+cover fetch
+shared mailbox
+rotating topic
+</code></pre>
+<hr />
+<h1 id="306-release-gates"><a class="header" href="#306-release-gates">306. Release Gates</a></h1>
+<p>Block if:</p>
+<pre><code class="language-text">removed member can decrypt new message
+membership leak appears in provider-facing metadata
+strict group uses direct fanout
+capability token logged
+</code></pre>
+<hr />
+<h1 id="307-security-invariants"><a class="header" href="#307-security-invariants">307. Security Invariants</a></h1>
+<p>Mandatory:</p>
+<pre><code class="language-text">1. Anonymous groups never expose raw AccountId/DeviceId to provider-facing transport.
+2. Group-local pseudonyms are distinct from global identity.
+3. Removed members cannot decrypt future epochs.
+4. New members cannot decrypt old history unless explicitly allowed.
+5. Sender keys are device-scoped by default.
+6. Membership/role capabilities are distinct.
+7. Maximum-anonymity groups do not silently use direct member fanout.
+8. Hidden-membership mode does not expose the full roster to ordinary members.
+9. Group control state advances monotonically by epoch.
+10. Group capability secrets and sender keys never appear in logs/telemetry.
+11. Large-group provider-visible topic IDs are random and epoch-rotatable.
+12. Read receipts, typing, and presence are disabled by default in strict anonymous groups.
+</code></pre>
+<hr />
+<h1 id="308-recommended-crate-layout"><a class="header" href="#308-recommended-crate-layout">308. Recommended Crate Layout</a></h1>
+<pre><code class="language-text">crates/
+├── siar-anon-group-core/
+├── siar-anon-group-membership/
+├── siar-anon-group-keys/
+├── siar-anon-group-capability/
+├── siar-anon-group-control/
+├── siar-anon-group-distribution/
+├── siar-anon-group-mailbox/
+├── siar-anon-group-pubsub/
+├── siar-anon-group-moderation/
+├── siar-anon-group-observability/
+└── siar-anon-group-testkit/
+</code></pre>
+<hr />
+<h1 id="309-siar-anon-group-core"><a class="header" href="#309-siar-anon-group-core">309. <code>siar-anon-group-core</code></a></h1>
+<p>Owns:</p>
+<pre><code class="language-text">IDs
+privacy modes
+size classes
+errors
+</code></pre>
+<hr />
+<h1 id="310-siar-anon-group-membership"><a class="header" href="#310-siar-anon-group-membership">310. <code>siar-anon-group-membership</code></a></h1>
+<p>Membership tree/proofs/epoch membership state.</p>
+<hr />
+<h1 id="311-siar-anon-group-keys"><a class="header" href="#311-siar-anon-group-keys">311. <code>siar-anon-group-keys</code></a></h1>
+<p>Control keys/sender keys/rotation.</p>
+<hr />
+<h1 id="312-siar-anon-group-capability"><a class="header" href="#312-siar-anon-group-capability">312. <code>siar-anon-group-capability</code></a></h1>
+<p>Read/write/moderator capabilities.</p>
+<hr />
+<h1 id="313-siar-anon-group-control"><a class="header" href="#313-siar-anon-group-control">313. <code>siar-anon-group-control</code></a></h1>
+<p>Join/leave/role/epoch control log.</p>
+<hr />
+<h1 id="314-siar-anon-group-distribution"><a class="header" href="#314-siar-anon-group-distribution">314. <code>siar-anon-group-distribution</code></a></h1>
+<p>Provider-neutral fanout.</p>
+<hr />
+<h1 id="315-siar-anon-group-mailbox"><a class="header" href="#315-siar-anon-group-mailbox">315. <code>siar-anon-group-mailbox</code></a></h1>
+<p>Shared mailbox distribution.</p>
+<hr />
+<h1 id="316-siar-anon-group-pubsub"><a class="header" href="#316-siar-anon-group-pubsub">316. <code>siar-anon-group-pubsub</code></a></h1>
+<p>Large-group anonymous topic transport.</p>
+<hr />
+<h1 id="317-siar-anon-group-moderation"><a class="header" href="#317-siar-anon-group-moderation">317. <code>siar-anon-group-moderation</code></a></h1>
+<p>Anonymous moderation capability.</p>
+<hr />
+<h1 id="318-siar-anon-group-observability"><a class="header" href="#318-siar-anon-group-observability">318. <code>siar-anon-group-observability</code></a></h1>
+<p>Privacy-safe metrics.</p>
+<hr />
+<h1 id="319-siar-anon-group-testkit"><a class="header" href="#319-siar-anon-group-testkit">319. <code>siar-anon-group-testkit</code></a></h1>
+<p>Synthetic groups/fault injection.</p>
+<hr />
+<h1 id="320-error-taxonomy"><a class="header" href="#320-error-taxonomy">320. Error Taxonomy</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum AnonymousGroupError {
+    NotMember,
+    InvalidCapability,
+    EpochMismatch,
+    SenderKeyMissing,
+    MembershipProofInvalid,
+    RoleUnauthorized,
+    DistributionUnavailable,
+    RekeyRequired,
+    HistoryUnavailable,
+    GroupExpired,
+    Internal,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="321-initial-production-scope"><a class="header" href="#321-initial-production-scope">321. Initial Production Scope</a></h1>
+<p>Implement first:</p>
+<pre><code class="language-text">invite-only groups
+group-local pseudonyms
+per-device sender keys
+group epochs
+join/leave rekey
+per-device anonymous fanout for small groups
+shared mailbox for medium groups
+hidden roster option
+role-scoped capabilities
+no presence/typing/read receipts in strict mode
+privacy-safe diagnostics
+</code></pre>
+<p>Then add:</p>
+<pre><code class="language-text">anonymous pub/sub
+tree-based rekey
+hidden moderator identity
+anonymous credentials
+zero-knowledge membership
+very-large-group distribution
+</code></pre>
+<hr />
+<h1 id="322-definition-of-done"><a class="header" href="#322-definition-of-done">322. Definition of Done</a></h1>
+<p>Part 43 is complete when:</p>
+<ul>
+<li>anonymous group privacy modes are explicit</li>
+<li>global identities are separated from group-local pseudonyms</li>
+<li>sender-key distribution and rotation are defined</li>
+<li>group epochs handle join/leave/ban/device removal</li>
+<li>forward/backward secrecy policies are explicit</li>
+<li>membership visibility can be full, role-scoped, pseudonymous, or hidden</li>
+<li>role privacy and capability-based moderation are defined</li>
+<li>small/medium/large group distribution strategies are distinct</li>
+<li>provider-facing topic/group identifiers are random and rotatable</li>
+<li>read receipts/presence/typing are suppressed in strict groups</li>
+<li>multi-device sender keys and device revocation are defined</li>
+<li>hidden-membership and large-group scaling are accounted for</li>
+<li>abuse/spam/moderation controls do not require global identity exposure</li>
+<li>backups/recovery do not blindly restore live sender keys</li>
+<li>diagnostics/telemetry do not expose roster or secrets</li>
+<li>privacy, scale, abuse, fuzz, property, and formal-state tests are specified</li>
+</ul>
+<hr />
+<h1 id="323-final-architecture"><a class="header" href="#323-final-architecture">323. Final Architecture</a></h1>
+<pre><code class="language-text">                         GROUP APPLICATION
+                                │
+                                ▼
+                     GROUP CONTROL / EPOCH
+                                │
+                   ┌────────────┴────────────┐
+                   │                         │
+             Membership State         Sender Keys
+                   │                         │
+                   └────────────┬────────────┘
+                                ▼
+                    Anonymous Distribution
+              ┌─────────────────┼─────────────────┐
+              │                 │                 │
+       Per-Device Fanout   Shared Mailbox    Anonymous Pub/Sub
+              │                 │                 │
+              └─────────────────┼─────────────────┘
+                                ▼
+                       Mixnet / Mailboxes
+</code></pre>
+<p>Strict anonymous group:</p>
+<pre><code class="language-text">Group-local pseudonyms
++
+device-scoped sender keys
++
+hidden/limited membership
++
+epoch-based rekey
++
+anonymous distribution
++
+cover-aware fetch
++
+no presence/typing/read receipts
+</code></pre>
+<hr />
+<h1 id="324-final-principle"><a class="header" href="#324-final-principle">324. Final Principle</a></h1>
+<p>Anonymous group messaging is not merely:</p>
+<pre><code class="language-text">normal group chat
++
+mixnet
+</code></pre>
+<p>The correct model is:</p>
+<pre><code class="language-text">group-local identity
++
+membership privacy
++
+sender-key separation
++
+epoch rekey
++
+capability-based roles
++
+anonymous fanout
++
+large-group distribution
++
+traffic-analysis resistance
+</code></pre>
+<p>This architecture gives SIAR a path from small private anonymous groups to large anonymous group systems without exposing the social graph or coupling group security to one transport provider.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="42-anonymity-threat-model-traffic-analysis-correlation-formal-privacy-verification-architecture.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="44-anonymous-voice-video-call-signaling-relay-privacy-realtime-metadata-private-session-architecture.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="42-anonymity-threat-model-traffic-analysis-correlation-formal-privacy-verification-architecture.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="44-anonymous-voice-video-call-signaling-relay-privacy-realtime-metadata-private-session-architecture.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

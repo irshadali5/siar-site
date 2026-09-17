@@ -1,0 +1,1875 @@
+<!DOCTYPE HTML>
+<html lang="en" class="navy" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>50 — Anonymous Network Reliability, Disaster Recovery, Partition Tolerance &amp; Multi-Region Continuity Architecture - SIAR System Architecture &amp; Technical Wiki</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="Comprehensive system architecture, cryptographic protocols, DTN mesh networking, distributed storage, audio DSP pipelines, and UI/UX design specifications for SIAR.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="theme/custom.css">
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "navy";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('navy')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="Home.html">Architecture Portal & Reading Guide</a></li><li class="chapter-item expanded affix "><a href="design-rationale.html">System Architecture Design Rationale</a></li><li class="chapter-item expanded affix "><a href="system-capabilities-comparison.html">System Capabilities & Comparison Matrix</a></li><li class="chapter-item expanded affix "><a href="spec-order.html">Master Specification Execution Order</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part I: Protocol Foundation & Extension Platform</li><li class="chapter-item expanded "><a href="01-protocol-extension-system-architecture.html"><strong aria-hidden="true">1.</strong> 01 — Protocol Extension System Architecture</a></li><li class="chapter-item expanded "><a href="07-capability-negotiation-architecture.html"><strong aria-hidden="true">2.</strong> 07 — Capability Negotiation Architecture</a></li><li class="chapter-item expanded "><a href="21-third-party-protocol-extensions-architecture.html"><strong aria-hidden="true">3.</strong> 21 — Third-Party Protocol Extensions Architecture</a></li><li class="chapter-item expanded "><a href="22-wasm-compatible-components-architecture.html"><strong aria-hidden="true">4.</strong> 22 — WASM-Compatible Components Architecture</a></li><li class="chapter-item expanded "><a href="23-external-interoperability-suite-architecture.html"><strong aria-hidden="true">5.</strong> 23 — External Interoperability Suite Architecture</a></li><li class="chapter-item expanded "><a href="24-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">6.</strong> 24 — Plugin / Module Ecosystem Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part II: Identity, Trust & Cryptography</li><li class="chapter-item expanded "><a href="02-multi-device-identity-architecture.html"><strong aria-hidden="true">7.</strong> 02 — Multi-Device Identity Architecture</a></li><li class="chapter-item expanded "><a href="28-production-security-e2ee-key-management-privacy-architecture.html"><strong aria-hidden="true">8.</strong> 28 — Production Security, E2EE, Key Management, Abuse Resistance & Privacy Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part III: Mesh Networking, Transports & Hardware</li><li class="chapter-item expanded "><a href="03-transport-routing-policy-engine-architecture.html"><strong aria-hidden="true">9.</strong> 03 — Transport & Routing Policy Engine Architecture</a></li><li class="chapter-item expanded "><a href="11-relay-self-hosted-infrastructure-architecture.html"><strong aria-hidden="true">10.</strong> 11 — Relay & Self-Hosted Infrastructure Architecture</a></li><li class="chapter-item expanded "><a href="12-multipath-networking-architecture.html"><strong aria-hidden="true">11.</strong> 12 — Multipath Networking Architecture</a></li><li class="chapter-item expanded "><a href="13-battery-aware-scheduling-architecture.html"><strong aria-hidden="true">12.</strong> 13 — Battery-Aware Scheduling Architecture</a></li><li class="chapter-item expanded "><a href="14-proximity-abstraction-architecture.html"><strong aria-hidden="true">13.</strong> 14 — Proximity Abstraction Architecture</a></li><li class="chapter-item expanded "><a href="15-qr-nfc-bootstrap-pairing-architecture.html"><strong aria-hidden="true">14.</strong> 15 — QR / NFC Bootstrap & Secure Pairing Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IV: Delay-Tolerant Networking & Emergency Mesh</li><li class="chapter-item expanded "><a href="06-dtn-store-carry-forward-architecture.html"><strong aria-hidden="true">15.</strong> 06 — DTN / Store-Carry-Forward Architecture</a></li><li class="chapter-item expanded "><a href="17-emergency-priority-classes-architecture.html"><strong aria-hidden="true">16.</strong> 17 — Emergency Priority Classes Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part V: Storage, Outbox & Data Lifecycle</li><li class="chapter-item expanded "><a href="04-offline-event-log-architecture.html"><strong aria-hidden="true">17.</strong> 04 — Offline Event Log Architecture</a></li><li class="chapter-item expanded "><a href="05-robust-file-blob-subsystem-architecture.html"><strong aria-hidden="true">18.</strong> 05 — Robust File / Blob Subsystem Architecture</a></li><li class="chapter-item expanded "><a href="09-crash-recovery-architecture.html"><strong aria-hidden="true">19.</strong> 09 — Crash Recovery Architecture</a></li><li class="chapter-item expanded "><a href="32-search-indexing-local-knowledge-privacy-architecture.html"><strong aria-hidden="true">20.</strong> 32 — Search, Indexing, Local Knowledge Retrieval & Privacy-Preserving Discovery Architecture</a></li><li class="chapter-item expanded "><a href="33-backup-restore-export-import-archival-portability-architecture.html"><strong aria-hidden="true">21.</strong> 33 — Backup, Restore, Export/Import, Archival & Long-Term Data Portability Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VI: Realtime Media, Calling & Audio DSP</li><li class="chapter-item expanded "><a href="25-android-direct-hardware-surface-zero-copy-media-architecture.html"><strong aria-hidden="true">22.</strong> 25 — Android Direct Hardware Surface / Zero-Copy Media Pipeline Architecture</a></li><li class="chapter-item expanded "><a href="26-rust-first-audio-dsp-resampling-aec-ns-agc-architecture.html"><strong aria-hidden="true">23.</strong> 26 — Rust-First Audio DSP, Resampling, AEC/NS/AGC & Hardware-Aware Audio Pipeline Architecture</a></li><li class="chapter-item expanded "><a href="29-realtime-calls-media-session-protocol-architecture.html"><strong aria-hidden="true">24.</strong> 29 — Realtime Calls & Media Session Protocol Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VII: Ephemeral State, Presence & Notifications</li><li class="chapter-item expanded "><a href="30-presence-availability-typing-read-receipts-ephemeral-state-architecture.html"><strong aria-hidden="true">25.</strong> 30 — Presence, Availability, Typing, Read Receipts & Ephemeral Realtime State Architecture</a></li><li class="chapter-item expanded "><a href="31-notifications-push-background-delivery-lifecycle-architecture.html"><strong aria-hidden="true">26.</strong> 31 — Notifications, Push Wake, Background Delivery & OS Lifecycle Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part VIII: Native Runtimes, Daemons & Embedded Linux</li><li class="chapter-item expanded "><a href="16-daemon-headless-runtime-architecture.html"><strong aria-hidden="true">27.</strong> 16 — Daemon & Headless Runtime Architecture</a></li><li class="chapter-item expanded "><a href="19-c-abi-ffi-architecture.html"><strong aria-hidden="true">28.</strong> 19 — C ABI / FFI Architecture</a></li><li class="chapter-item expanded "><a href="20-embedded-linux-node-architecture.html"><strong aria-hidden="true">29.</strong> 20 — Embedded Linux Node Architecture</a></li><li class="chapter-item expanded "><a href="27-rust-driven-android-native-build-packaging-automation.html"><strong aria-hidden="true">30.</strong> 27 — Rust-Driven Android Native Build & Packaging Automation Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part IX: Reliability, Testing, Fuzzing & Diagnostics</li><li class="chapter-item expanded "><a href="08-resource-limits-backpressure-architecture.html"><strong aria-hidden="true">31.</strong> 08 — Resource Limits & Backpressure Architecture</a></li><li class="chapter-item expanded "><a href="10-fuzzing-protocol-test-suite-architecture.html"><strong aria-hidden="true">32.</strong> 10 — Fuzzing & Protocol Test Suite Architecture</a></li><li class="chapter-item expanded "><a href="18-network-diagnostics-path-visualization-architecture.html"><strong aria-hidden="true">33.</strong> 18 — Network Diagnostics & Path Visualization Architecture</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part X: UI/UX Client Architecture (Cross-Platform)</li><li class="chapter-item expanded "><a href="ui-ux-01-product-foundation-cross-platform-interaction-architecture.html"><strong aria-hidden="true">34.</strong> UI/UX 01 — Product UX Foundation & Cross-Platform Interaction Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-02-desktop-dioxus-app-shell-navigation-window-architecture.html"><strong aria-hidden="true">35.</strong> UI/UX 02 — Desktop Dioxus App Shell, Navigation & Window Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-03-android-jetpack-compose-app-shell-navigation-lifecycle-architecture.html"><strong aria-hidden="true">36.</strong> UI/UX 03 — Android Jetpack Compose App Shell, Navigation & Lifecycle Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-04-conversation-list-inbox-architecture.html"><strong aria-hidden="true">37.</strong> UI/UX 04 — Conversation List / Inbox UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-05-conversation-message-timeline-architecture.html"><strong aria-hidden="true">38.</strong> UI/UX 05 — Conversation / Message Timeline UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-06-message-composer-attachments-voice-notes-drafts-architecture.html"><strong aria-hidden="true">39.</strong> UI/UX 06 — Message Composer, Attachments, Voice Notes & Drafts UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-07-calls-realtime-media-architecture.html"><strong aria-hidden="true">40.</strong> UI/UX 07 — Calls & Realtime Media UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-08-contacts-requests-verification-identity-architecture.html"><strong aria-hidden="true">41.</strong> UI/UX 08 — Contacts, Requests, Verification & Identity UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-09-groups-membership-roles-architecture.html"><strong aria-hidden="true">42.</strong> UI/UX 09 — Groups, Membership & Roles UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-10-files-media-gallery-transfer-architecture.html"><strong aria-hidden="true">43.</strong> UI/UX 10 — Files, Media Gallery & Transfer UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-11-search-local-knowledge-retrieval-architecture.html"><strong aria-hidden="true">44.</strong> UI/UX 11 — Search & Local Knowledge Retrieval UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-12-nearby-qr-nfc-pairing-device-linking-architecture.html"><strong aria-hidden="true">45.</strong> UI/UX 12 — Nearby, QR/NFC Pairing & Device Linking UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-13-notifications-background-incoming-call-architecture.html"><strong aria-hidden="true">46.</strong> UI/UX 13 — Notifications, Background & Incoming Call UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-14-presence-typing-receipts-status-architecture.html"><strong aria-hidden="true">47.</strong> UI/UX 14 — Presence, Typing, Receipts & Status UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-15-security-center-devices-keys-recovery-architecture.html"><strong aria-hidden="true">48.</strong> UI/UX 15 — Security Center, Devices, Keys & Recovery UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-16-backup-restore-export-migration-architecture.html"><strong aria-hidden="true">49.</strong> UI/UX 16 — Backup, Restore, Export & Migration UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-17-emergency-sos-offline-mesh-architecture.html"><strong aria-hidden="true">50.</strong> UI/UX 17 — Emergency / SOS / Offline Mesh UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-18-settings-privacy-notifications-data-controls-architecture.html"><strong aria-hidden="true">51.</strong> UI/UX 18 — Settings, Privacy, Notifications & Data Controls UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-19-plugin-module-ecosystem-architecture.html"><strong aria-hidden="true">52.</strong> UI/UX 19 — Plugin / Module Ecosystem UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-20-diagnostics-network-paths-advanced-developer-architecture.html"><strong aria-hidden="true">53.</strong> UI/UX 20 — Diagnostics, Network Paths & Advanced Developer UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-21-accessibility-inclusive-interaction-architecture.html"><strong aria-hidden="true">54.</strong> UI/UX 21 — Accessibility & Inclusive Interaction Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-22-design-system-tokens-typography-icons-motion-architecture.html"><strong aria-hidden="true">55.</strong> UI/UX 22 — Design System, Tokens, Typography, Icons & Motion Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-23-responsive-adaptive-desktop-tablet-foldable-phone-layout-architecture.html"><strong aria-hidden="true">56.</strong> UI/UX 23 — Responsive / Adaptive Desktop, Tablet, Foldable & Phone Layout Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-24-error-loading-empty-offline-degraded-state-architecture.html"><strong aria-hidden="true">57.</strong> UI/UX 24 — Error, Loading, Empty, Offline & Degraded-State UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-25-onboarding-first-run-permission-education-architecture.html"><strong aria-hidden="true">58.</strong> UI/UX 25 — Onboarding, First Run & Permission Education UX Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-26-performance-virtualization-large-data-ui-architecture.html"><strong aria-hidden="true">59.</strong> UI/UX 26 — Performance, Virtualization & Large-Data UI Architecture</a></li><li class="chapter-item expanded "><a href="ui-ux-27-ui-testing-screenshot-interaction-release-quality-gates-architecture.html"><strong aria-hidden="true">60.</strong> UI/UX 27 — UI Testing, Screenshot/Interaction Tests & Release Quality Gates Architecture</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Part XI: Anonymous Network — Core Mixnet Mechanics</li><li class="chapter-item expanded "><a href="34-mixnet-loopix-sphinx-nym-high-anonymity-transport-architecture.html"><strong aria-hidden="true">61.</strong> 34 — Mixnet, Loopix, Sphinx, Nym & High-Anonymity Transport Architecture</a></li><li class="chapter-item expanded "><a href="35-anonymous-mailbox-offline-receiving-reply-capability-architecture.html"><strong aria-hidden="true">62.</strong> 35 — Anonymous Mailbox, Offline Receiving & Reply Capability Architecture</a></li><li class="chapter-item expanded "><a href="36-sphinx-packet-cell-fragmentation-anonymous-message-framing-architecture.html"><strong aria-hidden="true">63.</strong> 36 — Sphinx Packet, Cell, Fragmentation & Anonymous Message Framing Architecture</a></li><li class="chapter-item expanded "><a href="37-cover-traffic-traffic-shaping-timing-obfuscation-loop-traffic-architecture.html"><strong aria-hidden="true">64.</strong> 37 — Cover Traffic, Traffic Shaping, Timing Obfuscation & Loop Traffic Architecture</a></li><li class="chapter-item expanded "><a href="38-native-loopix-inspired-mixnet-topology-mix-nodes-layering-packet-forwarding-architecture.html"><strong aria-hidden="true">65.</strong> 38 — Native Loopix-Inspired Mixnet Topology, Mix Nodes, Layering & Packet Forwarding Architecture</a></li><li class="chapter-item expanded "><a href="39-mixnet-directory-node-admission-identity-sybil-resistance-topology-governance-architecture.html"><strong aria-hidden="true">66.</strong> 39 — Mixnet Directory, Node Admission, Identity, Sybil Resistance & Topology Governance Architecture</a></li><li class="chapter-item expanded "><a href="40-anonymous-attachment-transfer-rendezvous-large-file-privacy-high-bandwidth-data-architecture.html"><strong aria-hidden="true">67.</strong> 40 — Anonymous Attachment Transfer, Rendezvous, Large-File Privacy & High-Bandwidth Anonymous Data Architecture</a></li><li class="chapter-item expanded "><a href="41-censorship-resistance-bridges-pluggable-transports-traffic-obfuscation-architecture.html"><strong aria-hidden="true">68.</strong> 41 — Censorship Resistance, Bridges, Pluggable Transports & Traffic Obfuscation Architecture</a></li><li class="chapter-item expanded "><a href="42-anonymity-threat-model-traffic-analysis-correlation-formal-privacy-verification-architecture.html"><strong aria-hidden="true">69.</strong> 42 — Anonymity Threat Model, Traffic Analysis, Correlation Attacks & Formal Privacy Verification Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part XII: Anonymous Network — Anonymous Application Primitives</li><li class="chapter-item expanded "><a href="43-anonymous-group-messaging-membership-privacy-sender-key-large-group-anonymity-architecture.html"><strong aria-hidden="true">70.</strong> 43 — Anonymous Group Messaging, Membership Privacy, Sender-Key Distribution & Large-Group Anonymity Architecture</a></li><li class="chapter-item expanded "><a href="44-anonymous-voice-video-call-signaling-relay-privacy-realtime-metadata-private-session-architecture.html"><strong aria-hidden="true">71.</strong> 44 — Anonymous Voice/Video Call Signaling, Relay Privacy, Realtime Metadata Protection & Private Realtime Session Architecture</a></li><li class="chapter-item expanded "><a href="45-anonymous-presence-discovery-contact-bootstrap-private-social-graph-architecture.html"><strong aria-hidden="true">72.</strong> 45 — Anonymous Presence, Discovery, Contact Bootstrap & Private Social Graph Architecture</a></li><li class="chapter-item expanded "><a href="46-anonymous-reputation-trust-signals-abuse-reporting-privacy-preserving-moderation-architecture.html"><strong aria-hidden="true">73.</strong> 46 — Anonymous Reputation, Trust Signals, Abuse Reporting & Privacy-Preserving Moderation Architecture</a></li><li class="chapter-item expanded "><a href="47-anonymous-payments-resource-credits-quotas-privacy-preserving-service-accounting-architecture.html"><strong aria-hidden="true">74.</strong> 47 — Anonymous Payments, Resource Credits, Quotas & Privacy-Preserving Service Accounting Architecture</a></li><li class="chapter-item expanded "><a href="48-anonymous-service-discovery-provider-selection-capability-advertisement-privacy-preserving-marketplace-architecture.html"><strong aria-hidden="true">75.</strong> 48 — Anonymous Service Discovery, Provider Selection, Capability Advertisement & Privacy-Preserving Marketplace Architecture</a></li><li class="chapter-item expanded "><a href="49-anonymous-resource-scheduling-capacity-markets-load-balancing-privacy-preserving-infrastructure-allocation-architecture.html"><strong aria-hidden="true">76.</strong> 49 — Anonymous Resource Scheduling, Capacity Markets, Load Balancing & Privacy-Preserving Infrastructure Allocation Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part XIII: Anonymous Network — Sovereign Protocol Policies & Governance</li><li class="chapter-item expanded "><a href="50-anonymous-network-reliability-disaster-recovery-partition-tolerance-multi-region-continuity-architecture.html" class="active"><strong aria-hidden="true">77.</strong> 50 — Anonymous Network Reliability, Disaster Recovery, Partition Tolerance & Multi-Region Continuity Architecture</a></li><li class="chapter-item expanded "><a href="51-anonymous-network-observability-slos-privacy-safe-telemetry-incident-detection-operations-architecture.html"><strong aria-hidden="true">78.</strong> 51 — Anonymous Network Observability, SLOs, Privacy-Safe Telemetry, Incident Detection & Operations Architecture</a></li><li class="chapter-item expanded "><a href="52-anonymous-network-upgrade-protocol-evolution-compatibility-migration-zero-downtime-rollout-architecture.html"><strong aria-hidden="true">79.</strong> 52 — Anonymous Network Upgrade, Protocol Evolution, Compatibility, Migration & Zero-Downtime Rollout Architecture</a></li><li class="chapter-item expanded "><a href="53-anonymous-network-governance-policy-distribution-trust-roots-multi-authority-emergency-decision-architecture.html"><strong aria-hidden="true">80.</strong> 53 — Anonymous Network Governance, Policy Distribution, Trust Roots, Multi-Authority Control & Emergency Decision Architecture</a></li><li class="chapter-item expanded "><a href="54-anonymous-network-economics-incentives-operator-sustainability-subsidies-privacy-preserving-compensation-architecture.html"><strong aria-hidden="true">81.</strong> 54 — Anonymous Network Economics, Incentives, Operator Sustainability, Subsidies & Privacy-Preserving Compensation Architecture</a></li><li class="chapter-item expanded "><a href="55-anonymous-network-legal-compliance-boundary-jurisdiction-isolation-data-minimization-lawful-operations-architecture.html"><strong aria-hidden="true">82.</strong> 55 — Anonymous Network Legal/Compliance Boundary, Jurisdiction Isolation, Data-Minimization & Lawful Operations Architecture</a></li><li class="chapter-item expanded "><a href="56-anonymous-network-privacy-policy-user-consent-transparency-data-rights-privacy-control-architecture.html"><strong aria-hidden="true">83.</strong> 56 — Anonymous Network Privacy Policy, User Consent, Transparency, Data Rights & Privacy-Control Architecture</a></li><li class="chapter-item expanded "><a href="57-anonymous-network-identity-recovery-account-portability-device-reprovisioning-privacy-preserving-continuity-architecture.html"><strong aria-hidden="true">84.</strong> 57 — Anonymous Network Identity Recovery, Account Portability, Device Re-Provisioning & Privacy-Preserving Continuity Architecture</a></li><li class="chapter-item expanded "><a href="58-anonymous-network-federation-inter-network-peering-cross-domain-trust-privacy-preserving-interoperability-architecture.html"><strong aria-hidden="true">85.</strong> 58 — Anonymous Network Federation, Inter-Network Peering, Cross-Domain Trust & Privacy-Preserving Interoperability Architecture</a></li><li class="chapter-item expanded "><a href="59-anonymous-network-naming-addressing-namespace-isolation-private-resolution-anti-enumeration-architecture.html"><strong aria-hidden="true">86.</strong> 59 — Anonymous Network Naming, Addressing, Namespace Isolation, Private Resolution & Anti-Enumeration Architecture</a></li><li class="chapter-item expanded "><a href="60-anonymous-network-time-clock-privacy-replay-windows-epoch-coordination-temporal-metadata-resistance-architecture.html"><strong aria-hidden="true">87.</strong> 60 — Anonymous Network Time, Clock Privacy, Replay Windows, Epoch Coordination & Temporal Metadata Resistance Architecture</a></li><li class="chapter-item expanded "><a href="61-anonymous-network-configuration-secrets-runtime-policy-remote-administration-secure-control-plane-management-architecture.html"><strong aria-hidden="true">88.</strong> 61 — Anonymous Network Configuration, Secrets, Runtime Policy, Remote Administration & Secure Control-Plane Management Architecture</a></li><li class="chapter-item expanded "><a href="62-anonymous-network-deployment-packaging-infrastructure-provisioning-bare-metal-vm-container-runtime-reproducible-operations-architecture.html"><strong aria-hidden="true">89.</strong> 62 — Anonymous Network Deployment, Packaging, Infrastructure Provisioning, Bare-Metal/VM/Container Runtime & Reproducible Operations Architecture</a></li><li class="chapter-item expanded "><a href="63-anonymous-network-performance-engineering-benchmarking-capacity-planning-resource-isolation-production-sizing-architecture.html"><strong aria-hidden="true">90.</strong> 63 — Anonymous Network Performance Engineering, Benchmarking, Capacity Planning, Resource Isolation & Production Sizing Architecture</a></li><li class="chapter-item expanded "><a href="64-anonymous-network-testing-verification-simulation-fault-injection-adversarial-validation-release-quality-architecture.html"><strong aria-hidden="true">91.</strong> 64 — Anonymous Network Testing, Verification, Simulation, Fault Injection, Adversarial Validation & Release Quality Architecture</a></li><li class="chapter-item expanded "><a href="65-anonymous-network-documentation-operator-runbooks-incident-playbooks-architecture-decision-records-production-knowledge-architecture.html"><strong aria-hidden="true">92.</strong> 65 — Anonymous Network Documentation, Operator Runbooks, Incident Playbooks, Architecture Decision Records & Production Knowledge Architecture</a></li><li class="chapter-item expanded "><a href="66-anonymous-network-cryptographic-agility-post-quantum-migration-key-lifecycle-long-term-security-architecture.html"><strong aria-hidden="true">93.</strong> 66 — Anonymous Network Cryptographic Agility, Post-Quantum Migration, Key Lifecycle & Long-Term Security Architecture</a></li><li class="chapter-item expanded "><a href="67-anonymous-network-data-lifecycle-storage-minimization-secure-deletion-retention-archival-cryptographic-erasure-architecture.html"><strong aria-hidden="true">94.</strong> 67 — Anonymous Network Data Lifecycle, Storage Minimization, Secure Deletion, Retention, Archival & Cryptographic Erasure Architecture</a></li><li class="chapter-item expanded "><a href="68-anonymous-network-api-sdk-extension-boundary-capability-security-third-party-integration-architecture.html"><strong aria-hidden="true">95.</strong> 68 — Anonymous Network API, SDK, Extension Boundary, Capability Security & Third-Party Integration Architecture</a></li><li class="chapter-item expanded "><a href="69-anonymous-network-multi-tenant-isolation-organizational-boundaries-delegated-administration-enterprise-policy-architecture.html"><strong aria-hidden="true">96.</strong> 69 — Anonymous Network Multi-Tenant Isolation, Organizational Boundaries, Delegated Administration & Enterprise Policy Architecture</a></li><li class="chapter-item expanded "><a href="70-anonymous-network-disaster-exercises-business-continuity-validation-crisis-coordination-operational-resilience-governance-architecture.html"><strong aria-hidden="true">97.</strong> 70 — Anonymous Network Disaster Exercises, Business Continuity Validation, Crisis Coordination & Operational Resilience Governance Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part XIV: Anonymous Network — Zero-Trust Infrastructure & Attestation</li><li class="chapter-item expanded "><a href="71-anonymous-network-trustworthy-boot-host-attestation-runtime-integrity-binary-measurement-compromise-detection-architecture.html"><strong aria-hidden="true">98.</strong> 71 — Anonymous Network Trustworthy Boot, Host Attestation, Runtime Integrity, Binary Measurement & Compromise Detection Architecture</a></li><li class="chapter-item expanded "><a href="72-anonymous-network-hardware-security-modules-secure-elements-key-custody-signing-ceremonies-high-assurance-cryptographic-operations-architecture.html"><strong aria-hidden="true">99.</strong> 72 — Anonymous Network Hardware Security Modules, Secure Elements, Key Custody, Signing Ceremonies & High-Assurance Cryptographic Operations Architecture</a></li><li class="chapter-item expanded "><a href="73-anonymous-network-supply-chain-transparency-dependency-provenance-reproducible-builds-sbom-artifact-trust-compromise-recovery-architecture.html"><strong aria-hidden="true">100.</strong> 73 — Anonymous Network Supply-Chain Transparency, Dependency Provenance, Reproducible Builds, SBOM, Artifact Trust & Compromise Recovery Architecture</a></li><li class="chapter-item expanded "><a href="74-anonymous-network-database-persistent-state-transaction-boundaries-schema-evolution-storage-engine-architecture.html"><strong aria-hidden="true">101.</strong> 74 — Anonymous Network Database, Persistent State, Transaction Boundaries, Schema Evolution & Storage-Engine Architecture</a></li><li class="chapter-item expanded "><a href="75-anonymous-network-event-streaming-message-bus-durable-queues-internal-pubsub-distributed-workflow-architecture.html"><strong aria-hidden="true">102.</strong> 75 — Anonymous Network Event Streaming, Message Bus, Durable Queues, Internal Pub/Sub & Distributed Workflow Architecture</a></li><li class="chapter-item expanded "><a href="76-anonymous-network-distributed-consensus-leader-election-membership-quorum-state-coordination-architecture.html"><strong aria-hidden="true">103.</strong> 76 — Anonymous Network Distributed Consensus, Leader Election, Membership, Quorum State & Coordination Architecture</a></li><li class="chapter-item expanded "><a href="77-anonymous-network-service-discovery-naming-endpoint-resolution-load-balancing-traffic-steering-architecture.html"><strong aria-hidden="true">104.</strong> 77 — Anonymous Network Service Discovery, Naming, Endpoint Resolution, Load Balancing & Traffic Steering Architecture</a></li><li class="chapter-item expanded "><a href="78-anonymous-network-edge-gateway-ingress-egress-reverse-proxy-api-gateway-waf-boundary-enforcement-architecture.html"><strong aria-hidden="true">105.</strong> 78 — Anonymous Network Edge Gateway, Ingress/Egress, Reverse Proxy, API Gateway, WAF & Boundary Enforcement Architecture</a></li><li class="chapter-item expanded "><a href="79-anonymous-network-internal-service-to-service-communication-zero-trust-networking-mtls-service-identity-east-west-security-architecture.html"><strong aria-hidden="true">106.</strong> 79 — Anonymous Network Internal Service-to-Service Communication, Zero-Trust Networking, mTLS, Service Identity & East-West Security Architecture</a></li><li class="chapter-item expanded "><a href="80-anonymous-network-secrets-distribution-dynamic-credentials-certificate-authority-workload-enrollment-secretless-runtime-architecture.html"><strong aria-hidden="true">107.</strong> 80 — Anonymous Network Secrets Distribution, Dynamic Credentials, Certificate Authority, Workload Enrollment & Secretless Runtime Architecture</a></li><li class="chapter-item expanded "><a href="81-anonymous-network-authorization-policy-decision-enforcement-capability-evaluation-abac-rbac-distributed-access-control-architecture.html"><strong aria-hidden="true">108.</strong> 81 — Anonymous Network Authorization, Policy Decision/Enforcement Points, Capability Evaluation, ABAC/RBAC & Distributed Access-Control Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part XV: Anonymous Network — Private Cloud Services & Anti-Surveillance</li><li class="chapter-item expanded "><a href="82-anonymous-network-identity-provider-authentication-mfa-passkeys-session-management-account-security-architecture.html"><strong aria-hidden="true">109.</strong> 82 — Anonymous Network Identity Provider, Authentication, MFA, Passkeys, Session Management & Account Security Architecture</a></li><li class="chapter-item expanded "><a href="83-anonymous-network-account-lifecycle-registration-enrollment-suspension-deactivation-deletion-identity-state-governance-architecture.html"><strong aria-hidden="true">110.</strong> 83 — Anonymous Network Account Lifecycle, Registration, Enrollment, Suspension, Deactivation, Deletion & Identity-State Governance Architecture</a></li><li class="chapter-item expanded "><a href="84-anonymous-network-profile-preferences-settings-personalization-synchronization-privacy-preserving-user-state-architecture.html"><strong aria-hidden="true">111.</strong> 84 — Anonymous Network Profile, Preferences, Settings, Personalization, Synchronization & Privacy-Preserving User-State Architecture</a></li><li class="chapter-item expanded "><a href="85-anonymous-network-contacts-address-book-relationship-graph-invitations-trust-state-privacy-preserving-social-connectivity-architecture.html"><strong aria-hidden="true">112.</strong> 85 — Anonymous Network Contacts, Address Book, Relationship Graph, Invitations, Trust State & Privacy-Preserving Social Connectivity Architecture</a></li><li class="chapter-item expanded "><a href="86-anonymous-network-group-directory-communities-channels-membership-discovery-moderation-boundaries-privacy-preserving-social-spaces-architecture.html"><strong aria-hidden="true">113.</strong> 86 — Anonymous Network Group Directory, Communities, Channels, Membership Discovery, Moderation Boundaries & Privacy-Preserving Social Spaces Architecture</a></li><li class="chapter-item expanded "><a href="87-anonymous-network-content-feed-timeline-subscription-recommendation-ranking-privacy-preserving-discovery-architecture.html"><strong aria-hidden="true">114.</strong> 87 — Anonymous Network Content Feed, Timeline, Subscription, Recommendation, Ranking & Privacy-Preserving Discovery Architecture</a></li><li class="chapter-item expanded "><a href="88-anonymous-network-content-publishing-posts-articles-media-drafts-revisions-distribution-creator-state-architecture.html"><strong aria-hidden="true">115.</strong> 88 — Anonymous Network Content Publishing, Posts, Articles, Media, Drafts, Revisions, Distribution & Creator-State Architecture</a></li><li class="chapter-item expanded "><a href="89-anonymous-network-comments-replies-threads-reactions-mentions-resharing-privacy-preserving-interaction-architecture.html"><strong aria-hidden="true">116.</strong> 89 — Anonymous Network Comments, Replies, Threads, Reactions, Mentions, Resharing & Privacy-Preserving Interaction Architecture</a></li><li class="chapter-item expanded "><a href="90-anonymous-network-notifications-activity-inbox-mentions-interaction-aggregation-digest-privacy-preserving-attention-architecture.html"><strong aria-hidden="true">117.</strong> 90 — Anonymous Network Notifications, Activity Inbox, Mentions, Interaction Aggregation, Digest & Privacy-Preserving Attention Architecture</a></li><li class="chapter-item expanded "><a href="91-anonymous-network-search-indexing-query-privacy-relevance-ranking-federated-search-private-information-retrieval-architecture.html"><strong aria-hidden="true">118.</strong> 91 — Anonymous Network Search, Indexing, Query Privacy, Relevance Ranking, Federated Search & Private Information Retrieval Architecture</a></li><li class="chapter-item expanded "><a href="92-anonymous-network-analytics-metrics-product-insights-privacy-preserving-aggregation-differential-privacy-anti-surveillance-data-architecture.html"><strong aria-hidden="true">119.</strong> 92 — Anonymous Network Analytics, Metrics, Product Insights, Privacy-Preserving Aggregation, Differential Privacy & Anti-Surveillance Data Architecture</a></li><li class="chapter-item expanded "><a href="93-anonymous-network-experimentation-feature-evaluation-ab-testing-rollouts-cohort-assignment-privacy-preserving-product-validation-architecture.html"><strong aria-hidden="true">120.</strong> 93 — Anonymous Network Experimentation, Feature Evaluation, A/B Testing, Rollouts, Cohort Assignment & Privacy-Preserving Product Validation Architecture</a></li><li class="chapter-item expanded "><a href="94-anonymous-network-audit-transparency-user-visible-security-history-verifiable-actions-privacy-preserving-accountability-architecture.html"><strong aria-hidden="true">121.</strong> 94 — Anonymous Network Audit, Transparency, User-Visible Security History, Verifiable Actions & Privacy-Preserving Accountability Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part XVI: Anonymous Network — Defense, SecOps & Vulnerability Management</li><li class="chapter-item expanded "><a href="95-anonymous-network-policy-compliance-engine-continuous-control-evaluation-security-posture-evidence-collection-privacy-preserving-assurance-architecture.html"><strong aria-hidden="true">122.</strong> 95 — Anonymous Network Policy Compliance Engine, Continuous Control Evaluation, Security Posture, Evidence Collection & Privacy-Preserving Assurance Architecture</a></li><li class="chapter-item expanded "><a href="96-anonymous-network-incident-response-detection-triage-containment-forensics-recovery-privacy-preserving-security-operations-architecture.html"><strong aria-hidden="true">123.</strong> 96 — Anonymous Network Incident Response, Detection, Triage, Containment, Forensics, Recovery & Privacy-Preserving Security Operations Architecture</a></li><li class="chapter-item expanded "><a href="97-anonymous-network-security-operations-center-threat-intelligence-indicators-of-compromise-detection-engineering-hunting-privacy-preserving-defensive-intelligence-architecture.html"><strong aria-hidden="true">124.</strong> 97 — Anonymous Network Security Operations Center, Threat Intelligence, Indicators of Compromise, Detection Engineering, Hunting & Privacy-Preserving Defensive Intelligence Architecture</a></li><li class="chapter-item expanded "><a href="98-anonymous-network-vulnerability-management-exposure-discovery-patch-prioritization-remediation-coordination-privacy-preserving-security-maintenance-architecture.html"><strong aria-hidden="true">125.</strong> 98 — Anonymous Network Vulnerability Management, Exposure Discovery, Patch Prioritization, Remediation Coordination & Privacy-Preserving Security Maintenance Architecture</a></li><li class="chapter-item expanded "><a href="99-anonymous-network-secure-update-patch-distribution-release-channels-client-upgrade-enforcement-rollback-protection-privacy-preserving-software-maintenance-architecture.html"><strong aria-hidden="true">126.</strong> 99 — Anonymous Network Secure Update, Patch Distribution, Release Channels, Client Upgrade Enforcement, Rollback Protection & Privacy-Preserving Software Maintenance Architecture</a></li><li class="chapter-item expanded "><a href="100-anonymous-network-disaster-recovery-backup-integrity-restore-orchestration-regional-failover-continuity-validation-privacy-preserving-resilience-architecture.html"><strong aria-hidden="true">127.</strong> 100 — Anonymous Network Disaster Recovery, Backup Integrity, Restore Orchestration, Regional Failover, Continuity Validation & Privacy-Preserving Resilience Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part XVII: Anonymous Network — SRE, Fleet Management & Physical Site Reliability</li><li class="chapter-item expanded "><a href="101-anonymous-network-capacity-management-load-shedding-admission-control-autoscaling-resource-fairness-privacy-preserving-availability-architecture.html"><strong aria-hidden="true">128.</strong> 101 — Anonymous Network Capacity Management, Load Shedding, Admission Control, Autoscaling, Resource Fairness & Privacy-Preserving Availability Architecture</a></li><li class="chapter-item expanded "><a href="102-anonymous-network-cost-governance-resource-accounting-budget-enforcement-capacity-economics-privacy-preserving-finops-architecture.html"><strong aria-hidden="true">129.</strong> 102 — Anonymous Network Cost Governance, Resource Accounting, Budget Enforcement, Capacity Economics & Privacy-Preserving FinOps Architecture</a></li><li class="chapter-item expanded "><a href="103-anonymous-network-data-residency-sovereignty-regional-placement-cross-border-transfer-jurisdiction-policy-privacy-preserving-geographic-governance-architecture.html"><strong aria-hidden="true">130.</strong> 103 — Anonymous Network Data Residency, Sovereignty, Regional Placement, Cross-Border Transfer, Jurisdiction Policy & Privacy-Preserving Geographic Governance Architecture</a></li><li class="chapter-item expanded "><a href="104-anonymous-network-service-ownership-operational-responsibility-escalation-on-call-change-authority-privacy-preserving-organizational-governance-architecture.html"><strong aria-hidden="true">131.</strong> 104 — Anonymous Network Service Ownership, Operational Responsibility, Escalation, On-Call, Change Authority & Privacy-Preserving Organizational Governance Architecture</a></li><li class="chapter-item expanded "><a href="105-anonymous-network-configuration-drift-desired-state-change-reconciliation-policy-convergence-privacy-preserving-infrastructure-state-governance-architecture.html"><strong aria-hidden="true">132.</strong> 105 — Anonymous Network Configuration Drift, Desired State, Change Reconciliation, Policy Convergence & Privacy-Preserving Infrastructure State Governance Architecture</a></li><li class="chapter-item expanded "><a href="106-anonymous-network-infrastructure-inventory-asset-graph-service-dependency-mapping-configuration-item-lifecycle-privacy-preserving-operational-topology-architecture.html"><strong aria-hidden="true">133.</strong> 106 — Anonymous Network Infrastructure Inventory, Asset Graph, Service Dependency Mapping, Configuration Item Lifecycle & Privacy-Preserving Operational Topology Architecture</a></li><li class="chapter-item expanded "><a href="107-anonymous-network-change-impact-analysis-dependency-aware-rollout-planning-pre-change-simulation-safe-execution-privacy-preserving-operational-decision-architecture.html"><strong aria-hidden="true">134.</strong> 107 — Anonymous Network Change Impact Analysis, Dependency-Aware Rollout Planning, Pre-Change Simulation, Safe Execution & Privacy-Preserving Operational Decision Architecture</a></li><li class="chapter-item expanded "><a href="108-anonymous-network-release-readiness-production-certification-go-no-go-decision-operational-acceptance-privacy-preserving-launch-governance-architecture.html"><strong aria-hidden="true">135.</strong> 108 — Anonymous Network Release Readiness, Production Certification, Go/No-Go Decision, Operational Acceptance & Privacy-Preserving Launch Governance Architecture</a></li><li class="chapter-item expanded "><a href="109-anonymous-network-service-level-objectives-error-budgets-reliability-policy-availability-governance-privacy-preserving-reliability-engineering-architecture.html"><strong aria-hidden="true">136.</strong> 109 — Anonymous Network Service Level Objectives, Error Budgets, Reliability Policy, Availability Governance & Privacy-Preserving Reliability Engineering Architecture</a></li><li class="chapter-item expanded "><a href="110-anonymous-network-availability-modeling-fault-domains-redundancy-planning-failure-correlation-reliability-simulation-privacy-preserving-resilience-engineering-architecture.html"><strong aria-hidden="true">137.</strong> 110 — Anonymous Network Availability Modeling, Fault Domains, Redundancy Planning, Failure Correlation, Reliability Simulation & Privacy-Preserving Resilience Engineering Architecture</a></li><li class="chapter-item expanded "><a href="111-anonymous-network-capacity-forecasting-demand-modeling-growth-planning-saturation-prediction-privacy-preserving-infrastructure-forecast-architecture.html"><strong aria-hidden="true">138.</strong> 111 — Anonymous Network Capacity Forecasting, Demand Modeling, Growth Planning, Saturation Prediction & Privacy-Preserving Infrastructure Forecast Architecture</a></li><li class="chapter-item expanded "><a href="112-anonymous-network-performance-budgeting-latency-decomposition-throughput-modeling-tail-latency-control-privacy-preserving-performance-engineering-architecture.html"><strong aria-hidden="true">139.</strong> 112 — Anonymous Network Performance Budgeting, Latency Decomposition, Throughput Modeling, Tail-Latency Control & Privacy-Preserving Performance Engineering Architecture</a></li><li class="chapter-item expanded "><a href="113-anonymous-network-resource-efficiency-work-consolidation-compute-memory-io-optimization-energy-awareness-privacy-preserving-efficiency-engineering-architecture.html"><strong aria-hidden="true">140.</strong> 113 — Anonymous Network Resource Efficiency, Work Consolidation, Compute/Memory/I/O Optimization, Energy Awareness & Privacy-Preserving Efficiency Engineering Architecture</a></li><li class="chapter-item expanded "><a href="114-anonymous-network-sustainability-carbon-aware-scheduling-hardware-lifecycle-resource-reuse-privacy-preserving-environmental-efficiency-architecture.html"><strong aria-hidden="true">141.</strong> 114 — Anonymous Network Sustainability, Carbon-Aware Scheduling, Hardware Lifecycle, Resource Reuse & Privacy-Preserving Environmental Efficiency Architecture</a></li><li class="chapter-item expanded "><a href="115-anonymous-network-hardware-fleet-management-firmware-lifecycle-secure-provisioning-maintenance-scheduling-privacy-preserving-physical-infrastructure-governance-architecture.html"><strong aria-hidden="true">142.</strong> 115 — Anonymous Network Hardware Fleet Management, Firmware Lifecycle, Secure Provisioning, Maintenance Scheduling & Privacy-Preserving Physical Infrastructure Governance Architecture</a></li><li class="chapter-item expanded "><a href="116-anonymous-network-data-center-edge-site-facility-power-cooling-environmental-monitoring-privacy-preserving-physical-site-reliability-architecture.html"><strong aria-hidden="true">143.</strong> 116 — Anonymous Network Data Center, Edge Site, Facility Power, Cooling, Environmental Monitoring & Privacy-Preserving Physical Site Reliability Architecture</a></li><li class="chapter-item expanded "><a href="117-anonymous-network-physical-security-tamper-detection-site-access-control-chain-of-custody-asset-protection-privacy-preserving-facility-security-architecture.html"><strong aria-hidden="true">144.</strong> 117 — Anonymous Network Physical Security, Tamper Detection, Site Access Control, Chain of Custody, Asset Protection & Privacy-Preserving Facility Security Architecture</a></li><li class="chapter-item expanded "><a href="118-anonymous-network-physical-disaster-preparedness-fire-flood-earthquake-response-site-evacuation-asset-salvage-emergency-logistics-privacy-preserving-facility-continuity-architecture.html"><strong aria-hidden="true">145.</strong> 118 — Anonymous Network Physical Disaster Preparedness, Fire/Flood/Earthquake Response, Site Evacuation, Asset Salvage, Emergency Logistics & Privacy-Preserving Facility Continuity Architecture</a></li><li class="chapter-item expanded "><a href="119-anonymous-network-crisis-command-emergency-decision-authority-multi-team-coordination-communications-situation-awareness-privacy-preserving-incident-command-architecture.html"><strong aria-hidden="true">146.</strong> 119 — Anonymous Network Crisis Command, Emergency Decision Authority, Multi-Team Coordination, Communications, Situation Awareness & Privacy-Preserving Incident Command Architecture</a></li><li class="chapter-item expanded "><a href="120-anonymous-network-post-incident-review-root-cause-analysis-corrective-actions-organizational-learning-recurrence-prevention-privacy-preserving-reliability-improvement-architecture.html"><strong aria-hidden="true">147.</strong> 120 — Anonymous Network Post-Incident Review, Root-Cause Analysis, Corrective Actions, Organizational Learning, Recurrence Prevention & Privacy-Preserving Reliability Improvement Architecture</a></li><li class="chapter-item expanded "><a href="121-anonymous-network-reliability-risk-register-technical-debt-governance-systemic-weakness-tracking-remediation-portfolio-privacy-preserving-engineering-risk-architecture.html"><strong aria-hidden="true">148.</strong> 121 — Anonymous Network Reliability Risk Register, Technical Debt Governance, Systemic Weakness Tracking, Remediation Portfolio & Privacy-Preserving Engineering Risk Architecture</a></li><li class="chapter-item expanded affix "><li class="part-title">Part XVIII: Anonymous Network — Governance, Traceability, SDK & Plugin Ecosystem</li><li class="chapter-item expanded "><a href="122-anonymous-network-architecture-governance-technical-standards-adr-lifecycle-design-review-exception-management-privacy-preserving-engineering-decision-architecture.html"><strong aria-hidden="true">149.</strong> 122 — Anonymous Network Architecture Governance, Technical Standards, ADR Lifecycle, Design Review, Exception Management & Privacy-Preserving Engineering Decision Architecture</a></li><li class="chapter-item expanded "><a href="123-anonymous-network-engineering-knowledge-graph-architecture-traceability-requirement-to-code-mapping-decision-provenance-privacy-preserving-technical-knowledge-architecture.html"><strong aria-hidden="true">150.</strong> 123 — Anonymous Network Engineering Knowledge Graph, Architecture Traceability, Requirement-to-Code Mapping, Decision Provenance & Privacy-Preserving Technical Knowledge Architecture</a></li><li class="chapter-item expanded "><a href="124-anonymous-network-requirements-engineering-specification-lifecycle-acceptance-criteria-verification-planning-change-traceability-privacy-preserving-product-technical-requirement-architecture.html"><strong aria-hidden="true">151.</strong> 124 — Anonymous Network Requirements Engineering, Specification Lifecycle, Acceptance Criteria, Verification Planning, Change Traceability & Privacy-Preserving Product/Technical Requirement Architecture</a></li><li class="chapter-item expanded "><a href="125-anonymous-network-test-strategy-governance-verification-matrix-coverage-traceability-qualification-evidence-release-confidence-privacy-preserving-engineering-assurance-architecture.html"><strong aria-hidden="true">152.</strong> 125 — Anonymous Network Test Strategy Governance, Verification Matrix, Coverage Traceability, Qualification Evidence, Release Confidence & Privacy-Preserving Engineering Assurance Architecture</a></li><li class="chapter-item expanded "><a href="126-anonymous-network-release-evidence-repository-certification-records-artifact-qualification-lineage-compliance-trace-packages-privacy-preserving-assurance-archive-architecture.html"><strong aria-hidden="true">153.</strong> 126 — Anonymous Network Release Evidence Repository, Certification Records, Artifact Qualification Lineage, Compliance Trace Packages & Privacy-Preserving Assurance Archive Architecture</a></li><li class="chapter-item expanded "><a href="127-anonymous-network-product-qualification-feature-maturity-levels-capability-readiness-general-availability-criteria-privacy-preserving-product-readiness-governance-architecture.html"><strong aria-hidden="true">154.</strong> 127 — Anonymous Network Product Qualification, Feature Maturity Levels, Capability Readiness, General Availability Criteria & Privacy-Preserving Product Readiness Governance Architecture</a></li><li class="chapter-item expanded "><a href="128-anonymous-network-product-lifecycle-governance-capability-evolution-backward-compatibility-migration-deprecation-sunset-privacy-preserving-end-of-life-architecture.html"><strong aria-hidden="true">155.</strong> 128 — Anonymous Network Product Lifecycle Governance, Capability Evolution, Backward Compatibility, Migration, Deprecation, Sunset & Privacy-Preserving End-of-Life Architecture</a></li><li class="chapter-item expanded "><a href="129-anonymous-network-api-protocol-compatibility-registry-version-negotiation-schema-evolution-interoperability-certification-privacy-preserving-compatibility-governance-architecture.html"><strong aria-hidden="true">156.</strong> 129 — Anonymous Network API & Protocol Compatibility Registry, Version Negotiation, Schema Evolution, Interoperability Certification & Privacy-Preserving Compatibility Governance Architecture</a></li><li class="chapter-item expanded "><a href="130-anonymous-network-sdk-client-library-generated-bindings-developer-compatibility-integration-certification-privacy-preserving-developer-platform-architecture.html"><strong aria-hidden="true">157.</strong> 130 — Anonymous Network SDK, Client Library, Generated Bindings, Developer Compatibility, Integration Certification & Privacy-Preserving Developer Platform Architecture</a></li><li class="chapter-item expanded "><a href="131-anonymous-network-developer-portal-api-documentation-sandbox-environments-credential-provisioning-integration-onboarding-support-privacy-preserving-developer-experience-architecture.html"><strong aria-hidden="true">158.</strong> 131 — Anonymous Network Developer Portal, API Documentation, Sandbox Environments, Credential Provisioning, Integration Onboarding, Support & Privacy-Preserving Developer Experience Architecture</a></li><li class="chapter-item expanded "><a href="132-anonymous-network-developer-cli-project-automation-local-integration-emulator-contract-testing-ci-integration-privacy-preserving-developer-toolchain-architecture.html"><strong aria-hidden="true">159.</strong> 132 — Anonymous Network Developer CLI, Project Automation, Local Integration Emulator, Contract Testing, CI Integration & Privacy-Preserving Developer Toolchain Architecture</a></li><li class="chapter-item expanded "><a href="133-anonymous-network-extension-marketplace-integration-distribution-package-discovery-trust-signals-review-revocation-privacy-preserving-developer-ecosystem-architecture.html"><strong aria-hidden="true">160.</strong> 133 — Anonymous Network Extension Marketplace, Integration Distribution, Package Discovery, Trust Signals, Review, Revocation & Privacy-Preserving Developer Ecosystem Architecture</a></li><li class="chapter-item expanded "><a href="134-anonymous-network-extension-runtime-plugin-sandboxing-capability-brokerage-resource-isolation-lifecycle-supervision-privacy-preserving-execution-architecture.html"><strong aria-hidden="true">161.</strong> 134 — Anonymous Network Extension Runtime, Plugin Sandboxing, Capability Brokerage, Resource Isolation, Lifecycle Supervision & Privacy-Preserving Execution Architecture</a></li><li class="chapter-item expanded "><a href="135-anonymous-network-extension-permission-model-consent-ux-delegated-authority-capability-attenuation-scope-review-privacy-preserving-authorization-architecture.html"><strong aria-hidden="true">162.</strong> 135 — Anonymous Network Extension Permission Model, Consent UX, Delegated Authority, Capability Attenuation, Scope Review & Privacy-Preserving Authorization Architecture</a></li><li class="chapter-item expanded "><a href="136-anonymous-network-extension-data-governance-data-access-mediation-information-flow-control-retention-deletion-export-privacy-preserving-extension-data-architecture.html"><strong aria-hidden="true">163.</strong> 136 — Anonymous Network Extension Data Governance, Data Access Mediation, Information-Flow Control, Retention, Deletion, Export & Privacy-Preserving Extension Data Architecture</a></li><li class="chapter-item expanded "><a href="137-anonymous-network-extension-inter-process-communication-event-bus-host-calls-shared-memory-streaming-backpressure-privacy-preserving-runtime-communication-architecture.html"><strong aria-hidden="true">164.</strong> 137 — Anonymous Network Extension Inter-Process Communication, Event Bus, Host Calls, Shared Memory, Streaming, Backpressure & Privacy-Preserving Runtime Communication Architecture</a></li><li class="chapter-item expanded "><a href="138-anonymous-network-extension-background-execution-durable-jobs-triggers-scheduling-wakeups-mobile-lifecycle-quotas-privacy-preserving-automation-runtime-architecture.html"><strong aria-hidden="true">165.</strong> 138 — Anonymous Network Extension Background Execution, Durable Jobs, Triggers, Scheduling, Wakeups, Mobile Lifecycle, Quotas & Privacy-Preserving Automation Runtime Architecture</a></li><li class="chapter-item expanded "><a href="140-anonymous-network-extension-ui-surface-embedded-panels-commands-menus-context-actions-theming-accessibility-privacy-preserving-host-ui-integration-architecture.html"><strong aria-hidden="true">166.</strong> 140 — Anonymous Network Extension UI Surface, Embedded Panels, Commands, Menus, Context Actions, Theming, Accessibility & Privacy-Preserving Host UI Integration Architecture</a></li><li class="chapter-item expanded "><a href="141-anonymous-network-extension-state-synchronization-cross-device-settings-ui-state-installation-state-capability-consistency-privacy-preserving-extension-state-convergence-architecture.html"><strong aria-hidden="true">167.</strong> 141 — Anonymous Network Extension State Synchronization, Cross-Device Settings, UI State, Installation State, Capability Consistency & Privacy-Preserving Extension State Convergence Architecture</a></li><li class="chapter-item expanded "><a href="142-anonymous-network-extension-dependency-management-package-resolution-version-constraints-lockfiles-dependency-isolation-supply-chain-policy-privacy-preserving-dependency-governance-architecture.html"><strong aria-hidden="true">168.</strong> 142 — Anonymous Network Extension Dependency Management, Package Resolution, Version Constraints, Lockfiles, Dependency Isolation, Supply-Chain Policy & Privacy-Preserving Dependency Governance Architecture</a></li><li class="chapter-item expanded "><a href="143-anonymous-network-extension-update-orchestration-dependency-aware-rollouts-state-migration-rollback-hot-upgrade-compatibility-gates-privacy-preserving-extension-evolution-architecture.html"><strong aria-hidden="true">169.</strong> 143 — Anonymous Network Extension Update Orchestration, Dependency-Aware Rollouts, State Migration, Rollback, Hot Upgrade, Compatibility Gates & Privacy-Preserving Extension Evolution Architecture</a></li><li class="chapter-item expanded "><a href="144-anonymous-network-extension-testing-certification-compatibility-matrix-sandbox-validation-fault-injection-security-privacy-qualification-release-evidence-architecture.html"><strong aria-hidden="true">170.</strong> 144 — Anonymous Network Extension Testing, Certification, Compatibility Matrix, Sandbox Validation, Fault Injection, Security/Privacy Qualification & Release Evidence Architecture</a></li><li class="chapter-item expanded "><a href="145-anonymous-network-extension-observability-runtime-health-crash-reporting-diagnostics-developer-telemetry-slos-privacy-preserving-extension-operations-architecture.html"><strong aria-hidden="true">171.</strong> 145 — Anonymous Network Extension Observability, Runtime Health, Crash Reporting, Diagnostics, Developer Telemetry, SLOs & Privacy-Preserving Extension Operations Architecture</a></li><li class="chapter-item expanded "><a href="146-anonymous-network-extension-incident-response-abuse-detection-quarantine-emergency-disable-forensics-recovery-privacy-preserving-extension-security-operations-architecture.html"><strong aria-hidden="true">172.</strong> 146 — Anonymous Network Extension Incident Response, Abuse Detection, Quarantine, Emergency Disable, Forensics, Recovery & Privacy-Preserving Extension Security Operations Architecture</a></li><li class="chapter-item expanded "><a href="147-anonymous-network-extension-governance-publisher-policy-ecosystem-rules-dispute-resolution-appeals-enforcement-consistency-privacy-preserving-marketplace-governance-architecture.html"><strong aria-hidden="true">173.</strong> 147 — Anonymous Network Extension Governance, Publisher Policy, Ecosystem Rules, Dispute Resolution, Appeals, Enforcement Consistency & Privacy-Preserving Marketplace Governance Architecture</a></li><li class="chapter-item expanded "><a href="148-anonymous-network-extension-business-model-pricing-revenue-sharing-paid-extensions-subscriptions-billing-integration-refunds-entitlements-privacy-preserving-marketplace-economics-architecture.html"><strong aria-hidden="true">174.</strong> 148 — Anonymous Network Extension Business Model, Pricing, Revenue Sharing, Paid Extensions, Subscriptions, Billing Integration, Refunds, Entitlements & Privacy-Preserving Marketplace Economics Architecture</a></li><li class="chapter-item expanded "><a href="149-anonymous-network-extension-licensing-open-source-commercial-license-enforcement-seat-activation-license-keys-offline-licensing-compliance-audit-privacy-preserving-software-license-architecture.html"><strong aria-hidden="true">175.</strong> 149 — Anonymous Network Extension Licensing, Open-Source/Commercial License Enforcement, Seat Activation, License Keys, Offline Licensing, Compliance, Audit & Privacy-Preserving Software License Architecture</a></li><li class="chapter-item expanded "><a href="150-anonymous-network-extension-developer-relations-publisher-support-documentation-governance-compatibility-communication-migration-guidance-ecosystem-education-privacy-preserving-developer-success-architecture.html"><strong aria-hidden="true">176.</strong> 150 — Anonymous Network Extension Developer Relations, Publisher Support, Documentation Governance, Compatibility Communication, Migration Guidance, Ecosystem Education & Privacy-Preserving Developer Success Architecture</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">SIAR System Architecture &amp; Technical Wiki</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/irshadali5/siar/edit/main/sys-arch/50-anonymous-network-reliability-disaster-recovery-partition-tolerance-multi-region-continuity-architecture.md" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="core-system-architecture-part-50--anonymous-network-reliability-disaster-recovery-partition-tolerance--multi-region-continuity-architecture"><a class="header" href="#core-system-architecture-part-50--anonymous-network-reliability-disaster-recovery-partition-tolerance--multi-region-continuity-architecture">Core System Architecture Part 50 — Anonymous Network Reliability, Disaster Recovery, Partition Tolerance &amp; Multi-Region Continuity Architecture</a></h1>
+<h2 id="siar--secure-local-first-multi-transport-communication-platform"><a class="header" href="#siar--secure-local-first-multi-transport-communication-platform">SIAR — Secure, Local-First, Multi-Transport Communication Platform</a></h2>
+<p><strong>Series:</strong> Core System Architecture<br />
+<strong>Part:</strong> 50<br />
+<strong>Status:</strong> Architecture specification<br />
+<strong>Primary language:</strong> Rust<br />
+<strong>Builds on:</strong> Core System Architecture Parts 34–49</p>
+<p><strong>Primary purpose:</strong> define the complete reliability and disaster-recovery architecture for SIAR's anonymous infrastructure, including failure-domain isolation, partition tolerance, durable client state, directory/topology continuity, mailbox recovery, provider failover, multi-region operation, backup boundaries, quorum behavior, recovery objectives, and privacy-preserving continuity procedures.</p>
+<hr />
+<h1 id="1-purpose"><a class="header" href="#1-purpose">1. Purpose</a></h1>
+<p>Anonymous communication infrastructure has to survive:</p>
+<pre><code class="language-text">node crashes
+operator failures
+cloud-region outages
+network partitions
+directory unavailability
+mailbox loss
+provider compromise
+regional censorship
+database corruption
+software rollout failures
+natural disasters
+</code></pre>
+<p>Reliability work can itself create privacy failures.</p>
+<p>Examples:</p>
+<pre><code class="language-text">fallback to direct transport
+restore old mailbox secret
+copy all user metadata into a central DR system
+use globally stable recovery IDs
+</code></pre>
+<p>The governing principle is:</p>
+<blockquote>
+<p><strong>SIAR reliability mechanisms must preserve privacy invariants during failure. Availability is important, but continuity must never silently weaken anonymity.</strong></p>
+</blockquote>
+<hr />
+<h1 id="2-architectural-position"><a class="header" href="#2-architectural-position">2. Architectural Position</a></h1>
+<pre><code class="language-text">Clients / Outboxes
+       │
+       ▼
+Anonymous Providers
+       │
+       ▼
+Regional Failure Domains
+       │
+       ▼
+Cross-Region Continuity
+       │
+       ▼
+Recovery / Rebuild / Failover
+</code></pre>
+<hr />
+<h1 id="3-reliability-goals"><a class="header" href="#3-reliability-goals">3. Reliability Goals</a></h1>
+<p>The system should tolerate:</p>
+<pre><code class="language-text">single node loss
+single operator loss
+single region loss
+directory mirror loss
+partial provider loss
+temporary network partition
+</code></pre>
+<p>without losing:</p>
+<pre><code class="language-text">durable user messages
+security state
+privacy policy
+</code></pre>
+<hr />
+<h1 id="4-privacy-goal-during-failure"><a class="header" href="#4-privacy-goal-during-failure">4. Privacy Goal During Failure</a></h1>
+<p>Hard rule:</p>
+<pre><code class="language-text">failure
+≠
+privacy downgrade
+</code></pre>
+<hr />
+<h1 id="5-failure-domain-model"><a class="header" href="#5-failure-domain-model">5. Failure Domain Model</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum FailureDomain {
+    Process,
+    Host,
+    Rack,
+    AvailabilityZone,
+    Region,
+    Operator,
+    ASN,
+    CloudProvider,
+    DirectoryAuthority,
+    ServiceProvider,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="6-why-failure-domains-matter"><a class="header" href="#6-why-failure-domains-matter">6. Why Failure Domains Matter</a></h1>
+<p>Two nodes are not independent if they share:</p>
+<pre><code class="language-text">host
+operator
+region
+cloud
+ASN
+</code></pre>
+<hr />
+<h1 id="7-reliability-diversity"><a class="header" href="#7-reliability-diversity">7. Reliability Diversity</a></h1>
+<p>Use multiple dimensions:</p>
+<pre><code class="language-text">operator
+region
+cloud
+ASN
+authority
+</code></pre>
+<hr />
+<h1 id="8-continuity-classes"><a class="header" href="#8-continuity-classes">8. Continuity Classes</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum ContinuityClass {
+    BestEffort,
+    Standard,
+    HighAvailability,
+    DisasterResilient,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="9-best-effort"><a class="header" href="#9-best-effort">9. Best Effort</a></h1>
+<p>Single-provider/simple deployment.</p>
+<hr />
+<h1 id="10-standard"><a class="header" href="#10-standard">10. Standard</a></h1>
+<p>Redundant nodes in one region.</p>
+<hr />
+<h1 id="11-high-availability"><a class="header" href="#11-high-availability">11. High Availability</a></h1>
+<p>Multi-zone, multi-operator.</p>
+<hr />
+<h1 id="12-disaster-resilient"><a class="header" href="#12-disaster-resilient">12. Disaster Resilient</a></h1>
+<p>Multi-region + multi-operator + independent control-plane continuity.</p>
+<hr />
+<h1 id="13-service-continuity-matrix"><a class="header" href="#13-service-continuity-matrix">13. Service Continuity Matrix</a></h1>
+<p>Services have different durability requirements.</p>
+<hr />
+<h1 id="14-mix-nodes"><a class="header" href="#14-mix-nodes">14. Mix Nodes</a></h1>
+<p>Transient packet state.</p>
+<p>Can be lost.</p>
+<hr />
+<h1 id="15-mailboxes"><a class="header" href="#15-mailboxes">15. Mailboxes</a></h1>
+<p>Durable queued anonymous messages.</p>
+<p>Must survive provider/node failure according to policy.</p>
+<hr />
+<h1 id="16-directory"><a class="header" href="#16-directory">16. Directory</a></h1>
+<p>Signed topology/control state.</p>
+<p>Must remain publishable and verifiable.</p>
+<hr />
+<h1 id="17-bulk-storage"><a class="header" href="#17-bulk-storage">17. Bulk Storage</a></h1>
+<p>Encrypted object durability.</p>
+<hr />
+<h1 id="18-realtime-relay"><a class="header" href="#18-realtime-relay">18. Realtime Relay</a></h1>
+<p>No durable session recovery required.</p>
+<p>Call reconnects.</p>
+<hr />
+<h1 id="19-bridge"><a class="header" href="#19-bridge">19. Bridge</a></h1>
+<p>Stateless or near-stateless.</p>
+<hr />
+<h1 id="20-client-outbox"><a class="header" href="#20-client-outbox">20. Client Outbox</a></h1>
+<p>Authoritative unsent message state.</p>
+<p>Critical.</p>
+<hr />
+<h1 id="21-durability-classes"><a class="header" href="#21-durability-classes">21. Durability Classes</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum AnonymousDataDurability {
+    Ephemeral,
+    Reconstructable,
+    Durable,
+    SecurityCritical,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="22-ephemeral"><a class="header" href="#22-ephemeral">22. Ephemeral</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">mix delay queues
+cover packets
+realtime jitter state
+</code></pre>
+<hr />
+<h1 id="23-reconstructable"><a class="header" href="#23-reconstructable">23. Reconstructable</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">provider health cache
+catalog cache
+search indexes
+</code></pre>
+<hr />
+<h1 id="24-durable"><a class="header" href="#24-durable">24. Durable</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">client outbox
+mailbox contents
+bulk encrypted objects
+</code></pre>
+<hr />
+<h1 id="25-security-critical"><a class="header" href="#25-security-critical">25. Security Critical</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">identity keys
+mailbox secrets
+reply capabilities
+revocation state
+governance roots
+</code></pre>
+<hr />
+<h1 id="26-recovery-rule"><a class="header" href="#26-recovery-rule">26. Recovery Rule</a></h1>
+<p>Security-critical state must not be blindly replicated or restored.</p>
+<hr />
+<h1 id="27-client-durable-outbox"><a class="header" href="#27-client-durable-outbox">27. Client Durable Outbox</a></h1>
+<p>The client's local outbox is the primary reliability anchor.</p>
+<hr />
+<h1 id="28-persist-before-send"><a class="header" href="#28-persist-before-send">28. Persist Before Send</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="29-outbox-state"><a class="header" href="#29-outbox-state">29. Outbox State</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum DurableOutboxState {
+    Queued,
+    Submitted,
+    Deposited,
+    Delivered,
+    Expired,
+    Failed,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="30-crash-recovery"><a class="header" href="#30-crash-recovery">30. Crash Recovery</a></h1>
+<p>On restart:</p>
+<pre><code class="language-text">reload durable outbox
+revalidate policy
+re-resolve anonymous provider
+resume
+</code></pre>
+<hr />
+<h1 id="31-no-duplicate-user-message"><a class="header" href="#31-no-duplicate-user-message">31. No Duplicate User Message</a></h1>
+<p>MessageId dedup required.</p>
+<hr />
+<h1 id="32-transport-delivery-id"><a class="header" href="#32-transport-delivery-id">32. Transport Delivery ID</a></h1>
+<p>Separate from application MessageId.</p>
+<hr />
+<h1 id="33-retry"><a class="header" href="#33-retry">33. Retry</a></h1>
+<p>New transport path may be used.</p>
+<hr />
+<h1 id="34-privacy-constraint"><a class="header" href="#34-privacy-constraint">34. Privacy Constraint</a></h1>
+<p>Retry path must satisfy same anonymity class.</p>
+<hr />
+<h1 id="35-network-partition"><a class="header" href="#35-network-partition">35. Network Partition</a></h1>
+<p>Client may be isolated from:</p>
+<pre><code class="language-text">Internet
+mixnet
+directory
+mailbox provider
+</code></pre>
+<hr />
+<h1 id="36-partition-behavior"><a class="header" href="#36-partition-behavior">36. Partition Behavior</a></h1>
+<p>Queue locally.</p>
+<hr />
+<h1 id="37-no-direct-escape"><a class="header" href="#37-no-direct-escape">37. No Direct Escape</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="38-local-only-mode"><a class="header" href="#38-local-only-mode">38. Local-Only Mode</a></h1>
+<p>During partition, local transports may continue only if policy allows.</p>
+<hr />
+<h1 id="39-example"><a class="header" href="#39-example">39. Example</a></h1>
+<p>Same-LAN messaging may continue in:</p>
+<pre><code class="language-text">Standard
+Private
+</code></pre>
+<p>but Maximum Anonymity may prohibit nearby transport.</p>
+<hr />
+<h1 id="40-partition-policy"><a class="header" href="#40-partition-policy">40. Partition Policy</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct PartitionPolicy {
+    pub allow_local_transport: bool,
+    pub allow_dtn: bool,
+    pub require_anonymous_route: bool,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="41-dtn-integration"><a class="header" href="#41-dtn-integration">41. DTN Integration</a></h1>
+<p>Store-carry-forward can maintain delivery under disconnected conditions.</p>
+<hr />
+<h1 id="42-privacy-label"><a class="header" href="#42-privacy-label">42. Privacy Label</a></h1>
+<p>DTN bundle carries required privacy class.</p>
+<hr />
+<h1 id="43-strict-dtn-rule"><a class="header" href="#43-strict-dtn-rule">43. Strict DTN Rule</a></h1>
+<p>Maximum-anonymity bundle cannot traverse privacy-ineligible opportunistic carrier.</p>
+<hr />
+<h1 id="44-regional-failure"><a class="header" href="#44-regional-failure">44. Regional Failure</a></h1>
+<p>One region becomes unavailable.</p>
+<hr />
+<h1 id="45-client-response"><a class="header" href="#45-client-response">45. Client Response</a></h1>
+<p>Use:</p>
+<pre><code class="language-text">fresh signed topology
+alternate provider
+alternate region
+</code></pre>
+<hr />
+<h1 id="46-no-geographic-pinning-requirement"><a class="header" href="#46-no-geographic-pinning-requirement">46. No Geographic Pinning Requirement</a></h1>
+<p>Clients should not rely on one home region.</p>
+<hr />
+<h1 id="47-multi-region-provider-set"><a class="header" href="#47-multi-region-provider-set">47. Multi-Region Provider Set</a></h1>
+<p>Each service should have:</p>
+<pre><code class="language-text">primary candidates
+secondary-region candidates
+</code></pre>
+<hr />
+<h1 id="48-region-selection"><a class="header" href="#48-region-selection">48. Region Selection</a></h1>
+<p>Local, privacy-aware.</p>
+<hr />
+<h1 id="49-region-failover"><a class="header" href="#49-region-failover">49. Region Failover</a></h1>
+<p>Use jitter to avoid stampede.</p>
+<hr />
+<h1 id="50-region-health"><a class="header" href="#50-region-health">50. Region Health</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum RegionHealth {
+    Healthy,
+    Degraded,
+    Unavailable,
+    Unknown,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="51-region-health-source"><a class="header" href="#51-region-health-source">51. Region Health Source</a></h1>
+<p>Aggregate signed control-plane signal.</p>
+<hr />
+<h1 id="52-avoid-precise-client-location"><a class="header" href="#52-avoid-precise-client-location">52. Avoid Precise Client Location</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="53-multi-region-topology"><a class="header" href="#53-multi-region-topology">53. Multi-Region Topology</a></h1>
+<p>Mixnet layers should span multiple regions.</p>
+<hr />
+<h1 id="54-do-not-map-layer-to-region"><a class="header" href="#54-do-not-map-layer-to-region">54. Do Not Map Layer to Region</a></h1>
+<p>Bad:</p>
+<pre><code class="language-text">L1 = Asia
+L2 = Europe
+L3 = US
+</code></pre>
+<hr />
+<h1 id="55-better"><a class="header" href="#55-better">55. Better</a></h1>
+<p>Each layer contains nodes across independent regions/operators.</p>
+<hr />
+<h1 id="56-region-loss-effect"><a class="header" href="#56-region-loss-effect">56. Region Loss Effect</a></h1>
+<p>Topology builder removes unavailable nodes next epoch.</p>
+<hr />
+<h1 id="57-mid-epoch-failure"><a class="header" href="#57-mid-epoch-failure">57. Mid-Epoch Failure</a></h1>
+<p>Clients use health/revocation overlay.</p>
+<hr />
+<h1 id="58-directory-continuity"><a class="header" href="#58-directory-continuity">58. Directory Continuity</a></h1>
+<p>Directory control plane must survive outages.</p>
+<hr />
+<h1 id="59-directory-components"><a class="header" href="#59-directory-components">59. Directory Components</a></h1>
+<pre><code class="language-text">registry
+policy
+topology builder
+signers
+revocation feed
+mirrors
+</code></pre>
+<hr />
+<h1 id="60-authority-quorum"><a class="header" href="#60-authority-quorum">60. Authority Quorum</a></h1>
+<p>Multi-authority future model.</p>
+<hr />
+<h1 id="61-quorum-availability"><a class="header" href="#61-quorum-availability">61. Quorum Availability</a></h1>
+<p>Need enough authorities online to sign new epoch.</p>
+<hr />
+<h1 id="62-quorum-failure"><a class="header" href="#62-quorum-failure">62. Quorum Failure</a></h1>
+<p>Existing valid topology can remain usable until freshness limit.</p>
+<hr />
+<h1 id="63-no-unsafe-emergency-signing"><a class="header" href="#63-no-unsafe-emergency-signing">63. No Unsafe Emergency Signing</a></h1>
+<p>Hard rule.</p>
+<p>Do not reduce quorum silently.</p>
+<hr />
+<h1 id="64-quorum-degradation-policy"><a class="header" href="#64-quorum-degradation-policy">64. Quorum Degradation Policy</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum QuorumFailurePolicy {
+    ContinueCurrentEpoch,
+    FreezeNewTopology,
+    StopStrictNewRoutes,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="65-maximum-anonymity"><a class="header" href="#65-maximum-anonymity">65. Maximum Anonymity</a></h1>
+<p>If topology freshness expires:</p>
+<pre><code class="language-text">stop creating new routes
+</code></pre>
+<hr />
+<h1 id="66-directory-mirrors"><a class="header" href="#66-directory-mirrors">66. Directory Mirrors</a></h1>
+<p>Read-only distribution layer.</p>
+<hr />
+<h1 id="67-mirror-failure"><a class="header" href="#67-mirror-failure">67. Mirror Failure</a></h1>
+<p>Use another mirror.</p>
+<hr />
+<h1 id="68-mirror-compromise"><a class="header" href="#68-mirror-compromise">68. Mirror Compromise</a></h1>
+<p>Signature verification prevents trust substitution.</p>
+<hr />
+<h1 id="69-revocation-continuity"><a class="header" href="#69-revocation-continuity">69. Revocation Continuity</a></h1>
+<p>Revocation feed must be independently distributed.</p>
+<hr />
+<h1 id="70-why"><a class="header" href="#70-why">70. Why</a></h1>
+<p>A stale topology may still contain compromised node.</p>
+<hr />
+<h1 id="71-revocation-freshness"><a class="header" href="#71-revocation-freshness">71. Revocation Freshness</a></h1>
+<p>Stricter than topology freshness.</p>
+<hr />
+<h1 id="72-revocation-outage"><a class="header" href="#72-revocation-outage">72. Revocation Outage</a></h1>
+<p>Strict mode may stop new routes after threshold.</p>
+<hr />
+<h1 id="73-mailbox-reliability"><a class="header" href="#73-mailbox-reliability">73. Mailbox Reliability</a></h1>
+<p>Mailbox is durable store-and-forward.</p>
+<hr />
+<h1 id="74-mailbox-failure-types"><a class="header" href="#74-mailbox-failure-types">74. Mailbox Failure Types</a></h1>
+<pre><code class="language-text">process crash
+storage corruption
+region loss
+operator loss
+credential loss
+</code></pre>
+<hr />
+<h1 id="75-mailbox-replication"><a class="header" href="#75-mailbox-replication">75. Mailbox Replication</a></h1>
+<p>Possible:</p>
+<pre><code class="language-text">single provider replicas
+multi-region same operator
+multi-provider redundancy
+</code></pre>
+<hr />
+<h1 id="76-privacy-tradeoff"><a class="header" href="#76-privacy-tradeoff">76. Privacy Tradeoff</a></h1>
+<p>Replication increases metadata exposure.</p>
+<hr />
+<h1 id="77-initial-recommendation"><a class="header" href="#77-initial-recommendation">77. Initial Recommendation</a></h1>
+<p>For standard HA:</p>
+<pre><code class="language-text">multi-region same provider
+</code></pre>
+<p>For maximum resilience/privacy:</p>
+<pre><code class="language-text">optional multi-provider encrypted redundancy
+</code></pre>
+<hr />
+<h1 id="78-multi-provider-mailbox"><a class="header" href="#78-multi-provider-mailbox">78. Multi-Provider Mailbox</a></h1>
+<p>Deposit identical encrypted payload to two providers.</p>
+<hr />
+<h1 id="79-leakage"><a class="header" href="#79-leakage">79. Leakage</a></h1>
+<p>Two providers can compare object timing/size.</p>
+<hr />
+<h1 id="80-mitigation"><a class="header" href="#80-mitigation">80. Mitigation</a></h1>
+<p>Use:</p>
+<pre><code class="language-text">independent IDs
+independent capabilities
+timing jitter
+</code></pre>
+<hr />
+<h1 id="81-redundancy-policy"><a class="header" href="#81-redundancy-policy">81. Redundancy Policy</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum MailboxRedundancyPolicy {
+    Single,
+    SameProviderMultiRegion,
+    MultiProvider,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="82-mailbox-replica-id"><a class="header" href="#82-mailbox-replica-id">82. Mailbox Replica ID</a></h1>
+<p>Provider-specific.</p>
+<hr />
+<h1 id="83-no-shared-stable-object-id"><a class="header" href="#83-no-shared-stable-object-id">83. No Shared Stable Object ID</a></h1>
+<p>Hard rule across providers.</p>
+<hr />
+<h1 id="84-mailbox-write-quorum"><a class="header" href="#84-mailbox-write-quorum">84. Mailbox Write Quorum</a></h1>
+<p>Possible:</p>
+<pre><code class="language-text">1-of-2
+2-of-3
+</code></pre>
+<hr />
+<h1 id="85-delivery-semantics"><a class="header" href="#85-delivery-semantics">85. Delivery Semantics</a></h1>
+<p>Application delivery after:</p>
+<pre><code class="language-text">at least one durable mailbox deposit
+</code></pre>
+<p>depending policy.</p>
+<hr />
+<h1 id="86-strong-durability-mode"><a class="header" href="#86-strong-durability-mode">86. Strong Durability Mode</a></h1>
+<p>Require multiple deposits.</p>
+<hr />
+<h1 id="87-latency-tradeoff"><a class="header" href="#87-latency-tradeoff">87. Latency Tradeoff</a></h1>
+<p>More replicas increase delay.</p>
+<hr />
+<h1 id="88-mailbox-read"><a class="header" href="#88-mailbox-read">88. Mailbox Read</a></h1>
+<p>Recipient can fetch from:</p>
+<pre><code class="language-text">primary
+fallback
+all
+</code></pre>
+<hr />
+<h1 id="89-duplicate-dedup"><a class="header" href="#89-duplicate-dedup">89. Duplicate Dedup</a></h1>
+<p>Application MessageId.</p>
+<hr />
+<h1 id="90-mailbox-disaster-recovery"><a class="header" href="#90-mailbox-disaster-recovery">90. Mailbox Disaster Recovery</a></h1>
+<p>If provider loses mailbox:</p>
+<pre><code class="language-text">client outbox retry
+sender resend
+secondary provider
+</code></pre>
+<hr />
+<h1 id="91-recipient-recovery"><a class="header" href="#91-recipient-recovery">91. Recipient Recovery</a></h1>
+<p>Fresh device gets fresh mailbox identity.</p>
+<hr />
+<h1 id="92-never-restore-old-live-mailbox-secret-blindly"><a class="header" href="#92-never-restore-old-live-mailbox-secret-blindly">92. Never Restore Old Live Mailbox Secret Blindly</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="93-bulk-object-reliability"><a class="header" href="#93-bulk-object-reliability">93. Bulk Object Reliability</a></h1>
+<p>Encrypted chunks can be replicated.</p>
+<hr />
+<h1 id="94-bulk-redundancy"><a class="header" href="#94-bulk-redundancy">94. Bulk Redundancy</a></h1>
+<p>Options:</p>
+<pre><code class="language-text">single provider
+replicated provider
+erasure-coded multi-provider
+</code></pre>
+<hr />
+<h1 id="95-initial-recommendation"><a class="header" href="#95-initial-recommendation">95. Initial Recommendation</a></h1>
+<p>Single provider + client retry for ordinary attachments.</p>
+<hr />
+<h1 id="96-high-durability-file"><a class="header" href="#96-high-durability-file">96. High-Durability File</a></h1>
+<p>Optional multi-provider copy.</p>
+<hr />
+<h1 id="97-backup-vs-transfer"><a class="header" href="#97-backup-vs-transfer">97. Backup vs Transfer</a></h1>
+<p>Bulk rendezvous is not archival backup.</p>
+<hr />
+<h1 id="98-object-loss-ux"><a class="header" href="#98-object-loss-ux">98. Object Loss UX</a></h1>
+<pre><code class="language-text">Attachment no longer available
+</code></pre>
+<hr />
+<h1 id="99-realtime-relay-reliability"><a class="header" href="#99-realtime-relay-reliability">99. Realtime Relay Reliability</a></h1>
+<p>Session is ephemeral.</p>
+<hr />
+<h1 id="100-relay-failure"><a class="header" href="#100-relay-failure">100. Relay Failure</a></h1>
+<p>Migrate/reconnect.</p>
+<hr />
+<h1 id="101-fresh-relay-credentials"><a class="header" href="#101-fresh-relay-credentials">101. Fresh Relay Credentials</a></h1>
+<p>Required.</p>
+<hr />
+<h1 id="102-media-keys"><a class="header" href="#102-media-keys">102. Media Keys</a></h1>
+<p>May rotate during migration.</p>
+<hr />
+<h1 id="103-no-session-state-restore-from-disk"><a class="header" href="#103-no-session-state-restore-from-disk">103. No Session State Restore From Disk</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="104-bridge-reliability"><a class="header" href="#104-bridge-reliability">104. Bridge Reliability</a></h1>
+<p>Bridge loss triggers alternate bridge/transport.</p>
+<hr />
+<h1 id="105-censorship--disaster"><a class="header" href="#105-censorship--disaster">105. Censorship + Disaster</a></h1>
+<p>Bridge distribution needs independent channels.</p>
+<hr />
+<h1 id="106-multi-region-bridge-pools"><a class="header" href="#106-multi-region-bridge-pools">106. Multi-Region Bridge Pools</a></h1>
+<p>Useful.</p>
+<hr />
+<h1 id="107-provider-catalog-continuity"><a class="header" href="#107-provider-catalog-continuity">107. Provider Catalog Continuity</a></h1>
+<p>Signed catalog cached locally.</p>
+<hr />
+<h1 id="108-catalog-outage"><a class="header" href="#108-catalog-outage">108. Catalog Outage</a></h1>
+<p>Use cached valid state within policy.</p>
+<hr />
+<h1 id="109-capacity-market-outage"><a class="header" href="#109-capacity-market-outage">109. Capacity Market Outage</a></h1>
+<p>Use cached coarse capacity + local experience.</p>
+<hr />
+<h1 id="110-price-catalog-outage"><a class="header" href="#110-price-catalog-outage">110. Price Catalog Outage</a></h1>
+<p>Existing price-lock/reservation may continue.</p>
+<hr />
+<h1 id="111-new-paid-allocation"><a class="header" href="#111-new-paid-allocation">111. New Paid Allocation</a></h1>
+<p>May fail if pricing freshness required.</p>
+<hr />
+<h1 id="112-accounting-continuity"><a class="header" href="#112-accounting-continuity">112. Accounting Continuity</a></h1>
+<p>Spend state must survive crash.</p>
+<hr />
+<h1 id="113-uncertain-spend"><a class="header" href="#113-uncertain-spend">113. Uncertain Spend</a></h1>
+<p>Never blindly retry one-time token.</p>
+<hr />
+<h1 id="114-settlement-outage"><a class="header" href="#114-settlement-outage">114. Settlement Outage</a></h1>
+<p>Service can continue if provider accepts deferred settlement.</p>
+<hr />
+<h1 id="115-settlement-recovery"><a class="header" href="#115-settlement-recovery">115. Settlement Recovery</a></h1>
+<p>Idempotent batch replay.</p>
+<hr />
+<h1 id="116-control-plane-database"><a class="header" href="#116-control-plane-database">116. Control Plane Database</a></h1>
+<p>Critical services may use PostgreSQL HA.</p>
+<hr />
+<h1 id="117-data-plane-independence"><a class="header" href="#117-data-plane-independence">117. Data Plane Independence</a></h1>
+<p>Mix nodes should not depend on central DB per packet.</p>
+<hr />
+<h1 id="118-why"><a class="header" href="#118-why">118. Why</a></h1>
+<p>Control-plane outage should not stop already-established forwarding.</p>
+<hr />
+<h1 id="119-control-plane-rpo"><a class="header" href="#119-control-plane-rpo">119. Control Plane RPO</a></h1>
+<p>Define acceptable loss.</p>
+<hr />
+<h1 id="120-recovery-point-objective"><a class="header" href="#120-recovery-point-objective">120. Recovery Point Objective</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct RecoveryPointObjective(pub Duration);
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="121-recovery-time-objective"><a class="header" href="#121-recovery-time-objective">121. Recovery Time Objective</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct RecoveryTimeObjective(pub Duration);
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="122-suggested-classes"><a class="header" href="#122-suggested-classes">122. Suggested Classes</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum RecoveryClass {
+    R0,
+    R1,
+    R2,
+    R3,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="123-r0"><a class="header" href="#123-r0">123. R0</a></h1>
+<p>Security-critical:</p>
+<pre><code class="language-text">near-zero logical data loss
+</code></pre>
+<hr />
+<h1 id="124-r1"><a class="header" href="#124-r1">124. R1</a></h1>
+<p>Durable user state:</p>
+<pre><code class="language-text">seconds/minutes
+</code></pre>
+<hr />
+<h1 id="125-r2"><a class="header" href="#125-r2">125. R2</a></h1>
+<p>Operational state:</p>
+<pre><code class="language-text">minutes
+</code></pre>
+<hr />
+<h1 id="126-r3"><a class="header" href="#126-r3">126. R3</a></h1>
+<p>Reconstructable cache:</p>
+<pre><code class="language-text">hours acceptable
+</code></pre>
+<hr />
+<h1 id="127-example-mapping"><a class="header" href="#127-example-mapping">127. Example Mapping</a></h1>
+<pre><code class="language-text">Identity keys      → R0
+Directory registry → R0/R1
+Mailbox messages   → R1
+Capacity cache     → R3
+</code></pre>
+<hr />
+<h1 id="128-backup-boundary"><a class="header" href="#128-backup-boundary">128. Backup Boundary</a></h1>
+<p>Backups must not become central privacy dump.</p>
+<hr />
+<h1 id="129-backup-classes"><a class="header" href="#129-backup-classes">129. Backup Classes</a></h1>
+<pre><code class="language-text">control-plane database
+operator config
+keys
+user-independent logs
+</code></pre>
+<hr />
+<h1 id="130-excluded-from-routine-central-backup"><a class="header" href="#130-excluded-from-routine-central-backup">130. Excluded From Routine Central Backup</a></h1>
+<p>Prefer not to centrally back up:</p>
+<pre><code class="language-text">per-user route history
+packet traces
+presence IDs
+contact graph
+</code></pre>
+<hr />
+<h1 id="131-key-backup"><a class="header" href="#131-key-backup">131. Key Backup</a></h1>
+<p>Special treatment.</p>
+<hr />
+<h1 id="132-directory-root-key"><a class="header" href="#132-directory-root-key">132. Directory Root Key</a></h1>
+<p>Offline backup.</p>
+<hr />
+<h1 id="133-authority-key"><a class="header" href="#133-authority-key">133. Authority Key</a></h1>
+<p>HSM/secure backup.</p>
+<hr />
+<h1 id="134-provider-keys"><a class="header" href="#134-provider-keys">134. Provider Keys</a></h1>
+<p>Secure rotation/recovery.</p>
+<hr />
+<h1 id="135-mailbox-user-secrets"><a class="header" href="#135-mailbox-user-secrets">135. Mailbox User Secrets</a></h1>
+<p>Client-owned; not operator recovery key.</p>
+<hr />
+<h1 id="136-no-master-decryption-key"><a class="header" href="#136-no-master-decryption-key">136. No Master Decryption Key</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="137-encrypted-database-backups"><a class="header" href="#137-encrypted-database-backups">137. Encrypted Database Backups</a></h1>
+<p>Control-plane backups encrypted.</p>
+<hr />
+<h1 id="138-backup-key-separation"><a class="header" href="#138-backup-key-separation">138. Backup Key Separation</a></h1>
+<p>Separate from application encryption keys.</p>
+<hr />
+<h1 id="139-backup-region"><a class="header" href="#139-backup-region">139. Backup Region</a></h1>
+<p>Independent failure domain.</p>
+<hr />
+<h1 id="140-backup-access"><a class="header" href="#140-backup-access">140. Backup Access</a></h1>
+<p>Least privilege.</p>
+<hr />
+<h1 id="141-backup-retention"><a class="header" href="#141-backup-retention">141. Backup Retention</a></h1>
+<p>Bounded.</p>
+<hr />
+<h1 id="142-disaster-restore"><a class="header" href="#142-disaster-restore">142. Disaster Restore</a></h1>
+<p>Must restore:</p>
+<pre><code class="language-text">control state
+policy
+registry
+revocation
+catalog metadata
+</code></pre>
+<p>without restoring stale security sessions.</p>
+<hr />
+<h1 id="143-restore-validation"><a class="header" href="#143-restore-validation">143. Restore Validation</a></h1>
+<p>Before serving:</p>
+<pre><code class="language-text">schema
+signatures
+policy version
+revocation freshness
+</code></pre>
+<hr />
+<h1 id="144-security-epoch"><a class="header" href="#144-security-epoch">144. Security Epoch</a></h1>
+<p>After major disaster, may advance:</p>
+<pre><code class="language-text">directory signing epoch
+provider key epoch
+</code></pre>
+<hr />
+<h1 id="145-compromise-vs-outage"><a class="header" href="#145-compromise-vs-outage">145. Compromise vs Outage</a></h1>
+<p>Different recovery.</p>
+<hr />
+<h1 id="146-outage-recovery"><a class="header" href="#146-outage-recovery">146. Outage Recovery</a></h1>
+<p>May reuse keys if uncompromised.</p>
+<hr />
+<h1 id="147-compromise-recovery"><a class="header" href="#147-compromise-recovery">147. Compromise Recovery</a></h1>
+<p>Rotate keys and revoke old.</p>
+<hr />
+<h1 id="148-do-not-confuse"><a class="header" href="#148-do-not-confuse">148. Do Not Confuse</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="149-regional-database-replication"><a class="header" href="#149-regional-database-replication">149. Regional Database Replication</a></h1>
+<p>For control plane:</p>
+<pre><code class="language-text">primary + replicas
+</code></pre>
+<hr />
+<h1 id="150-cross-region-write-strategy"><a class="header" href="#150-cross-region-write-strategy">150. Cross-Region Write Strategy</a></h1>
+<p>Potential:</p>
+<pre><code class="language-text">single writer
+multi-writer
+consensus
+</code></pre>
+<hr />
+<h1 id="151-initial-recommendation"><a class="header" href="#151-initial-recommendation">151. Initial Recommendation</a></h1>
+<p>Single logical writer with cross-region replicas for simpler correctness.</p>
+<hr />
+<h1 id="152-multi-writer-risk"><a class="header" href="#152-multi-writer-risk">152. Multi-Writer Risk</a></h1>
+<p>Complex conflict handling.</p>
+<hr />
+<h1 id="153-governance-data"><a class="header" href="#153-governance-data">153. Governance Data</a></h1>
+<p>Needs strong consistency.</p>
+<hr />
+<h1 id="154-provider-health-data"><a class="header" href="#154-provider-health-data">154. Provider Health Data</a></h1>
+<p>Can tolerate eventual consistency.</p>
+<hr />
+<h1 id="155-consistency-classes"><a class="header" href="#155-consistency-classes">155. Consistency Classes</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum ContinuityConsistency {
+    Strong,
+    Eventual,
+    Rebuildable,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="156-strong"><a class="header" href="#156-strong">156. Strong</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">revocation
+topology publication
+credit settlement state
+</code></pre>
+<hr />
+<h1 id="157-eventual"><a class="header" href="#157-eventual">157. Eventual</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">health
+capacity
+</code></pre>
+<hr />
+<h1 id="158-rebuildable"><a class="header" href="#158-rebuildable">158. Rebuildable</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">cache
+index
+</code></pre>
+<hr />
+<h1 id="159-network-partition-control-plane"><a class="header" href="#159-network-partition-control-plane">159. Network Partition Control Plane</a></h1>
+<p>Split-brain must be prevented.</p>
+<hr />
+<h1 id="160-directory-split-brain"><a class="header" href="#160-directory-split-brain">160. Directory Split Brain</a></h1>
+<p>Two regions publishing conflicting topology is critical.</p>
+<hr />
+<h1 id="161-quorum-prevents"><a class="header" href="#161-quorum-prevents">161. Quorum Prevents</a></h1>
+<p>Need single logical authority state.</p>
+<hr />
+<h1 id="162-minority-partition"><a class="header" href="#162-minority-partition">162. Minority Partition</a></h1>
+<p>Read-only/degraded.</p>
+<hr />
+<h1 id="163-no-independent-topology-publication"><a class="header" href="#163-no-independent-topology-publication">163. No Independent Topology Publication</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="164-provider-split-brain"><a class="header" href="#164-provider-split-brain">164. Provider Split Brain</a></h1>
+<p>Mailbox replicas may diverge.</p>
+<hr />
+<h1 id="165-conflict-rule"><a class="header" href="#165-conflict-rule">165. Conflict Rule</a></h1>
+<p>Mailbox items are append-only/idempotent.</p>
+<hr />
+<h1 id="166-why-append-only-helps"><a class="header" href="#166-why-append-only-helps">166. Why Append-Only Helps</a></h1>
+<p>Simplifies merge.</p>
+<hr />
+<h1 id="167-tombstones"><a class="header" href="#167-tombstones">167. Tombstones</a></h1>
+<p>Deletion/ACK requires careful replication.</p>
+<hr />
+<h1 id="168-ack-replication"><a class="header" href="#168-ack-replication">168. Ack Replication</a></h1>
+<p>ACK after local durable write.</p>
+<p>Cross-region propagation can follow.</p>
+<hr />
+<h1 id="169-delete-after-ack"><a class="header" href="#169-delete-after-ack">169. Delete After Ack</a></h1>
+<p>Use retention grace.</p>
+<hr />
+<h1 id="170-grace-window"><a class="header" href="#170-grace-window">170. Grace Window</a></h1>
+<p>Prevents losing item during replica lag.</p>
+<hr />
+<h1 id="171-message-tombstone"><a class="header" href="#171-message-tombstone">171. Message Tombstone</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct MailboxTombstone {
+    pub item_id: MailboxItemId,
+    pub acknowledged_at: Timestamp,
+    pub expires_at: Timestamp,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="172-tombstone-retention"><a class="header" href="#172-tombstone-retention">172. Tombstone Retention</a></h1>
+<p>Long enough for replica convergence.</p>
+<hr />
+<h1 id="173-replay-safety"><a class="header" href="#173-replay-safety">173. Replay Safety</a></h1>
+<p>Duplicate redelivery harmless.</p>
+<hr />
+<h1 id="174-partition-healing"><a class="header" href="#174-partition-healing">174. Partition Healing</a></h1>
+<p>Merge append-only items + tombstones.</p>
+<hr />
+<h1 id="175-bulk-metadata-replication"><a class="header" href="#175-bulk-metadata-replication">175. Bulk Metadata Replication</a></h1>
+<p>Same pattern where possible.</p>
+<hr />
+<h1 id="176-object-chunks"><a class="header" href="#176-object-chunks">176. Object Chunks</a></h1>
+<p>Immutable.</p>
+<hr />
+<h1 id="177-manifest"><a class="header" href="#177-manifest">177. Manifest</a></h1>
+<p>Immutable after finalization.</p>
+<hr />
+<h1 id="178-immutability"><a class="header" href="#178-immutability">178. Immutability</a></h1>
+<p>Strong reliability property.</p>
+<hr />
+<h1 id="179-mutable-state"><a class="header" href="#179-mutable-state">179. Mutable State</a></h1>
+<p>Keep minimal.</p>
+<hr />
+<h1 id="180-disaster-failover-coordinator"><a class="header" href="#180-disaster-failover-coordinator">180. Disaster Failover Coordinator</a></h1>
+<p>Local/control-plane function.</p>
+<hr />
+<h1 id="181-failover-plan"><a class="header" href="#181-failover-plan">181. Failover Plan</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct FailoverPlan {
+    pub failed_domain: FailureDomain,
+    pub affected_services: Vec&lt;AnonymousServiceType&gt;,
+    pub replacement_regions: Vec&lt;RegionId&gt;,
+    pub privacy_constraints: PrivacyConstraintSet,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="182-failover-policy-engine"><a class="header" href="#182-failover-policy-engine">182. Failover Policy Engine</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait ContinuityPolicyEngine {
+    fn plan(
+        &amp;self,
+        event: FailureEvent,
+        topology: &amp;ContinuityTopology,
+    ) -&gt; Result&lt;FailoverPlan, ContinuityError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="183-failure-event"><a class="header" href="#183-failure-event">183. Failure Event</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct FailureEvent {
+    pub domain: FailureDomain,
+    pub severity: FailureSeverity,
+    pub detected_at: Timestamp,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="184-failure-severity"><a class="header" href="#184-failure-severity">184. Failure Severity</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum FailureSeverity {
+    Degraded,
+    PartialOutage,
+    MajorOutage,
+    Disaster,
+    Compromise,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="185-automatic-vs-manual-failover"><a class="header" href="#185-automatic-vs-manual-failover">185. Automatic vs Manual Failover</a></h1>
+<p>Automatic for:</p>
+<pre><code class="language-text">ordinary node/region outage
+</code></pre>
+<p>Manual/security review for:</p>
+<pre><code class="language-text">suspected compromise
+authority key issue
+</code></pre>
+<hr />
+<h1 id="186-why"><a class="header" href="#186-why">186. Why</a></h1>
+<p>Compromise recovery often requires revocation/rotation, not simple reroute.</p>
+<hr />
+<h1 id="187-provider-failover"><a class="header" href="#187-provider-failover">187. Provider Failover</a></h1>
+<p>Uses Part 48 fallback list.</p>
+<hr />
+<h1 id="188-resource-reallocation"><a class="header" href="#188-resource-reallocation">188. Resource Reallocation</a></h1>
+<p>Uses Part 49 scheduler.</p>
+<hr />
+<h1 id="189-paymentreservation-recovery"><a class="header" href="#189-paymentreservation-recovery">189. Payment/Reservation Recovery</a></h1>
+<p>Uses Part 47 reconciliation.</p>
+<hr />
+<h1 id="190-cross-part-integration"><a class="header" href="#190-cross-part-integration">190. Cross-Part Integration</a></h1>
+<p>Reliability must orchestrate existing subsystems, not bypass them.</p>
+<hr />
+<h1 id="191-health-detection"><a class="header" href="#191-health-detection">191. Health Detection</a></h1>
+<p>Sources:</p>
+<pre><code class="language-text">local client failures
+independent probes
+provider self-report
+control-plane monitors
+</code></pre>
+<hr />
+<h1 id="192-failure-detection-delay"><a class="header" href="#192-failure-detection-delay">192. Failure Detection Delay</a></h1>
+<p>Balance:</p>
+<pre><code class="language-text">fast response
+vs
+false positive
+</code></pre>
+<hr />
+<h1 id="193-hysteresis"><a class="header" href="#193-hysteresis">193. Hysteresis</a></h1>
+<p>Required.</p>
+<hr />
+<h1 id="194-flapping-provider"><a class="header" href="#194-flapping-provider">194. Flapping Provider</a></h1>
+<p>Temporary deweight before hard removal.</p>
+<hr />
+<h1 id="195-hard-failure"><a class="header" href="#195-hard-failure">195. Hard Failure</a></h1>
+<p>Immediate failover.</p>
+<hr />
+<h1 id="196-privacy-during-failover"><a class="header" href="#196-privacy-during-failover">196. Privacy During Failover</a></h1>
+<p>Avoid all clients moving to same fallback.</p>
+<hr />
+<h1 id="197-randomized-failover"><a class="header" href="#197-randomized-failover">197. Randomized Failover</a></h1>
+<p>Weighted among eligible alternatives.</p>
+<hr />
+<h1 id="198-stampede-protection"><a class="header" href="#198-stampede-protection">198. Stampede Protection</a></h1>
+<p>Use:</p>
+<pre><code class="language-text">jitter
+capacity-aware selection
+backoff
+</code></pre>
+<hr />
+<h1 id="199-emergency-capacity"><a class="header" href="#199-emergency-capacity">199. Emergency Capacity</a></h1>
+<p>Reserve small headroom.</p>
+<hr />
+<h1 id="200-headroom-policy"><a class="header" href="#200-headroom-policy">200. Headroom Policy</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct ContinuityHeadroom {
+    pub reserve_fraction: f32,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="201-use"><a class="header" href="#201-use">201. Use</a></h1>
+<p>For sudden region/provider failure.</p>
+<hr />
+<h1 id="202-cost"><a class="header" href="#202-cost">202. Cost</a></h1>
+<p>Underutilization during normal operation.</p>
+<hr />
+<h1 id="203-realtime-calls"><a class="header" href="#203-realtime-calls">203. Realtime Calls</a></h1>
+<p>Reserve more headroom.</p>
+<hr />
+<h1 id="204-mailboxbulk"><a class="header" href="#204-mailboxbulk">204. Mailbox/Bulk</a></h1>
+<p>Can tolerate slower failover.</p>
+<hr />
+<h1 id="205-graceful-degradation"><a class="header" href="#205-graceful-degradation">205. Graceful Degradation</a></h1>
+<p>Order:</p>
+<pre><code class="language-text">background
+bulk
+attachments
+interactive
+security/emergency
+</code></pre>
+<hr />
+<h1 id="206-never-degrade-privacy-first"><a class="header" href="#206-never-degrade-privacy-first">206. Never Degrade Privacy First</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="207-feature-degradation"><a class="header" href="#207-feature-degradation">207. Feature Degradation</a></h1>
+<p>Possible:</p>
+<pre><code class="language-text">pause large files
+lower video quality
+delay background sync
+</code></pre>
+<hr />
+<h1 id="208-security-control"><a class="header" href="#208-security-control">208. Security Control</a></h1>
+<p>Always high priority.</p>
+<hr />
+<h1 id="209-disaster-mode"><a class="header" href="#209-disaster-mode">209. Disaster Mode</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum AnonymousNetworkMode {
+    Normal,
+    Degraded,
+    RegionalFailover,
+    DisasterRecovery,
+    SecurityRecovery,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="210-user-ux"><a class="header" href="#210-user-ux">210. User UX</a></h1>
+<p>Normal users see coarse:</p>
+<pre><code class="language-text">Anonymous network degraded
+Messages may be delayed
+</code></pre>
+<hr />
+<h1 id="211-do-not-expose-topology-details"><a class="header" href="#211-do-not-expose-topology-details">211. Do Not Expose Topology Details</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="212-advanced-diagnostics"><a class="header" href="#212-advanced-diagnostics">212. Advanced Diagnostics</a></h1>
+<p>Can show:</p>
+<pre><code class="language-text">region health
+provider redundancy class
+catalog freshness
+</code></pre>
+<hr />
+<h1 id="213-no-exact-route-disclosure"><a class="header" href="#213-no-exact-route-disclosure">213. No Exact Route Disclosure</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="214-operator-console"><a class="header" href="#214-operator-console">214. Operator Console</a></h1>
+<p>Shows:</p>
+<pre><code class="language-text">service health
+replica lag
+capacity
+failover state
+backup freshness
+</code></pre>
+<hr />
+<h1 id="215-dr-runbook"><a class="header" href="#215-dr-runbook">215. DR Runbook</a></h1>
+<p>Every service needs:</p>
+<pre><code class="language-text">detect
+contain
+fail over
+recover
+validate
+return
+</code></pre>
+<hr />
+<h1 id="216-runbook-versioning"><a class="header" href="#216-runbook-versioning">216. Runbook Versioning</a></h1>
+<p>Signed/internal controlled.</p>
+<hr />
+<h1 id="217-disaster-drill"><a class="header" href="#217-disaster-drill">217. Disaster Drill</a></h1>
+<p>Regularly test.</p>
+<hr />
+<h1 id="218-drill-types"><a class="header" href="#218-drill-types">218. Drill Types</a></h1>
+<pre><code class="language-text">region loss
+directory quorum loss
+mailbox DB corruption
+provider key compromise
+catalog outage
+mass relay failure
+</code></pre>
+<hr />
+<h1 id="219-game-day"><a class="header" href="#219-game-day">219. Game Day</a></h1>
+<p>Controlled production/staging exercise.</p>
+<hr />
+<h1 id="220-privacy-check-during-drill"><a class="header" href="#220-privacy-check-during-drill">220. Privacy Check During Drill</a></h1>
+<p>Must verify:</p>
+<pre><code class="language-text">no direct fallback
+no stale secret restoration
+no central packet logging
+</code></pre>
+<hr />
+<h1 id="221-backup-restore-drill"><a class="header" href="#221-backup-restore-drill">221. Backup Restore Drill</a></h1>
+<p>Required.</p>
+<hr />
+<h1 id="222-restore-validation"><a class="header" href="#222-restore-validation">222. Restore Validation</a></h1>
+<p>Measure:</p>
+<pre><code class="language-text">RPO
+RTO
+privacy invariants
+</code></pre>
+<hr />
+<h1 id="223-recovery-evidence"><a class="header" href="#223-recovery-evidence">223. Recovery Evidence</a></h1>
+<p>Record:</p>
+<pre><code class="language-text">drill date
+scope
+result
+RPO/RTO achieved
+privacy issues
+</code></pre>
+<hr />
+<h1 id="224-no-user-metadata-in-drill-report"><a class="header" href="#224-no-user-metadata-in-drill-report">224. No User Metadata in Drill Report</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="225-multi-region-continuity-topology"><a class="header" href="#225-multi-region-continuity-topology">225. Multi-Region Continuity Topology</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct ContinuityTopology {
+    pub regions: Vec&lt;RegionDescriptor&gt;,
+    pub operators: Vec&lt;OperatorContinuityDescriptor&gt;,
+    pub services: Vec&lt;ServiceContinuityDescriptor&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="226-region-descriptor"><a class="header" href="#226-region-descriptor">226. Region Descriptor</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct RegionDescriptor {
+    pub region_id: RegionId,
+    pub provider: CloudOrInfraProviderId,
+    pub health: RegionHealth,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="227-operator-continuity-descriptor"><a class="header" href="#227-operator-continuity-descriptor">227. Operator Continuity Descriptor</a></h1>
+<p>Contains:</p>
+<pre><code class="language-text">regions
+capacity classes
+independence metadata
+</code></pre>
+<hr />
+<h1 id="228-independence-audit"><a class="header" href="#228-independence-audit">228. Independence Audit</a></h1>
+<p>Two "regions" on same physical provider may still share failure risk.</p>
+<hr />
+<h1 id="229-cloud-concentration"><a class="header" href="#229-cloud-concentration">229. Cloud Concentration</a></h1>
+<p>Avoid.</p>
+<hr />
+<h1 id="230-asn-concentration"><a class="header" href="#230-asn-concentration">230. ASN Concentration</a></h1>
+<p>Avoid.</p>
+<hr />
+<h1 id="231-control-plane-concentration"><a class="header" href="#231-control-plane-concentration">231. Control-Plane Concentration</a></h1>
+<p>Avoid all authorities in same region/provider.</p>
+<hr />
+<h1 id="232-backup-concentration"><a class="header" href="#232-backup-concentration">232. Backup Concentration</a></h1>
+<p>Avoid backup in same failure domain.</p>
+<hr />
+<h1 id="233-recovery-secrets"><a class="header" href="#233-recovery-secrets">233. Recovery Secrets</a></h1>
+<p>Use separate:</p>
+<pre><code class="language-text">root recovery key
+operator recovery key
+</code></pre>
+<hr />
+<h1 id="234-secret-escrow"><a class="header" href="#234-secret-escrow">234. Secret Escrow</a></h1>
+<p>If used, threshold split.</p>
+<hr />
+<h1 id="235-no-single-recovery-master-secret"><a class="header" href="#235-no-single-recovery-master-secret">235. No Single Recovery Master Secret</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="236-threshold-recovery"><a class="header" href="#236-threshold-recovery">236. Threshold Recovery</a></h1>
+<p>Possible:</p>
+<pre><code class="language-text">M-of-N custodians
+</code></pre>
+<p>for authority root.</p>
+<hr />
+<h1 id="237-custodian-separation"><a class="header" href="#237-custodian-separation">237. Custodian Separation</a></h1>
+<p>Independent people/organizations.</p>
+<hr />
+<h1 id="238-client-key-recovery"><a class="header" href="#238-client-key-recovery">238. Client Key Recovery</a></h1>
+<p>Separate from network DR.</p>
+<hr />
+<h1 id="239-user-identity-recovery"><a class="header" href="#239-user-identity-recovery">239. User Identity Recovery</a></h1>
+<p>Follows Part 33 rules.</p>
+<hr />
+<h1 id="240-fresh-anonymous-identity-after-recovery"><a class="header" href="#240-fresh-anonymous-identity-after-recovery">240. Fresh Anonymous Identity After Recovery</a></h1>
+<p>Hard rule where required.</p>
+<hr />
+<h1 id="241-configuration-continuity"><a class="header" href="#241-configuration-continuity">241. Configuration Continuity</a></h1>
+<p>All production config versioned.</p>
+<hr />
+<h1 id="242-config-backup"><a class="header" href="#242-config-backup">242. Config Backup</a></h1>
+<p>Contains:</p>
+<pre><code class="language-text">non-secret config
+policy
+deployment manifests
+</code></pre>
+<hr />
+<h1 id="243-secret-injection"><a class="header" href="#243-secret-injection">243. Secret Injection</a></h1>
+<p>Restored separately.</p>
+<hr />
+<h1 id="244-infrastructure-as-code"><a class="header" href="#244-infrastructure-as-code">244. Infrastructure as Code</a></h1>
+<p>Recommended.</p>
+<hr />
+<h1 id="245-immutable-deployment"><a class="header" href="#245-immutable-deployment">245. Immutable Deployment</a></h1>
+<p>Helps rebuild.</p>
+<hr />
+<h1 id="246-reproducible-builds"><a class="header" href="#246-reproducible-builds">246. Reproducible Builds</a></h1>
+<p>Required for trusted recovery.</p>
+<hr />
+<h1 id="247-artifact-registry"><a class="header" href="#247-artifact-registry">247. Artifact Registry</a></h1>
+<p>Multi-region/mirrored.</p>
+<hr />
+<h1 id="248-signed-binaries"><a class="header" href="#248-signed-binaries">248. Signed Binaries</a></h1>
+<p>Required.</p>
+<hr />
+<h1 id="249-supply-chain-during-disaster"><a class="header" href="#249-supply-chain-during-disaster">249. Supply Chain During Disaster</a></h1>
+<p>Do not bypass signature verification.</p>
+<hr />
+<h1 id="250-emergency-manual-build"><a class="header" href="#250-emergency-manual-build">250. Emergency Manual Build</a></h1>
+<p>Still signed through approved path.</p>
+<hr />
+<h1 id="251-schema-migration-recovery"><a class="header" href="#251-schema-migration-recovery">251. Schema Migration Recovery</a></h1>
+<p>Backups must include schema version.</p>
+<hr />
+<h1 id="252-forward-restore"><a class="header" href="#252-forward-restore">252. Forward Restore</a></h1>
+<p>Use tested migration.</p>
+<hr />
+<h1 id="253-downgrade"><a class="header" href="#253-downgrade">253. Downgrade</a></h1>
+<p>Avoid unsupported rollback.</p>
+<hr />
+<h1 id="254-data-corruption-detection"><a class="header" href="#254-data-corruption-detection">254. Data Corruption Detection</a></h1>
+<p>Use:</p>
+<pre><code class="language-text">checksums
+Merkle roots
+database consistency checks
+</code></pre>
+<hr />
+<h1 id="255-mailbox-corruption"><a class="header" href="#255-mailbox-corruption">255. Mailbox Corruption</a></h1>
+<p>Corrupt item quarantined.</p>
+<hr />
+<h1 id="256-do-not-crash-whole-mailbox"><a class="header" href="#256-do-not-crash-whole-mailbox">256. Do Not Crash Whole Mailbox</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="257-provider-compromise"><a class="header" href="#257-provider-compromise">257. Provider Compromise</a></h1>
+<p>Treat as security recovery.</p>
+<hr />
+<h1 id="258-response"><a class="header" href="#258-response">258. Response</a></h1>
+<pre><code class="language-text">revoke
+remove from catalog/topology
+rotate keys
+migrate clients
+</code></pre>
+<hr />
+<h1 id="259-do-not-restore-compromised-key"><a class="header" href="#259-do-not-restore-compromised-key">259. Do Not Restore Compromised Key</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="260-compromised-region"><a class="header" href="#260-compromised-region">260. Compromised Region</a></h1>
+<p>May require broader key rotation.</p>
+<hr />
+<h1 id="261-forensic-logging"><a class="header" href="#261-forensic-logging">261. Forensic Logging</a></h1>
+<p>Privacy tension.</p>
+<hr />
+<h1 id="262-principle"><a class="header" href="#262-principle">262. Principle</a></h1>
+<p>Use infrastructure-level logs.</p>
+<p>Avoid packet/user-level logs.</p>
+<hr />
+<h1 id="263-incident-timeline"><a class="header" href="#263-incident-timeline">263. Incident Timeline</a></h1>
+<p>Can record:</p>
+<pre><code class="language-text">node health
+operator actions
+key rotations
+topology changes
+</code></pre>
+<hr />
+<h1 id="264-no-user-traffic-reconstruction"><a class="header" href="#264-no-user-traffic-reconstruction">264. No User Traffic Reconstruction</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="265-slos"><a class="header" href="#265-slos">265. SLOs</a></h1>
+<p>Reliability SLO examples:</p>
+<pre><code class="language-text">directory availability
+mailbox durability
+provider catalog freshness
+relay allocation success
+</code></pre>
+<hr />
+<h1 id="266-privacy-slo"><a class="header" href="#266-privacy-slo">266. Privacy SLO</a></h1>
+<p>Examples:</p>
+<pre><code class="language-text">zero silent direct fallback
+zero stale-secret restore
+zero cross-region raw social graph replication
+</code></pre>
+<hr />
+<h1 id="267-error-budgets"><a class="header" href="#267-error-budgets">267. Error Budgets</a></h1>
+<p>Can be tracked.</p>
+<hr />
+<h1 id="268-privacy-incidents"><a class="header" href="#268-privacy-incidents">268. Privacy Incidents</a></h1>
+<p>Not absorbed into ordinary availability error budget.</p>
+<hr />
+<h1 id="269-they-are-security-events"><a class="header" href="#269-they-are-security-events">269. They Are Security Events</a></h1>
+<p>Hard rule.</p>
+<hr />
+<h1 id="270-continuity-metrics"><a class="header" href="#270-continuity-metrics">270. Continuity Metrics</a></h1>
+<p>Privacy-safe:</p>
+<pre><code class="language-text">failover count
+replica lag bucket
+RPO/RTO
+catalog freshness
+region health
+</code></pre>
+<hr />
+<h1 id="271-forbidden-metrics"><a class="header" href="#271-forbidden-metrics">271. Forbidden Metrics</a></h1>
+<p>No:</p>
+<pre><code class="language-text">per-user failover history
+route identity
+contact graph
+mailbox secret
+</code></pre>
+<hr />
+<h1 id="272-testkit"><a class="header" href="#272-testkit">272. Testkit</a></h1>
+<p>Need multi-region fault simulator.</p>
+<hr />
+<h1 id="273-fault-types"><a class="header" href="#273-fault-types">273. Fault Types</a></h1>
+<pre><code class="language-text">process crash
+host loss
+zone loss
+region loss
+operator loss
+network partition
+packet loss
+high latency
+database corruption
+authority loss
+key compromise
+</code></pre>
+<hr />
+<h1 id="274-unit-tests"><a class="header" href="#274-unit-tests">274. Unit Tests</a></h1>
+<p>Test:</p>
+<pre><code class="language-text">failover policy
+staleness
+quorum rules
+recovery classes
+</code></pre>
+<hr />
+<h1 id="275-integration-tests"><a class="header" href="#275-integration-tests">275. Integration Tests</a></h1>
+<p>Bring down:</p>
+<pre><code class="language-text">mailbox region
+directory mirror
+relay cluster
+bulk provider
+</code></pre>
+<hr />
+<h1 id="276-region-loss-test"><a class="header" href="#276-region-loss-test">276. Region Loss Test</a></h1>
+<p>Messages remain queued/deliver through alternate eligible providers.</p>
+<hr />
+<h1 id="277-quorum-loss-test"><a class="header" href="#277-quorum-loss-test">277. Quorum Loss Test</a></h1>
+<p>No unauthorized lower-quorum topology signing.</p>
+<hr />
+<h1 id="278-revocation-outage-test"><a class="header" href="#278-revocation-outage-test">278. Revocation Outage Test</a></h1>
+<p>Strict route creation halts after freshness threshold.</p>
+<hr />
+<h1 id="279-mailbox-replica-test"><a class="header" href="#279-mailbox-replica-test">279. Mailbox Replica Test</a></h1>
+<p>Partition + heal + dedup.</p>
+<hr />
+<h1 id="280-tombstone-test"><a class="header" href="#280-tombstone-test">280. Tombstone Test</a></h1>
+<p>ACK/deletion converges.</p>
+<hr />
+<h1 id="281-bulk-object-loss-test"><a class="header" href="#281-bulk-object-loss-test">281. Bulk Object Loss Test</a></h1>
+<p>Client receives correct unavailable/retry behavior.</p>
+<hr />
+<h1 id="282-relay-failure-test"><a class="header" href="#282-relay-failure-test">282. Relay Failure Test</a></h1>
+<p>Call migrates or ends without direct fallback.</p>
+<hr />
+<h1 id="283-bridge-failure-test"><a class="header" href="#283-bridge-failure-test">283. Bridge Failure Test</a></h1>
+<p>Alternate bridge.</p>
+<hr />
+<h1 id="284-provider-catalog-outage-test"><a class="header" href="#284-provider-catalog-outage-test">284. Provider Catalog Outage Test</a></h1>
+<p>Valid cache works.</p>
+<hr />
+<h1 id="285-catalog-expiry-test"><a class="header" href="#285-catalog-expiry-test">285. Catalog Expiry Test</a></h1>
+<p>Strict new selection stops.</p>
+<hr />
+<h1 id="286-spend-reconciliation-test"><a class="header" href="#286-spend-reconciliation-test">286. Spend Reconciliation Test</a></h1>
+<p>Accounting recovers from crash.</p>
+<hr />
+<h1 id="287-backup-restore-test"><a class="header" href="#287-backup-restore-test">287. Backup Restore Test</a></h1>
+<p>Control plane rebuilds in alternate region.</p>
+<hr />
+<h1 id="288-key-compromise-test"><a class="header" href="#288-key-compromise-test">288. Key Compromise Test</a></h1>
+<p>Old key revoked, not restored.</p>
+<hr />
+<h1 id="289-privacy-drill-test"><a class="header" href="#289-privacy-drill-test">289. Privacy Drill Test</a></h1>
+<p>No direct path selected during outage.</p>
+<hr />
+<h1 id="290-chaos-engineering"><a class="header" href="#290-chaos-engineering">290. Chaos Engineering</a></h1>
+<p>Run controlled fault injection.</p>
+<hr />
+<h1 id="291-privacy-aware-chaos"><a class="header" href="#291-privacy-aware-chaos">291. Privacy-Aware Chaos</a></h1>
+<p>Failures must include assertions:</p>
+<pre><code class="language-text">privacy mode remains satisfied
+</code></pre>
+<hr />
+<h1 id="292-fuzzing"><a class="header" href="#292-fuzzing">292. Fuzzing</a></h1>
+<p>Fuzz:</p>
+<pre><code class="language-text">failover event
+recovery plan
+replica merge
+tombstone
+backup metadata
+</code></pre>
+<hr />
+<h1 id="293-property-tests"><a class="header" href="#293-property-tests">293. Property Tests</a></h1>
+<p>Properties:</p>
+<pre><code class="language-text">failed strict provider cannot cause non-anonymous allocation
+revoked key never reactivated by restore
+mailbox duplicate delivery is idempotent
+quorum cannot decrease automatically
+</code></pre>
+<hr />
+<h1 id="294-formal-verification-targets"><a class="header" href="#294-formal-verification-targets">294. Formal Verification Targets</a></h1>
+<p>Strong candidates:</p>
+<pre><code class="language-text">directory quorum failover
+mailbox replication/ACK
+recovery state machine
+provider failover policy
+</code></pre>
+<hr />
+<h1 id="295-tla-candidate"><a class="header" href="#295-tla-candidate">295. TLA+ Candidate</a></h1>
+<p>Multi-region directory quorum + failover.</p>
+<hr />
+<h1 id="296-tla-candidate"><a class="header" href="#296-tla-candidate">296. TLA+ Candidate</a></h1>
+<p>Mailbox append/ACK/tombstone convergence.</p>
+<hr />
+<h1 id="297-kani-candidate"><a class="header" href="#297-kani-candidate">297. Kani Candidate</a></h1>
+<p>Recovery policy hard constraints.</p>
+<hr />
+<h1 id="298-loom-candidate"><a class="header" href="#298-loom-candidate">298. Loom Candidate</a></h1>
+<p>Concurrent replica merge/ACK.</p>
+<hr />
+<h1 id="299-performance-tests"><a class="header" href="#299-performance-tests">299. Performance Tests</a></h1>
+<p>Measure:</p>
+<pre><code class="language-text">failover time
+recovery time
+replica lag
+resync bandwidth
+</code></pre>
+<hr />
+<h1 id="300-scale-tests"><a class="header" href="#300-scale-tests">300. Scale Tests</a></h1>
+<p>Synthetic:</p>
+<pre><code class="language-text">regional outage with millions of queued messages
+</code></pre>
+<hr />
+<h1 id="301-stampede-test"><a class="header" href="#301-stampede-test">301. Stampede Test</a></h1>
+<p>Mass client failover.</p>
+<hr />
+<h1 id="302-capacity-headroom-test"><a class="header" href="#302-capacity-headroom-test">302. Capacity Headroom Test</a></h1>
+<p>Alternate regions absorb load.</p>
+<hr />
+<h1 id="303-multi-operator-outage-test"><a class="header" href="#303-multi-operator-outage-test">303. Multi-Operator Outage Test</a></h1>
+<p>One operator disappears entirely.</p>
+<hr />
+<h1 id="304-disaster-recovery-drill-cadence"><a class="header" href="#304-disaster-recovery-drill-cadence">304. Disaster Recovery Drill Cadence</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">regular staging
+periodic production game-day
+</code></pre>
+<hr />
+<h1 id="305-crate-layout"><a class="header" href="#305-crate-layout">305. Crate Layout</a></h1>
+<p>Recommended:</p>
+<pre><code class="language-text">crates/
+├── siar-continuity-core/
+├── siar-failure-domain/
+├── siar-failover-policy/
+├── siar-region-health/
+├── siar-mailbox-replication/
+├── siar-directory-continuity/
+├── siar-backup-recovery/
+├── siar-disaster-runbook/
+├── siar-chaos/
+├── siar-continuity-observability/
+└── siar-continuity-testkit/
+</code></pre>
+<hr />
+<h1 id="306-siar-continuity-core"><a class="header" href="#306-siar-continuity-core">306. <code>siar-continuity-core</code></a></h1>
+<p>Owns:</p>
+<pre><code class="language-text">failure events
+RPO/RTO types
+continuity classes
+errors
+</code></pre>
+<hr />
+<h1 id="307-siar-failure-domain"><a class="header" href="#307-siar-failure-domain">307. <code>siar-failure-domain</code></a></h1>
+<p>Failure-domain metadata and independence.</p>
+<hr />
+<h1 id="308-siar-failover-policy"><a class="header" href="#308-siar-failover-policy">308. <code>siar-failover-policy</code></a></h1>
+<p>Privacy-aware recovery planning.</p>
+<hr />
+<h1 id="309-siar-region-health"><a class="header" href="#309-siar-region-health">309. <code>siar-region-health</code></a></h1>
+<p>Regional status/aggregation.</p>
+<hr />
+<h1 id="310-siar-mailbox-replication"><a class="header" href="#310-siar-mailbox-replication">310. <code>siar-mailbox-replication</code></a></h1>
+<p>Replica/ACK/tombstone behavior.</p>
+<hr />
+<h1 id="311-siar-directory-continuity"><a class="header" href="#311-siar-directory-continuity">311. <code>siar-directory-continuity</code></a></h1>
+<p>Quorum/mirror/revocation continuity.</p>
+<hr />
+<h1 id="312-siar-backup-recovery"><a class="header" href="#312-siar-backup-recovery">312. <code>siar-backup-recovery</code></a></h1>
+<p>Control-plane backup/restore.</p>
+<hr />
+<h1 id="313-siar-disaster-runbook"><a class="header" href="#313-siar-disaster-runbook">313. <code>siar-disaster-runbook</code></a></h1>
+<p>Machine-readable recovery workflows.</p>
+<hr />
+<h1 id="314-siar-chaos"><a class="header" href="#314-siar-chaos">314. <code>siar-chaos</code></a></h1>
+<p>Fault injection.</p>
+<hr />
+<h1 id="315-siar-continuity-observability"><a class="header" href="#315-siar-continuity-observability">315. <code>siar-continuity-observability</code></a></h1>
+<p>Privacy-safe SLO/DR metrics.</p>
+<hr />
+<h1 id="316-siar-continuity-testkit"><a class="header" href="#316-siar-continuity-testkit">316. <code>siar-continuity-testkit</code></a></h1>
+<p>Multi-region simulator.</p>
+<hr />
+<h1 id="317-error-taxonomy"><a class="header" href="#317-error-taxonomy">317. Error Taxonomy</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum ContinuityError {
+    RegionUnavailable,
+    ProviderUnavailable,
+    QuorumUnavailable,
+    TopologyStale,
+    RevocationStateStale,
+    ReplicaDiverged,
+    BackupInvalid,
+    RecoveryKeyUnavailable,
+    PrivacyConstraintUnsatisfied,
+    CapacityInsufficient,
+    Internal,
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h1 id="318-security-invariants"><a class="header" href="#318-security-invariants">318. Security Invariants</a></h1>
+<p>Mandatory:</p>
+<pre><code class="language-text">1. Failure never silently causes a privacy downgrade.
+2. Strict messages remain queued if no eligible anonymous route exists.
+3. Directory quorum requirements cannot auto-decrease during outage.
+4. Revoked or compromised keys are never restored from backup.
+5. Fresh anonymous mailbox/session identities are created after recovery where required.
+6. Mailbox replicas use provider-specific identifiers and application MessageId dedup.
+7. Cross-region backup does not become a centralized user-metadata archive.
+8. Realtime relay failure cannot fall back to direct peer media silently.
+9. Provider failover uses privacy-eligible candidates only.
+10. Disaster recovery preserves signed policy, revocation, and anti-rollback state.
+11. Split-brain topology publication is forbidden.
+12. Reliability telemetry never includes social graph or route identifiers.
+</code></pre>
+<hr />
+<h1 id="319-initial-production-scope"><a class="header" href="#319-initial-production-scope">319. Initial Production Scope</a></h1>
+<p>Implement first:</p>
+<pre><code class="language-text">local durable outbox
+multi-region directory mirrors
+single logical directory writer + replicas
+provider failover
+regional health
+mailbox same-provider multi-region replication
+append-only mailbox items + tombstones
+RPO/RTO classes
+encrypted cross-region control-plane backups
+disaster runbooks
+chaos/fault testkit
+privacy-aware failover assertions
+</code></pre>
+<p>Then add:</p>
+<pre><code class="language-text">multi-provider mailbox redundancy
+threshold authority continuity
+cross-provider encrypted erasure coding
+advanced regional headroom scheduling
+automated privacy-aware disaster orchestration
+</code></pre>
+<hr />
+<h1 id="320-definition-of-done"><a class="header" href="#320-definition-of-done">320. Definition of Done</a></h1>
+<p>Part 50 is complete when:</p>
+<ul>
+<li>process/host/zone/region/operator/ASN/cloud/authority failure domains are explicit</li>
+<li>continuity classes and RPO/RTO categories are defined</li>
+<li>client durable outbox remains authoritative for unsent messages</li>
+<li>partitions result in queueing rather than privacy downgrade</li>
+<li>directory quorum, mirror, topology, and revocation continuity are defined</li>
+<li>mailbox replication and duplicate/tombstone behavior are defined</li>
+<li>multi-region provider failover preserves privacy constraints</li>
+<li>control-plane backup boundaries avoid centralizing user metadata</li>
+<li>compromised keys are never restored</li>
+<li>disaster restore, key rotation, and security recovery are distinguished</li>
+<li>realtime, bridge, bulk, accounting, provider, and resource failover integrate with previous parts</li>
+<li>chaos, region-loss, split-brain, restore, capacity-stampede, and privacy-invariant tests are specified</li>
+<li>disaster drills measure both availability and privacy correctness</li>
+</ul>
+<hr />
+<h1 id="321-final-architecture"><a class="header" href="#321-final-architecture">321. Final Architecture</a></h1>
+<pre><code class="language-text">                    CLIENT DURABLE STATE
+                            │
+                            ▼
+                  PRIVACY-AWARE FAILOVER
+                            │
+            ┌───────────────┼───────────────┐
+            │               │               │
+        Region A        Region B        Region C
+            │               │               │
+            └───────────────┼───────────────┘
+                            ▼
+                  MULTI-OPERATOR SERVICES
+                            │
+                            ▼
+                CONTROL-PLANE CONTINUITY
+                            │
+                  Backup / Quorum / DR
+</code></pre>
+<p>Failure semantics:</p>
+<pre><code class="language-text">provider/region unavailable
+    ↓
+select privacy-eligible replacement
+    ↓
+if none available
+    ↓
+queue / degrade feature
+
+NOT
+
+switch to weaker direct path
+</code></pre>
+<hr />
+<h1 id="322-final-principle"><a class="header" href="#322-final-principle">322. Final Principle</a></h1>
+<p>Anonymous infrastructure should fail <strong>closed with respect to privacy</strong>, while failing <strong>gracefully with respect to availability</strong>.</p>
+<p>The correct model is:</p>
+<pre><code class="language-text">durable client state
++
+multi-region/operator diversity
++
+signed control-plane continuity
++
+privacy-aware failover
++
+bounded replication
++
+secure backup
++
+regular disaster drills
+</code></pre>
+<p>not:</p>
+<pre><code class="language-text">when anonymous infrastructure breaks, bypass it
+</code></pre>
+<p>This architecture gives SIAR a path to survive major outages and disasters while preserving the anonymity, identity-separation, and no-silent-downgrade guarantees established across Parts 34–49.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="49-anonymous-resource-scheduling-capacity-markets-load-balancing-privacy-preserving-infrastructure-allocation-architecture.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="51-anonymous-network-observability-slos-privacy-safe-telemetry-incident-detection-operations-architecture.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="49-anonymous-resource-scheduling-capacity-markets-load-balancing-privacy-preserving-infrastructure-allocation-architecture.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="51-anonymous-network-observability-slos-privacy-safe-telemetry-incident-detection-operations-architecture.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>
