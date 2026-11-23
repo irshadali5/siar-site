@@ -1,7 +1,7 @@
 /**
  * SIAR CI/CD Release Pipeline & Build Matrix Engine
  * Architecture: Part 09 - Release Automation & CI/CD Pipeline
- * Domain: siar.irshad.org.in
+ * Domain: siar.irshadlab.org
  */
 
 const MATRIX_RECIPES = {
@@ -115,7 +115,7 @@ function initPipelineStepper() {
         "[REPO] Generating APT dists/stable/InRelease with GPG keyring 0F4B2277...",
         "[REPO] Regenerating RPM x86_64/repodata/repomd.xml...",
         "[REPO] Updating F-Droid index-v2.json differential delta...",
-        "[REPO] Syncing release manifest to https://siar.irshad.org.in/pkg/manifest.json"
+        "[REPO] Syncing release manifest to https://siar.irshadlab.org/pkg/manifest.json"
       ]
     },
     {
@@ -123,7 +123,7 @@ function initPipelineStepper() {
       logs: [
         "[CDN] Syncing artifacts to Cloudflare R2 and MinIO EU Sovereign Mirror...",
         "[PURGE] Invalidation request sent to Cloudflare Edge: manifest.json, InRelease (12ms)",
-        "[SMOKE] Running live verification: curl -fsSL https://siar.irshad.org.in/install.sh | sh --test",
+        "[SMOKE] Running live verification: curl -fsSL https://siar.irshadlab.org/install.sh | sh --test",
         "[✓] SMOKE TEST PASSED: All 7 architecture hashes matched! Release v0.1.0 published successfully!"
       ]
     }
@@ -221,10 +221,10 @@ function initSmokeTestRunner() {
   btnRun.addEventListener('click', () => {
     outputBox.innerHTML = `
       <div style="color: var(--siar-cyan-glow); font-family: var(--font-mono); font-size: 0.78rem;">
-        $ curl -fsSL https://siar.irshad.org.in/install.sh | sh --test<br><br>
+        $ curl -fsSL https://siar.irshadlab.org/install.sh | sh --test<br><br>
         [SIAR INSTALLER SMOKE TEST]<br>
         1. Detected OS: Linux (x86_64)<br>
-        2. Fetching release manifest from: https://siar.irshad.org.in/pkg/manifest.json ... OK (200)<br>
+        2. Fetching release manifest from: https://siar.irshadlab.org/pkg/manifest.json ... OK (200)<br>
         3. Validating Minisign Ed25519 Public Key: RWS1A5v7D1lQ0s8nQ... OK<br>
         4. Verifying SLSA Level 3 in-toto checksum ledger... OK<br>
         5. Binary download test (/releases/siar-cli-v0.1.0-x86_64-unknown-linux-musl.tar.gz) ... 7.8 MB / 7.8 MB [100%]<br>
