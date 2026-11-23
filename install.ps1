@@ -1,7 +1,7 @@
 # ==============================================================================
 # SIAR PowerShell Fast Bootstrapper & Installer
-# Official Endpoint: https://siar.irshad.org.in/install.ps1
-# Repository: https://pkg.siar.irshad.org.in/
+# Official Endpoint: https://siar.irshadlab.org/install.ps1
+# Repository: https://pkg.siar.irshadlab.org/
 # ==============================================================================
 
 $ErrorActionPreference = "Stop"
@@ -17,7 +17,7 @@ if ($arch -ne "AMD64" -and $arch -ne "ARM64") {
 }
 
 $version = "v0.1.0"
-$baseUrl = "https://pkg.siar.irshad.org.in/releases"
+$baseUrl = "https://pkg.siar.irshadlab.org/releases"
 $fileName = "siar-cli-$version-x86_64-pc-windows-msvc.zip"
 $downloadUrl = "$baseUrl/$fileName"
 
