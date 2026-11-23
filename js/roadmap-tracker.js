@@ -1,7 +1,7 @@
 /**
  * SIAR System Requirements, Tech Stack & Roadmap Tracker Engine
  * Architecture: Part 10 - System Requirements, Tech Stack & Implementation Roadmap
- * Domain: siar.irshad.org.in
+ * Domain: siar.irshadlab.org
  */
 
 const ROADMAP_DATA = [
@@ -134,8 +134,8 @@ function initCspAuditor() {
     { directive: "default-src 'none'", status: "PASSED", note: "Denies all untrusted resource fetching by default." },
     { directive: "script-src 'self' 'wasm-unsafe-eval'", status: "PASSED", note: "Allows local scripts and WebAssembly engine execution." },
     { directive: "style-src 'self' 'unsafe-inline'", status: "PASSED", note: "Strictly allows local CSS design tokens." },
-    { directive: "img-src 'self' data: https://pkg.siar.irshad.org.in", status: "PASSED", note: "Restricted to local assets and official package mirror." },
-    { directive: "connect-src 'self' https://pkg.siar.irshad.org.in wss://*.siar.irshad.org.in", status: "PASSED", note: "WebSocket telemetry bridge restricted to official nodes." },
+    { directive: "img-src 'self' data: https://pkg.siar.irshadlab.org", status: "PASSED", note: "Restricted to local assets and official package mirror." },
+    { directive: "connect-src 'self' https://pkg.siar.irshadlab.org wss://*.siar.irshadlab.org", status: "PASSED", note: "WebSocket telemetry bridge restricted to official nodes." },
     { directive: "Strict-Transport-Security: max-age=63072000; preload", status: "PASSED", note: "Enforces 2-year TLS 1.3 encryption across all subdomains." },
     { directive: "Cross-Origin-Embedder-Policy: require-corp", status: "PASSED", note: "Enables SharedArrayBuffer for high-performance WASM WebWorkers." }
   ];
