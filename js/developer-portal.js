@@ -1,7 +1,7 @@
 /**
  * SIAR Developer Portal & Protocol Specification Interactive Showcase Engine
  * Architecture: Parts I through XVI
- * Domain: siar.irshad.org.in | docs.siar.irshad.org.in
+ * Domain: siar.irshadlab.org | docs.siar.irshadlab.org
  */
 
 const SDK_SNIPPETS = {
