@@ -1,7 +1,7 @@
 /**
  * SIAR Universal Package Distribution & Repository Generator Engine
  * Architecture: Part 02 - Cross-Platform Package Distribution Engine
- * Domain: siar.irshad.org.in | pkg.siar.irshad.org.in
+ * Domain: siar.irshadlab.org | pkg.siar.irshadlab.org
  */
 
 const fs = require('fs');
@@ -14,9 +14,9 @@ const PKG_DIR = path.join(ROOT_DIR, 'pkg');
 const RELEASE_INFO = {
   version: '0.1.0',
   releaseDate: '2026-08-29T00:00:00Z',
-  maintainer: 'Irshad Ali <dev@siar.irshad.org.in>',
-  homepage: 'https://siar.irshad.org.in',
-  baseUrl: 'https://pkg.siar.irshad.org.in',
+  maintainer: 'Irshad Ali <dev@siar.irshadlab.org>',
+  homepage: 'https://siar.irshadlab.org',
+  baseUrl: 'https://pkg.siar.irshadlab.org',
   minisignPubkey: 'RWS1A5v7D1lQ0s8nQj21kX8yN2Zp9qW4eR6tY8uI0oP=',
   gpgFingerprintApt: '4F82 1B09 7E65 D34A 9812  BC7E 51A2 8C9D 0F4B 2277',
   gpgFingerprintRpm: '8F3A 42C1 B990 E51D 642C  FA30 17D5 7B66 448A 2F10',
@@ -76,7 +76,7 @@ function generateGpgKeys() {
 
   const gpgAptAscii = `-----BEGIN PGP PUBLIC KEY BLOCK-----
 Version: SIAR Signing Authority v1.0
-Comment: Official Debian/Ubuntu Repository Key (siar.irshad.org.in)
+Comment: Official Debian/Ubuntu Repository Key (siar.irshadlab.org)
 
 mQINBF+q0SIBEADR3o... [SIAR APT ARCHIVE KEYRING 4096R/0F4B2277]
 =siar
@@ -84,7 +84,7 @@ mQINBF+q0SIBEADR3o... [SIAR APT ARCHIVE KEYRING 4096R/0F4B2277]
 
   const gpgRpmAscii = `-----BEGIN PGP PUBLIC KEY BLOCK-----
 Version: SIAR Signing Authority v1.0
-Comment: Official RPM/Fedora Repository Key (siar.irshad.org.in)
+Comment: Official RPM/Fedora Repository Key (siar.irshadlab.org)
 
 mQINBF+q0SIBEADZ9x... [SIAR RPM ARCHIVE KEYRING 4096R/448A2F10]
 =siar
@@ -157,7 +157,7 @@ Version: ${RELEASE_INFO.version}
 Date: ${new Date().toUTCString()}
 Architectures: amd64 arm64
 Components: main
-Description: Official signed APT repository for SIAR (siar.irshad.org.in)
+Description: Official signed APT repository for SIAR (siar.irshadlab.org)
 MD5Sum:
  8f3a42c1b990e51d642cfa3017d57b66 1240 main/binary-amd64/Packages
  e3b0c44298fc1c149afbf4c8996fb924 1190 main/binary-arm64/Packages
@@ -181,11 +181,11 @@ function generateRpmRepository() {
   // Repo definition file
   const repoConf = `[siar]
 name=SIAR Official Repository - $basearch
-baseurl=https://pkg.siar.irshad.org.in/rpm/$basearch/
+baseurl=https://pkg.siar.irshadlab.org/rpm/$basearch/
 enabled=1
 gpgcheck=1
 repo_gpgcheck=1
-gpgkey=https://pkg.siar.irshad.org.in/gpg/siar-rpm-key.pub
+gpgkey=https://pkg.siar.irshadlab.org/gpg/siar-rpm-key.pub
 metadata_expire=1d
 `;
   fs.writeFileSync(path.join(rpmDir, 'siar.repo'), repoConf);
@@ -220,7 +220,7 @@ function generateFdroidRepository() {
     repo: {
       name: "SIAR Official F-Droid Repository",
       icon: "icon.png",
-      address: "https://pkg.siar.irshad.org.in/fdroid/repo",
+      address: "https://pkg.siar.irshadlab.org/fdroid/repo",
       description: "Official privacy-preserving Android builds of SIAR Messenger and Nodes.",
       timestamp: Date.now(),
       version: 20002
@@ -235,7 +235,7 @@ function generateFdroidRepository() {
           description: { "en-US": "Zero-infrastructure, delay-tolerant decentralized mesh messaging engine." },
           categories: ["Security", "Connectivity", "Internet"],
           license: "Apache-2.0 OR MIT",
-          webSite: "https://siar.irshad.org.in",
+          webSite: "https://siar.irshadlab.org",
           sourceCode: "https://github.com/irshadali5/siar"
         },
         versions: {
@@ -267,7 +267,7 @@ function generateArchPkgbuild() {
   const archDir = path.join(PKG_DIR, 'arch');
   ensureDir(archDir);
 
-  const pkgbuild = `# Maintainer: Irshad Ali <dev@siar.irshad.org.in>
+  const pkgbuild = `# Maintainer: Irshad Ali <dev@siar.irshadlab.org>
 pkgname=siar-bin
 pkgver=${RELEASE_INFO.version}
 pkgrel=1
@@ -279,8 +279,8 @@ depends=('gcc-libs' 'glibc')
 provides=('siar' 'siar-cli')
 conflicts=('siar')
 
-source_x86_64=("https://pkg.siar.irshad.org.in/releases/siar-cli-v\${pkgver}-x86_64-unknown-linux-musl.tar.gz")
-source_aarch64=("https://pkg.siar.irshad.org.in/releases/siar-cli-v\${pkgver}-aarch64-unknown-linux-musl.tar.gz")
+source_x86_64=("https://pkg.siar.irshadlab.org/releases/siar-cli-v\${pkgver}-x86_64-unknown-linux-musl.tar.gz")
+source_aarch64=("https://pkg.siar.irshadlab.org/releases/siar-cli-v\${pkgver}-aarch64-unknown-linux-musl.tar.gz")
 
 sha256sums_x86_64=('7a4fb918cc3da10ef49b127741d4735e3a265e16eee03f59718b9b5d03019c07')
 sha256sums_aarch64=('4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a')
@@ -304,7 +304,7 @@ function generateHomebrewFormula() {
 
   const formula = `class SiarCli < Formula
   desc "Survivable Identity & Autonomous Routing - Terminal Node"
-  homepage "https://siar.irshad.org.in"
+  homepage "https://siar.irshadlab.org"
   version "${RELEASE_INFO.version}"
 
   if OS.mac? && Hardware::CPU.arm?
@@ -330,10 +330,10 @@ end
   version "${RELEASE_INFO.version}"
   sha256 "8f3a42c1b990e51d642cfa3017d57b66448a2f1098c3550a77e192041822910f"
 
-  url "https://pkg.siar.irshad.org.in/releases/SIAR_Messenger-#{version}-universal.dmg"
+  url "https://pkg.siar.irshadlab.org/releases/SIAR_Messenger-#{version}-universal.dmg"
   name "SIAR Messenger"
   desc "Zero-infrastructure, delay-tolerant mesh messaging app"
-  homepage "https://siar.irshad.org.in"
+  homepage "https://siar.irshadlab.org"
 
   app "SIAR Messenger.app"
   binary "#{appdir}/SIAR Messenger.app/Contents/MacOS/siar-cli"
@@ -362,11 +362,11 @@ PackageName: SIAR Messenger
 Publisher: Irshad Ali
 License: Apache-2.0
 ShortDescription: Survivable Identity & Autonomous Routing Mesh Desktop Client
-PackageUrl: https://siar.irshad.org.in
+PackageUrl: https://siar.irshadlab.org
 Installers:
   - Architecture: x64
     InstallerType: msix
-    InstallerUrl: https://pkg.siar.irshad.org.in/releases/SIAR_Messenger-0.1.0-x64.msix
+    InstallerUrl: https://pkg.siar.irshadlab.org/releases/SIAR_Messenger-0.1.0-x64.msix
     InstallerSha256: ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb
 ManifestType: singleton
 ManifestVersion: 1.6.0
