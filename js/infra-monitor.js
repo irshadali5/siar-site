@@ -1,7 +1,7 @@
 /**
  * SIAR Global Edge CDN & Infrastructure Monitor Engine
  * Architecture: Part 07 - Global Edge CDN, Storage & Routing Topology
- * Domain: siar.irshad.org.in | pkg.siar.irshad.org.in
+ * Domain: siar.irshadlab.org | pkg.siar.irshadlab.org
  */
 
 const INFRA_STATE = {
@@ -35,7 +35,7 @@ function initGeoRoutingSimulator() {
     const pkg = selectPkg ? selectPkg.value : "/latest/android-apk";
 
     let selectedTier = "Tier 1: Cloudflare R2 Global Primary";
-    let mirrorUrl = "https://r2-origin.siar.irshad.org.in";
+    let mirrorUrl = "https://r2-origin.siar.irshadlab.org";
     let latency = "14ms";
     let edgeColo = "IAD (Ashburn, VA)";
 
@@ -55,7 +55,7 @@ function initGeoRoutingSimulator() {
 
     if (isTier1SimulatedDown) {
       selectedTier = "Tier 2: MinIO EU Sovereign (Hetzner Germany) [FAILOVER ACTIVE]";
-      mirrorUrl = "https://eu-mirror.siar.irshad.org.in";
+      mirrorUrl = "https://eu-mirror.siar.irshadlab.org";
       latency = "24ms";
     }
 
