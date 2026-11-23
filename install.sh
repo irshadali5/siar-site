@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # ==============================================================================
 # SIAR Fast Bootstrapper & Installer
-# Official Endpoint: https://siar.irshad.org.in/install.sh
-# Repository: https://pkg.siar.irshad.org.in/
+# Official Endpoint: https://siar.irshadlab.org/install.sh
+# Repository: https://pkg.siar.irshadlab.org/
 # ==============================================================================
 
 set -euo pipefail
@@ -46,7 +46,7 @@ case "$OS" in
 esac
 
 TARGET_TRIPLE="${ARCH_TARGET}-${OS_TARGET}"
-BASE_URL="https://pkg.siar.irshad.org.in"
+BASE_URL="https://pkg.siar.irshadlab.org"
 VERSION="v0.1.0"
 BIN_NAME="siar-cli"
 TAR_FILE="${BIN_NAME}-${VERSION}-${TARGET_TRIPLE}.tar.gz"
