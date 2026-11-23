@@ -1,7 +1,7 @@
 /**
  * SIAR Client-Side Cryptographic Verifier & SLSA Provenance Engine
  * Architecture: Part 03 - Cryptographic Supply Chain & Signing
- * Domain: siar.irshad.org.in | pkg.siar.irshad.org.in
+ * Domain: siar.irshadlab.org | pkg.siar.irshadlab.org
  */
 
 const KNOWN_RELEASES = {
@@ -283,7 +283,7 @@ function renderVerificationResult(hashHex, filename, fileSize) {
         </div>
 
         <p style="font-size: 0.88rem; color: var(--siar-text-secondary); line-height: 1.6;">
-          ⚠️ <strong>Security Caution:</strong> This file may have been modified in transit, corrupted, or produced by an unauthorized builder. Do not execute this package on production or emergency nodes. Please download authentic packages from <a href="packages.html" style="color: var(--siar-cyan-glow);">pkg.siar.irshad.org.in</a>.
+          ⚠️ <strong>Security Caution:</strong> This file may have been modified in transit, corrupted, or produced by an unauthorized builder. Do not execute this package on production or emergency nodes. Please download authentic packages from <a href="packages.html" style="color: var(--siar-cyan-glow);">pkg.siar.irshadlab.org</a>.
         </p>
       </div>
     `;
@@ -401,8 +401,8 @@ function initCliSnippetGenerator() {
 
   const COMMANDS = {
     minisign: `# 1. Download binary and detached Minisign signature
-curl -LO https://pkg.siar.irshad.org.in/releases/siar-cli-v0.1.0-x86_64-unknown-linux-musl.tar.gz
-curl -LO https://pkg.siar.irshad.org.in/releases/siar-cli-v0.1.0-x86_64-unknown-linux-musl.tar.gz.minisig
+curl -LO https://pkg.siar.irshadlab.org/releases/siar-cli-v0.1.0-x86_64-unknown-linux-musl.tar.gz
+curl -LO https://pkg.siar.irshadlab.org/releases/siar-cli-v0.1.0-x86_64-unknown-linux-musl.tar.gz.minisig
 
 # 2. Verify with SIAR Official Public Release Key
 minisign -Vm siar-cli-v0.1.0-x86_64-unknown-linux-musl.tar.gz \\
@@ -416,7 +416,7 @@ cosign verify-blob \\
   siar-cli-v0.1.0-x86_64-unknown-linux-musl.tar.gz`,
 
     gpg: `# Verify Debian / Ubuntu APT InRelease Keyring Signature
-gpg --verify /var/lib/apt/lists/pkg.siar.irshad.org.in_deb_dists_stable_InRelease`
+gpg --verify /var/lib/apt/lists/pkg.siar.irshadlab.org_deb_dists_stable_InRelease`
   };
 
   if (cliSelect && cliOutput) {
