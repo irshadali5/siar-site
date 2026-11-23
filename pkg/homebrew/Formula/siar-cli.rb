@@ -1,6 +1,6 @@
 class SiarCli < Formula
   desc "Survivable Identity & Autonomous Routing - Terminal Node"
-  homepage "https://siar.irshad.org.in"
+  homepage "https://siar.irshadlab.org"
   version "0.1.0"
 
   if OS.mac? && Hardware::CPU.arm?
