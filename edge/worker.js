@@ -1,25 +1,25 @@
 /**
  * SIAR Cloudflare / Fastly Edge Compute Worker
  * Architecture: Part 07 - Global Edge CDN & Geo-Routing Topology
- * Domain: download.siar.irshad.org.in | pkg.siar.irshad.org.in
+ * Domain: download.siar.irshadlab.org | pkg.siar.irshadlab.org
  */
 
 const STORAGE_TIERS = {
   tier1_primary: {
     name: "Cloudflare R2 Global Primary",
-    baseUrl: "https://r2-origin.siar.irshad.org.in",
+    baseUrl: "https://r2-origin.siar.irshadlab.org",
     priority: 1,
     healthy: true
   },
   tier2_sovereign: {
     name: "MinIO EU Sovereign (Hetzner Germany)",
-    baseUrl: "https://eu-mirror.siar.irshad.org.in",
+    baseUrl: "https://eu-mirror.siar.irshadlab.org",
     priority: 2,
     healthy: true
   },
   tier3_cold: {
     name: "Backblaze B2 Cold Storage",
-    baseUrl: "https://b2-archive.siar.irshad.org.in",
+    baseUrl: "https://b2-archive.siar.irshadlab.org",
     priority: 3,
     healthy: true
   }
