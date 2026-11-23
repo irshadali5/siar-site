@@ -1,7 +1,7 @@
 /**
  * SIAR Decentralized Plugin Marketplace & Extension Registry
  * Architecture: Part 06 - Plugin Marketplace & Extension Registry
- * Domain: siar.irshad.org.in
+ * Domain: siar.irshadlab.org
  */
 
 const PLUGIN_CATALOG = [
@@ -10,7 +10,7 @@ const PLUGIN_CATALOG = [
     name: "siar-transport-lora-sx1262",
     version: "1.2.0",
     category: "transports",
-    author: "Irshad Ali <dev@siar.irshad.org.in>",
+    author: "Irshad Ali <dev@siar.irshadlab.org>",
     description: "LoRa SX1262 hardware transport driver for 915MHz/868MHz long-range disaster mesh packet modulation.",
     rating: 4.9,
     downloads: 14820,
@@ -24,7 +24,7 @@ const PLUGIN_CATALOG = [
 name = "siar-transport-lora-sx1262"
 version = "1.2.0"
 edition = "2024"
-authors = ["Irshad Ali <dev@siar.irshad.org.in>"]
+authors = ["Irshad Ali <dev@siar.irshadlab.org>"]
 description = "LoRa SX1262 hardware transport driver for long-range emergency mesh"
 license = "MIT OR Apache-2.0"
 category = "transports"
