@@ -1,7 +1,7 @@
 /**
  * SIAR Official Web Platform Controller & Interactive Modules
  * Architecture: Part 01 - Showcase & Landing UI/UX
- * Domain: siar.irshad.org.in
+ * Domain: siar.irshadlab.org
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -68,26 +68,26 @@ function detectClientOS() {
   let osName = 'Linux x86_64';
   let badgeIcon = '🐧';
   let targetTab = 'linux';
-  let downloadUrl = 'https://pkg.siar.irshad.org.in/deb/pool/main/s/siar-desktop/siar-desktop_0.1.0_amd64.deb';
+  let downloadUrl = 'https://pkg.siar.irshadlab.org/deb/pool/main/s/siar-desktop/siar-desktop_0.1.0_amd64.deb';
   let downloadLabel = 'Download Desktop (.deb)';
 
   if (/Android/i.test(ua)) {
     osName = 'Android (ARM64 / Universal)';
     badgeIcon = '📱';
     targetTab = 'android';
-    downloadUrl = 'https://pkg.siar.irshad.org.in/releases/siar-messenger-0.1.0-universal.apk';
+    downloadUrl = 'https://pkg.siar.irshadlab.org/releases/siar-messenger-0.1.0-universal.apk';
     downloadLabel = 'Download Android APK';
   } else if (/Macintosh|Mac OS X/i.test(ua)) {
     osName = 'macOS Universal (Apple Silicon / Intel)';
     badgeIcon = '🍎';
     targetTab = 'macos';
-    downloadUrl = 'https://pkg.siar.irshad.org.in/releases/SIAR_Messenger-0.1.0-universal.dmg';
+    downloadUrl = 'https://pkg.siar.irshadlab.org/releases/SIAR_Messenger-0.1.0-universal.dmg';
     downloadLabel = 'Download macOS DMG';
   } else if (/Windows/i.test(ua)) {
     osName = 'Windows x64 / ARM64';
     badgeIcon = '🪟';
     targetTab = 'windows';
-    downloadUrl = 'https://pkg.siar.irshad.org.in/releases/SIAR_Messenger-0.1.0-x64.msix';
+    downloadUrl = 'https://pkg.siar.irshadlab.org/releases/SIAR_Messenger-0.1.0-x64.msix';
     downloadLabel = 'Download Windows MSIX';
   }
 
