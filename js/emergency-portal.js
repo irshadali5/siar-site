@@ -1,7 +1,7 @@
 /**
  * SIAR Emergency Captive Portal & Offline Survival Hub Engine
  * Architecture: Part 08 - Offline Distribution & Emergency Captive Portal
- * Domain: siar.irshad.org.in | http://192.168.4.1/portal.html
+ * Domain: siar.irshadlab.org | http://192.168.4.1/portal.html
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -149,7 +149,7 @@ function appendLocalMessage(sender, text, transport, isSos = false) {
  * Offline Hub Utilities (Magnet Links, Iroh P2P, USB Provisioning)
  */
 function initOfflineHubUtilities() {
-  const MAGNET_URI = "magnet:?xt=urn:btih:7f9a8b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a&dn=SIAR_Release_v0.1.0_All_Platforms&ws=https://pkg.siar.irshad.org.in/releases/&tr=udp://tracker.opentrackr.org:1337/announce&tr=udp://tracker.openbittorrent.com:6969/announce";
+  const MAGNET_URI = "magnet:?xt=urn:btih:7f9a8b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a&dn=SIAR_Release_v0.1.0_All_Platforms&ws=https://pkg.siar.irshadlab.org/releases/&tr=udp://tracker.opentrackr.org:1337/announce&tr=udp://tracker.openbittorrent.com:6969/announce";
 
   const btnMagnet = document.getElementById('btnCopyMagnet');
   if (btnMagnet) {
@@ -165,7 +165,7 @@ function initOfflineHubUtilities() {
       const target = e.target.value;
       if (target === 'linux') {
         outputUsbScript.textContent = `# Prepare Bootable Field Provisioning USB Drive
-curl -LO https://pkg.siar.irshad.org.in/releases/siar-survival-pack-v0.1.0.tar.zst
+curl -LO https://pkg.siar.irshadlab.org/releases/siar-survival-pack-v0.1.0.tar.zst
 tar -I zstd -xvf siar-survival-pack-v0.1.0.tar.zst -C /media/usb/
 chmod +x /media/usb/serve-local.sh
 /media/usb/serve-local.sh 8080`;
