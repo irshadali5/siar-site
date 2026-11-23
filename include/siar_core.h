@@ -1,7 +1,7 @@
 /**
  * SIAR Core C-ABI Foreign Function Interface Header
  * Architecture: Part 05 - Developer Portal & SDK Hub
- * Domain: siar.irshad.org.in | docs.siar.irshad.org.in
+ * Domain: siar.irshadlab.org | docs.siar.irshadlab.org
  * License: Apache-2.0 OR MIT
  */
 
